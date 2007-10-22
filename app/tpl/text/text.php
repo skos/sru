@@ -53,7 +53,7 @@ extends UFtpl {
 		$url = $this->url(0).'/:edit/';
 		$urlDel = $this->url(0).'/:del/';
 		foreach ($d as $t) {
-			echo '<li><a href="'.$url.$t['alias'].'">'.$t['title'].'</a><small> <a href="'.$urlDel.$t['alias'].'">Usuń</a></small></li>';
+			echo '<li><a href="'.$url.$t['alias'].'">'.$t['alias'].' &mdash; '.$t['title'].'</a><small> <a href="'.$urlDel.$t['alias'].'">Usuń</a></small></li>';
 		}
 	}
 

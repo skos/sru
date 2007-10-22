@@ -19,6 +19,10 @@ extends UFtpl {
 <div id="head">
 <h1><a href="<?=$this->url(0);?>/">SKOS</a></h1>
 </div><!-- head -->
+<ul id="nav">
+<li><a href="<?=$this->url(0);?>/regulamin.html">Regulamin</a></li>
+<li><a href="<?=$this->url(0);?>/o-sieci.html">O sieci</a></li>
+</ul>
 <div id="main">
 <?=$d['body'];?>
 </div><!-- main -->

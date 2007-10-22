@@ -26,7 +26,7 @@ extends UFtpl {
 		$form->_submit('Dodaj');
 		$form->_end();
 		$form->_end(true);
-		echo '<a href="'.$this->url(0).'/:edit">Administruj</a>';
+		echo '<small class="admin"><a href="'.$this->url(0).'/:edit">Edytuj</a></small>';
 	}
 
 	public function titleList(array $d) {
@@ -34,10 +34,10 @@ extends UFtpl {
 	}
 
 	public function listShort(array $d) {
-		echo '<h2>Lista stron</h2><ul>';
+		echo '<h1>Lista stron</h1><ul>';
 		echo $d['texts']->write('listShort');
 		echo '</ul>';
-		echo '<a href="'.$this->url(0).'/:edit">Administruj</a>';
+		echo '<small class="admin"><a href="'.$this->url(0).'/:edit">Edytuj</a></small>';
 	}
 
 	public function title(array $d) {
@@ -53,16 +53,16 @@ extends UFtpl {
 	}
 
 	public function adminList(array $d) {
-		echo '<h2>Administracja stronami</h2>';
+		echo '<h1>Administracja stronami</h1>';
 		if ($this->_srv->get('msg')->get('textDel/ok')) {
 			UFtpl_Html::msgOk('Strona została usunięta');
 		} elseif ($this->_srv->get('msg')->get('textEdit/ok')) {
 			UFtpl_Html::msgOk('Strona została zapisana');
 		}
-		echo '<ul>';
+		echo '<ul class="admin">';
 		echo $d['texts']->write('adminList');
 		echo '</ul>';
-		echo '<a href="'.$this->url(0).'/">Wróć do prezentacji</a> <a href="'.$this->url(0).'/:add">Dodaj</a>';
+		echo '<small class="admin"><a href="'.$this->url(0).'/">Wróć do listy</a> <a href="'.$this->url(0).'/:add">Dodaj</a></small>';
 	}
 
 	public function edit(array $d) {
@@ -78,7 +78,7 @@ extends UFtpl {
 		$form->_submit('Zapisz');
 		$form->_end();
 		$form->_end(true);
-		echo '<a href="'.$this->url(0).'/:edit">Administruj</a>';
+		echo '<small class="admin"><a href="'.$this->url(0).'/:edit">Edytuj</a></small>';
 	}
 
 	public function titleNotFound() {
@@ -98,6 +98,6 @@ extends UFtpl {
 		$form->_submit('Usuń', array('name'=>'textDel'));
 		$form->_end();
 		$form->_end(true);
-		echo '<a href="'.$this->url(0).'/:edit">Administruj</a>';
+		echo '<a href="'.$this->url(0).'/:edit">Edytuj</a>';
 	}
 }
