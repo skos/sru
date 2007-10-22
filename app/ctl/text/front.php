@@ -51,10 +51,18 @@ extends UFctl {
 		$post = $req->post;
 		$acl = $this->_srv->get('acl');
 
-		if ('admin/add' == $get->view && $post->is('textAdd') && !$post->is('textPreview') && $acl->text('text', 'add')) {
-			$act = 'Text_Add';
-		} elseif ('admin/edit' == $get->view && $post->is('textEdit') && !$post->is('textPreview') && $acl->text('text', 'edit')) {
-			$act = 'Text_Edit';
+		if ('admin/add' == $get->view && $post->is('textAdd') && $acl->text('text', 'add')) {
+			if ($post->is('textPreview')) {
+				$act = 'Text_AddPreview';
+			} else {
+				$act = 'Text_Add';
+			}
+		} elseif ('admin/edit' == $get->view && $post->is('textEdit') && $acl->text('text', 'edit')) {
+			if ($post->is('textPreview')) {
+				$act = 'Text_EditPreview';
+			} else {
+				$act = 'Text_Edit';
+			}
 		} elseif ('admin/del' == $get->view && $post->is('textDel') && $acl->text('text', 'del')) {
 			$act = 'Text_Del';
 		}
