@@ -40,6 +40,11 @@ extends UFtpl {
 		echo '<small class="admin"><a href="'.$this->url(0).'/:edit">Edytuj</a></small>';
 	}
 
+	public function listShortNotFound() {
+		UFtpl_Html::msgErr('Nie ma jeszcze stron');
+		echo '<small><a href="'.$this->url(0).'/:add">Dodaj</a></small>';
+	}
+
 	public function title(array $d) {
 		echo $d['text']->write('title');
 	}

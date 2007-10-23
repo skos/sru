@@ -52,11 +52,13 @@ extends UFbox {
 	 */
 	public function listShort() {
 		$bean = UFra::factory('UFbean_Text_TextList');
-		$bean->listAlphabetically();
-
-		$d['texts'] = $bean;
-
-		return $this->render(__FUNCTION__, $d);
+		try {
+			$bean->listAlphabetically();
+			$d['texts'] = $bean;
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}
 	}
 
 	public function title() {
