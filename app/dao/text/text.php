@@ -9,7 +9,7 @@ extends UFdao {
 		$mapping = $this->mapping('list');
 
 		$query = $this->prepareSelect($mapping);
-		$query->order($mapping->alias);
+		$query->order($mapping->title);
 
 		return $this->doSelect($query);
 	}
