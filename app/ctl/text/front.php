@@ -13,7 +13,7 @@ extends UFctl {
 		return implode('/', $segments);
 	}
 
-	public function parseParameters() {
+	protected function parseParameters() {
 		$req = $this->_srv->get('req');
 		$get = $req->get;
 		
@@ -45,7 +45,7 @@ extends UFctl {
 		}
 	}
 
-	public function chooseAction($action = null) {
+	protected function chooseAction($action = null) {
 		$req = $this->_srv->get('req');
 		$get = $req->get;
 		$post = $req->post;
@@ -74,7 +74,7 @@ extends UFctl {
 		return $action;
 	}
 
-	public function chooseView($view = null) {
+	protected function chooseView($view = null) {
 		$req = $this->_srv->get('req');
 		$get = $req->get;
 		$post= $req->post;
