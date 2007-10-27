@@ -1,9 +1,7 @@
 RewriteEngine On
-RewriteBase /~hrynek/skos
+RewriteBase /
 
-RewriteCond %{REQUEST_URI} !^/~hrynek/skos/i/
-RewriteCond %{REQUEST_URI} !^/~hrynek/skos/index.php
-RewriteCond %{REQUEST_URI} !^/~hrynek/skos/index.html
-RewriteCond %{REQUEST_URI} !^/~hrynek/skos/$
-RewriteCond %{REQUEST_URI} !^/~hrynek/skos$
+RewriteCond %{REQUEST_URI} !^/i/
+RewriteCond %{REQUEST_URI} !^/index.php
+RewriteCond %{REQUEST_URI} !^/test.php
 RewriteRule ^(.*)$ index.php?$1 [PT]

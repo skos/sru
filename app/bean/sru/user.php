@@ -37,12 +37,22 @@ extends UFbeanSingle {
 
 	protected function normalizePassword($val, $change) {
 		$this->password = $val;
-		return md5($this->data['login'].$val);
+		if (array_key_exists('login', $this->data)) {
+			$login = $this->data['login'];
+		} else {
+			$login = md5(microtime());
+		}
+		return md5($login.$val);
 	}
 
 	protected function normalizeLogin($val, $change) {
-		$this->data['login'] = md5($val.$this->password);
-		$this->dataChanged['login'] = $this->data['login'];
+		if (is_string($this->password)) {
+			$pass = $this->password;
+		} else {
+			$pass = microtime();
+		}
+		$this->data['password'] = md5($val.$pass);
+		$this->dataChanged['password'] = $this->data['password'];
 		return $val;
 	}
 

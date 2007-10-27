@@ -1,7 +1,7 @@
 <?
 
 /**
- * dodanie uzytkownika
+ * dodanie uzytkownika i od razu go loguje do systemu
  */
 class UFact_Sru_User_Add
 extends UFact {
@@ -12,7 +12,8 @@ extends UFact {
 		try {
 			$bean = UFra::factory('UFbean_Sru_User');
 			$bean->fillFromPost(self::PREFIX);
-			$bean->save();
+			$id = $bean->save();
+			$this->_srv->get('session')->auth = $id;
 
 			$this->postDel(self::PREFIX);
 			$this->markOk(self::PREFIX);

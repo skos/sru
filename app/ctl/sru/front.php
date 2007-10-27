@@ -8,17 +8,31 @@ extends UFctl {
 	protected function parseParameters() {
 		$req = $this->_srv->get('req');
 		$get = $req->get;
+		$acl = $this->_srv->get('acl');
 		
 		$segCount = $req->segmentsCount();
 		if (0 == $segCount) {
-			$get->view = 'login';
-		} else {
+			if ($acl->sru('user', 'edit')) {
+				$get->view = 'user/main';
+			} else {
+				$get->view = 'login';
+			}
+		} elseif ($acl->sru('user', 'edit')) {	// zalogowani
+			switch ($req->segment(1)) {
+				case 'profile':
+					$get->view = 'user/edit';
+					break;
+				default:
+					$get->view = 'user/main';
+					break;
+			}
+		} else {	// anonimowi
 			switch ($req->segment(1)) {
 				case 'create':
 					$get->view = 'user/add';
 					break;
 				default:
-					$get->view = 'show';
+					$get->view = 'login';
 					break;
 			}
 		}
@@ -30,7 +44,13 @@ extends UFctl {
 		$post = $req->post;
 		$acl = $this->_srv->get('acl');
 
-		if ('user/add' == $get->view && $post->is('userAdd') && $acl->sru('user', 'add')) {
+		if ($post->is('userLogout') && $acl->sru('user', 'logout')) {
+			$act = 'User_Logout';
+		} elseif ('login' == $get->view && $post->is('userLogin') && $acl->sru('user', 'login')) {
+			$act = 'User_Login';
+		} elseif ('user/edit' == $get->view && $post->is('userEdit') && $acl->sru('user', 'edit')) {
+			$act = 'User_Add';
+		} elseif ('user/add' == $get->view && $post->is('userAdd') && $acl->sru('user', 'add')) {
 			$act = 'User_Add';
 		}
 
@@ -51,8 +71,12 @@ extends UFctl {
 		switch ($get->view) {
 			case 'login':
 				return 'Sru_Login';
+			case 'user/main':
+				return 'Sru_UserMain';
 			case 'user/add':
 				return 'Sru_UserAdd';
+			case 'user/edit':
+				return 'Sru_UserEdit';
 			default:
 				return 'Sru_Error404';
 		}

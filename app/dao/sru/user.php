@@ -23,4 +23,8 @@ extends UFdao {
 
 		return $this->doSelectFirst($query);
 	}
+
+	public function getFromSession() {
+		return $this->getByPK($this->_srv->get('session')->auth);
+	}
 }
