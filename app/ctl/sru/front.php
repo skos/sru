@@ -49,7 +49,7 @@ extends UFctl {
 		} elseif ('login' == $get->view && $post->is('userLogin') && $acl->sru('user', 'login')) {
 			$act = 'User_Login';
 		} elseif ('user/edit' == $get->view && $post->is('userEdit') && $acl->sru('user', 'edit')) {
-			$act = 'User_Add';
+			$act = 'User_Edit';
 		} elseif ('user/add' == $get->view && $post->is('userAdd') && $acl->sru('user', 'add')) {
 			$act = 'User_Add';
 		}

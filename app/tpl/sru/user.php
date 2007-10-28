@@ -92,6 +92,12 @@ extends UFtpl {
 	public function formEdit(array $d, $dormitories, $faculties) {
 		$d['locationId'] = $d['locationAlias'];
 		$d['dormitory'] = $d['dormitoryId'];
+		if (is_null($d['facultyId'])) {
+			$d['facultyId'] = '-';
+		}
+		if (is_null($d['studyYearId'])) {
+			$d['studyYearId'] = '-';
+		}
 		$form = UFra::factory('UFlib_Form', 'userEdit', $d, $this->errors);
 
 
@@ -104,11 +110,11 @@ extends UFtpl {
 		$tmp['-'] = 'N/D';
 		$form->facultyId('Wydział', array(
 			'type' => $form->SELECT,
-			'labels' => $form->_labelize($tmp, '', ''),
+			'labels' => $form->_labelize($tmp),
 		));
 		$form->studyYearId('Rok studiów', array(
 			'type' => $form->SELECT,
-			'labels' => $form->_labelize($this->studyYears, '', ''),
+			'labels' => $form->_labelize($this->studyYears),
 		));
 		$tmp = array();
 		foreach ($dormitories as $dorm) {
@@ -116,7 +122,7 @@ extends UFtpl {
 		}
 		$form->dormitory('Akademik', array(
 			'type' => $form->SELECT,
-			'labels' => $form->_labelize($tmp, '', ''),
+			'labels' => $form->_labelize($tmp),
 		));
 		$form->locationId('Pokój');
 	}

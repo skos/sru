@@ -57,8 +57,9 @@ extends UFbeanSingle {
 	}
 
 	protected function validateFacultyId($val, $change) {
+		$post = $this->_srv->get('req')->post->{$change?'userEdit':'userAdd'};
 		if ('-' === $val) {
-			if ('-' !== $this->_srv->get('req')->post->userAdd['studyYearId']) {
+			if ('-' !== $post['studyYearId']) {
 				return 'studyYearMismatch';
 			}
 		}
@@ -73,8 +74,9 @@ extends UFbeanSingle {
 	}
 
 	protected function validateStudyYearId($val, $change) {
+		$post = $this->_srv->get('req')->post->{$change?'userEdit':'userAdd'};
 		if ('-' === $val) {
-			if ('-' !== $this->_srv->get('req')->post->userAdd['facultyId']) {
+			if ('-' !== $post['facultyId']) {
 				return 'facultyMismatch';
 			}
 		} else {
@@ -91,9 +93,10 @@ extends UFbeanSingle {
 	}
 
 	protected function validateLocationId($val, $change) {
+		$post = $this->_srv->get('req')->post->{$change?'userEdit':'userAdd'};
 		try {
 			$dorm = UFra::factory('UFbean_Sru_Dormitory');
-			$dorm->getByPK((int)$this->_srv->get('req')->post->userAdd['dormitory']);
+			$dorm->getByPK((int)$post['dormitory']);
 		} catch (UFex $e) {
 			return;
 		}
