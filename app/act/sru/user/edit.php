@@ -13,6 +13,8 @@ extends UFact {
 			$bean = UFra::factory('UFbean_Sru_User');
 			$bean->getFromSession();
 			$bean->fillFromPost(self::PREFIX, array('login','password','name','surname'));
+			$bean->modifiedById = null;
+			$bean->modifiedAt = NOW;
 			$bean->save();
 
 			$this->postDel(self::PREFIX);

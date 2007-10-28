@@ -93,4 +93,73 @@ extends UFtpl {
 		$form->_end();
 		$form->_end(true);
 	}
+
+	public function titleUserComputers() {
+		echo 'Twoje komputery';
+	}
+
+	public function userComputers(array $d) {
+		echo '<h1>Twoje komputery</h1><ul>';
+		if ($this->_srv->get('msg')->get('computerAdd/ok')) {
+			UFtpl_Html::msgOk('Komputer został dodany');
+		} elseif ($this->_srv->get('msg')->get('computerDel/ok')) {
+			UFtpl_Html::msgOk('Komputer został wyrejestrowany');
+		}
+		$d['computers']->write('listOwn');
+		echo '</ul>';
+		echo '<p><small><a href="'.$this->url(1).'/:add">Dodaj</a></small></p>';
+	}
+
+	public function titleUserComputer(array $d) {
+		echo $d['computer']->write('titleDetails');
+	}
+
+	public function userComputer(array $d) {
+		echo '<div class="computer">';
+		$d['computer']->write('detailsOwn');
+		echo '<p class="nav"><a href="'.$this->url(1).'">Powrót do listy</a> <small><a href="'.$this->url(2).'/:edit">Edytuj</a></small></p>';
+		echo '</div>';
+	}
+
+	public function userComputerEdit(array $d) {
+		$form = UFra::factory('UFlib_Form');
+
+		$form->_start($this->url(3).'/');
+		$form->_fieldset('Zmień dane komputera');
+		if ($this->_srv->get('msg')->get('computerEdit/ok')) {
+			UFtpl_Html::msgOk('Dane zostały zmienione');
+		}
+		echo $d['computer']->write('formEdit');
+		$form->_submit('Zapisz');
+		$form->_end();
+		$form->_end(true);
+		echo '<p class="nav"><a href="'.$this->url(2).'">Powrót</a></p>';
+	}
+
+	public function titleUserComputerAdd() {
+		echo 'Dodaj komputer';
+	}
+
+	public function userComputerAdd(array $d) {
+		$form = UFra::factory('UFlib_Form');
+
+		$form->_start($this->url(2).'/');
+		$form->_fieldset('Dodaj komputer');
+		echo $d['computer']->write('formAdd');
+		$form->_submit('Dodaj');
+		$form->_end();
+		$form->_end(true);
+		echo '<p class="nav"><a href="'.$this->url(1).'">Powrót</a></p>';
+	}
+
+	public function userComputerDel(array $d) {
+		$form = UFra::factory('UFlib_Form');
+
+		$form->_start($this->url(3).'/');
+		$form->_fieldset('Wyrejestruj komputer');
+		echo $d['computer']->write('formDel');
+		$form->_submit('Wyrejestruj', array('name'=>'computerDel'));
+		$form->_end();
+		$form->_end(true);
+	}
 }

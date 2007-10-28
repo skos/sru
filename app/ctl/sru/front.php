@@ -22,6 +22,26 @@ extends UFctl {
 				case 'profile':
 					$get->view = 'user/edit';
 					break;
+				case 'computers':
+					if ($segCount > 1) {
+						switch ($req->segment(2)) {
+							case ':add':
+								$get->view = 'user/computer/add';
+								break;
+							default:
+								$get->computerId = (int)$req->segment(2);
+								if ($segCount > 2 && ':edit' == $req->segment(3)) {
+									$get->view = 'user/computer/edit';
+								} elseif ($segCount > 2 && ':del' == $req->segment(3)) {
+									$get->view = 'user/computer/del';
+								} else {
+									$get->view = 'user/computer';
+								}
+						}
+					} else {
+						$get->view = 'user/computers';
+					}
+					break;
 				default:
 					$get->view = 'user/main';
 					break;
@@ -52,6 +72,12 @@ extends UFctl {
 			$act = 'User_Edit';
 		} elseif ('user/add' == $get->view && $post->is('userAdd') && $acl->sru('user', 'add')) {
 			$act = 'User_Add';
+		} elseif ('user/computer/edit' == $get->view && $post->is('computerEdit') && $acl->sru('computer', 'edit')) {
+			$act = 'Computer_Edit';
+		} elseif ('user/computer/add' == $get->view && $post->is('computerAdd') && $acl->sru('computer', 'add')) {
+			$act = 'Computer_Add';
+		} elseif ('user/computer/edit' == $get->view && $post->is('computerDel') && $acl->sru('computer', 'del')) {
+			$act = 'Computer_Del';
 		}
 
 		if (isset($act)) {
@@ -77,6 +103,24 @@ extends UFctl {
 				return 'Sru_UserAdd';
 			case 'user/edit':
 				return 'Sru_UserEdit';
+			case 'user/computers':
+				return 'Sru_UserComputers';
+			case 'user/computer':
+				return 'Sru_UserComputer';
+			case 'user/computer/add':
+				if ($msg->get('computerAdd/ok')) {
+					return 'Sru_UserComputers';	
+				} else {
+					return 'Sru_UserComputerAdd';
+				}
+			case 'user/computer/edit':
+				if ($msg->get('computerDel/ok')) {
+					return 'Sru_UserComputers';	
+				} else {
+					return 'Sru_UserComputerEdit';
+				}
+			case 'user/computer/del':
+				return 'Sru_UserComputerDel';
 			default:
 				return 'Sru_Error404';
 		}
