@@ -15,7 +15,7 @@ extends UFtpl {
 		$form->_start();
 		$form->_fieldset('Zaloguj się');
 		if ($this->_srv->get('msg')->get('userLogin/errors')) {
-			UFtpl_Html::msgOk('Nieprawidłowy login lub hasło');
+			UFtpl_Html::msgErr('Nieprawidłowy login lub hasło');
 		}
 		echo $d['user']->write('formLogin');
 		$form->_submit('Zaloguj');
