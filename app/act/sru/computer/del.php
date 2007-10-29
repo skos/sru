@@ -10,6 +10,9 @@ extends UFact {
 
 	public function go() {
 		try {
+			if (!$this->_srv->get('req')->post->{self::PREFIX}['confirm']) {
+				return;
+			}
 			$bean = UFra::factory('UFbean_Sru_Computer');
 			$bean->getByUserIdPK((int)$this->_srv->get('session')->auth, (int)$this->_srv->get('req')->get->computerId);
 			$bean->active = false;

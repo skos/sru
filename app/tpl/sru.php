@@ -30,7 +30,6 @@ extends UFtpl {
 
 	public function userAdd(array $d) {
 		$form = UFra::factory('UFlib_Form');
-		//print_r($this->_srv->get('msg'));
 
 		$form->_start();
 		$form->_fieldset('Załóż konto');
@@ -81,7 +80,6 @@ extends UFtpl {
 
 	public function userEdit(array $d) {
 		$form = UFra::factory('UFlib_Form');
-		//print_r($this->_srv->get('msg'));
 
 		$form->_start();
 		$form->_fieldset('Twoje dane');
@@ -110,8 +108,17 @@ extends UFtpl {
 		echo '<p><small><a href="'.$this->url(1).'/:add">Dodaj</a></small></p>';
 	}
 
+	public function userComputersNotFound() {
+		echo '<h1>Twoje komputery</h1>';
+		UFtpl_Html::msgErr('Nie posiadasz komputerów. <a href="'.$this->url(1).'/:add">Dodaj komputer</a>.');
+	}
+
 	public function titleUserComputer(array $d) {
 		echo $d['computer']->write('titleDetails');
+	}
+
+	public function titleUserComputerNotFound(array $d) {
+		echo 'Komputera nie znaleziono';
 	}
 
 	public function userComputer(array $d) {
@@ -119,6 +126,10 @@ extends UFtpl {
 		$d['computer']->write('detailsOwn');
 		echo '<p class="nav"><a href="'.$this->url(1).'">Powrót do listy</a> <small><a href="'.$this->url(2).'/:edit">Edytuj</a></small></p>';
 		echo '</div>';
+	}
+
+	public function userComputerNotFound() {
+		UFtpl_Html::msgErr('Komputera nie znaleziono');
 	}
 
 	public function userComputerEdit(array $d) {
@@ -143,7 +154,11 @@ extends UFtpl {
 	public function userComputerAdd(array $d) {
 		$form = UFra::factory('UFlib_Form');
 
-		$form->_start($this->url(2).'/');
+		if ($this->_srv->get('msg')->get('userAdd/ok')) {
+			UFtpl_Html::msgOk('Konto zostało założone');
+		}
+
+		$form->_start($this->url(0).'/computers/:add');
 		$form->_fieldset('Dodaj komputer');
 		echo $d['computer']->write('formAdd');
 		$form->_submit('Dodaj');
@@ -158,7 +173,7 @@ extends UFtpl {
 		$form->_start($this->url(3).'/');
 		$form->_fieldset('Wyrejestruj komputer');
 		echo $d['computer']->write('formDel');
-		$form->_submit('Wyrejestruj', array('name'=>'computerDel'));
+		$form->_submit('Wyrejestruj');
 		$form->_end();
 		$form->_end(true);
 	}

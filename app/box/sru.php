@@ -61,39 +61,55 @@ extends UFbox {
 	}
 
 	public function userComputers() {
-		$user = UFra::factory('UFbean_Sru_User');
-		$user->getFromSession();
+		try {
+			$user = UFra::factory('UFbean_Sru_User');
+			$user->getFromSession();
 
-		$bean = UFra::factory('UFbean_Sru_ComputerList');
-		$bean->listByUserId($user->id);
+			$bean = UFra::factory('UFbean_Sru_ComputerList');
+			$bean->listByUserId($user->id);
 
-		$d['computers'] = $bean;
+			$d['computers'] = $bean;
 
-		return $this->render(__FUNCTION__, $d);
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}
 	}
 
 	public function titleUserComputer() {
-		$bean = $this->_getComputerFromGetByCurrentUser();
+		try {
+			$bean = $this->_getComputerFromGetByCurrentUser();
 
-		$d['computer'] = $bean;
+			$d['computer'] = $bean;
 
-		return $this->render(__FUNCTION__, $d);
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render('titleUserComputerNotFound');
+		}
 	}
 
 	public function userComputer() {
-		$bean = $this->_getComputerFromGetByCurrentUser();
+		try {
+			$bean = $this->_getComputerFromGetByCurrentUser();
 
-		$d['computer'] = $bean;
+			$d['computer'] = $bean;
 
-		return $this->render(__FUNCTION__, $d);
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render('userComputerNotFound');
+		}
 	}
 
 	public function userComputerEdit() {
-		$bean = $this->_getComputerFromGetByCurrentUser();
+		try {
+			$bean = $this->_getComputerFromGetByCurrentUser();
 
-		$d['computer'] = $bean;
+			$d['computer'] = $bean;
 
-		return $this->render(__FUNCTION__, $d);
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render('userComputerNotFound');
+		}
 	}
 
 	public function userComputerAdd() {
@@ -105,10 +121,14 @@ extends UFbox {
 	}
 
 	public function userComputerDel() {
-		$bean = $this->_getComputerFromGetByCurrentUser();
+		try {
+			$bean = $this->_getComputerFromGetByCurrentUser();
 
-		$d['computer'] = $bean;
+			$d['computer'] = $bean;
 
-		return $this->render(__FUNCTION__, $d);
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return '';
+		}
 	}
 }

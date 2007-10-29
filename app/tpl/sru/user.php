@@ -22,13 +22,16 @@ extends UFtpl {
 
 	protected $errors = array(
 		'login' => 'Podaj login',
+		'login/regexp' => 'Login zawiera niedozwolone znaki',
 		'login/duplicated' => 'Login zajęty',
 		'login/textMax' => 'Login jest za długi',
 		'password' => 'Hasło musi mieć co najmniej 6 znaków',
 		'password/mismatch' => 'Hasła się różnią',
 		'name' => 'Podaj imię',
+		'name/regexp' => 'Imię zawiera niedozwolone znaki',
 		'name/textMax' => 'Imię jest za długie',
 		'surname' => 'Podaj nazwisko',
+		'surnname/regexp' => 'Nazwisko zawiera niedozwolone znaki',
 		'surname/textMax' => 'Nazwisko jest za długie',
 		'email' => 'Podaj prawidłowy email',
 		'facultyId' => 'Wybierz wydział',

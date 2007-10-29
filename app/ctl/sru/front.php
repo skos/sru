@@ -12,12 +12,8 @@ extends UFctl {
 		
 		$segCount = $req->segmentsCount();
 		if (0 == $segCount) {
-			if ($acl->sru('user', 'edit')) {
-				$get->view = 'user/main';
-			} else {
-				$get->view = 'login';
-			}
-		} elseif ($acl->sru('user', 'edit')) {	// zalogowani
+			$get->view = 'user/main';
+		} else {
 			switch ($req->segment(1)) {
 				case 'profile':
 					$get->view = 'user/edit';
@@ -32,8 +28,6 @@ extends UFctl {
 								$get->computerId = (int)$req->segment(2);
 								if ($segCount > 2 && ':edit' == $req->segment(3)) {
 									$get->view = 'user/computer/edit';
-								} elseif ($segCount > 2 && ':del' == $req->segment(3)) {
-									$get->view = 'user/computer/del';
 								} else {
 									$get->view = 'user/computer';
 								}
@@ -42,17 +36,11 @@ extends UFctl {
 						$get->view = 'user/computers';
 					}
 					break;
-				default:
-					$get->view = 'user/main';
-					break;
-			}
-		} else {	// anonimowi
-			switch ($req->segment(1)) {
 				case 'create':
 					$get->view = 'user/add';
 					break;
 				default:
-					$get->view = 'login';
+					$get->view = 'error404';
 					break;
 			}
 		}
@@ -66,7 +54,7 @@ extends UFctl {
 
 		if ($post->is('userLogout') && $acl->sru('user', 'logout')) {
 			$act = 'User_Logout';
-		} elseif ('login' == $get->view && $post->is('userLogin') && $acl->sru('user', 'login')) {
+		} elseif ($post->is('userLogin') && $acl->sru('user', 'login')) {
 			$act = 'User_Login';
 		} elseif ('user/edit' == $get->view && $post->is('userEdit') && $acl->sru('user', 'edit')) {
 			$act = 'User_Edit';
@@ -95,32 +83,60 @@ extends UFctl {
 		$acl = $this->_srv->get('acl');
 
 		switch ($get->view) {
-			case 'login':
-				return 'Sru_Login';
 			case 'user/main':
-				return 'Sru_UserMain';
+				if ($acl->sru('user', 'login')) {
+					return 'Sru_Login';
+				} else {
+					return 'Sru_UserMain';
+				}
 			case 'user/add':
-				return 'Sru_UserAdd';
+				if ($msg->get('userAdd/ok')) {
+					return 'Sru_UserComputerAdd';
+				} elseif ($acl->sru('user', 'add')) {
+					return 'Sru_UserAdd';
+				} else {
+					return 'Sru_Error404';
+				}
 			case 'user/edit':
-				return 'Sru_UserEdit';
+				if ($acl->sru('user', 'edit')) {
+					return 'Sru_UserEdit';
+				} else {
+					return 'Sru_Error403';
+				}
 			case 'user/computers':
-				return 'Sru_UserComputers';
+				if ($acl->sru('user', 'logout')) {
+					return 'Sru_UserComputers';
+				} else {
+					return 'Sru_Error403';
+				}
 			case 'user/computer':
-				return 'Sru_UserComputer';
+				if ($acl->sru('user', 'logout')) {
+					return 'Sru_UserComputer';
+				} else {
+					return 'Sru_Error403';
+				}
 			case 'user/computer/add':
 				if ($msg->get('computerAdd/ok')) {
 					return 'Sru_UserComputers';	
-				} else {
+				} elseif ($acl->sru('computer', 'add')) {
 					return 'Sru_UserComputerAdd';
+				} else {
+					return 'Sru_Error403';
 				}
 			case 'user/computer/edit':
 				if ($msg->get('computerDel/ok')) {
 					return 'Sru_UserComputers';	
-				} else {
+				} elseif ($acl->sru('computer', 'edit')) {
 					return 'Sru_UserComputerEdit';
+				} else {
+					return 'Sru_Error403';
 				}
 			case 'user/computer/del':
-				return 'Sru_UserComputerDel';
+				if ($acl->sru('computer', 'del')) {
+					return 'Sru_UserComputerDel';
+				} else {
+					return 'Sru_Error403';
+				}
 			default:
 				return 'Sru_Error404';
 		}

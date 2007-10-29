@@ -18,12 +18,7 @@ extends UFtpl {
 	public function listOwn(array $d) {
 		$url = $this->url(1).'/';
 		foreach ($d as $c) {
-			if ($c['active']) {
-				$host = '<em>'.$c['host'].'</em>';
-			} else {
-				$host = $c['host'];
-			}
-			echo '<li><a href="'.$url.$c['id'].'">'.$host.' <small>'.$c['ip'].'/'.$c['mac'].'</small></a> <span>'.date(self::TIME_YYMMDD, $c['availableTo']).'</span></li>';
+			echo '<li><a href="'.$url.$c['id'].'">'.$c['host'].' <small>'.$c['ip'].'/'.$c['mac'].'</small></a> <span>'.date(self::TIME_YYMMDD, $c['availableTo']).'</span></li>';
 		}
 	}
 
@@ -51,7 +46,6 @@ extends UFtpl {
 	}
 
 	public function formAdd(array $d) {
-	print_r( $this->_srv->get('msg'));
 		$form = UFra::factory('UFlib_Form', 'computerAdd', $d, $this->errors);
 
 		$form->host('Nazwa');
@@ -59,5 +53,7 @@ extends UFtpl {
 	}
 
 	public function formDel(array $d) {
+		$form = UFra::factory('UFlib_Form');
+		$form->confirm('Tak, chcę wyrejestrować ten komputer', array('type'=>$form->CHECKBOX, 'name'=>'computerDel[confirm]', 'value'=>'1'));
 	}
 }
