@@ -22,6 +22,17 @@ extends UFact {
 			}
 
 			$bean = UFra::factory('UFbean_Sru_Computer');
+			$post = $this->_srv->get('req')->post->{self::PREFIX};
+			try {
+				$bean->getByMacUserId($post['mac'], $user->id);
+				$bean->active = true;
+			} catch (UFex $e) {
+				try {
+					$bean->getByHostUserId($post['host'], $user->id);
+					$bean->active = true;
+				} catch (UFex $e) {
+				}
+			}
 			$bean->fillFromPost(self::PREFIX, null, array('mac', 'host'));
 			$bean->locationId = $user->locationId;
 			$bean->modifiedById = null;

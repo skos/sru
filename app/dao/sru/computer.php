@@ -44,6 +44,40 @@ extends UFdao {
 		return $this->doSelect($query);
 	}
 
+	public function getByMacUserId($mac, $user) {
+		$key = $this->cachePrefix.'/'.__FUNCTION__.'/'.$mac.'/'.$user;
+		try {
+			return $this->cacheGet($key);
+		} catch (UFex_Core_DataNotFound $e) {
+			$mapping = $this->mapping('get');
+
+			$query = $this->prepareSelect($mapping);
+			$query->where($mapping->mac, $mac);
+			$query->where($mapping->userId, $user);
+
+			$return = $this->doSelectFirst($query);
+			$this->cacheSet($key, $return);
+			return $return;
+		}
+	}
+
+	public function getByHostUserId($host, $user) {
+		$key = $this->cachePrefix.'/'.__FUNCTION__.'/'.$host.'/'.$user;
+		try {
+			return $this->cacheGet($key);
+		} catch (UFex_Core_DataNotFound $e) {
+			$mapping = $this->mapping('get');
+
+			$query = $this->prepareSelect($mapping);
+			$query->where($mapping->host, $host);
+			$query->where($mapping->userId, $user);
+
+			$return = $this->doSelectFirst($query);
+			$this->cacheSet($key, $return);
+			return $return;
+		}
+	}
+
 	public function getByUserIdPK($user, $pk) {
 		$key = $this->cachePrefix.'/'.__FUNCTION__.'/'.$user.'/'.$pk;
 		try {
