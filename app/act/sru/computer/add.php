@@ -38,7 +38,6 @@ extends UFact {
 		} catch (UFex_Dao_DataNotValid $e) {
 			$this->markErrors(self::PREFIX, $e->getData());
 		} catch (UFex_Db_QueryFailed $e) {
-		print_r($e);
 			$this->markErrors(self::PREFIX, array('mac'=>'regexp'));
 		}
 	}
