@@ -28,11 +28,14 @@ ALTER TABLE ONLY public.computers_history DROP CONSTRAINT computers_history_modi
 ALTER TABLE ONLY public.computers_history DROP CONSTRAINT computers_history_location_id_fkey;
 ALTER TABLE ONLY public.computers_history DROP CONSTRAINT computers_history_computer_id_fkey;
 ALTER TABLE ONLY public.admins DROP CONSTRAINT admins_dormitory_id_fkey;
+DROP TRIGGER users_update ON public.users;
+DROP TRIGGER computers_update ON public.computers;
 DROP INDEX public.computers_mac_key;
 DROP INDEX public.computers_ipv4_key;
 DROP INDEX public.computers_host_key;
 ALTER TABLE ONLY public.users DROP CONSTRAINT users_pkey;
 ALTER TABLE ONLY public.users DROP CONSTRAINT users_login_key;
+ALTER TABLE ONLY public.users_history DROP CONSTRAINT users_history_pkey;
 ALTER TABLE ONLY public.text DROP CONSTRAINT text_pkey;
 ALTER TABLE ONLY public.text DROP CONSTRAINT text_alias_key;
 ALTER TABLE ONLY public.locations DROP CONSTRAINT locations_pkey;
@@ -43,17 +46,21 @@ ALTER TABLE ONLY public.faculties DROP CONSTRAINT faulties_alias_key;
 ALTER TABLE ONLY public.dormitories DROP CONSTRAINT dormitories_pkey;
 ALTER TABLE ONLY public.dormitories DROP CONSTRAINT dormitories_alias_key;
 ALTER TABLE ONLY public.computers DROP CONSTRAINT computers_pkey;
+ALTER TABLE ONLY public.computers_history DROP CONSTRAINT computers_history_pkey;
 ALTER TABLE ONLY public.admins DROP CONSTRAINT admins_pkey;
 ALTER TABLE ONLY public.admins DROP CONSTRAINT admins_login_key;
+ALTER TABLE public.users_history ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.users ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.text ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.locations ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.faculties ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.dormitories ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.computers_history ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.computers_history ALTER COLUMN computer_id DROP DEFAULT;
 ALTER TABLE public.computers ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.admins ALTER COLUMN id DROP DEFAULT;
 DROP SEQUENCE public.users_id_seq;
+DROP SEQUENCE public.users_history_id_seq;
 DROP TABLE public.users_history;
 DROP TABLE public.users;
 DROP SEQUENCE public.text_id_seq;
@@ -66,11 +73,15 @@ DROP TABLE public.faculties;
 DROP SEQUENCE public.dormitories_id_seq;
 DROP TABLE public.dormitories;
 DROP SEQUENCE public.computers_id_seq;
+DROP SEQUENCE public.computers_history_id_seq;
 DROP SEQUENCE public.computers_history_computer_id_seq;
 DROP TABLE public.computers_history;
 DROP TABLE public.computers;
 DROP SEQUENCE public.admins_id_seq;
 DROP TABLE public.admins;
+DROP FUNCTION public.user_update();
+DROP FUNCTION public.computer_update();
+DROP PROCEDURAL LANGUAGE plpgsql;
 DROP SCHEMA public;
 --
 -- Name: public; Type: SCHEMA; Schema: -; Owner: -
@@ -84,6 +95,104 @@ CREATE SCHEMA public;
 --
 
 COMMENT ON SCHEMA public IS 'Standard public schema';
+
+
+--
+-- Name: plpgsql; Type: PROCEDURAL LANGUAGE; Schema: -; Owner: -
+--
+
+CREATE PROCEDURAL LANGUAGE plpgsql;
+
+
+--
+-- Name: computer_update(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION computer_update() RETURNS "trigger"
+    AS $$BEGIN
+if
+	OLD.host!=NEW.host OR
+	OLD.mac!=NEW.mac OR
+	OLD.ipv4!=NEW.ipv4 OR
+	OLD.user_id!=NEW.user_id OR
+	OLD.location_id!=NEW.location_id OR
+	OLD.avail_to!=NEW.avail_to OR
+	OLD.comment!=NEW.comment OR
+	OLD.can_admin!=NEW.can_admin
+then
+	INSERT INTO computers_history (
+		computer_id,
+		host,
+		mac,
+		ipv4,
+		user_id,
+		location_id,
+		avail_to,
+		modified_by,
+		modified_at,
+		comment,
+		can_admin
+	) VALUES (
+		OLD.id,
+		OLD.host,
+		OLD.mac,
+		OLD.ipv4,
+		OLD.user_id,
+		OLD.location_id,
+		OLD.avail_to,
+		OLD.modified_by,
+		OLD.modified_at,
+		OLD.comment,
+		OLD.can_admin
+	);
+end if;
+return NEW;
+END;$$
+    LANGUAGE plpgsql;
+
+
+--
+-- Name: user_update(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION user_update() RETURNS "trigger"
+    AS $$BEGIN
+if
+	NEW.name!=OLD.name OR
+	NEW.surname!=OLD.surname OR
+	NEW.email!=OLD.email OR
+	NEW.faculty_id!=OLD.faculty_id OR
+	NEW.study_year_id!=OLD.study_year_id OR
+	NEW.location_id!=OLD.location_id OR
+	NEW.comment!=OLD.comment
+then
+	INSERT INTO users_history (
+		user_id,
+		name,
+		surname,
+		email,
+		faculty_id,
+		study_year_id,
+		location_id,
+		modified_by,
+		modified_at,
+		comment
+	) VALUES (
+		OLD.id,
+		OLD.name,
+		OLD.surname,
+		OLD.email,
+		OLD.faculty_id,
+		OLD.study_year_id,
+		OLD.location_id,
+		OLD.modified_by,
+		OLD.modified_at,
+		OLD.comment
+	);
+end if;
+return NEW;
+END;$$
+    LANGUAGE plpgsql;
 
 
 SET default_tablespace = '';
@@ -376,11 +485,11 @@ CREATE TABLE computers_history (
     user_id bigint,
     location_id bigint NOT NULL,
     avail_to timestamp without time zone NOT NULL,
-    avail_max_to timestamp without time zone NOT NULL,
     modified_by bigint,
     modified_at timestamp without time zone DEFAULT now() NOT NULL,
     "comment" pg_catalog.text NOT NULL,
-    can_admin boolean DEFAULT false NOT NULL
+    can_admin boolean DEFAULT false NOT NULL,
+    id bigint NOT NULL
 );
 
 
@@ -434,13 +543,6 @@ COMMENT ON COLUMN computers_history.avail_to IS 'do kiedy jest wazna rejestracja
 
 
 --
--- Name: COLUMN computers_history.avail_max_to; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN computers_history.avail_max_to IS 'do kiedy mozna sobie przedluzyc rejestracje';
-
-
---
 -- Name: COLUMN computers_history.modified_by; Type: COMMENT; Schema: public; Owner: -
 --
 
@@ -485,6 +587,24 @@ CREATE SEQUENCE computers_history_computer_id_seq
 --
 
 ALTER SEQUENCE computers_history_computer_id_seq OWNED BY computers_history.computer_id;
+
+
+--
+-- Name: computers_history_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE computers_history_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
+-- Name: computers_history_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE computers_history_id_seq OWNED BY computers_history.id;
 
 
 --
@@ -942,7 +1062,8 @@ CREATE TABLE users_history (
     location_id bigint NOT NULL,
     modified_by bigint,
     modified_at timestamp without time zone NOT NULL,
-    "comment" pg_catalog.text NOT NULL
+    "comment" pg_catalog.text NOT NULL,
+    id bigint NOT NULL
 );
 
 
@@ -1024,6 +1145,24 @@ COMMENT ON COLUMN users_history."comment" IS 'komentarz';
 
 
 --
+-- Name: users_history_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE users_history_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
+-- Name: users_history_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE users_history_id_seq OWNED BY users_history.id;
+
+
+--
 -- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -1066,6 +1205,13 @@ ALTER TABLE computers_history ALTER COLUMN computer_id SET DEFAULT nextval('comp
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE computers_history ALTER COLUMN id SET DEFAULT nextval('computers_history_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE dormitories ALTER COLUMN id SET DEFAULT nextval('dormitories_id_seq'::regclass);
 
 
@@ -1098,6 +1244,13 @@ ALTER TABLE users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
 
 
 --
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE users_history ALTER COLUMN id SET DEFAULT nextval('users_history_id_seq'::regclass);
+
+
+--
 -- Name: admins_login_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1111,6 +1264,14 @@ ALTER TABLE ONLY admins
 
 ALTER TABLE ONLY admins
     ADD CONSTRAINT admins_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: computers_history_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY computers_history
+    ADD CONSTRAINT computers_history_pkey PRIMARY KEY (id);
 
 
 --
@@ -1194,6 +1355,14 @@ ALTER TABLE ONLY text
 
 
 --
+-- Name: users_history_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY users_history
+    ADD CONSTRAINT users_history_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: users_login_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1228,6 +1397,40 @@ CREATE UNIQUE INDEX computers_ipv4_key ON computers USING btree (ipv4, active) W
 --
 
 CREATE UNIQUE INDEX computers_mac_key ON computers USING btree (mac, active) WHERE (active = true);
+
+
+--
+-- Name: computers_update; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER computers_update
+    AFTER UPDATE ON computers
+    FOR EACH ROW
+    EXECUTE PROCEDURE computer_update();
+
+
+--
+-- Name: TRIGGER computers_update ON computers; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON TRIGGER computers_update ON computers IS 'zapisuje historie zmian';
+
+
+--
+-- Name: users_update; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER users_update
+    AFTER UPDATE ON users
+    FOR EACH ROW
+    EXECUTE PROCEDURE user_update();
+
+
+--
+-- Name: TRIGGER users_update ON users; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON TRIGGER users_update ON users IS 'kopiuje dane do historii';
 
 
 --
