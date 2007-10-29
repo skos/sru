@@ -104,7 +104,7 @@ extends UFtpl {
 		$form = UFra::factory('UFlib_Form', 'userEdit', $d, $this->errors);
 
 
-		$form->_fieldset();
+		echo '<h1>'.$d['name'].' '.$d['surname'].'</h1>';
 		$form->email('E-mail');
 		$tmp = array();
 		foreach ($faculties as $fac) {

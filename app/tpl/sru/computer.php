@@ -33,16 +33,16 @@ extends UFtpl {
 		echo '<p><em>Rejestracja do:</em> '.date(self::TIME_YYMMDD, $d['availableTo']).'</p>';
 		echo '<p><em>Miejsce:</em> '.$d['locationAlias'].' ('.$d['dormitoryName'].')</p>';
 		echo '<p><em>Liczba kar:</em> '.$d['bans'].'</p>';
+		$ip = explode('.', $d['ip']);
+		$tag = substr(md5('haha'.$ip[2].$ip[3]), 0, 5);
+		echo '<p><a href="https://sru.ds.pg.gda.pl/lanstats/?ip='.$ip[2].'.'.$ip[3].'"><img src="https://sru.ds.pg.gda.pl/lanstats/153.19.'.$ip[2].'/'.str_pad($ip[3], 3, '0', STR_PAD_LEFT).'.'.$tag.'.png" alt="Statystyki transferów" /></a></p>';
 	}
 
 	public function formEdit(array $d) {
 		$form = UFra::factory('UFlib_Form', 'computerEdit', $d, $this->errors);
 
-		echo '<p><em>Nazwa:</em> '.$d['host'].'</p>';
+		echo '<h1>'.$d['host'].'.ds.pg.gda.pl</h1>';
 		$form->mac('MAC');
-		echo '<p><em>IP:</em> '.$d['ip'].'</p>';
-		echo '<p><em>Rejestracja do:</em> '.date(self::TIME_YYMMDD, $d['availableTo']).'</p>';
-		echo '<p><em>Miejsce:</em> '.$d['locationAlias'].' ('.$d['dormitoryName'].')</p>';
 	}
 
 	public function formAdd(array $d) {
