@@ -28,6 +28,9 @@ ALTER TABLE ONLY public.computers_history DROP CONSTRAINT computers_history_modi
 ALTER TABLE ONLY public.computers_history DROP CONSTRAINT computers_history_location_id_fkey;
 ALTER TABLE ONLY public.computers_history DROP CONSTRAINT computers_history_computer_id_fkey;
 ALTER TABLE ONLY public.admins DROP CONSTRAINT admins_dormitory_id_fkey;
+DROP INDEX public.computers_mac_key;
+DROP INDEX public.computers_ipv4_key;
+DROP INDEX public.computers_host_key;
 ALTER TABLE ONLY public.users DROP CONSTRAINT users_pkey;
 ALTER TABLE ONLY public.users DROP CONSTRAINT users_login_key;
 ALTER TABLE ONLY public.text DROP CONSTRAINT text_pkey;
@@ -40,8 +43,6 @@ ALTER TABLE ONLY public.faculties DROP CONSTRAINT faulties_alias_key;
 ALTER TABLE ONLY public.dormitories DROP CONSTRAINT dormitories_pkey;
 ALTER TABLE ONLY public.dormitories DROP CONSTRAINT dormitories_alias_key;
 ALTER TABLE ONLY public.computers DROP CONSTRAINT computers_pkey;
-ALTER TABLE ONLY public.computers DROP CONSTRAINT computers_mac_key;
-ALTER TABLE ONLY public.computers DROP CONSTRAINT computers_host_key;
 ALTER TABLE ONLY public.admins DROP CONSTRAINT admins_pkey;
 ALTER TABLE ONLY public.admins DROP CONSTRAINT admins_login_key;
 ALTER TABLE public.users ALTER COLUMN id DROP DEFAULT;
@@ -1113,22 +1114,6 @@ ALTER TABLE ONLY admins
 
 
 --
--- Name: computers_host_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY computers
-    ADD CONSTRAINT computers_host_key UNIQUE (host, active);
-
-
---
--- Name: computers_mac_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY computers
-    ADD CONSTRAINT computers_mac_key UNIQUE (mac, active);
-
-
---
 -- Name: computers_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1222,6 +1207,27 @@ ALTER TABLE ONLY users
 
 ALTER TABLE ONLY users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: computers_host_key; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX computers_host_key ON computers USING btree (host, active) WHERE (active = true);
+
+
+--
+-- Name: computers_ipv4_key; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX computers_ipv4_key ON computers USING btree (ipv4, active) WHERE (active = true);
+
+
+--
+-- Name: computers_mac_key; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX computers_mac_key ON computers USING btree (mac, active) WHERE (active = true);
 
 
 --
