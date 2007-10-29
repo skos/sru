@@ -250,8 +250,8 @@ CREATE TABLE computers (
     avail_max_to timestamp without time zone NOT NULL,
     modified_by bigint,
     modified_at timestamp without time zone DEFAULT now() NOT NULL,
-    "comment" pg_catalog.text NOT NULL,
-    active boolean NOT NULL,
+    "comment" pg_catalog.text DEFAULT ''::pg_catalog.text NOT NULL,
+    active boolean DEFAULT true NOT NULL,
     type_id smallint DEFAULT 1 NOT NULL,
     bans smallint DEFAULT 0 NOT NULL,
     can_admin boolean DEFAULT false NOT NULL
@@ -491,7 +491,6 @@ ALTER SEQUENCE computers_history_computer_id_seq OWNED BY computers_history.comp
 --
 
 CREATE SEQUENCE computers_id_seq
-    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
