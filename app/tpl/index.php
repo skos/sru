@@ -20,8 +20,8 @@ extends UFtpl {
 <h1><a href="/">SKOS</a></h1>
 </div><!-- head -->
 <ul id="nav">
-<li><a href="/regulamin.html">Regulamin</a></li>
-<li><a href="/sru/">SRU</a></li>
+<li><a href="<?=UFURL_BASE;?>/regulamin.html">Regulamin</a></li>
+<li><a href="<?=UFURL_BASE;?>/sru/">SRU</a></li>
 </ul>
 <div id="main">
 <?=$d['body'];?>
@@ -35,7 +35,7 @@ $stop = microtime(true);
 $start = $this->_srv->get('msg')->get('timeStart');
 $boot = $this->_srv->get('msg')->get('timeBoot');
 echo '<!-- boot: '.number_format(1000*($boot-$start), 1).'ms, total: '.number_format(1000*($stop-$start), 1).'ms -->';
-//echo print_r(UFra::logs(), true);
+echo print_r(UFra::logs(), true);
 ?>
 </body>
 </html><?
