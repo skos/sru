@@ -5,8 +5,8 @@
 class UFbean_Sru_User
 extends UFbeanSingle {
 
-	protected $locationId = null;
-	protected $password = null;
+	protected $_locationId = null;
+	protected $_password = null;
 
 	/*
 	public function validate($var, $val, $change) {
@@ -24,19 +24,18 @@ extends UFbeanSingle {
 	}
 
 	protected function validatePassword($val, $change) {
-		if (!$change) {
+			$post = $this->_srv->get('req')->post->{$change?'userEdit':'userAdd'};
 			try {
-				if ($val !== $this->_srv->get('req')->post->userAdd['password2']) {
+				if ($val !== $post['password2']) {
 					return 'mismatch';
 				}
 			} catch (UFex $e) {
 				return 'unknown';
 			}
-		}
 	}
 
 	protected function normalizePassword($val, $change) {
-		$this->password = $val;
+		$this->_password = $val;
 		if (array_key_exists('login', $this->data)) {
 			$login = $this->data['login'];
 		} else {
@@ -46,13 +45,15 @@ extends UFbeanSingle {
 	}
 
 	protected function normalizeLogin($val, $change) {
-		if (is_string($this->password)) {
-			$pass = $this->password;
+		if (is_string($this->_password)) {
+			$pass = $this->_password;
 		} else {
 			$pass = microtime();
 		}
-		$this->data['password'] = md5($val.$pass);
-		$this->dataChanged['password'] = $this->data['password'];
+		if (array_key_exists('password', $this->data)) {
+			$this->data['password'] = md5($val.$pass);
+			$this->dataChanged['password'] = $this->data['password'];
+		}
 		return $val;
 	}
 
@@ -103,13 +104,13 @@ extends UFbeanSingle {
 		try {
 			$loc = UFra::factory('UFbean_Sru_Location');
 			$loc->getByAliasDormitory((string)$val, $dorm->id);
-			$this->locationId = $loc->id;
+			$this->_locationId = $loc->id;
 		} catch (UFex $e) {
 			return 'noRoom';
 		}
 	}
 
 	protected function normalizeLocationId($val, $change) {
-		return (int)$this->locationId;
+		return (int)$this->_locationId;
 	}
 }
