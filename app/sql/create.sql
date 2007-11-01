@@ -211,13 +211,13 @@ CREATE TABLE admins (
     last_login_ip inet,
     name character varying(255) NOT NULL,
     type_id smallint DEFAULT 1 NOT NULL,
-    phone character varying(50) NOT NULL,
-    gg character varying(20) NOT NULL,
-    jid character varying(100) NOT NULL,
+    phone character varying(50) DEFAULT ''::character varying NOT NULL,
+    gg character varying(20) DEFAULT ''::character varying NOT NULL,
+    jid character varying(100) DEFAULT ''::character varying NOT NULL,
     email character varying(100) NOT NULL,
     created_at timestamp without time zone DEFAULT now() NOT NULL,
     dormitory_id bigint,
-    address character varying(255) NOT NULL,
+    address character varying(255) DEFAULT ''::character varying NOT NULL,
     active boolean DEFAULT true NOT NULL
 );
 
@@ -364,7 +364,8 @@ CREATE TABLE computers (
     active boolean DEFAULT true NOT NULL,
     type_id smallint DEFAULT 1 NOT NULL,
     bans smallint DEFAULT 0 NOT NULL,
-    can_admin boolean DEFAULT false NOT NULL
+    can_admin boolean DEFAULT false NOT NULL,
+    banned boolean DEFAULT false NOT NULL
 );
 
 
@@ -471,6 +472,13 @@ COMMENT ON COLUMN computers.bans IS 'licznik banow';
 --
 
 COMMENT ON COLUMN computers.can_admin IS 'komputer nalezy do administratora';
+
+
+--
+-- Name: COLUMN computers.banned; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN computers.banned IS 'czy komputer jest aktualnie zabanowany?';
 
 
 --
