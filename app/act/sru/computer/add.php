@@ -33,8 +33,12 @@ extends UFact {
 				} catch (UFex $e) {
 				}
 			}
+			// walidator locationId musi miec dane o akademiku
+			$post['dormitory'] = $user->dormitoryId;
+			$this->_srv->get('req')->post->{self::PREFIX} = $post;
+
 			$bean->fillFromPost(self::PREFIX, null, array('mac', 'host'));
-			$bean->locationId = $user->locationId;
+			$bean->locationId = $user->locationAlias;
 			$bean->modifiedById = null;
 			$bean->modifiedAt = NOW;
 			$bean->userId = $user->id;
@@ -47,8 +51,10 @@ extends UFact {
 			$this->postDel(self::PREFIX);
 			$this->markOk(self::PREFIX);
 		} catch (UFex_Dao_DataNotValid $e) {
+			print_r($e);
 			$this->markErrors(self::PREFIX, $e->getData());
 		} catch (UFex_Db_QueryFailed $e) {
+			print_r($e);
 			$this->markErrors(self::PREFIX, array('mac'=>'regexp'));
 		}
 	}

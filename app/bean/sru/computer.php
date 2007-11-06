@@ -43,7 +43,12 @@ extends UFbeanSingle {
 		$post = $this->_srv->get('req')->post->{$change?'computerEdit':'computerAdd'};
 		try {
 			$dorm = UFra::factory('UFbean_Sru_Dormitory');
-			$dorm->getByPK((int)$post['dormitory']);
+			if (array_key_exists('dormitory', $post)) {
+				$id = $post['dormitory'];
+			} else {
+				$id = $this->data['dormitory'];
+			}
+			$dorm->getByPK($id);
 		} catch (UFex $e) {
 			return;
 		}
