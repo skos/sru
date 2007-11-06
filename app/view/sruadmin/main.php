@@ -10,5 +10,6 @@ extends UFview_SruAdmin {
 
 		$this->append('title', $box->titleComputers());
 		$this->append('body', $box->computers());
+		$this->append('body', $box->logout());
 	}
 }

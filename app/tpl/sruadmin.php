@@ -23,6 +23,17 @@ extends UFtpl {
 		$form->_end(true);
 	}
 
+	public function logout(array $d) {
+		$form = UFra::factory('UFlib_Form');
+
+		$form->_start($this->url(0).'/');
+		$form->_fieldset('Wyloguj się');
+		echo $d['admin']->write('formLogout');
+		$form->_submit('Wyloguj', array('name'=>'adminLogout'));
+		$form->_end();
+		$form->_end(true);
+	}
+
 	public function title() {
 		echo 'Administracja SKOS';
 	}
@@ -61,6 +72,9 @@ extends UFtpl {
 		$d['computers']->write('listAdmin');
 		echo '</ul>';
 		echo '</div>';
+	}
+	public function computersNotFound() {
+		UFtpl_Html::msgErr('Komputerów nie znaleziono');
 	}
 
 	public function computerHistory(array $d) {
