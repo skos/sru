@@ -14,6 +14,11 @@ extends UFctl {
 			$get->view = 'index';
 		} else {
 			switch ($req->segment(1)) {
+				case 'admin':
+					$ctl = UFra::factory('UFctl_SruAdmin_Front');
+					$req->forward();
+					$ctl->go();
+					return false;
 				case 'sru':
 					$ctl = UFra::factory('UFctl_Sru_Front');
 					$req->forward();

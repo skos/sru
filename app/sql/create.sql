@@ -117,6 +117,7 @@ if
 	OLD.user_id!=NEW.user_id OR
 	OLD.location_id!=NEW.location_id OR
 	OLD.avail_to!=NEW.avail_to OR
+	OLD.avail_max_to!=NEW.avail_max_to OR
 	OLD.comment!=NEW.comment OR
 	OLD.can_admin!=NEW.can_admin
 then
@@ -128,6 +129,7 @@ then
 		user_id,
 		location_id,
 		avail_to,
+		avail_max_to,
 		modified_by,
 		modified_at,
 		comment,
@@ -140,6 +142,7 @@ then
 		OLD.user_id,
 		OLD.location_id,
 		OLD.avail_to,
+		OLD.avail_max_to,
 		OLD.modified_by,
 		OLD.modified_at,
 		OLD.comment,
@@ -497,7 +500,8 @@ CREATE TABLE computers_history (
     modified_at timestamp without time zone DEFAULT now() NOT NULL,
     "comment" pg_catalog.text NOT NULL,
     can_admin boolean DEFAULT false NOT NULL,
-    id bigint NOT NULL
+    id bigint NOT NULL,
+    avail_max_to timestamp without time zone NOT NULL
 );
 
 

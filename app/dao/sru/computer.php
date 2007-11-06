@@ -94,4 +94,14 @@ extends UFdao {
 			return $return;
 		}
 	}
+
+	public function listAllActive() {
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->active, true);
+		$query->order($mapping->host, $query->ASC);
+
+		return $this->doSelect($query);
+	}
 }

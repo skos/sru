@@ -18,6 +18,7 @@ extends UFmap_Sru_Computer_Add {
 		'comment'        => 'comment',
 		'active'         => 'active',
 		'typeId'         => 'type_id',
+		'canAdmin'       => 'can_admin',
 	);
 	protected $columnTypes = array(
 		'host'           => self::TEXT,
@@ -25,6 +26,7 @@ extends UFmap_Sru_Computer_Add {
 		'ip'             => self::TEXT,
 		'userId'         => self::NULL_INT,
 		'locationId'     => self::INT,
+		'dormitory'      => self::TEXT,	// kolumna tylko do walidacji
 		'availableTo'    => self::TS,
 		'availableMaxTo' => self::TS,
 		'modifiedById'   => self::NULL_INT,
@@ -32,6 +34,7 @@ extends UFmap_Sru_Computer_Add {
 		'comment'        => self::TEXT,
 		'active'         => self::BOOL,
 		'typeId'         => self::INT,
+		'canAdmin'       => self::BOOL,
 	);
 	protected $tables = array(
 		'' => 'computers',
@@ -41,6 +44,7 @@ extends UFmap_Sru_Computer_Add {
 		'mac' => array('regexp'=>'^[0-9a-fA-F]{1,2}?([- :]?[0-9a-fA-F]{1,2}){5}$'),
 		'ip' => array('regexp'=>'^[0-9.]{7,15}$'),
 		'locationId' => array('textMin'=>1),
+		'dormitory' => array('textMin'=>1),
 	);
 	protected $pk = 'id';
 }

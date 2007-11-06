@@ -130,6 +130,42 @@ img
 			:width 100%
 		input.submit
 			:padding 0.2em 1em
+	.computer
+		p
+			:margin 0
+			:padding 0
+		p.comment
+			:margin
+				:left 10.5em
+				:top 1em
+		em
+			:clear both
+			:display block
+			:width 10em
+			:text-align right
+			:font-style normal
+			:margin-right 0.5em
+			:float left
+			:font-weight bold
+			:color = !foreground + #444
+		ol
+			:font-size 0.8em
+			:font-weight bold
+			:color = !foreground + #444
+			li:hover
+				ul
+					:background-color #eee
+
+			ul
+				:font-weight normal
+				:color = !foreground + #444
+				:margin 0
+				:list-style-type none
+			p
+				a
+					:font
+						:weight normal
+						:size 0.8em
 
 #foot
 	:text-align center
@@ -137,3 +173,4 @@ img
 		:size 0.5em
 	:margin
 		:top 2em
+

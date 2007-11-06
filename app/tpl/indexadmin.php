@@ -1,8 +1,8 @@
 <?
 /**
- * szablon strony
+ * szablon czesci administracyjnej
  */
-class UFtpl_Index
+class UFtpl_IndexAdmin
 extends UFtpl {
 
 	public function index(array $d) {
@@ -19,11 +19,7 @@ extends UFtpl {
 <div id="head">
 <h1><a href="/">SKOS</a></h1>
 </div><!-- head -->
-<ul id="nav">
-<li><a href="<?=UFURL_BASE;?>/regulamin.html">Regulamin</a></li>
-<li><a href="<?=UFURL_BASE;?>/sru/">SRU</a></li>
-<li><a href="<?=UFURL_BASE;?>/admin/">Administracja</a></li>
-</ul>
+<?=$d['menuAdmin'];?>
 <div id="main">
 <?=$d['body'];?>
 </div><!-- main -->

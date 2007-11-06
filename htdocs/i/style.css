@@ -6,7 +6,7 @@
 body {
   background-color: #ffffff;
   
-  color: #0f0f0f;
+  color: #000000;
   font-family: "Verdana", "Tahoma", "Helvetica", "Arial", sans-serif; }
 
 a {
@@ -50,77 +50,107 @@ img {
   #nav a:hover, #nav a:active, #nav a:focus {
     background-color: #eee; }
 
-  #main h1, #main h2, #main h3, #main h4, #main h5, #main h6 {
-    color: #666;
-    font-weight: normal;
-    font-family: "Georgia", serif;
-    
-    margin-top: 1em;
-    margin-bottom: 1em;
-    
-    text-align: center; }
-  #main h2 {
-    margin-top: 0.8em;
-    margin-bottom: 0.8em; }
-  #main h3 {
-    margin-top: 0.5em;
-    margin-bottom: 0.5em; }
-  #main h4 {
-    margin-top: 0.3em;
-    margin-bottom: 0.3em; }
-  #main h5 {
-    margin-top: 0.1em;
-    margin-bottom: 0.1em; }
-  #main h6 {
-    margin-top: 0;
-    margin-bottom: 0; }
-  #main ul.admin {
-    margin-left: 2em; }
-    #main ul.admin small {
-      padding-left: 1em; }
-      #main ul.admin small a {
-        color: #999; }
-  #main ol, #main ul {
-    margin-left: 3em; }
-    #main ol li, #main ul li {
-      margin-top: 0.4em;
-      margin-bottom: 0.4em; }
-  #main ol ol {
-    list-style-type: upper-roman; }
-  #main p {
-    text-align: justify;
-    margin-top: 1em;
-    margin-bottom: 1em; }
-  #main p.msgOk, #main p.msgError {
-    border: 2px solid red;
-    color: red;
-    padding: 1em;
-    text-align: center;
-    margin: 1em; }
-  #main p.msgOk {
-    color: #009a00;
-    border-color: #009a00; }
-  #main q {
-    background-color: #eee; }
-  #main blockquote {
-    border-left: 3px solid #eee;
-    margin-left: 1em;
+#main h1, #main h2, #main h3, #main h4, #main h5, #main h6 {
+  color: #666;
+  font-weight: normal;
+  font-family: "Georgia", serif;
+  
+  margin-top: 1em;
+  margin-bottom: 1em;
+  
+  text-align: center; }
+#main h2 {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em; }
+#main h3 {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em; }
+#main h4 {
+  margin-top: 0.3em;
+  margin-bottom: 0.3em; }
+#main h5 {
+  margin-top: 0.1em;
+  margin-bottom: 0.1em; }
+#main h6 {
+  margin-top: 0;
+  margin-bottom: 0; }
+#main ul.admin {
+  margin-left: 2em; }
+  #main ul.admin small {
     padding-left: 1em; }
-  #main fieldset {
-    margin-top: 1em;
-    border-style: none;
+    #main ul.admin small a {
+      color: #999; }
+#main ol, #main ul {
+  margin-left: 3em; }
+  #main ol li, #main ul li {
+    margin-top: 0.4em;
+    margin-bottom: 0.4em; }
+#main ol ol {
+  list-style-type: upper-roman; }
+#main p {
+  text-align: justify;
+  margin-top: 1em;
+  margin-bottom: 1em; }
+#main p.msgOk, #main p.msgError {
+  border: 2px solid red;
+  color: red;
+  padding: 1em;
+  text-align: center;
+  margin: 1em; }
+#main p.msgOk {
+  color: #009a00;
+  border-color: #009a00; }
+#main q {
+  background-color: #eee; }
+#main blockquote {
+  border-left: 3px solid #eee;
+  margin-left: 1em;
+  padding-left: 1em; }
+#main fieldset {
+  margin-top: 1em;
+  border-style: none;
+  background-color: #eee;
+  padding: 0.5em; }
+  #main fieldset legend {
+    margin-left: 1em;
     background-color: #eee;
-    padding: 0.5em; }
-    #main fieldset legend {
-      margin-left: 1em;
-      background-color: #eee;
-      padding: 0.1em 1em;
-      font-family: "Georgia", serif;
-      font-weight: bold; }
-    #main fieldset textarea {
-      width: 100%; }
-    #main fieldset input.submit {
-      padding: 0.2em 1em; }
+    padding: 0.1em 1em;
+    font-family: "Georgia", serif;
+    font-weight: bold; }
+  #main fieldset textarea {
+    width: 100%; }
+  #main fieldset input.submit {
+    padding: 0.2em 1em; }
+#main .computer p {
+  margin: 0;
+  padding: 0; }
+#main .computer p.comment {
+  margin-left: 10.5em;
+  margin-top: 1em; }
+#main .computer em {
+  clear: both;
+  display: block;
+  width: 10em;
+  text-align: right;
+  font-style: normal;
+  margin-right: 0.5em;
+  float: left;
+  font-weight: bold;
+  color: #444444; }
+#main .computer ol {
+  font-size: 0.8em;
+  font-weight: bold;
+  color: #444444; }
+  #main .computer ol li:hover ul {
+    background-color: #eee; }
+  #main .computer ol ul {
+    font-weight: normal;
+    color: #444444;
+    margin: 0;
+    list-style-type: none; }
+  #main .computer ol p a {
+    font-weight: normal;
+    font-size: 0.8em; }
 
 #foot {
   text-align: center;
