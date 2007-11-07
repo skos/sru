@@ -73,6 +73,7 @@ extends UFtpl {
 		echo '</ul>';
 		echo '</div>';
 	}
+
 	public function computersNotFound() {
 		UFtpl_Html::msgErr('Komputerów nie znaleziono');
 	}
@@ -83,6 +84,7 @@ extends UFtpl {
 		echo '<ol class="history">';
 		$d['history']->write('table', $d['computer']);
 		echo '</ol>';
+		echo '</div>';
 
 	}
 
@@ -116,5 +118,36 @@ extends UFtpl {
 		$form->_submit('Wyrejestruj');
 		$form->_end();
 		$form->_end(true);
+	}
+
+	public function computerSearch(array $d) {
+		$form = UFra::factory('UFlib_Form');
+
+		echo '<div class="computerSearch">';
+		$form->_start($this->url(0).'/computers');
+		$form->_fieldset('Znajdź komputer');
+		echo $d['computer']->write('formSearch', $d['searched']);
+		$form->_submit('Znajdź');
+		$form->_end();
+		$form->_end(true);
+		echo '</div>';
+	}
+
+	public function titleMain() {
+		echo 'System Rejestracji Użytkowników';
+	}
+
+	public function titleComputerSearch() {
+		echo 'Znajdź komputer';
+	}
+
+	public function computerSearchResults(array $d) {
+		echo '<div class="computerSearchResults">';
+		echo $d['computers']->write('searchResults');
+		echo '</div>';
+	}
+
+	public function computerSearchResultsNotFound() {
+		UFtpl_Html::msgErr('Nie znaleziono');
 	}
 }

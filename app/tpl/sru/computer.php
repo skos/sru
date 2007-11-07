@@ -156,4 +156,25 @@ extends UFtpl {
 			echo '<li><a href="'.$url.'/computers/'.$c['id'].'">'.$c['host'].'</a></li>';
 		}
 	}
+
+	public function formSearch(array $d, array $searched) {
+		$d = $searched + $d;
+		$form = UFra::factory('UFlib_Form', 'computerSearch', $d, $this->errors);
+
+		$form->host('Host');
+		$form->ip('IP');
+		$form->mac('MAC');
+	}
+
+	public function searchResults(array $d) {
+		$url = $this->url(0);
+		foreach ($d as $c) {
+			if (is_null($c['userId'])) {
+				$owner = '(BRAK)';
+			} else {
+				$owner = '(<a href="'.$url.'/users/'.$c['userId'].'">'.$c['userName'].' '.$c['userSurname'].'</a>)';
+			}
+			echo '<li'.(!$c['active']?' class="old">Przedawniony ':'>').'<a href="'.$url.'/computers/'.$c['id'].'">'.$c['host'].' <small>'.$c['ip'].'/'.$c['mac'].'</small></a> <span>'.$owner.'</span></li>';
+		}
+	}
 }

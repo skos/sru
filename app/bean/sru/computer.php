@@ -64,4 +64,13 @@ extends UFbeanSingle {
 	protected function normalizeLocationId($val, $change) {
 		return (int)$this->_locationId;
 	}
+
+	protected function validateIp($val, $change) {
+		$ips = explode('.', $val);
+		foreach ($ips as $ip) {
+			if ($ip < 0 || $ip >255) {
+				return 'regexp';
+			}
+		}
+	}
 }

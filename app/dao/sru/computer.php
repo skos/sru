@@ -104,4 +104,32 @@ extends UFdao {
 
 		return $this->doSelect($query);
 	}
+
+	public function search($params) {
+		$key = $this->cachePrefix.'/'.__FUNCTION__.'/'.print_r($params, true);
+		try {
+			return $this->cacheGet($key);
+		} catch (UFex_Core_DataNotFound $e) {
+			$mapping = $this->mapping('list');
+
+			$query = $this->prepareSelect($mapping);
+			$query->order($mapping->active, $query->DESC);
+			$query->order($mapping->host, $query->ASC);
+			foreach ($params as $var=>$val) {
+				switch ($var) {
+					case 'host':
+						$val = str_replace('%', '', $val);
+						$val = str_replace('*', '%', $val);
+						$query->where($var, $val, UFlib_Db_Query::LIKE);
+						break;
+					default:
+						$query->where($var, $val);
+				}
+			}
+
+			$return = $this->doSelect($query);
+			$this->cacheSet($key, $return);
+			return $return;
+		}
+	}
 }

@@ -134,4 +134,59 @@ extends UFbox {
 		}
 	}
 
+	public function computerSearch() {
+		$bean = UFra::factory('UFbean_Sru_Computer');
+
+		$d['computer'] = $bean;
+
+		$get = $this->_srv->get('req')->get;
+		$tmp = array();
+		try {
+			$tmp['host'] = $get->searchedHost;
+		} catch (UFex_Core_DataNotFound $e) {
+		}
+		try {
+			$tmp['mac'] = $get->searchedMac;
+		} catch (UFex_Core_DataNotFound $e) {
+		}
+		try {
+			$tmp['ip'] = $get->searchedIp;
+		} catch (UFex_Core_DataNotFound $e) {
+		}
+		$d['searched'] = $tmp;
+
+		return $this->render(__FUNCTION__, $d);
+	}
+
+	public function computerSearchResults() {
+		try {
+			$bean = UFra::factory('UFbean_Sru_ComputerList');
+
+			$get = $this->_srv->get('req')->get;
+			$tmp = array();
+			try {
+				$tmp['host'] = $get->searchedHost;
+			} catch (UFex_Core_DataNotFound $e) {
+			}
+			try {
+				$tmp['mac'] = $get->searchedMac;
+			} catch (UFex_Core_DataNotFound $e) {
+			}
+			try {
+				$tmp['ip'] = $get->searchedIp;
+			} catch (UFex_Core_DataNotFound $e) {
+			}
+			$bean->search($tmp);
+			if (1 == count($bean)) {
+				$get->computerId = $bean[0]['id'];
+				return $this->computer();
+			}
+
+			$d['computers'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}
+	}
 }

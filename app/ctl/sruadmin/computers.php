@@ -17,12 +17,24 @@ extends UFctl {
 			$get->view = 'computers/main';
 		} else {
 			switch ($req->segment(2)) {
+				case 'search':
+					$get->view = 'computers/search';
+					for ($i=3; $i<=$segCount; ++$i) {
+						$tmp = explode(':', $req->segment($i), 2);
+						switch ($tmp[0]) {
+							case 'host':
+								$get->searchedHost = urldecode($tmp[1]);
+								break;
+							case 'ip':
+								$get->searchedIp = urldecode($tmp[1]);
+								break;
+							case 'mac':
+								$get->searchedMac = urldecode($tmp[1]);
+								break;
+						}
+					}
+					break;
 				/*
-				case 'users':
-					$ctl = UFra::factory('UFctl_SruAdmin_Users');
-					$req->forward();
-					$ctl->go();
-					return false;
 				case 'computers':
 					$ctl = UFra::factory('UFctl_SruAdmin_Computers');
 					$req->forward();
@@ -72,6 +84,8 @@ extends UFctl {
 			$act = 'Admin_Logout';
 		} elseif ($post->is('adminLogin') && $acl->sruAdmin('admin', 'login')) {
 			$act = 'Admin_Login';
+		} elseif ($post->is('computerSearch')) {
+			$act = 'Computer_Search';
 		} elseif ('computers/computer/edit' == $get->view && $post->is('computerEdit') && $acl->sruAdmin('computer', 'edit')) {
 			$act = 'Computer_Edit';
 		} elseif ('computers/computer/edit' == $get->view && $post->is('computerDel') && $acl->sruAdmin('computer', 'del')) {
@@ -97,7 +111,9 @@ extends UFctl {
 		}
 		switch ($get->view) {
 			case 'computers/main':
-				return 'SruAdmin_Main';
+				return 'SruAdmin_ComputerSearch';
+			case 'computers/search':
+				return 'SruAdmin_ComputerSearchResults';
 			case 'computers/computer':
 				return 'SruAdmin_Computer';
 			case 'computers/computer/history':
