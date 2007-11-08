@@ -163,6 +163,7 @@ CREATE FUNCTION user_update() RETURNS "trigger"
 if
 	NEW.name!=OLD.name OR
 	NEW.surname!=OLD.surname OR
+	NEW.login!=OLD.login OR
 	NEW.email!=OLD.email OR
 	NEW.faculty_id!=OLD.faculty_id OR
 	NEW.study_year_id!=OLD.study_year_id OR
@@ -173,6 +174,7 @@ then
 		user_id,
 		name,
 		surname,
+		login,
 		email,
 		faculty_id,
 		study_year_id,
@@ -184,6 +186,7 @@ then
 		OLD.id,
 		OLD.name,
 		OLD.surname,
+		OLD.login,
 		OLD.email,
 		OLD.faculty_id,
 		OLD.study_year_id,
@@ -1075,7 +1078,8 @@ CREATE TABLE users_history (
     modified_by bigint,
     modified_at timestamp without time zone NOT NULL,
     "comment" pg_catalog.text NOT NULL,
-    id bigint NOT NULL
+    id bigint NOT NULL,
+    "login" character varying NOT NULL
 );
 
 
@@ -1154,6 +1158,13 @@ COMMENT ON COLUMN users_history.modified_at IS 'czas powstania tej wersji';
 --
 
 COMMENT ON COLUMN users_history."comment" IS 'komentarz';
+
+
+--
+-- Name: COLUMN users_history."login"; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN users_history."login" IS 'login';
 
 
 --
