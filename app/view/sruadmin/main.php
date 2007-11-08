@@ -9,6 +9,7 @@ extends UFview_SruAdmin {
 		$box  = UFra::shared('UFbox_SruAdmin');
 
 		$this->append('title', $box->titleMain());
+		$this->append('body', $box->userSearch());
 		$this->append('body', $box->computerSearch());
 		$this->append('body', $box->logout());
 	}

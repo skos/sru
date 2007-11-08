@@ -5,7 +5,7 @@
 class UFtpl_Sru_User
 extends UFtpl {
 
-	protected $studyYears = array(
+	static public $studyYears = array(
 		1 => '1',
 		2 => '2',
 		3 => '3',
@@ -79,7 +79,7 @@ extends UFtpl {
 		));
 		$form->studyYearId('Rok studiów', array(
 			'type' => $form->SELECT,
-			'labels' => $form->_labelize($this->studyYears, '', ''),
+			'labels' => $form->_labelize(self::$studyYears, '', ''),
 		));
 		$tmp = array();
 		foreach ($dormitories as $dorm) {
@@ -117,7 +117,7 @@ extends UFtpl {
 		));
 		$form->studyYearId('Rok studiów', array(
 			'type' => $form->SELECT,
-			'labels' => $form->_labelize($this->studyYears),
+			'labels' => $form->_labelize(self::$studyYears),
 		));
 		$tmp = array();
 		foreach ($dormitories as $dorm) {
@@ -128,5 +128,89 @@ extends UFtpl {
 			'labels' => $form->_labelize($tmp),
 		));
 		$form->locationId('Pokój');
+	}
+
+	public function formSearch(array $d, array $searched) {
+		$d = $searched + $d;
+		$form = UFra::factory('UFlib_Form', 'userSearch', $d, $this->errors);
+
+		$form->login('Login');
+		$form->name('Imię');
+		$form->surname('Nazwisko');
+	}
+
+	public function searchResults(array $d) {
+		$url = $this->url(0);
+		foreach ($d as $c) {
+			echo '<li><a href="'.$url.'/users/'.$c['id'].'">'.$c['name'].' '.$c['surname'].'</a> <span><a href="'.$url.'/dormitories/'.$c['dormitoryAlias'].'/'.$c['locationAlias'].'">'.$c['locationAlias'].'</a> <small>(<a href="'.$url.'/dormitories/'.$c['dormitoryAlias'].'">'.$c['dormitoryAlias'].'</a>)</small></span>';
+		}
+	}
+
+	public function details(array $d) {
+		$url = $this->url(0);
+		echo '<h1>'.$d['name'].' '.$d['surname'].'</h1>';
+		echo '<p><em>Login:</em> '.$d['login'].'</p>';
+		echo '<p><em>E-mail:</em> <a href="mailto:'.$d['email'].'">'.$d['email'].'</a></p>';
+		echo '<p><em>Miejsce:</em> <a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'/'.$d['locationAlias'].'">'.$d['locationAlias'].'</a> <small>(<a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'">'.$d['dormitoryAlias'].'</a>)</small></p>';
+		echo '<p><em>Wydział:</em> '.$d['facultyName'].'</p>';
+		echo '<p><em>Rok studiów:</em> '.self::$studyYears[$d['studyYearId']].'</p>';
+		if (is_null($d['modifiedBy'])) {
+			$changed = 'UŻYTKOWNIK';
+		} else {
+			$changed = '<a href="'.$url.'/admins/'.$d['modifiedById'].'">'.$d['modifiedBy'].'</a>';;
+		}
+		echo '<p><em>Zmiana:</em> '.date(self::TIME_YYMMDD_HHMM, $d['modifiedAt']).'<small> ('.$changed.')</small></p>';
+		if (strlen($d['comment'])) {
+			echo '<p class="comment">'.nl2br($this->_escape($d['comment'])).'</p>';
+		}
+	}
+
+	public function titleDetails(array $d) {
+		echo $d['name'].' '.$d['surname'].' ('.$d['login'].')';
+	}
+
+	public function titleEdit(array $d) {
+		echo $d['name'].' '.$d['surname'].' ('.$d['login'].')';
+	}
+
+	public function formEditAdmin(array $d, $dormitories, $faculties) {
+		$d['locationId'] = $d['locationAlias'];
+		$d['dormitory'] = $d['dormitoryId'];
+		if (is_null($d['facultyId'])) {
+			$d['facultyId'] = '-';
+		}
+		if (is_null($d['studyYearId'])) {
+			$d['studyYearId'] = '-';
+		}
+		$form = UFra::factory('UFlib_Form', 'userEdit', $d, $this->errors);
+
+		$form->login('Login');
+		$form->name('Imię');
+		$form->surname('Nazwisko');
+		$form->email('E-mail');
+		$tmp = array();
+		foreach ($faculties as $fac) {
+			$tmp[$fac['id']] = $fac['name'];
+		}
+		$tmp['-'] = 'N/D';
+		$form->facultyId('Wydział', array(
+			'type' => $form->SELECT,
+			'labels' => $form->_labelize($tmp),
+		));
+		$form->studyYearId('Rok studiów', array(
+			'type' => $form->SELECT,
+			'labels' => $form->_labelize(self::$studyYears),
+		));
+		$tmp = array();
+		foreach ($dormitories as $dorm) {
+			$tmp[$dorm['id']] = $dorm['name'];
+		}
+		$form->dormitory('Akademik', array(
+			'type' => $form->SELECT,
+			'labels' => $form->_labelize($tmp),
+		));
+		$form->locationId('Pokój');
+		$form->changeComputersLocations('Zmień miesce także wszystkim zarejestrowanym komputerom', array('type'=>$form->CHECKBOX));
+		$form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
 	}
 }

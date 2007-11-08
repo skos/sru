@@ -120,7 +120,7 @@ extends UFtpl {
 		$form->host('Nazwa');
 		$form->mac('MAC');
 		$form->ip('IP');
-		$form->availableMaxTo('Rejestracja max do');
+		$form->availableMaxTo('Rejestracja max do', array('id'=>'availableMaxTo'));
 		foreach ($dormitories as $dorm) {
 			$tmp[$dorm['id']] = $dorm['name'];
 		}
@@ -131,6 +131,26 @@ extends UFtpl {
 		$form->locationId('Pokój');
 		$form->canAdmin('Komputer administratora', array('type'=>$form->CHECKBOX));
 		$form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
+
+		$conf = UFra::shared('UFconf_Sru');
+		$date = $conf->computerAvailableMaxTo;
+		?>
+<script type="text/javascript">
+input = document.getElementById('availableMaxTo');
+if (input) {
+	button = document.createElement('input');
+	button.setAttribute('value', '<?=$date;?>');
+	button.setAttribute('type', 'button');
+	button.onclick = function() {
+		input = document.getElementById('availableMaxTo');
+		input.value = this.value;
+	}
+	input.parentElement.insertBefore(button, input.nextSibling);
+	space = document.createTextNode(' ');
+	input.parentElement.insertBefore(space, input.nextSibling);
+}
+</script>
+		<?
 	}
 
 	public function formAdd(array $d) {
@@ -151,9 +171,9 @@ extends UFtpl {
 	}
 
 	public function listAdmin(array $d) {
-		$url = $this->url(0);
+		$url = $this->url(0).'/computers/';
 		foreach ($d as $c) {
-			echo '<li><a href="'.$url.'/computers/'.$c['id'].'">'.$c['host'].'</a></li>';
+			echo '<li><a href="'.$url.$c['id'].'">'.$c['host'].' <small>'.$c['ip'].'/'.$c['mac'].'</small></a> <span>'.date(self::TIME_YYMMDD, $c['availableTo']).'</span></li>';
 		}
 	}
 

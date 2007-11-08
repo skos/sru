@@ -18,9 +18,25 @@ extends UFbeanSingle {
 		try {
 			$bean = UFra::factory('UFbean_Sru_User');
 			$bean->getByLogin($val);
+			if ($change && $this->data['id'] == $bean->id) {
+				return;
+			}
 			return 'duplicated';
 		} catch (UFex_Dao_NotFound $e) {
 		}
+	}
+
+	protected function normalizeLogin($val, $change) {
+		if (is_string($this->_password)) {
+			$pass = $this->_password;
+		} else {
+			$pass = microtime();
+		}
+		if (isset($this->_password)) {
+			$this->data['password'] = md5($val.$pass);
+			$this->dataChanged['password'] = $this->data['password'];
+		}
+		return $val;
 	}
 
 	protected function validatePassword($val, $change) {
@@ -42,19 +58,6 @@ extends UFbeanSingle {
 			$login = md5(microtime());
 		}
 		return md5($login.$val);
-	}
-
-	protected function normalizeLogin($val, $change) {
-		if (is_string($this->_password)) {
-			$pass = $this->_password;
-		} else {
-			$pass = microtime();
-		}
-		if (array_key_exists('password', $this->data)) {
-			$this->data['password'] = md5($val.$pass);
-			$this->dataChanged['password'] = $this->data['password'];
-		}
-		return $val;
 	}
 
 	protected function validateFacultyId($val, $change) {

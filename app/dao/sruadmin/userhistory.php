@@ -1,25 +1,25 @@
 <?
 /**
- * historia komputera
+ * historia uzytkownika
  */
-class UFdao_SruAdmin_ComputerHistory
+class UFdao_SruAdmin_UserHistory
 extends UFdao {
 
-	public function listByComputerIdPK($computer, $id) {
+	public function listByUserIdPK($user, $id) {
 		$mapping = $this->mapping('list');
 
 		$query = $this->prepareSelect($mapping);
-		$query->where($mapping->computerId, $computer);
+		$query->where($mapping->userId, $user);
 		$query->where($mapping->pkName(), $id);
 
 		return $this->doSelect($query);
 	}
 
-	public function listByComputerId($id) {
+	public function listByUserId($id) {
 		$mapping = $this->mapping('list');
 
 		$query = $this->prepareSelect($mapping);
-		$query->where($mapping->computerId, $id);
+		$query->where($mapping->userId, $id);
 		$query->order($mapping->pkName(), $query->DESC);
 
 		return $this->doSelect($query);

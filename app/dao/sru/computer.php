@@ -44,6 +44,17 @@ extends UFdao {
 		return $this->doSelect($query);
 	}
 
+	public function listByUserIdAll($id) {
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->userId, $id);
+		$query->order($mapping->active, $query->DESC);
+		$query->order($mapping->host, $query->ASC);
+
+		return $this->doSelect($query);
+	}
+
 	public function getByMacUserId($mac, $user) {
 		$key = $this->cachePrefix.'/'.__FUNCTION__.'/'.$mac.'/'.$user;
 		try {
@@ -131,5 +142,22 @@ extends UFdao {
 			$this->cacheSet($key, $return);
 			return $return;
 		}
+	}
+
+	public function updateLocationByUserId($location, $user) {
+		$mapping = $this->mapping('set');
+
+		$query = UFra::factory('UFlib_Db_Query');
+		$query->tables($mapping->tables());
+		$query->joins($mapping->joins(), $mapping->joinOns());
+		$data = array(
+			$mapping->locationId => $location,
+		);
+		$query->values($mapping->columns(), $data,  $mapping->columnTypes());
+		$query->where($mapping->userId, $user);
+		$query->where($mapping->active, true);
+
+		$return = $this->doUpdate($query);
+		return $return;
 	}
 }

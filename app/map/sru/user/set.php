@@ -16,6 +16,7 @@ extends UFmap {
 		'locationId'     => 'location_id',
 		'modifiedById'   => 'modified_by',
 		'modifiedAt'     => 'modified_at',
+		'comment'        => 'comment',
 	);
 	protected $columnTypes = array(
 		'login'          => self::TEXT,
@@ -29,6 +30,7 @@ extends UFmap {
 		'locationId'     => self::INT,
 		'modifiedById'   => self::NULL_INT,
 		'modifiedAt'     => self::TS,
+		'comment'        => self::TEXT,
 	);
 	protected $tables = array(
 		'' => 'users',

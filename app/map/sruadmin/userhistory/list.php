@@ -2,13 +2,13 @@
 /**
  * wyciagniecie pojedynczego uzytkownika
  */
-class UFmap_Sru_User_Get
+class UFmap_SruAdmin_UserHistory_List
 extends UFmap {
 
 	protected $columns = array(
 		'id'             => 'u.id',
+		'userId'         => 'u.user_id',
 		'login'          => 'u.login',
-		'password'       => 'u.password',
 		'name'           => 'u.name',
 		'surname'        => 'u.surname',
 		'email'          => 'u.email',
@@ -21,7 +21,6 @@ extends UFmap {
 		'dormitoryId'    => 'l.dormitory_id',
 		'dormitoryAlias' => 'd.alias',
 		'dormitoryName'  => 'd.name',
-		'bans'           => 'u.bans',
 		'modifiedById'   => 'u.modified_by',
 		'modifiedBy'     => 'a.name',
 		'modifiedAt'     => 'u.modified_at',
@@ -29,8 +28,8 @@ extends UFmap {
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
+		'userId'         => self::INT,
 		'login'          => self::TEXT,
-		'password'       => self::TEXT,
 		'name'           => self::TEXT,
 		'surname'        => self::TEXT,
 		'email'          => self::TEXT,
@@ -43,14 +42,13 @@ extends UFmap {
 		'dormitoryId'    => self::INT,
 		'dormitoryAlias' => self::TEXT,
 		'dormitoryName'  => self::TEXT,
-		'bans'           => self::INT,
 		'modifiedById'   => self::NULL_INT,
 		'modifiedBy'     => self::TEXT,
 		'modifiedAt'     => self::TS,
 		'comment'        => self::TEXT,
 	);
 	protected $tables = array(
-		'u' => 'users',
+		'u' => 'users_history',
 	);
 	protected $joins = array(
 		'f' => 'faculties',
