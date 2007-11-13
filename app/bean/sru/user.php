@@ -38,12 +38,12 @@ extends UFbeanSingle {
 		}
 		return $val;
 	}
-
+	
 	protected function validatePassword($val, $change) {
 			$post = $this->_srv->get('req')->post->{$change?'userEdit':'userAdd'};
 			try {
-				if ($val !== $post['password2']) {
-					return 'mismatch';
+				if ($post['password2'] !== $val) {
+					return 'mismatch';			
 				}
 			} catch (UFex $e) {
 				return 'unknown';
@@ -59,8 +59,8 @@ extends UFbeanSingle {
 		}
 		return md5($login.$val);
 	}
-
-	protected function validateFacultyId($val, $change) {
+		
+		protected function validateStudyYearId($val, $change) {	
 		$post = $this->_srv->get('req')->post->{$change?'userEdit':'userAdd'};
 		if ('-' === $val) {
 			if ('-' !== $post['studyYearId']) {
@@ -77,14 +77,14 @@ extends UFbeanSingle {
 		}
 	}
 
-	protected function validateStudyYearId($val, $change) {
+	protected function validateFacultyId($val, $change) {
 		$post = $this->_srv->get('req')->post->{$change?'userEdit':'userAdd'};
 		if ('-' === $val) {
 			if ('-' !== $post['facultyId']) {
 				return 'facultyMismatch';
 			}
 		} else {
-			$this->validate('studyYearId', $val, $change);
+			$this->validate('studyYearId', $val, $change);//@todo, a i tak nie jest validowane swoja droga?
 		}
 	}
 
