@@ -13,10 +13,16 @@ extends UFact {
 			$this->begin();
 			$bean = UFra::factory('UFbean_Sru_User');
 			$bean->getByPK((int)$this->_srv->get('req')->get->userId);
+			$post = $this->_srv->get('req')->post->{self::PREFIX};
 			$login = $bean->login;
 			$bean->fillFromPost(self::PREFIX, array('password'));
 			$bean->modifiedById = $this->_srv->get('session')->authAdmin;
 			$bean->modifiedAt = NOW;
+			
+			if(isset($post['password']) && $post['password'] != '' )
+			{
+				$bean->password = $post['password'];	
+			}				
 			$bean->save();
 
 			if ($this->_srv->get('req')->post->{self::PREFIX}['changeComputersLocations']) {

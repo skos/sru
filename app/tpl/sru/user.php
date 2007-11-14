@@ -133,7 +133,7 @@ extends UFtpl {
 		$form->_end();
 		$form->_fieldset('');
 			$form->email('E-mail');
-			$form->password('Wybierz hasło', array('type'=>$form->PASSWORD,  ));
+			$form->password('Nowe hasło', array('type'=>$form->PASSWORD ));
 			$form->password2('Potwierdź hasło', array('type'=>$form->PASSWORD));	
 		$form->_end();	
 		$form->_fieldset('');
@@ -194,10 +194,16 @@ extends UFtpl {
 		}
 		$form = UFra::factory('UFlib_Form', 'userEdit', $d, $this->errors);
 
-		$form->login('Login');
+		$form->_fieldset('');
+			$form->login('Login');		
+			$form->email('E-mail');
+			$form->password('Nowe hasło', array('type'=>$form->PASSWORD,  ));
+			$form->password2('Potwierdź hasło', array('type'=>$form->PASSWORD));			
+		$form->_end();
+		$form->_fieldset('');
 		$form->name('Imię');
 		$form->surname('Nazwisko');
-		$form->email('E-mail');
+		
 		$tmp = array();
 		foreach ($faculties as $fac) {
 			$tmp[$fac['id']] = $fac['name'];

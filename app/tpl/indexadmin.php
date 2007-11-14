@@ -17,7 +17,7 @@ extends UFtpl {
 <body>
 <div id="body">
 <div id="head">
-<h1><a href="/">SKOS</a></h1>
+<h1><a href="<?=UFURL_BASE;?>"><abbr title="Sieć Komputerowa Osiedla Studenckiego">SKOS</abbr></a></h1>
 </div><!-- head -->
 <?=$d['menuAdmin'];?>
 <div id="main">
@@ -27,6 +27,7 @@ extends UFtpl {
 <a href="mailto:hrynek@hrynek.com">Maciej "HryneK" Hryniewicz</a>
 </div><!-- foot -->
 </div><!-- body -->
+<pre>
 <?
 $stop = microtime(true);
 $start = $this->_srv->get('msg')->get('timeStart');
@@ -34,6 +35,7 @@ $boot = $this->_srv->get('msg')->get('timeBoot');
 echo '<!-- boot: '.number_format(1000*($boot-$start), 1).'ms, total: '.number_format(1000*($stop-$start), 1).'ms -->';
 echo print_r(UFra::logs(), true);
 ?>
+</pre>
 </body>
 </html><?
 	}
