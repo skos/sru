@@ -40,7 +40,7 @@ extends UFtpl {
 		'locationId' => 'Podaj pokój',
 		'locationId/noDormitory' => 'Wybierz akademik',
 		'locationId/noRoom' => 'Pokój nie istnieje',
-		'password/mismatch' => 'Hasła się różnią',
+		'password3/invalid' => 'Podałeś nieprawidłowe hasło',
 
 	);
 
@@ -105,36 +105,39 @@ extends UFtpl {
 		$form = UFra::factory('UFlib_Form', 'userEdit', $d, $this->errors);
 
 
-		echo '<h2>'.$d['name'].' '.$d['surname'].'</h2>';
-		$form->email('E-mail');
-		$tmp = array();
-		foreach ($faculties as $fac) {
-			$tmp[$fac['id']] = $fac['name'];
-		}
-		$tmp['-'] = 'N/D';
-		$form->facultyId('Wydział', array(
-			'type' => $form->SELECT,
-			'labels' => $form->_labelize($tmp),
-		));
-		$form->studyYearId('Rok studiów', array(
-			'type' => $form->SELECT,
-			'labels' => $form->_labelize(self::$studyYears),
-		));
-		$tmp = array();
-		foreach ($dormitories as $dorm) {
-			$tmp[$dorm['id']] = $dorm['name'];
-		}
-		$form->dormitory('Akademik', array(
-			'type' => $form->SELECT,
-			'labels' => $form->_labelize($tmp),
-		));
-		$form->locationId('Pokój');
-
-		$form->password('Wybierz hasło', array('dupa'=>'aaa', 'value'=>"", 'type'=>$form->PASSWORD,  ));
-		$form->password2('Potwierdź hasło', array('type'=>$form->PASSWORD));		
-//@todo:		$form->password3('Obecne hasło', array('type'=>$form->PASSWORD));	
+		echo '<h1>'.$d['name'].' '.$d['surname'].'</h1>';
 		
-		
+		$form->_fieldset('');		
+			$tmp = array();
+			foreach ($faculties as $fac) {
+				$tmp[$fac['id']] = $fac['name'];
+			}
+			$tmp['-'] = 'N/D';
+			$form->facultyId('Wydział', array(
+				'type' => $form->SELECT,
+				'labels' => $form->_labelize($tmp),
+			));
+			$form->studyYearId('Rok studiów', array(
+				'type' => $form->SELECT,
+				'labels' => $form->_labelize(self::$studyYears),
+			));
+			$tmp = array();
+			foreach ($dormitories as $dorm) {
+				$tmp[$dorm['id']] = $dorm['name'];
+			}
+			$form->dormitory('Akademik', array(
+				'type' => $form->SELECT,
+				'labels' => $form->_labelize($tmp),
+			));
+			$form->locationId('Pokój');
+		$form->_end();
+		$form->_fieldset('');
+			$form->email('E-mail');
+			$form->password('Wybierz hasło', array('type'=>$form->PASSWORD,  ));
+			$form->password2('Potwierdź hasło', array('type'=>$form->PASSWORD));	
+		$form->_end();	
+		$form->_fieldset('');
+			$form->password3('Obecne hasło', array('type'=>$form->PASSWORD));			
 	}
 
 	public function formSearch(array $d, array $searched) {
@@ -155,7 +158,7 @@ extends UFtpl {
 
 	public function details(array $d) {
 		$url = $this->url(0);
-		echo '<h2>'.$d['name'].' '.$d['surname'].'</h2>';
+		echo '<h1>'.$d['name'].' '.$d['surname'].'</h1>';
 		echo '<p><em>Login:</em> '.$d['login'].'</p>';
 		echo '<p><em>E-mail:</em> <a href="mailto:'.$d['email'].'">'.$d['email'].'</a></p>';
 		echo '<p><em>Miejsce:</em> <a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'/'.$d['locationAlias'].'">'.$d['locationAlias'].'</a> <small>(<a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'">'.$d['dormitoryAlias'].'</a>)</small></p>';
