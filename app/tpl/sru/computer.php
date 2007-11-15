@@ -129,7 +129,9 @@ extends UFtpl {
 			'labels' => $form->_labelize($tmp),
 		));
 		$form->locationId('Pokój');
-		$form->canAdmin('Komputer administratora', array('type'=>$form->CHECKBOX));
+		$form->_fieldset('Uprawnienia');
+			$form->canAdmin('Komputer administratora', array('type'=>$form->CHECKBOX));
+		$form->_end();
 		$form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
 
 		$conf = UFra::shared('UFconf_Sru');

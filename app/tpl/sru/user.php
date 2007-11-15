@@ -106,7 +106,6 @@ extends UFtpl {
 
 
 		echo '<h1>'.$d['name'].' '.$d['surname'].'</h1>';
-		$form->email('E-mail');
 		$tmp = array();
 		foreach ($faculties as $fac) {
 			$tmp[$fac['id']] = $fac['name'];
@@ -129,8 +128,10 @@ extends UFtpl {
 			'labels' => $form->_labelize($tmp),
 		));
 		$form->locationId('Pokój');
-		$form->_fieldset('Zmiana hasła');
-			$form->password3('Obecne hasło', array('type'=>$form->PASSWORD));
+		$form->_fieldset('Zmiana chronionych danych');
+			$form->password3('Aktualne hasło', array('type'=>$form->PASSWORD));
+			echo '<p>Do zmiany poniższych danych wymagane jest podanie aktualnego hasła.</p>';
+			$form->email('E-mail');
 			$form->password('Nowe hasło', array('type'=>$form->PASSWORD ));
 			$form->password2('Potwierdź hasło', array('type'=>$form->PASSWORD));
 		$form->_end();
@@ -182,6 +183,7 @@ extends UFtpl {
 	public function formEditAdmin(array $d, $dormitories, $faculties) {
 		$d['locationId'] = $d['locationAlias'];
 		$d['dormitory'] = $d['dormitoryId'];
+		$d['changeComputersLocations'] = 1;
 		if (is_null($d['facultyId'])) {
 			$d['facultyId'] = '-';
 		}
