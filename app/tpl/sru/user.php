@@ -106,38 +106,34 @@ extends UFtpl {
 
 
 		echo '<h1>'.$d['name'].' '.$d['surname'].'</h1>';
-		
-		$form->_fieldset('');		
-			$tmp = array();
-			foreach ($faculties as $fac) {
-				$tmp[$fac['id']] = $fac['name'];
-			}
-			$tmp['-'] = 'N/D';
-			$form->facultyId('Wydział', array(
-				'type' => $form->SELECT,
-				'labels' => $form->_labelize($tmp),
-			));
-			$form->studyYearId('Rok studiów', array(
-				'type' => $form->SELECT,
-				'labels' => $form->_labelize(self::$studyYears),
-			));
-			$tmp = array();
-			foreach ($dormitories as $dorm) {
-				$tmp[$dorm['id']] = $dorm['name'];
-			}
-			$form->dormitory('Akademik', array(
-				'type' => $form->SELECT,
-				'labels' => $form->_labelize($tmp),
-			));
-			$form->locationId('Pokój');
-		$form->_end();
-		$form->_fieldset('');
-			$form->email('E-mail');
+		$form->email('E-mail');
+		$tmp = array();
+		foreach ($faculties as $fac) {
+			$tmp[$fac['id']] = $fac['name'];
+		}
+		$tmp['-'] = 'N/D';
+		$form->facultyId('Wydział', array(
+			'type' => $form->SELECT,
+			'labels' => $form->_labelize($tmp),
+		));
+		$form->studyYearId('Rok studiów', array(
+			'type' => $form->SELECT,
+			'labels' => $form->_labelize(self::$studyYears),
+		));
+		$tmp = array();
+		foreach ($dormitories as $dorm) {
+			$tmp[$dorm['id']] = $dorm['name'];
+		}
+		$form->dormitory('Akademik', array(
+			'type' => $form->SELECT,
+			'labels' => $form->_labelize($tmp),
+		));
+		$form->locationId('Pokój');
+		$form->_fieldset('Zmiana hasła');
+			$form->password3('Obecne hasło', array('type'=>$form->PASSWORD));
 			$form->password('Nowe hasło', array('type'=>$form->PASSWORD ));
-			$form->password2('Potwierdź hasło', array('type'=>$form->PASSWORD));	
-		$form->_end();	
-		$form->_fieldset('');
-			$form->password3('Obecne hasło', array('type'=>$form->PASSWORD));			
+			$form->password2('Potwierdź hasło', array('type'=>$form->PASSWORD));
+		$form->_end();
 	}
 
 	public function formSearch(array $d, array $searched) {
@@ -193,14 +189,8 @@ extends UFtpl {
 			$d['studyYearId'] = '-';
 		}
 		$form = UFra::factory('UFlib_Form', 'userEdit', $d, $this->errors);
-
-		$form->_fieldset('');
-			$form->login('Login');		
-			$form->email('E-mail');
-			$form->password('Nowe hasło', array('type'=>$form->PASSWORD,  ));
-			$form->password2('Potwierdź hasło', array('type'=>$form->PASSWORD));			
-		$form->_end();
-		$form->_fieldset('');
+		$form->login('Login');
+		$form->email('E-mail');
 		$form->name('Imię');
 		$form->surname('Nazwisko');
 		
@@ -228,5 +218,9 @@ extends UFtpl {
 		$form->locationId('Pokój');
 		$form->changeComputersLocations('Zmień miesce także wszystkim zarejestrowanym komputerom', array('type'=>$form->CHECKBOX));
 		$form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
+		$form->_fieldset('Zmiana hasła');
+			$form->password('Nowe hasło', array('type'=>$form->PASSWORD,  ));
+			$form->password2('Potwierdź hasło', array('type'=>$form->PASSWORD));
+		$form->_end();
 	}
 }
