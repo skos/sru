@@ -27,7 +27,7 @@ extends UFact {
 
 			if ($this->_srv->get('req')->post->{self::PREFIX}['changeComputersLocations']) {
 				$comps = UFra::factory('UFbean_Sru_ComputerList');
-				$comps->updateLocationByUserId($bean->locationId, $bean->id);
+				$comps->updateLocationByUserId($bean->locationId, $bean->id, $this->_srv->get('session')->authAdmin);
 			}
 
 			$this->postDel(self::PREFIX);

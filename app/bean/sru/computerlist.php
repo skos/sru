@@ -9,7 +9,7 @@ extends UFbeanList {
 		$this->data = $this->dao->search($params);
 	}
 	
-	public function updateLocationByUserId($location, $user) {
-		$this->data = $this->dao->updateLocationByUserId($location, $user);
+	public function updateLocationByUserId($location, $user, $modifiedBy=null) {
+		$this->data = $this->dao->updateLocationByUserId($location, $user, $modifiedBy);
 	}
 }

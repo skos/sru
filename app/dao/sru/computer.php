@@ -144,7 +144,7 @@ extends UFdao {
 		}
 	}
 
-	public function updateLocationByUserId($location, $user) {
+	public function updateLocationByUserId($location, $user, $modifiedBy=null) {
 		$mapping = $this->mapping('set');
 
 		$query = UFra::factory('UFlib_Db_Query');
@@ -152,6 +152,7 @@ extends UFdao {
 		$query->joins($mapping->joins(), $mapping->joinOns());
 		$data = array(
 			$mapping->locationId => $location,
+			$mapping->modifiedById => $modifiedBy,
 		);
 		$query->values($mapping->columns(), $data,  $mapping->columnTypes());
 		$query->where($mapping->userId, $user);

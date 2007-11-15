@@ -8,11 +8,16 @@ extends UFbeanSingle {
 	protected $_locationId = null;
 	protected $_password = null;
 
-	/*
-	public function validate($var, $val, $change) {
-		parent::validate($var, $val, $change);
+	/**
+	 * zaszyfrowane haslo
+	 * 
+	 * @param string $login - login
+	 * @param string $password - haslo
+	 * @return string
+	 */
+	static function generatePassword($login, $password) {
+		return md5($login.$password);
 	}
-	*/
 
 	protected function validateLogin($val, $change) {
 		try {
@@ -57,7 +62,7 @@ extends UFbeanSingle {
 		} else {
 			$login = md5(microtime());
 		}
-		return md5($login.$val);
+		return self::generatePassword($login, $val);
 	}
 		
 		protected function validateStudyYearId($val, $change) {	
