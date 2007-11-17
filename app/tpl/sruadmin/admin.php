@@ -24,7 +24,7 @@ extends UFtpl {
 		'name/regexp' => 'Nazwa zawiera niedozwolone znaki',
 		'name/textMax' => 'Nazwa jest za długa',
 		'email' => 'Adres email jest nieprawidłowy ',
-		'dormitory' => 'Wybierz akademik',
+		'dormitoryId' => 'Wybierz akademik',
 		'typeId' => 'Wybierz uprawnienia',
 	);	
 	
@@ -52,15 +52,19 @@ extends UFtpl {
 			{
 				if($lastDom != '')		
 					echo '</ul>';
-				echo '<h3>'.$c['dormitoryName'].'</h3>';
+				if (is_null($c['dormitoryName'])) {
+					echo '<h3>Spoza akademików</h3>';
+				} else {
+					echo '<h3>'.$c['dormitoryName'].'</h3>';
+				}
 				echo '<ul>';		
 			}
 			
-			if($c['active'])
+			if ($c['active']) {
 				echo '<li><a href="'.$url.$c['id'].'">';
-			else
+			} else {
 				echo '<li><a class="inactive" href="'.$url.$c['id'].'">';  //@todo dac .inactive do styla
-
+			}
 			switch($c['typeId'])
 			{
 				case 1:
@@ -98,6 +102,9 @@ extends UFtpl {
 		echo 'Dodanie nowego administratora';
 	}		
 	public function formAdd(array $d, $dormitories) {
+		if (!isset($d['typeId'])) {
+			$d['typeId'] = 3;
+		}
 		$form = UFra::factory('UFlib_Form', 'adminAdd', $d, $this->errors);
 
 		$form->_fieldset();
@@ -108,7 +115,7 @@ extends UFtpl {
 		$form->name('Nazwa'); //@todo nazwac jakos rozsadnie:P
 		$form->typeId('Uprawnienia', array(
 			'type' => $form->SELECT,
-			'labels' => $form->_labelize($this->adminTypes, '', ''),
+			'labels' => $form->_labelize($this->adminTypes),
 		));
 		$form->email('E-mail');
 		$form->phone('Telefon');
@@ -120,7 +127,8 @@ extends UFtpl {
 		foreach ($dormitories as $dorm) {
 			$tmp[$dorm['id']] = $dorm['name'];
 		}
-		$form->dormitory('Akademik', array(
+		$tmp['-'] = 'N/D';
+		$form->dormitoryId('Akademik', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize($tmp, '', ''),
 		));		
