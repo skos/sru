@@ -32,11 +32,11 @@ extends UFdao {
 
 		$query = $this->prepareSelect($mapping);
 		
-//		$query->where($mapping->active, true); // @todo: chyba jednak lepiej wszystkich zlistowac?
+		$query->where($mapping->active, true); // @todo: chyba jednak lepiej wszystkich zlistowac?
+		                                       // nie, na nich bedzie osobny box, bo do normalnej pracy nie sa potrzebni [hrynek]
 		
-		$query->order($mapping->dormitoryAlias, $query->ASC);
-		$query->order($mapping->typeId, $query->ASC);
-		$query->order($mapping->active, $query->DESC);
+		$query->order($mapping->dormitoryId, $query->ASC);	// @todo: kijowe rozwiazanie, ale jak bylo po aliasie, to "10" bylo przed "2"
+		$query->order($mapping->name, $query->ASC);
 		
 		return $this->doSelect($query);
 	}
