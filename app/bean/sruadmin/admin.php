@@ -26,7 +26,7 @@ extends UFbeanSingle {
 	protected function validatePassword($val, $change) {
 		if (!$change) {
 			try {
-				if ($val !== $this->_srv->get('req')->post->userAdd['password2']) {
+				if ($val !== $this->_srv->get('req')->post->adminAdd['password2']) {
 					return 'mismatch';
 				}
 			} catch (UFex $e) {

@@ -23,6 +23,10 @@ extends UFctl {
 					$ctl = UFra::factory('UFctl_SruAdmin_Computers');
 					$ctl->go();
 					return false;
+				case 'admins':
+					$ctl = UFra::factory('UFctl_SruAdmin_Admins');
+					$ctl->go();
+					return false;					
 				default:
 					$get->view = 'error404';
 					break;
@@ -41,6 +45,9 @@ extends UFctl {
 		} elseif ($post->is('adminLogin') && $acl->sruAdmin('admin', 'login')) {
 			$act = 'Admin_Login';
 		}
+		
+
+	
 
 		if (isset($act)) {
 			$action = 'SruAdmin_'.$act;

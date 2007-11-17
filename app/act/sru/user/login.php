@@ -13,8 +13,8 @@ extends UFact {
 			$bean = UFra::factory('UFbean_Sru_User');
 			$post = $this->_srv->get('req')->post->{self::PREFIX};
 			$login = $post['login'];
-			$password = md5($post['login'].$post['password']);
-			$bean->getByLoginPassword($login, $password);
+			$password = UFbean_Sru_User::generatePassword($login, $password);
+
 
 			$sess = $this->_srv->get('session');
 			$sess->auth = $bean->id;

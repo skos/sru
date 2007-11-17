@@ -27,4 +27,17 @@ extends UFdao {
 	public function getFromSession() {
 		return $this->getByPK($this->_srv->get('session')->authAdmin);
 	}
+	public function listAll() {
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		
+//		$query->where($mapping->active, true); // @todo: chyba jednak lepiej wszystkich zlistowac?
+		
+		$query->order($mapping->dormitoryAlias, $query->ASC);
+		$query->order($mapping->typeId, $query->ASC);
+		$query->order($mapping->active, $query->DESC);
+		
+		return $this->doSelect($query);
+	}
 }

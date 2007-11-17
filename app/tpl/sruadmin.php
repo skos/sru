@@ -42,6 +42,7 @@ extends UFtpl {
 		echo '<ul id="nav">';
 		echo '<li><a href="'.UFURL_BASE.'/admin/">Start</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/users/">Użytkownicy</a></li>';
+		echo '<li><a href="'.UFURL_BASE.'/admin/admins/">Administratorzy</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/computers/">Komputery</a></li>';
 		echo '</ul>';
 	}
@@ -246,4 +247,55 @@ extends UFtpl {
 		echo '</ol>';
 		echo '</div>';
 	}
+	public function titleAdmins() {
+		echo 'Administratorzy';
+	}	
+	public function admins(array $d)
+	{
+		$url = $this->url(0).'/admins/';
+		
+		echo '<div class="admins">';
+		echo '<h2>Administratorzy</h2>';
+
+		$d['admins']->write('listAdmin');
+
+		echo '</div>';
+		
+		
+		//@todo: uprawnienia
+		echo '<p class="nav"><a href="'.$url.':add">Dodaj nowego administratora</a></p>';
+				
+	}
+	public function adminsNotFound() {
+		UFtpl_Html::msgErr('Administratorów nie znaleziono');
+	}
+	public function admin(array $d) {
+		$url = $this->url(0).'/admin/'.$d['admin']->id;
+		echo '<div class="admin">';		
+		$d['admin']->write('details');
+		
+		//@todo: uprawnienia
+		echo '<p class="nav"><a href="'.$url.'/:edit">Edycja</a></p>';
+		echo '</div>';
+	}
+
+	public function titleAdmin(array $d) {
+		echo $d['admin']->write('titleDetails');
+	}	
+	public function adminAdd(array $d) {
+		$form = UFra::factory('UFlib_Form');
+		echo '<h2>Dodawanie nowego administratora</h2>';
+		$form->_start();
+		
+		if ($this->_srv->get('msg')->get('adminAdd/ok')) {
+			UFtpl_Html::msgOk('Konto zostało założone');
+		}
+		echo $d['admin']->write('formAdd', $d['dormitories']);
+		$form->_submit('Dodaj');
+		$form->_end();
+		$form->_end(true);
+	}
+	public function titleAdminAdd(array $d) {
+		echo 'Dodawanie nowego administratora';
+	}		
 }

@@ -19,6 +19,12 @@ extends UFbox {
 
 		return $bean;
 	}
+	protected function _getAdminFromGet() {
+		$bean = UFra::factory('UFbean_SruAdmin_Admin');
+		$bean->getByPK((int)$this->_srv->get('req')->get->adminId);
+
+		return $bean;
+	}	
 
 	public function login() {
 		$bean = UFra::factory('UFbean_SruAdmin_Admin');
@@ -353,4 +359,69 @@ extends UFbox {
 
 		return $this->render(__FUNCTION__, $d);
 	}
+	
+	public function admins() 
+	{
+		try 
+		{
+			$bean = UFra::factory('UFbean_SruAdmin_AdminList');	
+			$bean->listAll();
+			$d['admins'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} 
+		catch (UFex_Dao_NotFound $e) 
+		{
+			return $this->render('adminsNotFound');
+		}
+	}
+/*	@todo: no need for it?
+ * 	public function titleAdmins() {
+		try {
+			return $this->render(__FUNCTION__, array());
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}
+	}*/
+	
+	
+	public function titleAdmin()
+	{
+		try
+		{
+			$bean = $this->_getAdminFromGet();
+
+			$d['admin'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		}
+		catch (UFex_Dao_NotFound $e) 
+		{
+			return $this->render(__FUNCTION__.'NotFound');
+		}
+	}
+
+	public function admin() {
+		try {
+			$bean = $this->_getAdminFromGet();
+
+			$d['admin'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}
+	}
+	public function adminAdd() {
+		$dorms = UFra::factory('UFbean_Sru_DormitoryList');
+		$dorms->listAll();
+		
+		$bean = UFra::factory('UFbean_SruAdmin_Admin');
+
+		$d['admin'] = $bean;
+		$d['dormitories'] = $dorms;
+
+
+		return $this->render(__FUNCTION__, $d);
+	}	
 }
