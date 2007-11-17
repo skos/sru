@@ -5,8 +5,18 @@
 class UFbean_SruAdmin_Admin
 extends UFbeanSingle {
 
-	protected $locationId = null;
-	protected $password = null;
+	protected $_password = null;
+
+	/**
+	 * zaszyfrowane haslo
+	 * 
+	 * @param string $login - login
+	 * @param string $password - haslo
+	 * @return string
+	 */
+	static function generatePassword($login, $password) {
+		return md5($login.$password);
+	}
 
 	/*
 	public function validate($var, $val, $change) {
@@ -16,7 +26,7 @@ extends UFbeanSingle {
 
 	protected function validateLogin($val, $change) {
 		try {
-			$bean = UFra::factory('UFbean_Sru_User');
+			$bean = UFra::factory('UFbean_SruAdmin_Admin');
 			$bean->getByLogin($val);
 			return 'duplicated';
 		} catch (UFex_Dao_NotFound $e) {
@@ -24,35 +34,36 @@ extends UFbeanSingle {
 	}
 
 	protected function validatePassword($val, $change) {
-		if (!$change) {
-			try {
-				if ($val !== $this->_srv->get('req')->post->adminAdd['password2']) {
-					return 'mismatch';
-				}
-			} catch (UFex $e) {
-				return 'unknown';
+		$post = $this->_srv->get('req')->post->{$change?'adminEdit':'adminAdd'};
+		try {
+			if ($post['password2'] !== $val) {
+				return 'mismatch';			
 			}
+		} catch (UFex $e) {
+			return 'unknown';
 		}
 	}
 
 	protected function normalizePassword($val, $change) {
-		$this->password = $val;
+		$this->_password = $val;
 		if (array_key_exists('login', $this->data)) {
 			$login = $this->data['login'];
 		} else {
 			$login = md5(microtime());
 		}
-		return md5($login.$val);
+		return self::generatePassword($login, $val);
 	}
 
 	protected function normalizeLogin($val, $change) {
-		if (is_string($this->password)) {
-			$pass = $this->password;
+		if (is_string($this->_password)) {
+			$pass = $this->_password;
 		} else {
 			$pass = microtime();
 		}
-		$this->data['password'] = md5($val.$pass);
-		$this->dataChanged['password'] = $this->data['password'];
+		if (isset($this->_password)) {
+			$this->data['password'] = self::generatePassword($val, $pass);
+			$this->dataChanged['password'] = $this->data['password'];
+		}
 		return $val;
 	}
 

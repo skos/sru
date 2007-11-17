@@ -14,7 +14,7 @@ extends UFmap {
 		'jid'            => 'jid',
 		'email'          => 'email',
 		'address'        => 'address',
-		'dormitory'   	 => 'dormitory_id',
+		'dormitoryId'  	 => 'dormitory_id',
 	);
 	protected $columnTypes = array(
 		'login'          => self::TEXT,
@@ -26,7 +26,7 @@ extends UFmap {
 		'jid'            => self::TEXT,
 		'email'          => self::TEXT,
 		'address'        => self::TEXT,
-		'dormitory'  	  => self::NULL_INT,
+		'dormitoryId'	 => self::NULL_INT,
 	);	
 
 	protected $tables = array(
@@ -35,9 +35,9 @@ extends UFmap {
 	protected $valids = array(
 		'login' => array('textMin'=>1, 'textMax'=>100, 'regexp'=>'^[-a-zA-Z0-9\.@_]+$'),
 		'password' => array('textMin'=>6), 
-		'name' => array('textMin'=>1, 'textMax'=>100, 'regexp'=>'^[-a-zA-Z ]+$'),
+		'name' => array('textMin'=>1, 'textMax'=>100, 'regexp'=>'^[-a-zA-Z" ]+$'),
 		'email' => array('email'=>true),
-		'dormitory' => array('textMin'=>1),
+		'dormitoryId' => array('textMin'=>1),
 		'typeId' => array('textMin'=>1),
 	);
 	protected $pk = 'id';
