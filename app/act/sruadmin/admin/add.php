@@ -21,4 +21,3 @@ extends UFact {
 		}
 	}
 }
-?>
