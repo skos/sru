@@ -38,7 +38,7 @@ extends UFbeanSingle {
 			$pass = microtime();
 		}
 		if (isset($this->_password)) {
-			$this->data['password'] = md5($val.$pass);
+			$this->data['password'] = self::generatePassword($val, $pass);
 			$this->dataChanged['password'] = $this->data['password'];
 		}
 		return $val;
