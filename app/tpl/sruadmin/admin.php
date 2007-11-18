@@ -85,6 +85,19 @@ extends UFtpl {
 		}
 		echo '</ul>';
 	}
+	public function listBots(array $d) {
+		$url = $this->url(0).'/admins/';
+		
+		if(!count($d))
+			return;
+
+		echo '<ul>';	
+		foreach ($d as $c)
+		{
+			echo '<li><a href="'.$url.$c['id'].'">'.$c['name'].'</li></a>';										
+		}
+		echo '</ul>';
+	}	
 	public function titleDetails(array $d) {
 		echo $d['name'];
 	}	

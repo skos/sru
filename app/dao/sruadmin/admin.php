@@ -32,12 +32,36 @@ extends UFdao {
 
 		$query = $this->prepareSelect($mapping);
 		
-		$query->where($mapping->active, true); // @todo: chyba jednak lepiej wszystkich zlistowac?
-		                                       // nie, na nich bedzie osobny box, bo do normalnej pracy nie sa potrzebni [hrynek]
+		$query->where($mapping->active, true); 
 		
 		$query->order($mapping->dormitoryId, $query->ASC);	// @todo: kijowe rozwiazanie, ale jak bylo po aliasie, to "10" bylo przed "2"
+		$query->order($mapping->typeId, $query->ASC); //to czemus wadzi hrynek? wydaje mi sie ze najpierw wazniejsi powinny byc chociaz jak wolisz:P
 		$query->order($mapping->name, $query->ASC);
 		
 		return $this->doSelect($query);
 	}
+	public function listAllInactive() {
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		
+		$query->where($mapping->active, false);
+		
+		$query->order($mapping->dormitoryId, $query->ASC);	// @todo: kijowe rozwiazanie, ale jak bylo po aliasie, to "10" bylo przed "2"
+		$query->order($mapping->typeId, $query->ASC); //to czemus wadzi hrynek? wydaje mi sie ze najpierw wazniejsi powinny byc chociaz jak wolisz:P
+		$query->order($mapping->name, $query->ASC);
+		
+		return $this->doSelect($query);
+	}	
+	public function listAllBots() {
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		
+		$query->where($mapping->typeId, 4);  //@todo: to zawsze bedzie '4'?:P
+		
+		$query->order($mapping->name, $query->ASC);
+		
+		return $this->doSelect($query);
+	}	
 }

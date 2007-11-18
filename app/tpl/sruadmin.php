@@ -262,13 +262,44 @@ extends UFtpl {
 		echo '</div>';
 		
 		
-		//@todo: uprawnienia
+		//@todo: uprawnienia, dac na to inne miejsce, w jakis odzielny box?
 		echo '<p class="nav"><a href="'.$url.':add">Dodaj nowego administratora</a></p>';
 				
 	}
+	public function inactiveAdmins(array $d)
+	{
+		$url = $this->url(0).'/admins/';
+		
+		echo '<div class="admins">';
+		echo '<h2>Nieaktywni Administratorzy</h2>';
+
+		$d['admins']->write('listAdmin');
+
+		echo '</div>';			
+	}	
+	public function bots(array $d)
+	{
+		$url = $this->url(0).'/admins/';
+		
+		echo '<div class="admins">';
+		echo '<h2>Boty</h2>';
+
+		$d['admins']->write('listBots');
+
+		echo '</div>';			
+	}		
 	public function adminsNotFound() {
+		echo '<h2>Administratorzy</h2>';
 		UFtpl_Html::msgErr('Administratorów nie znaleziono');
 	}
+	public function botsNotFound() {
+		echo '<h2>Boty</h2>';
+		UFtpl_Html::msgErr('Botów nie znaleziono');
+	}
+	public function inactiveAdminsNotFound() {
+		echo '<h2>Nieaktywni Administratorzy</h2>';
+		UFtpl_Html::msgErr('Administratorów nie znaleziono');
+	}		
 	public function admin(array $d) {
 		$url = $this->url(0).'/admin/'.$d['admin']->id;
 		echo '<div class="admin">';		

@@ -375,6 +375,36 @@ extends UFbox {
 			return $this->render('adminsNotFound');
 		}
 	}
+	public function inactiveAdmins() 
+	{
+		try 
+		{
+			$bean = UFra::factory('UFbean_SruAdmin_AdminList');	
+			$bean->listAllInactive();
+			$d['admins'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} 
+		catch (UFex_Dao_NotFound $e) 
+		{
+			return $this->render('inactiveAdminsNotFound');
+		}
+	}
+	public function bots() 
+	{
+		try 
+		{
+			$bean = UFra::factory('UFbean_SruAdmin_AdminList');	
+			$bean->listAllBots();
+			$d['admins'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} 
+		catch (UFex_Dao_NotFound $e) 
+		{
+			return $this->render('botsNotFound');
+		}
+	}	
 /*	@todo: no need for it?
  * 	public function titleAdmins() {
 		try {
