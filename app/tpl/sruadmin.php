@@ -253,6 +253,7 @@ extends UFtpl {
 	public function admins(array $d)
 	{
 		$url = $this->url(0).'/admins/';
+		$acl = $this->_srv->get('acl');
 		
 		echo '<div class="admins">';
 		echo '<h2>Administratorzy</h2>';
@@ -262,8 +263,10 @@ extends UFtpl {
 		echo '</div>';
 		
 		
-		//@todo: uprawnienia, dac na to inne miejsce, w jakis odzielny box?
-		echo '<p class="nav"><a href="'.$url.':add">Dodaj nowego administratora</a></p>';
+		if($acl->sruAdmin('admin', 'add'))//@todo: dac w inne, ladniejsze miejsce:P
+		{
+			echo '<p class="nav"><a href="'.$url.':add">Dodaj nowego administratora</a></p>';
+		}
 				
 	}
 	public function inactiveAdmins(array $d)
@@ -290,23 +293,27 @@ extends UFtpl {
 	}		
 	public function adminsNotFound() {
 		echo '<h2>Administratorzy</h2>';
-		UFtpl_Html::msgErr('Administratorów nie znaleziono');
+		UFtpl_Html::msgErr('Nie znaleziono administratorów');
 	}
 	public function botsNotFound() {
 		echo '<h2>Boty</h2>';
-		UFtpl_Html::msgErr('Botów nie znaleziono');
+		UFtpl_Html::msgErr('Nie znaleziono botów');
 	}
 	public function inactiveAdminsNotFound() {
 		echo '<h2>Nieaktywni Administratorzy</h2>';
-		UFtpl_Html::msgErr('Administratorów nie znaleziono');
+		UFtpl_Html::msgErr('Nie znaleziono administratorów');
 	}		
 	public function admin(array $d) {
-		$url = $this->url(0).'/admin/'.$d['admin']->id;
+		$url = $this->url(0).'/admins/'.$d['admin']->id;
+		$acl = $this->_srv->get('acl');
+		
 		echo '<div class="admin">';		
 		$d['admin']->write('details');
 		
-		//@todo: uprawnienia
-		echo '<p class="nav"><a href="'.$url.'/:edit">Edycja</a></p>';
+		if($acl->sruAdmin('admin', 'edit'))
+		{
+			echo '<p class="nav"><a href="'.$url.'/:edit">Edycja</a></p>';
+		}
 		echo '</div>';
 	}
 
@@ -328,5 +335,21 @@ extends UFtpl {
 	}
 	public function titleAdminAdd(array $d) {
 		echo 'Dodawanie nowego administratora';
-	}		
+	}	
+	public function titleAdminEdit(array $d) {
+		echo $d['admin']->write('titleDetails');
+	}
+	public function adminEdit(array $d) {
+		$form = UFra::factory('UFlib_Form');
+		echo '<h2>Edycja administratora</h2>';
+		$form->_start();
+		
+		if ($this->_srv->get('msg')->get('adminEdit/ok')) {
+			UFtpl_Html::msgOk('Dane zostały zmienione');
+		}
+		echo $d['admin']->write('formEdit', $d['dormitories']);
+		$form->_submit('Zapisz');
+		$form->_end();
+		$form->_end(true);
+	}			
 }

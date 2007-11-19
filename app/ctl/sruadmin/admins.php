@@ -28,13 +28,22 @@ extends UFctl {
 				default:
 					$get->view = 'admins/admin';
 					$id = (int)$req->segment(2);
-					if ($id <= 0)
-					{
+					if ($id <= 0) {
 						$get->view = 'error404';
 						break;
 					}
 					$get->adminId = $id;
-					break;
+
+					if ($segCount > 2) {
+						switch ($req->segment(3)) {
+							case ':edit':
+								$get->view = 'admins/edit';
+								break;
+							default:
+								$get->view = 'error404';
+								break;
+						}
+					}	
 				}
 		}
 	}
@@ -46,8 +55,9 @@ extends UFctl {
 		
 		if ('admins/add' == $get->view && $post->is('adminAdd') && $acl->sruAdmin('admin', 'add')) {
 			$act = 'Admin_Add';
-		}		
-
+		} elseif ('admins/edit' == $get->view && $post->is('adminEdit') && $acl->sruAdmin('admin', 'edit')) {
+			$act = 'Admin_Edit';
+		}
 
 		if (isset($act)) {
 			$action = 'SruAdmin_'.$act;
@@ -75,11 +85,19 @@ extends UFctl {
 			case 'admins/add':
 				if ($msg->get('adminAdd/ok')) {
 					return 'SruAdmin_Admins';
-				} elseif ($acl->sruAdmin('admin', 'add')) { //@todo jakies uprawnienia, idtype w sesji?
+				} elseif ($acl->sruAdmin('admin', 'add')) {
 					return 'SruAdmin_AdminAdd';
 				} else {
 					return 'Sru_Error404';
-				}								
+				}
+			case 'admins/edit':
+				if ($msg->get('adminEdit/ok')) { 
+					return 'SruAdmin_Admin';				//@todo: mzoe tak byc?			
+				} elseif ($acl->sruAdmin('admin', 'edit')) {
+					return 'SruAdmin_AdminEdit';
+				} else {
+					return 'Sru_Error403';
+				}											
 			default:
 				return 'Sru_Error404';
 		}

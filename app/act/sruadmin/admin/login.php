@@ -13,9 +13,10 @@ extends UFact {
 			$bean = UFra::factory('UFbean_SruAdmin_Admin');
 			$post = $this->_srv->get('req')->post->{self::PREFIX};
 			$login = $post['login'];
-			$password = md5($post['login'].$post['password']);
+			$password = md5($post['login'].$post['password']); //@todo: jest metoda do tego
 			$bean->getByLoginPassword($login, $password);
-
+			
+			//@todo niech zmienia lostlogin time itd
 			$sess = $this->_srv->get('session');
 			$sess->authAdmin = $bean->id;
 			

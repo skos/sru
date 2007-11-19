@@ -14,7 +14,7 @@ extends UFmap {
 		'lastLoginIp'    => 'a.last_login_ip',
 		'typeId'         => 'a.type_id',
 		'phone'          => 'a.phone',
-		'gg'             => 'a.phone',
+		'gg'             => 'a.gg',
 		'jid'            => 'a.jid',
 		'email'          => 'a.email',
 		'address'        => 'a.address',

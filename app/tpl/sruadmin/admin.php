@@ -43,9 +43,7 @@ extends UFtpl {
 		$url = $this->url(0).'/admins/';
 		
 		$lastDom = '';
-		
-		//@todo: dziala ok jesli dormitoryId jest NOT NULL, hrynek?
-			
+					
 		foreach ($d as $c)
 		{
 			if($lastDom != $c['dormitoryId'])
@@ -125,7 +123,7 @@ extends UFtpl {
 		//@todo: a skoro konta z haslem wklepuje admin, to moze lepiej by bylo gdyby ono bylo generowane i szlo na maila?
 		$form->password('Hasło', array('type'=>$form->PASSWORD));
 		$form->password2('Powtórz hasło', array('type'=>$form->PASSWORD));
-		$form->name('Nazwa'); //@todo nazwac jakos rozsadnie:P
+		$form->name('Nazwa'); 
 		$form->typeId('Uprawnienia', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize($this->adminTypes),
@@ -146,43 +144,50 @@ extends UFtpl {
 			'labels' => $form->_labelize($tmp, '', ''),
 		));		
 	}
-/*
-	public function formEdit(array $d, $dormitories, $faculties) {
-		$d['locationId'] = $d['locationAlias'];
-		$d['dormitory'] = $d['dormitoryId'];
-		if (is_null($d['facultyId'])) {
-			$d['facultyId'] = '-';
-		}
-		if (is_null($d['studyYearId'])) {
-			$d['studyYearId'] = '-';
-		}
-		$form = UFra::factory('UFlib_Form', 'userEdit', $d, $this->errors);
 
+	public function formEdit(array $d, $dormitories) {
 
-		echo '<h1>'.$d['name'].' '.$d['surname'].'</h1>';
+		$form = UFra::factory('UFlib_Form', 'adminEdit', $d, $this->errors);
+
+		$form->_fieldset();
+		
+		$form->name('Nazwa'); 
+		
+		$form->password('Hasło', array('type'=>$form->PASSWORD));
+		$form->password2('Powtórz hasło', array('type'=>$form->PASSWORD));
+
+		$form->typeId('Uprawnienia', array(
+			'type' => $form->SELECT,
+			'labels' => $form->_labelize($this->adminTypes),
+		));	
+
+		$tmp = array(); //@todo: pewnie da sie latwiej + zeby dla nieaktywnego byl wybrany false
+
+		$tmp[0] = 'false';
+		$tmp[1] = 'true';
+
+		$form->active('Aktywny', array(
+			'type' => $form->SELECT,
+			'labels' => $form->_labelize($tmp, '', ''),
+		));
+
+		$form->_end();
+		
+		$form->_fieldset();
 		$form->email('E-mail');
-		$tmp = array();
-		foreach ($faculties as $fac) {
-			$tmp[$fac['id']] = $fac['name'];
-		}
-		$tmp['-'] = 'N/D';
-		$form->facultyId('Wydział', array(
-			'type' => $form->SELECT,
-			'labels' => $form->_labelize($tmp),
-		));
-		$form->studyYearId('Rok studiów', array(
-			'type' => $form->SELECT,
-			'labels' => $form->_labelize($this->studyYears),
-		));
+		$form->phone('Telefon');
+		$form->gg('GG');
+		$form->jid('Jabber');
+		$form->address('Adres');
+
 		$tmp = array();
 		foreach ($dormitories as $dorm) {
 			$tmp[$dorm['id']] = $dorm['name'];
 		}
-		$form->dormitory('Akademik', array(
+		$tmp['-'] = 'N/D';
+		$form->dormitoryId('Akademik', array(
 			'type' => $form->SELECT,
-			'labels' => $form->_labelize($tmp),
-		));
-		$form->locationId('Pokój');
+			'labels' => $form->_labelize($tmp, '', ''),
+		));		
 	}
-	*/
 }

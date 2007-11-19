@@ -46,6 +46,7 @@ extends UFdao {
 		$query = $this->prepareSelect($mapping);
 		
 		$query->where($mapping->active, false);
+//		$query->where($mapping->typeId, 4); //@todo jak zrobic mniejsze od 4?(wszystko poza botami)
 		
 		$query->order($mapping->dormitoryId, $query->ASC);	// @todo: kijowe rozwiazanie, ale jak bylo po aliasie, to "10" bylo przed "2"
 		$query->order($mapping->typeId, $query->ASC); //to czemus wadzi hrynek? wydaje mi sie ze najpierw wazniejsi powinny byc chociaz jak wolisz:P

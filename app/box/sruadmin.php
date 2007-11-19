@@ -404,17 +404,7 @@ extends UFbox {
 		{
 			return $this->render('botsNotFound');
 		}
-	}	
-/*	@todo: no need for it?
- * 	public function titleAdmins() {
-		try {
-			return $this->render(__FUNCTION__, array());
-		} catch (UFex_Dao_NotFound $e) {
-			return $this->render(__FUNCTION__.'NotFound');
-		}
-	}*/
-	
-	
+	}		
 	public function titleAdmin()
 	{
 		try
@@ -453,5 +443,37 @@ extends UFbox {
 
 
 		return $this->render(__FUNCTION__, $d);
+	}
+	public function titleAdminEdit()
+	{
+		try
+		{
+			$bean = $this->_getAdminFromGet();
+
+			$d['admin'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		}
+		catch (UFex_Dao_NotFound $e) 
+		{
+			return $this->render(__FUNCTION__.'NotFound');
+		}
+	}
+
+	public function adminEdit() {
+		try {
+			$bean = $this->_getAdminFromGet();
+			$dorms = UFra::factory('UFbean_Sru_DormitoryList');
+			$dorms->listAll();
+			
+			$bean = $this->_getAdminFromGet();
+	
+			$d['admin'] = $bean;
+			$d['dormitories'] = $dorms;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}
 	}	
 }
