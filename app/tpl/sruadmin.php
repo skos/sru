@@ -46,7 +46,23 @@ extends UFtpl {
 		echo '<li><a href="'.UFURL_BASE.'/admin/computers/">Komputery</a></li>';
 		echo '</ul>';
 	}
-
+	public function adminBar() {
+		$sess = $this->_srv->get('session');
+		$url = $this->url(0);
+		//@todo: sformatowac, ostylowac 
+		if($sess->name && $sess->authAdmin)
+		{
+			echo '<a href="'.$url.'/admins/'.$sess->authAdmin.'">'.$sess->name.'</a>';
+		}
+		if($sess->lastLoginAt && $sess->lastLoginIp)
+		{
+			echo ' Ostatnie logowanie: '.date(self::TIME_YYMMDD_HHMM, $sess->lastLoginAt);
+			echo '('.$sess->lastLoginIp.')';	
+		}
+		
+		//@todo: a moze na tym barze guzik do logouta?
+	}
+	
 	public function titleComputer(array $d) {
 		echo $d['computer']->write('titleDetails');
 	}
@@ -263,7 +279,7 @@ extends UFtpl {
 		echo '</div>';
 		
 		
-		if($acl->sruAdmin('admin', 'add'))//@todo: dac w inne, ladniejsze miejsce:P
+		if($acl->sruAdmin('admin', 'add'))
 		{
 			echo '<p class="nav"><a href="'.$url.':add">Dodaj nowego administratora</a></p>';
 		}

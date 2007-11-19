@@ -20,6 +20,7 @@ extends UFtpl {
 <h1><a href="<?=UFURL_BASE;?>/"><abbr title="Sieć Komputerowa Osiedla Studenckiego">SKOS</abbr></a></h1>
 </div><!-- head -->
 <?=$d['menuAdmin'];?>
+<?=$d['adminBar'];?>
 <div id="main">
 <?=$d['body'];?>
 </div><!-- main -->

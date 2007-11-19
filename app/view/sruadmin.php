@@ -14,6 +14,10 @@ extends UFview {
 			$box = UFra::shared('UFbox_SruAdmin');
 			$this->append('menuAdmin', $box->menuAdmin());
 		}
+		if (!isset($this->data['adminBar'])) { 
+			$box = UFra::shared('UFbox_SruAdmin');
+			$this->append('adminBar', $box->adminBar());
+		}		
 	}
 
 	public function fillData() {

@@ -8,6 +8,8 @@ class UFmap_SruAdmin_Admin_Set
 extends UFmap {
 	protected $columns = array(
 		'password'       => 'password',
+		'lastLoginAt'	 => 'last_login_at',
+		'lastLoginIp'	 => 'last_login_ip',
 		'name'           => 'name',
 		'typeId'         => 'type_id',
 		'phone'          => 'phone',
@@ -20,6 +22,8 @@ extends UFmap {
 	);
 	protected $columnTypes = array(
 		'password'       => self::TEXT,
+		'lastLoginAt'	 => self::TS,
+		'lastLoginIp'	 => self::TEXT,		//@todo: text?
 		'name'           => self::TEXT,
 		'typeId'         => self::INT,
 		'phone'          => self::TEXT,
@@ -39,6 +43,7 @@ extends UFmap {
 		'name' => array('textMin'=>1, 'textMax'=>100, 'regexp'=>'^[-a-zA-Z ]+$'),
 		'email' => array('email'=>true),
 		'dormitory' => array('textMin'=>1),
+		//@todo: jakas validacja lastLoginIp lastLoginAt?
 	);
 	protected $pk = 'id';
 }
