@@ -5,9 +5,8 @@
 class UFacl_SruAdmin_Admin
 extends UFlib_ClassWithService {
 	
-	//@TODO: to moze byc tu?
 	const 	CENTRAL		= 1,
-			OSIEDLOWY	= 2, //@todo: a po angielsku??:p
+			CAMPUS		= 2,
 			LOCAL		= 3,
 			BOT			= 4;	
 	

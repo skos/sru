@@ -57,10 +57,10 @@ extends UFtpl {
 		if($sess->lastLoginAt && $sess->lastLoginIp)
 		{
 			echo ' Ostatnie logowanie: '.date(self::TIME_YYMMDD_HHMM, $sess->lastLoginAt);
-			echo '('.$sess->lastLoginIp.')';	
+			echo ' ('.$sess->lastLoginIp.')';	
 		}
 		
-		//@todo: a moze na tym barze guzik do logouta?
+		//@todo: a moze na tym barze link do logouta?
 	}
 	
 	public function titleComputer(array $d) {

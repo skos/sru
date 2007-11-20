@@ -23,7 +23,7 @@ extends UFmap {
 	protected $columnTypes = array(
 		'password'       => self::TEXT,
 		'lastLoginAt'	 => self::TS,
-		'lastLoginIp'	 => self::TEXT,		//@todo: text?
+		'lastLoginIp'	 => self::TEXT,
 		'name'           => self::TEXT,
 		'typeId'         => self::INT,
 		'phone'          => self::TEXT,

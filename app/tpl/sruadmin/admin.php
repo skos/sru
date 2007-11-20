@@ -7,7 +7,7 @@ extends UFtpl {
 
 	protected $adminTypes = array(
 		UFacl_SruAdmin_Admin::CENTRAL 	=> 'Administrator Centralny',
-		UFacl_SruAdmin_Admin::OSIEDLOWY => 'Administrator Osiedlowy',
+		UFacl_SruAdmin_Admin::CAMPUS 	=> 'Administrator Osiedlowy',
 		UFacl_SruAdmin_Admin::LOCAL		=> 'Administrator Lokalny',
 		UFacl_SruAdmin_Admin::BOT		=> 'BOT',
 	);
@@ -119,7 +119,6 @@ extends UFtpl {
 
 		$form->_fieldset();
 		$form->login('Login');
-		//@todo: a skoro konta z haslem wklepuje admin, to moze lepiej by bylo gdyby ono bylo generowane i szlo na maila?
 		$form->password('Hasło', array('type'=>$form->PASSWORD));
 		$form->password2('Powtórz hasło', array('type'=>$form->PASSWORD));
 		$form->name('Nazwa'); 
@@ -164,16 +163,8 @@ extends UFtpl {
 				'type' => $form->SELECT,
 				'labels' => $form->_labelize($this->adminTypes),
 			));	
-	
-			$tmp = array(); //@todo: pewnie da sie latwiej + zeby dla nieaktywnego byl wybrany false
-	
-			$tmp[0] = 'false';
-			$tmp[1] = 'true';
-	
-			$form->active('Aktywny', array(
-				'type' => $form->SELECT,
-				'labels' => $form->_labelize($tmp, '', ''),
-			));
+			$form->active('Aktywny', array('type'=>$form->CHECKBOX) );
+
 		}
 
 		$form->_end();
