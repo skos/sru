@@ -91,16 +91,9 @@ extends UFctl {
 					return 'Sru_Error404';
 				}
 			case 'admins/edit':
-			/*	if ($msg->get('adminEdit/ok')) { //@todo lepiej zrobic chyab redirectai tak zeby byla ramka
-[17:25:18] hrynek: te ramke, to sie reczenie robi dopisujac do ktoregos tpl-a od boksa
-[17:25:34] hrynek: w sumie mozna i przekierowywac, ale wtedy tez trzeba pokazac jakis komunikat
-[17:25:46] hrynek: popatrz na UFra::redirect()
-[17:26:44] hrynek: i $_srv->get('msgNext')
-[17:27:12] hrynek: to jest identyczne, jak 'msg', ale dane przejda w nastepnym requescie do 'msg'
-[17:28:00] hrynek: ale tak czy siak musisz gdzies pokazac ramke na podstawie zawartosci 'msg'
+				if ($msg->get('adminEdit/ok')) { 
 					return 'SruAdmin_Admin';
-				}else*/
-				if ($acl->sruAdmin('admin', 'edit', $get->adminId)) {
+				} elseif ($acl->sruAdmin('admin', 'edit', $get->adminId)) {
 					return 'SruAdmin_AdminEdit';
 				} else {
 					return 'Sru_Error403';

@@ -22,7 +22,7 @@ extends UFact {
 				$bean->password = $post['password'];	
 			}
 			
-			if(isset($post['typeId']) && $acl->sruAdmin('admin', 'advancedEdit')) //bo chyba advancedEdit nie jest nigdzie przy zapisie sprawdzany indziej
+			if(isset($post['typeId']) && $acl->sruAdmin('admin', 'advancedEdit'))
 			{
 				$bean->typeId = $post['typeId'];	
 			}	
@@ -39,13 +39,6 @@ extends UFact {
 		} catch (UFex_Dao_DataNotValid $e) {
 			$this->rollback();
 			$this->markErrors(self::PREFIX, $e->getData());
-		} catch (UFex_Db_QueryFailed $e) {
-			$this->rollback();
-			if (0 == $e->getCode()) {
-				$this->markErrors(self::PREFIX, array('mac'=>'regexp'));//@todo ??
-			} else {
-				throw $e;
-			}
 		}
 	}
 }

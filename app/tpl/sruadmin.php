@@ -271,6 +271,10 @@ extends UFtpl {
 		$url = $this->url(0).'/admins/';
 		$acl = $this->_srv->get('acl');
 		
+		if ($this->_srv->get('msg')->get('adminAdd/ok')) {
+			UFtpl_Html::msgOk('Konto zostało założone');
+		}		
+		
 		echo '<div class="admins">';
 		echo '<h2>Administratorzy</h2>';
 
@@ -323,6 +327,10 @@ extends UFtpl {
 		$url = $this->url(0).'/admins/'.$d['admin']->id;
 		$acl = $this->_srv->get('acl');
 		
+		if ($this->_srv->get('msg')->get('adminEdit/ok')) {
+			UFtpl_Html::msgOk('Dane zostały zmienione');
+		}		
+		
 		echo '<div class="admin">';		
 		$d['admin']->write('details');
 		
@@ -341,9 +349,7 @@ extends UFtpl {
 		echo '<h2>Dodawanie nowego administratora</h2>';
 		$form->_start();
 		
-		if ($this->_srv->get('msg')->get('adminAdd/ok')) {
-			UFtpl_Html::msgOk('Konto zostało założone');
-		}
+
 		echo $d['admin']->write('formAdd', $d['dormitories']);
 		$form->_submit('Dodaj');
 		$form->_end();
@@ -360,9 +366,7 @@ extends UFtpl {
 		echo '<h2>Edycja administratora</h2>';
 		$form->_start();
 		
-		if ($this->_srv->get('msg')->get('adminEdit/ok')) {
-			UFtpl_Html::msgOk('Dane zostały zmienione');
-		}
+
 		echo $d['admin']->write('formEdit', $d['dormitories']);
 		$form->_submit('Zapisz');
 		$form->_end();
