@@ -5,12 +5,11 @@
 class UFtpl_SruAdmin_Admin
 extends UFtpl {
 
-	//@todo te nazwy tak maja byc?
 	protected $adminTypes = array(
-		1 => 'Administrator Centralny',
-		2 => 'Administrator Osiedlowy',
-		3 => 'Administrator Lokalny',
-		4 => 'BOT',
+		UFacl_SruAdmin_Admin::CENTRAL 	=> 'Administrator Centralny',
+		UFacl_SruAdmin_Admin::OSIEDLOWY => 'Administrator Osiedlowy',
+		UFacl_SruAdmin_Admin::LOCAL		=> 'Administrator Lokalny',
+		UFacl_SruAdmin_Admin::BOT		=> 'BOT',
 	);
 	
 	protected $errors = array(
@@ -156,20 +155,26 @@ extends UFtpl {
 		$form->password('Hasło', array('type'=>$form->PASSWORD));
 		$form->password2('Powtórz hasło', array('type'=>$form->PASSWORD));
 
-		$form->typeId('Uprawnienia', array(
-			'type' => $form->SELECT,
-			'labels' => $form->_labelize($this->adminTypes),
-		));	
-
-		$tmp = array(); //@todo: pewnie da sie latwiej + zeby dla nieaktywnego byl wybrany false
-
-		$tmp[0] = 'false';
-		$tmp[1] = 'true';
-
-		$form->active('Aktywny', array(
-			'type' => $form->SELECT,
-			'labels' => $form->_labelize($tmp, '', ''),
-		));
+		$sess = $this->_srv->get('session');
+		$acl  = $this->_srv->get('acl');
+		
+		if($acl->sruAdmin('admin', 'advancedEdit'))
+		{
+			$form->typeId('Uprawnienia', array(
+				'type' => $form->SELECT,
+				'labels' => $form->_labelize($this->adminTypes),
+			));	
+	
+			$tmp = array(); //@todo: pewnie da sie latwiej + zeby dla nieaktywnego byl wybrany false
+	
+			$tmp[0] = 'false';
+			$tmp[1] = 'true';
+	
+			$form->active('Aktywny', array(
+				'type' => $form->SELECT,
+				'labels' => $form->_labelize($tmp, '', ''),
+			));
+		}
 
 		$form->_end();
 		

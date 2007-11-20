@@ -33,6 +33,7 @@ extends UFdao {
 		$query = $this->prepareSelect($mapping);
 		
 		$query->where($mapping->active, true); 
+		$query->where($mapping->typeId, UFacl_SruAdmin_Admin::BOT, UFlib_Db_Query::LT);		
 		
 		$query->order($mapping->dormitoryId, $query->ASC);	// @todo: kijowe rozwiazanie, ale jak bylo po aliasie, to "10" bylo przed "2"
 		$query->order($mapping->typeId, $query->ASC); //to czemus wadzi hrynek? wydaje mi sie ze najpierw wazniejsi powinny byc chociaz jak wolisz:P
@@ -46,7 +47,7 @@ extends UFdao {
 		$query = $this->prepareSelect($mapping);
 		
 		$query->where($mapping->active, false);
-//		$query->where($mapping->typeId, 4); //@todo jak zrobic mniejsze od 4?(wszystko poza botami)
+		$query->where($mapping->typeId, UFacl_SruAdmin_Admin::BOT, UFlib_Db_Query::LT);
 		
 		$query->order($mapping->dormitoryId, $query->ASC);	// @todo: kijowe rozwiazanie, ale jak bylo po aliasie, to "10" bylo przed "2"
 		$query->order($mapping->typeId, $query->ASC); //to czemus wadzi hrynek? wydaje mi sie ze najpierw wazniejsi powinny byc chociaz jak wolisz:P
@@ -59,7 +60,7 @@ extends UFdao {
 
 		$query = $this->prepareSelect($mapping);
 		
-		$query->where($mapping->typeId, 4);  //@todo: to zawsze bedzie '4'?:P
+		$query->where($mapping->typeId, UFacl_SruAdmin_Admin::BOT); 
 		
 		$query->order($mapping->name, $query->ASC);
 		

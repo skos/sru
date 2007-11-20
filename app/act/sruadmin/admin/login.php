@@ -36,7 +36,6 @@ extends UFact {
 			{
 				$bean->lastLoginIp =  $serv->REMOTE_ADDR;
 			}
-
 			$bean->lastLoginAt = NOW;
 			$bean->save();			
 			

@@ -89,7 +89,7 @@ extends UFbeanSingle {
 				return 'facultyMismatch';
 			}
 		} else {
-			$this->validate('studyYearId', $val, $change);//@todo, a i tak nie jest validowane swoja droga?
+			$this->validate('facultyId', $val, $change);
 		}
 	}
 

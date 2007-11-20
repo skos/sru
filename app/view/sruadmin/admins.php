@@ -4,15 +4,15 @@ extends UFview_SruAdmin {
 
 	public function fillData() {
 		$box  = UFra::shared('UFbox_SruAdmin');
+		$acl = $this->_srv->get('acl');
 
 		$this->append('title', $box->titleAdmins());
 		$this->append('body', $box->admins());
 		
-		//@todo: w zaleznosci od uprawnien te boxy:?
-			$this->append('body', $box->bots());//@todo:kim, czym beda boty? beda mialy jid, czy telefon?:P 
-												//moze warto im dac odzielna tabele?
+		if($acl->sruAdmin('admin', 'advancedEdit'))
+		{
+			$this->append('body', $box->bots());									
 			$this->append('body', $box->inactiveAdmins());
+		}
 	}
 }
-
-?>

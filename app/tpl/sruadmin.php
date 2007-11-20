@@ -326,7 +326,7 @@ extends UFtpl {
 		echo '<div class="admin">';		
 		$d['admin']->write('details');
 		
-		if($acl->sruAdmin('admin', 'edit'))
+		if($acl->sruAdmin('admin', 'edit', $d['admin']->id))
 		{
 			echo '<p class="nav"><a href="'.$url.'/:edit">Edycja</a></p>';
 		}
