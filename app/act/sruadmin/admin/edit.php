@@ -13,13 +13,24 @@ extends UFact {
 			$bean = UFra::factory('UFbean_SruAdmin_Admin');
 			$bean->getByPK((int)$this->_srv->get('req')->get->adminId);
 			$post = $this->_srv->get('req')->post->{self::PREFIX};
+			$acl = $this->_srv->get('acl');
 			$login = $bean->login;
-			$bean->fillFromPost(self::PREFIX, array('password'));
+			$bean->fillFromPost(self::PREFIX, array('password', 'login', 'typeId', 'active'));
 				
 			if(isset($post['password']) && $post['password'] != '' )
 			{
 				$bean->password = $post['password'];	
-			}				
+			}
+			
+			if(isset($post['typeId']) && $acl->sruAdmin('admin', 'advancedEdit')) //bo chyba advancedEdit nie jest nigdzie przy zapisie sprawdzany indziej
+			{
+				$bean->typeId = $post['typeId'];	
+			}	
+			if(isset($post['active']) && $acl->sruAdmin('admin', 'advancedEdit'))
+			{
+				$bean->active = $post['active'];	
+			}	
+											
 			$bean->save();
 
 			$this->postDel(self::PREFIX);
