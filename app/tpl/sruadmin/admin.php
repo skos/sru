@@ -47,7 +47,7 @@ extends UFtpl {
 		{
 			if($lastDom != $c['dormitoryId'])
 			{
-				if($lastDom != '')		
+				if($lastDom != '-')
 					echo '</ul>';
 				if (is_null($c['dormitoryName'])) {
 					echo '<h3>Spoza akademików</h3>';
@@ -57,11 +57,7 @@ extends UFtpl {
 				echo '<ul>';		
 			}
 			
-			if ($c['active']) {
-				echo '<li><a href="'.$url.$c['id'].'">';
-			} else {
-				echo '<li><a class="inactive" href="'.$url.$c['id'].'">';  //@todo dac .inactive do styla
-			}
+			echo '<li><a href="'.$url.$c['id'].'">';
 			switch($c['typeId'])
 			{
 				case 1:
@@ -74,7 +70,6 @@ extends UFtpl {
 						echo $c['name'];
 						break;							
 			}
-
 			echo '</a></li>';
 			
 			$lastDom = $c['dormitoryId'];
@@ -91,7 +86,7 @@ extends UFtpl {
 		echo '<ul>';	
 		foreach ($d as $c)
 		{
-			echo '<li><a href="'.$url.$c['id'].'">'.$c['name'].'</li></a>';										
+			echo '<li><a href="'.$url.$c['id'].'">'.$c['name'].'</a></li>';
 		}
 		echo '</ul>';
 	}	
@@ -182,5 +177,15 @@ extends UFtpl {
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize($tmp),
 		));		
+	}
+
+	public function adminBar(array $d, $ip, $time) {
+		echo '<a href="'.$this->url(0).'/admins/'.$d['id'].'">'.$d['name'].'</a> ';
+		if (!is_null($time)) {
+			echo 'Ostatnie logowanie: '.date(self::TIME_YYMMDD_HHMM, $time).' ' ;
+		}
+		if (!is_null($ip)) {
+			echo '('.$ip.') ';
+		}
 	}
 }

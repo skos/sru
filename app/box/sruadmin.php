@@ -359,6 +359,31 @@ extends UFbox {
 
 		return $this->render(__FUNCTION__, $d);
 	}
+
+	public function adminBar() {
+		try {
+			$bean = UFra::factory('UFbean_SruAdmin_Admin');
+			$bean->getFromSession();
+			$d['admin'] = $bean;
+
+
+			$sess = $this->_srv->get('session');
+			try {
+				$d['lastLoginIp'] = $sess->lastLoginIp;
+			} catch (UFex_Dao_NotFound $e) {
+				$d['lastLoginIp'] = null;
+			}
+			try {
+				$d['lastLoginAt'] = $sess->lastLoginAt;
+			} catch (UFex_Dao_NotFound $e) {
+				$d['lastLoginAt'] = null;
+			}
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return '';
+		}
+	}
 	
 	public function admins() 
 	{

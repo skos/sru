@@ -46,21 +46,16 @@ extends UFtpl {
 		echo '<li><a href="'.UFURL_BASE.'/admin/computers/">Komputery</a></li>';
 		echo '</ul>';
 	}
-	public function adminBar() {
-		$sess = $this->_srv->get('session');
-		$url = $this->url(0);
-		//@todo: sformatowac, ostylowac 
-		if($sess->name && $sess->authAdmin)
-		{
-			echo '<a href="'.$url.'/admins/'.$sess->authAdmin.'">'.$sess->name.'</a>';
-		}
-		if($sess->lastLoginAt && $sess->lastLoginIp)
-		{
-			echo ' Ostatnie logowanie: '.date(self::TIME_YYMMDD_HHMM, $sess->lastLoginAt);
-			echo ' ('.$sess->lastLoginIp.')';	
-		}
-		
-		//@todo: a moze na tym barze link do logouta?
+
+	public function adminBar(array $d) {
+		$form = UFra::factory('UFlib_Form');
+
+		$form->_start($this->url(0).'/', array('class'=>'adminBar'));
+		$form->_fieldset();
+		echo $d['admin']->write(__FUNCTION__, $d['lastLoginIp'], $d['lastLoginAt']);
+		$form->_submit('Wyloguj', array('name'=>'adminLogout'));
+		$form->_end();
+		$form->_end(true);
 	}
 	
 	public function titleComputer(array $d) {
@@ -293,7 +288,7 @@ extends UFtpl {
 	{
 		$url = $this->url(0).'/admins/';
 		
-		echo '<div class="admins">';
+		echo '<div class="admins inactive">';
 		echo '<h2>Nieaktywni Administratorzy</h2>';
 
 		$d['admins']->write('listAdmin');
