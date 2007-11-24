@@ -70,6 +70,8 @@ extends UFbeanSingle {
 	protected function validateDormitoryId($val, $change) {
 		if ('-' == $val) {
 			return;
+		} elseif ($change && '' === $val) {
+			return;
 		}
 		try {
 			$dorm = UFra::factory('UFbean_Sru_Dormitory');
@@ -81,6 +83,8 @@ extends UFbeanSingle {
 
 	protected function normalizeDormitoryId($val, $change) {
 		if ('-' === $val) {
+			return null;
+		} elseif ($change && '' === $val) {
 			return null;
 		} else {
 			return (int)$val;
