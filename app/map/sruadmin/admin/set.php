@@ -40,7 +40,7 @@ extends UFmap {
 	protected $valids = array(
 		'login' => array('textMin'=>1, 'textMax'=>100, 'regexp'=>'^[-a-zA-Z0-9\.@_]+$'),
 		'password' => array('textMin'=>6), 
-		'name' => array('textMin'=>1, 'textMax'=>100, 'regexp'=>'^[-a-zA-Z ]+$'),
+		'name' => array('textMin'=>1, 'textMax'=>100, 'regexp'=>'^[-a-zA-Z" ]+$'),
 		'email' => array('email'=>true),
 		'dormitory' => array('textMin'=>1),
 		'lastLoginIp' => array('regexp'=>'^[0-9.]{7,15}$'),
