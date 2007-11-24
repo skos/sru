@@ -9,7 +9,7 @@ extends UFconf {
 		'driver'    => 'Postgresql',
 		'host'      => 'localhost',
 		'user'      => 'hrynek',
-		'pass'      => 'hrynek',
+		'pass'      => 'vipwip',
 		'base'      => 'skos',
 		'encoding'  => 'utf8',
 		'collation' => 'utf8_polish_ci',

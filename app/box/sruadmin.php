@@ -370,12 +370,12 @@ extends UFbox {
 			$sess = $this->_srv->get('session');
 			try {
 				$d['lastLoginIp'] = $sess->lastLoginIp;
-			} catch (UFex_Dao_NotFound $e) {
+			} catch (UFex_Core_DataNotFound $e) {
 				$d['lastLoginIp'] = null;
 			}
 			try {
 				$d['lastLoginAt'] = $sess->lastLoginAt;
-			} catch (UFex_Dao_NotFound $e) {
+			} catch (UFex_Core_DataNotFound $e) {
 				$d['lastLoginAt'] = null;
 			}
 
