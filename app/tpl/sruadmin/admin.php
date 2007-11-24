@@ -143,7 +143,7 @@ extends UFtpl {
 		));		
 	}
 
-	public function formEdit(array $d, $dormitories) {
+	public function formEdit(array $d, $dormitories, $advanced=false) {
 
 		$form = UFra::factory('UFlib_Form', 'adminEdit', $d, $this->errors);
 
@@ -154,10 +154,7 @@ extends UFtpl {
 		$form->password('Hasło', array('type'=>$form->PASSWORD));
 		$form->password2('Powtórz hasło', array('type'=>$form->PASSWORD));
 
-		$sess = $this->_srv->get('session');
-		$acl  = $this->_srv->get('acl');
-		
-		if($acl->sruAdmin('admin', 'advancedEdit'))
+		if($advanced)
 		{
 			$form->typeId('Uprawnienia', array(
 				'type' => $form->SELECT,
@@ -180,10 +177,10 @@ extends UFtpl {
 		foreach ($dormitories as $dorm) {
 			$tmp[$dorm['id']] = $dorm['name'];
 		}
-		$tmp['-'] = 'N/D';
+		$tmp[''] = 'N/D';
 		$form->dormitoryId('Akademik', array(
 			'type' => $form->SELECT,
-			'labels' => $form->_labelize($tmp, '', ''),
+			'labels' => $form->_labelize($tmp),
 		));		
 	}
 }

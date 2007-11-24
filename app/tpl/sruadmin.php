@@ -367,7 +367,7 @@ extends UFtpl {
 		$form->_start();
 		
 
-		echo $d['admin']->write('formEdit', $d['dormitories']);
+		echo $d['admin']->write('formEdit', $d['dormitories'], $d['advanced']);
 		$form->_submit('Zapisz');
 		$form->_end();
 		$form->_end(true);

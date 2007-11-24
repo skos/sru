@@ -467,9 +467,11 @@ extends UFbox {
 			$dorms->listAll();
 			
 			$bean = $this->_getAdminFromGet();
+			$acl  = $this->_srv->get('acl');
 	
 			$d['admin'] = $bean;
 			$d['dormitories'] = $dorms;
+			$d['advanced'] = $acl->sruAdmin('admin', 'advancedEdit');
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
