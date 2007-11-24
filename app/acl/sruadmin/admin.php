@@ -17,12 +17,13 @@ extends UFlib_ClassWithService {
 	public function login() {
 		return !$this->_loggedIn();
 	}
-	public function add() {
-		//tylko administrator centralny moze dodawac
+
+	//tylko administratorzy centralni i osiedlowi moga zarzadzac administratorami
 		
+	public function add() {
 		$sess = $this->_srv->get('session');
 		
-		if($this->_loggedIn() && $sess->is('typeId') && $sess->typeId == self::CENTRAL  )
+		if($this->_loggedIn() && $sess->is('typeId') && ($sess->typeId == self::CENTRAL || $sess->typeId == self::CAMPUS) )
 		{
 			return true;
 		}
@@ -36,7 +37,7 @@ extends UFlib_ClassWithService {
 		{
 			return true;	
 		}	
-		if($this->_loggedIn() && $sess->is('typeId') && $sess->typeId == self::CENTRAL  )
+		if($this->_loggedIn() && $sess->is('typeId') && ($sess->typeId == self::CENTRAL || $sess->typeId == self::CAMPUS) )
 		{
 			return true;
 		}
@@ -46,7 +47,7 @@ extends UFlib_ClassWithService {
 
 		$sess = $this->_srv->get('session');
 		
-		if($this->_loggedIn() && $sess->is('typeId') && $sess->typeId == self::CENTRAL  )
+		if($this->_loggedIn() && $sess->is('typeId') && ($sess->typeId == self::CENTRAL || $sess->typeId == self::CAMPUS) )
 		{
 			return true;
 		}
