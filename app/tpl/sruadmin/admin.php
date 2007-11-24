@@ -30,7 +30,6 @@ extends UFtpl {
 	public function formLogin(array $d) {
 		$form = UFra::factory('UFlib_Form', 'adminLogin', $d);
 
-		echo '<p>Testowe konto: admin/admin</p>';
 		$form->login('Login');
 		$form->password('Hasło', array('type'=>$form->PASSWORD));
 	}
