@@ -8,9 +8,9 @@ extends UFconf {
 	protected $db = array(
 		'driver'    => 'Postgresql',
 		'host'      => 'localhost',
-		'user'      => 'hrynek',
-		'pass'      => 'vipwip',
-		'base'      => 'skos',
+		'user'      => '-',
+		'pass'      => '-',
+		'base'      => '-',
 		'encoding'  => 'utf8',
 		'collation' => 'utf8_polish_ci',
 		'pconnect'  => true,
@@ -28,7 +28,5 @@ extends UFconf {
 
 	protected $debugAllowed = array(
 		'127.0.0.1',
-		'153.19.210.85',
-		'153.19.212.255',
 	);
 }
