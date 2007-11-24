@@ -41,7 +41,7 @@ extends UFtpl {
 	public function listAdmin(array $d) {
 		$url = $this->url(0).'/admins/';
 		
-		$lastDom = '';
+		$lastDom = '-';
 					
 		foreach ($d as $c)
 		{
