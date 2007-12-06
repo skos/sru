@@ -28,7 +28,7 @@ extends UFact {
 			$sess->lastLoginAt  = $bean->lastLoginAt;
 			
 		
-			if(isset($serv->HTTP_X_FORWARDED_FOR) && $serv->HTTP_X_FORWARDED_FOR != '' )
+			if($serv->is('HTTP_X_FORWARDED_FOR') && $serv->HTTP_X_FORWARDED_FOR != '' )
 			{
 				$bean->lastLoginIp = $serv->HTTP_X_FORWARDED_FOR;
 			}
