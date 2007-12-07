@@ -12,6 +12,22 @@ extends UFact {
 		try {
 			$bean = UFra::factory('UFbean_Sru_Computer');
 			$bean->getByPK((int)$this->_srv->get('req')->get->computerId);
+
+			// w przypadku, gdy pole IP jest puste, pobieramy pierwszy wolny
+			// IP w danym DS
+			$post = $this->_srv->get('req')->post->{self::PREFIX};
+			if($post['ip'] == '') {
+				try {
+					$ip = UFra::factory('UFbean_Sru_Ipv4');
+					$ip->getFreeByDormitoryId($bean->dormitoryId);
+					$post['ip'] = $ip->ip;
+					$this->_srv->get('req')->post->{self::PREFIX} = $post;
+				} catch (UFex_Dao_NotFound $e) {
+					$this->markErrors(self::PREFIX, array('ip'=>'noFree'));
+					return;
+				}
+			}
+
 			$bean->fillFromPost(self::PREFIX, array('typeId'));
 			$bean->modifiedById = $this->_srv->get('session')->authAdmin;
 			$bean->modifiedAt = NOW;
