@@ -151,6 +151,19 @@ if (input) {
 	space = document.createTextNode(' ');
 	input.parentElement.insertBefore(space, input.nextSibling);
 }
+input = document.getElementById('computerEdit_ip');
+if (input) {
+	button = document.createElement('input');
+	button.setAttribute('value', 'Pierwsze wolne');
+	button.setAttribute('type', 'button');
+	button.onclick = function() {
+		input = document.getElementById('computerEdit_ip');
+		input.value = '';
+	}
+	input.parentElement.insertBefore(button, input.nextSibling);
+	space = document.createTextNode(' ');
+	input.parentElement.insertBefore(space, input.nextSibling);
+}
 </script>
 		<?
 	}
