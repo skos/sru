@@ -26,7 +26,11 @@ extends UFctl {
 				case 'admins':
 					$ctl = UFra::factory('UFctl_SruAdmin_Admins');
 					$ctl->go();
-					return false;					
+					return false;	
+				case 'places':
+					$ctl = UFra::factory('UFctl_SruAdmin_Places');
+					$ctl->go();
+					return false;										
 				default:
 					$get->view = 'error404';
 					break;

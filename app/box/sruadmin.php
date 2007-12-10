@@ -502,5 +502,20 @@ extends UFbox {
 		} catch (UFex_Dao_NotFound $e) {
 			return $this->render(__FUNCTION__.'NotFound');
 		}
+	}
+	public function dorms() 
+	{
+		try 
+		{
+			$bean = UFra::factory('UFbean_SruAdmin_DormList');	
+			$bean->listAll();
+			$d['dorms'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} 
+		catch (UFex_Dao_NotFound $e) 
+		{
+			return $this->render('dormsNotFound');
+		}
 	}	
 }

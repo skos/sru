@@ -44,6 +44,7 @@ extends UFtpl {
 		echo '<li><a href="'.UFURL_BASE.'/admin/users/">Użytkownicy</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/admins/">Administratorzy</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/computers/">Komputery</a></li>';
+		echo '<li><a href="'.UFURL_BASE.'/admin/places/">Akademiki</a></li>';
 		echo '</ul>';
 	}
 
@@ -366,5 +367,32 @@ extends UFtpl {
 		$form->_submit('Zapisz');
 		$form->_end();
 		$form->_end(true);
-	}			
+	}
+	public function titleDormitories() {
+		echo 'Akademiki';
+	}	
+	public function dorms(array $d)
+	{
+		$url = $this->url(0).'/admins/';
+		$acl = $this->_srv->get('acl');
+		
+/*		if ($this->_srv->get('msg')->get('adminAdd/ok')) {
+			UFtpl_Html::msgOk('Konto zostało założone');
+		}*/	
+		
+		echo '<div class="dormitories">';
+		echo '<h2>Akademiki</h2>';
+
+		$d['dorms']->write('listDorms');
+
+		echo '</div>';
+		
+	/*	
+		if($acl->sruAdmin('admin', 'add'))
+		{
+			echo '<p class="nav"><a href="'.$url.':add">Dodaj nowy akademik</a></p>';
+		}*/
+				
+	}
+	
 }
