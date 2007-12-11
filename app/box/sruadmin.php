@@ -27,7 +27,7 @@ extends UFbox {
 	}	
 	
 	protected function _getDormFromGet() {
-		$bean = UFra::factory('UFbean_SruAdmin_Dorm');
+		$bean = UFra::factory('UFbean_Sru_Dormitory');
 		$bean->getByAlias($this->_srv->get('req')->get->dormAlias);
 
 		return $bean;
@@ -449,7 +449,7 @@ extends UFbox {
 		}
 		catch (UFex_Dao_NotFound $e) 
 		{
-			return $this->render(__FUNCTION__.'NotFound');
+			return $this->render('titleAdminNotFound');
 		}
 	}
 
@@ -488,7 +488,7 @@ extends UFbox {
 		}
 		catch (UFex_Dao_NotFound $e) 
 		{
-			return $this->render(__FUNCTION__.'NotFound');
+			return $this->render('titleAdminNotFound');
 		}
 	}
 
@@ -507,14 +507,14 @@ extends UFbox {
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
-			return $this->render(__FUNCTION__.'NotFound');
+			return $this->render('adminNotFound');
 		}
 	}
 	public function dorms() 
 	{
 		try 
 		{
-			$bean = UFra::factory('UFbean_SruAdmin_DormList');	
+			$bean = UFra::factory('UFbean_Sru_DormitoryList');	
 			$bean->listAll();
 			$d['dorms'] = $bean;
 

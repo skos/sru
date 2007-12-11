@@ -306,10 +306,20 @@ extends UFtpl {
 		$d['admins']->write('listBots');
 
 		echo '</div>';			
-	}		
+	}	
+	public function titleAdminNotFound() {
+		echo 'Nie znaleziono administratora';
+	}
+			
 	public function adminsNotFound() {
 		echo '<h2>Administratorzy</h2>';
 		UFtpl_Html::msgErr('Nie znaleziono administratorów');
+		
+		if($acl->sruAdmin('admin', 'add'))
+		{
+			echo '<p class="nav"><a href="'.$url.':add">Dodaj nowego administratora</a></p>';
+		}		
+		
 	}
 	public function botsNotFound() {
 		echo '<h2>Boty</h2>';
@@ -336,6 +346,10 @@ extends UFtpl {
 		}
 		echo '</div>';
 	}
+	public function adminNotFound() {
+		
+		UFtpl_Html::msgErr('Nie znaleziono administratora');
+	}	
 
 	public function titleAdmin(array $d) {
 		echo $d['admin']->write('titleDetails');
@@ -375,44 +389,32 @@ extends UFtpl {
 	{
 		$url = $this->url(0).'/admins/';
 		$acl = $this->_srv->get('acl');
-		
-/*		if ($this->_srv->get('msg')->get('dormAdd/ok')) {
-			UFtpl_Html::msgOk('Stworzyłeś właśnie akademik :D');
-		}*/	
-		
+			
 		echo '<div class="dormitories">';
 		echo '<h2>Akademiki</h2>';
 
 		$d['dorms']->write('listDorms');
 
 		echo '</div>';
-		
-	/*	
-		if($acl->sruAdmin('dorm', 'add'))
-		{
-			echo '<p class="nav"><a href="'.$url.':add">Dodaj nowy akademik</a></p>';
-		}*/
-				
+					
 	}
 	public function titleDorm(array $d) {
 		echo $d['dorm']->write('titleDetails');
 	}
 	public function dorm(array $d) {
-//		$url = $this->url(0).'/admins/'.$d['admin']->id;
-//		$acl = $this->_srv->get('acl');
-		
-		if ($this->_srv->get('msg')->get('dormEdit/ok')) {
-			UFtpl_Html::msgOk('Dane zostały zmienione');
-		}		
 		
 		echo '<div class="dorm">';		
 		$d['dorm']->write('details');
-		
-	/*	if($acl->sruAdmin('admin', 'edit', $d['admin']->id))
-		{
-			echo '<p class="nav"><a href="'.$url.'/:edit">Edycja</a></p>';
-		}*/
 		echo '</div>';
+	}
+	public function dormNotFound() {
+		UFtpl_Html::msgErr('Nie znaleziono akademika');
 	}	
+	public function titleDormNotFound() {
+		echo 'Nie znaleziono akademika';
+	}		
+	public function dormsNotFound() {
+		UFtpl_Html::msgErr('Nie znaleziono akademików');
+	}			
 	
 }

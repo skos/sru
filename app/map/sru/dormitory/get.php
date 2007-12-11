@@ -9,15 +9,15 @@ extends UFmap {
 		'id'             => 'id',
 		'name'           => 'name',
 		'alias'          => 'alias',
-		'usersCount'     => 'users_count',
-		'computersCount' => 'computers_count',
+		'userCount'     => 'users_count',
+		'computerCount' => 'computers_count',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
 		'name'           => self::TEXT,
 		'alias'          => self::TEXT,
-		'usersCount'     => self::INT,
-		'computersCount' => self::INT,
+		'userCount'     => self::INT,
+		'computerCount' => self::INT,
 	);
 	protected $tables = array(
 		'' => 'dormitories',
