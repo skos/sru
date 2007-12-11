@@ -27,7 +27,7 @@ extends UFctl {
 					$ctl = UFra::factory('UFctl_SruAdmin_Admins');
 					$ctl->go();
 					return false;	
-				case 'places':
+				case 'dormitories':
 					$ctl = UFra::factory('UFctl_SruAdmin_Places');
 					$ctl->go();
 					return false;										

@@ -13,4 +13,12 @@ extends UFdao {
 	
 		return $this->doSelect($query);
 	}
+	public function getByAlias($alias) {
+		$mapping = $this->mapping('get');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->alias, $alias);
+
+		return $this->doSelectFirst($query);
+	}	
 }

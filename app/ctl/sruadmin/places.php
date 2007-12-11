@@ -16,19 +16,32 @@ extends UFctl {
 		// wyzsze segmenty sprawdzane sa w front'ie
 		if (1 == $segCount)	
 		{
-			$get->view = 'places/main';
+			$get->view = 'dormitories/main';
 		} 
 		else
 		{
-			switch ($req->segment(2)) 
+			$alias = $req->segment(2);  //@todo jak sprawdzac poprawnosc?
+			$get->dormAlias = $alias;
+
+			if(2 == $segCount)
+			{
+				
+				$get->view = 'dormitories/dorm';
+			}
+			else
+			{
+				$get->view = 'error404';
+			}
+			/*			
+			switch ($req->segment(1)) 
 			{	
-				case 'dorms':
-					$get->view = 'places/main';
+				case 'dormitories':
+					$get->view = 'dormitories/main';
 					break;
 				default:
 					$get->view = 'error404';
 					break;
-					
+			*/	
 		/*			$get->view = 'places/dorm';
 					$id = (int)$req->segment(2);
 					if ($id <= 0) {
@@ -46,8 +59,8 @@ extends UFctl {
 								$get->view = 'error404';
 								break;
 						}
-					}*/	
-				}
+					}
+				}*/	
 		}
 	}
 	protected function chooseAction($action = null) {
@@ -56,8 +69,6 @@ extends UFctl {
 		$post = $req->post;
 		$acl = $this->_srv->get('acl');
 		
-//		if('places/main' == $get->view)
-//			$act = 'Dormitories_List';
 	/*		
 		if ('admins/add' == $get->view && $post->is('adminAdd') && $acl->sruAdmin('admin', 'add')) {
 			$act = 'Admin_Add';
@@ -85,11 +96,11 @@ extends UFctl {
 		
 		switch ($get->view) 
 		{
-			case 'places/main':
+			case 'dormitories/main':
 				return 'SruAdmin_Dorms';
-	/*		case 'admins/admin':
-				return 'SruAdmin_Admin';
-			case 'admins/add':
+			case 'dormitories/dorm':
+				return 'SruAdmin_Dorm';
+	/*		case 'admins/add':
 				if ($msg->get('adminAdd/ok')) {
 					return 'SruAdmin_Admins';
 				} elseif ($acl->sruAdmin('admin', 'add')) {

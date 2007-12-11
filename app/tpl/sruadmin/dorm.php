@@ -6,7 +6,7 @@ class UFtpl_SruAdmin_Dorm
 extends UFtpl {
 
 	public function listDorms(array $d) {
-		$url = $this->url(0).'/places/dorms/';
+		$url = $this->url(0).'/dormitories/';
 		
 		$lastDom = '-';
 
@@ -14,24 +14,21 @@ extends UFtpl {
 		
 		foreach ($d as $c)
 		{
-			echo '<li><a href="'.$url.$c['id'].'">'.$c['name'].'</a></li>';			
+			echo '<li><a href="'.$url.$c['alias'].'">'.$c['name'].'</a></li>';			
 		}
 		echo '</ul>';
 	}
-	/*
+
 	public function titleDetails(array $d) {
 		echo $d['name'];
-	}	
+	}
 	public function details(array $d) {
+		
 		$url = $this->url(0);
-		echo '<h2>'.$d['name'].'<br/><small>('.$this->adminTypes[$d['typeId']].')</small></h2>';
-		echo '<p><em>E-mail:</em> <a href="mailto:'.$d['email'].'">'.$d['email'].'</a></p>';
-		echo '<p><em>Telefon:</em> '.$d['phone'].'</p>';
-		echo '<p><em>Gadu-Gadu:</em> '.$d['gg'].'</p>';
-		echo '<p><em>Jabber:</em> '.$d['jid'].'</p>';
-		echo '<p><em>Adres:</em> '.$d['address'].'</p>';							
+		echo '<h2>'.$d['name'].'</h2>';
+						
 	}	
-
+/*
 	public function titleAdd(array $d) {
 		echo 'Dodanie nowego administratora';
 	}		
