@@ -22,42 +22,54 @@ extends UFbox {
 	}
 
 	public function logout() {
+		try{
 		$bean = UFra::factory('UFbean_Sru_User');
 		$bean->getFromSession();
 
 		$d['user'] = $bean;
-
+				
 		return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return '';
+		}
 	}
 
 	public function userAdd() {
-		$dorms = UFra::factory('UFbean_Sru_DormitoryList');
-		$dorms->listAll();
-		$faculties = UFra::factory('UFbean_Sru_FacultyList');
-		$faculties->listAll();
-		$bean = UFra::factory('UFbean_Sru_User');
+		try{
+			$dorms = UFra::factory('UFbean_Sru_DormitoryList');
+			$dorms->listAll();
+			$faculties = UFra::factory('UFbean_Sru_FacultyList');
+			$faculties->listAll();
+			$bean = UFra::factory('UFbean_Sru_User');
+	
+			$d['user'] = $bean;
+			$d['dormitories'] = $dorms;
+			$d['faculties'] = $faculties;
 
-		$d['user'] = $bean;
-		$d['dormitories'] = $dorms;
-		$d['faculties'] = $faculties;
-
-		return $this->render(__FUNCTION__, $d);
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return '';
+		}		
 	}
 
 	public function userEdit() {
-		$bean = UFra::factory('UFbean_Sru_User');
-		$bean->getFromSession();
-
-		$dorms = UFra::factory('UFbean_Sru_DormitoryList');
-		$dorms->listAll();
-		$faculties = UFra::factory('UFbean_Sru_FacultyList');
-		$faculties->listAll();
-
-		$d['user'] = $bean;
-		$d['dormitories'] = $dorms;
-		$d['faculties'] = $faculties;
-
-		return $this->render(__FUNCTION__, $d);
+		try{		
+			$bean = UFra::factory('UFbean_Sru_User');
+			$bean->getFromSession();
+	
+			$dorms = UFra::factory('UFbean_Sru_DormitoryList');
+			$dorms->listAll();
+			$faculties = UFra::factory('UFbean_Sru_FacultyList');
+			$faculties->listAll();
+	
+			$d['user'] = $bean;
+			$d['dormitories'] = $dorms;
+			$d['faculties'] = $faculties;
+	
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return '';
+		}			
 	}
 
 	public function userComputers() {
