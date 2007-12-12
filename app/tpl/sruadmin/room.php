@@ -8,7 +8,8 @@ extends UFtpl {
 	public function listRooms(array $d) {
 		$url = $this->url(0).'/dormitories/';
 		
-		$lastFlor = '-';
+		$lastFlor = '-';	
+		$eo = 0;
 		
 		foreach ($d as $c)
 		{	
@@ -16,15 +17,24 @@ extends UFtpl {
 			{
 				if($lastFlor != '-')
 				{
-					echo '</ul></div>';
+					echo '</ul>';
+					echo '<br style="clear: left;" />';  //chyba sie nie da w inline dac :after :P 
 				}				
-				$lastFlor = $c['alias'][0];
-				echo '<div class="wrapper" style="width: 4em; float: left;"><ul class="rooms" style="display: block; width: 4em; text-decoration: none;">';
-			}	
-			echo '<li style="list-style-type:none;"><a href="'.$url.$c['dormitoryAlias'].'/'.$c['alias'].'">'.$c['alias'].'</a></li>';			
+				$lastFlor = $c['alias'][0];	
+				$eo++;
+				
+				echo '<ul class="rooms" style="text-decoration: none; ">';
+			}
+			if($eo % 2 )
+			{
+				echo '<li class="odd" style="float:left; list-style-type:none; width:3em;"><a href="'.$url.$c['dormitoryAlias'].'/'.$c['alias'].'">'.$c['alias'].'</a></li>';			
+			}
+			else
+			{
+				echo '<li class="even" style="float:left; background-color: #eeeeee; list-style-type:none; width:3em;"><a href="'.$url.$c['dormitoryAlias'].'/'.$c['alias'].'">'.$c['alias'].'</a></li>';
+			}
 		}
-		echo '</ul></div>';
-		
+		echo '</ul>';
 		echo '<br style="clear: left;" />';
 	}
 
