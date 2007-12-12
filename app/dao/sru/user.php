@@ -57,7 +57,8 @@ extends UFdao {
 			return $return;
 		}
 	}
-	public function getByRoom($roomId) {
+
+	public function listByRoom($roomId) {
 	
 		$mapping = $this->mapping('list');
 

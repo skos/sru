@@ -560,7 +560,7 @@ extends UFbox {
 			try {
 				$rooms = UFra::factory('UFbean_SruAdmin_RoomList');
 				
-				$rooms->listAll($bean->alias); 
+				$rooms->listByDormitoryId($bean->id); 
 				
 						
 				$d['rooms'] = $rooms;
@@ -599,7 +599,7 @@ extends UFbox {
 			try {
 				$users = UFra::factory('UFbean_Sru_UserList');  //bu
 			
-				$users->getByRoom($d['room']->id);
+				$users->listByRoom($d['room']->id);
 				
 				$d['users'] = $users;
 								

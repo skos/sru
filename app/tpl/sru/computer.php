@@ -21,6 +21,7 @@ extends UFtpl {
 		'mac' => 'Nieprawidłowy format',
 		'mac/duplicated' => 'MAC jest już zajęty',
 		'ip' => 'Nieprawidłowy format',
+		'ip/noFree' => 'Nie ma wolnych IP w tym DS-ie',
 		'availableMaxTo' => 'Nieprawidłowy format',
 		'dormitory' => 'Wybierz akademik',
 		'locationId' => 'Podaj pokój',

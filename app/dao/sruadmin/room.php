@@ -5,11 +5,11 @@
 class UFdao_SruAdmin_Room
 extends UFdao {
 
-	public function listAll($dormitoryAlias) {
+	public function listByDormitoryId($dormitoryId) {
 		$mapping = $this->mapping('list');
 
 		$query = $this->prepareSelect($mapping);
-		$query->where($mapping->dormitoryAlias, $dormitoryAlias);
+		$query->where($mapping->dormitoryId, $dormitoryId);
 		$query->order($mapping->alias);
 
 		return $this->doSelect($query);

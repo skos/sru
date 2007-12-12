@@ -20,7 +20,7 @@ extends UFtpl {
 	public function titleDetails(array $d) {
 		echo $d['alias'];
 	}
-	public function details(array $d, array $users) {
+	public function details(array $d, $users) {
 		
 		$url = $this->url(0);
 		echo '<h2>'.$d['alias'].'<br/><small>(liczba użytkowników:'.$d['userCount'].' liczba komputerów:'.$d['computerCount'].')</small></h2>';
