@@ -20,10 +20,20 @@ extends UFctl {
 		} 
 		else
 		{
-			$alias = $req->segment(2);  //@todo jak sprawdzac poprawnosc?
+			$alias = $req->segment(2);  
+			//@todo jak sprawdzac poprawnosc?
 			$get->dormAlias = $alias;
+			
+			if(3 == $segCount)
+			{
+				$alias = $req->segment(3);  
+				//@todo jak sprawdzac poprawnosc?
+				$get->roomAlias = $alias;	
 
-			if(2 == $segCount)
+				$get->view = 'dormitories/room';
+				
+			}
+			elseif(2 == $segCount)
 			{
 				
 				$get->view = 'dormitories/dorm';
@@ -69,13 +79,6 @@ extends UFctl {
 		$post = $req->post;
 		$acl = $this->_srv->get('acl');
 		
-	/*		
-		if ('admins/add' == $get->view && $post->is('adminAdd') && $acl->sruAdmin('admin', 'add')) {
-			$act = 'Admin_Add';
-		} elseif ('admins/edit' == $get->view && $post->is('adminEdit') && $acl->sruAdmin('admin', 'edit', $get->adminId)) {
-			$act = 'Admin_Edit';
-		}*/
-
 		if (isset($act)) {
 			$action = 'SruAdmin_'.$act;
 		}
@@ -100,6 +103,8 @@ extends UFctl {
 				return 'SruAdmin_Dorms';
 			case 'dormitories/dorm':
 				return 'SruAdmin_Dorm';
+			case 'dormitories/room':
+				return 'SruAdmin_Room';				
 	/*		case 'admins/add':
 				if ($msg->get('adminAdd/ok')) {
 					return 'SruAdmin_Admins';

@@ -181,7 +181,7 @@ extends UFtpl {
 
 	public function adminBar(array $d, $ip, $time) {
 		echo '<a href="'.$this->url(0).'/admins/'.$d['id'].'">'.$d['name'].'</a> ';
-		if (!is_null($time)) {
+		if (!is_null($time) && $time != 0 ) {
 			echo 'Ostatnie logowanie: '.date(self::TIME_YYMMDD_HHMM, $time).' ' ;
 		}
 		if (!is_null($ip)) {

@@ -57,4 +57,14 @@ extends UFdao {
 			return $return;
 		}
 	}
+	public function getByRoom($roomId) {
+	
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->locationId, $roomId);
+		$query->order($mapping->surname);
+
+		return $this->doSelect($query);
+	}			
 }

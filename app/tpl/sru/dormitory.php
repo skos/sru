@@ -24,6 +24,7 @@ extends UFtpl {
 		
 		$url = $this->url(0);
 		echo '<h2>'.$d['name'].'<br/><small>(liczba użytkowników:'.$d['userCount'].' liczba komputerów:'.$d['computerCount'].')</small></h2>';
-						
+
+		
 	}		
 }

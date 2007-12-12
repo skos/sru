@@ -18,7 +18,7 @@ extends UFbox {
 		$bean->getByPK((int)$this->_srv->get('req')->get->userId);
 
 		return $bean;
-	}
+	}	
 	protected function _getAdminFromGet() {
 		$bean = UFra::factory('UFbean_SruAdmin_Admin');
 		$bean->getByPK((int)$this->_srv->get('req')->get->adminId);
@@ -29,6 +29,12 @@ extends UFbox {
 	protected function _getDormFromGet() {
 		$bean = UFra::factory('UFbean_Sru_Dormitory');
 		$bean->getByAlias($this->_srv->get('req')->get->dormAlias);
+
+		return $bean;
+	}
+	protected function _getRoomFromGet() {
+		$bean = UFra::factory('UFbean_SruAdmin_Room');
+		$bean->getByAlias($this->_srv->get('req')->get->dormAlias, $this->_srv->get('req')->get->roomAlias);
 
 		return $bean;
 	}	
@@ -549,10 +555,61 @@ extends UFbox {
 			$bean = $this->_getDormFromGet();
 
 			$d['dorm'] = $bean;
+			$d['rooms'] = array();
+			
+			try {
+				$rooms = UFra::factory('UFbean_SruAdmin_RoomList');
+				
+				$rooms->listAll($bean->alias); 
+				
+						
+				$d['rooms'] = $rooms;
+			} catch (UFex_Dao_NotFound $e) {
+
+			}			
+		
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}
+	}
+	public function titleRoom()
+	{
+		try
+		{
+			$bean = $this->_getRoomFromGet();
+
+			$d['room'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		}
+		catch (UFex_Dao_NotFound $e) 
+		{
+			return $this->render(__FUNCTION__.'NotFound');
+		}
+	}
+	public function room() {
+		try {
+			$bean = $this->_getRoomFromGet();
+
+			$d['room'] = $bean;
+			
+			$d['users'] = array();
+			
+			try {
+				$users = UFra::factory('UFbean_Sru_UserList');  //bu
+			
+				$users->getByRoom($d['room']->id);
+				
+				$d['users'] = $users;
+								
+			} catch (UFex_Dao_NotFound $e) {
+				
+			}			
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
 			return $this->render(__FUNCTION__.'NotFound');
 		}
-	}		
+	}			
 }

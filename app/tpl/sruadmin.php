@@ -388,7 +388,6 @@ extends UFtpl {
 	public function dorms(array $d)
 	{
 		$url = $this->url(0).'/admins/';
-		$acl = $this->_srv->get('acl');
 			
 		echo '<div class="dormitories">';
 		echo '<h2>Akademiki</h2>';
@@ -405,6 +404,18 @@ extends UFtpl {
 		
 		echo '<div class="dorm">';		
 		$d['dorm']->write('details');
+		
+
+		
+		if($d['rooms'])
+		{
+			echo '<div class="rooms">';
+			echo '<h3>Pokoje</h3>';			
+
+			$d['rooms']->write('listRooms');
+			echo '</div>';
+		}
+
 		echo '</div>';
 	}
 	public function dormNotFound() {
@@ -415,6 +426,27 @@ extends UFtpl {
 	}		
 	public function dormsNotFound() {
 		UFtpl_Html::msgErr('Nie znaleziono akademików');
-	}			
+	}
+
+	public function titleRoom(array $d) {
+		echo $d['room']->write('titleDetails');
+	}
+	public function room(array $d) {
+		
+		echo '<div class="room">';	
+		
+		$d['room']->write('details', $d['users']);
+		
+		echo '</div>';
+	}
+	public function roomNotFound() {
+		UFtpl_Html::msgErr('Nie znaleziono pokoju');
+	}	
+	public function titleRoomNotFound() {
+		echo 'Nie znaleziono pokoju';
+	}		
+	public function roomsNotFound() {
+		UFtpl_Html::msgErr('Nie znaleziono pokoi');
+	}				
 	
 }
