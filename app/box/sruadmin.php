@@ -597,19 +597,28 @@ extends UFbox {
 			$d['users'] = array();
 			
 			try {
-				$users = UFra::factory('UFbean_Sru_UserList');  //bu
+				$users = UFra::factory('UFbean_Sru_UserList');
 			
 				$users->listByRoom($d['room']->id);
 				
 				$d['users'] = $users;
 								
-			} catch (UFex_Dao_NotFound $e) {
-				
-			}			
+			} catch (UFex_Dao_NotFound $e) {}			
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
 			return $this->render(__FUNCTION__.'NotFound');
 		}
-	}			
+	}
+	public function roomEdit() {
+		try {
+			$bean = $this->_getRoomFromGet();
+	
+			$d['room'] = $bean;
+					
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render('roomNotFound');
+		}
+	}		
 }

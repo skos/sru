@@ -168,7 +168,7 @@ extends UFtpl {
 		}
 		echo '<p><em>Zmiana:</em> '.date(self::TIME_YYMMDD_HHMM, $d['modifiedAt']).'<small> ('.$changed.')</small></p>';
 		if (strlen($d['comment'])) {
-			echo '<p class="comment">'.nl2br($this->_escape($d['comment'])).'</p>';
+			echo '<p><em>Komentarz:</em></p><p class="comment">'.nl2br($this->_escape($d['comment'])).'</p>';
 		}
 	}
 

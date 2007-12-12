@@ -433,6 +433,10 @@ extends UFtpl {
 	}
 	public function room(array $d) {
 		
+		if ($this->_srv->get('msg')->get('roomEdit/ok')) {
+			UFtpl_Html::msgOk('Komentarz został zmieniony');
+		}		
+		
 		echo '<div class="room">';	
 		
 		$d['room']->write('details', $d['users']);
@@ -447,6 +451,10 @@ extends UFtpl {
 	}		
 	public function roomsNotFound() {
 		UFtpl_Html::msgErr('Nie znaleziono pokoi');
+	}
+	public function roomEdit(array $d) {
+		
+		echo $d['room']->write('formEdit');
 	}				
 	
 }

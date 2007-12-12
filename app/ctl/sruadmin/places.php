@@ -21,56 +21,37 @@ extends UFctl {
 		else
 		{
 			$alias = $req->segment(2);  
-			//@todo jak sprawdzac poprawnosc?
+			//@todo jakos sprawdzac poprawnosc?
 			$get->dormAlias = $alias;
 			
-			if(3 == $segCount)
+			
+			if($segCount > 2)
 			{
 				$alias = $req->segment(3);  
-				//@todo jak sprawdzac poprawnosc?
-				$get->roomAlias = $alias;	
-
-				$get->view = 'dormitories/room';
 				
+				$get->roomAlias = $alias;					
+
+				if(3 == $segCount)
+				{
+					$get->view = 'dormitories/room';
+				}
+				elseif(4 == $segCount && $req->segment(4) == ':edit' )
+				{			
+					$get->view = 'dormitories/room/edit';
+				}
+				else
+				{
+					$get->view = 'error404';
+				}		
 			}
 			elseif(2 == $segCount)
-			{
-				
+			{		
 				$get->view = 'dormitories/dorm';
 			}
 			else
 			{
 				$get->view = 'error404';
 			}
-			/*			
-			switch ($req->segment(1)) 
-			{	
-				case 'dormitories':
-					$get->view = 'dormitories/main';
-					break;
-				default:
-					$get->view = 'error404';
-					break;
-			*/	
-		/*			$get->view = 'places/dorm';
-					$id = (int)$req->segment(2);
-					if ($id <= 0) {
-						$get->view = 'error404';
-						break;
-					}
-					$get->adminId = $id;
-
-					if ($segCount > 2) {
-						switch ($req->segment(3)) {
-							case ':edit':
-								$get->view = 'admins/edit';
-								break;
-							default:
-								$get->view = 'error404';
-								break;
-						}
-					}
-				}*/	
 		}
 	}
 	protected function chooseAction($action = null) {
@@ -78,6 +59,10 @@ extends UFctl {
 		$get = $req->get;
 		$post = $req->post;
 		$acl = $this->_srv->get('acl');
+		
+		if ('dormitories/room/edit' == $get->view && $post->is('roomEdit')) {
+			$act = 'Room_Edit';		
+		}
 		
 		if (isset($act)) {
 			$action = 'SruAdmin_'.$act;
@@ -104,23 +89,13 @@ extends UFctl {
 			case 'dormitories/dorm':
 				return 'SruAdmin_Dorm';
 			case 'dormitories/room':
-				return 'SruAdmin_Room';				
-	/*		case 'admins/add':
-				if ($msg->get('adminAdd/ok')) {
-					return 'SruAdmin_Admins';
-				} elseif ($acl->sruAdmin('admin', 'add')) {
-					return 'SruAdmin_AdminAdd';
-				} else {
-					return 'Sru_Error404';
-				}
-			case 'admins/edit':
-				if ($msg->get('adminEdit/ok')) { 
-					return 'SruAdmin_Admin';
-				} elseif ($acl->sruAdmin('admin', 'edit', $get->adminId)) {
-					return 'SruAdmin_AdminEdit';
-				} else {
-					return 'Sru_Error403';
-				}		*/									
+				return 'SruAdmin_Room';	
+			case 'dormitories/room/edit':
+				if ($msg->get('roomEdit/ok')) { 
+					return 'SruAdmin_Room';
+				} else{
+					return 'SruAdmin_RoomEdit';
+				}								
 			default:
 				return 'Sru_Error404';
 		}
