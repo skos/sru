@@ -8,13 +8,24 @@ extends UFtpl {
 	public function listRooms(array $d) {
 		$url = $this->url(0).'/dormitories/';
 		
-		echo '<ul>';
+		$lastFlor = '-';
 		
 		foreach ($d as $c)
-		{
-			echo '<li><a href="'.$url.$c['dormitoryAlias'].'/'.$c['alias'].'">'.$c['alias'].'</a></li>';			
+		{	
+			if($lastFlor != $c['alias'][0])
+			{
+				if($lastFlor != '-')
+				{
+					echo '</ul></div>';
+				}				
+				$lastFlor = $c['alias'][0];
+				echo '<div class="wrapper" style="width: 4em; float: left;"><ul class="rooms" style="display: block; width: 4em; text-decoration: none;">';
+			}	
+			echo '<li style="list-style-type:none;"><a href="'.$url.$c['dormitoryAlias'].'/'.$c['alias'].'">'.$c['alias'].'</a></li>';			
 		}
-		echo '</ul>';
+		echo '</ul></div>';
+		
+		echo '<br style="clear: left;" />';
 	}
 
 	public function titleDetails(array $d) {
