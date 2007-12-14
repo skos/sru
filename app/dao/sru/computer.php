@@ -55,7 +55,7 @@ extends UFdao {
 		return $this->doSelect($query);
 	}
 
-	public function getByMacUserId($mac, $user) {
+	public function getInactiveByMacUserId($mac, $user) {
 		$key = $this->cachePrefix.'/'.__FUNCTION__.'/'.$mac.'/'.$user;
 		try {
 			return $this->cacheGet($key);
@@ -65,6 +65,7 @@ extends UFdao {
 			$query = $this->prepareSelect($mapping);
 			$query->where($mapping->mac, $mac);
 			$query->where($mapping->userId, $user);
+			$query->where($mapping->active, false);
 
 			$return = $this->doSelectFirst($query);
 			$this->cacheSet($key, $return);
@@ -72,7 +73,7 @@ extends UFdao {
 		}
 	}
 
-	public function getByHostUserId($host, $user) {
+	public function getInactiveByHostUserId($host, $user) {
 		$key = $this->cachePrefix.'/'.__FUNCTION__.'/'.$host.'/'.$user;
 		try {
 			return $this->cacheGet($key);
@@ -82,6 +83,7 @@ extends UFdao {
 			$query = $this->prepareSelect($mapping);
 			$query->where($mapping->host, $host);
 			$query->where($mapping->userId, $user);
+			$query->where($mapping->active, false);
 
 			$return = $this->doSelectFirst($query);
 			$this->cacheSet($key, $return);

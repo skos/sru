@@ -23,13 +23,18 @@ extends UFact {
 
 			$bean = UFra::factory('UFbean_Sru_Computer');
 			$post = $this->_srv->get('req')->post->{self::PREFIX};
+
+			$foundOld = false;
+
 			try {
-				$bean->getByMacUserId($post['mac'], $user->id);
+				$bean->getInactiveByMacUserId($post['mac'], $user->id);
 				$bean->active = true;
+				$foundOld = true;
 			} catch (UFex $e) {
 				try {
-					$bean->getByHostUserId($post['host'], $user->id);
+					$bean->getInactiveByHostUserId($post['host'], $user->id);
 					$bean->active = true;
+					$foundOld = true;
 				} catch (UFex $e) {
 				}
 			}
@@ -38,7 +43,11 @@ extends UFact {
 			$this->_srv->get('req')->post->{self::PREFIX} = $post;
 
 			$bean->fillFromPost(self::PREFIX, null, array('mac', 'host'));
-			$bean->locationId = $user->locationAlias;
+			if ($bean->locationId != $user->locationId) {
+				$this->_srv->get('req')->post->computerEdit = $this->_srv->get('req')->post->{self::PREFIX};	// walidator oczekuje computerEdit przy zmianie pokoju
+				$bean->locationId = $user->locationAlias;
+				$this->_srv->get('req')->post->del('computerEdit');
+			}
 			$bean->modifiedById = null;
 			$bean->modifiedAt = NOW;
 			$bean->userId = $user->id;
