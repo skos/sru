@@ -72,8 +72,12 @@ extends UFctl {
 		$get = $req->get;
 		$post = $req->post;
 		$acl = $this->_srv->get('acl');
-
-		if ($post->is('userSearch')) {
+		
+		if ($post->is('adminLogout') && $acl->sruAdmin('admin', 'logout')) {
+			$act = 'Admin_Logout';
+		} elseif ($post->is('adminLogin') && $acl->sruAdmin('admin', 'login')) {
+			$act = 'Admin_Login';
+		} elseif ($post->is('userSearch')) {
 			$act = 'User_Search';
 		} elseif ('users/user/edit' == $get->view && $post->is('userEdit') && $acl->sruAdmin('user', 'edit')) {
 			$act = 'User_Edit';
