@@ -43,10 +43,14 @@ extends UFact {
 			$this->_srv->get('req')->post->{self::PREFIX} = $post;
 
 			$bean->fillFromPost(self::PREFIX, null, array('mac', 'host'));
-			if ($bean->locationId != $user->locationId) {
-				$this->_srv->get('req')->post->computerEdit = $this->_srv->get('req')->post->{self::PREFIX};	// walidator oczekuje computerEdit przy zmianie pokoju
+			if ($foundOld) {
+				if ($bean->locationId != $user->locationId) {
+					$this->_srv->get('req')->post->computerEdit = $this->_srv->get('req')->post->{self::PREFIX};	// walidator oczekuje computerEdit przy zmianie pokoju
+					$bean->locationId = $user->locationAlias;
+					$this->_srv->get('req')->post->del('computerEdit');
+				}
+			} else {
 				$bean->locationId = $user->locationAlias;
-				$this->_srv->get('req')->post->del('computerEdit');
 			}
 			$bean->modifiedById = null;
 			$bean->modifiedAt = NOW;
