@@ -72,20 +72,31 @@ extends UFtpl {
 	}
 
 	public function computer(array $d) {
+		
+		if ($this->_srv->get('msg')->get('computerDel/ok')) {
+			UFtpl_Html::msgOk('Komputer wyrejestrowano');
+		}			
 		$url = $this->url(0).'/computers/'.$d['computer']->id;
 		echo '<div class="computer">';
 		$d['computer']->write('details');
-		echo '<p class="nav"><a href="'.$url.'">Dane</a> <a href="'.$url.'/history">Historia zmian</a> <a href="'.$url.'/:edit">Edycja</a></p>';
-		echo '</div>';
+		echo '<p class="nav"><a href="'.$url.'">Dane</a> <a href="'.$url.'/history">Historia zmian</a>  <a href="'.$url.'/:edit">Edycja</a> ';
+		if($d['computer']->active)
+		{
+			echo '<a href="'.$url.'/:del"> Wyrejestruj</a>';
+		}
+		echo '</p></div>';
 	}
-
+/* @todo: uzywane jest?
 	public function titleComputers() {
 		echo 'Wszystkie komputery';
 	}
+	
 
 	public function computers(array $d) {
 		echo '<div class="computers">';
 		echo '<h1>Komputery</h1>';
+
+
 		if ($this->_srv->get('msg')->get('computerDel/ok')) {
 			UFtpl_Html::msgOk('Komputer został usunięty');
 		}
@@ -97,7 +108,7 @@ extends UFtpl {
 
 	public function computersNotFound() {
 		UFtpl_Html::msgErr('Komputerów nie znaleziono');
-	}
+	}*/
 
 	public function computerHistory(array $d) {
 		echo '<div class="computer">';
@@ -219,14 +230,36 @@ extends UFtpl {
 	}
 
 	public function userComputers(array $d) {
+		$url = $this->url(2).'/computers/';
+		
 		echo '<h2>Komputery użytkownika</h2><ul>';
+		
+		if ($this->_srv->get('msg')->get('computerAdd/ok')) {
+			UFtpl_Html::msgOk('Komputer został dodany');
+		}		
 		echo $d['computers']->write('listAdmin');
 		echo '</ul>';
+		
+		echo '<p class="nav"><a href="'.$url.':add">Dodaj komputer</a></p>';
+		
 	}
+	public function userInactiveComputers(array $d) {
+		$url = $this->url(2).'/computers/';
+		
+		echo '<h2>Wyrejestrowane komputery</h2><ul>';
+			
+		echo $d['computers']->write('listAdmin');
+		echo '</ul>';
+		
+	}	
 
 	public function userComputersNotFound() {
+		$url = $this->url(2).'/computers/';
+		echo '<h2>Komputery użytkownika</h2><ul>';
+		echo '<p class="nav"><a href="'.$url.':add">Dodaj komputer</a></p>';
 	}
-
+	public function userInactiveComputersNotFound() {
+	}
 	public function titleUserEdit(array $d) {
 		echo $d['user']->write('titleEdit');
 	}
@@ -455,6 +488,20 @@ extends UFtpl {
 	public function roomEdit(array $d) {
 		
 		echo $d['room']->write('formEdit');
+	}
+	public function titleComputerAdd() {
+		echo 'Dodaj komputer';
+	}	
+	public function computerAdd(array $d) {
+		$form = UFra::factory('UFlib_Form');
+
+		$form->_start();
+		$form->_fieldset('Dodaj komputer');
+		echo $d['computer']->write('formAdd');
+		$form->_submit('Dodaj');
+		$form->_end();
+		$form->_end(true);
+		
 	}				
 	
 }

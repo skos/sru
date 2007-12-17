@@ -307,7 +307,7 @@ extends UFbox {
 			$user = $this->_getUserFromGet();
 
 			$bean = UFra::factory('UFbean_Sru_ComputerList');
-			$bean->listByUserIdAll($user->id);
+			$bean->listByUserId($user->id); 
 
 			$d['computers'] = $bean;
 
@@ -316,6 +316,20 @@ extends UFbox {
 			return $this->render(__FUNCTION__.'NotFound');
 		}
 	}
+	public function userInactiveComputers() {
+		try {
+			$user = $this->_getUserFromGet();
+
+			$bean = UFra::factory('UFbean_Sru_ComputerList');
+			$bean->listByUserIdInactive($user->id); 
+
+			$d['computers'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}
+	}	
 
 	public function userEdit() {
 		try {
@@ -620,5 +634,12 @@ extends UFbox {
 		} catch (UFex_Dao_NotFound $e) {
 			return $this->render('roomNotFound');
 		}
-	}		
+	}
+	public function computerAdd() {
+		$bean = UFra::factory('UFbean_Sru_Computer');
+
+		$d['computer'] = $bean;
+
+		return $this->render(__FUNCTION__, $d);
+	}	
 }

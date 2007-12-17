@@ -42,7 +42,14 @@ extends UFctl {
 						break;
 					}
 					$get->userId = $id;
-					if ($segCount > 2) {
+					if ($segCount > 3) 
+					{
+						if($req->segment(3) == 'computers' && $req->segment(4) == ':add')
+						{
+							$get->view = 'users/user/computers/add';
+						}
+					}
+					else if ($segCount > 2) {
 						switch ($req->segment(3)) {
 							case 'history':
 								$get->view = 'users/user/history';
@@ -77,6 +84,8 @@ extends UFctl {
 			$act = 'Admin_Logout';
 		} elseif ($post->is('adminLogin') && $acl->sruAdmin('admin', 'login')) {
 			$act = 'Admin_Login';
+		} elseif ('users/user/computers/add' == $get->view && $post->is('computerAdd')) {
+			$act = 'Computer_Add';			
 		} elseif ($post->is('userSearch')) {
 			$act = 'User_Search';
 		} elseif ('users/user/edit' == $get->view && $post->is('userEdit') && $acl->sruAdmin('user', 'edit')) {
@@ -117,6 +126,12 @@ extends UFctl {
 				} else {
 					return 'SruAdmin_UserEdit';
 				}
+			case 'users/user/computers/add':
+				if ($msg->get('computerAdd/ok')) {
+					return 'SruAdmin_User';
+				} else {
+					return 'SruAdmin_ComputerAdd';
+				} 		
 			case 'users/user/restore':
 				return 'SruAdmin_UserRestore';
 			default:

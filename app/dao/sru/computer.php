@@ -43,7 +43,17 @@ extends UFdao {
 
 		return $this->doSelect($query);
 	}
+	public function listByUserIdInactive($id) {
+		$mapping = $this->mapping('list');
 
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->userId, $id);
+		$query->where($mapping->active, false);
+		$query->order($mapping->host, $query->ASC);
+
+		return $this->doSelect($query);
+	}	
+/* @todo: to jest uzywane?
 	public function listByUserIdAll($id) {
 		$mapping = $this->mapping('list');
 
@@ -54,7 +64,7 @@ extends UFdao {
 
 		return $this->doSelect($query);
 	}
-
+*/
 	public function getInactiveByMacUserId($mac, $user) {
 		$key = $this->cachePrefix.'/'.__FUNCTION__.'/'.$mac.'/'.$user;
 		try {

@@ -64,6 +64,9 @@ extends UFctl {
 									}
 								}
 								break;
+							case ':del':
+								$get->view = 'computers/computer/delete';
+								break;								
 							default:
 								$get->view = 'error404';
 								break;
@@ -88,7 +91,7 @@ extends UFctl {
 			$act = 'Computer_Search';
 		} elseif ('computers/computer/edit' == $get->view && $post->is('computerEdit') && $acl->sruAdmin('computer', 'edit')) {
 			$act = 'Computer_Edit';
-		} elseif ('computers/computer/edit' == $get->view && $post->is('computerDel') && $acl->sruAdmin('computer', 'del')) {
+		} elseif ('computers/computer/delete' == $get->view && $post->is('computerDel') ) {
 			$act = 'Computer_Del';
 		}
 
@@ -118,6 +121,12 @@ extends UFctl {
 				return 'SruAdmin_Computer';
 			case 'computers/computer/history':
 				return 'SruAdmin_ComputerHistory';
+			case 'computers/computer/delete':
+				if ($msg->get('computerDel/ok')) {
+					return 'SruAdmin_Computer';
+				} else {
+					return 'SruAdmin_ComputerDelete';
+				}				
 			case 'computers/computer/edit':
 				if ($msg->get('computerDel/ok')) {
 					return 'SruAdmin_Main';
