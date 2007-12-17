@@ -40,11 +40,10 @@ extends UFtpl {
 
 	public function menuAdmin() {
 		echo '<ul id="nav">';
-		echo '<li><a href="'.UFURL_BASE.'/admin/">Start</a></li>';
-		echo '<li><a href="'.UFURL_BASE.'/admin/users/">Użytkownicy</a></li>';
-		echo '<li><a href="'.UFURL_BASE.'/admin/admins/">Administratorzy</a></li>';
+		echo '<li><a href="'.UFURL_BASE.'/admin/">Szukaj</a></li>';	
 		echo '<li><a href="'.UFURL_BASE.'/admin/computers/">Komputery</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/dormitories/">Akademiki</a></li>';
+		echo '<li><a href="'.UFURL_BASE.'/admin/admins/">Administratorzy</a></li>';
 		echo '</ul>';
 	}
 
@@ -86,29 +85,56 @@ extends UFtpl {
 		}
 		echo '</p></div>';
 	}
-/* @todo: uzywane jest?
+
 	public function titleComputers() {
 		echo 'Wszystkie komputery';
 	}
 	
 
-	public function computers(array $d) {
+	public function serverComputers(array $d) {
 		echo '<div class="computers">';
-		echo '<h1>Komputery</h1>';
+		echo '<h2>Serwery</h2>';
 
-
-		if ($this->_srv->get('msg')->get('computerDel/ok')) {
-			UFtpl_Html::msgOk('Komputer został usunięty');
-		}
 		echo '<ul>';
 		$d['computers']->write('listAdmin');
 		echo '</ul>';
 		echo '</div>';
 	}
+	public function administrationComputers(array $d) {
+		echo '<div class="computers">';
+		echo '<h2>Komputery administracji</h2>';
+
+		echo '<ul>';
+		$d['computers']->write('listAdmin');
+		echo '</ul>';
+		echo '</div>';
+	}
+	public function organizationsComputers(array $d) {
+		echo '<div class="computers">';
+		echo '<h2>Komputery organizacji</h2>';
+
+		echo '<ul>';
+		$d['computers']->write('listAdmin');
+		echo '</ul>';
+		echo '</div>';
+	}
+	public function organizationsComputersNotFound() {
+		echo '<h2Komputery organizacji</h2>';
+		UFtpl_Html::msgErr('Nie znaleziono komputerów');
+	}
+	public function administrationComputersNotFound() {
+		echo '<h2>Komputery administracji</h2>';
+		UFtpl_Html::msgErr('Nie znaleziono komputerów');
+	}	
+	public function serverComputersNotFound() {
+		echo '<h2>Serwery</h2>';
+		UFtpl_Html::msgErr('Nie znaleziono komputerów');
+	}
+				
 
 	public function computersNotFound() {
 		UFtpl_Html::msgErr('Komputerów nie znaleziono');
-	}*/
+	}
 
 	public function computerHistory(array $d) {
 		echo '<div class="computer">';

@@ -173,4 +173,31 @@ extends UFdao {
 		$return = $this->doUpdate($query);
 		return $return;
 	}
+	public function listAllServers() {
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->typeId, 4);
+		$query->order($mapping->host, $query->ASC);
+
+		return $this->doSelect($query);
+	}
+	public function listAllOrganization() {
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->typeId, 2);
+		$query->order($mapping->host, $query->ASC);
+
+		return $this->doSelect($query);
+	}
+	public function listAllAdministration() {
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->typeId, 3);
+		$query->order($mapping->host, $query->ASC);
+
+		return $this->doSelect($query);
+	}			
 }

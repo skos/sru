@@ -101,7 +101,7 @@ extends UFbox {
 
 		return $this->render(__FUNCTION__, $d);
 	}
-
+/*
 	public function computers() {
 		try {
 			$bean = UFra::factory('UFbean_Sru_ComputerList');
@@ -114,7 +114,7 @@ extends UFbox {
 			return $this->render('computersNotFound');
 		}
 	}
-
+*/
 	public function titleComputerEdit() {
 		try {
 			$bean = $this->_getComputerFromGet();
@@ -641,5 +641,41 @@ extends UFbox {
 		$d['computer'] = $bean;
 
 		return $this->render(__FUNCTION__, $d);
+	}
+	public function serverComputers() {
+		try {
+			$bean = UFra::factory('UFbean_Sru_ComputerList');
+			$bean->listAllServers();
+
+			$d['computers'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}
+	}
+	public function administrationComputers() {
+		try {
+			$bean = UFra::factory('UFbean_Sru_ComputerList');
+			$bean->listAllAdministration();
+
+			$d['computers'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}
 	}	
+	public function organizationsComputers() {
+		try {
+			$bean = UFra::factory('UFbean_Sru_ComputerList');
+			$bean->listAllOrganization();
+
+			$d['computers'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}
+	}				
 }

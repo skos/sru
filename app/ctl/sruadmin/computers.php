@@ -114,7 +114,8 @@ extends UFctl {
 		}
 		switch ($get->view) {
 			case 'computers/main':
-				return 'SruAdmin_ComputerSearch';
+	//			return 'SruAdmin_ComputerSearch';
+				return 'SruAdmin_Computers';
 			case 'computers/search':
 				return 'SruAdmin_ComputerSearchResults';
 			case 'computers/computer':
