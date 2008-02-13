@@ -42,6 +42,7 @@ extends UFtpl {
 		echo '<ul id="nav">';
 		echo '<li><a href="'.UFURL_BASE.'/admin/">Szukaj</a></li>';	
 		echo '<li><a href="'.UFURL_BASE.'/admin/computers/">Komputery</a></li>';
+		echo '<li><a href="'.UFURL_BASE.'/admin/penalties/">Kary</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/dormitories/">Akademiki</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/admins/">Administratorzy</a></li>';
 		echo '</ul>';
@@ -239,7 +240,7 @@ extends UFtpl {
 		$url = $this->url(0).'/users/'.$d['user']->id;
 		echo '<div class="user">';
 		$d['user']->write('details');
-		echo '<p class="nav"><a href="'.$url.'">Dane</a> <a href="'.$url.'/history">Historia zmian</a> <a href="'.$url.'/:edit">Edycja</a></p>';
+		echo '<p class="nav"><a href="'.$url.'">Dane</a> <a href="'. $this->url(0).'/penalties/:add/'.$d['user']->id.'">Ukarz</a> <a href="'.$url.'/history">Historia zmian</a> <a href="'.$url.'/:edit">Edycja</a></p>';
 		echo '</div>';
 	}
 
@@ -528,6 +529,52 @@ extends UFtpl {
 		$form->_end();
 		$form->_end(true);
 		
-	}				
+	}
+	public function titlePenalties() {
+		echo 'Kary';
+	}	
+	public function penalties(array $d)
+	{
+		$url = $this->url(0).'/penalties/';
+		$acl = $this->_srv->get('acl');
+		
+		if ($this->_srv->get('msg')->get('penaltyAdd/ok')) {
+			UFtpl_Html::msgOk('Kara została założona');
+		}		
+		
+		echo '<div class="penalties">';
+		echo '<h2>Kary</h2>';
+
+		$d['penalties']->write('listPenalty');
+
+		echo '</div>';			
+	}	
+	public function penaltiesNotFound() {
+		UFtpl_Html::msgErr('Nie znaleziono kar');
+	}
+	public function titlePenaltyAdd(array $d) {
+		echo 'Kara dla '.$d['user']->name.' '.$d['user']->surname.' ('.$d['user']->login.')';
+	}	
+	public function penaltyAdd(array $d)
+	{
+		$url = $this->url(0).'/penalties/';
+		$acl = $this->_srv->get('acl');
+		
+		echo '<h2>Kara dla '.$d['user']->name.' '.$d['user']->surname.' ('.$d['user']->login.')</h2>';
+		
+		echo '<div class="penalty">';
+	
+		$form = UFra::factory('UFlib_Form');
+
+		$form->_start();
+		$form->_fieldset();
+		echo $d['penalty']->write('formAdd', $d['computers']);
+		$form->_submit('Dodaj');
+		$form->_end();
+		$form->_end(true);		
+
+		echo '</div>';
+					
+	}							
 	
 }

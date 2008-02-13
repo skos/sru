@@ -38,7 +38,7 @@ extends UFmap {
 		'name' => array('textMin'=>1, 'textMax'=>100, 'regexp'=>'^[-a-zA-Z" ]+$'),
 		'email' => array('email'=>true),
 		'dormitoryId' => array('textMin'=>1),
-		'typeId' => array('textMin'=>1),
+		'typeId' => array('textMin'=>1), //@todo: a takie typy jakos dokladniej nei powinien byc validowane?
 	);
 	protected $pk = 'id';
 }

@@ -30,7 +30,11 @@ extends UFctl {
 				case 'dormitories':
 					$ctl = UFra::factory('UFctl_SruAdmin_Places');
 					$ctl->go();
-					return false;										
+					return false;
+				case 'penalties':
+					$ctl = UFra::factory('UFctl_SruAdmin_Penalties');
+					$ctl->go();
+					return false;														
 				default:
 					$get->view = 'error404';
 					break;

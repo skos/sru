@@ -677,5 +677,59 @@ extends UFbox {
 		} catch (UFex_Dao_NotFound $e) {
 			return $this->render(__FUNCTION__.'NotFound');
 		}
-	}				
+	}
+	public function penalties() 
+	{
+		try 
+		{
+			$bean = UFra::factory('UFbean_SruAdmin_PenaltyList');	
+			$bean->listAll();
+			$d['penalties'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} 
+		catch (UFex_Dao_NotFound $e) 
+		{
+			return $this->render('penaltiesNotFound');
+		}
+	}
+	public function penaltyAdd() {
+			
+			try {
+				
+			$bean = UFra::factory('UFbean_SruAdmin_Penalty');
+	
+			$d['penalty'] = $bean;
+					
+			$bean = $this->_getUserFromGet();
+
+			$d['user'] = $bean;
+			
+			$d['computers'] = NULL;
+			
+			try{
+			
+				$bean = UFra::factory('UFbean_Sru_ComputerList');
+				$bean->listByUserId($d['user']->id); 
+	
+				$d['computers'] = $bean;
+			} catch (UFex_Dao_NotFound $e) {}			
+			
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render('userNotFound');
+		}		
+	}
+
+	public function titlePenaltyAdd() {
+		try {
+			$bean = $this->_getUserFromGet();
+
+			$d['user'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render('titleUserNotFound');
+		}
+	}							
 }

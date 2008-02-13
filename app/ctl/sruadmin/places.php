@@ -21,7 +21,7 @@ extends UFctl {
 		else
 		{
 			$alias = $req->segment(2);  
-			//@todo jakos sprawdzac poprawnosc?
+			
 			$get->dormAlias = $alias;
 			
 			
