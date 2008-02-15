@@ -51,7 +51,7 @@ extends UFtpl {
 		
 		$form->typeId('Typ', array(
 			'type' => $form->SELECT,
-			'labels' => $form->_labelize(UFconf_Sru::$types),
+			'labels' => $form->_labelize(UFconf_Sru::$penaltyTypes),
 		));	
 		
 
