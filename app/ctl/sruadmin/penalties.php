@@ -33,7 +33,13 @@ extends UFctl {
 					}
 					break;
 				default:
-					$get->view = 'penalties/main';
+					$get->view = 'penalties/penalty';
+					$id = (int)$req->segment(2);
+					if ($id <= 0) {
+						$get->view = 'error404';
+						break;
+					}
+					$get->penaltyId = $id;
 
 				}
 		}		
@@ -77,7 +83,7 @@ extends UFctl {
 			case 'penalties/main':
 				return 'SruAdmin_Penalties';
 			case 'penalties/penalty':
-				return 'SruAdmin_Admin';
+				return 'SruAdmin_Penalty';
 			case 'penalties/add':
 				if ($msg->get('penaltyAdd/ok')) {
 					return 'SruAdmin_Penalties';

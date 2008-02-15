@@ -8,29 +8,35 @@ extends UFmap {
 		'adminId'		=> 'admin_id',
 		'userId'		=> 'user_id',
 		'typeId' 		=> 'type_id',
-		'startTime'		=> 'start_time',
-		'endTime'		=> 'end_time',
+		'startAt'		=> 'start_at',
+		'endAt'			=> 'end_at',
 		'comment'		=> 'comment',
 		'modifiedBy'	=> 'modified_by',
-		'modifiedAt'	=> 'modified_at',
-		'active'		=> 'active',
-		'reasonId'		=> 'reason_id',
+		'modifiedAt'	=> 'modified_at',		
+		'amnestyAt'		=> 'amnesty_at',
+		'amnestyAfter'	=> 'amnesty_after',
+		'amnestyBy'		=> 'amnesty_by',
+		'createdAt'		=> 'created_at',
+		'reason'		=> 'reason',
 	);
 	protected $columnTypes = array(
 		'adminId'		=> self::INT,
 		'userId'		=> self::INT,
 		'typeId' 		=> self::INT,
-		'startTime'		=> self::TS,
-		'endTime'		=> self::TS,
+		'startAt'		=> self::TS,
+		'endAt'			=> self::TS,
 		'comment'		=> self::TEXT,
 		'modifiedBy'	=> self::NULL_INT, 
-		'modifiedAt'	=> self::TS,
-		'active'		=> self::BOOL,	
-		'reasonId'		=> self::INT,
+		'modifiedAt'	=> self::TS,		
+		'amnestyAt'		=> self::NULL_TS,
+		'amnestyAfter'	=> self::NULL_TS,
+		'amnestyBy'		=> self::INT,
+		'createdAt'		=> self::TS,		
+		'reason'		=> self::TEXT,
 	);	
 
 	protected $tables = array(
-		'' => 'users_penalties',
+		'' => 'penalties',
 	);
 	protected $valids = array(
 

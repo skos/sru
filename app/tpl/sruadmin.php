@@ -575,6 +575,19 @@ extends UFtpl {
 
 		echo '</div>';
 					
-	}							
+	}
+	public function titlePenalty(array $d) {
+		echo 'Kara';
+	}
+	public function penalty(array $d) {
+		echo '<div class="penalty">';	
+		
+		$d['penalty']->write('details');
+		
+		echo '</div>';
+	}
+	public function penaltyNotFound() {
+		UFtpl_Html::msgErr('Nie znaleziono kary');
+	}								
 	
 }

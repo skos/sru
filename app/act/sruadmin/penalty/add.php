@@ -12,9 +12,9 @@ extends UFact {
 			$bean = UFra::factory('UFbean_SruAdmin_Penalty');
 			$bean->fillFromPost(self::PREFIX);
 			
-			if($bean->endTime <=  $bean->startTime)
+			if($bean->endAt <=  $bean->startAt)
 			{
-				$this->markErrors(self::PREFIX, array('endTime'=>'noSense'));
+				$this->markErrors(self::PREFIX, array('endAt'=>'noSense'));
 				return;
 			}
 					
@@ -22,7 +22,10 @@ extends UFact {
 			$bean->userId  = $this->_srv->get('req')->get->userId; //@todo: a jak to zvalidowac?
 			
 			$bean->modifiedBy = null;
-			$bean->modifiedAt = NOW;//@todo: czemu to mi sie zapisuje w postaci godziny? 
+			$bean->modifiedAt = NOW;
+			$bean->createdAt = NOW;
+			
+			$bean->amnestyAfter = NOW;
 			
 				
 			$id = $bean->save();

@@ -18,7 +18,13 @@ extends UFbox {
 		$bean->getByPK((int)$this->_srv->get('req')->get->userId);
 
 		return $bean;
-	}	
+	}
+	protected function _getPenaltyFromGet() {
+		$bean = UFra::factory('UFbean_SruAdmin_Penalty');
+		$bean->getByPK((int)$this->_srv->get('req')->get->penaltyId);
+
+		return $bean;
+	}		
 	protected function _getAdminFromGet() {
 		$bean = UFra::factory('UFbean_SruAdmin_Admin');
 		$bean->getByPK((int)$this->_srv->get('req')->get->adminId);
@@ -731,5 +737,16 @@ extends UFbox {
 		} catch (UFex_Dao_NotFound $e) {
 			return $this->render('titleUserNotFound');
 		}
-	}							
+	}
+	public function penalty() {
+		try {
+			$bean = $this->_getPenaltyFromGet();
+
+			$d['penalty'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}
+	}								
 }

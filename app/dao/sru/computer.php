@@ -53,7 +53,7 @@ extends UFdao {
 
 		return $this->doSelect($query);
 	}	
-/* @todo: to jest uzywane?
+/* 
 	public function listByUserIdAll($id) {
 		$mapping = $this->mapping('list');
 
