@@ -43,7 +43,7 @@ extends UFmap {
 		'name' => array('textMin'=>1, 'textMax'=>100, 'regexp'=>'^[-a-zA-Z" ]+$'),
 		'email' => array('email'=>true),
 		'dormitory' => array('textMin'=>1),
-		'lastLoginIp' => array('regexp'=>'^[0-9.]{7,15}$'),
+		'lastLoginIp' => array('regexp'=>'^([0-9a-fA-F:]+)?[0-9.]{7,15}$'),
 	);
 	protected $pk = 'id';
 }
