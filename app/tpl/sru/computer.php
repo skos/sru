@@ -110,6 +110,7 @@ extends UFtpl {
 
 		echo '<h1>'.$d['host'].'.ds.pg.gda.pl</h1>';
 		$form->mac('MAC');
+		$this->showMacHint();
 	}
 
 	public function formEditAdmin(array $d, $dormitories) {
@@ -174,6 +175,7 @@ if (input) {
 
 		$form->host('Nazwa');
 		$form->mac('MAC');
+		$this->showMacHint();
 	}
 
 	public function formDel(array $d) {
@@ -212,5 +214,27 @@ if (input) {
 			}
 			echo '<li'.(!$c['active']?' class="old">Przedawniony ':'>').'<a href="'.$url.'/computers/'.$c['id'].'">'.$c['host'].' <small>'.$c['ip'].'/'.$c['mac'].'</small></a> <span>'.$owner.'</span></li>';
 		}
+	}
+
+	private function showMacHint() {
+		echo '<a href="javascript:showmachint();"><small>Co to jest MAC?</small></a><br/>
+			<span id="macHint" style="background: gray; display: none;"><small>MAC jest indywidualnym numerem karty sieciowej. 
+			Podawany jest w formacie 1A:2B:3C:4D:5E:6F. Aby go sprawdzić:<br/>
+			1) W systemie Windows: Start -> Uruchom -> wpisz "cmd" -> wpisz "ipconfig /all" -> MAC to "Adres fizyczny"<br/>
+			2) W systemie Uniksowym: w konsoli wpisz: ifconfig -a. MAC to "HWaddr".<br/>
+			Pamiętaj, by podać adres karty sieciowej, z której będziesz korzystać. Więcej informacji znajdziesz w FAQ.
+			</small></span><br/>';
+?>
+<script type="text/javascript">
+function showmachint() {
+	macHint = document.getElementById("macHint");
+	if (macHint.style.display == 'none') {
+		macHint.style.display = 'block';
+	} else {
+		macHint.style.display = 'none';
+	}
+}
+</script>
+<?
 	}
 }
