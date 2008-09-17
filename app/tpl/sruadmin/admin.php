@@ -95,7 +95,8 @@ extends UFtpl {
 	}	
 	public function details(array $d) {
 		$url = $this->url(0);
-		echo '<h2>'.$d['name'].'<br/><small>('.$this->adminTypes[$d['typeId']].')</small></h2>';
+		echo '<h2>'.$d['name'].'<br/><small>('.$this->adminTypes[$d['typeId']].' | 
+			ostatnie logowanie: '.date(self::TIME_YYMMDD_HHMM, $d['lastLoginAt']).')</small></h2>';
 		echo '<p><em>E-mail:</em> <a href="mailto:'.$d['email'].'">'.$d['email'].'</a></p>';
 		echo '<p><em>Telefon:</em> '.$d['phone'].'</p>';
 		echo '<p><em>Gadu-Gadu:</em> '.$d['gg'].'</p>';
