@@ -316,6 +316,7 @@ extends UFbox {
 			$bean->listByUserId($user->id); 
 
 			$d['computers'] = $bean;
+			$d['user'] = $user;
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {

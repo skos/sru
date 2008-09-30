@@ -257,7 +257,7 @@ extends UFtpl {
 	}
 
 	public function userComputers(array $d) {
-		$url = $this->url(2).'/computers/';
+		$url = $this->url(1).'/'.$d['user']->id.'/computers/';
 		
 		echo '<h2>Komputery użytkownika</h2><ul>';
 		
