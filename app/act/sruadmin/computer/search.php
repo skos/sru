@@ -28,7 +28,7 @@ extends UFact {
 				$finds[] = 'ip:'.urlencode($post['ip']);
 			}
 			if (count($finds)) {
-				UFra::redirect(UFURL_BASE.'/'.implode('/', $this->_srv->get('req')->segments(0)).'/computers/search/'.implode('/', $finds));
+				UFlib_Http::redirect(UFURL_BASE.'/'.implode('/', $this->_srv->get('req')->segments(0)).'/computers/search/'.implode('/', $finds));
 			}
 		} catch (UFex_Dao_DataNotValid $e) {
 			$this->markErrors(self::PREFIX, $e->getData());

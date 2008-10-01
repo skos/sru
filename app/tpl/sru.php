@@ -3,7 +3,7 @@
  * szablon modulu sru
  */
 class UFtpl_Sru
-extends UFtpl {
+extends UFtpl_Common {
 
 	public function titleLogin() {
 		echo 'Zaloguj się';
@@ -12,16 +12,16 @@ extends UFtpl {
 	public function login(array $d) {
 		$form = UFra::factory('UFlib_Form');
 
-		$form->_start();
-		$form->_fieldset('Zaloguj się');
+		echo $form->_start();
+		echo $form->_fieldset('Zaloguj się');
 		if ($this->_srv->get('msg')->get('userLogin/errors')) {
 			UFtpl_Html::msgErr('Nieprawidłowy login lub hasło');
 		}
 		echo $d['user']->write('formLogin');
-		$form->_submit('Zaloguj');
+		echo $form->_submit('Zaloguj');
 		echo ' <a href="'.$this->url(0).'/create">Załóż konto</a>';
-		$form->_end();
-		$form->_end(true);
+		echo $form->_end();
+		echo $form->_end(true);
 	}
 
 	public function titleUserAdd() {
@@ -31,15 +31,15 @@ extends UFtpl {
 	public function userAdd(array $d) {
 		$form = UFra::factory('UFlib_Form');
 
-		$form->_start();
-		$form->_fieldset('Załóż konto');
+		echo $form->_start();
+		echo $form->_fieldset('Załóż konto');
 		if ($this->_srv->get('msg')->get('userAdd/ok')) {
 			UFtpl_Html::msgOk('Konto zostało założone');
 		}
 		echo $d['user']->write('formAdd', $d['dormitories'], $d['faculties']);
-		$form->_submit('Załóż');
-		$form->_end();
-		$form->_end(true);
+		echo $form->_submit('Załóż');
+		echo $form->_end();
+		echo $form->_end(true);
 	}
 
 	public function titleMain() {
@@ -49,12 +49,12 @@ extends UFtpl {
 	public function logout(array $d) {
 		$form = UFra::factory('UFlib_Form');
 
-		$form->_start($this->url(0).'/');
-		$form->_fieldset('Wyloguj się');
+		echo $form->_start($this->url(0).'/');
+		echo $form->_fieldset('Wyloguj się');
 		echo $d['user']->write('formLogout');
-		$form->_submit('Wyloguj', array('name'=>'userLogout'));
-		$form->_end();
-		$form->_end(true);
+		echo $form->_submit('Wyloguj', array('name'=>'userLogout'));
+		echo $form->_end();
+		echo $form->_end(true);
 	}
 
 	public function userMainMenu() {
@@ -81,15 +81,15 @@ extends UFtpl {
 	public function userEdit(array $d) {
 		$form = UFra::factory('UFlib_Form');
 
-		$form->_start();
-		$form->_fieldset('Twoje dane');
+		echo $form->_start();
+		echo $form->_fieldset('Twoje dane');
 		if ($this->_srv->get('msg')->get('userEdit/ok')) {
 			UFtpl_Html::msgOk('Dane zostały zmienione');
 		}
 		echo $d['user']->write('formEdit', $d['dormitories'], $d['faculties']);
-		$form->_submit('Zapisz');
-		$form->_end();
-		$form->_end(true);
+		echo $form->_submit('Zapisz');
+		echo $form->_end();
+		echo $form->_end(true);
 	}
 
 	public function titleUserComputers() {
@@ -135,15 +135,15 @@ extends UFtpl {
 	public function userComputerEdit(array $d) {
 		$form = UFra::factory('UFlib_Form');
 
-		$form->_start($this->url(3).'/');
-		$form->_fieldset('Zmień dane komputera');
+		echo $form->_start($this->url(3).'/');
+		echo $form->_fieldset('Zmień dane komputera');
 		if ($this->_srv->get('msg')->get('computerEdit/ok')) {
 			UFtpl_Html::msgOk('Dane zostały zmienione');
 		}
 		echo $d['computer']->write('formEdit');
-		$form->_submit('Zapisz');
-		$form->_end();
-		$form->_end(true);
+		echo $form->_submit('Zapisz');
+		echo $form->_end();
+		echo $form->_end(true);
 		echo '<p class="nav"><a href="'.$this->url(2).'">Powrót</a></p>';
 	}
 
@@ -158,23 +158,23 @@ extends UFtpl {
 			UFtpl_Html::msgOk('Konto zostało założone');
 		}
 
-		$form->_start($this->url(0).'/computers/:add');
-		$form->_fieldset('Dodaj komputer');
+		echo $form->_start($this->url(0).'/computers/:add');
+		echo $form->_fieldset('Dodaj komputer');
 		echo $d['computer']->write('formAdd');
-		$form->_submit('Dodaj');
-		$form->_end();
-		$form->_end(true);
+		echo $form->_submit('Dodaj');
+		echo $form->_end();
+		echo $form->_end(true);
 		echo '<p class="nav"><a href="'.$this->url(1).'">Powrót</a></p>';
 	}
 
 	public function userComputerDel(array $d) {
 		$form = UFra::factory('UFlib_Form');
 
-		$form->_start($this->url(3).'/');
-		$form->_fieldset('Wyrejestruj komputer');
+		echo $form->_start($this->url(3).'/');
+		echo $form->_fieldset('Wyrejestruj komputer');
 		echo $d['computer']->write('formDel');
-		$form->_submit('Wyrejestruj');
-		$form->_end();
-		$form->_end(true);
+		echo $form->_submit('Wyrejestruj');
+		echo $form->_end();
+		echo $form->_end(true);
 	}
 }

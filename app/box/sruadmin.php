@@ -146,9 +146,9 @@ extends UFbox {
 				// lista, zeby mozna bylo podac tablice dla $bean->fill()
 				$history = UFra::factory('UFbean_SruAdmin_ComputerHistoryList');
 				$history->listByComputerIdPK($compId, $histId);
-				$history = $history[0];
-				$bean->fill($history);
+				$d['history'] = $history[0];
 			} catch (UFex $e) {
+				$d['history'] = null;
 			}
 
 			$d['computer'] = $bean;

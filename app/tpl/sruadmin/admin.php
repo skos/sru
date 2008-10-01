@@ -3,7 +3,7 @@
  * szablon beana admina
  */
 class UFtpl_SruAdmin_Admin
-extends UFtpl {
+extends UFtpl_Common {
 
 	protected $adminTypes = array(
 		UFacl_SruAdmin_Admin::CENTRAL 	=> 'Administrator Centralny',
@@ -30,8 +30,8 @@ extends UFtpl {
 	public function formLogin(array $d) {
 		$form = UFra::factory('UFlib_Form', 'adminLogin', $d);
 
-		$form->login('Login');
-		$form->password('Hasło', array('type'=>$form->PASSWORD));
+		echo $form->login('Login');
+		echo $form->password('Hasło', array('type'=>$form->PASSWORD));
 	}
 
 	public function formLogout(array $d) {
@@ -113,27 +113,27 @@ extends UFtpl {
 		}
 		$form = UFra::factory('UFlib_Form', 'adminAdd', $d, $this->errors);
 
-		$form->_fieldset();
-		$form->login('Login');
-		$form->password('Hasło', array('type'=>$form->PASSWORD));
-		$form->password2('Powtórz hasło', array('type'=>$form->PASSWORD));
-		$form->name('Nazwa'); 
-		$form->typeId('Uprawnienia', array(
+		echo $form->_fieldset();
+		echo $form->login('Login');
+		echo $form->password('Hasło', array('type'=>$form->PASSWORD));
+		echo $form->password2('Powtórz hasło', array('type'=>$form->PASSWORD));
+		echo $form->name('Nazwa'); 
+		echo $form->typeId('Uprawnienia', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize($this->adminTypes),
 		));
-		$form->email('E-mail');
-		$form->phone('Telefon');
-		$form->gg('GG');
-		$form->jid('Jabber');
-		$form->address('Adres');
+		echo $form->email('E-mail');
+		echo $form->phone('Telefon');
+		echo $form->gg('GG');
+		echo $form->jid('Jabber');
+		echo $form->address('Adres');
 
 		$tmp = array();
 		foreach ($dormitories as $dorm) {
 			$tmp[$dorm['id']] = $dorm['name'];
 		}
 		$tmp['-'] = 'N/D';
-		$form->dormitoryId('Akademik', array(
+		echo $form->dormitoryId('Akademik', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize($tmp, '', ''),
 		));		
@@ -143,38 +143,38 @@ extends UFtpl {
 
 		$form = UFra::factory('UFlib_Form', 'adminEdit', $d, $this->errors);
 
-		$form->_fieldset();
+		echo $form->_fieldset();
 		
-		$form->name('Nazwa'); 
+		echo $form->name('Nazwa'); 
 		
-		$form->password('Hasło', array('type'=>$form->PASSWORD));
-		$form->password2('Powtórz hasło', array('type'=>$form->PASSWORD));
+		echo $form->password('Hasło', array('type'=>$form->PASSWORD));
+		echo $form->password2('Powtórz hasło', array('type'=>$form->PASSWORD));
 
 		if($advanced)
 		{
-			$form->typeId('Uprawnienia', array(
+			echo $form->typeId('Uprawnienia', array(
 				'type' => $form->SELECT,
 				'labels' => $form->_labelize($this->adminTypes),
 			));	
-			$form->active('Aktywny', array('type'=>$form->CHECKBOX) );
+			echo $form->active('Aktywny', array('type'=>$form->CHECKBOX) );
 
 		}
 
-		$form->_end();
+		echo $form->_end();
 		
-		$form->_fieldset();
-		$form->email('E-mail');
-		$form->phone('Telefon');
-		$form->gg('GG');
-		$form->jid('Jabber');
-		$form->address('Adres');
+		echo $form->_fieldset();
+		echo $form->email('E-mail');
+		echo $form->phone('Telefon');
+		echo $form->gg('GG');
+		echo $form->jid('Jabber');
+		echo $form->address('Adres');
 
 		$tmp = array();
 		foreach ($dormitories as $dorm) {
 			$tmp[$dorm['id']] = $dorm['name'];
 		}
 		$tmp[''] = 'N/D';
-		$form->dormitoryId('Akademik', array(
+		echo $form->dormitoryId('Akademik', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize($tmp),
 		));		

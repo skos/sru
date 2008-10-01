@@ -15,6 +15,7 @@ extends UFact {
 			$bean->getByPK((int)$this->_srv->get('req')->get->userId);
 			$post = $this->_srv->get('req')->post->{self::PREFIX};
 			$login = $bean->login;
+			UFra::debug('1...');
 			$bean->fillFromPost(self::PREFIX, array('password'));
 			$bean->modifiedById = $this->_srv->get('session')->authAdmin;
 			$bean->modifiedAt = NOW;

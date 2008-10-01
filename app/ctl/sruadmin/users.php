@@ -42,14 +42,9 @@ extends UFctl {
 						break;
 					}
 					$get->userId = $id;
-					if ($segCount > 3) 
-					{
-						if($req->segment(3) == 'computers' && $req->segment(4) == ':add')
-						{
+					if ($segCount > 3 && $req->segment(3) == 'computers' && $req->segment(4) == ':add') {
 							$get->view = 'users/user/computers/add';
-						}
-					}
-					else if ($segCount > 2) {
+					} elseif ($segCount > 2) {
 						switch ($req->segment(3)) {
 							case 'history':
 								$get->view = 'users/user/history';

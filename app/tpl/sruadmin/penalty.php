@@ -3,7 +3,7 @@
  * szablon beana admina
  */
 class UFtpl_SruAdmin_Penalty
-extends UFtpl {
+extends UFtpl_Common {
 		
 	protected $errors = array(
 		'reason' => 'Podaj powód',
@@ -44,12 +44,12 @@ extends UFtpl {
 
 		$form = UFra::factory('UFlib_Form', 'penaltyAdd', $d, $this->errors);
 		
-/*		$form->reasonId('Powód', array(
+/*		echo $form->reasonId('Powód', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(UFconf_Sru::$reasons),
 		));		*/
 		
-		$form->typeId('Typ', array(
+		echo $form->typeId('Typ', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(UFconf_Sru::$penaltyTypes),
 		));	
@@ -61,18 +61,18 @@ extends UFtpl {
 			foreach ($computers as $c) {
 				$tmp[$c['id']] = $c['host'];
 			}
-			$form->computerId('Komputery', array( //@todo: jak zrobic multiple selecta? a moze lepiej jakos na check boxach? a moze nigdy nie ma potrzeby karac paru kompow na raz?
+			echo $form->computerId('Komputery', array( //@todo: jak zrobic multiple selecta? a moze lepiej jakos na check boxach? a moze nigdy nie ma potrzeby karac paru kompow na raz?
 				'type' => $form->SELECT,
 				'labels' => $form->_labelize($tmp),
 			));		
 	
 			echo '</div>'; }
-		$form->reason('Powód(dla użytkownika)',  array('type'=>$form->TEXTAREA, 'rows'=>3));
+		echo $form->reason('Powód(dla użytkownika)',  array('type'=>$form->TEXTAREA, 'rows'=>3));
 
 		//@todo: core chyba powinien te value obslugiwac, co? ;)
-		$form->startAt('Od', array('value' => date(self::TIME_YYMMDD, NOW) ));
-		$form->endAt('Do', array('value' => date(self::TIME_YYMMDD, NOW+60*60*24*7)));
-		$form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
+		echo $form->startAt('Od', array('value' => date(self::TIME_YYMMDD, NOW) ));
+		echo $form->endAt('Do', array('value' => date(self::TIME_YYMMDD, NOW+60*60*24*7)));
+		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
 	}
 	public function details(array $c) {//@todo: do czau modyfikacji dodac godziny
 		$url = $this->url(0);

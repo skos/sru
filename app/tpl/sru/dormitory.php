@@ -3,7 +3,7 @@
  * szablon beana akademika
  */
 class UFtpl_Sru_Dormitory
-extends UFtpl {
+extends UFtpl_Common {
 	
 	public function listDorms(array $d) {
 		$url = $this->url(0).'/dormitories/';

@@ -25,6 +25,7 @@ extends UFmap {
 		'facultyId'      => self::NULL_INT,
 		'studyYearId'    => self::NULL_INT,
 		'dormitory'      => self::TEXT,	// kolumna tylko do walidacji
+		'locationAlias'  => self::TEXT,	// kolumna tylko do walidacji
 		'locationId'     => self::INT,
 		'modifiedById'   => self::NULL_INT,
 	);
@@ -40,7 +41,8 @@ extends UFmap {
 		'facultyId' => array('textMin'=>1, 'regexp'=>'^(1|2|3|4|5|6|7|8|9|-)$'),
 		'studyYearId' => array('textMin'=>1, 'regexp'=>'^(1|2|3|4|5|6|7|8|9|10|11|-)$'),
 		'dormitory' => array('textMin'=>1),
-		'locationId' => array('textMin'=>1),
+		'locationAlias' => array('textMin'=>1),
+		'locationId' => array('intMin'=>1),
 	);
 	protected $pk = 'id';
 }

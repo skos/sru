@@ -3,7 +3,7 @@
  * szablon beana komputera
  */
 class UFtpl_Sru_Computer
-extends UFtpl {
+extends UFtpl_Common {
 
 	protected $computerTypes = array(
 		1 => 'Student',
@@ -24,9 +24,9 @@ extends UFtpl {
 		'ip/noFree' => 'Nie ma wolnych IP w tym DS-ie',
 		'availableMaxTo' => 'Nieprawidłowy format',
 		'dormitory' => 'Wybierz akademik',
-		'locationId' => 'Podaj pokój',
-		'locationId/noDormitory' => 'Wybierz akademik',
-		'locationId/noRoom' => 'Pokój nie istnieje',
+		'locationAlias' => 'Podaj pokój',
+		'locationAlias/noDormitory' => 'Wybierz akademik',
+		'locationAlias/noRoom' => 'Pokój nie istnieje',
 	);
 	
 	public function listOwn(array $d) {
@@ -109,32 +109,34 @@ extends UFtpl {
 		$form = UFra::factory('UFlib_Form', 'computerEdit', $d, $this->errors);
 
 		echo '<h1>'.$d['host'].'.ds.pg.gda.pl</h1>';
-		$form->mac('MAC');
+		echo $form->mac('MAC');
 		$this->showMacHint();
 	}
 
-	public function formEditAdmin(array $d, $dormitories) {
+	public function formEditAdmin(array $d, $dormitories, $history=null) {
+		if (is_array($history)) {
+			$d = $history + $d;
+		}
 		$d['availableMaxTo'] = date(self::TIME_YYMMDD, $d['availableMaxTo']);
-		$d['locationId'] = $d['locationAlias'];
 		$d['dormitory'] = $d['dormitoryId'];
 		$form = UFra::factory('UFlib_Form', 'computerEdit', $d, $this->errors);
 
-		$form->host('Nazwa');
-		$form->mac('MAC');
-		$form->ip('IP');
-		$form->availableMaxTo('Rejestracja max do', array('id'=>'availableMaxTo'));
+		echo $form->host('Nazwa');
+		echo $form->mac('MAC');
+		echo $form->ip('IP');
+		echo $form->availableMaxTo('Rejestracja max do', array('id'=>'availableMaxTo'));
 		foreach ($dormitories as $dorm) {
 			$tmp[$dorm['id']] = $dorm['name'];
 		}
-		$form->dormitory('Akademik', array(
+		echo $form->dormitory('Akademik', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize($tmp),
 		));
-		$form->locationId('Pokój');
-		$form->_fieldset('Uprawnienia');
-			$form->canAdmin('Komputer administratora', array('type'=>$form->CHECKBOX));
-		$form->_end();
-		$form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
+		echo $form->locationAlias('Pokój');
+		echo $form->_fieldset('Uprawnienia');
+		echo $form->canAdmin('Komputer administratora', array('type'=>$form->CHECKBOX));
+		echo $form->_end();
+		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
 
 		$conf = UFra::shared('UFconf_Sru');
 		$date = $conf->computerAvailableMaxTo;
@@ -173,19 +175,19 @@ if (input) {
 	public function formAdd(array $d) {
 		$form = UFra::factory('UFlib_Form', 'computerAdd', $d, $this->errors);
 
-		$form->host('Nazwa');
-		$form->mac('MAC');
+		echo $form->host('Nazwa');
+		echo $form->mac('MAC');
 		$this->showMacHint();
 	}
 
 	public function formDel(array $d) {
 		$form = UFra::factory('UFlib_Form');
-		$form->confirm('Tak, chcę wyrejestrować ten komputer', array('type'=>$form->CHECKBOX, 'name'=>'computerDel[confirm]', 'value'=>'1'));
+		echo $form->confirm('Tak, chcę wyrejestrować ten komputer', array('type'=>$form->CHECKBOX, 'name'=>'computerDel[confirm]', 'value'=>'1'));
 	}
 
 	public function formDelAdmin(array $d) {
 		$form = UFra::factory('UFlib_Form');
-		$form->confirm('Tak, wyrejestruj ten komputer', array('type'=>$form->CHECKBOX, 'name'=>'computerDel[confirm]', 'value'=>'1'));
+		echo $form->confirm('Tak, wyrejestruj ten komputer', array('type'=>$form->CHECKBOX, 'name'=>'computerDel[confirm]', 'value'=>'1'));
 	}
 
 	public function listAdmin(array $d) {
@@ -199,9 +201,9 @@ if (input) {
 		$d = $searched + $d;
 		$form = UFra::factory('UFlib_Form', 'computerSearch', $d, $this->errors);
 
-		$form->host('Host');
-		$form->ip('IP');
-		$form->mac('MAC');
+		echo $form->host('Host');
+		echo $form->ip('IP');
+		echo $form->mac('MAC');
 	}
 
 	public function searchResults(array $d) {

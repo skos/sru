@@ -3,5 +3,5 @@
  * szablon beana wydzialu
  */
 class UFtpl_Sru_Faculty
-extends UFtpl {
+extends UFtpl_Common {
 }

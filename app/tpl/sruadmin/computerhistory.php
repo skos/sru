@@ -3,7 +3,7 @@
  * szablon beana historii komputera
  */
 class UFtpl_SruAdmin_ComputerHistory
-extends UFtpl {
+extends UFtpl_Common {
 
 	protected function _diff(array $old, array $new) {
 		$changes = array();

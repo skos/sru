@@ -3,7 +3,7 @@
  * szablon modulu administracji sru
  */
 class UFtpl_SruAdmin
-extends UFtpl {
+extends UFtpl_Common {
 
 	public function titleLogin() {
 		echo 'Zaloguj się';
@@ -12,26 +12,26 @@ extends UFtpl {
 	public function login(array $d) {
 		$form = UFra::factory('UFlib_Form');
 
-		$form->_start();
-		$form->_fieldset('Zaloguj się');
+		echo $form->_start();
+		echo $form->_fieldset('Zaloguj się');
 		if ($this->_srv->get('msg')->get('adminLogin/errors')) {
-			UFtpl_Html::msgErr('Nieprawidłowy login lub hasło');
+			echo $this->ERR('Nieprawidłowy login lub hasło');
 		}
 		echo $d['admin']->write('formLogin');
-		$form->_submit('Zaloguj');
-		$form->_end();
-		$form->_end(true);
+		echo $form->_submit('Zaloguj');
+		echo $form->_end();
+		echo $form->_end(true);
 	}
 
 	public function logout(array $d) {
 		$form = UFra::factory('UFlib_Form');
 
-		$form->_start($this->url(0).'/');
-		$form->_fieldset('Wyloguj się');
+		echo $form->_start($this->url(0).'/');
+		echo $form->_fieldset('Wyloguj się');
 		echo $d['admin']->write('formLogout');
-		$form->_submit('Wyloguj', array('name'=>'adminLogout'));
-		$form->_end();
-		$form->_end(true);
+		echo $form->_submit('Wyloguj', array('name'=>'adminLogout'));
+		echo $form->_end();
+		echo $form->_end(true);
 	}
 
 	public function title() {
@@ -51,12 +51,12 @@ extends UFtpl {
 	public function adminBar(array $d) {
 		$form = UFra::factory('UFlib_Form');
 
-		$form->_start($this->url(0).'/', array('class'=>'adminBar'));
-		$form->_fieldset();
+		echo $form->_start($this->url(0).'/', array('class'=>'adminBar'));
+		echo $form->_fieldset();
 		echo $d['admin']->write(__FUNCTION__, $d['lastLoginIp'], $d['lastLoginAt']);
-		$form->_submit('Wyloguj', array('name'=>'adminLogout'));
-		$form->_end();
-		$form->_end(true);
+		echo $form->_submit('Wyloguj', array('name'=>'adminLogout'));
+		echo $form->_end();
+		echo $form->_end(true);
 	}
 	
 	public function titleComputer(array $d) {
@@ -68,13 +68,13 @@ extends UFtpl {
 	}
 
 	public function computerNotFound() {
-		UFtpl_Html::msgErr('Komputera nie znaleziono');
+		echo $this->ERR('Komputera nie znaleziono');
 	}
 
 	public function computer(array $d) {
 		
 		if ($this->_srv->get('msg')->get('computerDel/ok')) {
-			UFtpl_Html::msgOk('Komputer wyrejestrowano');
+			echo $this->OK('Komputer wyrejestrowano');
 		}			
 		$url = $this->url(0).'/computers/'.$d['computer']->id;
 		echo '<div class="computer">';
@@ -121,20 +121,20 @@ extends UFtpl {
 	}
 	public function organizationsComputersNotFound() {
 		echo '<h2Komputery organizacji</h2>';
-		UFtpl_Html::msgErr('Nie znaleziono komputerów');
+		echo $this->ERR('Nie znaleziono komputerów');
 	}
 	public function administrationComputersNotFound() {
 		echo '<h2>Komputery administracji</h2>';
-		UFtpl_Html::msgErr('Nie znaleziono komputerów');
+		echo $this->ERR('Nie znaleziono komputerów');
 	}	
 	public function serverComputersNotFound() {
 		echo '<h2>Serwery</h2>';
-		UFtpl_Html::msgErr('Nie znaleziono komputerów');
+		echo $this->ERR('Nie znaleziono komputerów');
 	}
 				
 
 	public function computersNotFound() {
-		UFtpl_Html::msgErr('Komputerów nie znaleziono');
+		echo $this->ERR('Komputerów nie znaleziono');
 	}
 
 	public function computerHistory(array $d) {
@@ -154,40 +154,40 @@ extends UFtpl {
 		$form = UFra::factory('UFlib_Form');
 
 		echo '<h2>Edycja</h2>';
-		$form->_start($this->url());
-		$form->_fieldset('Edycja komputera');
+		echo $form->_start($this->url());
+		echo $form->_fieldset('Edycja komputera');
 		if (!$this->_srv->get('msg')->get('computerEdit') && $this->_srv->get('req')->get->is('computerHistoryId')) {
-			UFtpl_Html::msgErr('Formularz wypełniony danymi z '.date(self::TIME_YYMMDD_HHMM, $d['computer']->modifiedAt));
+			echo $this->ERR('Formularz wypełniony danymi z '.date(self::TIME_YYMMDD_HHMM, $d['computer']->modifiedAt));
 		} elseif ($this->_srv->get('msg')->get('computerEdit/ok')) {
-			UFtpl_Html::msgOk('Dane zostały zmienione');
+			echo $this->OK('Dane zostały zmienione');
 		}
-		echo $d['computer']->write('formEditAdmin', $d['dormitories']);
-		$form->_submit('Zapisz');
-		$form->_end();
-		$form->_end(true);
+		echo $d['computer']->write('formEditAdmin', $d['dormitories'], $d['history']);
+		echo $form->_submit('Zapisz');
+		echo $form->_end();
+		echo $form->_end(true);
 	}
 
 	public function computerDel(array $d) {
 		$form = UFra::factory('UFlib_Form');
 
-		$form->_start($this->url(3).'/');
-		$form->_fieldset('Wyrejestruj komputer');
+		echo $form->_start($this->url(3).'/');
+		echo $form->_fieldset('Wyrejestruj komputer');
 		echo $d['computer']->write('formDelAdmin');
-		$form->_submit('Wyrejestruj');
-		$form->_end();
-		$form->_end(true);
+		echo $form->_submit('Wyrejestruj');
+		echo $form->_end();
+		echo $form->_end(true);
 	}
 
 	public function computerSearch(array $d) {
 		$form = UFra::factory('UFlib_Form');
 
 		echo '<div class="computerSearch">';
-		$form->_start($this->url(0).'/computers');
-		$form->_fieldset('Znajdź komputer');
+		echo $form->_start($this->url(0).'/computers');
+		echo $form->_fieldset('Znajdź komputer');
 		echo $d['computer']->write('formSearch', $d['searched']);
-		$form->_submit('Znajdź');
-		$form->_end();
-		$form->_end(true);
+		echo $form->_submit('Znajdź');
+		echo $form->_end();
+		echo $form->_end(true);
 		echo '</div>';
 	}
 
@@ -206,7 +206,7 @@ extends UFtpl {
 	}
 
 	public function computerSearchResultsNotFound() {
-		UFtpl_Html::msgErr('Nie znaleziono');
+		echo $this->ERR('Nie znaleziono');
 	}
 
 	public function titleUserSearch() {
@@ -217,12 +217,12 @@ extends UFtpl {
 		$form = UFra::factory('UFlib_Form');
 
 		echo '<div class="userSearch">';
-		$form->_start($this->url(0).'/users');
-		$form->_fieldset('Znajdź użytkownika');
+		echo $form->_start($this->url(0).'/users');
+		echo $form->_fieldset('Znajdź użytkownika');
 		echo $d['user']->write('formSearch', $d['searched']);
-		$form->_submit('Znajdź');
-		$form->_end();
-		$form->_end(true);
+		echo $form->_submit('Znajdź');
+		echo $form->_end();
+		echo $form->_end(true);
 		echo '</div>';
 	}
 
@@ -233,7 +233,7 @@ extends UFtpl {
 	}
 
 	public function userSearchResultsNotFound() {
-		UFtpl_Html::msgErr('Nie znaleziono');
+		echo $this->ERR('Nie znaleziono');
 	}
 
 	public function user(array $d) {
@@ -245,7 +245,7 @@ extends UFtpl {
 	}
 
 	public function userNotFound() {
-		UFtpl_Html::msgErr('Użytkownika nie znaleziono');
+		echo $this->ERR('Użytkownika nie znaleziono');
 	}
 
 	public function titleUser(array $d) {
@@ -262,7 +262,7 @@ extends UFtpl {
 		echo '<h2>Komputery użytkownika</h2><ul>';
 		
 		if ($this->_srv->get('msg')->get('computerAdd/ok')) {
-			UFtpl_Html::msgOk('Komputer został dodany');
+			echo $this->OK('Komputer został dodany');
 		}		
 		echo $d['computers']->write('listAdmin');
 		echo '</ul>';
@@ -295,20 +295,20 @@ extends UFtpl {
 		$form = UFra::factory('UFlib_Form');
 
 		echo '<h2>Edycja</h2>';
-		$form->_start($this->url());
-		$form->_fieldset('Edycja użytkownika');
+		echo $form->_start($this->url());
+		echo $form->_fieldset('Edycja użytkownika');
 		if (!$this->_srv->get('msg')->get('userEdit') && $this->_srv->get('req')->get->is('userHistoryId')) {
-			UFtpl_Html::msgErr('Formularz wypełniony danymi z '.date(self::TIME_YYMMDD_HHMM, $d['user']->modifiedAt));
+			echo $this->ERR('Formularz wypełniony danymi z '.date(self::TIME_YYMMDD_HHMM, $d['user']->modifiedAt));
 		} elseif ($this->_srv->get('msg')->get('userEdit/ok')) {
-			UFtpl_Html::msgOk('Dane zostały zmienione');
+			echo $this->OK('Dane zostały zmienione');
 		}
 		if ($this->_srv->get('msg')->get('userEdit/loginChanged')) {
-			UFtpl_Html::msgOk('W związku ze zmianą loginu, użytkownik będzie musiał przejść procedurę zmiany hasła.');
+			echo $this->OK('W związku ze zmianą loginu, użytkownik będzie musiał przejść procedurę zmiany hasła.');
 		}
 		echo $d['user']->write('formEditAdmin', $d['dormitories'], $d['faculties']);
-		$form->_submit('Zapisz');
-		$form->_end();
-		$form->_end(true);
+		echo $form->_submit('Zapisz');
+		echo $form->_end();
+		echo $form->_end(true);
 	}
 
 	public function userHistory(array $d) {
@@ -328,7 +328,7 @@ extends UFtpl {
 		$acl = $this->_srv->get('acl');
 		
 		if ($this->_srv->get('msg')->get('adminAdd/ok')) {
-			UFtpl_Html::msgOk('Konto zostało założone');
+			echo $this->OK('Konto zostało założone');
 		}		
 		
 		echo '<div class="admins">';
@@ -373,7 +373,7 @@ extends UFtpl {
 			
 	public function adminsNotFound() {
 		echo '<h2>Administratorzy</h2>';
-		UFtpl_Html::msgErr('Nie znaleziono administratorów');
+		echo $this->ERR('Nie znaleziono administratorów');
 		
 		if($acl->sruAdmin('admin', 'add'))
 		{
@@ -383,18 +383,18 @@ extends UFtpl {
 	}
 	public function botsNotFound() {
 		echo '<h2>Boty</h2>';
-		UFtpl_Html::msgErr('Nie znaleziono botów');
+		echo $this->ERR('Nie znaleziono botów');
 	}
 	public function inactiveAdminsNotFound() {
 		echo '<h2>Nieaktywni Administratorzy</h2>';
-		UFtpl_Html::msgErr('Nie znaleziono administratorów');
+		echo $this->ERR('Nie znaleziono administratorów');
 	}		
 	public function admin(array $d) {
 		$url = $this->url(0).'/admins/'.$d['admin']->id;
 		$acl = $this->_srv->get('acl');
 		
 		if ($this->_srv->get('msg')->get('adminEdit/ok')) {
-			UFtpl_Html::msgOk('Dane zostały zmienione');
+			echo $this->OK('Dane zostały zmienione');
 		}		
 		
 		echo '<div class="admin">';		
@@ -408,7 +408,7 @@ extends UFtpl {
 	}
 	public function adminNotFound() {
 		
-		UFtpl_Html::msgErr('Nie znaleziono administratora');
+		echo $this->ERR('Nie znaleziono administratora');
 	}	
 
 	public function titleAdmin(array $d) {
@@ -417,13 +417,13 @@ extends UFtpl {
 	public function adminAdd(array $d) {
 		$form = UFra::factory('UFlib_Form');
 		echo '<h2>Dodawanie nowego administratora</h2>';
-		$form->_start();
+		echo $form->_start();
 		
 
 		echo $d['admin']->write('formAdd', $d['dormitories']);
-		$form->_submit('Dodaj');
-		$form->_end();
-		$form->_end(true);
+		echo $form->_submit('Dodaj');
+		echo $form->_end();
+		echo $form->_end(true);
 	}
 	public function titleAdminAdd(array $d) {
 		echo 'Dodawanie nowego administratora';
@@ -434,13 +434,13 @@ extends UFtpl {
 	public function adminEdit(array $d) {
 		$form = UFra::factory('UFlib_Form');
 		echo '<h2>Edycja administratora</h2>';
-		$form->_start();
+		echo $form->_start();
 		
 
 		echo $d['admin']->write('formEdit', $d['dormitories'], $d['advanced']);
-		$form->_submit('Zapisz');
-		$form->_end();
-		$form->_end(true);
+		echo $form->_submit('Zapisz');
+		echo $form->_end();
+		echo $form->_end(true);
 	}
 	public function titleDormitories() {
 		echo 'Akademiki';
@@ -479,13 +479,13 @@ extends UFtpl {
 		echo '</div>';
 	}
 	public function dormNotFound() {
-		UFtpl_Html::msgErr('Nie znaleziono akademika');
+		echo $this->ERR('Nie znaleziono akademika');
 	}	
 	public function titleDormNotFound() {
 		echo 'Nie znaleziono akademika';
 	}		
 	public function dormsNotFound() {
-		UFtpl_Html::msgErr('Nie znaleziono akademików');
+		echo $this->ERR('Nie znaleziono akademików');
 	}
 
 	public function titleRoom(array $d) {
@@ -494,7 +494,7 @@ extends UFtpl {
 	public function room(array $d) {
 		
 		if ($this->_srv->get('msg')->get('roomEdit/ok')) {
-			UFtpl_Html::msgOk('Komentarz został zmieniony');
+			echo $this->OK('Komentarz został zmieniony');
 		}		
 		
 		echo '<div class="room">';	
@@ -504,13 +504,13 @@ extends UFtpl {
 		echo '</div>';
 	}
 	public function roomNotFound() {
-		UFtpl_Html::msgErr('Nie znaleziono pokoju');
+		echo $this->ERR('Nie znaleziono pokoju');
 	}	
 	public function titleRoomNotFound() {
 		echo 'Nie znaleziono pokoju';
 	}		
 	public function roomsNotFound() {
-		UFtpl_Html::msgErr('Nie znaleziono pokoi');
+		echo $this->ERR('Nie znaleziono pokoi');
 	}
 	public function roomEdit(array $d) {
 		
@@ -522,12 +522,12 @@ extends UFtpl {
 	public function computerAdd(array $d) {
 		$form = UFra::factory('UFlib_Form');
 
-		$form->_start();
-		$form->_fieldset('Dodaj komputer');
+		echo $form->_start();
+		echo $form->_fieldset('Dodaj komputer');
 		echo $d['computer']->write('formAdd');
-		$form->_submit('Dodaj');
-		$form->_end();
-		$form->_end(true);
+		echo $form->_submit('Dodaj');
+		echo $form->_end();
+		echo $form->_end(true);
 		
 	}
 	public function titlePenalties() {
@@ -539,7 +539,7 @@ extends UFtpl {
 		$acl = $this->_srv->get('acl');
 		
 		if ($this->_srv->get('msg')->get('penaltyAdd/ok')) {
-			UFtpl_Html::msgOk('Kara została założona');
+			echo $this->OK('Kara została założona');
 		}		
 		
 		echo '<div class="penalties">';
@@ -550,7 +550,7 @@ extends UFtpl {
 		echo '</div>';			
 	}	
 	public function penaltiesNotFound() {
-		UFtpl_Html::msgErr('Nie znaleziono kar');
+		echo $this->ERR('Nie znaleziono kar');
 	}
 	public function titlePenaltyAdd(array $d) {
 		echo 'Kara dla '.$d['user']->name.' '.$d['user']->surname.' ('.$d['user']->login.')';
@@ -566,12 +566,12 @@ extends UFtpl {
 	
 		$form = UFra::factory('UFlib_Form');
 
-		$form->_start();
-		$form->_fieldset();
+		echo $form->_start();
+		echo $form->_fieldset();
 		echo $d['penalty']->write('formAdd', $d['computers']);
-		$form->_submit('Dodaj');
-		$form->_end();
-		$form->_end(true);		
+		echo $form->_submit('Dodaj');
+		echo $form->_end();
+		echo $form->_end(true);		
 
 		echo '</div>';
 					
@@ -587,7 +587,7 @@ extends UFtpl {
 		echo '</div>';
 	}
 	public function penaltyNotFound() {
-		UFtpl_Html::msgErr('Nie znaleziono kary');
+		echo $this->ERR('Nie znaleziono kary');
 	}								
 	
 }

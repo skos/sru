@@ -3,7 +3,7 @@
  * szablon strony
  */
 class UFtpl_Index
-extends UFtpl {
+extends UFtpl_Common {
 
 	public function index(array $d) {
 		header('Content-Type: text/html; charset=UTF-8');

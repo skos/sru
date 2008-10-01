@@ -3,7 +3,7 @@
  * szablon modulu tekstowego
  */
 class UFtpl_Text
-extends UFtpl {
+extends UFtpl_Common {
 
 	public function addTitle(array $d) {
 		echo 'Dodaj stronę';

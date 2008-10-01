@@ -39,10 +39,21 @@ extends UFraCore{
 		self::$services->set('msgNext', $msgNext);
 		self::$services->set('session', $session);
 		self::$services->set('acl', $acl);
-
-		define('NOW', time());
 	}
 
+	static public function autoload($className) {
+		$classFile = strtolower($className);
+		if (isset(self::$classMap[$classFile])) {
+			$classFile = UFDIR_CORE.self::$classMap[$classFile];
+		} else {
+			$classFile = substr($classFile, 2);
+			$classFile = str_replace('_','/',$classFile);
+			$classFile = UFDIR_APP.str_replace('//','/_',$classFile);
+		}
+		return self::includeClass($classFile);
+	}
+
+	/*
 	static public function autoload($className) {
 		$classFile = strtolower($className);
 		$classFile = substr($classFile, 2);
@@ -67,6 +78,7 @@ extends UFraCore{
 				break;
 		}
 	}
+	*/
 
 }
 

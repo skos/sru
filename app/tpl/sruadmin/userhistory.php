@@ -3,7 +3,7 @@
  * szablon beana historii uzytkownika
  */
 class UFtpl_SruAdmin_UserHistory
-extends UFtpl {
+extends UFtpl_Common {
 
 	protected function _diff(array $old, array $new) {
 		$changes = array();

@@ -24,6 +24,7 @@ extends UFmap {
 		'ip'             => self::TEXT,
 		'userId'         => self::NULL_INT,
 		'locationId'     => self::INT,
+		'locationAlias'  => self::TEXT,	// kolumna tylko do walidacji
 		'availableTo'    => self::TS,
 		'availableMaxTo' => self::TS,
 		'modifiedById'   => self::NULL_INT,
@@ -38,7 +39,8 @@ extends UFmap {
 		'host' => array('textMin'=>1, 'textMax'=>50, 'regexp'=>'^[a-z][-a-z0-9]*$'),
 		'mac' => array('regexp'=>'^[0-9a-fA-F]{1,2}?([- :]?[0-9a-fA-F]{1,2}){5}$'),
 		'ip' => array('regexp'=>'^[0-9]{1,3}(\.[0-9]{1,3}){3}$'),
-		'locationId' => array('textMin'=>1),
+		'locationId' => array('intMin'=>1),
+		'locationAlias' => array('textMin'=>1),
 	);
 	protected $pk = 'id';
 }

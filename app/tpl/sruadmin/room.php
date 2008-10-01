@@ -3,7 +3,7 @@
  * szablon beana pokoju
  */
 class UFtpl_SruAdmin_Room
-extends UFtpl {
+extends UFtpl_Common {
 	
 	public function listRooms(array $d) {
 		$url = $this->url(0).'/dormitories/';
@@ -67,12 +67,12 @@ extends UFtpl {
 		echo '<h3>Edycja</h3>';
 		$form = UFra::factory('UFlib_Form', 'roomEdit', $d, array());
 		
-		$form->_start($this->url());
+		echo $form->_start($this->url());
 		
-		$form->_fieldset('Komentarz');
-		$form->comment('', array('type'=>$form->TEXTAREA, 'rows'=>5));
-		$form->_submit('Zapisz');
-		$form->_end();
-		$form->_end(true);		
+		echo $form->_fieldset('Komentarz');
+		echo $form->comment('', array('type'=>$form->TEXTAREA, 'rows'=>5));
+		echo $form->_submit('Zapisz');
+		echo $form->_end();
+		echo $form->_end(true);		
 	}		
 }

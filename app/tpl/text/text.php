@@ -3,7 +3,7 @@
  * szablon beana tekstowego
  */
 class UFtpl_Text_Text
-extends UFtpl {
+extends UFtpl_Common {
 	
 	protected $errors = array(
 		'alias' => 'Adres nie jest prawidłowy.',

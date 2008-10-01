@@ -27,7 +27,8 @@ extends UFdao {
 	public function getFromSession() {
 		return $this->getByPK($this->_srv->get('session')->authAdmin);
 	}
-	public function listAll() {
+
+	public function listAll($page=1, $perPage=10, $overFetch=0) {
 		$mapping = $this->mapping('list');
 
 		$query = $this->prepareSelect($mapping);
@@ -41,7 +42,8 @@ extends UFdao {
 		
 		return $this->doSelect($query);
 	}
-	public function listAllInactive() {
+
+	public function listAllInactive($page=1, $perPage=10, $overFetch=0) {
 		$mapping = $this->mapping('list');
 
 		$query = $this->prepareSelect($mapping);
@@ -55,6 +57,7 @@ extends UFdao {
 		
 		return $this->doSelect($query);
 	}	
+
 	public function listAllBots() {
 		$mapping = $this->mapping('list');
 

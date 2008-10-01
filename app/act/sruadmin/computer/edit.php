@@ -10,6 +10,7 @@ extends UFact {
 
 	public function go() {
 		try {
+			$this->begin();
 			$bean = UFra::factory('UFbean_Sru_Computer');
 			$bean->getByPK((int)$this->_srv->get('req')->get->computerId);
 
@@ -35,9 +36,12 @@ extends UFact {
 
 			$this->postDel(self::PREFIX);
 			$this->markOk(self::PREFIX);
+			$this->commit();
 		} catch (UFex_Dao_DataNotValid $e) {
+			$this->rollback();
 			$this->markErrors(self::PREFIX, $e->getData());
 		} catch (UFex_Db_QueryFailed $e) {
+			$this->rollback();
 			if (0 == $e->getCode()) {
 				$this->markErrors(self::PREFIX, array('mac'=>'regexp'));
 			} else {

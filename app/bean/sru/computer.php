@@ -5,8 +5,6 @@
 class UFbean_Sru_Computer
 extends UFbeanSingle {
 
-	protected $_locationId = null;
-
 	protected function validateHost($val, $change) {
 		try {
 			$bean = UFra::factory('UFbean_Sru_Computer');
@@ -39,30 +37,24 @@ extends UFbeanSingle {
 		return strtolower($val);
 	}
 
-	protected function validateLocationId($val, $change) {
+	protected function validateLocationAlias($val, $change) {
 		$post = $this->_srv->get('req')->post->{$change?'computerEdit':'computerAdd'};
 		try {
 			$dorm = UFra::factory('UFbean_Sru_Dormitory');
-			if (array_key_exists('dormitory', $post)) {
-				$id = $post['dormitory'];
-			} else {
-				$id = $this->data['dormitory'];
-			}
-			$dorm->getByPK($id);
+			$dorm->getByPK((int)$post['dormitory']);
 		} catch (UFex $e) {
-			return;
+			return 'noDormitory';
 		}
 		try {
 			$loc = UFra::factory('UFbean_Sru_Location');
 			$loc->getByAliasDormitory((string)$val, $dorm->id);
-			$this->_locationId = $loc->id;
+			$this->data['locationAlias'] = $val;
+			$this->dataChanged['locationAlias'] = $val;
+			$this->data['locationId'] = $loc->id;
+			$this->dataChanged['locationId'] = $loc->id;
 		} catch (UFex $e) {
 			return 'noRoom';
 		}
-	}
-
-	protected function normalizeLocationId($val, $change) {
-		return (int)$this->_locationId;
 	}
 
 	protected function validateIp($val, $change) {
