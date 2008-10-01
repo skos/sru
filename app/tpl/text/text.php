@@ -23,9 +23,9 @@ extends UFtpl_Common {
 	public function formAdd(array $d) {
 		$form = UFra::factory('UFlib_Form', 'textAdd', $d, $this->errors);
 
-		$form->title('Tytuł');
-		$form->alias('Adres');
-		$form->content('Treść', array('type'=>$form->TEXTAREA, 'rows'=>20));
+		echo $form->title('Tytuł');
+		echo $form->alias('Adres');
+		echo $form->content('Treść', array('type'=>$form->TEXTAREA, 'rows'=>20));
 	}
 
 	public function preview(array $d) {
@@ -60,9 +60,9 @@ extends UFtpl_Common {
 	public function formEdit(array $d) {
 		$form = UFra::factory('UFlib_Form', 'textEdit', $d, $this->errors);
 
-		$form->title('Tytuł');
-		$form->alias('Adres');
-		$form->content('Treść', array('type'=>$form->TEXTAREA, 'rows'=>20));
+		echo $form->title('Tytuł');
+		echo $form->alias('Adres');
+		echo $form->content('Treść', array('type'=>$form->TEXTAREA, 'rows'=>20));
 	}
 
 	public function formDel(array $d) {

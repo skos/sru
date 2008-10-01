@@ -16,16 +16,16 @@ extends UFtpl_Common {
 	public function add(array $d) {
 		$form = UFra::factory('UFlib_Form');
 
-		$form->_start($this->url(0).'/:add');
-		$form->_fieldset('Dodaj stronę');
+		echo $form->_start($this->url(0).'/:add');
+		echo $form->_fieldset('Dodaj stronę');
 		if ($this->_srv->get('msg')->get('textAdd/ok')) {
 			UFtpl_Html::msgOk('Strona została dodana');
 		}
 		echo $d['text']->write('formAdd');
-		$form->_submit('Podgląd', array('name'=>'textPreview'));
-		$form->_submit('Dodaj');
-		$form->_end();
-		$form->_end(true);
+		echo $form->_submit('Podgląd', array('name'=>'textPreview'));
+		echo $form->_submit('Dodaj');
+		echo $form->_end();
+		echo $form->_end(true);
 		echo '<small class="admin"><a href="'.$this->url(0).'/:edit">Edytuj</a></small>';
 	}
 
@@ -73,16 +73,16 @@ extends UFtpl_Common {
 	public function edit(array $d) {
 		$form = UFra::factory('UFlib_Form');
 
-		$form->_start($this->url().'/');
-		$form->_fieldset('Zmień stronę');
+		echo $form->_start($this->url().'/');
+		echo $form->_fieldset('Zmień stronę');
 		if ($this->_srv->get('msg')->get('textEdit/ok')) {
 			UFtpl_Html::msgOk('Strona została zapisana');
 		}
 		echo $d['text']->write('formEdit');
-		$form->_submit('Podgląd', array('name'=>'textPreview'));
-		$form->_submit('Zapisz');
-		$form->_end();
-		$form->_end(true);
+		echo $form->_submit('Podgląd', array('name'=>'textPreview'));
+		echo $form->_submit('Zapisz');
+		echo $form->_end();
+		echo $form->_end(true);
 		echo '<small class="admin"><a href="'.$this->url(0).'/:edit">Edytuj</a></small>';
 	}
 
@@ -97,12 +97,12 @@ extends UFtpl_Common {
 	public function delete(array $d) {
 		$form = UFra::factory('UFlib_Form');
 
-		$form->_start($this->url().'/');
-		$form->_fieldset('Usuń stronę');
+		echo $form->_start($this->url().'/');
+		echo $form->_fieldset('Usuń stronę');
 		echo $d['text']->write('formDel');
-		$form->_submit('Usuń', array('name'=>'textDel'));
-		$form->_end();
-		$form->_end(true);
+		echo $form->_submit('Usuń', array('name'=>'textDel'));
+		echo $form->_end();
+		echo $form->_end(true);
 		echo '<a href="'.$this->url(0).'/:edit">Edytuj</a>';
 	}
 }
