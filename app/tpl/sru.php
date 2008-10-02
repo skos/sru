@@ -37,6 +37,7 @@ extends UFtpl_Common {
 			UFtpl_Html::msgOk('Konto zostało założone');
 		}
 		echo $d['user']->write('formAdd', $d['dormitories'], $d['faculties']);
+		echo '<br/><b>Założenie konta oznacza akceptację <a href="../regulamin.html">Regulaminu SKOS PG</a>.</b><br/><br/>';
 		echo $form->_submit('Załóż');
 		echo $form->_end();
 		echo $form->_end(true);
