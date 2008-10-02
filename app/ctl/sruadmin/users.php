@@ -29,7 +29,7 @@ extends UFctl {
 								$get->searchedLogin = urldecode($tmp[1]);
 								break;
 							case 'surname':
-								$get->searchedSruname = urldecode($tmp[1]);
+								$get->searchedSurname = urldecode($tmp[1]);
 								break;
 						}
 					}
