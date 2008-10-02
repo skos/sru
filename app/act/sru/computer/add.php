@@ -13,6 +13,14 @@ extends UFact {
 			$user = UFra::factory('UFbean_Sru_User');
 			$user->getFromSession();
 
+			$computers = UFra::factory('UFbean_Sru_ComputerList');
+			try {
+				$computers->listByUserId($user->id);
+				// znaleziono komputery, wiec uzytkownik nie moze dodac sobie kolejnego
+				return;
+			} catch (UFex_Dao_NotFound $e) {
+			} 
+
 			try {
 				$ip = UFra::factory('UFbean_Sru_Ipv4');
 				$ip->getFreeByDormitoryId($user->dormitoryId);
@@ -46,11 +54,12 @@ extends UFact {
 			if ($foundOld) {
 				if ($bean->locationId != $user->locationId) {
 					$this->_srv->get('req')->post->computerEdit = $this->_srv->get('req')->post->{self::PREFIX};	// walidator oczekuje computerEdit przy zmianie pokoju
-					$bean->locationId = $user->locationAlias;
+					$bean->locationAlias = $user->locationAlias;
+					$bean->locationId = $user->locationId;
 					$this->_srv->get('req')->post->del('computerEdit');
 				}
 			} else {
-				$bean->locationId = $user->locationAlias;
+				$bean->locationAlias = $user->locationAlias;
 			}
 			$bean->modifiedById = null;
 			$bean->modifiedAt = NOW;

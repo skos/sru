@@ -3,7 +3,7 @@
 /**
  * dodanie uzytkownika
  */
-class UFact_Sru_User_Add
+class UFact_SruAdmin_User_Add
 extends UFact {
 
 	const PREFIX = 'userAdd';
@@ -11,7 +11,8 @@ extends UFact {
 	public function go() {
 		try {
 			$bean = UFra::factory('UFbean_Sru_User');
-			$bean->fillFromPost(self::PREFIX);
+			$bean->fillFromPost(self::PREFIX, array('password'));
+			$bean->modifiedById = $this->_srv->get('session')->authAdmin;
 
 			// wygenerowanie hasla
 			$password = md5($bean->login.NOW);

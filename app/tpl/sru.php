@@ -15,7 +15,7 @@ extends UFtpl_Common {
 		echo $form->_start();
 		echo $form->_fieldset('Zaloguj się');
 		if ($this->_srv->get('msg')->get('userLogin/errors')) {
-			UFtpl_Html::msgErr('Nieprawidłowy login lub hasło');
+			echo $this->ERR('Nieprawidłowy login lub hasło');
 		}
 		echo $d['user']->write('formLogin');
 		echo $form->_submit('Zaloguj');
@@ -36,11 +36,31 @@ extends UFtpl_Common {
 		if ($this->_srv->get('msg')->get('userAdd/ok')) {
 			UFtpl_Html::msgOk('Konto zostało założone');
 		}
-		echo $d['user']->write('formAdd', $d['dormitories'], $d['faculties']);
+		echo $d['user']->write('formAdd', $d['dormitories'], $d['faculties'], $d['admin']);
 		echo '<br/><b>Założenie konta oznacza akceptację <a href="../regulamin.html">Regulaminu SKOS PG</a>.</b><br/><br/>';
 		echo $form->_submit('Załóż');
 		echo $form->_end();
 		echo $form->_end(true);
+	}
+
+	public function userAddMailTitle(array $d) {
+		echo 'Witamy w sieci SKOS';
+	}
+
+	public function userAddMailBody(array $d) {
+		echo 'Imię: '.$d['user']->name."\n";
+		echo 'Nazwisko: '.$d['user']->surname."\n";
+		echo "\n";
+		echo 'Login: '.$d['user']->login."\n";
+		echo 'Hasło: '.$d['password'];
+		UFra::debug('haslo: '.$d['password']);
+	}
+
+	public function userAddMailHeaders(array $d) {
+		echo 'MIME-Version: 1.0'."\n";
+		echo 'Content-Type: text/plain; charset=UTF-8'."\n";
+		echo 'Content-Transfer-Encoding: 8bit'."\n";
+		echo 'From: Administratorzy SKOS <adnet@ds.pg.gda.pl>'."\n";
 	}
 
 	public function titleMain() {
@@ -62,8 +82,10 @@ extends UFtpl_Common {
 		echo '<div class="mainMenu"><h1>System Rejestracji Użytkowników</h1><ul>';
 		echo '<li><a href="'.$this->url(0).'/profile">Profil</a></li>';
 		echo '<li><a href="'.$this->url(0).'/computers">Komputery</a></li>';
+		/*
 		echo '<li><a href="'.$this->url(0).'/bans">Kary</a></li>';
 		echo '<li><a href="'.$this->url(0).'/services">Usługi</a></li>';
+		*/
 		echo '</ul></div>';
 	}
 
@@ -85,7 +107,7 @@ extends UFtpl_Common {
 		echo $form->_start();
 		echo $form->_fieldset('Twoje dane');
 		if ($this->_srv->get('msg')->get('userEdit/ok')) {
-			UFtpl_Html::msgOk('Dane zostały zmienione');
+			echo $this->OK('Dane zostały zmienione');
 		}
 		echo $d['user']->write('formEdit', $d['dormitories'], $d['faculties']);
 		echo $form->_submit('Zapisz');
@@ -106,12 +128,12 @@ extends UFtpl_Common {
 		}
 		$d['computers']->write('listOwn');
 		echo '</ul>';
-		echo '<p><small><a href="'.$this->url(1).'/:add">Dodaj</a></small></p>';
+		echo '<p>Samodzielnie możesz dodać tylko jeden komputer. Jeżeli chcesz zarejestrować kolejny, zgłoś się do administratora lokalnego.</p>';
 	}
 
 	public function userComputersNotFound() {
 		echo '<h1>Twoje komputery</h1>';
-		UFtpl_Html::msgErr('Nie posiadasz komputerów. <a href="'.$this->url(1).'/:add">Dodaj komputer</a>.');
+		echo $this->ERR('Nie posiadasz komputerów. <a href="'.$this->url(1).'/:add">Dodaj komputer</a>.');
 	}
 
 	public function titleUserComputer(array $d) {
@@ -165,7 +187,6 @@ extends UFtpl_Common {
 		echo $form->_submit('Dodaj');
 		echo $form->_end();
 		echo $form->_end(true);
-		echo '<p class="nav"><a href="'.$this->url(1).'">Powrót</a></p>';
 	}
 
 	public function userComputerDel(array $d) {

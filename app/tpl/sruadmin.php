@@ -221,6 +221,7 @@ extends UFtpl_Common {
 		echo $form->_fieldset('Znajdź użytkownika');
 		echo $d['user']->write('formSearch', $d['searched']);
 		echo $form->_submit('Znajdź');
+		echo ' <a href="'.$this->url(1).'/users/:add">Dodaj</a>';
 		echo $form->_end();
 		echo $form->_end(true);
 		echo '</div>';
@@ -238,6 +239,9 @@ extends UFtpl_Common {
 
 	public function user(array $d) {
 		$url = $this->url(0).'/users/'.$d['user']->id;
+		if ($this->_srv->get('msg')->get('userAdd/ok')) {
+			echo $this->OK('Konto zostało założone.');
+		}		
 		echo '<div class="user">';
 		$d['user']->write('details');
 		echo '<p class="nav"><a href="'.$url.'">Dane</a> <a href="'. $this->url(0).'/penalties/:add/'.$d['user']->id.'">Ukarz</a> <a href="'.$url.'/history">Historia zmian</a> <a href="'.$url.'/:edit">Edycja</a></p>';
@@ -257,7 +261,7 @@ extends UFtpl_Common {
 	}
 
 	public function userComputers(array $d) {
-		$url = $this->url(1).'/'.$d['user']->id.'/computers/';
+		$url = $this->url(0).'/users/'.$d['user']->id.'/computers/';
 		
 		echo '<h2>Komputery użytkownika</h2><ul>';
 		
@@ -280,9 +284,9 @@ extends UFtpl_Common {
 		
 	}	
 
-	public function userComputersNotFound() {
-		$url = $this->url(2).'/computers/';
-		echo '<h2>Komputery użytkownika</h2><ul>';
+	public function userComputersNotFound(array $d) {
+		$url = $this->url(0).'/users/'.$d['user']->id.'/computers/';
+		echo '<h2>Komputery użytkownika</h2>';
 		echo '<p class="nav"><a href="'.$url.':add">Dodaj komputer</a></p>';
 	}
 	public function userInactiveComputersNotFound() {

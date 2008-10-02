@@ -55,15 +55,14 @@ extends UFtpl_Common {
 		echo '<p>'.$d['name'].' '.$d['surname'].'</p>';
 	}
 
-	public function formAdd(array $d, $dormitories, $faculties) {
+	public function formAdd(array $d, $dormitories, $faculties, $admin=false) {
 		$form = UFra::factory('UFlib_Form', 'userAdd', $d, $this->errors);
 
 
 		echo $form->_fieldset('Konto');
 		echo $form->login('Login');
-		echo $form->password('Wybierz hasło', array('type'=>$form->PASSWORD));
-		echo $form->password2('Potwierdź hasło', array('type'=>$form->PASSWORD));
 		echo $form->email('E-mail');
+		echo '<p>Hasło zostanie przesłane na powyższy adres.</p>';
 		echo $form->_end();
 
 		echo $form->_fieldset('Dane osobowe');

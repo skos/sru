@@ -31,41 +31,7 @@ extends UFbeanSingle {
 		}
 	}
 
-	protected function normalizeLogin($val, $change) {
-		if (is_string($this->_password)) {
-			$pass = $this->_password;
-		} else {
-			$pass = microtime();
-		}
-		if (isset($this->_password)) {
-			$this->data['password'] = self::generatePassword($val, $pass);
-			$this->dataChanged['password'] = $this->data['password'];
-		}
-		return $val;
-	}
-	
-	protected function validatePassword($val, $change) {
-			$post = $this->_srv->get('req')->post->{$change?'userEdit':'userAdd'};
-			try {
-				if ($post['password2'] !== $val) {
-					return 'mismatch';			
-				}
-			} catch (UFex $e) {
-				return 'unknown';
-			}
-	}
-
-	protected function normalizePassword($val, $change) {
-		$this->_password = $val;
-		if (array_key_exists('login', $this->data)) {
-			$login = $this->data['login'];
-		} else {
-			$login = md5(microtime());
-		}
-		return self::generatePassword($login, $val);
-	}
-		
-		protected function validateStudyYearId($val, $change) {	
+	protected function validateStudyYearId($val, $change) {	
 		$post = $this->_srv->get('req')->post->{$change?'userEdit':'userAdd'};
 		if ('-' === $val) {
 			if ('-' !== $post['studyYearId']) {

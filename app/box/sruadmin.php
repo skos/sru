@@ -311,16 +311,16 @@ extends UFbox {
 	public function userComputers() {
 		try {
 			$user = $this->_getUserFromGet();
+			$d['user'] = $user;
 
 			$bean = UFra::factory('UFbean_Sru_ComputerList');
 			$bean->listByUserId($user->id); 
-
 			$d['computers'] = $bean;
-			$d['user'] = $user;
+
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
-			return $this->render(__FUNCTION__.'NotFound');
+			return $this->render(__FUNCTION__.'NotFound', $d);
 		}
 	}
 	public function userInactiveComputers() {
