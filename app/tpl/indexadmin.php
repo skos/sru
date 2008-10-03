@@ -25,7 +25,7 @@ extends UFtpl_Common {
 <?=$d['body'];?>
 </div><!-- main -->
 <div id="foot">
-<a href="mailto:hrynek@hrynek.com">Maciej "HryneK" Hryniewicz</a>
+&copy;&nbsp;<a href="mailto:adnet@ds.pg.gda.pl">SKOS</a>
 </div><!-- foot -->
 </div><!-- body -->
 <?
