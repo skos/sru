@@ -39,9 +39,6 @@ extends UFact {
 				}
 			}
 			// walidator locationId musi miec dane o akademiku
-			$post['dormitory'] = $user->dormitoryId;
-			$this->_srv->get('req')->post->{self::PREFIX} = $post;
-
 			$bean->fillFromPost(self::PREFIX, null, array('mac', 'host'));
 			if ($foundOld) {
 				if ($bean->locationId != $user->locationId) {
@@ -50,7 +47,7 @@ extends UFact {
 					$this->_srv->get('req')->post->del('computerEdit');
 				}
 			} else {
-				$bean->locationId = $user->locationAlias;
+				$bean->locationId = $user->locationId;
 			}
 			$bean->modifiedById = null;
 			$bean->modifiedAt = NOW;

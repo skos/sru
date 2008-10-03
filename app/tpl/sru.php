@@ -14,7 +14,10 @@ extends UFtpl_Common {
 
 		echo $form->_start();
 		echo $form->_fieldset('Zaloguj się');
-		if ($this->_srv->get('msg')->get('userLogin/errors')) {
+
+		if ($this->_srv->get('msg')->get('userAdd/ok')) {
+			echo $this->OK('Konto zostało założone. Hasło otrzymasz wkrótce na maila.');
+		} elseif ($this->_srv->get('msg')->get('userLogin/errors')) {
 			echo $this->ERR('Nieprawidłowy login lub hasło');
 		}
 		echo $d['user']->write('formLogin');
@@ -53,14 +56,15 @@ extends UFtpl_Common {
 		echo "\n";
 		echo 'Login: '.$d['user']->login."\n";
 		echo 'Hasło: '.$d['password'];
-		UFra::debug('haslo: '.$d['password']);
+		echo "\n";
+		echo 'Kliknij: http://'.$d['host'].$this->url(0).'/'.$d['token']->token;
 	}
 
 	public function userAddMailHeaders(array $d) {
 		echo 'MIME-Version: 1.0'."\n";
 		echo 'Content-Type: text/plain; charset=UTF-8'."\n";
 		echo 'Content-Transfer-Encoding: 8bit'."\n";
-		echo 'From: Administratorzy SKOS <adnet@ds.pg.gda.pl>'."\n";
+		echo 'From: Test SRU <testowy-email-no-reply@pg.edu.pl>'."\n";
 	}
 
 	public function titleMain() {
@@ -79,7 +83,11 @@ extends UFtpl_Common {
 	}
 
 	public function userMainMenu() {
-		echo '<div class="mainMenu"><h1>System Rejestracji Użytkowników</h1><ul>';
+		echo '<div class="mainMenu"><h1>System Rejestracji Użytkowników</h1>';
+		if ($this->_srv->get('msg')->get('userConfirm/ok')) {
+			echo $this->OK('Konto zostało aktywowane.');
+		}
+		echo '<ul>';
 		echo '<li><a href="'.$this->url(0).'/profile">Profil</a></li>';
 		echo '<li><a href="'.$this->url(0).'/computers">Komputery</a></li>';
 		/*
@@ -176,10 +184,6 @@ extends UFtpl_Common {
 
 	public function userComputerAdd(array $d) {
 		$form = UFra::factory('UFlib_Form');
-
-		if ($this->_srv->get('msg')->get('userAdd/ok')) {
-			UFtpl_Html::msgOk('Konto zostało założone');
-		}
 
 		echo $form->_start($this->url(0).'/computers/:add');
 		echo $form->_fieldset('Dodaj komputer');

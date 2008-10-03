@@ -10,6 +10,7 @@ SET escape_string_warning = off;
 
 SET search_path = public, pg_catalog;
 
+ALTER TABLE ONLY public.users_tokens DROP CONSTRAINT users_tokens_user_id_fkey;
 ALTER TABLE ONLY public.users DROP CONSTRAINT users_modified_by_fkey;
 ALTER TABLE ONLY public.users DROP CONSTRAINT users_location_id_fkey;
 ALTER TABLE ONLY public.users_history DROP CONSTRAINT users_history_user_id_fkey;
@@ -33,6 +34,7 @@ DROP TRIGGER computers_update ON public.computers;
 DROP INDEX public.computers_mac_key;
 DROP INDEX public.computers_ipv4_key;
 DROP INDEX public.computers_host_key;
+ALTER TABLE ONLY public.users_tokens DROP CONSTRAINT users_tokens_pkey;
 ALTER TABLE ONLY public.users DROP CONSTRAINT users_pkey;
 ALTER TABLE ONLY public.users DROP CONSTRAINT users_login_key;
 ALTER TABLE ONLY public.users_history DROP CONSTRAINT users_history_pkey;
@@ -53,6 +55,7 @@ ALTER TABLE ONLY public.computers_bans DROP CONSTRAINT computers_bans_pkey;
 ALTER TABLE ONLY public.penalties DROP CONSTRAINT bans_pkey;
 ALTER TABLE ONLY public.admins DROP CONSTRAINT admins_pkey;
 ALTER TABLE ONLY public.admins DROP CONSTRAINT admins_login_key;
+ALTER TABLE public.users_tokens ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.users_history ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.users ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.text ALTER COLUMN id DROP DEFAULT;
@@ -63,6 +66,8 @@ ALTER TABLE public.computers_history ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.computers_history ALTER COLUMN computer_id DROP DEFAULT;
 ALTER TABLE public.computers ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.admins ALTER COLUMN id DROP DEFAULT;
+DROP SEQUENCE public.users_tokens_id_seq;
+DROP TABLE public.users_tokens;
 DROP SEQUENCE public.users_id_seq;
 DROP SEQUENCE public.users_history_id_seq;
 DROP TABLE public.users_history;
@@ -1221,7 +1226,8 @@ CREATE TABLE users (
     modified_by bigint,
     modified_at timestamp without time zone DEFAULT now() NOT NULL,
     "comment" pg_catalog.text DEFAULT ''::pg_catalog.text NOT NULL,
-    name character varying(100) NOT NULL
+    name character varying(100) NOT NULL,
+    active boolean DEFAULT true NOT NULL
 );
 
 
@@ -1314,6 +1320,13 @@ COMMENT ON COLUMN users."comment" IS 'komentarze dotyczace uzytkownika';
 --
 
 COMMENT ON COLUMN users.name IS 'imie';
+
+
+--
+-- Name: COLUMN users.active; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN users.active IS 'czy uzytkownik moze logowac sie do systemu?';
 
 
 --
@@ -1457,6 +1470,52 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 
 
 --
+-- Name: users_tokens; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE users_tokens (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    token pg_catalog.text NOT NULL,
+    valid_to timestamp without time zone DEFAULT (now() + '7 days'::interval) NOT NULL,
+    "type" smallint DEFAULT 0 NOT NULL
+);
+
+
+--
+-- Name: COLUMN users_tokens.valid_to; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN users_tokens.valid_to IS 'do kiedy token jest wazny';
+
+
+--
+-- Name: COLUMN users_tokens."type"; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN users_tokens."type" IS 'do czego moze byc ten token wykorzystany
+0 - aktywacja konta';
+
+
+--
+-- Name: users_tokens_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE users_tokens_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
+-- Name: users_tokens_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE users_tokens_id_seq OWNED BY users_tokens.id;
+
+
+--
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1524,6 +1583,13 @@ ALTER TABLE users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
 --
 
 ALTER TABLE users_history ALTER COLUMN id SET DEFAULT nextval('users_history_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE users_tokens ALTER COLUMN id SET DEFAULT nextval('users_tokens_id_seq'::regclass);
 
 
 --
@@ -1684,6 +1750,14 @@ ALTER TABLE ONLY users
 
 ALTER TABLE ONLY users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users_tokens_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY users_tokens
+    ADD CONSTRAINT users_tokens_pkey PRIMARY KEY (id);
 
 
 --
@@ -1883,6 +1957,14 @@ ALTER TABLE ONLY users
 
 ALTER TABLE ONLY users
     ADD CONSTRAINT users_modified_by_fkey FOREIGN KEY (modified_by) REFERENCES admins(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: users_tokens_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY users_tokens
+    ADD CONSTRAINT users_tokens_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --

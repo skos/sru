@@ -58,9 +58,11 @@ extends UFbox {
 		return $this->render(__FUNCTION__, $d);
 	}
 
-	public function userAddMailBody($user, $password) {
+	public function userAddMailBody($user, $password, $token) {
 		$d['user'] = $user;
 		$d['password'] = $password;
+		$d['token'] = $token;
+		$d['host'] = $this->_srv->get('req')->server->HTTP_HOST;
 		return $this->render(__FUNCTION__, $d);
 	}
 

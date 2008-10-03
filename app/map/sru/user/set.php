@@ -17,6 +17,7 @@ extends UFmap {
 		'modifiedById'   => 'modified_by',
 		'modifiedAt'     => 'modified_at',
 		'comment'        => 'comment',
+		'active'         => 'active',
 	);
 	protected $columnTypes = array(
 		'login'          => self::TEXT,
@@ -32,6 +33,7 @@ extends UFmap {
 		'modifiedById'   => self::NULL_INT,
 		'modifiedAt'     => self::TS,
 		'comment'        => self::TEXT,
+		'active'         => self::BOOL,
 	);
 	protected $tables = array(
 		'' => 'users',

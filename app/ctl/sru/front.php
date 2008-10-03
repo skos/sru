@@ -40,6 +40,11 @@ extends UFctl {
 					$get->view = 'user/add';
 					break;
 				default:
+					if (UFlib_Valid::regexp($req->segment(1),'^[0-9a-f]{32}$')) {
+						$get->userToken = $req->segment(1);
+						$get->view = 'user/main';
+						break;
+					}
 					$get->view = 'error404';
 					break;
 			}
@@ -56,6 +61,8 @@ extends UFctl {
 			$act = 'User_Logout';
 		} elseif ($post->is('userLogin') && $acl->sru('user', 'login')) {
 			$act = 'User_Login';
+		} elseif ('user/main' == $get->view && $get->is('userToken') && $acl->sru('user', 'add')) {
+			$act = 'User_Confirm';
 		} elseif ('user/edit' == $get->view && $post->is('userEdit') && $acl->sru('user', 'edit')) {
 			$act = 'User_Edit';
 		} elseif ('user/add' == $get->view && $post->is('userAdd') && $acl->sru('user', 'add')) {
@@ -91,7 +98,7 @@ extends UFctl {
 				}
 			case 'user/add':
 				if ($msg->get('userAdd/ok')) {
-					return 'Sru_UserComputerAdd';
+					return 'Sru_Login';
 				} elseif ($acl->sru('user', 'add')) {
 					return 'Sru_UserAdd';
 				} else {

@@ -11,6 +11,7 @@ extends UFdao {
 		$query = $this->prepareSelect($mapping);
 		$query->where($mapping->login, $login);
 		$query->where($mapping->password, $password);
+		$query->where($mapping->active, true);
 
 		return $this->doSelectFirst($query);
 	}

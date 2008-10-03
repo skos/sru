@@ -10,8 +10,10 @@ extends UFact {
 
 	public function go() {
 		try {
+			$this->begin();
 			$bean = UFra::factory('UFbean_Sru_User');
 			$bean->fillFromPost(self::PREFIX);
+			$bean->active = false;
 
 			// wygenerowanie hasla
 			$password = md5($bean->login.NOW);
@@ -21,18 +23,24 @@ extends UFact {
 
 			$id = $bean->save();
 			$req = $this->_srv->get('req');
-			$req->get->userId = $id;
+
+			$token = UFra::factory('UFbean_Sru_Token');
+			$token->token = md5($id.NOW);
+			$token->userId = $id;
+			$token->save();
 
 			// wyslanie maila
 			$box = UFra::factory('UFbox_Sru');
 			$title = $box->userAddMailTitle($bean);
-			$body = $box->userAddMailBody($bean, $password);
+			$body = $box->userAddMailBody($bean, $password, $token);
 			$headers = $box->userAddMailHeaders($bean);
 			mail($bean->email, $title, $body, $headers);
 
 			$this->postDel(self::PREFIX);
 			$this->markOk(self::PREFIX);
+			$this->commit();
 		} catch (UFex_Dao_DataNotValid $e) {
+			$this->rollback();
 			$this->markErrors(self::PREFIX, $e->getData());
 		}
 	}

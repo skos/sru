@@ -15,6 +15,7 @@ extends UFmap {
 		'studyYearId'    => 'study_year_id',
 		'locationId'     => 'location_id',
 		'modifiedById'   => 'modified_by',
+		'active'         => 'active',
 	);
 	protected $columnTypes = array(
 		'login'          => self::TEXT,
@@ -28,6 +29,7 @@ extends UFmap {
 		'locationAlias'  => self::TEXT,	// kolumna tylko do walidacji
 		'locationId'     => self::INT,
 		'modifiedById'   => self::NULL_INT,
+		'active'         => self::BOOL,
 	);
 	protected $tables = array(
 		'' => 'users',

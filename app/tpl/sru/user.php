@@ -154,7 +154,7 @@ extends UFtpl_Common {
 	public function details(array $d) {
 		$url = $this->url(0);
 		echo '<h1>'.$d['name'].' '.$d['surname'].'</h1>';
-		echo '<p><em>Login:</em> '.$d['login'].'</p>';
+		echo '<p><em>Login:</em> '.$d['login'].(!$d['active']?' <strong>(konto nieaktywne)</strong>':'').'</p>';
 		echo '<p><em>E-mail:</em> <a href="mailto:'.$d['email'].'">'.$d['email'].'</a></p>';
 		echo '<p><em>Miejsce:</em> <a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'/'.$d['locationAlias'].'">'.$d['locationAlias'].'</a> <small>(<a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'">'.$d['dormitoryAlias'].'</a>)</small></p>';
 		echo '<p><em>Wydział:</em> '.$d['facultyName'].'</p>';
@@ -222,5 +222,6 @@ extends UFtpl_Common {
 			echo $form->password('Nowe hasło', array('type'=>$form->PASSWORD,  ));
 			echo $form->password2('Potwierdź hasło', array('type'=>$form->PASSWORD));
 		echo $form->_end();
+		echo $form->active('Konto aktywne', array('type'=>$form->CHECKBOX));
 	}
 }
