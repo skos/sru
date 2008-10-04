@@ -37,7 +37,7 @@ extends UFtpl_Common {
 		echo $form->_start();
 		echo $form->_fieldset('Załóż konto');
 		if ($this->_srv->get('msg')->get('userAdd/ok')) {
-			UFtpl_Html::msgOk('Konto zostało założone');
+			echo $this->OK('Konto zostało założone');
 		}
 		echo $d['user']->write('formAdd', $d['dormitories'], $d['faculties'], $d['admin']);
 		echo '<br/><b>Założenie konta oznacza akceptację <a href="../regulamin.html">Regulaminu SKOS PG</a>.</b><br/><br/>';
@@ -112,7 +112,7 @@ extends UFtpl_Common {
 	}
 
 	public function error404() {
-		UFtpl_Html::msgErr('Strony nie znaleziono. Wróć do <a href="'.$this->url(0).'/" title="System Rejestracji Użytkowników">SRU</a>.');
+		echo $this->ERR('Strony nie znaleziono. Wróć do <a href="'.$this->url(0).'/" title="System Rejestracji Użytkowników">SRU</a>.');
 	}
 
 	public function titleUserEdit() {
@@ -140,9 +140,9 @@ extends UFtpl_Common {
 	public function userComputers(array $d) {
 		echo '<h1>Twoje komputery</h1><ul>';
 		if ($this->_srv->get('msg')->get('computerAdd/ok')) {
-			UFtpl_Html::msgOk('Komputer został dodany');
+			echo $this->OK('Komputer został dodany');
 		} elseif ($this->_srv->get('msg')->get('computerDel/ok')) {
-			UFtpl_Html::msgOk('Komputer został wyrejestrowany');
+			echo $this->OK('Komputer został wyrejestrowany');
 		}
 		$d['computers']->write('listOwn');
 		echo '</ul>';
@@ -170,7 +170,7 @@ extends UFtpl_Common {
 	}
 
 	public function userComputerNotFound() {
-		UFtpl_Html::msgErr('Komputera nie znaleziono');
+		echo $this->ERR('Komputera nie znaleziono');
 	}
 
 	public function userComputerEdit(array $d) {
@@ -179,7 +179,7 @@ extends UFtpl_Common {
 		echo $form->_start($this->url(3).'/');
 		echo $form->_fieldset('Zmień dane komputera');
 		if ($this->_srv->get('msg')->get('computerEdit/ok')) {
-			UFtpl_Html::msgOk('Dane zostały zmienione');
+			echo $this->OK('Dane zostały zmienione');
 		}
 		echo $d['computer']->write('formEdit');
 		echo $form->_submit('Zapisz');
