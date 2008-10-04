@@ -66,6 +66,13 @@ extends UFbox {
 		return $this->render(__FUNCTION__, $d);
 	}
 
+	public function userAddMailBodyNoToken($user, $password) {
+		$d['user'] = $user;
+		$d['password'] = $password;
+		$d['host'] = $this->_srv->get('req')->server->HTTP_HOST;
+		return $this->render(__FUNCTION__, $d);
+	}
+
 	public function userAddMailHeaders($user) {
 		$d['user'] = $user;
 		return $this->render(__FUNCTION__, $d);

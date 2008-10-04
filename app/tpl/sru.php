@@ -50,6 +50,16 @@ extends UFtpl_Common {
 		echo 'Witamy w sieci SKOS';
 	}
 
+	public function userAddMailBodyNoToken(array $d) {
+		echo 'Imię: '.$d['user']->name."\n";
+		echo 'Nazwisko: '.$d['user']->surname."\n";
+		echo "\n";
+		echo 'Login: '.$d['user']->login."\n";
+		echo 'Hasło: '.$d['password'];
+		echo "\n";
+		echo 'Konto jest już aktywne.';;
+	}
+
 	public function userAddMailBody(array $d) {
 		echo 'Imię: '.$d['user']->name."\n";
 		echo 'Nazwisko: '.$d['user']->surname."\n";

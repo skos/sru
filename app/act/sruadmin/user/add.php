@@ -27,7 +27,7 @@ extends UFact {
 			// wyslanie maila
 			$box = UFra::factory('UFbox_Sru');
 			$title = $box->userAddMailTitle($bean);
-			$body = $box->userAddMailBody($bean, $password);
+			$body = $box->userAddMailBodyNoToken($bean, $password);
 			$headers = $box->userAddMailHeaders($bean);
 			mail($bean->email, $title, $body, $headers);
 
