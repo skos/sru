@@ -182,7 +182,7 @@ extends UFtpl_Common {
 		$form = UFra::factory('UFlib_Form');
 
 		echo '<div class="computerSearch">';
-		echo $form->_start($this->url(0).'/computers');
+		echo $form->_start($this->url(0).'/computers/search');
 		echo $form->_fieldset('Znajdź komputer');
 		echo $d['computer']->write('formSearch', $d['searched']);
 		echo $form->_submit('Znajdź');
@@ -217,7 +217,7 @@ extends UFtpl_Common {
 		$form = UFra::factory('UFlib_Form');
 
 		echo '<div class="userSearch">';
-		echo $form->_start($this->url(0).'/users');
+		echo $form->_start($this->url(0).'/users/search');
 		echo $form->_fieldset('Znajdź użytkownika');
 		echo $d['user']->write('formSearch', $d['searched']);
 		echo $form->_submit('Znajdź');
