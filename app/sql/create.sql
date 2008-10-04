@@ -31,6 +31,20 @@ ALTER TABLE ONLY public.computers_history DROP CONSTRAINT computers_history_comp
 ALTER TABLE ONLY public.admins DROP CONSTRAINT admins_dormitory_id_fkey;
 DROP TRIGGER users_update ON public.users;
 DROP TRIGGER computers_update ON public.computers;
+DROP RULE update_counter_inc ON public.users;
+DROP RULE update_counter_dec ON public.users;
+DROP RULE update_active_on ON public.users;
+DROP RULE update_active_off ON public.users;
+DROP RULE udpate_users_counter ON public.locations;
+DROP RULE udpate_counter_inc ON public.computers;
+DROP RULE udpate_counter_dec ON public.computers;
+DROP RULE udpate_computers_counter ON public.locations;
+DROP RULE udpate_active_on ON public.computers;
+DROP RULE udpate_active_off ON public.computers;
+DROP RULE insert_counter ON public.computers;
+DROP RULE insert_counter ON public.users;
+DROP RULE delete_counter ON public.computers;
+DROP RULE delete_counter ON public.users;
 DROP INDEX public.computers_mac_key;
 DROP INDEX public.computers_ipv4_key;
 DROP INDEX public.computers_host_key;
@@ -1779,6 +1793,104 @@ CREATE UNIQUE INDEX computers_ipv4_key ON computers USING btree (ipv4, active) W
 --
 
 CREATE UNIQUE INDEX computers_mac_key ON computers USING btree (mac, active) WHERE (active = true);
+
+
+--
+-- Name: delete_counter; Type: RULE; Schema: public; Owner: -
+--
+
+CREATE RULE delete_counter AS ON DELETE TO users DO UPDATE locations SET users_count = (locations.users_count - 1) WHERE (locations.id = old.location_id);
+
+
+--
+-- Name: delete_counter; Type: RULE; Schema: public; Owner: -
+--
+
+CREATE RULE delete_counter AS ON DELETE TO computers DO UPDATE locations SET computers_count = (locations.computers_count - 1) WHERE (locations.id = old.location_id);
+
+
+--
+-- Name: insert_counter; Type: RULE; Schema: public; Owner: -
+--
+
+CREATE RULE insert_counter AS ON INSERT TO users DO UPDATE locations SET users_count = (locations.users_count + 1) WHERE (locations.id = new.location_id);
+
+
+--
+-- Name: insert_counter; Type: RULE; Schema: public; Owner: -
+--
+
+CREATE RULE insert_counter AS ON INSERT TO computers DO UPDATE locations SET computers_count = (locations.computers_count + 1) WHERE (locations.id = new.location_id);
+
+
+--
+-- Name: udpate_active_off; Type: RULE; Schema: public; Owner: -
+--
+
+CREATE RULE udpate_active_off AS ON UPDATE TO computers WHERE ((old.active = true) AND (new.active = false)) DO UPDATE locations SET computers_count = (locations.computers_count - 1) WHERE (locations.id = old.location_id);
+
+
+--
+-- Name: udpate_active_on; Type: RULE; Schema: public; Owner: -
+--
+
+CREATE RULE udpate_active_on AS ON UPDATE TO computers WHERE ((old.active = false) AND (new.active = true)) DO UPDATE locations SET computers_count = (locations.computers_count + 1) WHERE (locations.id = new.location_id);
+
+
+--
+-- Name: udpate_computers_counter; Type: RULE; Schema: public; Owner: -
+--
+
+CREATE RULE udpate_computers_counter AS ON UPDATE TO locations WHERE (old.computers_count <> new.computers_count) DO UPDATE dormitories SET computers_count = ((dormitories.computers_count + new.computers_count) - old.computers_count) WHERE (dormitories.id = new.dormitory_id);
+
+
+--
+-- Name: udpate_counter_dec; Type: RULE; Schema: public; Owner: -
+--
+
+CREATE RULE udpate_counter_dec AS ON UPDATE TO computers WHERE (new.location_id <> old.location_id) DO UPDATE locations SET computers_count = (locations.computers_count - 1) WHERE (locations.id = old.location_id);
+
+
+--
+-- Name: udpate_counter_inc; Type: RULE; Schema: public; Owner: -
+--
+
+CREATE RULE udpate_counter_inc AS ON UPDATE TO computers WHERE (new.location_id <> old.location_id) DO UPDATE locations SET computers_count = (locations.computers_count + 1) WHERE (locations.id = new.location_id);
+
+
+--
+-- Name: udpate_users_counter; Type: RULE; Schema: public; Owner: -
+--
+
+CREATE RULE udpate_users_counter AS ON UPDATE TO locations WHERE (old.users_count <> new.users_count) DO UPDATE dormitories SET users_count = ((dormitories.users_count + new.users_count) - old.users_count) WHERE (dormitories.id = new.dormitory_id);
+
+
+--
+-- Name: update_active_off; Type: RULE; Schema: public; Owner: -
+--
+
+CREATE RULE update_active_off AS ON UPDATE TO users WHERE ((old.active = true) AND (new.active = false)) DO UPDATE locations SET users_count = (locations.users_count - 1) WHERE (locations.id = old.location_id);
+
+
+--
+-- Name: update_active_on; Type: RULE; Schema: public; Owner: -
+--
+
+CREATE RULE update_active_on AS ON UPDATE TO users WHERE ((old.active = false) AND (new.active = true)) DO UPDATE locations SET users_count = (locations.users_count + 1) WHERE (locations.id = new.location_id);
+
+
+--
+-- Name: update_counter_dec; Type: RULE; Schema: public; Owner: -
+--
+
+CREATE RULE update_counter_dec AS ON UPDATE TO users WHERE (old.location_id <> new.location_id) DO UPDATE locations SET users_count = (locations.users_count - 1) WHERE (locations.id = old.location_id);
+
+
+--
+-- Name: update_counter_inc; Type: RULE; Schema: public; Owner: -
+--
+
+CREATE RULE update_counter_inc AS ON UPDATE TO users WHERE (new.location_id <> old.location_id) DO UPDATE locations SET users_count = (locations.users_count + 1) WHERE (locations.id = new.location_id);
 
 
 --
