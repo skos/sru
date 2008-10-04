@@ -181,8 +181,9 @@ if (input) {
 	}
 
 	public function formDel(array $d) {
-		$form = UFra::factory('UFlib_Form');
-		echo $form->confirm('Tak, chcę wyrejestrować ten komputer', array('type'=>$form->CHECKBOX, 'name'=>'computerDel[confirm]', 'value'=>'1'));
+		$d['confirm'] = false;
+		$form = UFra::factory('UFlib_Form', $d);
+		echo $form->confirm('Tak, chcę wyrejestrować ten komputer', array('type'=>$form->CHECKBOX, 'name'=>'computerDel[confirm]'));
 	}
 
 	public function formDelAdmin(array $d) {
