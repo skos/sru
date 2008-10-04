@@ -13,6 +13,16 @@ extends UFdao {
 		return $return;
 	}
 
+	public function getByIp($ip) {
+		$mapping = $this->mapping('get');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->ip, $ip);
+		$query->where($mapping->active, true);
+
+		return $this->doSelectFirst($query);
+	}
+
 	public function getByHost($host) {
 		$mapping = $this->mapping('get');
 

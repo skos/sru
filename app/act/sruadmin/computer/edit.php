@@ -40,13 +40,6 @@ extends UFact {
 		} catch (UFex_Dao_DataNotValid $e) {
 			$this->rollback();
 			$this->markErrors(self::PREFIX, $e->getData());
-		} catch (UFex_Db_QueryFailed $e) {
-			$this->rollback();
-			if (0 == $e->getCode()) {
-				$this->markErrors(self::PREFIX, array('mac'=>'regexp'));
-			} else {
-				throw $e;
-			}
 		}
 	}
 }

@@ -21,12 +21,6 @@ extends UFact {
 			$this->markOk(self::PREFIX);
 		} catch (UFex_Dao_DataNotValid $e) {
 			$this->markErrors(self::PREFIX, $e->getData());
-		} catch (UFex_Db_QueryFailed $e) {
-			if (0 == $e->getCode()) {
-				$this->markErrors(self::PREFIX, array('mac'=>'regexp'));
-			} else {
-				throw $e;
-			}
 		}
 	}
 }

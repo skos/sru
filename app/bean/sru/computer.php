@@ -29,6 +29,8 @@ extends UFbeanSingle {
 				return;
 			}
 			return 'duplicated';
+		} catch (UFex_Db_QueryFailed $e) {
+			return 'regexp';
 		} catch (UFex_Dao_NotFound $e) {
 		}
 	}
@@ -63,6 +65,15 @@ extends UFbeanSingle {
 			if ($ip < 0 || $ip >255) {
 				return 'regexp';
 			}
+		}
+		try {
+			$bean = UFra::factory('UFbean_Sru_Computer');
+			$bean->getByIp($val);
+			if ($change && $this->data['id'] == $bean->id) {
+				return;
+			}
+			return 'duplicated';
+		} catch (UFex_Dao_NotFound $e) {
 		}
 	}
 }

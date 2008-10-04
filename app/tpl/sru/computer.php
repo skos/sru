@@ -22,6 +22,7 @@ extends UFtpl_Common {
 		'mac/duplicated' => 'MAC jest już zajęty',
 		'ip' => 'Nieprawidłowy format',
 		'ip/noFree' => 'Nie ma wolnych IP w tym DS-ie',
+		'ip/duplicated' => 'IP zajęte',
 		'availableMaxTo' => 'Nieprawidłowy format',
 		'dormitory' => 'Wybierz akademik',
 		'locationAlias' => 'Podaj pokój',
