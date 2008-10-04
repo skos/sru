@@ -216,7 +216,7 @@ extends UFtpl_Common {
 			'labels' => $form->_labelize($tmp),
 		));
 		echo $form->locationAlias('Pokój');
-		echo $form->changeComputersLocations('Zmień miesce także wszystkim zarejestrowanym komputerom', array('type'=>$form->CHECKBOX));
+		echo $form->changeComputersLocations('Zmień miejsce także wszystkim zarejestrowanym komputerom', array('type'=>$form->CHECKBOX));
 		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
 		echo $form->_fieldset('Zmiana hasła');
 			echo $form->password('Nowe hasło', array('type'=>$form->PASSWORD,  ));
