@@ -111,6 +111,14 @@ extends UFtpl_Common {
 		echo 'Strony nie znaleziono';
 	}
 
+	public function error403() {
+		echo $this->ERR('Nie masz uprawnień do oglądania tej strony. Wróć do <a href="'.$this->url(0).'/" title="System Rejestracji Użytkowników">SRU</a>.');
+	}
+
+	public function titleError403() {
+		echo 'Brak uprawnień';
+	}
+
 	public function error404() {
 		echo $this->ERR('Strony nie znaleziono. Wróć do <a href="'.$this->url(0).'/" title="System Rejestracji Użytkowników">SRU</a>.');
 	}
