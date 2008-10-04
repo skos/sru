@@ -20,7 +20,12 @@ extends UFact {
 				$finds[] = 'host:'.$val;
 			}
 			if (isset($post['mac']) && !empty($post['mac'])) {
-				$bean->mac = $post['mac'];
+				try {
+					$bean->mac = $post['mac'];
+				} catch (UFex_Db_QueryFailed $e) {
+					$this->markErrors(self::PREFIX, array('mac'=>'regexp'));
+					return;
+				}
 				$finds[] = 'mac:'.urlencode($post['mac']);
 			}
 			if (isset($post['ip']) && !empty($post['ip'])) {
