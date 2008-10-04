@@ -26,6 +26,7 @@ extends UFtpl_Common {
 		'login/duplicated' => 'Login zajęty',
 		'login/textMax' => 'Login jest za długi',
 		'password' => 'Hasło musi mieć co najmniej 6 znaków',
+		'password/tooShort' => 'Hasło musi mieć co najmniej 6 znaków',
 		'password/mismatch' => 'Hasła się różnią',
 		'name' => 'Podaj imię',
 		'name/regexp' => 'Imię zawiera niedozwolone znaki',
