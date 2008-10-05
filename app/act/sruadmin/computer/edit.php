@@ -24,12 +24,16 @@ extends UFact {
 					$post['ip'] = $ip->ip;
 					$this->_srv->get('req')->post->{self::PREFIX} = $post;
 				} catch (UFex_Dao_NotFound $e) {
+					$this->rollback();
 					$this->markErrors(self::PREFIX, array('ip'=>'noFree'));
 					return;
 				}
 			}
 
 			$bean->fillFromPost(self::PREFIX, array('typeId'));
+			if ($bean->availableTo>$bean->availableMaxTo) {
+				$bean->availableTo = $bean->availableMaxTo;
+			}
 			$bean->modifiedById = $this->_srv->get('session')->authAdmin;
 			$bean->modifiedAt = NOW;
 			$bean->save();
