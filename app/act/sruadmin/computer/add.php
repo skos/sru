@@ -24,31 +24,19 @@ extends UFact {
 			$bean = UFra::factory('UFbean_Sru_Computer');
 			$post = $this->_srv->get('req')->post->{self::PREFIX};
 
-			$foundOld = false;
-
 			try {
 				$bean->getInactiveByMacUserId($post['mac'], $user->id);
 				$bean->active = true;
-				$foundOld = true;
 			} catch (UFex $e) {
 				try {
 					$bean->getInactiveByHostUserId($post['host'], $user->id);
 					$bean->active = true;
-					$foundOld = true;
 				} catch (UFex $e) {
 				}
 			}
-			// walidator locationId musi miec dane o akademiku
+
 			$bean->fillFromPost(self::PREFIX, null, array('mac', 'host'));
-			if ($foundOld) {
-				if ($bean->locationId != $user->locationId) {
-					$this->_srv->get('req')->post->computerEdit = $this->_srv->get('req')->post->{self::PREFIX};	// walidator oczekuje computerEdit przy zmianie pokoju
-					$bean->locationId = $user->locationAlias;
-					$this->_srv->get('req')->post->del('computerEdit');
-				}
-			} else {
-				$bean->locationId = $user->locationId;
-			}
+			$bean->locationId = $user->locationId;
 			$bean->modifiedById = null;
 			$bean->modifiedAt = NOW;
 			$bean->userId = $user->id;
