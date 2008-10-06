@@ -37,8 +37,9 @@ extends UFdao {
 			$mapping = $this->mapping('search');
 
 			$query = $this->prepareSelect($mapping);
-			$query->order($mapping->surname, $query->ASC);
-			$query->order($mapping->name, $query->ASC);
+			$query->order($mapping->surnameSearch, $query->ASC);
+			$query->order($mapping->nameSearch, $query->ASC);
+			$query->order($mapping->locationAlias, $query->ASC);
 			foreach ($params as $var=>$val) {
 				switch ($var) {
 					case 'surname':
