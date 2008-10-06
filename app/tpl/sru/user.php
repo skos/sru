@@ -17,7 +17,7 @@ extends UFtpl_Common {
 		9 => 'Doktoranckie 4',
 		10 => 'Uzupełniające 1',
 		11 => 'Uzupełniające 2',
-		'-' => 'N/D',
+		'0' => 'N/D',
 	);
 
 	protected $errors = array(
@@ -184,10 +184,10 @@ extends UFtpl_Common {
 		$d['dormitory'] = $d['dormitoryId'];
 		$d['changeComputersLocations'] = 1;
 		if (is_null($d['facultyId'])) {
-			$d['facultyId'] = '-';
+			$d['facultyId'] = '0';
 		}
 		if (is_null($d['studyYearId'])) {
-			$d['studyYearId'] = '-';
+			$d['studyYearId'] = '0';
 		}
 		$form = UFra::factory('UFlib_Form', 'userEdit', $d, $this->errors);
 		echo $form->login('Login');
@@ -199,7 +199,7 @@ extends UFtpl_Common {
 		foreach ($faculties as $fac) {
 			$tmp[$fac['id']] = $fac['name'];
 		}
-		$tmp['-'] = 'N/D';
+		$tmp['0'] = 'N/D';
 		echo $form->facultyId('Wydział', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize($tmp),

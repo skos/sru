@@ -31,31 +31,11 @@ extends UFbeanSingle {
 		}
 	}
 
-	protected function validateStudyYearId($val, $change) {	
-		$post = $this->_srv->get('req')->post->{$change?'userEdit':'userAdd'};
-		if ('-' === $val) {
-			if ('-' !== $post['studyYearId']) {
-				return 'studyYearMismatch';
-			}
-		}
-	}
-
 	protected function normalizeFacultyId($val, $change) {
-		if ('-' === $val) {
+		if ('0' === $val) {
 			return null;
 		} else {
 			return (int)$val;
-		}
-	}
-
-	protected function validateFacultyId($val, $change) {
-		$post = $this->_srv->get('req')->post->{$change?'userEdit':'userAdd'};
-		if ('-' === $val) {
-			if ('-' !== $post['facultyId']) {
-				return 'facultyMismatch';
-			}
-		} else {
-			$this->validate('facultyId', $val, $change);
 		}
 	}
 
