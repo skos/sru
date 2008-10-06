@@ -173,9 +173,15 @@ if (input) {
 		<?
 	}
 
-	public function formAdd(array $d) {
+	public function formAdd(array $d, $admin=false) {
 		$form = UFra::factory('UFlib_Form', 'computerAdd', $d, $this->errors);
 
+		if ($admin) {
+			echo $form->typeId('Typ', array(
+				'type' => $form->SELECT,
+				'labels' => $form->_labelize($this->computerTypes),
+			));
+		}
 		echo $form->host('Nazwa');
 		echo $form->mac('MAC');
 		$this->showMacHint();

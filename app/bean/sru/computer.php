@@ -5,6 +5,11 @@
 class UFbean_Sru_Computer
 extends UFbeanSingle {
 
+	const TYPE_USER = 1;
+	const TYPE_ORGANIZATION = 2;
+	const TYPE_ADMINISTRATION = 3;
+	const TYPE_SERVER = 4;
+
 	protected function validateHost($val, $change) {
 		try {
 			$bean = UFra::factory('UFbean_Sru_Computer');

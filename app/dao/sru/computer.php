@@ -187,7 +187,7 @@ extends UFdao {
 		$mapping = $this->mapping('list');
 
 		$query = $this->prepareSelect($mapping);
-		$query->where($mapping->typeId, 4);
+		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_SERVER);
 		$query->order($mapping->host, $query->ASC);
 
 		return $this->doSelect($query);
@@ -196,7 +196,7 @@ extends UFdao {
 		$mapping = $this->mapping('list');
 
 		$query = $this->prepareSelect($mapping);
-		$query->where($mapping->typeId, 2);
+		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_ORGANIZATION);
 		$query->order($mapping->host, $query->ASC);
 
 		return $this->doSelect($query);
@@ -205,7 +205,7 @@ extends UFdao {
 		$mapping = $this->mapping('list');
 
 		$query = $this->prepareSelect($mapping);
-		$query->where($mapping->typeId, 3);
+		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_ADMINISTRATION);
 		$query->order($mapping->host, $query->ASC);
 
 		return $this->doSelect($query);

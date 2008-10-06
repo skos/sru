@@ -35,7 +35,7 @@ extends UFact {
 				}
 			}
 
-			$bean->fillFromPost(self::PREFIX, null, array('mac', 'host'));
+			$bean->fillFromPost(self::PREFIX, null, array('mac', 'host', 'typeId'));
 			$bean->locationId = $user->locationId;
 			$bean->modifiedById = null;
 			$bean->modifiedAt = NOW;

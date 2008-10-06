@@ -120,7 +120,7 @@ extends UFtpl_Common {
 		echo '</div>';
 	}
 	public function organizationsComputersNotFound() {
-		echo '<h2Komputery organizacji</h2>';
+		echo '<h2>Komputery organizacji</h2>';
 		echo $this->ERR('Nie znaleziono komputerów');
 	}
 	public function administrationComputersNotFound() {
@@ -528,7 +528,7 @@ extends UFtpl_Common {
 
 		echo $form->_start();
 		echo $form->_fieldset('Dodaj komputer');
-		echo $d['computer']->write('formAdd');
+		echo $d['computer']->write('formAdd', true);
 		echo $form->_submit('Dodaj');
 		echo $form->_end();
 		echo $form->_end(true);
