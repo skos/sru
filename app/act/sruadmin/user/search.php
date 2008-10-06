@@ -16,13 +16,13 @@ extends UFact {
 
 			$finds = array();
 			if (isset($post['name']) && !empty($post['name'])) {
-				$finds[] = 'name:'.urlencode($post['name']);
+				$finds[] = 'name:'.urlencode(mb_strtolower($post['name'], 'UTF-8'));
 			}
 			if (isset($post['login']) && !empty($post['login'])) {
-				$finds[] = 'login:'.urlencode($post['login']);
+				$finds[] = 'login:'.urlencode(mb_strtolower($post['login'], 'UTF-8'));
 			}
 			if (isset($post['surname']) && !empty($post['surname'])) {
-				$finds[] = 'surname:'.urlencode($post['surname']);
+				$finds[] = 'surname:'.urlencode(mb_strtolower($post['surname'], 'UTF-8'));
 			}
 			if (count($finds)) {
 				UFlib_Http::redirect(UFURL_BASE.'/'.implode('/', $this->_srv->get('req')->segments(0)).'/users/search/'.implode('/', $finds));

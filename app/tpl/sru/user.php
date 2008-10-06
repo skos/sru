@@ -225,4 +225,12 @@ extends UFtpl_Common {
 		echo $form->_end();
 		echo $form->active('Konto aktywne', array('type'=>$form->CHECKBOX));
 	}
+
+	public function userAddMailBody(array $d, $password) {
+		echo 'Imię: '.$d['name']."\n";
+		echo 'Nazwisko: '.$d['surname']."\n";
+		echo $d['dormitoryName']."\n";
+		echo 'Pokój: '.$d['locationAlias']."\n";
+		echo 'Twoje hasło to: '.$password."\n";
+	}
 }

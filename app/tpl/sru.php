@@ -51,23 +51,74 @@ extends UFtpl_Common {
 	}
 
 	public function userAddMailBodyNoToken(array $d) {
-		echo 'Imię: '.$d['user']->name."\n";
-		echo 'Nazwisko: '.$d['user']->surname."\n";
+		echo 'Witamy w Sieci Komputerowej Osiedla Studenckiego Politechniki Gdańskiej!'."\n";
 		echo "\n";
-		echo 'Login: '.$d['user']->login."\n";
-		echo 'Hasło: '.$d['password'];
+		echo 'Jeżeli otrzymałeś/aś tę wiadomość, a nie chciałeś/aś założyć konta w SKOS PG,'."\n";
+		echo 'prosimy o zignorowanie tej wiadomości.'."\n";
 		echo "\n";
-		echo 'Konto jest już aktywne.';;
+		echo 'Aby dokończyć proces aktywacji konta, zgłoś się do swojego administratora'."\n";
+		echo 'lokalnego z wejściówką do DS-u. Godziny, w których możesz go zastać znajdziesz'."\n";
+		echo 'tutaj: http://skos.pg.gda.pl/'."\n";
+		echo "\n";
+		echo 'W razie jakichkolwiek problemów zachęcamy do skorzystania z FAQ:'."\n";
+		echo 'http://skos.pg.gda.pl/'."\n";
+		echo "\n";
+		echo '- - - - - - - - - - -'."\n";
+		echo "\n";
+		echo 'Dane, na które zostało założone konto:'."\n";
+		echo $d['user']->write('userAddMailBody', $d['password']);
+		echo 'PROSIMY O ZMIANĘ HASŁA ZARAZ PO PIERWSZYM ZALOGOWANIU SIĘ!'."\n";
+		echo "\n";
+		echo '- - - - - - - - - - -'."\n";
+		echo "\n";
+		echo 'Nasza sieć obejmuje swoim zasięgiem sieci LAN wszystkich Domów Studenckich'."\n";
+		echo 'Politechniki Gdańskiej, jest częścią Uczelnianej Sieci Komputerowej (USK PG) i'."\n";
+		echo 'dołączona jest bezpośrednio do sieci TASK.'."\n";
+		echo "\n";
+		echo 'Wszelkie informacje na temat funkcjonowania sieci, godzin dyżurów'."\n";
+		echo 'administratorów SKOS PG oraz Regulamin SKOS PG znajdziesz na stronie'."\n";
+		echo 'http://skos.pg.gda.pl/'."\n";
+		echo "\n";
+		echo '-- '."\n";
+		echo 'Pozdrawiamy,'."\n";
+		echo 'Administratorzy SKOS PG'."\n";
+		echo 'http://skos.pg.gda.pl/'."\n";
+		echo '[wiadomość została wygenerowana automatycznie]'."\n";
 	}
 
 	public function userAddMailBody(array $d) {
-		echo 'Imię: '.$d['user']->name."\n";
-		echo 'Nazwisko: '.$d['user']->surname."\n";
+		echo 'Witamy w Sieci Komputerowej Osiedla Studenckiego Politechniki Gdańskiej!'."\n";
 		echo "\n";
-		echo 'Login: '.$d['user']->login."\n";
-		echo 'Hasło: '.$d['password'];
+		echo 'Jeżeli otrzymałeś/aś tę wiadomość, a nie chciałeś/aś założyć konta w SKOS PG,'."\n";
+		echo 'prosimy o zignorowanie tej wiadomości.'."\n";
 		echo "\n";
-		echo 'Kliknij: http://'.$d['host'].$this->url(0).'/'.$d['token']->token;
+		echo 'Aby aktywować swoje konto, kliknij:'."\n";
+		echo 'http://'.$d['host'].$this->url(0).'/'.$d['token']->token."\n";
+		echo "\n";
+		echo 'W razie jakichkolwiek problemów zachęcamy do skorzystania z FAQ:'."\n";
+		echo 'http://skos.pg.gda.pl/'."\n";
+		echo "\n";
+		echo '- - - - - - - - - - -'."\n";
+		echo "\n";
+		echo 'Dane, na które zostało założone konto:'."\n";
+		echo $d['user']->write('userAddMailBody', $d['password']);
+		echo 'PROSIMY O ZMIANĘ HASŁA ZARAZ PO PIERWSZYM ZALOGOWANIU SIĘ!'."\n";
+		echo "\n";
+		echo '- - - - - - - - - - -'."\n";
+		echo "\n";
+		echo 'Nasza sieć obejmuje swoim zasięgiem sieci LAN wszystkich Domów Studenckich'."\n";
+		echo 'Politechniki Gdańskiej, jest częścią Uczelnianej Sieci Komputerowej (USK PG) i'."\n";
+		echo 'dołączona jest bezpośrednio do sieci TASK.'."\n";
+		echo "\n";
+		echo 'Wszelkie informacje na temat funkcjonowania sieci, godzin dyżurów'."\n";
+		echo 'administratorów SKOS PG oraz Regulamin SKOS PG znajdziesz na stronie'."\n";
+		echo 'http://skos.pg.gda.pl/'."\n";
+		echo "\n";
+		echo '-- '."\n";
+		echo 'Pozdrawiamy,'."\n";
+		echo 'Administratorzy SKOS PG'."\n";
+		echo 'http://skos.pg.gda.pl/'."\n";
+		echo '[wiadomość została wygenerowana automatycznie]'."\n";
 	}
 
 	public function userAddMailHeaders(array $d) {

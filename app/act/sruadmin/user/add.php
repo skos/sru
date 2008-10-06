@@ -21,6 +21,7 @@ extends UFact {
 			$bean->password = $bean->generatePassword($bean->login, $password);
 
 			$id = $bean->save();
+			$bean->getByPK($id);	// uzupelnione dane dociagane z innych tabel
 			$req = $this->_srv->get('req');
 			$req->get->userId = $id;
 
