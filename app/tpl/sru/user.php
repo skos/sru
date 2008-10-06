@@ -73,7 +73,7 @@ extends UFtpl_Common {
 		foreach ($faculties as $fac) {
 			$tmp[$fac['id']] = $fac['name'];
 		}
-		$tmp['-'] = 'N/D';
+		$tmp['0'] = 'N/D';
 		echo $form->facultyId('Wydział', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize($tmp, '', ''),
