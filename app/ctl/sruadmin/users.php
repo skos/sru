@@ -88,7 +88,7 @@ extends UFctl {
 			$act = 'User_Search';
 		} elseif ('users/user/add' == $get->view && $post->is('userAdd') && $acl->sruAdmin('user', 'add')) {
 			$act = 'User_Add';
-		} elseif ('users/user/edit' == $get->view && $post->is('userEdit') && $acl->sruAdmin('user', 'edit')) {
+		} elseif ($post->is('userEdit') && $acl->sruAdmin('user', 'edit')) {
 			$act = 'User_Edit';
 		} elseif ('users/user/edit' == $get->view && $post->is('userDel') && $acl->sruAdmin('user', 'del')) {
 			$act = 'User_Del';

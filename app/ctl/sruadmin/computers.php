@@ -89,7 +89,7 @@ extends UFctl {
 			$act = 'Admin_Login';
 		} elseif ($post->is('computerSearch')) {
 			$act = 'Computer_Search';
-		} elseif ('computers/computer/edit' == $get->view && $post->is('computerEdit') && $acl->sruAdmin('computer', 'edit')) {
+		} elseif ($post->is('computerEdit') && $acl->sruAdmin('computer', 'edit')) {
 			$act = 'Computer_Edit';
 		} elseif ('computers/computer/delete' == $get->view && $post->is('computerDel') ) {
 			$act = 'Computer_Del';
