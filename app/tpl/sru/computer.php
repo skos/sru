@@ -253,4 +253,18 @@ function showmachint() {
 			echo "host\t".$c['host']."\t{ hardware ethernet ".$c['mac'].'; fixed-address '.$c['ip']."; }\n";
 		}
 	}
+
+	public function configDnsRev(array $d) {
+		$adm = UFbean_Sru_Computer::TYPE_ADMINISTRATION;
+		foreach ($d as $c) {
+			$host = $c['host'].($c['typeId']==$adm?'.adm':'').'.ds.pg.gda.pl';
+			echo substr(strrchr($c['ip'], '.'),1)."\t\tPTR\t".$host.".\n";
+		}
+	}
+
+	public function configDns(array $d) {
+		foreach ($d as $c) {
+			echo $c['host']."\t\tA\t".$c['ip']."\n";
+		}
+	}
 }

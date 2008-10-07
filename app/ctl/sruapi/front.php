@@ -13,14 +13,36 @@ extends UFctl {
 		$get->view = '-';
 		if ($segCount>0) {
 			switch ($req->segment(1)) {
-				case 'dhcp-stud':
-					$get->view = 'dhcp/stud';
+				case 'dhcp':
+					if ($segCount>1) {
+						switch ($req->segment(2)) {
+							case 'stud':
+								$get->view = 'dhcp/stud';
+								break;
+							case 'adm':
+								$get->view = 'dhcp/adm';
+								break;
+							case 'org':
+								$get->view = 'dhcp/org';
+								break;
+						}
+					}
 					break;
-				case 'dhcp-adm':
-					$get->view = 'dhcp/adm';
-					break;
-				case 'dhcp-org':
-					$get->view = 'dhcp/org';
+				case 'dns':
+					if ($segCount>1) {
+						switch ($req->segment(2)) {
+							case 'ds':
+								$get->view = 'dns/ds';
+								break;
+							case 'adm':
+								$get->view = 'dns/adm';
+								break;
+							default:
+								$get->view = 'dns';
+								$get->ipClass = (int)$req->segment(2);
+								break;
+						}
+					}
 					break;
 			}
 		}
@@ -37,6 +59,12 @@ extends UFctl {
 				return 'SruApi_DhcpAdm';
 			case 'dhcp/org':
 				return 'SruApi_DhcpOrg';
+			case 'dns/ds':
+				return 'SruApi_DnsDs';
+			case 'dns/adm':
+				return 'SruApi_DnsAdm';
+			case 'dns':
+				return 'SruApi_DnsRev';
 			default:
 				return 'SruApi_Error404';
 		}

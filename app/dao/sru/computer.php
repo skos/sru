@@ -135,6 +135,8 @@ extends UFdao {
 		$query->where($mapping->active, true);
 		if (is_int($type)) {
 			$query->where($mapping->typeId, $type);
+		} elseif (is_array($type)) {
+			$query->where($mapping->typeId, $type, $query->IN);
 		}
 		$query->order($mapping->host, $query->ASC);
 
@@ -216,4 +218,15 @@ extends UFdao {
 
 		return $this->doSelect($query);
 	}			
+
+	public function listAllActiveByIpClass($class) {
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->active, true);
+		$query->where($mapping->column('ip').' <<= \'153.19.'.(int)$class.'/24\'', null, $query->SQL);
+		$query->order($mapping->ip, $query->ASC);
+
+		return $this->doSelect($query);
+	}
 }
