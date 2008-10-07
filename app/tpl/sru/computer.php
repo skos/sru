@@ -247,4 +247,10 @@ function showmachint() {
 </script>
 <?
 	}
+
+	public function configDhcp(array $d) {
+		foreach ($d as $c) {
+			echo "host\t".$c['host']."\t{ hardware ethernet ".$c['mac'].'; fixed-address '.$c['ip']."; }\n";
+		}
+	}
 }

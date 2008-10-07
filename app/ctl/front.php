@@ -24,6 +24,11 @@ extends UFctl {
 					$req->forward();
 					$ctl->go();
 					return false;
+				case 'api':
+					$ctl = UFra::factory('UFctl_SruApi_Front');
+					$req->forward();
+					$ctl->go();
+					return false;
 				default:
 					$ctl = UFra::factory('UFctl_Text_Front');
 					$ctl->go();

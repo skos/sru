@@ -128,11 +128,14 @@ extends UFdao {
 		}
 	}
 
-	public function listAllActive() {
+	public function listAllActiveByType($type=null) {
 		$mapping = $this->mapping('list');
 
 		$query = $this->prepareSelect($mapping);
 		$query->where($mapping->active, true);
+		if (is_int($type)) {
+			$query->where($mapping->typeId, $type);
+		}
 		$query->order($mapping->host, $query->ASC);
 
 		return $this->doSelect($query);
