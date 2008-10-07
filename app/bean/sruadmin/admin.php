@@ -67,22 +67,8 @@ extends UFbeanSingle {
 		return $val;
 	}
 
-	protected function validateDormitoryId($val, $change) {
-		if ('-' == $val) {
-			return;
-		} elseif ($change && '' === $val) {
-			return;
-		}
-		try {
-			$dorm = UFra::factory('UFbean_Sru_Dormitory');
-			$dorm->getByPK((int)$val);
-		} catch (UFex $e) {
-			return 'notFound';
-		}
-	}
-
 	protected function normalizeDormitoryId($val, $change) {
-		if ('-' === $val) {
+		if ('0' === $val) {
 			return null;
 		} elseif ($change && '' === $val) {
 			return null;

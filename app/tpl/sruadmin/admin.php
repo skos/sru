@@ -132,7 +132,7 @@ extends UFtpl_Common {
 		foreach ($dormitories as $dorm) {
 			$tmp[$dorm['id']] = $dorm['name'];
 		}
-		$tmp['-'] = 'N/D';
+		$tmp['0'] = 'N/D';
 		echo $form->dormitoryId('Akademik', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize($tmp, '', ''),
