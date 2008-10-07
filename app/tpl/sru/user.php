@@ -96,10 +96,10 @@ extends UFtpl_Common {
 	public function formEdit(array $d, $dormitories, $faculties) {
 		$d['dormitory'] = $d['dormitoryId'];
 		if (is_null($d['facultyId'])) {
-			$d['facultyId'] = '-';
+			$d['facultyId'] = '0';
 		}
 		if (is_null($d['studyYearId'])) {
-			$d['studyYearId'] = '-';
+			$d['studyYearId'] = '0';
 		}
 		$form = UFra::factory('UFlib_Form', 'userEdit', $d, $this->errors);
 
@@ -109,7 +109,7 @@ extends UFtpl_Common {
 		foreach ($faculties as $fac) {
 			$tmp[$fac['id']] = $fac['name'];
 		}
-		$tmp['-'] = 'N/D';
+		$tmp['0'] = 'N/D';
 		echo $form->facultyId('Wydział', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize($tmp),
