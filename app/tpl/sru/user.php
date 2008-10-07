@@ -231,6 +231,7 @@ extends UFtpl_Common {
 		echo 'Nazwisko: '.$d['surname']."\n";
 		echo $d['dormitoryName']."\n";
 		echo 'Pokój: '.$d['locationAlias']."\n";
+		echo 'Login: '.$d['login']."\n";
 		echo 'Twoje hasło to: '.$password."\n";
 	}
 }
