@@ -39,7 +39,7 @@ extends UFmap {
 		'' => 'users',
 	);
 	protected $valids = array(
-		'login' => array('textMin'=>1, 'textMax'=>100),
+		'login' => array('textMin'=>1, 'textMax'=>100, 'regexp'=>'^[-a-zA-Z0-9\.@_]+$'),
 		'password' => array('textMin'=>6),
 		'name' => array('textMin'=>1),
 		'surname' => array('textMin'=>1),
