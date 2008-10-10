@@ -148,13 +148,13 @@ extends UFtpl_Common {
 	public function searchResults(array $d) {
 		$url = $this->url(0);
 		foreach ($d as $c) {
-			echo '<li><a href="'.$url.'/users/'.$c['id'].'">'.$c['name'].' '.$c['surname'].'</a> <span><a href="'.$url.'/dormitories/'.$c['dormitoryAlias'].'/'.$c['locationAlias'].'">'.$c['locationAlias'].'</a> <small>(<a href="'.$url.'/dormitories/'.$c['dormitoryAlias'].'">'.$c['dormitoryAlias'].'</a>)</small></span></li>';
+			echo '<li><a href="'.$url.'/users/'.$c['id'].'">'.$this->_escape($c['name']).' '.$this->_escape($c['surname']).'</a> <span><a href="'.$url.'/dormitories/'.$c['dormitoryAlias'].'/'.$c['locationAlias'].'">'.$c['locationAlias'].'</a> <small>(<a href="'.$url.'/dormitories/'.$c['dormitoryAlias'].'">'.$c['dormitoryAlias'].'</a>)</small></span></li>';
 		}
 	}
 
 	public function details(array $d) {
 		$url = $this->url(0);
-		echo '<h1>'.$d['name'].' '.$d['surname'].'</h1>';
+		echo '<h1>'.$this->_escape($d['name']).' '.$this->_escape($d['surname']).'</h1>';
 		echo '<p><em>Login:</em> '.$d['login'].(!$d['active']?' <strong>(konto nieaktywne)</strong>':'').'</p>';
 		echo '<p><em>E-mail:</em> <a href="mailto:'.$d['email'].'">'.$d['email'].'</a></p>';
 		echo '<p><em>Miejsce:</em> <a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'/'.$d['locationAlias'].'">'.$d['locationAlias'].'</a> <small>(<a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'">'.$d['dormitoryAlias'].'</a>)</small></p>';
@@ -172,11 +172,11 @@ extends UFtpl_Common {
 	}
 
 	public function titleDetails(array $d) {
-		echo $d['name'].' '.$d['surname'].' ('.$d['login'].')';
+		echo $this->_escape($d['name']).' '.$this->_escape($d['surname']).' ('.$d['login'].')';
 	}
 
 	public function titleEdit(array $d) {
-		echo $d['name'].' '.$d['surname'].' ('.$d['login'].')';
+		echo $this->_escape($d['name']).' '.$this->_escape($d['surname']).' ('.$d['login'].')';
 	}
 
 	public function formEditAdmin(array $d, $dormitories, $faculties) {

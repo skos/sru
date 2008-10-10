@@ -14,8 +14,8 @@ extends UFtpl_Common {
 			}
 			switch ($key) {
 				case 'login': $changes[] = 'Login: '.$val.$arr.$new[$key]; break;
-				case 'name': $changes[] = 'Imię: '.$val.$arr.$new[$key]; break;
-				case 'surname': $changes[] = 'Nazwisko: '.$val.$arr.$new[$key]; break;
+				case 'name': $changes[] = 'Imię: '.$this->_escape($val).$arr.$this->_escape($new[$key]); break;
+				case 'surname': $changes[] = 'Nazwisko: '.$this->_escape($val).$arr.$this->_escape($new[$key]); break;
 				case 'email': $changes[] = 'E-mail: '.$val.$arr.$new[$key]; break;
 				case 'facultyId': $changes[] = 'Wydział: '.$old['facultyAlias'].$arr.$new['facultyAlias']; break;
 				case 'locationId': $changes[] = 'Miejsce: '.$old['locationAlias'].'<small>&nbsp;('.$old['dormitoryAlias'].')</small>'.$arr.$new['locationAlias'].'<small>&nbsp;('.$new['dormitoryAlias'].')</small>'; break;
