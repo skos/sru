@@ -72,4 +72,17 @@ extends UFbox {
 			return '';
 		}
 	}
+
+	public function ethers() {
+		try {
+			$bean = UFra::factory('UFbean_Sru_ComputerList');
+			$bean->listEthers();
+
+			$d['computers'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return '';
+		}
+	}
 }

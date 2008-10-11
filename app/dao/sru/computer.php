@@ -229,4 +229,13 @@ extends UFdao {
 
 		return $this->doSelect($query);
 	}
+
+	public function listEthers() {
+		$mapping = $this->mapping('ethers');
+
+		$query = $this->prepareSelect($mapping);
+		$query->order($mapping->ip, $query->ASC);
+
+		return $this->doSelect($query);
+	}
 }

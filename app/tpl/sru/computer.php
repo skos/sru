@@ -244,6 +244,12 @@ if (input) {
 		}
 	}
 
+	public function configEthers(array $d) {
+		foreach ($d as $c) {
+			echo $c['ip']."\t".$c['mac']."\n";
+		}
+	}
+
 	public function configDns(array $d) {
 		foreach ($d as $c) {
 			echo $c['host']."\t\tA\t".$c['ip']."\n";

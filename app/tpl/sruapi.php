@@ -21,6 +21,10 @@ extends UFtpl_Common {
 		$d['computers']->write('configDns');
 	}
 
+	public function ethers(array $d) {
+		$d['computers']->write('configEthers');
+	}
+
 	public function error404() {
 		header('HTTP/1.0 404 Not Found');
 	}

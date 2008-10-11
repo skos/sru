@@ -44,6 +44,9 @@ extends UFctl {
 						}
 					}
 					break;
+				case 'ethers':
+					$get->view = 'ethers';
+					break;
 			}
 		}
 	}
@@ -65,6 +68,8 @@ extends UFctl {
 				return 'SruApi_DnsAdm';
 			case 'dns':
 				return 'SruApi_DnsRev';
+			case 'ethers':
+				return 'SruApi_Ethers';
 			default:
 				return 'SruApi_Error404';
 		}
