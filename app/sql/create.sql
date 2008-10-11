@@ -897,7 +897,8 @@ CREATE TABLE locations (
     "comment" pg_catalog.text DEFAULT ''::pg_catalog.text NOT NULL,
     users_count integer DEFAULT 0 NOT NULL,
     computers_count integer DEFAULT 0 NOT NULL,
-    dormitory_id bigint NOT NULL
+    dormitory_id bigint NOT NULL,
+    users_max smallint
 );
 
 
@@ -941,6 +942,13 @@ COMMENT ON COLUMN locations.computers_count IS 'ilosc zarejestrowanych komputero
 --
 
 COMMENT ON COLUMN locations.dormitory_id IS 'akademik, w ktorym znajduje sie pokoj';
+
+
+--
+-- Name: COLUMN locations.users_max; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN locations.users_max IS 'maksymalna ilosc osob w pokoju';
 
 
 --
