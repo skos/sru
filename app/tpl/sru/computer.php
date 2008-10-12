@@ -176,6 +176,10 @@ if (input) {
 	public function formAdd(array $d, $admin=false) {
 		$form = UFra::factory('UFlib_Form', 'computerAdd', $d, $this->errors);
 
+		if ($this->_srv->get('msg')->get('computerAdd/errors/ip/noFree')) {
+			echo $this->ERR($this->errors['ip/noFree']);
+		}		
+
 		if ($admin) {
 			echo $form->typeId('Typ', array(
 				'type' => $form->SELECT,
