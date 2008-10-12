@@ -17,7 +17,7 @@ extends UFtpl_Common {
 		9 => 'Doktoranckie 4',
 		10 => 'Uzupełniające 1',
 		11 => 'Uzupełniające 2',
-		'0' => 'N/D',
+		0 => 'N/D',
 	);
 
 	protected $errors = array(
@@ -158,7 +158,7 @@ extends UFtpl_Common {
 		echo '<p><em>Login:</em> '.$d['login'].(!$d['active']?' <strong>(konto nieaktywne)</strong>':'').'</p>';
 		echo '<p><em>E-mail:</em> <a href="mailto:'.$d['email'].'">'.$d['email'].'</a></p>';
 		echo '<p><em>Miejsce:</em> <a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'/'.$d['locationAlias'].'">'.$d['locationAlias'].'</a> <small>(<a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'">'.$d['dormitoryAlias'].'</a>)</small></p>';
-		echo '<p><em>Wydział:</em> '.$d['facultyName'].'</p>';
+		echo '<p><em>Wydział:</em> '.(!is_null($d['facultyName'])?$d['facultyName']:'N/D').'</p>';
 		echo '<p><em>Rok studiów:</em> '.self::$studyYears[$d['studyYearId']].'</p>';
 		if (is_null($d['modifiedBy'])) {
 			$changed = 'UŻYTKOWNIK';
