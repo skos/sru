@@ -13,16 +13,31 @@ extends UFact {
 			$user = UFra::factory('UFbean_Sru_User');
 			$user->getByPK((int)$this->_srv->get('req')->get->userId);
 
-			try {
-				$ip = UFra::factory('UFbean_Sru_Ipv4');
-				$ip->getFreeByDormitoryId($user->dormitoryId);
-			} catch (UFex_Dao_NotFound $e) {
-				$this->markErrors(self::PREFIX, array('ip'=>'noFree'));
-				return;
-			}
-
 			$bean = UFra::factory('UFbean_Sru_Computer');
 			$post = $this->_srv->get('req')->post->{self::PREFIX};
+			if($post['ip'] == '') {
+				try {
+					$ip = UFra::factory('UFbean_Sru_Ipv4');
+					$ip->getFreeByDormitoryId($user->dormitory);
+				} catch (UFex_Dao_NotFound $e) {
+					$this->rollback();
+					$this->markErrors(self::PREFIX, array('ip'=>'noFreeAdmin'));
+					return;
+				}
+			} else {
+				try {
+					$ip = UFra::factory('UFbean_Sru_Ipv4');
+					$ip->getByIp($post['ip']);
+				} catch (UFex_Dao_NotFound $e) {
+					$this->rollback();
+					$this->markErrors(self::PREFIX, array('ip'=>'notFound'));
+					return;
+				} catch (UFex_Db_QueryFailed $e) {
+					$this->rollback();
+					$this->markErrors(self::PREFIX, array('ip'=>'notFound'));
+					return;
+				}
+			}
 
 			try {
 				$bean->getInactiveByMacUserId($post['mac'], $user->id);

@@ -22,6 +22,7 @@ extends UFtpl_Common {
 		'mac/duplicated' => 'MAC jest już zajęty',
 		'ip' => 'Nieprawidłowy format',
 		'ip/noFree' => 'Nie ma wolnych IP w tym DS-ie - skontaktuj się ze swoim administratorem lokalnym w godzinach dyżurów',
+		'ip/noFreeAdmin' => 'Nie ma wolnych IP w tym DS-ie',
 		'ip/notFound' => 'Niedozwolony adres IP',
 		'ip/duplicated' => 'IP zajęte',
 		'availableMaxTo' => 'Nieprawidłowy format',
@@ -177,7 +178,7 @@ if (input) {
 	public function formAdd(array $d, $admin=false) {
 		$form = UFra::factory('UFlib_Form', 'computerAdd', $d, $this->errors);
 
-		if ($this->_srv->get('msg')->get('computerAdd/errors/ip/noFree')) {
+		if (!$admin && $this->_srv->get('msg')->get('computerAdd/errors/ip/noFree')) {
 			echo $this->ERR($this->errors['ip/noFree']);
 		}		
 
@@ -188,6 +189,24 @@ if (input) {
 			));
 		}
 		echo $form->host('Nazwa');
+		if ($admin) {
+			echo $form->ip('IP');
+?><script type="text/javascript">
+input = document.getElementById('computerAdd_ip');
+if (input) {
+	button = document.createElement('input');
+	button.setAttribute('value', 'Pierwsze wolne');
+	button.setAttribute('type', 'button');
+	button.onclick = function() {
+		input = document.getElementById('computerEdit_ip');
+		input.value = '';
+	}
+	input.parentElement.insertBefore(button, input.nextSibling);
+	space = document.createTextNode(' ');
+	input.parentElement.insertBefore(space, input.nextSibling);
+}
+</script><?
+		}
 		echo $form->mac('MAC');
 		$this->showMacHint();
 	}
