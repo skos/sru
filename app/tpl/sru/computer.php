@@ -21,7 +21,7 @@ extends UFtpl_Common {
 		'mac' => 'Nieprawidłowy format',
 		'mac/duplicated' => 'MAC jest już zajęty',
 		'ip' => 'Nieprawidłowy format',
-		'ip/noFree' => 'Nie ma wolnych IP w tym DS-ie. Skontaktuj się z administratorem lokalnym w godzinach dyżurów',
+		'ip/noFree' => 'Nie ma wolnych IP w tym DS-ie - skontaktuj się ze swoim administratorem lokalnym w godzinach dyżurów',
 		'ip/duplicated' => 'IP zajęte',
 		'availableMaxTo' => 'Nieprawidłowy format',
 		'dormitory' => 'Wybierz akademik',
