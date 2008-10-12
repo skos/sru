@@ -17,7 +17,11 @@ extends UFtpl_Common {
 				case 'name': $changes[] = 'Imię: '.$this->_escape($val).$arr.$this->_escape($new[$key]); break;
 				case 'surname': $changes[] = 'Nazwisko: '.$this->_escape($val).$arr.$this->_escape($new[$key]); break;
 				case 'email': $changes[] = 'E-mail: '.$val.$arr.$new[$key]; break;
-				case 'facultyId': $changes[] = 'Wydział: '.$old['facultyAlias'].$arr.$new['facultyAlias']; break;
+				case 'facultyId':
+					$oldF = is_null($old['facultyAlias'])?'N/D':$old['facultyAlias'];
+					$newF = is_null($new['facultyAlias'])?'N/D':$new['facultyAlias'];
+					$changes[] = 'Wydział: '.$oldF.$arr.$newF;
+					break;
 				case 'locationId': $changes[] = 'Miejsce: '.$old['locationAlias'].'<small>&nbsp;('.$old['dormitoryAlias'].')</small>'.$arr.$new['locationAlias'].'<small>&nbsp;('.$new['dormitoryAlias'].')</small>'; break;
 				case 'studyYearId': $changes[] = 'Rok studiów: '. UFtpl_Sru_User::$studyYears[$val].$arr.UFtpl_Sru_User::$studyYears[$new[$key]]; break;
 				case 'comment': $changes[] = 'Komentarz: <q>'.$val.'</q>'.$arr.'<q>'.$new[$key].'</q>'; break;
