@@ -20,6 +20,15 @@ extends UFdao {
 
 		$query = $this->prepareSelect($mapping);
 		$query->where($mapping->ip, $ip);
+
+		return $this->doSelectFirst($query);
+	}
+
+	public function getFreeByIp($ip) {
+		$mapping = $this->mapping('get');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->ip, $ip);
 		$query->where($mapping->host, null);
 
 		return $this->doSelectFirst($query);

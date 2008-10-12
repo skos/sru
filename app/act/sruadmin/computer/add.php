@@ -18,9 +18,8 @@ extends UFact {
 			if($post['ip'] == '') {
 				try {
 					$ip = UFra::factory('UFbean_Sru_Ipv4');
-					$ip->getFreeByDormitoryId($user->dormitory);
+					$ip->getFreeByDormitoryId($user->dormitoryId);
 				} catch (UFex_Dao_NotFound $e) {
-					$this->rollback();
 					$this->markErrors(self::PREFIX, array('ip'=>'noFreeAdmin'));
 					return;
 				}
@@ -29,12 +28,10 @@ extends UFact {
 					$ip = UFra::factory('UFbean_Sru_Ipv4');
 					$ip->getByIp($post['ip']);
 				} catch (UFex_Dao_NotFound $e) {
-					$this->rollback();
 					$this->markErrors(self::PREFIX, array('ip'=>'notFound'));
 					return;
 				} catch (UFex_Db_QueryFailed $e) {
-					$this->rollback();
-					$this->markErrors(self::PREFIX, array('ip'=>'notFound'));
+					$this->markErrors(self::PREFIX, array('ip'=>''));
 					return;
 				}
 			}
