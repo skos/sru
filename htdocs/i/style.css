@@ -1,159 +1,55 @@
 
-* {
-  margin: 0;
-  padding: 0; }
+* { margin: 0; padding: 0; }
 
-body {
-  background-color: #ffffff;
-  
-  color: #000000;
-  font-family: "Verdana", "Tahoma", "Helvetica", "Arial", sans-serif; }
+body { background-color: #ffffff; color: #000000; font-family: "Verdana", "Tahoma", "Helvetica", "Arial", sans-serif; }
 
-a {
-  color: #003d9a;
-  text-decoration: none; }
+a { color: #003d9a; text-decoration: none; }
 
-a:focus,a:hover,a:active {
-  text-decoration: underline;
-  color: red; }
+a:focus,a:hover,a:active { text-decoration: underline; color: red; }
 
-img {
-  border-style: none; }
+img { border-style: none; }
 
-#body {
-  width: 40em;
-  margin-left: auto;
-  margin-right: auto; }
+#body { width: 40em; margin-left: auto; margin-right: auto; }
 
-#head {
-  text-align: center;
-  font-size: 3em;
-  letter-spacing: 0.4em;
-  margin-bottom: 0.3em; }
-  #head a {
-    color: #aaa; }
-  #head a:hover, #head a:active, #head a:focus {
-    text-decoration: none;
-    color: #999; }
+#head { text-align: center; font-size: 3em; letter-spacing: 0.4em; margin-bottom: 0.3em; }
+#head a { color: #aaa; }
+#head a:hover, #head a:active, #head a:focus { text-decoration: none; color: #999; }
 
-#nav {
-  list-style-type: none;
-  border-bottom: 1px solid #ddd;
-  border-top: 1px solid #ddd;
-  
-  text-align: center; }
-  #nav li {
-    display: inline;
-    line-height: 2em; }
-  #nav a {
-    padding: 0.5em 1em; }
-  #nav a:hover, #nav a:active, #nav a:focus {
-    background-color: #eee; }
+#nav { list-style-type: none; border-bottom: 1px solid #ddd; border-top: 1px solid #ddd; text-align: center; }
+#nav li { display: inline; line-height: 2em; }
+#nav a { padding: 0.5em 1em; }
+#nav a:hover, #nav a:active, #nav a:focus { background-color: #eee; }
 
-#main h1, #main h2, #main h3, #main h4, #main h5, #main h6 {
-  color: #666;
-  font-weight: normal;
-  font-family: "Georgia", serif;
-  
-  margin-top: 1em;
-  margin-bottom: 1em;
-  
-  text-align: center; }
-#main h2 {
-  margin-top: 0.8em;
-  margin-bottom: 0.8em; }
-#main h3 {
-  margin-top: 0.5em;
-  margin-bottom: 0.5em; }
-#main h4 {
-  margin-top: 0.3em;
-  margin-bottom: 0.3em; }
-#main h5 {
-  margin-top: 0.1em;
-  margin-bottom: 0.1em; }
-#main h6 {
-  margin-top: 0;
-  margin-bottom: 0; }
-#main ul.admin {
-  margin-left: 2em; }
-  #main ul.admin small {
-    padding-left: 1em; }
-    #main ul.admin small a {
-      color: #999; }
-#main ol, #main ul {
-  margin-left: 3em; }
-  #main ol li, #main ul li {
-    margin-top: 0.4em;
-    margin-bottom: 0.4em; }
-#main ol ol {
-  list-style-type: upper-roman; }
-#main p {
-  text-align: justify;
-  margin-top: 1em;
-  margin-bottom: 1em; }
-#main p.msgOk, #main p.msgError {
-  border: 2px solid red;
-  color: red;
-  padding: 1em;
-  text-align: center;
-  margin: 1em; }
-#main p.msgOk {
-  color: #009a00;
-  border-color: #009a00; }
-#main q {
-  background-color: #eee; }
-#main blockquote {
-  border-left: 3px solid #eee;
-  margin-left: 1em;
-  padding-left: 1em; }
-#main fieldset {
-  margin-top: 1em;
-  border-style: none;
-  background-color: #eee;
-  padding: 0.5em; }
-  #main fieldset legend {
-    margin-left: 1em;
-    background-color: #eee;
-    padding: 0.1em 1em;
-    font-family: "Georgia", serif;
-    font-weight: bold; }
-  #main fieldset textarea {
-    width: 100%; }
-  #main fieldset input.submit {
-    padding: 0.2em 1em; }
-#main .computer p, #main .user p {
-  margin: 0;
-  padding: 0; }
-#main .computer p.comment, #main .user p.comment {
-  margin-left: 10.5em;
-  margin-top: 1em; }
-#main .computer em, #main .user em {
-  clear: both;
-  display: block;
-  width: 10em;
-  text-align: right;
-  font-style: normal;
-  margin-right: 0.5em;
-  float: left;
-  font-weight: bold;
-  color: #444444; }
-#main .computer ol, #main .user ol {
-  font-size: 0.8em;
-  font-weight: bold;
-  color: #444444; }
-  #main .computer ol li:hover ul, #main .user ol li:hover ul {
-    background-color: #eee; }
-  #main .computer ol ul, #main .user ol ul {
-    font-weight: normal;
-    color: #444444;
-    margin: 0;
-    list-style-type: none; }
-  #main .computer ol p a, #main .user ol p a {
-    font-weight: normal;
-    font-size: 0.8em; }
+#main h1, #main h2, #main h3, #main h4, #main h5, #main h6 { color: #666; font-weight: normal; font-family: "Georgia", serif; margin-top: 1em; margin-bottom: 1em; text-align: center; }
+#main h2 { margin-top: 0.8em; margin-bottom: 0.8em; }
+#main h3 { margin-top: 0.5em; margin-bottom: 0.5em; }
+#main h4 { margin-top: 0.3em; margin-bottom: 0.3em; }
+#main h5 { margin-top: 0.1em; margin-bottom: 0.1em; }
+#main h6 { margin-top: 0; margin-bottom: 0; }
+#main ul.admin { margin-left: 2em; }
+#main ul.admin small { padding-left: 1em; }
+#main ul.admin small a { color: #999; }
+#main ol, #main ul { margin-left: 3em; }
+#main ol li, #main ul li { margin-top: 0.4em; margin-bottom: 0.4em; }
+#main ol ol { list-style-type: upper-roman; }
+#main p { text-align: justify; margin-top: 1em; margin-bottom: 1em; }
+#main p.msgOk, #main p.msgError { border: 2px solid red; color: red; padding: 1em; text-align: center; margin: 1em; }
+#main p.msgOk { color: #009a00; border-color: #009a00; }
+#main q { background-color: #eee; }
+#main blockquote { border-left: 3px solid #eee; margin-left: 1em; padding-left: 1em; }
+#main fieldset { margin-top: 1em; border-style: none; background-color: #eee; padding: 0.5em; }
+#main fieldset legend { margin-left: 1em; background-color: #eee; padding: 0.1em 1em; font-family: "Georgia", serif; font-weight: bold; }
+#main fieldset textarea { width: 100%; }
+#main fieldset input.submit { padding: 0.2em 1em; }
+#main .computer p, #main .user p { margin: 0; padding: 0; }
+#main .computer p.comment, #main .user p.comment { margin-left: 10.5em; margin-top: 1em; }
+#main .computer em, #main .user em { clear: both; display: block; width: 10em; text-align: right; font-style: normal; margin-right: 0.5em; float: left; font-weight: bold; color: #444444; }
+#main .computer ol, #main .user ol { font-size: 0.8em; font-weight: bold; color: #444444; }
+#main .computer ol li:hover ul, #main .user ol li:hover ul { background-color: #eee; }
+#main .computer ol ul, #main .user ol ul { font-weight: normal; color: #444444; margin: 0; list-style-type: none; }
+#main .computer ol p a, #main .user ol p a { font-weight: normal; font-size: 0.8em; }
+#main .rooms ul { list-style-type: none; margin: 0; padding: 0; clear: both; text-align: center; border-top: 1px solid #ccc; overflow: auto; }
+#main .rooms ul.first { border-top-style: none; }
+#main .rooms li { width: 10%; float: left; display: block; }
 
-#foot {
-  text-align: center;
-  font-size: 0.5em;
-  
-  margin-top: 2em; }
+#foot { text-align: center; font-size: 0.5em; margin-top: 2em; }

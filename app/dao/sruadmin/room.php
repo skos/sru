@@ -10,7 +10,7 @@ extends UFdao {
 
 		$query = $this->prepareSelect($mapping);
 		$query->where($mapping->dormitoryId, $dormitoryId);
-		$query->order($mapping->alias);
+		$query->order($mapping->id);
 
 		return $this->doSelect($query);
 	}

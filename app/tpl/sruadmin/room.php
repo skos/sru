@@ -9,33 +9,22 @@ extends UFtpl_Common {
 		$url = $this->url(0).'/dormitories/';
 		
 		$lastFlor = '-';	
-		$eo = 0;
 		
 		foreach ($d as $c)
 		{	
 			if($lastFlor != $c['alias'][0])
 			{
-				if($lastFlor != '-')
-				{
-					echo '</ul>';
-					echo '<br style="clear: left;" />';  //chyba sie nie da w inline dac :after :P 
+				if($lastFlor != '-') {
+					echo '</ul><ul>';
+				} else {
+					echo '<ul class="first">';
 				}				
 				$lastFlor = $c['alias'][0];	
-				$eo++;
 				
-				echo '<ul class="rooms" style="text-decoration: none; ">';
 			}
-			if($eo % 2 )
-			{
-				echo '<li class="odd" style="float:left; list-style-type:none; width:3em;"><a href="'.$url.$c['dormitoryAlias'].'/'.$c['alias'].'">'.$c['alias'].'</a></li>';			
-			}
-			else
-			{
-				echo '<li class="even" style="float:left; background-color: #eeeeee; list-style-type:none; width:3em;"><a href="'.$url.$c['dormitoryAlias'].'/'.$c['alias'].'">'.$c['alias'].'</a></li>';
-			}
+			echo '<li><a href="'.$url.$c['dormitoryAlias'].'/'.$c['alias'].'">'.$c['alias'].'</a></li>';
 		}
 		echo '</ul>';
-		echo '<br style="clear: left;" />';
 	}
 
 	public function titleDetails(array $d) {
