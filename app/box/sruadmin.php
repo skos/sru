@@ -200,6 +200,8 @@ extends UFbox {
 		try {
 			$bean = UFra::factory('UFbean_Sru_ComputerList');
 
+			$d['computers'] =& $bean;
+
 			$get = $this->_srv->get('req')->get;
 			$tmp = array();
 			try {
@@ -220,8 +222,8 @@ extends UFbox {
 				return $this->computer();
 			}
 
-			$d['computers'] = $bean;
-
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Db_QueryFailed $e) {
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
 			return $this->render(__FUNCTION__.'NotFound');

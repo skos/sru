@@ -20,11 +20,9 @@ extends UFact {
 				$finds[] = 'host:'.$val;
 			}
 			if (isset($post['mac']) && !empty($post['mac'])) {
-				$bean->mac = $post['mac'];
 				$finds[] = 'mac:'.urlencode($post['mac']);
 			}
 			if (isset($post['ip']) && !empty($post['ip'])) {
-				$bean->ip = $post['ip'];
 				$finds[] = 'ip:'.urlencode($post['ip']);
 			}
 			if (count($finds)) {
