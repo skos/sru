@@ -28,6 +28,21 @@ extends UFact {
 					$this->markErrors(self::PREFIX, array('ip'=>'noFree'));
 					return;
 				}
+			} else {
+				try {
+					$ip = UFra::factory('UFbean_Sru_Ipv4');
+					$ip->getByIp($post['ip']);
+					$post['ip'] = $ip->ip;
+					$this->_srv->get('req')->post->{self::PREFIX} = $post;
+				} catch (UFex_Dao_NotFound $e) {
+					$this->rollback();
+					$this->markErrors(self::PREFIX, array('ip'=>'notFound'));
+					return;
+				} catch (UFex_Db_QueryFailed $e) {
+					$this->rollback();
+					$this->markErrors(self::PREFIX, array('ip'=>'notFound'));
+					return;
+				}
 			}
 
 			$bean->fillFromPost(self::PREFIX, array('typeId'));

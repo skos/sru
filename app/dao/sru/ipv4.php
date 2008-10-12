@@ -14,4 +14,14 @@ extends UFdao {
 
 		return $this->doSelectFirst($query);
 	}
+
+	public function getByIp($ip) {
+		$mapping = $this->mapping('get');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->ip, $ip);
+		$query->where($mapping->host, null);
+
+		return $this->doSelectFirst($query);
+	}
 }
