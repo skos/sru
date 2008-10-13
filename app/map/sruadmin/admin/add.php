@@ -35,8 +35,8 @@ extends UFmap {
 	protected $valids = array(
 		'login' => array('textMin'=>1, 'textMax'=>100, 'regexp'=>'^[-a-zA-Z0-9\.@_]+$'),
 		'password' => array('textMin'=>6), 
-		'name' => array('textMin'=>1),
-		'email' => array('email'=>true),
+		'name' => array('textMin'=>1, 'textMax'=>100),
+		'email' => array('email'=>true, 'textMax'=>100),
 		'dormitoryId' => array('textMin'=>1),
 		'typeId' => array('textMin'=>1), //@todo: a takie typy jakos dokladniej nei powinien byc validowane?
 	);

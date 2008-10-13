@@ -37,9 +37,9 @@ extends UFmap {
 	protected $valids = array(
 		'login' => array('textMin'=>1, 'textMax'=>100, 'regexp'=>'^[-a-zA-Z0-9\.@_]+$'),
 		'password' => array('textMin'=>6),
-		'name' => array('textMin'=>1),
-		'surname' => array('textMin'=>1),
-		'email' => array('email'=>true),
+		'name' => array('textMin'=>1, 'textMax'=>100),
+		'surname' => array('textMin'=>1, 'textMax'=>100),
+		'email' => array('email'=>true, 'textMax'=>100),
 		'facultyId' => array('textMin'=>1, 'regexp'=>'^(1|2|3|4|5|6|7|8|9|0)$'),
 		'studyYearId' => array('textMin'=>1, 'regexp'=>'^(1|2|3|4|5|6|7|8|9|10|11|0)$'),
 		'dormitory' => array('textMin'=>1),
