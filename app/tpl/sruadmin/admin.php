@@ -35,7 +35,7 @@ extends UFtpl_Common {
 	}
 
 	public function formLogout(array $d) {
-		echo '<p>'.$d['name'].'</p>';
+		echo '<p>'.$this->_escape($d['name']).'</p>';
 	}
 	
 	public function listAdmin(array $d) {
@@ -61,13 +61,13 @@ extends UFtpl_Common {
 			switch($c['typeId'])
 			{
 				case 1:
-						echo '<strong>'.$c['name'].'</strong>';
+						echo '<strong>'.$this->_escape($c['name']).'</strong>';
 						break;
 				case 2:
-						echo '<em>'.$c['name'].'</em>';
+						echo '<em>'.$this->_escape($c['name']).'</em>';
 						break;						
 				case 3:
-						echo $c['name'];
+						echo $this->_escape($c['name']);
 						break;							
 			}
 			echo '</a></li>';
@@ -86,16 +86,16 @@ extends UFtpl_Common {
 		echo '<ul>';	
 		foreach ($d as $c)
 		{
-			echo '<li><a href="'.$url.$c['id'].'">'.$c['name'].'</a></li>';
+			echo '<li><a href="'.$url.$c['id'].'">'.$this->_escape($c['name']).'</a></li>';
 		}
 		echo '</ul>';
 	}	
 	public function titleDetails(array $d) {
-		echo $d['name'];
+		echo $this->_escape($d['name']);
 	}	
 	public function details(array $d) {
 		$url = $this->url(0);
-		echo '<h2>'.$d['name'].'<br/><small>('.$this->adminTypes[$d['typeId']].' | 
+		echo '<h2>'.$this->_escape($d['name']).'<br/><small>('.$this->adminTypes[$d['typeId']].' | 
 			ostatnie logowanie: '.date(self::TIME_YYMMDD_HHMM, $d['lastLoginAt']).')</small></h2>';
 		echo '<p><em>E-mail:</em> <a href="mailto:'.$d['email'].'">'.$d['email'].'</a></p>';
 		echo '<p><em>Telefon:</em> '.$d['phone'].'</p>';
@@ -181,7 +181,7 @@ extends UFtpl_Common {
 	}
 
 	public function adminBar(array $d, $ip, $time) {
-		echo '<a href="'.$this->url(0).'/admins/'.$d['id'].'">'.$d['name'].'</a> ';
+		echo '<a href="'.$this->url(0).'/admins/'.$d['id'].'">'.$this->_escape($d['name']).'</a> ';
 		if (!is_null($time) && $time != 0 ) {
 			echo 'Ostatnie logowanie: '.date(self::TIME_YYMMDD_HHMM, $time).' ' ;
 		}

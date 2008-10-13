@@ -65,7 +65,7 @@ extends UFtpl_Common {
 		if (is_null($d['userId'])) {
 			$user = 'BRAK';
 		} else {
-			$user = '<a href="'.$url.'/users/'.$d['userId'].'">'.$d['userName'].' '.$d['userSurname'].'</a>';
+			$user = '<a href="'.$url.'/users/'.$d['userId'].'">'.$this->_escape($d['userName']).' '.$this->_escape($d['userSurname']).'</a>';
 		}
 		if ($d['typeId'] != 1) {
 			echo '<p><em>Typ komputera:</em> '.$this->computerTypes[$d['typeId']].'</p>';
@@ -100,7 +100,7 @@ extends UFtpl_Common {
 		if (is_null($d['modifiedBy'])) {
 			$changed = 'UŻYTKOWNIK';
 		} else {
-			$changed = '<a href="'.$url.'/admins/'.$d['modifiedById'].'">'.$d['modifiedBy'].'</a>';;
+			$changed = '<a href="'.$url.'/admins/'.$d['modifiedById'].'">'.$this->_escape($d['modifiedBy']).'</a>';;
 		}
 		echo '<p><em>Zmiana:</em> '.date(self::TIME_YYMMDD_HHMM, $d['modifiedAt']).'<small> ('.$changed.')</small></p>';
 		if (strlen($d['comment'])) {
@@ -244,7 +244,7 @@ if (input) {
 			if (is_null($c['userId'])) {
 				$owner = '(BRAK)';
 			} else {
-				$owner = '(<a href="'.$url.'/users/'.$c['userId'].'">'.$c['userName'].' '.$c['userSurname'].'</a>)';
+				$owner = '(<a href="'.$url.'/users/'.$c['userId'].'">'.$this->_escape($c['userName']).' '.$this->_escape($c['userSurname']).'</a>)';
 			}
 			echo '<li'.(!$c['active']?' class="old">Przedawniony ':'>').'<a href="'.$url.'/computers/'.$c['id'].'">'.$c['host'].' <small>'.$c['ip'].'/'.$c['mac'].'</small></a> <span>'.$owner.'</span></li>';
 		}

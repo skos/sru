@@ -30,8 +30,8 @@ extends UFtpl_Common {
 		foreach ($d as $c)
 		{	
 			echo '<tr>			
-					<td><a href="'.$url.'/admins/'.$c['adminId'].'">'.$c['adminName'].'</a></td>
-					<td><a href="'.$url.'/users/'.$c['userId'].'">'.$c['userName'].' '.$c['userSurname'].'</a></td>
+					<td><a href="'.$url.'/admins/'.$c['adminId'].'">'.$this->_escape($c['adminName']).'</a></td>
+					<td><a href="'.$url.'/users/'.$c['userId'].'">'.$this->_escape($c['userName']).' '.$this->_escape($c['userSurname']).'</a></td>
 					<td>'.nl2br($this->_escape($c['reason'])).'</td>' //@todo: ograniczyc do ilus znakow
 					.'<td>'.date(self::TIME_YYMMDD, $c['startAt']).'</td>
 					<td>'.date(self::TIME_YYMMDD, $c['endAt']).'</td>
@@ -80,13 +80,13 @@ extends UFtpl_Common {
 		
 		if($c['userId'])
 		{
-			echo '<p><em>Ukarany:</em> <a href="'.$url.'/users/'.$c['userId'].'">'.$c['userName'].' '.$c['userSurname'].' ('.$c['userLogin'].')</a></p>';
+			echo '<p><em>Ukarany:</em> <a href="'.$url.'/users/'.$c['userId'].'">'.$this->_escape($c['userName']).' '.$this->_escape($c['userSurname']).' ('.$c['userLogin'].')</a></p>';
 		}
-		echo '<p><em>Przez:</em> <a href="'.$url.'/admins/'.$c['adminId'].'">'.$c['adminName'].'</a><small> ('.date(self::TIME_YYMMDD, $c['createdAt']) .')</small></p>';
+		echo '<p><em>Przez:</em> <a href="'.$url.'/admins/'.$c['adminId'].'">'.$this->_escape($c['adminName']).'</a><small> ('.date(self::TIME_YYMMDD, $c['createdAt']) .')</small></p>';
 		
 		if($c['modifiedBy'])
 		{
-			echo '<p><em>Ostatnio modyfikowana przez:</em> <a href="'.$url.'/admins/'.$c['modifiedBy'].'">'.$c['modifyAdminName']. '</a> <small>('.date(self::TIME_YYMMDD, $c['modifiedAt']).')</small></p>';							
+			echo '<p><em>Ostatnio modyfikowana przez:</em> <a href="'.$url.'/admins/'.$c['modifiedBy'].'">'.$this->_escape($c['modifyAdminName']). '</a> <small>('.date(self::TIME_YYMMDD, $c['modifiedAt']).')</small></p>';							
 		}
 		
 		echo '<p><em>Powód:</em></p><p class="comment">'.nl2br($this->_escape($c['reason'])).'</p>';
@@ -99,7 +99,7 @@ extends UFtpl_Common {
 
 		if($c['amnestyBy'])
 		{
-			echo '<p><em>Amnestia udzielona przez:</em> <a href="'.$url.'/admins/'.$c['amnestyBy'].'">'.$c['amnestyAdminName'].'</a> <small>('.date(self::TIME_YYMMDD, $c['amnestyAt']).')</small></p>';							
+			echo '<p><em>Amnestia udzielona przez:</em> <a href="'.$url.'/admins/'.$c['amnestyBy'].'">'.$this->_escape($c['amnestyAdminName']).'</a> <small>('.date(self::TIME_YYMMDD, $c['amnestyAt']).')</small></p>';							
 		}	
 		
 		

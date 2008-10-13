@@ -163,7 +163,7 @@ extends UFtpl_Common {
 		if (is_null($d['modifiedBy'])) {
 			$changed = 'UŻYTKOWNIK';
 		} else {
-			$changed = '<a href="'.$url.'/admins/'.$d['modifiedById'].'">'.$d['modifiedBy'].'</a>';;
+			$changed = '<a href="'.$url.'/admins/'.$d['modifiedById'].'">'.$this->_escape($d['modifiedBy']).'</a>';;
 		}
 		echo '<p><em>Zmiana:</em> '.date(self::TIME_YYMMDD_HHMM, $d['modifiedAt']).'<small> ('.$changed.')</small></p>';
 		if (strlen($d['comment'])) {
