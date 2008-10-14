@@ -25,15 +25,22 @@ extends UFact {
 			$bean->getByPK($id);	// uzupelnione dane dociagane z innych tabel
 			$req = $this->_srv->get('req');
 
-			$token = UFra::factory('UFbean_Sru_Token');
-			$token->token = md5($id.NOW);
-			$token->userId = $id;
-			$token->save();
-
 			// wyslanie maila
 			$box = UFra::factory('UFbox_Sru');
 			$title = $box->userAddMailTitle($bean);
-			$body = $box->userAddMailBody($bean, $password, $token);
+			try {
+				$oldUser = UFra::factory('UFbean_Sru_User');
+				$oldUser->getOldByEmail($bean->email);
+
+				$token = UFra::factory('UFbean_Sru_Token');
+				$token->token = md5($id.NOW);
+				$token->userId = $id;
+				$token->save();
+
+				$body = $box->userAddMailBody($bean, $password, $token);
+			} catch (UFex_Dao_NotFound $e) {
+				$body = $box->userAddMailBodyNoToken($bean, $password);
+			}
 			$headers = $box->userAddMailHeaders($bean);
 			mail($bean->email, $title, $body, $headers);
 

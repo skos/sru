@@ -70,4 +70,13 @@ extends UFdao {
 
 		return $this->doSelect($query);
 	}			
+
+	public function getOldByEmail($email) {
+		$mapping = $this->mapping('old');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->email, $email);
+
+		return $this->doSelectFirst($query);
+	}
 }

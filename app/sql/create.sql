@@ -50,6 +50,7 @@ DROP INDEX public.computers_ipv4_key;
 DROP INDEX public.computers_host_key;
 ALTER TABLE ONLY public.users_tokens DROP CONSTRAINT users_tokens_pkey;
 ALTER TABLE ONLY public.users DROP CONSTRAINT users_pkey;
+ALTER TABLE ONLY public.users_old DROP CONSTRAINT users_old_pkey;
 ALTER TABLE ONLY public.users DROP CONSTRAINT users_login_key;
 ALTER TABLE ONLY public.users_history DROP CONSTRAINT users_history_pkey;
 ALTER TABLE ONLY public.text DROP CONSTRAINT text_pkey;
@@ -82,6 +83,7 @@ ALTER TABLE public.computers ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.admins ALTER COLUMN id DROP DEFAULT;
 DROP SEQUENCE public.users_tokens_id_seq;
 DROP TABLE public.users_tokens;
+DROP TABLE public.users_old;
 DROP SEQUENCE public.users_id_seq;
 DROP SEQUENCE public.users_history_id_seq;
 DROP TABLE public.users_history;
@@ -1492,6 +1494,15 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 
 
 --
+-- Name: users_old; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE users_old (
+    email pg_catalog.text NOT NULL
+);
+
+
+--
 -- Name: users_tokens; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1764,6 +1775,14 @@ ALTER TABLE ONLY users_history
 
 ALTER TABLE ONLY users
     ADD CONSTRAINT users_login_key UNIQUE ("login");
+
+
+--
+-- Name: users_old_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY users_old
+    ADD CONSTRAINT users_old_pkey PRIMARY KEY (email);
 
 
 --
