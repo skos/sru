@@ -862,7 +862,7 @@ ALTER SEQUENCE faulties_id_seq OWNED BY faculties.id;
 
 CREATE TABLE ipv4s (
     ip inet NOT NULL,
-    dormitory_id bigint NOT NULL
+    dormitory_id bigint
 );
 
 
