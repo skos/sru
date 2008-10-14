@@ -30,6 +30,7 @@ extends UFact {
 			}
 
 			$bean = UFra::factory('UFbean_Sru_Computer');
+			$bean->typeId = UFbean_Sru_Computer::TYPE_STUDENT;
 			$post = $this->_srv->get('req')->post->{self::PREFIX};
 
 			$foundOld = false;
