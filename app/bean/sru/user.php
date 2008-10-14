@@ -19,6 +19,14 @@ extends UFbeanSingle {
 		return md5($login.$password);
 	}
 
+	protected function normalizeName($val, $change) {
+		return trim($val);
+	}
+
+	protected function normalizeSurname($val, $change) {
+		return trim($val);
+	}
+
 	protected function validateLogin($val, $change) {
 		try {
 			$bean = UFra::factory('UFbean_Sru_User');
