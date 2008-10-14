@@ -1793,14 +1793,14 @@ CREATE UNIQUE INDEX computers_host_key ON computers USING btree (host, active) W
 -- Name: computers_ipv4_key; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE UNIQUE INDEX computers_ipv4_key ON computers USING btree (ipv4, active) WHERE (active = true);
+CREATE UNIQUE INDEX computers_ipv4_key ON computers USING btree (ipv4, active) WHERE ((active = true) AND (type_id <> 4));
 
 
 --
 -- Name: computers_mac_key; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE UNIQUE INDEX computers_mac_key ON computers USING btree (mac, active) WHERE (active = true);
+CREATE UNIQUE INDEX computers_mac_key ON computers USING btree (mac, active) WHERE ((active = true) AND (type_id <> 4));
 
 
 --

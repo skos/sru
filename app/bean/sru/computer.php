@@ -33,6 +33,10 @@ extends UFbeanSingle {
 			if ($change && $this->data['id'] == $bean->id) {
 				return;
 			}
+			// sprawdzamy, czy mamy do czynienia z serwerem
+			if ($this->data['typeId'] == self::TYPE_SERVER && $bean->typeId == self::TYPE_SERVER) {
+				return;
+			}
 			return 'duplicated';
 		} catch (UFex_Db_QueryFailed $e) {
 			return 'regexp';
@@ -75,6 +79,10 @@ extends UFbeanSingle {
 			$bean = UFra::factory('UFbean_Sru_Computer');
 			$bean->getByIp($val);
 			if ($change && $this->data['id'] == $bean->id) {
+				return;
+			}
+			// sprawdzamy, czy mamy do czynienia z serwerem
+			if ($this->data['typeId'] == self::TYPE_SERVER && $bean->typeId == self::TYPE_SERVER) {
 				return;
 			}
 			return 'duplicated';
