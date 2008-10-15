@@ -79,4 +79,26 @@ extends UFdao {
 
 		return $this->doSelectFirst($query);
 	}
+
+	public function getFromWalet($name, $surname, $room, $dormitory) {
+		// mb_strtolower() ma jakies problemy, jak php wewnetrznie nie jest utf
+		$enc = mb_internal_encoding();
+		mb_internal_encoding('UTF-8');
+		$name = trim(mb_strtolower($name));
+		$surname = trim(mb_strtolower($surname));
+		mb_internal_encoding($enc);
+
+		$md5 = md5($surname.' '.$name);
+		$room = ltrim(trim(mb_strtoupper($room)), '0');
+		$dormitory = (int)$dormitory;
+
+		$mapping = $this->mapping('walet');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->hash, $md5);
+		$query->where($mapping->dormitory, $dormitory);
+		$query->where($mapping->room, $room);
+
+		return $this->doSelectFirst($query);
+	}
 }

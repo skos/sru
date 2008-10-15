@@ -45,6 +45,7 @@ DROP RULE insert_counter ON public.computers;
 DROP RULE insert_counter ON public.users;
 DROP RULE delete_counter ON public.computers;
 DROP RULE delete_counter ON public.users;
+DROP INDEX public.users_walet_all_key;
 DROP INDEX public.computers_mac_key;
 DROP INDEX public.computers_ipv4_key;
 DROP INDEX public.computers_host_key;
@@ -81,6 +82,7 @@ ALTER TABLE public.computers_history ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.computers_history ALTER COLUMN computer_id DROP DEFAULT;
 ALTER TABLE public.computers ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.admins ALTER COLUMN id DROP DEFAULT;
+DROP TABLE public.users_walet;
 DROP SEQUENCE public.users_tokens_id_seq;
 DROP TABLE public.users_tokens;
 DROP TABLE public.users_old;
@@ -1549,6 +1551,17 @@ ALTER SEQUENCE users_tokens_id_seq OWNED BY users_tokens.id;
 
 
 --
+-- Name: users_walet; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE users_walet (
+    hash pg_catalog.text NOT NULL,
+    room pg_catalog.text NOT NULL,
+    dorm integer NOT NULL
+);
+
+
+--
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1820,6 +1833,13 @@ CREATE UNIQUE INDEX computers_ipv4_key ON computers USING btree (ipv4, active) W
 --
 
 CREATE UNIQUE INDEX computers_mac_key ON computers USING btree (mac, active) WHERE ((active = true) AND (type_id <> 4));
+
+
+--
+-- Name: users_walet_all_key; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX users_walet_all_key ON users_walet USING btree (hash, room, dorm);
 
 
 --

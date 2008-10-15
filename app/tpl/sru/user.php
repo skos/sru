@@ -67,6 +67,9 @@ extends UFtpl_Common {
 		echo $form->_end();
 
 		echo $form->_fieldset('Dane osobowe');
+		if ($this->_srv->get('msg')->get('userAdd/errors/walet/notFound')) {
+			echo $this->ERR('Użytkownik nie jest zameldowany w tym pokoju');
+		}
 		echo $form->name('Imię');
 		echo $form->surname('Nazwisko');
 		$tmp = array();
@@ -105,6 +108,9 @@ extends UFtpl_Common {
 
 
 		echo '<h1>'.$d['name'].' '.$d['surname'].'</h1>';
+		if ($this->_srv->get('msg')->get('userEdit/errors/walet/notFound')) {
+			echo $this->ERR('Użytkownik nie jest zameldowany w tym pokoju');
+		}
 		$tmp = array();
 		foreach ($faculties as $fac) {
 			$tmp[$fac['id']] = $fac['name'];
