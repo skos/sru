@@ -68,7 +68,7 @@ extends UFtpl_Common {
 
 		echo $form->_fieldset('Dane osobowe');
 		if ($this->_srv->get('msg')->get('userAdd/errors/walet/notFound')) {
-			echo $this->ERR('Użytkownik nie jest zameldowany w tym pokoju');
+			echo $this->ERR('Podana osoba nie jest zameldowana w tym pokoju');
 		}
 		echo $form->name('Imię');
 		echo $form->surname('Nazwisko');
