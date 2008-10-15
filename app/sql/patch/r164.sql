@@ -1,11 +1,22 @@
+DROP TABLE users_walet;
 CREATE TABLE users_walet
 (
   hash text NOT NULL,
   room text NOT NULL,
-  dorm integer NOT NULL,
-  CONSTRAINT users_walet_pkey PRIMARY KEY (hash, room, dorm)
+  dorm integer NOT NULL
 )
 WITH (OIDS=FALSE);
+ALTER TABLE users_walet OWNER TO hrynek;
+
+-- Index: users_walet_all_key
+
+-- DROP INDEX users_walet_all_key;
+
+CREATE INDEX users_walet_all_key
+  ON users_walet
+  USING btree
+  (hash, room, dorm);
+
 
 truncate users_walet;
 copy users_walet (hash, dorm, room) from stdin;
