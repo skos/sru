@@ -295,6 +295,10 @@ extends UFtpl_Common {
 		echo $d['user']->write('titleEdit');
 	}
 
+	public function titleUserEditNotFound(array $d) {
+		$this->titleUserNotFound();
+	}
+
 	public function userEdit(array $d) {
 		$form = UFra::factory('UFlib_Form');
 

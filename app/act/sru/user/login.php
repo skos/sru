@@ -28,6 +28,8 @@ extends UFact {
 			$this->markErrors(self::PREFIX, $e->getData());
 		} catch (UFex_Dao_NotFound $e) {
 			$this->markErrors(self::PREFIX, array('login'=>'notAuthorized'));
+		} catch (UFex $e) {
+			UFra::error($e);
 		}
 	}
 }

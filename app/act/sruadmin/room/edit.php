@@ -25,6 +25,9 @@ extends UFact {
 			$this->commit();
 		} catch (UFex_Dao_DataNotValid $e) {
 			$this->rollback();
+		} catch (UFex $e) {
+			$this->rollback();
+			UFra::error($e);
 		}
 	}
 }

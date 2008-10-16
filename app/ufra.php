@@ -8,6 +8,7 @@ extends UFraCore{
 	static protected $booted = false;
 
 	static public function boot() {
+		set_error_handler(array('UFra', 'phpError'));
 		if (self::$booted) {
 			return;
 		}
@@ -41,6 +42,16 @@ extends UFraCore{
 		self::$services->set('acl', $acl);
 	}
 
+	static public function phpError($errNo, $errStr, $errFile, $errLine) {
+		file_put_contents(UFDIR_APP.'var/log/ufra-errors.log', date('c')." $errFile:$errLine $errStr\n", FILE_APPEND);
+		self::errorHandler($errNo, $errStr, $errFile, $errLine);
+	}
+
+	static public function error($txt) {
+		file_put_contents(UFDIR_APP.'var/log/ufra-errors.log', date('c')." $txt\n", FILE_APPEND);
+		self::log($txt, E_USER_ERROR);
+	}
+
 	static public function autoload($className) {
 		$classFile = strtolower($className);
 		if (isset(self::$classMap[$classFile])) {
@@ -52,34 +63,6 @@ extends UFraCore{
 		}
 		return self::includeClass($classFile);
 	}
-
-	/*
-	static public function autoload($className) {
-		$classFile = strtolower($className);
-		$classFile = substr($classFile, 2);
-		$classFile = str_replace('_','/',$classFile);
-		$classFile = str_replace('//','/_',$classFile);
-		
-		$tmp = explode('/', $classFile);
-		switch ($tmp[0]) {
-			case 'ex':
-			case 'lib':
-				// tych klas najpierw szukamy w core, a potem w aplikacji
-				if (parent::autoload($className)) {
-					return true;
-				} else {
-					return self::includeClass(UFDIR_APP.$classFile);
-				}
-				break;
-			default: 
-				if (!self::includeClass(UFDIR_APP.$classFile)) {
-					return parent::autoload($className);
-				}
-				break;
-		}
-	}
-	*/
-
 }
 
 function __autoload($class) {

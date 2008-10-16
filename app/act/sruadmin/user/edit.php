@@ -49,6 +49,8 @@ extends UFact {
 			} else {
 				throw $e;
 			}
+		} catch (UFex $e) {
+			UFra::error($e);
 		}
 	}
 }

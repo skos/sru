@@ -22,6 +22,8 @@ extends UFact {
 			$this->postDel(self::PREFIX);
 			$this->markOk(self::PREFIX);
 		} catch (UFex_Dao_NotFound $e) {
+		} catch (UFex $e) {
+			UFra::error($e);
 		}
 	}
 }

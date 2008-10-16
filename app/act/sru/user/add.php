@@ -58,6 +58,9 @@ extends UFact {
 		} catch (UFex_Dao_DataNotValid $e) {
 			$this->rollback();
 			$this->markErrors(self::PREFIX, $e->getData());
+		} catch (UFex $e) {
+			$this->rollback();
+			UFra::error($e);
 		}
 	}
 }

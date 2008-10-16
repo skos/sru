@@ -20,6 +20,8 @@ extends UFact {
 			$this->markErrors(self::PREFIX, $e->getData());
 		} catch (UFex_Db_QueryFailed $e) {
 			$this->markErrors(self::PREFIX, array('alias'=>'duplicated'));
+		} catch (UFex $e) {
+			UFra::error($e);
 		}
 	}
 }
