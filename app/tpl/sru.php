@@ -125,7 +125,7 @@ extends UFtpl_Common {
 		echo 'MIME-Version: 1.0'."\n";
 		echo 'Content-Type: text/plain; charset=UTF-8'."\n";
 		echo 'Content-Transfer-Encoding: 8bit'."\n";
-		echo 'From: Test SRU <testowy-email-no-reply@pg.edu.pl>'."\n";
+		echo 'From: Administratorzy SKOS <adnet@ds.pg.gda.pl>'."\n";
 	}
 
 	public function titleMain() {
