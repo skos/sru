@@ -50,15 +50,12 @@ extends UFtpl_Common {
 		echo 'Witamy w sieci SKOS';
 	}
 
-	public function userAddMailBodyNoToken(array $d) {
+	protected function userAddMailBody(array $d, $info='') {
 		echo 'Witamy w Sieci Komputerowej Osiedla Studenckiego Politechniki Gdańskiej!'."\n";
 		echo "\n";
 		echo 'Jeżeli otrzymałeś/aś tę wiadomość, a nie chciałeś/aś założyć konta w SKOS PG,'."\n";
 		echo 'prosimy o zignorowanie tej wiadomości.'."\n";
-		echo "\n";
-		echo 'Aby dokończyć proces aktywacji konta, zgłoś się do swojego administratora'."\n";
-		echo 'lokalnego z wejściówką do DS-u. Godziny, w których możesz go zastać znajdziesz'."\n";
-		echo 'tutaj: http://skos.pg.gda.pl/'."\n";
+		echo $info;
 		echo "\n";
 		echo 'W razie jakichkolwiek problemów zachęcamy do skorzystania z FAQ:'."\n";
 		echo 'http://skos.pg.gda.pl/'."\n";
@@ -86,39 +83,23 @@ extends UFtpl_Common {
 		echo '[wiadomość została wygenerowana automatycznie]'."\n";
 	}
 
-	public function userAddMailBody(array $d) {
-		echo 'Witamy w Sieci Komputerowej Osiedla Studenckiego Politechniki Gdańskiej!'."\n";
-		echo "\n";
-		echo 'Jeżeli otrzymałeś/aś tę wiadomość, a nie chciałeś/aś założyć konta w SKOS PG,'."\n";
-		echo 'prosimy o zignorowanie tej wiadomości.'."\n";
-		echo "\n";
-		echo 'Aby aktywować swoje konto, kliknij:'."\n";
-		echo 'http://'.$d['host'].$this->url(0).'/'.$d['token']->token."\n";
-		echo "\n";
-		echo 'W razie jakichkolwiek problemów zachęcamy do skorzystania z FAQ:'."\n";
-		echo 'http://skos.pg.gda.pl/'."\n";
-		echo "\n";
-		echo '- - - - - - - - - - -'."\n";
-		echo "\n";
-		echo 'Dane, na które zostało założone konto:'."\n";
-		echo $d['user']->write('userAddMailBody', $d['password']);
-		echo 'PROSIMY O ZMIANĘ HASŁA ZARAZ PO PIERWSZYM ZALOGOWANIU SIĘ!'."\n";
-		echo "\n";
-		echo '- - - - - - - - - - -'."\n";
-		echo "\n";
-		echo 'Nasza sieć obejmuje swoim zasięgiem sieci LAN wszystkich Domów Studenckich'."\n";
-		echo 'Politechniki Gdańskiej, jest częścią Uczelnianej Sieci Komputerowej (USK PG) i'."\n";
-		echo 'dołączona jest bezpośrednio do sieci TASK.'."\n";
-		echo "\n";
-		echo 'Wszelkie informacje na temat funkcjonowania sieci, godzin dyżurów'."\n";
-		echo 'administratorów SKOS PG oraz Regulamin SKOS PG znajdziesz na stronie'."\n";
-		echo 'http://skos.pg.gda.pl/'."\n";
-		echo "\n";
-		echo '-- '."\n";
-		echo 'Pozdrawiamy,'."\n";
-		echo 'Administratorzy SKOS PG'."\n";
-		echo 'http://skos.pg.gda.pl/'."\n";
-		echo '[wiadomość została wygenerowana automatycznie]'."\n";
+	public function userAddMailBodyNoToken(array $d) {
+		$info = "\n";
+		$info .= 'Aby dokończyć proces aktywacji konta, zgłoś się do swojego administratora'."\n";
+		$info .= 'lokalnego z wejściówką do DS-u. Godziny, w których możesz go zastać znajdziesz'."\n";
+		$info .= 'tutaj: http://skos.pg.gda.pl/'."\n";
+		$this->userAddMailBody($d, $info);
+	}
+
+	public function userAddMailBodyNoInfo(array $d) {
+		$this->userAddMailBody($d);
+	}
+
+	public function userAddMailBodyToken(array $d) {
+		$info = "\n";
+		$info .= 'Aby aktywować swoje konto, kliknij:'."\n";
+		$info .= 'http://'.$d['host'].$this->url(0).'/'.$d['token']->token."\n";
+		$this->userAddMailBody($d, $info);
 	}
 
 	public function userAddMailHeaders(array $d) {

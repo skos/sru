@@ -45,7 +45,7 @@ extends UFact {
 				$token->userId = $id;
 				$token->save();
 
-				$body = $box->userAddMailBody($bean, $password, $token);
+				$body = $box->userAddMailBodyToken($bean, $password, $token);
 			} catch (UFex_Dao_NotFound $e) {
 				$body = $box->userAddMailBodyNoToken($bean, $password);
 			}
