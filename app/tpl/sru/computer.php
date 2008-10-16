@@ -56,7 +56,7 @@ extends UFtpl_Common {
 		echo '<p><em>Liczba kar:</em> '.$d['bans'].'</p>';
 		$ip = explode('.', $d['ip']);
 		$tag = substr(md5('haha'.$ip[2].$ip[3]), 0, 5);
-		echo '<p><a href="https://sru.ds.pg.gda.pl/lanstats/?ip='.$ip[2].'.'.$ip[3].'"><img src="https://sru.ds.pg.gda.pl/lanstats/153.19.'.$ip[2].'/'.str_pad($ip[3], 3, '0', STR_PAD_LEFT).'.'.$tag.'.png" alt="Statystyki transferów" /></a></p>';
+		//echo '<p><a href="https://sru.ds.pg.gda.pl/lanstats/?ip='.$ip[2].'.'.$ip[3].'"><img src="https://sru.ds.pg.gda.pl/lanstats/153.19.'.$ip[2].'/'.str_pad($ip[3], 3, '0', STR_PAD_LEFT).'.'.$tag.'.png" alt="Statystyki transferów" /></a></p>';
 	}
 
 	public function details(array $d) {
