@@ -64,6 +64,8 @@ extends UFtpl_Common {
 		echo "\n";
 		echo 'Dane, na które zostało założone konto:'."\n";
 		echo $d['user']->write('userAddMailBody', $d['password']);
+		echo "\n";
+		echo 'System Rejestracji Użytkowników: http://'.$d['host'].'/'."\n";
 		echo 'PROSIMY O ZMIANĘ HASŁA ZARAZ PO PIERWSZYM ZALOGOWANIU SIĘ!'."\n";
 		echo "\n";
 		echo '- - - - - - - - - - -'."\n";
