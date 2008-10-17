@@ -18,7 +18,7 @@ extends UFtpl_Common {
 		if ($this->_srv->get('msg')->get('userAdd/ok')) {
 			echo $this->OK('Konto zostało założone. Hasło otrzymasz wkrótce na maila.');
 		} elseif ($this->_srv->get('msg')->get('userLogin/errors')) {
-			echo $this->ERR('Nieprawidłowy login lub hasło');
+			echo $this->ERR('Nieprawidłowy login lub hasło. Czy aktywowałeś swoje konto u administratora lub linkiem z maila?');
 		}
 		echo $d['user']->write('formLogin');
 		echo $form->_submit('Zaloguj');
