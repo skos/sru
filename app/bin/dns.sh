@@ -1,6 +1,6 @@
 #!/bin/bash
 increment="$(dirname $0)/zoneserialinc.sh"
-tmp="/tmp/sru-api.tmp"
+tmp="/tmp/sru-dns.tmp"
 base="/opt/skos/dns"
 dir="$base/inc"
 

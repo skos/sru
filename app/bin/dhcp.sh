@@ -1,5 +1,5 @@
 #!/bin/bash
-tmp="/tmp/sru-api.tmp"
+tmp="/tmp/sru-dhcp.tmp"
 dir='/opt/skos/dhcp'
 
 wget -q -O $tmp http://sru.ds.pg.gda.pl/api/dhcp/stud && mv $tmp "$dir/studs.inc"
