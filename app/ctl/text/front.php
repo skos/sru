@@ -22,6 +22,7 @@ extends UFctl {
 			$get->view = 'list';
 		} else {
 			switch ($req->segment(1)) {
+/*
 				case ':add':
 					$get->view = 'admin/add';
 					break;
@@ -37,6 +38,7 @@ extends UFctl {
 					$get->view = 'admin/del';
 					$get->alias = $this->getAlias(1);
 					break;
+*/
 				default:
 					$get->view = 'show';
 					$get->alias = $this->getAlias();
