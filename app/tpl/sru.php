@@ -129,7 +129,7 @@ extends UFtpl_Common {
 	public function userMainMenu() {
 		echo '<div class="mainMenu"><h1>System Rejestracji Użytkowników</h1>';
 		if ($this->_srv->get('msg')->get('userConfirm/ok')) {
-			echo $this->OK('Konto zostało aktywowane.');
+			echo $this->OK('Konto zostało aktywowane - teraz <a href="'.$this->url(0).'/computers">dodaj komputer</a>');
 		}
 		echo '<ul>';
 		echo '<li><a href="'.$this->url(0).'/profile">Profil</a></li>';
