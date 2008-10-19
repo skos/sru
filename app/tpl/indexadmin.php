@@ -17,7 +17,7 @@ extends UFtpl_Common {
 <body>
 <div id="body">
 <div id="head">
-<h1><a href="<?=UFURL_BASE;?>/"><abbr title="Sieć Komputerowa Osiedla Studenckiego">SKOS</abbr></a></h1>
+<h1><a href="<?=UFURL_BASE;?>/">Admin</a></h1>
 </div><!-- head -->
 <?=$d['menuAdmin'];?>
 <?=$d['adminBar'];?>
