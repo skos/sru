@@ -238,4 +238,15 @@ extends UFdao {
 
 		return $this->doSelect($query);
 	}
+
+	public function listByRoom($roomId) {
+	
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->locationId, $roomId);
+		$query->order($mapping->host);
+
+		return $this->doSelect($query);
+	}			
 }

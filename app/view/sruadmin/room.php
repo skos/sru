@@ -10,6 +10,8 @@ extends UFview_SruAdmin {
 
 		$this->append('title', $box->titleRoom());
 		$this->append('body',  $box->room());
+		$this->append('body',  $box->roomUsers());
+		$this->append('body',  $box->roomComputers());
 
 	}
 }

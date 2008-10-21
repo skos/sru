@@ -240,4 +240,11 @@ extends UFtpl_Common {
 		echo 'Login: '.$d['login']."\n";
 		echo 'Twoje hasło to: '.$password."\n";
 	}
+
+	public function shortList(array $d) {
+		$url = $this->url(0).'/users/';
+		foreach ($d as $c) {
+			echo '<li><a href="'.$url.$c['id'].'">'.$this->_escape($c['name']).' '.$this->_escape($c['surname']).'</a></li>';
+		}
+	}
 }

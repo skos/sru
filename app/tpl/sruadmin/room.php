@@ -30,30 +30,18 @@ extends UFtpl_Common {
 	public function titleDetails(array $d) {
 		echo $d['alias'].' ('.$d['dormitoryAlias'].')';
 	}
-	public function details(array $d, $users) {
+	public function details(array $d) {
 		
 		$url = $this->url(0);
 		echo '<h2>'.$d['alias'].' ('.$d['dormitoryAlias'].')<br/><small>(liczba użytkowników:'.$d['userCount'].' liczba komputerów:'.$d['computerCount'].')</small></h2>';
-			
-		if($users)
-		{
-			echo '<h3>Użytkownicy</h3><ul>';
-			
-			foreach ($users as $c)
-			{
-				echo '<li><a href="'.$url.'/users/'.$c['id'].'">'.$c['name'].' '.$c['surname'].'</a></li>';
-			}
-			echo '</ul>';
-		}	
-		echo '<h3>Komentarz</h3>';
-		
-		echo '<p class="comment">'.nl2br($this->_escape($d['comment'])).'</p>';		
-			
+		if ($d['comment']) {
+			echo '<p class="comment">'.nl2br($this->_escape($d['comment'])).'</p>';		
+		}
 		echo '<p class="nav"><a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'/'.$d['alias'].'/:edit">Edytuj</a></p>';
 	}
+
 	public function formEdit(array $d) {
 	
-		echo '<h3>Edycja</h3>';
 		$form = UFra::factory('UFlib_Form', 'roomEdit', $d, array());
 		
 		echo $form->_start($this->url());

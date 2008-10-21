@@ -279,4 +279,11 @@ if (input) {
 			echo $c['host']."\t\tA\t".$c['ip']."\n";
 		}
 	}
+
+	public function shortList(array $d) {
+		$url = $this->url(0).'/computers/';
+		foreach ($d as $c) {
+			echo '<li><a href="'.$url.$c['id'].'">'.$c['host'].' <small>'.$c['ip'].'/'.$c['mac'].'</small></a> <span>'.date(self::TIME_YYMMDD, $c['availableTo']).'</span></li>';
+		}
+	}
 }

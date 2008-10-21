@@ -617,22 +617,38 @@ extends UFbox {
 
 			$d['room'] = $bean;
 			
-			$d['users'] = array();
-			
-			try {
-				$users = UFra::factory('UFbean_Sru_UserList');
-			
-				$users->listByRoom($d['room']->id);
-				
-				$d['users'] = $users;
-								
-			} catch (UFex_Dao_NotFound $e) {}			
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}
+	}
+
+	public function roomUsers() {
+		try {
+			$room = $this->_getRoomFromGet();
+			$bean = UFra::factory('UFbean_Sru_UserList');
+			$bean->listByRoom($room->id);
+			$d['users'] = $bean;
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
 			return $this->render(__FUNCTION__.'NotFound');
 		}
 	}
+
+	public function roomComputers() {
+		try {
+			$room = $this->_getRoomFromGet();
+			$bean = UFra::factory('UFbean_Sru_ComputerList');
+			$bean->listByRoom($room->id);
+			$d['computers'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}
+	}
+
 	public function roomEdit() {
 		try {
 			$bean = $this->_getRoomFromGet();

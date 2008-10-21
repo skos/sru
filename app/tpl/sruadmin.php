@@ -499,21 +499,41 @@ extends UFtpl_Common {
 	public function titleRoom(array $d) {
 		echo $d['room']->write('titleDetails');
 	}
+
 	public function room(array $d) {
-		
 		if ($this->_srv->get('msg')->get('roomEdit/ok')) {
 			echo $this->OK('Komentarz został zmieniony');
 		}		
 		
-		echo '<div class="room">';	
-		
-		$d['room']->write('details', $d['users']);
-		
-		echo '</div>';
+		$d['room']->write('details');
 	}
+
 	public function roomNotFound() {
 		echo $this->ERR('Nie znaleziono pokoju');
 	}	
+
+	public function roomUsers(array $d) {
+		echo '<h3>Użytkownicy</h3><ul>';
+		$d['users']->write('shortList');
+		echo '</ul>';
+	}
+
+	public function roomUsersNotFound() {
+		echo '<h3>Użytkownicy</h3>';
+		echo $this->ERR('Brak użytkowników');
+	}
+
+	public function roomComputers(array $d) {
+		echo '<h3>Komputery</h3><ul>';
+		$d['computers']->write('shortList');
+		echo '</ul>';
+	}
+
+	public function roomComputersNotFound() {
+		echo '<h3>Komputery</h3>';
+		echo $this->ERR('Brak komputerów');
+	}
+
 	public function titleRoomNotFound() {
 		echo 'Nie znaleziono pokoju';
 	}		
@@ -521,7 +541,6 @@ extends UFtpl_Common {
 		echo $this->ERR('Nie znaleziono pokoi');
 	}
 	public function roomEdit(array $d) {
-		
 		echo $d['room']->write('formEdit');
 	}
 	public function titleComputerAdd() {
