@@ -81,15 +81,12 @@ extends UFdao {
 	}
 
 	public function getFromWalet($name, $surname, $room, $dormitory) {
-		// mb_strtolower() ma jakies problemy, jak php wewnetrznie nie jest utf
-		$enc = mb_internal_encoding();
-		mb_internal_encoding('UTF-8');
-		$name = trim(mb_strtolower($name));
-		$surname = trim(mb_strtolower($surname));
-		mb_internal_encoding($enc);
+		$name = trim($name);
+		$surname = trim($surname);
 
 		$md5 = md5($surname.' '.$name);
-		$room = ltrim(trim(mb_strtoupper($room)), '0');
+		$room = strtoupper(str_replace(' ', '', $room));
+		$room = ltrim($room, '0');
 		$dormitory = (int)$dormitory;
 
 		$mapping = $this->mapping('walet');
