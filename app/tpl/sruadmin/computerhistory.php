@@ -54,13 +54,13 @@ extends UFtpl_Common {
 			'canAdmin' => $current->canAdmin,
 		);
 		$url = $this->url(0).'/computers/'.$current->id;
-		$urlAdmin = $this->url(0).'/admins';
+		$urlAdmin = $this->url(0).'/admins/';
 		foreach ($d as $c) {
 			echo '<li>';
 			if (is_null($curr['modifiedBy'])) {
 				$changed = 'UŻYTKOWNIK';
 			} else {
-				$changed = '<a href="'.$urlAdmin.'/'.$curr['modifiedById'].'">'.$this->_escape($curr['modifiedBy']).'</a>';
+				$changed = '<a href="'.$urlAdmin.$curr['modifiedById'].'">'.$this->_escape($curr['modifiedBy']).'</a>';
 			}
 			echo date(self::TIME_YYMMDD_HHMM, $curr['modifiedAt']).' &mdash; '.$changed;
 			echo $this->_diff($c, $curr);
@@ -72,7 +72,7 @@ extends UFtpl_Common {
 		if (is_null($curr['modifiedBy'])) {
 			$changed = 'UŻYTKOWNIK';
 		} else {
-			$changed = '<a href="'.$url.'/admins/'.$curr['modifiedById'].'">'.$this->_escape($curr['modifiedBy']).'</a>';
+			$changed = '<a href="'.$url.$curr['modifiedById'].'">'.$this->_escape($curr['modifiedBy']).'</a>';
 		}
 		echo date(self::TIME_YYMMDD_HHMM, $curr['modifiedAt']).' &mdash; '.$changed;
 		echo '<ul><li>Utworzono</li></ul>';
