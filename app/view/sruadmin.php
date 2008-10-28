@@ -10,6 +10,8 @@ extends UFview {
 	}
 
 	protected function fillDefaultData() {
+		$acl = $this->_srv->get('acl');
+
 		if (!isset($this->data['menuAdmin'])) {
 			$box = UFra::shared('UFbox_SruAdmin');
 			$this->append('menuAdmin', $box->menuAdmin());
@@ -18,6 +20,14 @@ extends UFview {
 			$box = UFra::shared('UFbox_SruAdmin');
 			$this->append('adminBar', $box->adminBar());
 		}		
+
+		// logi
+		if ($acl->core('log', 'ufraShow')) {
+			$bLogs = UFra::shared('UFbox_Log');
+			$this->data['logs'] = $bLogs->full();
+		} else {
+			$this->data['logs'] = '';
+		}
 	}
 
 	public function fillData() {
