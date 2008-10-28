@@ -221,7 +221,7 @@ extends UFtpl_Common {
 		echo $form->_fieldset('Znajdź użytkownika');
 		echo $d['user']->write('formSearch', $d['searched']);
 		echo $form->_submit('Znajdź');
-		echo ' <a href="'.$this->url(1).'/users/:add">Dodaj</a>';
+		echo ' <a href="'.$this->url(0).'/users/:add">Dodaj</a>';
 		echo $form->_end();
 		echo $form->_end(true);
 		echo '</div>';
