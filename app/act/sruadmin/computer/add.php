@@ -49,7 +49,7 @@ extends UFact {
 
 			$bean->fillFromPost(self::PREFIX, null, array('mac', 'host', 'typeId'));
 			$bean->locationId = $user->locationId;
-			$bean->modifiedById = null;
+			$bean->modifiedById = $this->_srv->get('session')->authAdmin;
 			$bean->modifiedAt = NOW;
 			$bean->userId = $user->id;
 			$bean->ip = $ip->ip;
