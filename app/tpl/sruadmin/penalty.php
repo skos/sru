@@ -50,7 +50,7 @@ extends UFtpl_Common {
 		if (is_null($computers)) {
 			echo '<strong>Ostrzeżenie</strong>';
 		} else {
-			echo '<strong>'.date(self::TIME_YYMMDD, $c['startAt']).'</strong> &mdash; <strong>'.date(self::TIME_YYMMDD, $c['endAt']).'</strong>';
+			echo '<strong>'.date(self::TIME_YYMMDD, $c['startAt']).'</strong> &mdash; <strong>'.date(self::TIME_YYMMDD_HHMM, $c['endAt']).'</strong>';
 		}
 		echo '</p>';
 		//@todo: lista ukaranych kompow
