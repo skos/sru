@@ -255,4 +255,15 @@ extends UFtpl_Common {
 		echo $form->_end();
 		echo $form->_end(true);
 	}
+
+	public function userBar(array $d) {
+		$form = UFra::factory('UFlib_Form');
+
+		echo $form->_start($this->url(0).'/', array('class'=>'userBar'));
+		echo $form->_fieldset();
+		echo $d['user']->write(__FUNCTION__);
+		echo $form->_submit('Wyloguj', array('name'=>'userLogout'));
+		echo $form->_end();
+		echo $form->_end(true);
+	}
 }

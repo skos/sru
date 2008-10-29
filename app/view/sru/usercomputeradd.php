@@ -3,7 +3,7 @@
  * dodanie komputera
  */
 class UFview_Sru_UserComputerAdd
-extends UFview {
+extends UFview_SruUser {
 
 	public function fillData() {
 		$box  = UFra::shared('UFbox_Sru');

@@ -3,7 +3,7 @@
  * edycja profilu przez uzytkownika
  */
 class UFview_Sru_UserEdit
-extends UFview {
+extends UFview_SruUser {
 
 	public function fillData() {
 		$box  = UFra::shared('UFbox_Sru');

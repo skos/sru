@@ -3,7 +3,7 @@
  * edycja wlasnego komputera
  */
 class UFview_Sru_UserComputerEdit
-extends UFview {
+extends UFview_SruUser {
 
 	public function fillData() {
 		$box  = UFra::shared('UFbox_Sru');

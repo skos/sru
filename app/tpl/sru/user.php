@@ -262,4 +262,9 @@ extends UFtpl_Common {
 			echo '<li><a href="'.$url.$c['id'].'">'.$this->_escape($c['name']).' '.$this->_escape($c['surname']).'</a></li>';
 		}
 	}
+
+	public function userBar(array $d, $ip, $time) {
+		echo $this->_escape($d['name']) .' &quot;'. $this->_escape($d['login']) .'&quot; '. $this->_escape($d['surname']);
+		echo ' | <a href="'. $this->url(0) .'/">Strona główna</a> | ';
+	}
 }

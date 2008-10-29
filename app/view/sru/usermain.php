@@ -3,7 +3,7 @@
  * glowny panel uzytkownika
  */
 class UFview_Sru_UserMain
-extends UFview {
+extends UFview_SruUser {
 
 	public function fillData() {
 		$box  = UFra::shared('UFbox_Sru');
