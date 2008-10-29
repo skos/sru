@@ -10,7 +10,7 @@ extends UFdao {
 
 		$query = $this->prepareSelect($mapping);
 		$query->where($mapping->active, true); 
-		$query->order($mapping->id,  $query->DESC);
+		$query->order($mapping->endAt,  $query->ASC);
 		
 			
 		return $this->doSelect($query);
