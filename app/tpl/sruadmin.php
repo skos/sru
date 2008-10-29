@@ -579,12 +579,13 @@ extends UFtpl_Common {
 	}	
 
 	public function penaltiesNotFound() {
-		echo $this->ERR('Nie znaleziono kar');
+		echo $this->ERR('Nie znaleziono aktywnych kar');
 	}
 
 	public function titlePenaltyAdd(array $d) {
 		echo 'Kara dla '.$d['user']->name.' '.$d['user']->surname.' ('.$d['user']->login.')';
 	}	
+
 	public function penaltyAdd(array $d)
 	{
 		$url = $this->url(0).'/penalties/';
@@ -606,12 +607,19 @@ extends UFtpl_Common {
 		echo '</div>';
 					
 	}
+
 	public function titlePenalty(array $d) {
 		echo 'Kara';
 	}
+
 	public function penalty(array $d) {
 		echo '<div class="penalty">';	
 		echo '<h2>Kara</h2>';
+		if ($this->_srv->get('msg')->get('penaltyEdit/ok')) {
+			echo $this->OK('Kara została zmieniona');
+		} elseif ($this->_srv->get('msg')->get('penaltyEdit/errors/endAt')) {
+			echo $this->ERR('Nieprawidłowa data');
+		}
 		
 		$d['penalty']->write('details', $d['computers']);
 		

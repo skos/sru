@@ -1,0 +1,44 @@
+<?
+/**
+ * edycja kary
+ */
+class UFact_SruAdmin_Penalty_Edit
+extends UFact {
+
+	const PREFIX = 'penaltyEdit';
+
+	public function go() {
+		try {
+			$this->begin();
+
+			$bean = UFra::factory('UFbean_SruAdmin_Penalty');
+			$bean->getByPK($this->_srv->get('req')->get->penaltyId);
+			if (!$bean->active) {
+				UFra::error('Penalty '.$bean->id.' is not active');
+				return;
+			}
+
+			$bean->fillFromPost(self::PREFIX, null, array('endAt'));
+			$bean->modifiedAt = NOW;
+			$bean->modifiedById = $this->_srv->get('session')->authAdmin; 
+			if ($bean->endAt < NOW) {
+				$bean->endAt = NOW;
+				$bean->amnestyById = $bean->modifiedById;
+				$bean->amnestyAt = NOW;
+				$bean->active = false;
+			}
+			
+			$bean->save();
+
+			$this->postDel(self::PREFIX);
+			$this->markOk(self::PREFIX);
+			$this->commit();
+		} catch (UFex_Dao_DataNotValid $e) {
+			$this->rollback();
+			$this->markErrors(self::PREFIX, $e->getData());
+		} catch (UFex $e) {
+			$this->rollback();
+			UFra::error($e);
+		}
+	}
+}

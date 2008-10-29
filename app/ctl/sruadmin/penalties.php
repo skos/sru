@@ -45,6 +45,7 @@ extends UFctl {
 		}		
 
 	}
+
 	protected function chooseAction($action = null) {
 		$req = $this->_srv->get('req');
 		$get = $req->get;
@@ -55,6 +56,8 @@ extends UFctl {
 			$act = 'Admin_Logout';
 		} elseif ($post->is('adminLogin') && $acl->sruAdmin('admin', 'login')) {
 			$act = 'Admin_Login';
+		} elseif ('penalties/penalty' == $get->view && $post->is('penaltyEdit') && $acl->sruAdmin('penalty', 'edit')) {
+			$act = 'Penalty_Edit';
 		} elseif ('penalties/add' == $get->view && $post->is('penaltyAdd') && $acl->sruAdmin('penalty', 'add')) {
 			$act = 'Penalty_Add';
 		}/* elseif ('admins/edit' == $get->view && $post->is('adminEdit') && $acl->sruAdmin('admin', 'edit', $get->adminId)) {

@@ -42,34 +42,42 @@ extends UFtpl_Common {
 		echo $form->comment('Opis dla administratorów', array('type'=>$form->TEXTAREA, 'rows'=>10));
 	}
 
-	public function details(array $c, $computers) {
+	public function details(array $d, $computers) {
+		$d['endAt'] = date(self::TIME_YYMMDD_HHMM, $d['endAt']);
 		$url = $this->url(0);
+		$form = UFra::factory('UFlib_Form', 'penaltyEdit', $d);
 		
-		echo '<p><em>Ukarany:</em> <a href="'.$url.'/users/'.$c['userId'].'">'.$this->_escape($c['userName']).' '.$this->_escape($c['userSurname']).' ('.$c['userLogin'].')</a></p>';
+		echo '<p><em>Ukarany:</em> <a href="'.$url.'/users/'.$d['userId'].'">'.$this->_escape($d['userName']).' '.$this->_escape($d['userSurname']).' ('.$d['userLogin'].')</a></p>';
+		echo $form->_start();
 		echo '<p><em>Czas trwania:</em> ';
 		if (is_null($computers)) {
 			echo '<strong>Ostrzeżenie</strong>';
+		} elseif ($d['active']) {
+			echo date(self::TIME_YYMMDD, $d['startAt']).' &mdash; ';
+			echo $form->endAt(null, array('after'=>'')).' ';
+			echo $form->_submit('Zmień');
 		} else {
-			echo '<strong>'.date(self::TIME_YYMMDD, $c['startAt']).'</strong> &mdash; <strong>'.date(self::TIME_YYMMDD_HHMM, $c['endAt']).'</strong>';
+			echo date(self::TIME_YYMMDD, $d['startAt']).' &mdash; <strong>'.$d['endAt'].'</strong>';
 		}
 		echo '</p>';
-		//@todo: lista ukaranych kompow
+		echo $form->_end(true);
+
 		if (!is_null($computers)) {
 			$computers->write('computerList');
 		}
-		echo '<p><em>Powód:</em> '.nl2br($this->_escape($c['reason'])).'</p>';
+		echo '<p><em>Powód:</em> '.nl2br($this->_escape($d['reason'])).'</p>';
 		echo '<span id="penaltyMoreSwitch"></span><div id="penaltyMore">';
-		echo '<p><em>Karzący:</em> <a href="'.$url.'/admins/'.$c['createdById'].'">'.$this->_escape($c['createdByName']).'</a><small> ('.date(self::TIME_YYMMDD_HHMM, $c['createdAt']) .')</small></p>';
+		echo '<p><em>Karzący:</em> <a href="'.$url.'/admins/'.$d['createdById'].'">'.$this->_escape($d['createdByName']).'</a><small> ('.date(self::TIME_YYMMDD_HHMM, $d['createdAt']) .')</small></p>';
 
-		if($c['modifiedById']) {
-			echo '<p><em>Modyfikacja:</em> <a href="'.$url.'/admins/'.$c['modifiedById'].'">'.$this->_escape($c['modifiedByName']). '</a> <small>('.date(self::TIME_YYMMDD_HHMM, $c['modifiedAt']).')</small></p>';							
+		if($d['modifiedById']) {
+			echo '<p><em>Modyfikacja:</em> <a href="'.$url.'/admins/'.$d['modifiedById'].'">'.$this->_escape($d['modifiedByName']). '</a> <small>('.date(self::TIME_YYMMDD_HHMM, $d['modifiedAt']).')</small></p>';							
 		}
 		
-		if($c['amnestyById']) {
-			echo '<p><em>Amnestia udzielona przez:</em> <a href="'.$url.'/admins/'.$c['amnestyById'].'">'.$this->_escape($c['amnestyByName']).'</a> <small>('.date(self::TIME_YYMMDD_HHMM, $c['amnestyAt']).')</small></p>';							
+		if($d['amnestyById']) {
+			echo '<p><em>Amnestia:</em> <a href="'.$url.'/admins/'.$d['amnestyById'].'">'.$this->_escape($d['amnestyByName']).'</a> <small>('.date(self::TIME_YYMMDD_HHMM, $d['amnestyAt']).')</small></p>';							
 		}	
 		
-		echo '<p><em>Komentarz:</em> '.nl2br($this->_escape($c['comment'])).'</p>';
+		echo '<p><em>Komentarz:</em> '.nl2br($this->_escape($d['comment'])).'</p>';
 		echo '</div>';
 ?><script type="text/javascript">
 function changeVisibility() {
