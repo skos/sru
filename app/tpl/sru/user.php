@@ -170,6 +170,14 @@ extends UFtpl_Common {
 		echo '<p><em>Miejsce:</em> <a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'/'.$d['locationAlias'].'">'.$d['locationAlias'].'</a> <small>(<a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'">'.$d['dormitoryAlias'].'</a>)</small></p>';
 		echo '<p><em>Wydział:</em> '.(!is_null($d['facultyName'])?$d['facultyName']:'N/D').'</p>';
 		echo '<p><em>Rok studiów:</em> '.self::$studyYears[$d['studyYearId']].'</p>';
+		if ($d['banned']) {
+			$bans = '<a href="'.$url.'/users/'.$d['id'].'/bans">'.$d['bans'].' <strong>(aktywne)</strong></a>';
+		} elseif ($d['bans']>0) {
+			$bans = '<a href="'.$url.'/users/'.$d['id'].'/bans">'.$d['bans'].'</a>';
+		} else {
+			$bans= '0';
+		}
+		echo '<p><em>Kary:</em> '.$bans.'</p>';
 		if (is_null($d['modifiedBy'])) {
 			$changed = 'UŻYTKOWNIK';
 		} else {

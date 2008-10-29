@@ -4,107 +4,93 @@
  */
 class UFtpl_SruAdmin_Penalty
 extends UFtpl_Common {
+
+	protected $penaltyTypes = array(
+		1 => 'Ostrzeżenie',
+		2 => 'Jeden komputer',
+		3 => 'Wszystkie komputery',
+	);
 		
 	protected $errors = array(
-		'reason' => 'Podaj powód',
-		'typeId' => 'Wybierz typ kary',
-		'startAt' => 'Podaj od kiedy ma obowiązywać',
-		'endAt' => 'Podaj do kiedy ma obowiązywać',
-		'endAt/noSense' => 'Koniec powinien być po początku',
+		'reason' => 'Podaj opis',
+		'duration' => 'Podaj długość',
 	);	
 
 	public function listPenalty(array $d) {
 		$url = $this->url(0);
 
-		echo '<table>
-				<thead><tr>
-					<th scope="col">kto</th>
-					<th scope="col">komu</th>
-					<th scope="col">za co</th>
-					<th scope="col">od kiedy</th>
-					<th scope="col">do kiedy</th>
-					<th scope="col"></th>
-				</tr></thead>
-				
-				<tbody>';
-		foreach ($d as $c)
-		{	
-			echo '<tr>			
-					<td><a href="'.$url.'/admins/'.$c['adminId'].'">'.$this->_escape($c['adminName']).'</a></td>
-					<td><a href="'.$url.'/users/'.$c['userId'].'">'.$this->_escape($c['userName']).' '.$this->_escape($c['userSurname']).'</a></td>
-					<td>'.nl2br($this->_escape($c['reason'])).'</td>' //@todo: ograniczyc do ilus znakow
-					.'<td>'.date(self::TIME_YYMMDD, $c['startAt']).'</td>
-					<td>'.date(self::TIME_YYMMDD, $c['endAt']).'</td>
-					<td><a href="'.$url.'/penalties/'.$c['id'].'">edytuj</a></td></tr>'; 		
+		foreach ($d as $c) {	
+			echo '<li>';
+			echo '<small>'.date(self::TIME_YYMMDD, $c['startAt']).' &mdash; '.date(self::TIME_YYMMDD, $c['endAt']).'</small> ';
+			echo '<a href="'.$url.'/penalties/'.$c['id'].'">'.$this->_escape($c['userName']).' '.$this->_escape($c['userSurname']).'</a>';
+			echo '</li>';
 		}
-		echo '</tbody></table>';		
-		
 	}
+
 	public function formAdd(array $d, $computers ) {
+		if (!isset($d['duration'])) {
+			$d['duration'] = 30;
+		}
 
 		$form = UFra::factory('UFlib_Form', 'penaltyAdd', $d, $this->errors);
 		
-/*		echo $form->reasonId('Powód', array(
-			'type' => $form->SELECT,
-			'labels' => $form->_labelize(UFconf_Sru::$reasons),
-		));		*/
-		
-		echo $form->typeId('Typ', array(
-			'type' => $form->SELECT,
-			'labels' => $form->_labelize(UFconf_Sru::$penaltyTypes),
-		));	
-		
+		$computers->write('penaltyAdd', $d);
 
-		if($computers) {
-			echo '<div id="computersCheckBoxes">'; //@todo: fajnie gdyby ten div pojawial sie tylko jak sie karze kompy
-			$tmp = array();
-			foreach ($computers as $c) {
-				$tmp[$c['id']] = $c['host'];
-			}
-			echo $form->computerId('Komputery', array( //@todo: jak zrobic multiple selecta? a moze lepiej jakos na check boxach? a moze nigdy nie ma potrzeby karac paru kompow na raz?
-				'type' => $form->SELECT,
-				'labels' => $form->_labelize($tmp),
-			));		
-	
-			echo '</div>'; }
-		echo $form->reason('Powód(dla użytkownika)',  array('type'=>$form->TEXTAREA, 'rows'=>3));
+		echo $form->duration('Długość (w dobach)');
+		echo $form->reason('Opis dla użytkownika',  array('type'=>$form->TEXTAREA, 'rows'=>5));
 
-		//@todo: core chyba powinien te value obslugiwac, co? ;)
-		echo $form->startAt('Od', array('value' => date(self::TIME_YYMMDD, NOW) ));
-		echo $form->endAt('Do', array('value' => date(self::TIME_YYMMDD, NOW+60*60*24*7)));
-		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
+		echo $form->comment('Opis dla administratorów', array('type'=>$form->TEXTAREA, 'rows'=>10));
 	}
-	public function details(array $c) {//@todo: do czau modyfikacji dodac godziny
-		$url = $this->url(0);
-		echo '<h2>Kara</h2>';
-		
-		if($c['userId'])
-		{
-			echo '<p><em>Ukarany:</em> <a href="'.$url.'/users/'.$c['userId'].'">'.$this->_escape($c['userName']).' '.$this->_escape($c['userSurname']).' ('.$c['userLogin'].')</a></p>';
-		}
-		echo '<p><em>Przez:</em> <a href="'.$url.'/admins/'.$c['adminId'].'">'.$this->_escape($c['adminName']).'</a><small> ('.date(self::TIME_YYMMDD, $c['createdAt']) .')</small></p>';
-		
-		if($c['modifiedBy'])
-		{
-			echo '<p><em>Ostatnio modyfikowana przez:</em> <a href="'.$url.'/admins/'.$c['modifiedBy'].'">'.$this->_escape($c['modifyAdminName']). '</a> <small>('.date(self::TIME_YYMMDD, $c['modifiedAt']).')</small></p>';							
-		}
-		
-		echo '<p><em>Powód:</em></p><p class="comment">'.nl2br($this->_escape($c['reason'])).'</p>';
-		echo '<p><em>Typ:</em> '.UFconf_Sru::$penaltyTypes[$c['typeId']].'</p>';
-		//@todo: lista ukaranych kompow
-		
-		echo '<p><em>Czas trwania:</em> od <strong>'.date(self::TIME_YYMMDD, $c['startAt']).'</strong> do <strong>'.date(self::TIME_YYMMDD, $c['endAt']).'</strong></p>';							
-		
-	//	echo '<p><em>Możliwość anulowania:</em> '.date(self::TIME_YYMMDD, $c['amnestyAfter']).'</p>'; w to sie narazie nie bawimy
 
-		if($c['amnestyBy'])
-		{
-			echo '<p><em>Amnestia udzielona przez:</em> <a href="'.$url.'/admins/'.$c['amnestyBy'].'">'.$this->_escape($c['amnestyAdminName']).'</a> <small>('.date(self::TIME_YYMMDD, $c['amnestyAt']).')</small></p>';							
+	public function details(array $c, $computers) {
+		$url = $this->url(0);
+		
+		echo '<p><em>Ukarany:</em> <a href="'.$url.'/users/'.$c['userId'].'">'.$this->_escape($c['userName']).' '.$this->_escape($c['userSurname']).' ('.$c['userLogin'].')</a></p>';
+		echo '<p><em>Czas trwania:</em> ';
+		if (is_null($computers)) {
+			echo '<strong>Ostrzeżenie</strong>';
+		} else {
+			echo '<strong>'.date(self::TIME_YYMMDD, $c['startAt']).'</strong> &mdash; <strong>'.date(self::TIME_YYMMDD, $c['endAt']).'</strong>';
+		}
+		echo '</p>';
+		//@todo: lista ukaranych kompow
+		if (!is_null($computers)) {
+			$computers->write('computerList');
+		}
+		echo '<p><em>Powód:</em> '.nl2br($this->_escape($c['reason'])).'</p>';
+		echo '<span id="penaltyMoreSwitch"></span><div id="penaltyMore">';
+		echo '<p><em>Karzący:</em> <a href="'.$url.'/admins/'.$c['createdById'].'">'.$this->_escape($c['createdByName']).'</a><small> ('.date(self::TIME_YYMMDD_HHMM, $c['createdAt']) .')</small></p>';
+
+		if($c['modifiedBy']) {
+			echo '<p><em>Modyfikacja:</em> <a href="'.$url.'/admins/'.$c['modifiedById'].'">'.$this->_escape($c['modifiedByName']). '</a> <small>('.date(self::TIME_YYMMDD_HHMM, $c['modifiedAt']).')</small></p>';							
+		}
+		
+		if($c['amnestyBy']) {
+			echo '<p><em>Amnestia udzielona przez:</em> <a href="'.$url.'/admins/'.$c['amnestyById'].'">'.$this->_escape($c['amnestyByName']).'</a> <small>('.date(self::TIME_YYMMDD_HHMM, $c['amnestyAt']).')</small></p>';							
 		}	
 		
-		
-		echo '<p><em>Komentarz:</em></p><p class="comment">'.nl2br($this->_escape($c['comment'])).'</p>';
-		
-
+		echo '<p><em>Komentarz:</em> '.nl2br($this->_escape($c['comment'])).'</p>';
+		echo '</div>';
+?><script type="text/javascript">
+function changeVisibility() {
+	var div = document.getElementById('penaltyMore');
+	if (div.sruHidden != true) {
+		div.style.display = 'none';
+		div.sruHidden = true;
+	} else {
+		div.style.display = 'block';
+		div.sruHidden = false;
+	}
+}
+var container = document.getElementById('penaltyMoreSwitch');
+var button = document.createElement('a');
+button.onclick = function() {
+	changeVisibility();
+}
+var txt = document.createTextNode('Szczegóły...');
+button.appendChild(txt);
+container.appendChild(button);
+changeVisibility();
+</script><?
 	}		
 }

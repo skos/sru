@@ -83,13 +83,13 @@ extends UFtpl_Common {
 		echo '<p><em>Rejestracja do:</em> '.$max.'</p>';
 		echo '<p><em>Miejsce:</em> <a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'/'.$d['locationAlias'].'">'.$d['locationAlias'].'</a> <small>(<a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'">'.$d['dormitoryAlias'].'</a>)</small></p>';
 		if ($d['banned']) {
-			$bans = ' <small>(<a href="'.$this->url().'/bans">są aktywne</a>)</small>';
+			$bans = '<a href="'.$url.'/computers/'.$d['id'].'/bans">'.$d['bans'].' <strong>(aktywne)</strong></a>';
 		} elseif ($d['bans']>0) {
-			$bans = ' <small>(<a href="'.$this->url().'/bans">lista</a>)</small>';
+			$bans = '<a href="'.$url.'/computers/'.$d['id'].'/bans">'.$d['bans'].'</a>';
 		} else {
-			$bans= '';
+			$bans= '0';
 		}
-		echo '<p><em>Kary:</em> '.$d['bans'].$bans.'</p>';
+		echo '<p><em>Kary:</em> '.$bans.'</p>';
 		$acls = array();
 		if ($d['canAdmin']) {
 			$acls[] = 'admin';
@@ -256,6 +256,9 @@ if (input) {
 
 	public function configDhcp(array $d) {
 		foreach ($d as $c) {
+			if ($c['banned']) {
+				$c['ip'] = str_replace('153.19.', '192.168.', $c['ip']);
+			}
 			echo "host\t".$c['host']."\t{ hardware ethernet ".$c['mac'].'; fixed-address '.$c['ip']."; }\n";
 		}
 	}
@@ -270,6 +273,9 @@ if (input) {
 
 	public function configEthers(array $d) {
 		foreach ($d as $c) {
+			if ($c['banned']) {
+				$c['mac'] = '00:00:00:00:00:00';
+			}
 			echo $c['mac']."\t".$c['ip']."\n";
 		}
 	}
@@ -285,5 +291,22 @@ if (input) {
 		foreach ($d as $c) {
 			echo '<li><a href="'.$url.$c['id'].'">'.$c['host'].' <small>'.$c['ip'].'/'.$c['mac'].'</small></a> <span>'.date(self::TIME_YYMMDD, $c['availableTo']).'</span></li>';
 		}
+	}
+
+	public function penaltyAdd(array $d, array $post) {
+		$form = UFra::factory('UFlib_Form', 'penaltyAdd', $post);
+
+		$tmp = array(
+			'0' => '<em>Ostrzeżenie</em>',
+			'' => '<strong>Wszystkie komputery</strong>',
+		);
+		foreach ($d as $c) {
+			$tmp[$c['id']] = $c['host'].' <small>'.$c['ip'].'/'.$c['mac'].'</small>';;
+		}
+		echo $form->computerId('Zakres', array(
+			'type' => $form->RADIO,
+			'labels' => $form->_labelize($tmp),
+		));		
+	
 	}
 }

@@ -557,9 +557,11 @@ extends UFtpl_Common {
 		echo $form->_end(true);
 		
 	}
+
 	public function titlePenalties() {
 		echo 'Kary';
 	}	
+
 	public function penalties(array $d)
 	{
 		$url = $this->url(0).'/penalties/';
@@ -569,16 +571,17 @@ extends UFtpl_Common {
 			echo $this->OK('Kara została założona');
 		}		
 		
-		echo '<div class="penalties">';
-		echo '<h2>Kary</h2>';
+		echo '<h2>Kary</h2><ul>';
 
 		$d['penalties']->write('listPenalty');
 
-		echo '</div>';			
+		echo '</ul>';
 	}	
+
 	public function penaltiesNotFound() {
 		echo $this->ERR('Nie znaleziono kar');
 	}
+
 	public function titlePenaltyAdd(array $d) {
 		echo 'Kara dla '.$d['user']->name.' '.$d['user']->surname.' ('.$d['user']->login.')';
 	}	
@@ -608,8 +611,9 @@ extends UFtpl_Common {
 	}
 	public function penalty(array $d) {
 		echo '<div class="penalty">';	
+		echo '<h2>Kara</h2>';
 		
-		$d['penalty']->write('details');
+		$d['penalty']->write('details', $d['computers']);
 		
 		echo '</div>';
 	}

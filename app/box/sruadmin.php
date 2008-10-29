@@ -19,12 +19,14 @@ extends UFbox {
 
 		return $bean;
 	}
+
 	protected function _getPenaltyFromGet() {
 		$bean = UFra::factory('UFbean_SruAdmin_Penalty');
 		$bean->getByPK((int)$this->_srv->get('req')->get->penaltyId);
 
 		return $bean;
 	}		
+
 	protected function _getAdminFromGet() {
 		$bean = UFra::factory('UFbean_SruAdmin_Admin');
 		$bean->getByPK((int)$this->_srv->get('req')->get->adminId);
@@ -38,6 +40,7 @@ extends UFbox {
 
 		return $bean;
 	}
+
 	protected function _getRoomFromGet() {
 		$bean = UFra::factory('UFbean_SruAdmin_Room');
 		$bean->getByAlias($this->_srv->get('req')->get->dormAlias, $this->_srv->get('req')->get->roomAlias);
@@ -757,11 +760,19 @@ extends UFbox {
 			return $this->render('titleUserNotFound');
 		}
 	}
+
 	public function penalty() {
 		try {
 			$bean = $this->_getPenaltyFromGet();
 
 			$d['penalty'] = $bean;
+			if (UFbean_SruAdmin_Penalty::TYPE_COMPUTER === $bean->typeId || UFbean_SruAdmin_Penalty::TYPE_COMPUTERS === $bean->typeId) {
+				$computers = UFra::factory('UFbean_SruAdmin_ComputerBanList');
+				$computers->listByPenaltyId($bean->id);
+				$d['computers'] = $computers;
+			} else {
+				$d['computers'] = null;
+			}
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {

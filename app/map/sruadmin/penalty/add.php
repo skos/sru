@@ -4,45 +4,52 @@
  */
 class UFmap_SruAdmin_Penalty_Add
 extends UFmap {
+
 	protected $columns = array(
-		'adminId'		=> 'admin_id',
-		'userId'		=> 'user_id',
-		'typeId' 		=> 'type_id',
-		'startAt'		=> 'start_at',
-		'endAt'			=> 'end_at',
-		'comment'		=> 'comment',
-		'modifiedBy'	=> 'modified_by',
-		'modifiedAt'	=> 'modified_at',		
-		'amnestyAt'		=> 'amnesty_at',
-		'amnestyAfter'	=> 'amnesty_after',
-		'amnestyBy'		=> 'amnesty_by',
-		'createdAt'		=> 'created_at',
-		'reason'		=> 'reason',
+		'userId'       => 'user_id',
+		'typeId'       => 'type_id',
+		'startAt'      => 'start_at',
+		'endAt'        => 'end_at',
+		'reason'       => 'reason',
+		'comment'      => 'comment',
+		'createdById'  => 'created_by',
+		'createdAt'    => 'created_at',
+		'modifiedById' => 'modified_by',
+		'modifiedAt'   => 'modified_at',
+		'amnestyAt'    => 'amnesty_at',
+		'amnestyAfter' => 'amnesty_after',
+		'amnestyById'  => 'amnesty_by',
+		'active'       => 'active',
 	);
+
 	protected $columnTypes = array(
-		'adminId'		=> self::INT,
-		'userId'		=> self::INT,
-		'typeId' 		=> self::INT,
-		'startAt'		=> self::TS,
-		'endAt'			=> self::TS,
-		'comment'		=> self::TEXT,
-		'modifiedBy'	=> self::NULL_INT, 
-		'modifiedAt'	=> self::TS,		
-		'amnestyAt'		=> self::NULL_TS,
-		'amnestyAfter'	=> self::NULL_TS,
-		'amnestyBy'		=> self::INT,
-		'createdAt'		=> self::TS,		
-		'reason'		=> self::TEXT,
-	);	
+		'userId'       => self::INT,
+		'typeId'       => self::INT,
+		'startAt'      => self::TS,
+		'endAt'        => self::TS,
+		'reason'       => self::TEXT,
+		'comment'      => self::TEXT,
+		'createdById'  => self::INT,
+		'createdAt'    => self::TS,
+		'modifiedById' => self::NULL_INT, 
+		'modifiedAt'   => self::NULL_TS,
+		'amnestyAt'    => self::NULL_TS,
+		'amnestyAfter' => self::NULL_TS,
+		'amnestyById'  => self::NULL_INT,
+		'active'       => self::BOOL,
+		'duration'     => self::INT,	// tylko do walidacji formularza
+		'computerId'   => self::NULL_INT,	// tylko do walidacji formularza
+	);
 
 	protected $tables = array(
 		'' => 'penalties',
 	);
-	protected $valids = array(
 
-		'typeId'   => array('textMin'=>1),
-		'reasonId' => array('textMin'=>1),
-		//@todo: validacja dat?
+	protected $valids = array(
+		'typeId' => array('intMin'=>1),
+		'reason' => array('textMin'=>1),
+		'duration' => array('intMin'=>1),
 	);
+
 	protected $pk = 'id';
 }

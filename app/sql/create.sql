@@ -18,6 +18,10 @@ ALTER TABLE ONLY public.users_history DROP CONSTRAINT users_history_modified_by_
 ALTER TABLE ONLY public.users_history DROP CONSTRAINT users_history_location_id_fkey;
 ALTER TABLE ONLY public.users_history DROP CONSTRAINT users_history_faculty_id_fkey;
 ALTER TABLE ONLY public.users DROP CONSTRAINT users_faculty_id_fkey;
+ALTER TABLE ONLY public.penalties DROP CONSTRAINT penalties_user_id_fkey;
+ALTER TABLE ONLY public.penalties DROP CONSTRAINT penalties_modified_by_fkey;
+ALTER TABLE ONLY public.penalties DROP CONSTRAINT penalties_created_by_fkey;
+ALTER TABLE ONLY public.penalties DROP CONSTRAINT penalties_amnesty_by_fkey;
 ALTER TABLE ONLY public.locations DROP CONSTRAINT locations_dormitory_id_fkey;
 ALTER TABLE ONLY public.ipv4s DROP CONSTRAINT ipv4s_dormitory_id_fkey;
 ALTER TABLE ONLY public.computers DROP CONSTRAINT computers_user_id_fkey;
@@ -28,11 +32,16 @@ ALTER TABLE ONLY public.computers_history DROP CONSTRAINT computers_history_user
 ALTER TABLE ONLY public.computers_history DROP CONSTRAINT computers_history_modified_by_fkey;
 ALTER TABLE ONLY public.computers_history DROP CONSTRAINT computers_history_location_id_fkey;
 ALTER TABLE ONLY public.computers_history DROP CONSTRAINT computers_history_computer_id_fkey;
+ALTER TABLE ONLY public.computers_bans DROP CONSTRAINT computers_bans_penalty_id_fkey;
+ALTER TABLE ONLY public.computers_bans DROP CONSTRAINT computers_bans_computer_id_fkey;
 ALTER TABLE ONLY public.admins DROP CONSTRAINT admins_dormitory_id_fkey;
 DROP TRIGGER users_update ON public.users;
 DROP TRIGGER computers_update ON public.computers;
 DROP RULE update_counter_inc ON public.users;
 DROP RULE update_counter_dec ON public.users;
+DROP RULE update_computers_bans_off ON public.penalties;
+DROP RULE update_banned_off ON public.computers_bans;
+DROP RULE update_banned_off ON public.penalties;
 DROP RULE update_active_on ON public.users;
 DROP RULE update_active_off ON public.users;
 DROP RULE udpate_users_counter ON public.locations;
@@ -41,11 +50,22 @@ DROP RULE udpate_counter_dec ON public.computers;
 DROP RULE udpate_computers_counter ON public.locations;
 DROP RULE udpate_active_on ON public.computers;
 DROP RULE udpate_active_off ON public.computers;
+DROP RULE insert_counter ON public.computers_bans;
+DROP RULE insert_counter ON public.penalties;
 DROP RULE insert_counter ON public.computers;
 DROP RULE insert_counter ON public.users;
+DROP RULE insert_banned_on ON public.computers_bans;
+DROP RULE insert_banned_on ON public.penalties;
 DROP RULE delete_counter ON public.computers;
 DROP RULE delete_counter ON public.users;
 DROP INDEX public.users_walet_all_key;
+DROP INDEX public.users_surname_key;
+DROP INDEX public.fki_penalties_user_id;
+DROP INDEX public.fki_penalties_modified_by;
+DROP INDEX public.fki_penalties_created_by;
+DROP INDEX public.fki_penalties_amnesty_by;
+DROP INDEX public.fki_computers_bans_penalty_id;
+DROP INDEX public.fki_computers_bans_computer_id;
 DROP INDEX public.computers_mac_key;
 DROP INDEX public.computers_ipv4_key;
 DROP INDEX public.computers_host_key;
@@ -58,6 +78,7 @@ ALTER TABLE ONLY public.text DROP CONSTRAINT text_pkey;
 ALTER TABLE ONLY public.text DROP CONSTRAINT text_alias_key;
 ALTER TABLE ONLY public.penalty_templates DROP CONSTRAINT penalty_templates_title_key;
 ALTER TABLE ONLY public.penalty_templates DROP CONSTRAINT penalty_templates_pkey;
+ALTER TABLE ONLY public.penalties DROP CONSTRAINT penalties_pkey;
 ALTER TABLE ONLY public.locations DROP CONSTRAINT locations_pkey;
 ALTER TABLE ONLY public.locations DROP CONSTRAINT locations_alias_key;
 ALTER TABLE ONLY public.ipv4s DROP CONSTRAINT ipv4s_pkey;
@@ -68,50 +89,38 @@ ALTER TABLE ONLY public.dormitories DROP CONSTRAINT dormitories_alias_key;
 ALTER TABLE ONLY public.computers DROP CONSTRAINT computers_pkey;
 ALTER TABLE ONLY public.computers_history DROP CONSTRAINT computers_history_pkey;
 ALTER TABLE ONLY public.computers_bans DROP CONSTRAINT computers_bans_pkey;
-ALTER TABLE ONLY public.penalties DROP CONSTRAINT bans_pkey;
 ALTER TABLE ONLY public.admins DROP CONSTRAINT admins_pkey;
 ALTER TABLE ONLY public.admins DROP CONSTRAINT admins_login_key;
-ALTER TABLE public.users_tokens ALTER COLUMN id DROP DEFAULT;
-ALTER TABLE public.users_history ALTER COLUMN id DROP DEFAULT;
-ALTER TABLE public.users ALTER COLUMN id DROP DEFAULT;
-ALTER TABLE public.text ALTER COLUMN id DROP DEFAULT;
-ALTER TABLE public.locations ALTER COLUMN id DROP DEFAULT;
-ALTER TABLE public.faculties ALTER COLUMN id DROP DEFAULT;
-ALTER TABLE public.dormitories ALTER COLUMN id DROP DEFAULT;
-ALTER TABLE public.computers_history ALTER COLUMN id DROP DEFAULT;
-ALTER TABLE public.computers_history ALTER COLUMN computer_id DROP DEFAULT;
-ALTER TABLE public.computers ALTER COLUMN id DROP DEFAULT;
-ALTER TABLE public.admins ALTER COLUMN id DROP DEFAULT;
 DROP TABLE public.users_walet;
-DROP SEQUENCE public.users_tokens_id_seq;
 DROP TABLE public.users_tokens;
+DROP SEQUENCE public.users_tokens_id_seq;
 DROP TABLE public.users_old;
-DROP SEQUENCE public.users_id_seq;
-DROP SEQUENCE public.users_history_id_seq;
 DROP TABLE public.users_history;
+DROP SEQUENCE public.users_history_id_seq;
 DROP TABLE public.users;
-DROP SEQUENCE public.text_id_seq;
+DROP SEQUENCE public.users_id_seq;
 DROP TABLE public.text;
+DROP SEQUENCE public.text_id_seq;
 DROP TABLE public.penalty_templates;
 DROP SEQUENCE public.penalty_templates_id;
 DROP TABLE public.penalties;
-DROP SEQUENCE public.locations_id_seq;
 DROP TABLE public.locations;
+DROP SEQUENCE public.locations_id_seq;
 DROP TABLE public.ipv4s;
-DROP SEQUENCE public.faulties_id_seq;
 DROP TABLE public.faculties;
-DROP SEQUENCE public.dormitories_id_seq;
+DROP SEQUENCE public.faulties_id_seq;
 DROP TABLE public.dormitories;
-DROP SEQUENCE public.computers_id_seq;
+DROP SEQUENCE public.dormitories_id_seq;
+DROP TABLE public.computers_history;
 DROP SEQUENCE public.computers_history_id_seq;
 DROP SEQUENCE public.computers_history_computer_id_seq;
-DROP TABLE public.computers_history;
 DROP TABLE public.computers_bans;
 DROP SEQUENCE public.computers_ban_id;
 DROP TABLE public.computers;
+DROP SEQUENCE public.computers_id_seq;
 DROP SEQUENCE public.bans_id_seq;
-DROP SEQUENCE public.admins_id_seq;
 DROP TABLE public.admins;
+DROP SEQUENCE public.admins_id_seq;
 DROP FUNCTION public.user_update();
 DROP FUNCTION public.computer_update();
 DROP PROCEDURAL LANGUAGE plpgsql;
@@ -234,6 +243,17 @@ END;$$
     LANGUAGE plpgsql;
 
 
+--
+-- Name: admins_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE admins_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
 SET default_tablespace = '';
 
 SET default_with_oids = false;
@@ -243,7 +263,7 @@ SET default_with_oids = false;
 --
 
 CREATE TABLE admins (
-    id bigint NOT NULL,
+    id bigint DEFAULT nextval('admins_id_seq'::regclass) NOT NULL,
     "login" character varying NOT NULL,
     "password" character(32) NOT NULL,
     last_login_at timestamp without time zone,
@@ -367,24 +387,6 @@ COMMENT ON COLUMN admins.active IS 'czy konto jest aktywne?';
 
 
 --
--- Name: admins_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE admins_id_seq
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: admins_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE admins_id_seq OWNED BY admins.id;
-
-
---
 -- Name: bans_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -396,11 +398,22 @@ CREATE SEQUENCE bans_id_seq
 
 
 --
+-- Name: computers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE computers_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
 -- Name: computers; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE computers (
-    id bigint NOT NULL,
+    id bigint DEFAULT nextval('computers_id_seq'::regclass) NOT NULL,
     host character varying(50) NOT NULL,
     mac macaddr NOT NULL,
     ipv4 inet NOT NULL,
@@ -536,7 +549,6 @@ COMMENT ON COLUMN computers.banned IS 'czy komputer jest aktualnie zabanowany?';
 --
 
 CREATE SEQUENCE computers_ban_id
-    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -550,7 +562,8 @@ CREATE SEQUENCE computers_ban_id
 CREATE TABLE computers_bans (
     id bigint DEFAULT nextval('computers_ban_id'::regclass) NOT NULL,
     computer_id bigint NOT NULL,
-    penalty_id bigint NOT NULL
+    penalty_id bigint NOT NULL,
+    active boolean DEFAULT true NOT NULL
 );
 
 
@@ -576,11 +589,34 @@ COMMENT ON COLUMN computers_bans.penalty_id IS 'ktora kara';
 
 
 --
+-- Name: computers_history_computer_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE computers_history_computer_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
+-- Name: computers_history_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE computers_history_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
 -- Name: computers_history; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE computers_history (
-    computer_id bigint NOT NULL,
+    computer_id bigint DEFAULT nextval('computers_history_computer_id_seq'::regclass) NOT NULL,
     host character varying(50) NOT NULL,
     mac macaddr NOT NULL,
     ipv4 inet NOT NULL,
@@ -591,7 +627,7 @@ CREATE TABLE computers_history (
     modified_at timestamp without time zone DEFAULT now() NOT NULL,
     "comment" pg_catalog.text NOT NULL,
     can_admin boolean DEFAULT false NOT NULL,
-    id bigint NOT NULL,
+    id bigint DEFAULT nextval('computers_history_id_seq'::regclass) NOT NULL,
     avail_max_to timestamp without time zone NOT NULL
 );
 
@@ -674,58 +710,14 @@ COMMENT ON COLUMN computers_history.can_admin IS 'komputer nalezy do administrat
 
 
 --
--- Name: computers_history_computer_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: dormitories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE computers_history_computer_id_seq
-    START WITH 1
+CREATE SEQUENCE dormitories_id_seq
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
     CACHE 1;
-
-
---
--- Name: computers_history_computer_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE computers_history_computer_id_seq OWNED BY computers_history.computer_id;
-
-
---
--- Name: computers_history_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE computers_history_id_seq
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: computers_history_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE computers_history_id_seq OWNED BY computers_history.id;
-
-
---
--- Name: computers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE computers_id_seq
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: computers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE computers_id_seq OWNED BY computers.id;
 
 
 --
@@ -733,7 +725,7 @@ ALTER SEQUENCE computers_id_seq OWNED BY computers.id;
 --
 
 CREATE TABLE dormitories (
-    id bigint NOT NULL,
+    id bigint DEFAULT nextval('dormitories_id_seq'::regclass) NOT NULL,
     name character varying(255) NOT NULL,
     alias character varying(10) NOT NULL,
     users_count integer DEFAULT 0 NOT NULL,
@@ -777,10 +769,10 @@ COMMENT ON COLUMN dormitories.computers_count IS 'ilosc zarejestrowanych kompute
 
 
 --
--- Name: dormitories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: faulties_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE dormitories_id_seq
+CREATE SEQUENCE faulties_id_seq
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -788,18 +780,11 @@ CREATE SEQUENCE dormitories_id_seq
 
 
 --
--- Name: dormitories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE dormitories_id_seq OWNED BY dormitories.id;
-
-
---
 -- Name: faculties; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE faculties (
-    id bigint NOT NULL,
+    id bigint DEFAULT nextval('faulties_id_seq'::regclass) NOT NULL,
     name character varying(255) NOT NULL,
     alias character varying(10) NOT NULL,
     users_count integer DEFAULT 0 NOT NULL,
@@ -843,24 +828,6 @@ COMMENT ON COLUMN faculties.computers_count IS 'ilosc zarejestrowanych komputero
 
 
 --
--- Name: faulties_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE faulties_id_seq
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: faulties_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE faulties_id_seq OWNED BY faculties.id;
-
-
---
 -- Name: ipv4s; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -892,11 +859,22 @@ COMMENT ON COLUMN ipv4s.dormitory_id IS 'akademik';
 
 
 --
+-- Name: locations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE locations_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
 -- Name: locations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE locations (
-    id bigint NOT NULL,
+    id bigint DEFAULT nextval('locations_id_seq'::regclass) NOT NULL,
     alias character varying(10) NOT NULL,
     "comment" pg_catalog.text DEFAULT ''::pg_catalog.text NOT NULL,
     users_count integer DEFAULT 0 NOT NULL,
@@ -956,30 +934,12 @@ COMMENT ON COLUMN locations.users_max IS 'maksymalna ilosc osob w pokoju';
 
 
 --
--- Name: locations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE locations_id_seq
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: locations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE locations_id_seq OWNED BY locations.id;
-
-
---
 -- Name: penalties; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE penalties (
     id bigint DEFAULT nextval('bans_id_seq'::regclass) NOT NULL,
-    admin_id bigint NOT NULL,
+    created_by bigint NOT NULL,
     user_id bigint,
     type_id smallint DEFAULT 1 NOT NULL,
     start_at timestamp without time zone DEFAULT now() NOT NULL,
@@ -987,11 +947,12 @@ CREATE TABLE penalties (
     "comment" pg_catalog.text,
     modified_by bigint,
     reason pg_catalog.text NOT NULL,
-    modified_at timestamp without time zone DEFAULT now() NOT NULL,
+    modified_at timestamp without time zone,
     created_at timestamp without time zone DEFAULT now() NOT NULL,
     amnesty_at timestamp without time zone,
     amnesty_after timestamp without time zone,
-    amnesty_by bigint
+    amnesty_by bigint,
+    active boolean DEFAULT true NOT NULL
 );
 
 
@@ -1003,10 +964,10 @@ COMMENT ON TABLE penalties IS 'kary nalozone na uzytkownikow';
 
 
 --
--- Name: COLUMN penalties.admin_id; Type: COMMENT; Schema: public; Owner: -
+-- Name: COLUMN penalties.created_by; Type: COMMENT; Schema: public; Owner: -
 --
 
-COMMENT ON COLUMN penalties.admin_id IS 'tworca kary';
+COMMENT ON COLUMN penalties.created_by IS 'tworca kary';
 
 
 --
@@ -1162,11 +1123,22 @@ COMMENT ON COLUMN penalty_templates.amnesty_after IS 'czas po ktorym mozna udzie
 
 
 --
+-- Name: text_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE text_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
 -- Name: text; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE text (
-    id bigint NOT NULL,
+    id bigint DEFAULT nextval('text_id_seq'::regclass) NOT NULL,
     alias pg_catalog.text NOT NULL,
     title pg_catalog.text NOT NULL,
     content pg_catalog.text NOT NULL,
@@ -1218,10 +1190,10 @@ COMMENT ON COLUMN text.modified_by IS 'kto dokonal modyfikacji';
 
 
 --
--- Name: text_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE text_id_seq
+CREATE SEQUENCE users_id_seq
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -1229,18 +1201,11 @@ CREATE SEQUENCE text_id_seq
 
 
 --
--- Name: text_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE text_id_seq OWNED BY text.id;
-
-
---
 -- Name: users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE users (
-    id bigint NOT NULL,
+    id bigint DEFAULT nextval('users_id_seq'::regclass) NOT NULL,
     "login" character varying NOT NULL,
     "password" character(32) NOT NULL,
     surname character varying(100) NOT NULL,
@@ -1253,7 +1218,8 @@ CREATE TABLE users (
     modified_at timestamp without time zone DEFAULT now() NOT NULL,
     "comment" pg_catalog.text DEFAULT ''::pg_catalog.text NOT NULL,
     name character varying(100) NOT NULL,
-    active boolean DEFAULT true NOT NULL
+    active boolean DEFAULT true NOT NULL,
+    banned boolean DEFAULT false NOT NULL
 );
 
 
@@ -1356,6 +1322,24 @@ COMMENT ON COLUMN users.active IS 'czy uzytkownik moze logowac sie do systemu?';
 
 
 --
+-- Name: COLUMN users.banned; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN users.banned IS 'czy uzytkownik jest w tej chwili zabanowany?';
+
+
+--
+-- Name: users_history_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE users_history_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
 -- Name: users_history; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1370,7 +1354,7 @@ CREATE TABLE users_history (
     modified_by bigint,
     modified_at timestamp without time zone NOT NULL,
     "comment" pg_catalog.text NOT NULL,
-    id bigint NOT NULL,
+    id bigint DEFAULT nextval('users_history_id_seq'::regclass) NOT NULL,
     "login" character varying NOT NULL
 );
 
@@ -1460,42 +1444,6 @@ COMMENT ON COLUMN users_history."login" IS 'login';
 
 
 --
--- Name: users_history_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE users_history_id_seq
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: users_history_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE users_history_id_seq OWNED BY users_history.id;
-
-
---
--- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE users_id_seq
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE users_id_seq OWNED BY users.id;
-
-
---
 -- Name: users_old; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1505,11 +1453,22 @@ CREATE TABLE users_old (
 
 
 --
+-- Name: users_tokens_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE users_tokens_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
 -- Name: users_tokens; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE users_tokens (
-    id integer NOT NULL,
+    id integer DEFAULT nextval('users_tokens_id_seq'::regclass) NOT NULL,
     user_id integer NOT NULL,
     token pg_catalog.text NOT NULL,
     valid_to timestamp without time zone DEFAULT (now() + '7 days'::interval) NOT NULL,
@@ -1533,24 +1492,6 @@ COMMENT ON COLUMN users_tokens."type" IS 'do czego moze byc ten token wykorzysta
 
 
 --
--- Name: users_tokens_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE users_tokens_id_seq
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: users_tokens_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE users_tokens_id_seq OWNED BY users_tokens.id;
-
-
---
 -- Name: users_walet; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1559,83 +1500,6 @@ CREATE TABLE users_walet (
     room pg_catalog.text NOT NULL,
     dorm integer NOT NULL
 );
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE admins ALTER COLUMN id SET DEFAULT nextval('admins_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE computers ALTER COLUMN id SET DEFAULT nextval('computers_id_seq'::regclass);
-
-
---
--- Name: computer_id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE computers_history ALTER COLUMN computer_id SET DEFAULT nextval('computers_history_computer_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE computers_history ALTER COLUMN id SET DEFAULT nextval('computers_history_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE dormitories ALTER COLUMN id SET DEFAULT nextval('dormitories_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE faculties ALTER COLUMN id SET DEFAULT nextval('faulties_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE locations ALTER COLUMN id SET DEFAULT nextval('locations_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE text ALTER COLUMN id SET DEFAULT nextval('text_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE users_history ALTER COLUMN id SET DEFAULT nextval('users_history_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE users_tokens ALTER COLUMN id SET DEFAULT nextval('users_tokens_id_seq'::regclass);
 
 
 --
@@ -1652,14 +1516,6 @@ ALTER TABLE ONLY admins
 
 ALTER TABLE ONLY admins
     ADD CONSTRAINT admins_pkey PRIMARY KEY (id);
-
-
---
--- Name: bans_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY penalties
-    ADD CONSTRAINT bans_pkey PRIMARY KEY (id);
 
 
 --
@@ -1740,6 +1596,14 @@ ALTER TABLE ONLY locations
 
 ALTER TABLE ONLY locations
     ADD CONSTRAINT locations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: penalties_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY penalties
+    ADD CONSTRAINT penalties_pkey PRIMARY KEY (id);
 
 
 --
@@ -1836,6 +1700,55 @@ CREATE UNIQUE INDEX computers_mac_key ON computers USING btree (mac, active) WHE
 
 
 --
+-- Name: fki_computers_bans_computer_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX fki_computers_bans_computer_id ON computers_bans USING btree (computer_id);
+
+
+--
+-- Name: fki_computers_bans_penalty_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX fki_computers_bans_penalty_id ON computers_bans USING btree (penalty_id);
+
+
+--
+-- Name: fki_penalties_amnesty_by; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX fki_penalties_amnesty_by ON penalties USING btree (amnesty_by);
+
+
+--
+-- Name: fki_penalties_created_by; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX fki_penalties_created_by ON penalties USING btree (created_by);
+
+
+--
+-- Name: fki_penalties_modified_by; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX fki_penalties_modified_by ON penalties USING btree (modified_by);
+
+
+--
+-- Name: fki_penalties_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX fki_penalties_user_id ON penalties USING btree (user_id);
+
+
+--
+-- Name: users_surname_key; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX users_surname_key ON users USING btree (surname);
+
+
+--
 -- Name: users_walet_all_key; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1857,6 +1770,20 @@ CREATE RULE delete_counter AS ON DELETE TO computers DO UPDATE locations SET com
 
 
 --
+-- Name: insert_banned_on; Type: RULE; Schema: public; Owner: -
+--
+
+CREATE RULE insert_banned_on AS ON INSERT TO penalties WHERE (new.type_id <> 1) DO UPDATE users SET banned = true WHERE (users.id = new.user_id);
+
+
+--
+-- Name: insert_banned_on; Type: RULE; Schema: public; Owner: -
+--
+
+CREATE RULE insert_banned_on AS ON INSERT TO computers_bans DO UPDATE computers SET banned = true WHERE (computers.id = new.computer_id);
+
+
+--
 -- Name: insert_counter; Type: RULE; Schema: public; Owner: -
 --
 
@@ -1868,6 +1795,20 @@ CREATE RULE insert_counter AS ON INSERT TO users DO UPDATE locations SET users_c
 --
 
 CREATE RULE insert_counter AS ON INSERT TO computers DO UPDATE locations SET computers_count = (locations.computers_count + 1) WHERE (locations.id = new.location_id);
+
+
+--
+-- Name: insert_counter; Type: RULE; Schema: public; Owner: -
+--
+
+CREATE RULE insert_counter AS ON INSERT TO penalties DO UPDATE users SET bans = (users.bans + 1) WHERE (users.id = new.user_id);
+
+
+--
+-- Name: insert_counter; Type: RULE; Schema: public; Owner: -
+--
+
+CREATE RULE insert_counter AS ON INSERT TO computers_bans DO UPDATE computers SET bans = (computers.bans + 1) WHERE (computers.id = new.computer_id);
 
 
 --
@@ -1927,6 +1868,27 @@ CREATE RULE update_active_on AS ON UPDATE TO users WHERE ((old.active = false) A
 
 
 --
+-- Name: update_banned_off; Type: RULE; Schema: public; Owner: -
+--
+
+CREATE RULE update_banned_off AS ON UPDATE TO penalties WHERE ((old.active = true) AND (new.active = false)) DO UPDATE users SET banned = false WHERE (users.id = old.user_id);
+
+
+--
+-- Name: update_banned_off; Type: RULE; Schema: public; Owner: -
+--
+
+CREATE RULE update_banned_off AS ON UPDATE TO computers_bans WHERE ((old.active = true) AND (new.active = false)) DO UPDATE computers SET banned = false WHERE (computers.id = old.computer_id);
+
+
+--
+-- Name: update_computers_bans_off; Type: RULE; Schema: public; Owner: -
+--
+
+CREATE RULE update_computers_bans_off AS ON UPDATE TO penalties WHERE ((old.active = true) AND (new.active = false)) DO UPDATE computers_bans SET active = false WHERE (computers_bans.penalty_id = old.id);
+
+
+--
 -- Name: update_counter_dec; Type: RULE; Schema: public; Owner: -
 --
 
@@ -1980,6 +1942,22 @@ COMMENT ON TRIGGER users_update ON users IS 'kopiuje dane do historii';
 
 ALTER TABLE ONLY admins
     ADD CONSTRAINT admins_dormitory_id_fkey FOREIGN KEY (dormitory_id) REFERENCES dormitories(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: computers_bans_computer_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY computers_bans
+    ADD CONSTRAINT computers_bans_computer_id_fkey FOREIGN KEY (computer_id) REFERENCES computers(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: computers_bans_penalty_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY computers_bans
+    ADD CONSTRAINT computers_bans_penalty_id_fkey FOREIGN KEY (penalty_id) REFERENCES penalties(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -2060,6 +2038,38 @@ ALTER TABLE ONLY ipv4s
 
 ALTER TABLE ONLY locations
     ADD CONSTRAINT locations_dormitory_id_fkey FOREIGN KEY (dormitory_id) REFERENCES dormitories(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: penalties_amnesty_by_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY penalties
+    ADD CONSTRAINT penalties_amnesty_by_fkey FOREIGN KEY (amnesty_by) REFERENCES admins(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- Name: penalties_created_by_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY penalties
+    ADD CONSTRAINT penalties_created_by_fkey FOREIGN KEY (created_by) REFERENCES admins(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- Name: penalties_modified_by_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY penalties
+    ADD CONSTRAINT penalties_modified_by_fkey FOREIGN KEY (modified_by) REFERENCES admins(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- Name: penalties_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY penalties
+    ADD CONSTRAINT penalties_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
