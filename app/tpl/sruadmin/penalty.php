@@ -61,11 +61,11 @@ extends UFtpl_Common {
 		echo '<span id="penaltyMoreSwitch"></span><div id="penaltyMore">';
 		echo '<p><em>Karzący:</em> <a href="'.$url.'/admins/'.$c['createdById'].'">'.$this->_escape($c['createdByName']).'</a><small> ('.date(self::TIME_YYMMDD_HHMM, $c['createdAt']) .')</small></p>';
 
-		if($c['modifiedBy']) {
+		if($c['modifiedById']) {
 			echo '<p><em>Modyfikacja:</em> <a href="'.$url.'/admins/'.$c['modifiedById'].'">'.$this->_escape($c['modifiedByName']). '</a> <small>('.date(self::TIME_YYMMDD_HHMM, $c['modifiedAt']).')</small></p>';							
 		}
 		
-		if($c['amnestyBy']) {
+		if($c['amnestyById']) {
 			echo '<p><em>Amnestia udzielona przez:</em> <a href="'.$url.'/admins/'.$c['amnestyById'].'">'.$this->_escape($c['amnestyByName']).'</a> <small>('.date(self::TIME_YYMMDD_HHMM, $c['amnestyAt']).')</small></p>';							
 		}	
 		
