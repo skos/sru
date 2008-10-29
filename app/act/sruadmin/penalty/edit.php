@@ -13,15 +13,20 @@ extends UFact {
 
 			$bean = UFra::factory('UFbean_SruAdmin_Penalty');
 			$bean->getByPK($this->_srv->get('req')->get->penaltyId);
+			$post = $this->_srv->get('req')->post->{self::PREFIX};
 			if (!$bean->active) {
 				UFra::error('Penalty '.$bean->id.' is not active');
 				return;
 			}
 
-			$bean->fillFromPost(self::PREFIX, null, array('endAt'));
+			if ('' === $post['endAt']) {
+				$bean->endAt = NOW;
+			} else {
+				$bean->fillFromPost(self::PREFIX, null, array('endAt'));
+			}
 			$bean->modifiedAt = NOW;
 			$bean->modifiedById = $this->_srv->get('session')->authAdmin; 
-			if ($bean->endAt < NOW) {
+			if ($bean->endAt <= NOW) {
 				$bean->endAt = NOW;
 				$bean->amnestyById = $bean->modifiedById;
 				$bean->amnestyAt = NOW;
