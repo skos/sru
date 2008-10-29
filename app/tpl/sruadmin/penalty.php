@@ -18,11 +18,12 @@ extends UFtpl_Common {
 
 	public function listPenalty(array $d) {
 		$url = $this->url(0);
+		echo '<h3>Wszystkich kar: '. count($d) .'</h3>';
 
 		foreach ($d as $c) {	
 			echo '<li>';
 			echo '<small>'.date(self::TIME_YYMMDD, $c['startAt']).' &mdash; '.date(self::TIME_YYMMDD, $c['endAt']).'</small> ';
-			echo '<a href="'.$url.'/penalties/'.$c['id'].'">'.$this->_escape($c['userName']).' '.$this->_escape($c['userSurname']).'</a>';
+			echo '<a href="'.$url.'/penalties/'.$c['id'].'">'.$this->_escape($c['userName']).' '.$this->_escape($c['userSurname']).' ('.$this->_escape($c['userLogin']).')</a>';
 			echo '</li>';
 		}
 	}
@@ -78,6 +79,7 @@ extends UFtpl_Common {
 		}	
 		
 		echo '<p><em>Komentarz:</em> '.nl2br($this->_escape($d['comment'])).'</p>';
+		echo '<p><em>Typ:</em> '.$this->_escape($this->penaltyTypes[$d['typeId']]).'</p>';
 		echo '</div>';
 ?><script type="text/javascript">
 function changeVisibility() {
