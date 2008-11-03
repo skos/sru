@@ -232,8 +232,12 @@ extends UFdao {
 
 	public function listEthers() {
 		$mapping = $this->mapping('ethers');
+		
+		$conf = UFra::factory('UFconf_Sru');
 
 		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->ip, $conf->noEthers, $query->NOT_IN);
+		$query->distinct();
 		$query->order($mapping->ip, $query->ASC);
 
 		return $this->doSelect($query);

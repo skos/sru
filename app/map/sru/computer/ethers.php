@@ -8,7 +8,6 @@ extends UFmap {
 	protected $columns = array(
 		'ip'             => 'i.ip',
 		'mac'            => "coalesce(c.mac,'00:00:00:00:00:00')",
-		'host'           => 'c.host',
 		'active'         => 'c.active',
 		'banned'         => 'c.banned',
 	);
@@ -30,7 +29,7 @@ extends UFmap {
 	);
 
 	protected $wheres = array(
-		'c.active OR c.active IS NULL',
+		'(c.active OR c.active IS NULL)',
 	);
 	protected $pk = 'i.idp';
 }
