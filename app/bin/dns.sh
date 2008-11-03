@@ -15,5 +15,6 @@ for i in `seq 207 223`; do
 	$increment "$base/M/${i}.ds" "$dir/${i}.inc" && changed=1
 done
 if [[ $changed == "1" ]]; then
+	echo -n "$(date) "
 	/usr/sbin/rndc reload
 fi
