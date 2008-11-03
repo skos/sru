@@ -17,7 +17,7 @@ extends UFmap {
 		'mac'            => self::TEXT,
 		'host'           => self::TEXT,
 		'active'         => self::NULL_BOOL,
-		'banned'         => 'c.banned',
+		'banned'         => self::NULL_BOOL,
 	);
 	protected $tables = array(
 		'i' => 'ipv4s',
