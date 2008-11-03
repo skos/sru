@@ -2,7 +2,7 @@
 /**
  * szablon strony
  */
-class UFtpl_Index
+class UFtpl_IndexSru
 extends UFtpl_Common {
 
 	public function index(array $d) {
@@ -24,6 +24,7 @@ extends UFtpl_Common {
 <li><a href="<?=UFURL_BASE;?>/sru/">SRU</a></li>
 <li><a href="<?=UFURL_BASE;?>/admin/">Administracja</a></li>
 </ul>
+<?=$d['userBar'];?>
 <div id="main">
 <?=$d['body'];?>
 </div><!-- main -->

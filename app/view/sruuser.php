@@ -5,6 +5,10 @@
 class UFview_SruUser
 extends UFview {
 
+	protected function chooseTemplate() {
+		return UFra::factory('UFtpl_IndexSru', $this->_srv);
+	}
+
 	protected function fillDefaultData() {
 		if (!isset($this->data['userBar'])) { 
 			$box = UFra::shared('UFbox_Sru');
