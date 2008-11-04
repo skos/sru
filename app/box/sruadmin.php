@@ -733,14 +733,13 @@ extends UFbox {
 
 			$d['user'] = $bean;
 			
-			$d['computers'] = NULL;
+			$comp = UFra::factory('UFbean_Sru_ComputerList');
+			$d['computers'] =& $comp;
 			
 			try{
 			
-				$bean = UFra::factory('UFbean_Sru_ComputerList');
-				$bean->listByUserId($d['user']->id); 
+				$comp->listByUserId($d['user']->id); 
 	
-				$d['computers'] = $bean;
 			} catch (UFex_Dao_NotFound $e) {}			
 			
 			return $this->render(__FUNCTION__, $d);

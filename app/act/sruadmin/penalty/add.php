@@ -35,13 +35,17 @@ extends UFact {
 
 			if (UFbean_SruAdmin_Penalty::TYPE_COMPUTERS === $bean->typeId) {
 				$computers = UFra::factory('UFbean_Sru_ComputerList');
-				$computers->listByUserId($user->id);
+				try {
+					$computers->listByUserId($user->id);
 
-				foreach ($computers as $computer) {
-					$penalty = UFra::factory('UFbean_SruAdmin_ComputerBan');
-					$penalty->penaltyId = $id;
-					$penalty->computerId = $computer['id'];
-					$penalty->save(false);
+					foreach ($computers as $computer) {
+						$penalty = UFra::factory('UFbean_SruAdmin_ComputerBan');
+						$penalty->penaltyId = $id;
+						$penalty->computerId = $computer['id'];
+						$penalty->save(false);
+					}
+				} catch (UFex_Dao_NotFound $e) {
+					// uzytkownik nie ma komputerow
 				}
 			} elseif (UFbean_SruAdmin_Penalty::TYPE_COMPUTER === $bean->typeId) {
 				$computer = UFra::factory('UFbean_Sru_Computer');
