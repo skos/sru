@@ -52,7 +52,7 @@ extends UFtpl_Common {
 		echo $form->password('Hasło', array('type'=>$form->PASSWORD));
 	}
 
-	public function formLogout(array $d) {
+	public function formInfo(array $d) {
 		echo '<p>'.$d['name'].' '.$d['surname'].'</p>';
 	}
 

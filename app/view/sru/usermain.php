@@ -10,6 +10,6 @@ extends UFview_SruUser {
 
 		$this->append('title', $box->titleMain());
 		$this->append('body', $box->userMainMenu());
-		$this->append('body', $box->logout());
+		$this->append('body', $box->userInfo());
 	}
 }

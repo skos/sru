@@ -115,13 +115,22 @@ extends UFtpl_Common {
 		echo 'System Rejestracji Użytkowników';
 	}
 
-	public function logout(array $d) {
+	public function userInfo(array $d) {
 		$form = UFra::factory('UFlib_Form');
 
 		echo $form->_start($this->url(0).'/');
-		echo $form->_fieldset('Wyloguj się');
-		echo $d['user']->write('formLogout');
-		echo $form->_submit('Wyloguj', array('name'=>'userLogout'));
+		echo $form->_fieldset('Ważne informacje');
+		echo $d['penalties']->write('listPenalty');
+		echo $form->_end();
+		echo $form->_end(true);
+	}
+
+	public function penaltiesNotFound() {
+		$form = UFra::factory('UFlib_Form');
+
+		echo $form->_start($this->url(0).'/');
+		echo $form->_fieldset('Ważne informacje');
+		echo "<h3>Hurra! Brak aktywnych kar i ostrzeżeń! ;)</h3>";
 		echo $form->_end();
 		echo $form->_end(true);
 	}
