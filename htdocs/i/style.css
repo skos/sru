@@ -51,5 +51,7 @@ img { border-style: none; }
 #main .rooms ul { list-style-type: none; margin: 0; padding: 0; clear: both; text-align: center; border-top: 1px solid #ccc; overflow: auto; }
 #main .rooms ul.first { border-top-style: none; }
 #main .rooms li { width: 10%; float: left; display: block; }
+#main .displayOnHover a { color: white; }
+#main .displayOnHover a:hover { text-decoration: underline; color: red; }
 
 #foot { text-align: center; font-size: 0.5em; margin-top: 2em; }
