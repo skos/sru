@@ -68,7 +68,7 @@ extends UFtpl_Common {
 		}
 		echo '<p><em>Powód:</em> '.nl2br($this->_escape($d['reason'])).'</p>';
 		echo '<span id="penaltyMoreSwitch"></span><div id="penaltyMore">';
-		echo '<p><em>Karzący:</em> <span class="displayOnHover"><a href="'.$url.'/admins/'.$d['createdById'].'">'.$this->_escape($d['createdByName']).'</a><small> ('.date(self::TIME_YYMMDD_HHMM, $d['createdAt']) .')</small></span></p>';
+		echo '<p class="displayOnHover"><em>Karzący:</em> <span><a href="'.$url.'/admins/'.$d['createdById'].'">'.$this->_escape($d['createdByName']).'</a><small> ('.date(self::TIME_YYMMDD_HHMM, $d['createdAt']) .')</small></span></p>';
 
 		if($d['modifiedById']) {
 			echo '<p><em>Modyfikacja:</em> <a href="'.$url.'/admins/'.$d['modifiedById'].'">'.$this->_escape($d['modifiedByName']). '</a> <small>('.date(self::TIME_YYMMDD_HHMM, $d['modifiedAt']).')</small></p>';							
