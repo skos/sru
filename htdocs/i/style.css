@@ -54,5 +54,7 @@ img { border-style: none; }
 #main .displayOnHover span, #main .displayOnHover a { color: white; }
 #main .displayOnHover a:hover { text-decoration: underline; color: red; }
 #main .displayOnHover span:hover { color: black; }
+#main .ban { background: red; }
+#main .warning { background: #fff4ac; }
 
 #foot { text-align: center; font-size: 0.5em; margin-top: 2em; }

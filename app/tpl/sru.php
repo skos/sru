@@ -125,6 +125,15 @@ extends UFtpl_Common {
 		echo $form->_end(true);
 	}
 
+	public function userPenalties(array $d) {
+		$d['penalties']->write('listAllPenalty');
+	}
+
+
+	public function titlePenalties() {
+		echo 'Archiwum kar i ostrzeżeń';
+	}
+
 	public function penaltiesNotFound() {
 		$form = UFra::factory('UFlib_Form');
 
@@ -135,6 +144,10 @@ extends UFtpl_Common {
 		echo $form->_end(true);
 	}
 
+	public function userPenaltiesNotFound() {
+		echo "<h3>Hurra! Brak aktywnych kar i ostrzeżeń! ;)</h3>";
+	}
+
 	public function userMainMenu() {
 		echo '<div class="mainMenu"><h1>System Rejestracji Użytkowników</h1>';
 		if ($this->_srv->get('msg')->get('userConfirm/ok')) {
@@ -143,8 +156,8 @@ extends UFtpl_Common {
 		echo '<ul>';
 		echo '<li><a href="'.$this->url(0).'/profile">Profil</a></li>';
 		echo '<li><a href="'.$this->url(0).'/computers">Komputery</a></li>';
+		echo '<li><a href="'.$this->url(0).'/penalties">Kary</a></li>';
 		/*
-		echo '<li><a href="'.$this->url(0).'/bans">Kary</a></li>';
 		echo '<li><a href="'.$this->url(0).'/services">Usługi</a></li>';
 		*/
 		echo '</ul></div>';

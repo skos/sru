@@ -13,20 +13,44 @@ extends UFtpl_Common {
 
 	public function listPenalty(array $d) {
 		$url = $this->url(0);
-		echo '<h3>Wszystkich aktywnych kar i ostrzeżeń: '. count($d) .'</h3>';
+		echo '<h3>Masz aktywne kary / ostrzeżenia</h3>';
 
 		foreach ($d as $c) {
-			echo '<small>Typ kary: ';
+			if (UFbean_SruAdmin_Penalty::TYPE_WARNING == $c['typeId']) {
+				echo '<div class="warning">';
+			} else {
+				echo '<div class="ban">';
+			}
+			echo '<small>Typ: ';
 
 			if (UFbean_SruAdmin_Penalty::TYPE_WARNING == $c['typeId']) {
-				echo '<strong>Ostrzeżenie</strong>';
+				echo 'Ostrzeżenie';
 			} else {
-				echo '<strong>Kara na '.$this->_escape($this->penaltyTypes[$c['typeId']]).'</strong>';
+				echo '<strong>Kara</strong>';
 			}
-			echo '<br/>Ważna do: <strong>'.date(self::TIME_YYMMDD, $c['endAt']).'</strong>';
-			echo '<br/>Powód: <strong>'.nl2br($this->_escape($c['reason'])).'</strong>';
-			echo '</small>';
-			echo '<br/><hr/>';
+			echo '<br/>Ważna do: '.date(self::TIME_YYMMDD_HHMM, $c['endAt']);
+			echo '<br/>Powód: '.nl2br($this->_escape($c['reason']));
+			echo '</small></div>';
+			echo '<br/>';
+		}
+	}
+
+	public function listAllPenalty(array $d) {
+		$url = $this->url(0);
+		echo '<h3>Archiwum kar i ostrzeżeń:</h3>';
+
+		foreach ($d as $c) {	
+			echo '<div><small>Typ: ';
+
+			if (UFbean_SruAdmin_Penalty::TYPE_WARNING == $c['typeId']) {
+				echo 'Ostrzeżenie';
+			} else {
+				echo '<strong>Kara</strong>';
+			}
+			echo '<br/>Ważna do: '.date(self::TIME_YYMMDD, $c['endAt']);
+			echo '<br/>Powód: '.nl2br($this->_escape($c['reason']));
+			echo '</small></div>';
+			echo '<hr/>';
 		}
 	}	
 }

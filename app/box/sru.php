@@ -193,4 +193,22 @@ extends UFbox {
 			return '';
 		}
 	}
+
+	public function userPenalties() {
+		try 
+		{
+			$user = UFra::factory('UFbean_Sru_User');
+			$user->getFromSession();
+
+			$bean = UFra::factory('UFbean_Sru_PenaltyList');	
+			$bean->listAllByUserId($user->id);
+			$d['penalties'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} 
+		catch (UFex_Dao_NotFound $e) 
+		{
+			return $this->render('userPenaltiesNotFound');
+		}
+	}
 }

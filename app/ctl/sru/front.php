@@ -39,6 +39,9 @@ extends UFctl {
 				case 'create':
 					$get->view = 'user/add';
 					break;
+				case 'penalties':
+					$get->view = 'user/penalties';
+					break;
 				default:
 					if (UFlib_Valid::regexp($req->segment(1),'^[0-9a-f]{32}$')) {
 						$get->userToken = $req->segment(1);
@@ -141,6 +144,12 @@ extends UFctl {
 			case 'user/computer/del':
 				if ($acl->sru('computer', 'del')) {
 					return 'Sru_UserComputerDel';
+				} else {
+					return 'Sru_Error403';
+				}
+			case 'user/penalties':
+				if ($acl->sru('user', 'logout')) {
+					return 'Sru_UserPenalties';
 				} else {
 					return 'Sru_Error403';
 				}
