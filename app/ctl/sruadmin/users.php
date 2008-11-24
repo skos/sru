@@ -52,6 +52,9 @@ extends UFctl {
 							case 'history':
 								$get->view = 'users/user/history';
 								break;
+							case 'penalties':
+								$get->view = 'users/user/penalties';
+								break;
 							case ':edit':
 								$get->view = 'users/user/edit';
 								if ($segCount > 3) {
@@ -140,6 +143,8 @@ extends UFctl {
 				} 		
 			case 'users/user/restore':
 				return 'SruAdmin_UserRestore';
+			case 'users/user/penalties':
+				return 'SruAdmin_UserPenalties';
 			default:
 				return 'Sru_Error404';
 		}

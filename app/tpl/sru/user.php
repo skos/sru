@@ -171,9 +171,9 @@ extends UFtpl_Common {
 		echo '<p><em>Wydział:</em> '.(!is_null($d['facultyName'])?$d['facultyName']:'N/D').'</p>';
 		echo '<p><em>Rok studiów:</em> '.self::$studyYears[$d['studyYearId']].'</p>';
 		if ($d['banned']) {
-			$bans = '<a href="'.$url.'/users/'.$d['id'].'/bans">'.$d['bans'].' <strong>(aktywne)</strong></a>';
+			$bans = '<a href="'.$url.'/users/'.$d['id'].'/penalties">'.$d['bans'].' <strong>(aktywne)</strong></a>';
 		} elseif ($d['bans']>0) {
-			$bans = '<a href="'.$url.'/users/'.$d['id'].'/bans">'.$d['bans'].'</a>';
+			$bans = '<a href="'.$url.'/users/'.$d['id'].'/penalties">'.$d['bans'].'</a>';
 		} else {
 			$bans= '0';
 		}

@@ -777,5 +777,34 @@ extends UFbox {
 		} catch (UFex_Dao_NotFound $e) {
 			return $this->render(__FUNCTION__.'NotFound');
 		}
-	}								
+	}	
+	public function userPenalties() 
+	{
+		try 
+		{
+			$user = $this->_getUserFromGet();
+			$d['user'] = $user;
+
+			$bean = UFra::factory('UFbean_SruAdmin_PenaltyList');	
+			$bean->listAllByUserId($user->id);
+			$d['penalties'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} 
+		catch (UFex_Dao_NotFound $e) 
+		{
+			return $this->render('penaltiesNotFound');
+		}
+	}
+	public function titleUserPenalties() {
+		try {
+			$bean = $this->_getUserFromGet();
+
+			$d['user'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render('titleUserNotFound');
+		}
+	}							
 }

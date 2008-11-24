@@ -559,7 +559,7 @@ extends UFtpl_Common {
 	}
 
 	public function titlePenalties() {
-		echo 'Kary';
+		echo 'Aktywne kary';
 	}	
 
 	public function penalties(array $d)
@@ -571,7 +571,7 @@ extends UFtpl_Common {
 			echo $this->OK('Kara została założona');
 		}		
 		
-		echo '<h2>Kary</h2><ul>';
+		echo '<h2>Aktywne kary</h2><ul>';
 
 		$d['penalties']->write('listPenalty');
 
@@ -609,14 +609,21 @@ extends UFtpl_Common {
 	}
 
 	public function titlePenalty(array $d) {
-		echo 'Kara';
+		echo 'Kara / Ostrzeżenie';
 	}
 
 	public function penalty(array $d) {
 		echo '<div class="penalty">';	
-		echo '<h2>Kara</h2>';
+		echo '<h2>';
+
+		if (UFbean_SruAdmin_Penalty::TYPE_WARNING == $d['penalty']->typeId) {
+			echo 'Ostrzeżenie';
+		} else {
+			echo 'Kara';
+		}
+		echo '</h2>';
 		if ($this->_srv->get('msg')->get('penaltyEdit/ok')) {
-			echo $this->OK('Kara została zmieniona');
+			echo $this->OK('Zmiany zostały wprowadzone');
 		} elseif ($this->_srv->get('msg')->get('penaltyEdit/errors/endAt')) {
 			echo $this->ERR('Nieprawidłowa data');
 		}
@@ -627,6 +634,22 @@ extends UFtpl_Common {
 	}
 	public function penaltyNotFound() {
 		echo $this->ERR('Nie znaleziono kary');
+	}
+
+	public function titleUserPenalties(array $d) {
+		echo 'Lista kar i ostrzeżeń dla '.$d['user']->name.' '.$d['user']->surname.' ('.$d['user']->login.')';
+	}	
+
+	public function userPenalties(array $d)
+	{
+		$url = $this->url(0).'/penalties/';
+		$acl = $this->_srv->get('acl');		
+		
+		echo '<h2>Lista kar dla '.$d['user']->name.' '.$d['user']->surname.' ('.$d['user']->login.')</h2><ul>';
+
+		$d['penalties']->write('listUserPenalty');
+
+		echo '</ul>';
 	}								
 	
 }
