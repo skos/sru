@@ -32,6 +32,9 @@ extends UFctl {
 					$get->view = 'penalties/add';
 					}
 					break;
+				case 'actions':
+					$get->view = 'penalties/actions';
+					break;
 				default:
 					$get->view = 'penalties/penalty';
 					$id = (int)$req->segment(2);
@@ -94,7 +97,9 @@ extends UFctl {
 					return 'SruAdmin_PenaltyAdd';
 				} else {
 					return 'Sru_Error404';
-				}											
+				}	
+			case 'penalties/actions':
+				return 'SruAdmin_PenaltyActions';										
 			default:
 				return 'Sru_Error404';
 		}

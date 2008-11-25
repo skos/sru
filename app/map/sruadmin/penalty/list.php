@@ -25,6 +25,10 @@ extends UFmap_SruAdmin_Penalty_Get {
 		'userName'     => 'u.name',
 		'userSurname'  => 'u.surname',
 		'userLogin'    => 'u.login',
+
+		'creatorName'  => 'a.name',
+
+		'modifierName' => 'c.name',
 	);
 	protected $columnTypes = array(
 		'id'           => self::INT,
@@ -46,15 +50,23 @@ extends UFmap_SruAdmin_Penalty_Get {
 		'userName'     => self::TEXT,
 		'userSurname'  => self::TEXT,
 		'userLogin'    => self::TEXT,
+
+		'creatorName'  => self::TEXT,
+
+		'modifierName' => self::TEXT,
 	);
 	protected $tables = array(
 		'b' => 'penalties',
 	);
 	protected $joins = array( 
 		'u' => 'users',
+		'a' => 'admins',
+		'c' => 'admins',
 	);
 	protected $joinOns = array(
 		'u' => 'b.user_id=u.id',
+		'a' => 'b.created_by=a.id',
+		'c' => 'b.modified_by=c.id',
 	);
 	protected $pk = 'b.id';
 }

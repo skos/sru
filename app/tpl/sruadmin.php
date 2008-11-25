@@ -571,7 +571,7 @@ extends UFtpl_Common {
 			echo $this->OK('Kara została założona');
 		}		
 		
-		echo '<h2>Aktywne kary</h2><ul>';
+		echo '<h2>Aktywne kary | <a href='.$url.'actions/>Ostatnie akcje</a></h2><ul>';
 
 		$d['penalties']->write('listPenalty');
 
@@ -642,7 +642,6 @@ extends UFtpl_Common {
 
 	public function userPenalties(array $d)
 	{
-		$url = $this->url(0).'/penalties/';
 		$acl = $this->_srv->get('acl');		
 		
 		echo '<h2>Lista kar dla '.$d['user']->name.' '.$d['user']->surname.' ('.$d['user']->login.')</h2><ul>';
@@ -650,6 +649,22 @@ extends UFtpl_Common {
 		$d['penalties']->write('listUserPenalty');
 
 		echo '</ul>';
-	}								
+	}	
+
+	public function penaltyActions(array $d)
+	{
+		$url = $this->url(0).'/penalties/';
+		$acl = $this->_srv->get('acl');		
+		
+		echo '<h2><a href='.$url.'>Aktywne kary</a> | Ostatnie akcje</h2>';
+
+		$d['modified']->write('penaltyLastModified');
+		$d['added']->write('penaltyLastAdded');
+
+	}
+
+	public function titlePenaltyActions() {
+		echo 'Ostatnie akcje na karach i ostrzeżeniach';
+	}						
 	
 }

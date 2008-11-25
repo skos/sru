@@ -67,6 +67,34 @@ extends UFtpl_Common {
 		echo $form->comment('Opis dla administratorów', array('type'=>$form->TEXTAREA, 'rows'=>10));
 	}
 
+	public function penaltyLastAdded(array $d) {
+		$url = $this->url(0);
+		echo '<h3>Kary i ostrzeżenia ostatnio dodane</h3>';
+
+		foreach ($d as $c) {	
+			echo '<li>';
+			echo '<small>dodana: '.date(self::TIME_YYMMDD, $c['startAt']);
+			echo ' dla: <a href="'.$url.'/penalties/'.$c['id'].'">'.$this->_escape($c['userName']).' '.$this->_escape($c['userSurname']).' ('.$this->_escape($c['userLogin']).')</a>';
+			echo ' przez: <a href="'.$url.'/admins/'.$c['createdById'].'">'.$this->_escape($c['creatorName']).'</a>';
+			echo ' typu: '.$this->_escape($this->penaltyTypes[$c['typeId']]).'</small> ';
+			echo '</li>';
+		}
+	}
+
+	public function penaltyLastModified(array $d) {
+		$url = $this->url(0);
+		echo '<h3>Kary i ostrzeżenia ostatnio modyfikowane</h3>';
+
+		foreach ($d as $c) {	
+			echo '<li>';
+			echo '<small>zmodyfikowana: '.date(self::TIME_YYMMDD, $c['modifiedAt']);
+			echo ' dla: <a href="'.$url.'/penalties/'.$c['id'].'">'.$this->_escape($c['userName']).' '.$this->_escape($c['userSurname']).' ('.$this->_escape($c['userLogin']).')</a>';
+			echo ' przez: <a href="'.$url.'/admins/'.$c['modifiedById'].'">'.$this->_escape($c['creatorName']).'</a>';
+			echo ' typu: '.$this->_escape($this->penaltyTypes[$c['typeId']]).'</small> ';
+			echo '</li>';
+		}
+	}
+
 	public function details(array $d, $computers) {
 		$d['endAt'] = date(self::TIME_YYMMDD_HHMM, $d['endAt']);
 		$url = $this->url(0);
@@ -76,7 +104,7 @@ extends UFtpl_Common {
 		echo $form->_start();
 		echo '<p><em>Czas trwania:</em> ';
 
-		if ($d['active'] || is_null($computers)) {
+		if ($d['active']) {
 			echo date(self::TIME_YYMMDD, $d['startAt']).' &mdash; ';
 			echo $form->endAt(null, array('after'=>'')).' ';
 			echo $form->_submit('Zmień');
