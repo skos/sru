@@ -22,7 +22,6 @@ extends UFdao {
 
 		$query = $this->prepareSelect($mapping);
 		$query->where($mapping->userId, $id);
-		$query->where($mapping->endAt, time(), $query->LTE); 
 		$query->order($mapping->endAt,  $query->DESC);
 		
 			

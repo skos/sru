@@ -39,8 +39,18 @@ extends UFtpl_Common {
 		$url = $this->url(0);
 		echo '<h3>Archiwum kar i ostrzeżeń:</h3>';
 
-		foreach ($d as $c) {	
-			echo '<div><small>Typ: ';
+		foreach ($d as $c) {
+			if ($c['endAt'] > time()) {	
+				if (UFbean_SruAdmin_Penalty::TYPE_WARNING == $c['typeId']) {
+					echo '<div class="warning">';
+				} else {
+					echo '<div class="ban">';
+				}
+			} else {
+				echo '<div>';
+			}
+			echo '<small>Typ: ';
+
 
 			if (UFbean_SruAdmin_Penalty::TYPE_WARNING == $c['typeId']) {
 				echo 'Ostrzeżenie';
