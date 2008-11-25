@@ -145,7 +145,7 @@ extends UFtpl_Common {
 	}
 
 	public function userPenaltiesNotFound() {
-		echo "<h3>Hurra! Brak aktywnych kar i ostrzeżeń! ;)</h3>";
+		echo "<h3>Hurra! Brak kar i ostrzeżeń! ;)</h3>";
 	}
 
 	public function userMainMenu() {
