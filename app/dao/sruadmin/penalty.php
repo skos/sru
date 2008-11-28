@@ -26,7 +26,7 @@ extends UFdao {
 		return $this->doSelect($query);
 	}
 
-	public function listLastAdded($id, $page=1, $perPage=10, $overFetch=0) {
+	public function listLastAdded($page=1, $perPage=10, $overFetch=0) {
 		$mapping = $this->mapping('list');
 
 		$query = $this->prepareSelect($mapping);
@@ -36,7 +36,7 @@ extends UFdao {
 		return $this->doSelect($query);
 	}
 
-	public function listLastModified($id, $page=1, $perPage=10, $overFetch=0) {
+	public function listLastModified($page=1, $perPage=10, $overFetch=0) {
 		$mapping = $this->mapping('list');
 
 		$query = $this->prepareSelect($mapping);
