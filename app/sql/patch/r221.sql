@@ -8,8 +8,7 @@ UPDATE computers SET active=false, modified_by=new.modified_by, modified_at=new.
 ALTER TABLE users_history
    ADD COLUMN active boolean;
 
-ALTER TABLE users_history
-   ADD COLUMN active boolean;
+UPDATE users_history SET active=true;
 
 ALTER TABLE users_history
    ALTER COLUMN active SET NOT NULL;
