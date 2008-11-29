@@ -43,6 +43,7 @@ DROP RULE update_computers_bans_off ON public.penalties;
 DROP RULE update_banned_off ON public.computers_bans;
 DROP RULE update_banned_off ON public.penalties;
 DROP RULE update_active_on ON public.users;
+DROP RULE update_active_off_computer ON public.users;
 DROP RULE update_active_off ON public.users;
 DROP RULE udpate_users_counter ON public.locations;
 DROP RULE udpate_counter_inc ON public.computers;
@@ -161,7 +162,8 @@ if
 	OLD.avail_to!=NEW.avail_to OR
 	OLD.avail_max_to!=NEW.avail_max_to OR
 	OLD.comment!=NEW.comment OR
-	OLD.can_admin!=NEW.can_admin
+	OLD.can_admin!=NEW.can_admin OR
+	OLD.active!=NEW.active
 then
 	INSERT INTO computers_history (
 		computer_id,
@@ -175,7 +177,8 @@ then
 		modified_by,
 		modified_at,
 		comment,
-		can_admin
+		can_admin,
+		active
 	) VALUES (
 		OLD.id,
 		OLD.host,
@@ -188,7 +191,8 @@ then
 		OLD.modified_by,
 		OLD.modified_at,
 		OLD.comment,
-		OLD.can_admin
+		OLD.can_admin,
+		OLD.active
 	);
 end if;
 return NEW;
@@ -210,7 +214,8 @@ if
 	NEW.faculty_id!=OLD.faculty_id OR
 	NEW.study_year_id!=OLD.study_year_id OR
 	NEW.location_id!=OLD.location_id OR
-	NEW.comment!=OLD.comment
+	NEW.comment!=OLD.comment OR
+	NEW.active!=OLD.active
 then
 	INSERT INTO users_history (
 		user_id,
@@ -223,7 +228,8 @@ then
 		location_id,
 		modified_by,
 		modified_at,
-		comment
+		comment,
+		active
 	) VALUES (
 		OLD.id,
 		OLD.name,
@@ -235,7 +241,8 @@ then
 		OLD.location_id,
 		OLD.modified_by,
 		OLD.modified_at,
-		OLD.comment
+		OLD.comment,
+		OLD.active
 	);
 end if;
 return NEW;
@@ -628,7 +635,8 @@ CREATE TABLE computers_history (
     "comment" pg_catalog.text NOT NULL,
     can_admin boolean DEFAULT false NOT NULL,
     id bigint DEFAULT nextval('computers_history_id_seq'::regclass) NOT NULL,
-    avail_max_to timestamp without time zone NOT NULL
+    avail_max_to timestamp without time zone NOT NULL,
+    active boolean NOT NULL
 );
 
 
@@ -1355,7 +1363,8 @@ CREATE TABLE users_history (
     modified_at timestamp without time zone NOT NULL,
     "comment" pg_catalog.text NOT NULL,
     id bigint DEFAULT nextval('users_history_id_seq'::regclass) NOT NULL,
-    "login" character varying NOT NULL
+    "login" character varying NOT NULL,
+    active boolean NOT NULL
 );
 
 
@@ -1858,6 +1867,13 @@ CREATE RULE udpate_users_counter AS ON UPDATE TO locations WHERE (old.users_coun
 --
 
 CREATE RULE update_active_off AS ON UPDATE TO users WHERE ((old.active = true) AND (new.active = false)) DO UPDATE locations SET users_count = (locations.users_count - 1) WHERE (locations.id = old.location_id);
+
+
+--
+-- Name: update_active_off_computer; Type: RULE; Schema: public; Owner: -
+--
+
+CREATE RULE update_active_off_computer AS ON UPDATE TO users WHERE ((old.active = true) AND (new.active = false)) DO UPDATE computers SET active = false, modified_by = new.modified_by, modified_at = new.modified_at, avail_to = new.modified_at WHERE ((computers.user_id = new.id) AND (computers.active = true));
 
 
 --

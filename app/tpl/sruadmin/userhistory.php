@@ -25,6 +25,7 @@ extends UFtpl_Common {
 				case 'locationId': $changes[] = 'Miejsce: '.$old['locationAlias'].'<small>&nbsp;('.$old['dormitoryAlias'].')</small>'.$arr.$new['locationAlias'].'<small>&nbsp;('.$new['dormitoryAlias'].')</small>'; break;
 				case 'studyYearId': $changes[] = 'Rok studiów: '. UFtpl_Sru_User::$studyYears[$val].$arr.UFtpl_Sru_User::$studyYears[$new[$key]]; break;
 				case 'comment': $changes[] = 'Komentarz: <q>'.$val.'</q>'.$arr.'<q>'.$new[$key].'</q>'; break;
+				case 'active': $changes[] = 'Aktywny: '.($val?'tak':'nie').$arr.($new[$key]?'tak':'nie'); break;
 				default: continue;
 			}
 		}
@@ -57,6 +58,7 @@ extends UFtpl_Common {
 			'modifiedBy' => $current->modifiedBy,
 			'modifiedAt' => $current->modifiedAt,
 			'comment' => $current->comment,
+			'active' => $current->active,
 		);
 		$url = $this->url(0).'/users/'.$current->id;
 		$urlAdmin = $this->url(0).'/admins/';

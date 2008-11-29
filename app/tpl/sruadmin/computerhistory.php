@@ -21,6 +21,7 @@ extends UFtpl_Common {
 				case 'availableMaxTo': $changes[] = 'Rejestracja max do: '. date(self::TIME_YYMMDD, $val).$arr. date(self::TIME_YYMMDD, $new[$key]); break;
 				case 'comment': $changes[] = 'Komentarz: <q>'.$val.'</q>'.$arr.'<q>'.$new[$key].'</q>'; break;
 				case 'canAdmin': $changes[] = 'Administrator: '.($val?'tak':'nie').$arr.($new[$key]?'tak':'nie'); break;
+				case 'active': $changes[] = 'Aktywny: '.($val?'tak':'nie').$arr.($new[$key]?'tak':'nie'); break;
 				default: continue;
 			}
 		}
@@ -52,6 +53,7 @@ extends UFtpl_Common {
 			'modifiedAt' => $current->modifiedAt,
 			'comment' => $current->comment,
 			'canAdmin' => $current->canAdmin,
+			'active' => $current->active,
 		);
 		$url = $this->url(0).'/computers/'.$current->id;
 		$urlAdmin = $this->url(0).'/admins/';

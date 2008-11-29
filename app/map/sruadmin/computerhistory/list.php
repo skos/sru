@@ -24,6 +24,7 @@ extends UFmap {
 		'modifiedAt'     => 'h.modified_at',
 		'comment'        => 'h.comment',
 		'canAdmin'       => 'h.can_admin',
+		'active'         => 'h.active',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -44,6 +45,7 @@ extends UFmap {
 		'modifiedAt'     => self::TS,
 		'comment'        => self::TEXT,
 		'canAdmin'       => self::BOOL,
+		'active'         => self::BOOL,
 	);
 	protected $tables = array(
 		'h' => 'computers_history',
