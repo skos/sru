@@ -11,6 +11,8 @@ extends UFmap {
 		'alias'          => 'alias',
 		'userCount'     => 'users_count',
 		'computerCount' => 'computers_count',
+		'usersMax'      => 'users_max',
+		'computersMax'  => 'computers_max',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -18,6 +20,8 @@ extends UFmap {
 		'alias'          => self::TEXT,
 		'userCount'     => self::INT,
 		'computerCount' => self::INT,
+		'users_max'     => self::INT,
+		'computers_max' => self::INT,
 	);
 	protected $tables = array(
 		'' => 'dormitories',
