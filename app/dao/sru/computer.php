@@ -180,6 +180,7 @@ extends UFdao {
 		$data = array(
 			$mapping->locationId => $location,
 			$mapping->modifiedById => $modifiedBy,
+			$mapping->modifiedAt => NOW,
 		);
 		$query->values($mapping->columns(), $data,  $mapping->columnTypes());
 		$query->where($mapping->userId, $user);

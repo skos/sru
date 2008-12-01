@@ -16,6 +16,8 @@ extends UFact {
 			$post = $this->_srv->get('req')->post->{self::PREFIX};
 			$login = $bean->login;
 
+			$locationId = $bean->locationId;
+
 			$bean->fillFromPost(self::PREFIX, array('password'));
 			$bean->modifiedById = $this->_srv->get('session')->authAdmin;
 			$bean->modifiedAt = NOW;
@@ -39,7 +41,7 @@ extends UFact {
 				
 			$bean->save();
 
-			if ($this->_srv->get('req')->post->{self::PREFIX}['changeComputersLocations']) {
+			if ($this->_srv->get('req')->post->{self::PREFIX}['changeComputersLocations'] && $locationId!==$bean->locationId) {
 				$comps = UFra::factory('UFbean_Sru_ComputerList');
 				$comps->updateLocationByUserId($bean->locationId, $bean->id, $this->_srv->get('session')->authAdmin);
 			}
