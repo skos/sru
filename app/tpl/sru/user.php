@@ -209,7 +209,15 @@ extends UFtpl_Common {
 		}
 		$form = UFra::factory('UFlib_Form', 'userEdit', $d, $this->errors);
 		if ($this->_srv->get('msg')->get('userEdit/errors/walet/notFound')) {
-			echo $this->ERR('Użytkownik nie jest zameldowany w tym pokoju. '.$form->ignoreWalet('Zignoruj', array('type'=>$form->CHECKBOX)));
+			$pswd = false;
+			try {
+				$post = $this->_srv->get('req')->post->userEdit;
+				if (!empty($post['password'])) {
+					$pswd = true;
+				}
+			} catch (UFex $e) {
+			}
+			echo $this->ERR('Użytkownik nie jest zameldowany w tym pokoju.<br />'.$form->ignoreWalet('Zignoruj'.($pswd?' <strong>(ponownie wpisz hasło)</strong>':''), array('type'=>$form->CHECKBOX)));
 		}
 		echo $form->login('Login');
 		echo $form->email('E-mail');
