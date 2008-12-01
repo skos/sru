@@ -7,7 +7,6 @@ class UFact_Sru_User_Edit
 extends UFact {
 
 	const PREFIX = 'userEdit';
-	const PSW_MIN_LENGTH = 6;
 
 	protected function checkOldPassword(&$bean, &$post) {
 		if ($bean->password != $bean->generatePassword($bean->login, $post['password3'])) {

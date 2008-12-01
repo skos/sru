@@ -21,11 +21,10 @@ extends UFact {
 			$bean->fillFromPost(self::PREFIX, array('password'));
 			$bean->modifiedById = $this->_srv->get('session')->authAdmin;
 			$bean->modifiedAt = NOW;
-			
-			$map = UFra::factory('UFmap_Sru_User_Set');
-			$valid = $map->valid('password');
-
 			if (isset($post['password']) && $post['password'] != '' ) {
+				$map = UFra::factory('UFmap_Sru_User_Set');
+				$valid = $map->valid('password');
+
 				if (strlen($post['password'])<$valid['textMin']) {
 					throw UFra::factory('UFex_Dao_DataNotValid', 'Password too short', 0, E_WARNING, array('password' => 'textMin'));
 				} elseif (!isset($post['password2']) || $post['password'] != $post['password2']) {
