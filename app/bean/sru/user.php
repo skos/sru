@@ -68,7 +68,7 @@ extends UFbeanSingle {
 			$loc->getByAliasDormitory((string)$val, $dorm->id);
 			$this->data['locationAlias'] = $val;
 			$this->dataChanged['locationAlias'] = $val;
-			if (isset($this->data['locationId']) && $this->data['locationId']!=$loc->id) {
+			if (!$change || (isset($this->data['locationId']) && $this->data['locationId']!=$loc->id)) {
 				$this->data['locationId'] = $loc->id;
 				$this->dataChanged['locationId'] = $loc->id;
 			}
