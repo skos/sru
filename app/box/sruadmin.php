@@ -766,9 +766,13 @@ extends UFbox {
 
 			$d['penalty'] = $bean;
 			if (UFbean_SruAdmin_Penalty::TYPE_COMPUTER === $bean->typeId || UFbean_SruAdmin_Penalty::TYPE_COMPUTERS === $bean->typeId) {
-				$computers = UFra::factory('UFbean_SruAdmin_ComputerBanList');
-				$computers->listByPenaltyId($bean->id);
-				$d['computers'] = $computers;
+				try {
+					$computers = UFra::factory('UFbean_SruAdmin_ComputerBanList');
+					$computers->listByPenaltyId($bean->id);
+					$d['computers'] = $computers;
+				} catch (UFex_Dao_NotFound $e) {
+					$d['computers'] = null;
+				}
 			} else {
 				$d['computers'] = null;
 			}
