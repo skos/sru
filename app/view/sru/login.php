@@ -10,5 +10,6 @@ extends UFview {
 
 		$this->append('title', $box->titleLogin());
 		$this->append('body', $box->login());
+		$this->append('body', $box->recoverPassword());
 	}
 }

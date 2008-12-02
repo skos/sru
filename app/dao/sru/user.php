@@ -98,4 +98,28 @@ extends UFdao {
 
 		return $this->doSelectFirst($query);
 	}
+
+	public function listByEmailActive($email, $active=null) {
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->email, $email);
+		if (is_bool($active)) {
+			$query->where($mapping->active, $active);
+		}
+
+		return $this->doSelect($query);
+	}
+
+	public function getByEmailActive($email, $active=null) {
+		$mapping = $this->mapping('get');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->email, $email);
+		if (is_bool($active)) {
+			$query->where($mapping->active, $active);
+		}
+
+		return $this->doSelectFirst($query);
+	}
 }

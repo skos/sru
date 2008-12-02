@@ -17,6 +17,8 @@ extends UFtpl_Common {
 
 		if ($this->_srv->get('msg')->get('userAdd/ok')) {
 			echo $this->OK('Konto zostało założone. Hasło otrzymasz wkrótce na maila.');
+		} elseif ($this->_srv->get('msg')->get('userConfirm/errors/token/invalid')) {
+			echo $this->ERR('Token w linku jest nieprawidłowy.');
 		} elseif ($this->_srv->get('msg')->get('userLogin/errors')) {
 			echo $this->ERR('Nieprawidłowy login lub hasło. Czy aktywowałeś swoje konto u administratora lub linkiem z maila?');
 		}
@@ -104,11 +106,15 @@ extends UFtpl_Common {
 		$this->userAddMailBody($d, $info);
 	}
 
-	public function userAddMailHeaders(array $d) {
+	public function mailHeaders() {
 		echo 'MIME-Version: 1.0'."\n";
 		echo 'Content-Type: text/plain; charset=UTF-8'."\n";
 		echo 'Content-Transfer-Encoding: 8bit'."\n";
 		echo 'From: Administratorzy SKOS <adnet@ds.pg.gda.pl>'."\n";
+	}
+
+	public function userAddMailHeaders(array $d) {
+		$this->mailHeaders();
 	}
 
 	public function titleMain() {
@@ -287,5 +293,57 @@ extends UFtpl_Common {
 		echo $form->_submit('Wyloguj', array('name'=>'userLogout'));
 		echo $form->_end();
 		echo $form->_end(true);
+	}
+
+	public function recoverPassword(array $d) {
+		$form = UFra::factory('UFlib_Form', 'sendPassword');
+
+		echo $form->_start();
+		echo $form->_fieldset('Przypomnij hasło');
+
+		if ($this->_isOK('sendPassword')) {
+			echo $this->OK('Kliknij link, który został wysłany na maila.');
+		} elseif ($this->_isOK('userConfirmPassword')) {
+			echo $this->OK('Nowe hasło zostało wysłane na maila.');
+		} elseif ($this->_srv->get('msg')->get('sendPassword/errors/email/notUnique')) {
+			echo $this->ERR('Podany email jest przypisany do kilku kont - proszę zgłosić się do administratora lokalnego w celu zmiany hasła.');
+		} elseif ($this->_isErr('sendPassword')) {
+			echo $this->ERR('Nie znaleziono aktywnego konta z podanym mailem.');
+		}
+		echo $form->email('E-mail');
+		echo $form->_submit('Przypomnij');
+		echo $form->_end();
+		echo $form->_end(true);
+	}
+
+	public function userRecoverPasswordMailTitle(array $d) {
+		echo '[SRU] Zmiana hasła';
+	}
+
+	public function userRecoverPasswordMailBodyToken(array $d) {
+		echo 'Kliknij poniższy link, aby zmienić hasło do Twojego konta w Systemie'."\n";
+		echo 'Rejestracji Użytkowników (http://'.$d['host'].'/):'."\n";
+		echo 'http://'.$d['host'].$this->url(0).'/'.$d['token']->token."\n\n";
+		echo '-- '."\n";
+		echo 'Pozdrawiamy,'."\n";
+		echo 'Administratorzy SKOS PG'."\n";
+		echo 'http://skos.pg.gda.pl/'."\n";
+		echo '[wiadomość została wygenerowana automatycznie]'."\n";
+	}
+
+	public function userRecoverPasswordMailBodyPassword(array $d) {
+		echo 'Twój login: '.$d['user']->login."\n";
+		echo 'Twoje nowe hasło: '.$d['password']."\n\n";
+		echo 'System Rejestracji Użytkowników: http://'.$d['host'].'/'."\n";
+		echo 'PROSIMY O ZMIANĘ HASŁA ZARAZ PO PIERWSZYM ZALOGOWANIU!'."\n\n";
+		echo '-- '."\n";
+		echo 'Pozdrawiamy,'."\n";
+		echo 'Administratorzy SKOS PG'."\n";
+		echo 'http://skos.pg.gda.pl/'."\n";
+		echo '[wiadomość została wygenerowana automatycznie]'."\n";
+	}
+
+	public function userRecoverPasswordMailHeaders(array $d) {
+		$this->mailHeaders();
 	}
 }

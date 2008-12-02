@@ -211,4 +211,18 @@ extends UFbox {
 			return $this->render('userPenaltiesNotFound');
 		}
 	}
+
+	public function userRecoverPasswordMailBodyToken($user, $token) {
+		$d['user'] = $user;
+		$d['token'] = $token;
+		$d['host'] = $this->_srv->get('req')->server->HTTP_HOST;
+		return $this->render(__FUNCTION__, $d);
+	}
+
+	public function userRecoverPasswordMailBodyPassword($user, $password) {
+		$d['user'] = $user;
+		$d['password'] = $password;
+		$d['host'] = $this->_srv->get('req')->server->HTTP_HOST;
+		return $this->render(__FUNCTION__, $d);
+	}
 }
