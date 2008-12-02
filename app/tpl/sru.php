@@ -299,7 +299,7 @@ extends UFtpl_Common {
 		$form = UFra::factory('UFlib_Form', 'sendPassword');
 
 		echo $form->_start();
-		echo $form->_fieldset('Przypomnij hasło');
+		echo $form->_fieldset('Zmień hasło');
 
 		if ($this->_isOK('sendPassword')) {
 			echo $this->OK('Kliknij link, który został wysłany na maila.');
@@ -311,7 +311,7 @@ extends UFtpl_Common {
 			echo $this->ERR('Nie znaleziono aktywnego konta z podanym mailem.');
 		}
 		echo $form->email('E-mail');
-		echo $form->_submit('Przypomnij');
+		echo $form->_submit('Zmień');
 		echo $form->_end();
 		echo $form->_end(true);
 	}
