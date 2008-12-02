@@ -298,7 +298,7 @@ extends UFtpl_Common {
 	public function recoverPassword(array $d) {
 		$form = UFra::factory('UFlib_Form', 'sendPassword');
 
-		echo $form->_start();
+		echo $form->_start($this->url(0));
 		echo $form->_fieldset('Zmień hasło');
 
 		if ($this->_isOK('sendPassword')) {
