@@ -321,8 +321,8 @@ extends UFtpl_Common {
 	}
 
 	public function userRecoverPasswordMailBodyToken(array $d) {
-		echo 'Kliknij poniższy link, aby zmienić hasło do Twojego konta w Systemie'."\n";
-		echo 'Rejestracji Użytkowników (http://'.$d['host'].'/):'."\n";
+		echo 'Kliknij poniższy link, aby zmienić hasło do Twojego konta w SRU'."\n";
+		echo '(Systemie Rejestracji Użytkowników):'."\n";
 		echo 'http://'.$d['host'].$this->url(0).'/'.$d['token']->token."\n\n";
 		echo '-- '."\n";
 		echo 'Pozdrawiamy,'."\n";
