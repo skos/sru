@@ -14,13 +14,19 @@ extends UFact {
 			$bean = UFra::factory('UFbean_Sru_User');
 			$bean->fillFromPost(self::PREFIX, null, array('email'));
 
-			$list = UFra::factory('UFbean_Sru_UserList');
-			$list->listByEmailActive($bean->email, true);
-			if (count($list) === 1) {
-				$bean->getByEmailActive($bean->email, true);
-			} else {
+			try {
+				$list = UFra::factory('UFbean_Sru_UserList');
+				$list->listByEmailActive($bean->email, true);
+				if (count($list) === 1) {
+					$bean->getByEmailActive($bean->email, true);
+				} else {
+					$this->rollback();
+					$this->markErrors(self::PREFIX, array('email'=>'notUnique'));
+					return;
+				}
+			} catch (UFex_Dao_NotFound $e) {
 				$this->rollback();
-				$this->markErrors(self::PREFIX, array('email'=>'notUnique'));
+				$this->markErrors(self::PREFIX, array('email'=>'notFound'));
 				return;
 			}
 			$id = $bean->id;
