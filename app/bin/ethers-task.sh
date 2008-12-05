@@ -8,5 +8,5 @@ tmp="/tmp/sru-ethers.tmp"
 echo -n '' > "${dir}/.lock"
 echo -n '' > "${dir}/.nolock"
 wget -q --no-check-certificate -O $tmp https://sru.ds.pg.gda.pl/api/ethers && mv $tmp "$dir/ethers" && \
-$changed "$dir/ethers" && rsync "${dir}/.lock" "$dir/ethers" "${dir}/.nolock" "$url" && \
+$changed "$dir/ethers" && rsync --inplace "${dir}/.lock" "$dir/ethers" "${dir}/.nolock" "$url" && \
 echo "$(date) Tablica ARP zostala wyslana"
