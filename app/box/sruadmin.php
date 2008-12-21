@@ -252,6 +252,18 @@ extends UFbox {
 			$tmp['surname'] = $get->searchedSurname;
 		} catch (UFex_Core_DataNotFound $e) {
 		}
+		try {
+			$tmp['email'] = $get->searchedEmail;
+		} catch (UFex_Core_DataNotFound $e) {
+		}
+		try {
+			$tmp['room'] = $get->searchedRoom;
+		} catch (UFex_Core_DataNotFound $e) {
+		}
+		try {
+			$tmp['dormitory'] = $get->searchedDormitory;
+		} catch (UFex_Core_DataNotFound $e) {
+		}
 		$d['searched'] = $tmp;
 
 		return $this->render(__FUNCTION__, $d);
@@ -273,6 +285,18 @@ extends UFbox {
 			}
 			try {
 				$tmp['login'] = $get->searchedLogin;
+			} catch (UFex_Core_DataNotFound $e) {
+			}
+			try {
+				$tmp['email'] = $get->searchedEmail;
+			} catch (UFex_Core_DataNotFound $e) {
+			}
+			try {
+				$tmp['room'] = $get->searchedRoom;
+			} catch (UFex_Core_DataNotFound $e) {
+			}
+			try {
+				$tmp['dormitory'] = $get->searchedDormitory;
 			} catch (UFex_Core_DataNotFound $e) {
 			}
 			$bean->search($tmp);

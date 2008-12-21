@@ -153,6 +153,7 @@ extends UFtpl_Common {
 		echo $form->login('Login');
 		echo $form->name('Imię');
 		echo $form->surname('Nazwisko');
+		echo $form->email('E-mail');
 	}
 
 	public function searchResults(array $d) {
