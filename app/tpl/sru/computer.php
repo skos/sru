@@ -50,7 +50,7 @@ extends UFtpl_Common {
 	public function detailsOwn(array $d) {
 		echo '<h1>'.$d['host'].'.ds.pg.gda.pl</h1>';
 		echo '<p><em>MAC:</em> '.$d['mac'].'</p>';
-		echo '<p><em>IP:</em> '.$d['ip'].'</p>';
+		echo '<p><em>IP:</em> <a href="http://stats.ds.pg.gda.pl/?ip='.substr ($d['ip'], 7, 7).'">'.$d['ip'].'</a></p>';
 		echo '<p><em>Rejestracja do:</em> '.date(self::TIME_YYMMDD, $d['availableTo']).'</p>';
 		echo '<p><em>Miejsce:</em> '.$d['locationAlias'].' ('.$d['dormitoryName'].')</p>';
 		echo '<p><em>Liczba kar:</em> '.$d['bans'].'</p>';
@@ -72,7 +72,7 @@ extends UFtpl_Common {
 		}
 		echo '<p><em>Właściciel:</em> '.$user.'</p>';
 		echo '<p><em>MAC:</em> '.$d['mac'].'</p>';
-		echo '<p><em>IP:</em> '.$d['ip'].'</p>';
+		echo '<p><em>IP:</em> <a href="http://stats.ds.pg.gda.pl/?ip='.substr ($d['ip'], 7, 7).'">'.$d['ip'].'</a></p>';
 		if (!$d['active']) {
 			$max = 'BRAK <small>(było '.date(self::TIME_YYMMDD, $d['availableTo']).')</small>';
 		} elseif ($d['availableTo'] != $d['availableMaxTo']) {
