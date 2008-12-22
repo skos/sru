@@ -40,6 +40,7 @@ extends UFdao {
 			$query->order($mapping->surnameSearch, $query->ASC);
 			$query->order($mapping->nameSearch, $query->ASC);
 			$query->order($mapping->locationAlias, $query->ASC);
+			$query->order($mapping->active, $query->DESC);
 			foreach ($params as $var=>$val) {
 				switch ($var) {
 					case 'surname':
