@@ -46,7 +46,7 @@ extends UFdao {
 					case 'name':
 					case 'login':
 					case 'email':
-					case 'roon':
+					case 'room':
 						$val = str_replace('%', '', $val);
 						$val = str_replace('*', '%', $val);
 						$query->where($var.'Search', $val, UFlib_Db_Query::LIKE);
