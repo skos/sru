@@ -17,9 +17,13 @@ extends UFmap {
 		'emailSearch'	 => 'lower(u.email)',
 		'locationId'     => 'u.location_id',
 		'locationAlias'  => 'l.alias',
+		'room'			 => 'l.alias',
+		'roomSearch'	 => 'lower(l.alias)',
 		'dormitoryId'    => 'l.dormitory_id',
 		'dormitoryAlias' => 'd.alias',
 		'dormitoryName'  => 'd.name',
+		'dormitory'      => 'd.alias',
+		'dormitorySearch'=> 'lower(d.alias)',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -33,9 +37,13 @@ extends UFmap {
 		'emailSearch'	 => self::TEXT,
 		'locationId'     => self::INT,
 		'locationAlias'  => self::TEXT,
+		'room'		     => self::TEXT,
+		'roomSearch'	 => self::TEXT,
 		'dormitoryId'    => self::INT,
 		'dormitoryAlias' => self::TEXT,
 		'dormitoryName'  => self::TEXT,
+		'dormitory'      => self::TEXT,
+		'dormitorySearch'=> self::TEXT,
 	);
 	protected $tables = array(
 		'u' => 'users',

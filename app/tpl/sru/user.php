@@ -154,6 +154,18 @@ extends UFtpl_Common {
 		echo $form->name('Imię');
 		echo $form->surname('Nazwisko');
 		echo $form->email('E-mail');
+		echo $form->room('Pokój');
+		$dorms = UFra::factory('UFbean_Sru_DormitoryList');                                         
+		$dorms->listAll();
+
+		$tmp = array();
+		foreach ($dorms as $dorm) {
+			$tmp[$dorm['alias']] = $dorm['name'];
+		}
+		echo $form->dormitory('Akademik', array(
+			'type' => $form->SELECT,
+			'labels' => $form->_labelize($tmp, '', ''),
+			));
 	}
 
 	public function searchResults(array $d) {

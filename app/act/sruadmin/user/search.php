@@ -27,6 +27,12 @@ extends UFact {
 			if (isset($post['email']) && !empty($post['email'])) {
 				$finds[] = 'email:'.urlencode(mb_strtolower($post['email'], 'UTF-8'));
 			}
+			if (isset($post['room']) && !empty($post['room'])) {
+				$finds[] = 'room:'.urlencode(preg_replace('/[^a-z0-9]/', '', mb_strtolower($post['room'], 'UTF-8')));
+			}
+			if (isset($post['dormitory']) && !empty($post['dormitory'])) {
+				$finds[] = 'dormitory:'.urlencode(mb_strtolower($post['dormitory'], 'UTF-8'));
+			}
 			if (count($finds)) {
 				UFlib_Http::redirect(UFURL_BASE.'/'.implode('/', $this->_srv->get('req')->segments(0)).'/users/search/'.implode('/', $finds));
 			}
