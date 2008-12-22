@@ -28,7 +28,7 @@ extends UFact {
 				$finds[] = 'email:'.urlencode(mb_strtolower($post['email'], 'UTF-8'));
 			}
 			if (isset($post['room']) && !empty($post['room'])) {
-				$finds[] = 'room:'.urlencode(preg_replace('/[^a-z0-9]/', '', mb_strtolower($post['room'], 'UTF-8')));
+				$finds[] = 'room:'.urlencode(preg_replace('/[^a-z0-9*]/', '', mb_strtolower($post['room'], 'UTF-8')));
 			}
 			if (isset($post['dormitory']) && !empty($post['dormitory'])) {
 				$finds[] = 'dormitory:'.urlencode(mb_strtolower($post['dormitory'], 'UTF-8'));

@@ -23,7 +23,6 @@ extends UFmap {
 		'dormitoryAlias' => 'd.alias',
 		'dormitoryName'  => 'd.name',
 		'dormitory'      => 'd.alias',
-		'dormitorySearch'=> 'lower(d.alias)',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -43,7 +42,6 @@ extends UFmap {
 		'dormitoryAlias' => self::TEXT,
 		'dormitoryName'  => self::TEXT,
 		'dormitory'      => self::TEXT,
-		'dormitorySearch'=> self::TEXT,
 	);
 	protected $tables = array(
 		'u' => 'users',
