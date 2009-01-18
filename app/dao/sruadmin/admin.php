@@ -9,6 +9,7 @@ extends UFdao {
 		$mapping = $this->mapping('get');
 
 		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->active, true);
 		$query->where($mapping->login, $login);
 		$query->where($mapping->password, $password);
 
