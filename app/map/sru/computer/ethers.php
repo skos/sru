@@ -25,11 +25,7 @@ extends UFmap {
 		'c' => 'computers',
 	);
 	protected $joinOns = array(
-		'c' => 'i.ip=c.ipv4',
-	);
-
-	protected $wheres = array(
-		'(c.active OR c.active IS NULL)',
+		'c' => '(i.ip=c.ipv4 AND c.active AND NOT c.banned)',
 	);
 	protected $pk = 'i.idp';
 }
