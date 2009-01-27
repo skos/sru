@@ -22,7 +22,7 @@ extends UFmap {
 		'c' => 'computers',
 	);
 	protected $joinOns = array(
-		'c' => 'i.ip=c.ipv4',
+		'c' => '(i.ip=c.ipv4 and c.active)',
 	);
 	protected $pk = 'i.id';
 }
