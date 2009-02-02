@@ -233,9 +233,9 @@ if (input) {
 		$d = $searched + $d;
 		$form = UFra::factory('UFlib_Form', 'computerSearch', $d, $this->errors);
 
-		echo $form->host('Host');
-		echo $form->ip('IP');
-		echo $form->mac('MAC');
+		echo $form->host('Host&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+		echo $form->ip('IP (153.19.)');
+		echo $form->mac('MAC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
 	}
 
 	public function searchResults(array $d) {
