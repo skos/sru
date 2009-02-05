@@ -154,9 +154,9 @@ if (input) {
 		input = document.getElementById('availableMaxTo');
 		input.value = this.value;
 	}
-	input.parentElement.insertBefore(button, input.nextSibling);
+	input.parentNode.insertBefore(button, input.nextSibling);
 	space = document.createTextNode(' ');
-	input.parentElement.insertBefore(space, input.nextSibling);
+	input.parentNode.insertBefore(space, input.nextSibling);
 }
 input = document.getElementById('computerEdit_ip');
 if (input) {
@@ -167,9 +167,9 @@ if (input) {
 		input = document.getElementById('computerEdit_ip');
 		input.value = '';
 	}
-	input.parentElement.insertBefore(button, input.nextSibling);
+	input.parentNode.insertBefore(button, input.nextSibling);
 	space = document.createTextNode(' ');
-	input.parentElement.insertBefore(space, input.nextSibling);
+	input.parentNode.insertBefore(space, input.nextSibling);
 }
 </script>
 		<?
@@ -198,12 +198,12 @@ if (input) {
 	button.setAttribute('value', 'Pierwsze wolne');
 	button.setAttribute('type', 'button');
 	button.onclick = function() {
-		input = document.getElementById('computerEdit_ip');
+		input = document.getElementById('computerAdd_ip');
 		input.value = '';
 	}
-	input.parentElement.insertBefore(button, input.nextSibling);
+	input.parentNode.insertBefore(button, input.nextSibling);
 	space = document.createTextNode(' ');
-	input.parentElement.insertBefore(space, input.nextSibling);
+	input.parentNode.insertBefore(space, input.nextSibling);
 }
 </script><?
 		}
