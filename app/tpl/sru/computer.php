@@ -176,9 +176,6 @@ if (input) {
 	}
 
 	public function formAdd(array $d, $admin=false) {
-		if (is_null($d['ip']) || empty($d['ip'])) {
-			$d['ip'] = '153.19.';
-		}
 		$form = UFra::factory('UFlib_Form', 'computerAdd', $d, $this->errors);
 
 		if (!$admin && $this->_srv->get('msg')->get('computerAdd/errors/ip/noFree')) {
