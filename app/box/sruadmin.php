@@ -787,8 +787,8 @@ extends UFbox {
 	public function penalty() {
 		try {
 			$bean = $this->_getPenaltyFromGet();
-
 			$d['penalty'] = $bean;
+			
 			if (UFbean_SruAdmin_Penalty::TYPE_COMPUTER === $bean->typeId || UFbean_SruAdmin_Penalty::TYPE_COMPUTERS === $bean->typeId) {
 				try {
 					$computers = UFra::factory('UFbean_SruAdmin_ComputerBanList');
