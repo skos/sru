@@ -18,6 +18,13 @@ extends UFact {
 				UFra::error('Penalty '.$bean->id.' is not active');
 				return;
 			}
+			$acl = $this->_srv->get('acl');
+			$admin = UFra::factory('UFbean_SruAdmin_Admin');
+			$admin->getFromSession();
+			if(!$acl->sruAdmin('admin', 'editPenalties', $admin->id, $bean->createdById)) {
+				UFra::error('Admin '.$d['admin']->id.' dont have permission to edit this penalty');
+				return;
+			}
 
 			if ('' === $post['endAt']) {
 				$bean->endAt = NOW;
