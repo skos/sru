@@ -10,6 +10,17 @@ extends UFmap {
 		'penaltyId'    => 'b.penalty_id',
 		'active'       => 'b.active',
 		'computerHost' => 'c.host',
+		
+		'id'           => 'p.id',
+		'userId'       => 'p.user_id',
+		'typeId'       => 'p.type_id',
+		'startAt'      => 'p.start_at',
+		'endAt'        => 'p.end_at',
+		'createdById'  => 'p.created_by',
+		'createdAt'    => 'p.created_at',
+		'modifiedById' => 'p.modified_by',
+		'modifiedAt'   => 'p.modified_at',
+		'active'       => 'b.active',
 	);
 
 	protected $columnTypes = array(
@@ -17,6 +28,17 @@ extends UFmap {
 		'penaltyId'    => self::INT,
 		'active'       => self::BOOL,
 		'computerHost' => self::TEXT,
+		
+		'id'           => self::INT,
+		'userId'       => self::INT,
+		'typeId'       => self::INT,
+		'startAt'      => self::TS,
+		'endAt'        => self::TS,
+		'createdById'  => self::INT,
+		'createdAt'    => self::TS,
+		'modifiedById' => self::NULL_INT, 
+		'modifiedAt'   => self::NULL_TS,
+		'active'       => self::BOOL,
 	);
 
 	protected $tables = array(
@@ -25,10 +47,12 @@ extends UFmap {
 
 	protected $joins = array(
 		'c' => 'computers',
+		'p' => 'penalties',
 	);
 
 	protected $joinOns = array(
 		'c' => 'b.computer_id=c.id',
+		'p' => 'b.penalty_id=p.id',
 	);
 
 	protected $pk = 'id';

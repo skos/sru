@@ -813,7 +813,7 @@ extends UFbox {
 			$user = $this->_getUserFromGet();
 			$d['user'] = $user;
 
-			$bean = UFra::factory('UFbean_SruAdmin_PenaltyList');	
+			$bean = UFra::factory('UFbean_SruAdmin_PenaltyList');
 			$bean->listAllByUserId($user->id);
 			$d['penalties'] = $bean;
 
@@ -833,6 +833,36 @@ extends UFbox {
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
 			return $this->render('titleUserNotFound');
+		}
+	}
+	
+	public function computerPenalties() 
+	{
+		try 
+		{
+			$computer = $this->_getComputerFromGet();
+			$d['computer'] = $computer;
+
+			$bean = UFra::factory('UFbean_SruAdmin_ComputerBanList');
+			$bean->listAllByComputerId($computer->id);
+			$d['penalties'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} 
+		catch (UFex_Dao_NotFound $e) 
+		{
+			return $this->render('penaltiesNotFound');
+		}
+	}
+	public function titleComputerPenalties() {
+		try {
+			$bean = $this->_getComputerFromGet();
+
+			$d['computer'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render('titleComputerNotFound');
 		}
 	}
 

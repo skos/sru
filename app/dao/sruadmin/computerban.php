@@ -24,4 +24,14 @@ extends UFdao {
 
 		return $this->doSelect($query);
 	}
+	
+	public function listAllByComputerId($id) {
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->computerId, $id);
+		$query->order($mapping->endAt, $query->DESC);
+
+		return $this->doSelect($query);
+	}
 }

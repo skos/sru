@@ -650,6 +650,21 @@ extends UFtpl_Common {
 
 		echo '</ul>';
 	}	
+	
+	public function titleComputerPenalties(array $d) {
+		echo 'Lista kar i ostrzeżeń dla hosta '.$d['computer']->host;
+	}	
+
+	public function computerPenalties(array $d)
+	{
+		$acl = $this->_srv->get('acl');		
+		
+		echo '<h2>Lista kar dla hosta '.$d['computer']->host.'</h2><ul>';
+
+		$d['penalties']->write('listComputerPenalty');
+
+		echo '</ul>';
+	}
 
 	public function penaltyActions(array $d)
 	{

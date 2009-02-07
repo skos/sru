@@ -66,7 +66,10 @@ extends UFctl {
 								break;
 							case ':del':
 								$get->view = 'computers/computer/delete';
-								break;								
+								break;	
+							case 'penalties':
+								$get->view = 'computers/computer/penalties';
+								break;				
 							default:
 								$get->view = 'error404';
 								break;
@@ -136,6 +139,8 @@ extends UFctl {
 				}
 			case 'computers/computer/restore':
 				return 'SruAdmin_ComputerRestore';
+			case 'computers/computer/penalties':
+				return 'SruAdmin_ComputerPenalties';
 			default:
 				return 'Sru_Error404';
 		}
