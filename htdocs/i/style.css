@@ -34,18 +34,20 @@ img { border-style: none; }
 #main ol ol { list-style-type: upper-roman; }
 #main p { text-align: justify; margin-top: 1em; margin-bottom: 1em; }
 #main p.msgOk, #main p.msgError { border: 2px solid red; color: red; padding: 1em; text-align: center; margin: 1em; }
+#main p.msgOk input, #main p.msgOk label, #main p.msgError input, #main p.msgError label { display: inline; margin: 0; float: none; clear: none; }
 #main p.msgOk { color: #009a00; border-color: #009a00; }
 #main q { background-color: #eee; }
 #main blockquote { border-left: 3px solid #eee; margin-left: 1em; padding-left: 1em; }
 #main fieldset { margin-top: 1em; border-style: none; background-color: #eee; padding: 0.5em; }
-#main fieldset fieldset { padding: 0; }
-#main fieldset legend { margin-left: 1em; background-color: #eee; padding: 0.1em 1em; font-family: "Georgia", serif; font-weight: bold; }
-#main fieldset input.submit { padding: 0.2em 1em; margin-left: 14em; }
-#main fieldset label { display: block; width: 10em; float: left; clear: both; text-align: right; margin-right: 0.5em; }
-#main fieldset input.radio, #main fieldset input.checkbox { margin-left: 14em; margin-top: 0.5em; float: left; clear: both; }
-#main fieldset label.radio, #main fieldset label.checkbox { min-width: auto; width: 27em; float: right; clear: none; text-align: left; }
-#main fieldset.radio legend { margin-left: 9em; }
-#main .computer p, #main .user p { margin: 0; padding: 0; }
+#main fieldset fieldset { padding: 0.5em 0; }
+#main fieldset.radio legend { margin-left: 27%; }
+#main legend { margin-left: 1em; background-color: #eee; padding: 0.1em 1em; font-family: "Georgia", serif; font-weight: bold; }
+#main input.submit { padding: 0.2em 1em; margin-left: 29.5%; }
+#main label { display: block; width: 29.5%; float: left; clear: both; text-align: right; margin-right: 0.5%; }
+#main input.radio, #main input.checkbox { margin-left: 29.5%; margin-top: 0.5em; float: left; clear: both; }
+#main label.radio, #main label.checkbox { width: 66.5%; float: right; clear: none; text-align: left; }
+#main textarea { width: 66.5%; }
+#main .computer p, #main .user p { margin: 0; padding: 0; clear: both; }
 #main .computer p.comment, #main .user p.comment { margin-left: 10.5em; margin-top: 1em; }
 #main .computer em, #main .user em { clear: both; display: block; width: 10em; text-align: right; font-style: normal; margin-right: 0.5em; float: left; font-weight: bold; color: #444444; }
 #main .computer ol, #main .user ol { font-size: 0.8em; font-weight: bold; color: #444444; }
@@ -58,6 +60,7 @@ img { border-style: none; }
 #main .displayOnHover span, #main .displayOnHover a { color: white; }
 #main .displayOnHover a:hover { text-decoration: underline; color: red; }
 #main .displayOnHover span:hover { color: black; }
+#main .nav { display: block; }
 #main .ban { background: #ff6c6c; }
 #main .warning { background: #fff4ac; }
 
