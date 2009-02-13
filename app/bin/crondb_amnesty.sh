@@ -22,6 +22,6 @@ time1=$(date +%s)
 
 dur1=$(timediff $time1 $time0)
 
-log "remove_bans: ${out1} in ${dur1} sec"
+log "${out1} in ${dur1} sec"
 
 rm "$PIDFILE"
