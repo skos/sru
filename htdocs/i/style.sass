@@ -49,6 +49,7 @@ img
 		:padding 0.5em 1em
 	a:hover,a:active,a:focus
 		:background-color #eee
+
 #main
 	h1,h2,h3,h4,h5,h6
 		:color #666
@@ -119,6 +120,8 @@ img
 		:border-style none
 		:background-color #eee
 		:padding 0.5em
+		fieldset
+			:padding 0
 		legend
 			:margin-left 1em
 			:background-color #eee
@@ -126,10 +129,30 @@ img
 			:font
 				:family "Georgia", serif
 				:weight bold
-		textarea
-			:width 100%
 		input.submit
 			:padding 0.2em 1em
+			:margin-left 14em
+		label
+			:display block
+			:width 10em
+			:float left
+			:clear both
+			:text-align right
+			:margin-right 0.5em
+		input.radio,input.checkbox
+			:margin-left 14em
+			:margin-top 0.5em
+			:float left
+			:clear both
+		label.radio,label.checkbox
+			:min-width auto
+			:width 27em
+			:float right
+			:clear none
+			:text-align left
+	fieldset.radio
+		legend
+			:margin-left 9em
 	.computer,.user
 		p
 			:margin 0

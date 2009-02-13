@@ -306,6 +306,8 @@ if (input) {
 		echo $form->computerId('Zakres', array(
 			'type' => $form->RADIO,
 			'labels' => $form->_labelize($tmp),
+			'labelClass' => 'radio',
+			'class' => 'radio',
 		));		
 	
 	}

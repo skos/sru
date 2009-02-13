@@ -38,9 +38,13 @@ img { border-style: none; }
 #main q { background-color: #eee; }
 #main blockquote { border-left: 3px solid #eee; margin-left: 1em; padding-left: 1em; }
 #main fieldset { margin-top: 1em; border-style: none; background-color: #eee; padding: 0.5em; }
+#main fieldset fieldset { padding: 0; }
 #main fieldset legend { margin-left: 1em; background-color: #eee; padding: 0.1em 1em; font-family: "Georgia", serif; font-weight: bold; }
-#main fieldset textarea { width: 100%; }
-#main fieldset input.submit { padding: 0.2em 1em; }
+#main fieldset input.submit { padding: 0.2em 1em; margin-left: 14em; }
+#main fieldset label { display: block; width: 10em; float: left; clear: both; text-align: right; margin-right: 0.5em; }
+#main fieldset input.radio, #main fieldset input.checkbox { margin-left: 14em; margin-top: 0.5em; float: left; clear: both; }
+#main fieldset label.radio, #main fieldset label.checkbox { min-width: auto; width: 27em; float: right; clear: none; text-align: left; }
+#main fieldset.radio legend { margin-left: 9em; }
 #main .computer p, #main .user p { margin: 0; padding: 0; }
 #main .computer p.comment, #main .user p.comment { margin-left: 10.5em; margin-top: 1em; }
 #main .computer em, #main .user em { clear: both; display: block; width: 10em; text-align: right; font-style: normal; margin-right: 0.5em; float: left; font-weight: bold; color: #444444; }
