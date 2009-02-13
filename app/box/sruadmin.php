@@ -745,9 +745,10 @@ extends UFbox {
 			return $this->render('penaltiesNotFound');
 		}
 	}
+	
 	public function penaltyAdd() {
 			
-			try {
+		try {
 				
 			$bean = UFra::factory('UFbean_SruAdmin_Penalty');
 	
@@ -764,7 +765,11 @@ extends UFbox {
 			
 				$comp->listByUserId($d['user']->id); 
 	
-			} catch (UFex_Dao_NotFound $e) {}			
+			} catch (UFex_Dao_NotFound $e) {}	
+			
+			$templates = UFra::factory('UFbean_SruAdmin_PenaltyTemplatesList');
+			$templates->listAll();
+			$d['templates'] = $templates;		
 			
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {

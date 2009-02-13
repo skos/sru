@@ -52,12 +52,23 @@ extends UFtpl_Common {
 		}
 	}
 
-	public function formAdd(array $d, $computers ) {
+	public function formAdd(array $d, $computers, $templates) {
 		if (!isset($d['duration'])) {
 			$d['duration'] = 30;
 		}
 
 		$form = UFra::factory('UFlib_Form', 'penaltyAdd', $d, $this->errors);
+		
+		$tmp = array();
+		foreach ($templates as $template) {
+			$tmp[$template['id']] = $template['title'];
+		}
+		echo $form->templateId('Szablon', array(
+			'type' => $form->SELECT,
+			'labels' => $form->_labelize($tmp, '', ''),
+		));
+		
+		echo "<input type='button' value='wybierz' class='submit' onClick='insertValues()'/>";
 		
 		$computers->write('penaltyAdd', $d);
 
@@ -65,6 +76,28 @@ extends UFtpl_Common {
 		echo $form->reason('Opis dla użytkownika',  array('type'=>$form->TEXTAREA, 'rows'=>5));
 
 		echo $form->comment('Opis dla administratorów', array('type'=>$form->TEXTAREA, 'rows'=>10));
+
+		
+echo "<script type=\"text/javascript\">";
+echo "var templates = [];";
+for ($i = 0; $i < count($templates); $i++) {
+	echo "templates[".$i."] = [".$templates[$i]['id'].",\"".$templates[$i]['description']."\",".$templates[$i]['type_id'].",".$templates[$i]['duration']."]; ";
+}
+echo "function insertValues() {";
+echo "var selIndex = document.getElementById(\"penaltyAdd_templateId\").selectedIndex; ";
+echo "var selId = document.getElementById(\"penaltyAdd_templateId\")[selIndex].value; ";
+echo "for (var i = 0; templates.length; i++) {";
+echo "if (templates[i][0] == selId) {";
+echo "var desc = templates[i][1]; ";
+echo "var typeId = templates[i][2]; ";
+echo "var duration = templates[i][3]; ";
+echo "break; ";
+echo "}}";
+echo "document.getElementById(\"penaltyAdd_reason\").value = desc; ";
+echo "document.getElementById(\"penaltyAdd_duration\").value = duration; ";
+echo "}";
+echo "</script>";
+
 	}
 
 	public function penaltyLastAdded(array $d) {
