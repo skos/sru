@@ -99,11 +99,8 @@ extends UFtpl_Common {
 		$d['endAt'] = date(self::TIME_YYMMDD_HHMM, $d['endAt']);
 		$url = $this->url(0);
 		
-		$form = UFra::factory('UFlib_Form', 'penaltyEdit', $d);
 		
 		echo '<p><em>Ukarany:</em> <a href="'.$url.'/users/'.$d['userId'].'">'.$this->_escape($d['userName']).' '.$this->_escape($d['userSurname']).' ('.$d['userLogin'].')</a></p>';
-		echo $form->_start();
-		echo '<p><em>Czas trwania:</em> ';
 
 		if ($d['active']) {
 			$acl = $this->_srv->get('acl');
@@ -111,17 +108,20 @@ extends UFtpl_Common {
 			$admin->getFromSession();
 			$d['admin'] = $admin;
 			if($acl->sruAdmin('admin', 'editPenalties', $d['admin']->id, $d['createdById'])) {
-				echo date(self::TIME_YYMMDD, $d['startAt']).' &mdash; ';
-				echo $form->endAt(null, array('after'=>'')).' ';
+				$form = UFra::factory('UFlib_Form', 'penaltyEdit', $d);
+				echo $form->_start();
+				echo $form->_fieldset('Edycja kary');
+				echo $form->endAt('Od '.date(self::TIME_YYMMDD, $d['startAt']).' do');
 				echo $form->_submit('Zmień');
+				echo $form->_end();
+				echo $form->_end(true);
 			} else {
-				echo date(self::TIME_YYMMDD, $d['startAt']).' &mdash; '.$d['endAt'].' <strong>(nie możesz modyfikować tej kary)</strong>';
+				//echo date(self::TIME_YYMMDD, $d['startAt']).' &mdash; '.$d['endAt'].' <strong>(nie możesz modyfikować tej kary)</strong>';
+				echo '<p><em>Kara trwa:</em> '.date(self::TIME_YYMMDD_HHMM, $d['startAt']).' &mdash; <strong>'.$d['endAt'].'</strong></p>';
 			}
 		} else {
-			echo date(self::TIME_YYMMDD, $d['startAt']).' &mdash; <strong>'.$d['endAt'].'</strong>';
+			echo '<p><em>Kara trwała:</em> '.date(self::TIME_YYMMDD_HHMM, $d['startAt']).' &mdash; '.$d['endAt'].'</p>';
 		}
-		echo '</p>';
-		echo $form->_end(true);
 
 		if (!is_null($computers)) {
 			$computers->write('computerList');
