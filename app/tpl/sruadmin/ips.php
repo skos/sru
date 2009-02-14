@@ -5,10 +5,10 @@
 class UFtpl_SruAdmin_Ips
 extends UFtpl_Common {
 
-	public function ips(array $d) {		
+	public function ips(array $d, $dorm = null) {		
 		$url = $this->url(0).'/computers/';
 		$urlDorm = $this->url(0).'/dormitories/';
-	
+
 		echo "<table id='ips'>";
 		echo "<th colspan='8'><b>Serwery</b></th><tr>";
 		$i = 1;
@@ -18,7 +18,11 @@ extends UFtpl_Common {
 				$i = 1;
 			}
 			if ($c['host'] != null) {
-				echo "<td class='".$c['factDormAlias']."' title='".$c['host']." (".$c['factDorm'].")'><a href='".$url.$c['hostId']."'>".substr($c['ip'], 7)."</a></td>";
+				if ($dorm == null || ($dorm != null && $c['factDormAlias'] == $dorm->alias)) {
+					echo "<td class='".$c['factDormAlias']."' title='".$c['host']." (".$c['factDorm'].")'><a href='".$url.$c['hostId']."'>".substr($c['ip'], 7)."</a></td>";
+				} else {
+					echo "<td>".substr($c['ip'], 7)."</td>";
+				}
 			} else {
 				echo "<td>".substr($c['ip'], 7)."</td>";
 			}

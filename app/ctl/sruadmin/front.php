@@ -34,7 +34,11 @@ extends UFctl {
 				case 'penalties':
 					$ctl = UFra::factory('UFctl_SruAdmin_Penalties');
 					$ctl->go();
-					return false;														
+					return false;	
+				case 'ips':
+					$ctl = UFra::factory('UFctl_SruAdmin_Ips');
+					$ctl->go();
+					return false;												
 				default:
 					$get->view = 'error404';
 					break;

@@ -37,7 +37,6 @@ extends UFbox {
 	protected function _getDormFromGet() {
 		$bean = UFra::factory('UFbean_Sru_Dormitory');
 		$bean->getByAlias($this->_srv->get('req')->get->dormAlias);
-
 		return $bean;
 	}
 
@@ -905,6 +904,13 @@ extends UFbox {
 	}
 	public function ips() {
 		try {
+			try {
+				$bean = $this->_getDormFromGet();
+				$d['dorm'] = $bean;
+			} catch (UFex_Dao_NotFound $e) {
+			} catch (UFex_Core_DataNotFound $e) {
+			}
+		
 			$dorms = UFra::factory('UFbean_Sru_DormitoryList');
 			$dorms->listAll();	
 		

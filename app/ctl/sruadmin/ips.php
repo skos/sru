@@ -1,8 +1,8 @@
 <?php
 /**
- * front controller czesci administracyjnej sru dotyczacej pokoi
+ * front controller czesci administracyjnej sru dotyczacej IP
  */
-class UFctl_SruAdmin_Places
+class UFctl_SruAdmin_Ips
 extends UFctl {
 
 	protected function parseParameters() 
@@ -16,7 +16,7 @@ extends UFctl {
 		// wyzsze segmenty sprawdzane sa w front'ie
 		if (1 == $segCount)	
 		{
-			$get->view = 'dormitories/main';
+			$get->view = 'ips/main';
 		} 
 		else
 		{
@@ -27,26 +27,12 @@ extends UFctl {
 			
 			if($segCount > 2)
 			{
-				$alias = $req->segment(3);  
-				
-				$get->roomAlias = $alias;					
-
-				if(3 == $segCount)
-				{
-					$get->view = 'dormitories/room';
-				}
-				elseif(4 == $segCount && $req->segment(4) == ':edit' )
-				{			
-					$get->view = 'dormitories/room/edit';
-				}
-				else
-				{
-					$get->view = 'error404';
-				}		
+				$get->view = 'error404';	
 			}
 			elseif(2 == $segCount)
 			{
-				$get->view = 'dormitories/dorm';
+				$get->view = 'ips/main';
+
 			}
 			else
 			{
@@ -64,8 +50,6 @@ extends UFctl {
 			$act = 'Admin_Logout';
 		} elseif ($post->is('adminLogin') && $acl->sruAdmin('admin', 'login')) {
 			$act = 'Admin_Login';
-		} elseif ('dormitories/room/edit' == $get->view && $post->is('roomEdit')) {
-			$act = 'Room_Edit';		
 		}
 		
 		if (isset($act)) {
@@ -88,18 +72,8 @@ extends UFctl {
 		
 		switch ($get->view) 
 		{
-			case 'dormitories/main':
-				return 'SruAdmin_Dorms';
-			case 'dormitories/dorm':
-				return 'SruAdmin_Dorm';
-			case 'dormitories/room':
-				return 'SruAdmin_Room';	
-			case 'dormitories/room/edit':
-				if ($msg->get('roomEdit/ok')) { 
-					return 'SruAdmin_Room';
-				} else{
-					return 'SruAdmin_RoomEdit';
-				}								
+			case 'ips/main':
+				return 'SruAdmin_Ips';								
 			default:
 				return 'Sru_Error404';
 		}
