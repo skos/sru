@@ -517,7 +517,15 @@ extends UFbox {
 			$bean = $this->_getAdminFromGet();
 
 			$d['admin'] = $bean;
+			
+			$added = UFra::factory('UFbean_SruAdmin_PenaltyList');
+			$added->listLastAddedById($bean->id);
+			$d['added'] = $added;
 
+			$modified = UFra::factory('UFbean_SruAdmin_PenaltyList');
+			$modified->listLastAddedById($bean->id);
+			$d['modified'] = $modified;
+			
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
 			return $this->render(__FUNCTION__.'NotFound');

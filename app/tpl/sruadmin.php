@@ -407,6 +407,8 @@ extends UFtpl_Common {
 		{
 			echo '<p class="nav"><a href="'.$url.'/:edit">Edycja</a></p>';
 		}
+		$d['added']->write('penaltyLastAdded', false);
+		$d['modified']->write('penaltyLastModified', false);
 		echo '</div>';
 	}
 	public function adminNotFound() {

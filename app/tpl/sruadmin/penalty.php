@@ -106,7 +106,7 @@ echo "</script>";
 
 	}
 
-	public function penaltyLastAdded(array $d) {
+	public function penaltyLastAdded(array $d, $showAddedBy = true) {
 		$url = $this->url(0);
 		echo '<h3>Kary i ostrzeżenia ostatnio dodane</h3>';
 
@@ -114,13 +114,15 @@ echo "</script>";
 			echo '<li>';
 			echo '<small>dodana: '.date(self::TIME_YYMMDD_HHMM, $c['startAt']);
 			echo ' dla: <a href="'.$url.'/penalties/'.$c['id'].'">'.$this->_escape($c['userName']).' '.$this->_escape($c['userSurname']).' ('.$this->_escape($c['userLogin']).')</a>';
-			echo ' przez: <a href="'.$url.'/admins/'.$c['createdById'].'">'.$this->_escape($c['creatorName']).'</a>';
+			if ($showAddedBy == true) {
+				echo ' przez: <a href="'.$url.'/admins/'.$c['createdById'].'">'.$this->_escape($c['creatorName']).'</a>';
+			}
 			echo ' typu: '.$this->_escape($this->penaltyTypes[$c['typeId']]).'</small> ';
 			echo '</li>';
 		}
 	}
 
-	public function penaltyLastModified(array $d) {
+	public function penaltyLastModified(array $d, $showAddedBy = true) {
 		$url = $this->url(0);
 		echo '<h3>Kary i ostrzeżenia ostatnio modyfikowane</h3>';
 
@@ -128,7 +130,9 @@ echo "</script>";
 			echo '<li>';
 			echo '<small>zmodyfikowana: '.date(self::TIME_YYMMDD_HHMM, $c['modifiedAt']);
 			echo ' dla: <a href="'.$url.'/penalties/'.$c['id'].'">'.$this->_escape($c['userName']).' '.$this->_escape($c['userSurname']).' ('.$this->_escape($c['userLogin']).')</a>';
-			echo ' przez: <a href="'.$url.'/admins/'.$c['modifiedById'].'">'.$this->_escape($c['modifierName']).'</a>';
+			if ($showAddedBy == true) {
+				echo ' przez: <a href="'.$url.'/admins/'.$c['modifiedById'].'">'.$this->_escape($c['modifierName']).'</a>';
+			}
 			echo ' typu: '.$this->_escape($this->penaltyTypes[$c['typeId']]).'</small> ';
 			echo '</li>';
 		}
