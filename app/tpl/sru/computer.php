@@ -61,6 +61,7 @@ extends UFtpl_Common {
 
 	public function details(array $d) {
 		$url = $this->url(0);
+		$urlNav = $this->url(2);
 		echo '<h1>'.$d['host'].'</h1>';
 		if (is_null($d['userId'])) {
 			$user = 'BRAK';
@@ -106,6 +107,12 @@ extends UFtpl_Common {
 		if (strlen($d['comment'])) {
 			echo '<p class="comment">'.nl2br($this->_escape($d['comment'])).'</p>';
 		}
+		echo '<p class="nav"><a href="'.$urlNav.'">Dane</a> <a href="'.$url.'/penalties/:add/'.$d['userId'].'/computer:'.$d['id'].'">Ukarz</a> <a href="'.$urlNav.'/history">Historia zmian</a>  <a href="'.$urlNav.'/:edit">Edycja</a> ';
+		if($d['active'])
+		{
+			echo '<a href="'.$urlNav.'/:del"> Wyrejestruj</a>';
+		}
+		echo '</p>';
 	}
 
 	public function formEdit(array $d) {

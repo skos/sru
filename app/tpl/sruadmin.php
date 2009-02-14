@@ -79,11 +79,6 @@ extends UFtpl_Common {
 		$url = $this->url(0).'/computers/'.$d['computer']->id;
 		echo '<div class="computer">';
 		$d['computer']->write('details');
-		echo '<p class="nav"><a href="'.$url.'">Dane</a> <a href="'.$url.'/history">Historia zmian</a>  <a href="'.$url.'/:edit">Edycja</a> ';
-		if($d['computer']->active)
-		{
-			echo '<a href="'.$url.'/:del"> Wyrejestruj</a>';
-		}
 		echo '</p></div>';
 	}
 
@@ -599,7 +594,7 @@ extends UFtpl_Common {
 
 		echo $form->_start();
 		echo $form->_fieldset();
-		echo $d['penalty']->write('formAdd', $d['computers'], $d['templates']);
+		echo $d['penalty']->write('formAdd', $d['computers'], $d['templates'], $d['computerId']);
 		echo $form->_submit('Dodaj');
 		echo $form->_end();
 		echo $form->_end(true);		

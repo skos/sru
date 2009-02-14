@@ -751,21 +751,20 @@ extends UFbox {
 		try {
 				
 			$bean = UFra::factory('UFbean_SruAdmin_Penalty');
-	
 			$d['penalty'] = $bean;
 					
-			$bean = $this->_getUserFromGet();
-
-			$d['user'] = $bean;
-			
-			$comp = UFra::factory('UFbean_Sru_ComputerList');
-			$d['computers'] =& $comp;
+			$user = $this->_getUserFromGet();
+			$d['user'] = $user;
 			
 			try{
-			
+				$comp = UFra::factory('UFbean_Sru_ComputerList');
+				$d['computers'] =& $comp;
 				$comp->listByUserId($d['user']->id); 
-	
-			} catch (UFex_Dao_NotFound $e) {}	
+				$d['computerId'] = $this->_srv->get('req')->get->computerId;
+			} catch (UFex_Dao_NotFound $e) {
+			} catch (UFex_Core_DataNotFound $e) {
+				$d['computerId'] = null;
+			}
 			
 			$templates = UFra::factory('UFbean_SruAdmin_PenaltyTemplatesList');
 			$templates->listAll();

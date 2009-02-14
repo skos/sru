@@ -52,9 +52,12 @@ extends UFtpl_Common {
 		}
 	}
 
-	public function formAdd(array $d, $computers, $templates) {
+	public function formAdd(array $d, $computers, $templates, $computerId=null) {
 		if (!isset($d['duration'])) {
 			$d['duration'] = 30;
+		}
+		if (!isset($d['computerId']) && is_int($computerId)) {
+			$d['computerId'] = $computerId;
 		}
 
 		$form = UFra::factory('UFlib_Form', 'penaltyAdd', $d, $this->errors);

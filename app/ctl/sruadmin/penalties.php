@@ -3,7 +3,7 @@
  * front controller czesci administracyjnej sru dotyczacej kar
  */
 class UFctl_SruAdmin_Penalties
-extends UFctl {
+extends UFctl_Common {
 
 	protected function parseParameters() 
 	{
@@ -23,14 +23,27 @@ extends UFctl {
 			switch ($req->segment(2)) 
 			{			
 				case ':add':
-					$id = (int)$req->segment(3);
-					if ($id <= 0) {
+					try {
+						$id = (int)$req->segment(3);
+						if ($id <= 0) {
 							$get->view = 'error404';
-				
-					}	else {		
-					$get->userId = $id;								
-					$get->view = 'penalties/add';
+							break;
+						}
+					} catch (UFex_Core_DataNotFound $e) {
+						$get->view = 'error404';
+						break;
 					}
+
+					// uzytkownik zostal podany
+					$get->userId = $id;								
+
+					if ($this->isParamInt(4, 'computer')) {
+						$tmp = (int)$this->fetchParam(4, 'computer');
+						if ($tmp > 0) {
+							$get->computerId = $tmp;
+						}
+					}
+					$get->view = 'penalties/add';
 					break;
 				case 'actions':
 					$get->view = 'penalties/actions';
