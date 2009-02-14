@@ -17,7 +17,9 @@ extends UFmap {
 	protected $columnTypes = array(
 		'ip'		=> self::TEXT,
 		'dormName'	=> self::TEXT,
+		'dormAlias'	=> self::TEXT,
 		'host'		=> self::NULL_TEXT,
+		'hostId'	=> self::INT,
 		'factDorm'	=> self::TEXT,
 		'factDormAlias'	=> self::TEXT,
 	);
