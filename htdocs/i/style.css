@@ -66,8 +66,9 @@ img { border-style: none; }
 
 #foot { text-align: center; font-size: 0.5em; margin-top: 2em; }
 
-#ips tr { height: 30px; }
-#ips td { width: 100px; }
+#ips tr { height: 20px; }
+#ips { font-size: 0.8em; width: 640px; }
+#ips td { text-align: center; }
 .ds1 { background-color: #ffaa30; }
 .ds2 { background-color: #ee3040; }
 .ds3 { background-color: #dddddd; }

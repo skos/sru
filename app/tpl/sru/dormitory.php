@@ -24,16 +24,17 @@ extends UFtpl_Common {
 		$url = $this->url(0).'/';
 		
 		echo '<h2>'.$d['name'].'<br/><small>(liczba użytkowników:'.$d['userCount'].' liczba komputerów:'.$d['computerCount'].')</small></h2>';
-		echo '<h3>Zajętość IP: '.round(100*$d['computerCount']/$d['computersMax']).'% | <a href="'.$url.'ips#'.$d['alias'].'">Zobacz</a></h3><img src="http://chart.apis.google.com/chart?chs=300x150&chd=t:'.$d['computerCount'].'&chds=0,'.$d['computersMax'].'&cht=gom&chco=007700,009900,00bb00,00dd00,00ff00,ff0000" width=300" height=150" alt="Zajętość: '.round(100*$d['computerCount']/$d['computersMax']).'%" />';
+		echo '<h3><a href="'.$url.'ips#'.$d['alias'].'">Zajętość IP: '.round(100*$d['computerCount']/$d['computersMax']).'%</a></h3><img src="http://chart.apis.google.com/chart?chs=300x150&chd=t:'.$d['computerCount'].'&chds=0,'.$d['computersMax'].'&cht=gom&chco=007700,009900,00bb00,00dd00,00ff00,ff0000" width=300" height=150" alt="Zajętość: '.round(100*$d['computerCount']/$d['computersMax']).'%" />';
 	}
 	
 	public function legendForIps(array $d) {
 		$url = $this->url(0).'/ips/';
 			
 		echo '<ul>';
+		echo '<li><a href="'.$url.'">Wszystkie</a></li>';
 		foreach ($d as $c)
 		{
-			echo '<li class="'.$c['alias'].'">'.$c['name'].' &middot; <a href="'.$url.$c['alias'].'">tylko ten DS</a></li>';			
+			echo '<li class="'.$c['alias'].'"><a href="'.$url.$c['alias'].'">'.$c['name'].'</a></li>';			
 		}
 		echo '</ul>';
 	}		
