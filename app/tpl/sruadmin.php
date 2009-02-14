@@ -689,7 +689,7 @@ extends UFtpl_Common {
 		echo '<h2>Zestawienie numerów IP</h2>';
 		
 		$d['dorms']->write('legendForIps');
-		$d['ips']->write('ips', $d['dorm']);
+		$d['ips']->write('ips', array_key_exists('dorm', $d) ? $d['dorm'] : null);
 	}						
 	
 }
