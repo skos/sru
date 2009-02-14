@@ -887,5 +887,36 @@ extends UFbox {
 		{
 			return $this->render('penaltiesNotFound');
 		}
+	}
+	public function titleIps()
+	{
+		try
+		{
+			$bean = UFra::factory('UFbean_SruAdmin_Ips');
+			$bean->listAll();
+			$d['ips'] = $bean;		
+
+			return $this->render(__FUNCTION__, $d);
+		}
+		catch (UFex_Dao_NotFound $e) 
+		{
+			return $this->render(__FUNCTION__.'NotFound');
+		}
+	}
+	public function ips() {
+		try {
+			$dorms = UFra::factory('UFbean_Sru_DormitoryList');
+			$dorms->listAll();	
+		
+			$bean = UFra::factory('UFbean_SruAdmin_Ips');
+			$bean->listAll();
+			
+			$d['dorms'] = $dorms;
+			$d['ips'] = $bean;	
+		
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}
 	}					
 }

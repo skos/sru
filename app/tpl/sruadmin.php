@@ -675,6 +675,19 @@ extends UFtpl_Common {
 
 	public function titlePenaltyActions() {
 		echo 'Ostatnie akcje na karach i ostrzeżeniach';
+	}
+	
+	public function titleIps() {
+		echo 'Zestawienie numerów IP';
+	}
+	
+	public function ips(array $d) {
+		$acl = $this->_srv->get('acl');		
+		
+		echo '<h2>Zestawienie numerów IP</h2>';
+		
+		$d['dorms']->write('legendForIps');
+		$d['ips']->write('ips');
 	}						
 	
 }

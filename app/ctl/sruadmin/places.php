@@ -45,8 +45,12 @@ extends UFctl {
 				}		
 			}
 			elseif(2 == $segCount)
-			{		
-				$get->view = 'dormitories/dorm';
+			{
+				if ($req->segment(2) == 'ips') {
+					$get->view = 'dormitories/ips';
+				} else {
+					$get->view = 'dormitories/dorm';
+				}
 			}
 			else
 			{
@@ -92,6 +96,8 @@ extends UFctl {
 				return 'SruAdmin_Dorms';
 			case 'dormitories/dorm':
 				return 'SruAdmin_Dorm';
+			case 'dormitories/ips':
+				return 'SruAdmin_Ips';
 			case 'dormitories/room':
 				return 'SruAdmin_Room';	
 			case 'dormitories/room/edit':
