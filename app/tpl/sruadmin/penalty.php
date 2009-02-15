@@ -14,6 +14,7 @@ extends UFtpl_Common {
 	protected $errors = array(
 		'reason' => 'Podaj opis',
 		'duration' => 'Podaj długość',
+		'after' => 'Podaj minimalną długość',
 	);	
 
 	public function listPenalty(array $d) {
