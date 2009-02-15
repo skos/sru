@@ -35,7 +35,7 @@ extends UFtpl_Common {
 					echo "<td>".substr($c['ip'], 11)."</td>";
 					$i++;
 				}
-			} else if ($dorm == null) {
+			} else if ($dorm == null || $dorm->alias == $c['dormAlias']) {
 				echo "<td>".substr($c['ip'], 11)."</td>";
 				$i++;
 			}
