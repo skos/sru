@@ -737,7 +737,9 @@ CREATE TABLE dormitories (
     name character varying(255) NOT NULL,
     alias character varying(10) NOT NULL,
     users_count integer DEFAULT 0 NOT NULL,
-    computers_count integer DEFAULT 0 NOT NULL
+    computers_count integer DEFAULT 0 NOT NULL,
+    users_max integer DEFAULT 0 NOT NULL,
+    computers_max integer DEFAULT 0 NOT NULL
 );
 
 
@@ -960,7 +962,8 @@ CREATE TABLE penalties (
     amnesty_at timestamp without time zone,
     amnesty_after timestamp without time zone,
     amnesty_by bigint,
-    active boolean DEFAULT true NOT NULL
+    active boolean DEFAULT true NOT NULL,
+    template_id smallint
 );
 
 
@@ -1063,11 +1066,17 @@ COMMENT ON COLUMN penalties.amnesty_by IS 'kto udzielil amnesti';
 
 
 --
+-- Name: COLUMN penalties.template_id; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN penalties.template_id IS 'id szablonu, na podstawie ktorego zostala utworzona kara';
+
+
+--
 -- Name: penalty_templates_id; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE penalty_templates_id
-    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -1084,7 +1093,8 @@ CREATE TABLE penalty_templates (
     description pg_catalog.text,
     penalty_type_id smallint NOT NULL,
     duration integer NOT NULL,
-    amnesty_after integer DEFAULT 0 NOT NULL
+    amnesty_after integer DEFAULT 0 NOT NULL,
+    reason pg_catalog.text DEFAULT ''::pg_catalog.text NOT NULL
 );
 
 
@@ -1106,7 +1116,7 @@ COMMENT ON COLUMN penalty_templates.title IS 'tytul';
 -- Name: COLUMN penalty_templates.description; Type: COMMENT; Schema: public; Owner: -
 --
 
-COMMENT ON COLUMN penalty_templates.description IS 'opis';
+COMMENT ON COLUMN penalty_templates.description IS 'opis dla administratora';
 
 
 --
@@ -1894,7 +1904,7 @@ CREATE RULE update_banned_off AS ON UPDATE TO penalties WHERE ((old.active = tru
 -- Name: update_banned_off; Type: RULE; Schema: public; Owner: -
 --
 
-CREATE RULE update_banned_off AS ON UPDATE TO computers_bans WHERE ((old.active = true) AND (new.active = false)) DO UPDATE computers SET banned = false WHERE (computers.id = old.computer_id);
+CREATE RULE update_banned_off AS ON UPDATE TO computers_bans WHERE (((old.active = true) AND (new.active = false)) AND ((SELECT count(computers_bans.id) AS count FROM computers_bans WHERE (computers_bans.active AND (computers_bans.computer_id = old.computer_id))) < 2)) DO UPDATE computers SET banned = false WHERE (computers.id = old.computer_id);
 
 
 --
