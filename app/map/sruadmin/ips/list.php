@@ -8,23 +8,19 @@ extends UFmap {
 	protected $columns = array(
 		'ip'           => 'i.ip',
 		'dormitoryId'  => 'i.dormitory_id',
-		'dormitoryName' => 'id.name',
 		'dormitoryAlias' => 'id.alias',
 		'computerId'   => 'c.id',
 		'computerHost' => 'c.host',
 		'computerDormitoryId' => 'cl.dormitory_id',
-		'computerDormitoryName' => 'cd.name',
 		'computerDormitoryAlias' => 'cd.alias',
 	);
 	protected $columnTypes = array(
 		'ip'           => self::TEXT,
 		'dormitoryId'  => self::NULL_INT,
-		'dormitoryName' => self::NULL_TEXT,
 		'dormitoryAlias' => self::NULL_TEXT,
 		'computerId'   => self::NULL_INT,
 		'computerHost' => self::NULL_TEXT,
 		'computerDormitoryId' => self::NULL_INT,
-		'computerDormitoryName' => self::NULL_TEXT,
 		'computerDormitoryAlias' => self::NULL_TEXT,
 	);
 	protected $tables = array(
