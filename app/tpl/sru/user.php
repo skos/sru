@@ -177,6 +177,7 @@ extends UFtpl_Common {
 
 	public function details(array $d) {
 		$url = $this->url(0);
+		$urlUser = $url.'/users/'.$d['id'];
 		echo '<h1>'.$this->_escape($d['name']).' '.$this->_escape($d['surname']).'</h1>';
 		echo '<p><em>Login:</em> '.$d['login'].(!$d['active']?' <strong>(konto nieaktywne)</strong>':'').'</p>';
 		echo '<p><em>E-mail:</em> <a href="mailto:'.$d['email'].'">'.$d['email'].'</a></p>';
@@ -184,9 +185,9 @@ extends UFtpl_Common {
 		echo '<p><em>Wydział:</em> '.(!is_null($d['facultyName'])?$d['facultyName']:'N/D').'</p>';
 		echo '<p><em>Rok studiów:</em> '.self::$studyYears[$d['studyYearId']].'</p>';
 		if ($d['banned']) {
-			$bans = '<a href="'.$url.'/users/'.$d['id'].'/penalties">'.$d['bans'].' <strong>(aktywne)</strong></a>';
+			$bans = '<a href="'.$urlUser.'/penalties">'.$d['bans'].' <strong>(aktywne)</strong></a>';
 		} elseif ($d['bans']>0) {
-			$bans = '<a href="'.$url.'/users/'.$d['id'].'/penalties">'.$d['bans'].'</a>';
+			$bans = '<a href="'.$urlUser.'/penalties">'.$d['bans'].'</a>';
 		} else {
 			$bans= '0';
 		}
@@ -205,6 +206,7 @@ extends UFtpl_Common {
 		if (strlen($d['comment'])) {
 			echo '<p><em>Komentarz:</em></p><p class="comment">'.nl2br($this->_escape($d['comment'])).'</p>';
 		}
+		echo '<p class="nav"><a href="'.$urlUser.'">Dane</a> <a href="'. $url.'/penalties/:add/user:'.$d['id'].'">Ukarz</a> <a href="'.$urlUser.'/history">Historia zmian</a> <a href="'.$urlUser.'/:edit">Edycja</a></p>';
 	}
 
 	public function titleDetails(array $d) {

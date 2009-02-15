@@ -14,13 +14,13 @@ extends UFact {
 			$user->getByPK($this->_srv->get('req')->get->userId);
 
 			$bean = UFra::factory('UFbean_SruAdmin_Penalty');
-			$bean->fillFromPost(self::PREFIX, null, array('duration', 'reason', 'comment', 'computerId'));
+			$bean->fillFromPost(self::PREFIX, null, array('duration', 'reason', 'comment', 'computerId', 'after'));
 			$bean->userId = $user->id;
 			$bean->startAt = NOW;
 			$bean->endAt = NOW + $bean->duration * 24 * 3600;
 			$bean->createdAt = NOW;
 			$bean->createdById = $this->_srv->get('session')->authAdmin; 
-			$bean->amnestyAfter = NOW;
+			$bean->amnestyAfter = NOW + $bean->after * 24 * 3600;
 			
 			if (null === $bean->computerId) {
 				$bean->typeId = UFbean_SruAdmin_Penalty::TYPE_COMPUTERS;
@@ -29,6 +29,14 @@ extends UFact {
 				$bean->active = false;
 			} else {
 				$bean->typeId = UFbean_SruAdmin_Penalty::TYPE_COMPUTER;
+			}
+
+			try {
+				$tpl = UFra::factory('UFbean_SruAdmin_PenaltyTemplate');
+				$tpl->getByPK($this->_srv->get('req')->get->templateId);
+				$bean->templateId = $tpl->id;
+			} catch (UFex_Core_DataNotFound $e) {
+			} catch (UFex_Dao_NotFound $e) {
 			}
 				
 			$id = $bean->save();

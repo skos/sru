@@ -23,26 +23,42 @@ extends UFctl_Common {
 			switch ($req->segment(2)) 
 			{			
 				case ':add':
-					try {
-						$id = (int)$req->segment(3);
-						if ($id <= 0) {
-							$get->view = 'error404';
-							break;
+					$found = false;
+					for ($i=3; $i<=$segCount; ++$i) {
+						if (!$found && $this->isParamInt($i, 'computer')) {
+							$tmp = (int)$this->fetchParam($i, 'computer');
+							if ($tmp > 0) {
+								try {
+									$bean = UFra::factory('UFbean_Sru_Computer');
+									$bean->getByPK($tmp);
+									$get->userId = $bean->userId;
+									$get->computerId = $tmp;
+									$found = true;
+								} catch (UFex_Dao_NotFound $e) {
+								}
+							}
+						} elseif (!$found && $this->isParam($i, 'ip:[0-9]{1,3}(\.[0-9]{1,3}){3}')) {
+							$tmp = $this->fetchParam($i, 'ip');
+							try {
+								$bean = UFra::factory('UFbean_Sru_Computer');
+								$bean->getByIp($tmp);
+								$get->computerId = $bean->id;
+								$get->userId = $bean->userId;
+								$found = true;
+							} catch (UFex_Dao_NotFound $e) {
+							}
+						} elseif (!$found && $this->isParamInt($i, 'user')) {
+							$tmp = (int)$this->fetchParam($i, 'user');
+							if ($tmp > 0) {
+								$get->userId = $tmp;
+								$found = true;
+							}
+						} elseif ($this->isParamInt($i, 'template')) {
+							$tmp = (int)$this->fetchParam($i, 'template');
+							$get->templateId = $tmp;
 						}
-					} catch (UFex_Core_DataNotFound $e) {
-						$get->view = 'error404';
-						break;
 					}
 
-					// uzytkownik zostal podany
-					$get->userId = $id;								
-
-					if ($this->isParamInt(4, 'computer')) {
-						$tmp = (int)$this->fetchParam(4, 'computer');
-						if ($tmp > 0) {
-							$get->computerId = $tmp;
-						}
-					}
 					$get->view = 'penalties/add';
 					break;
 				case 'actions':
@@ -107,7 +123,13 @@ extends UFctl_Common {
 				if ($msg->get('penaltyAdd/ok')) {
 					return 'SruAdmin_Penalties';
 				} elseif ($acl->sruAdmin('penalty', 'add')) {
-					return 'SruAdmin_PenaltyAdd';
+					if (!$get->is('userId')) {	
+						return 'Sru_Error404';
+					} elseif ($get->is('templateId')) {
+						return 'SruAdmin_PenaltyAdd';
+					} else {
+						return 'SruAdmin_PenaltyTemplateChoose';
+					}
 				} else {
 					return 'Sru_Error404';
 				}	

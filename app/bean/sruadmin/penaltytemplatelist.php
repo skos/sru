@@ -2,6 +2,6 @@
 /**
  * kar
  */
-class UFbean_SruAdmin_PenaltyTemplatesList
+class UFbean_SruAdmin_PenaltyTemplateList
 extends UFbeanList {
 }

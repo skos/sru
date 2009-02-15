@@ -20,4 +20,31 @@ extends UFlib_ClassWithService {
 	public function del() {
 		return $this->_loggedIn();
 	}
+	
+	/**
+	 * sprawdza uprawnienia do edycji danej kary
+	 * 
+	 * @param int $id - id kary
+	 * @return bool
+	 */
+	public function editOne($id) {
+		if (!$this->_loggedIn()) {
+			return false;
+		}
+		$sess = $this->_srv->get('session');
+		$bean = UFra::factory('UFbean_SruAdmin_Penalty');
+		try {
+			$bean->getByPK($id);
+		} catch (Exception $e) {
+			return false;
+		}
+		
+		if ($sess->authAdmin == $bean->createdById) {	//swoje kary mozna edytowac
+			return true;	
+		} elseif ($sess->typeId == UFacl_SruAdmin_Admin::CENTRAL || $sess->typeId == UFacl_SruAdmin_Admin::CAMPUS) {
+			return true;
+		} else {
+			return ($bean->amnestyAfter<NOW);
+		}
+	}	
 }

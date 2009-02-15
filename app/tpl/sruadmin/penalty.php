@@ -53,57 +53,22 @@ extends UFtpl_Common {
 	}
 
 	public function formAdd(array $d, $computers, $templates, $computerId=null) {
-		if (!isset($d['duration'])) {
-			$d['duration'] = 30;
-		}
 		if (!isset($d['computerId']) && is_int($computerId)) {
 			$d['computerId'] = $computerId;
+		}
+		if (!isset($d['after'])) {
+			$d['after'] = 0;
 		}
 
 		$form = UFra::factory('UFlib_Form', 'penaltyAdd', $d, $this->errors);
 		
-		$tmp = array();
-		foreach ($templates as $template) {
-			$tmp[$template['id']] = $template['title'];
-		}
-		echo $form->templateId('Szablon', array(
-			'type' => $form->SELECT,
-			'labels' => $form->_labelize($tmp, '', ''),
-		));
-		
-		echo "<input type='button' value='wybierz' class='submit' onClick='insertValues()'/>";
-		
 		$computers->write('penaltyAdd', $d);
 
-		echo $form->duration('Długość (w dobach)');
+		echo $form->duration('Długość (dni)');
+		echo $form->after('Min. długość (dni)');
 		echo $form->reason('Opis dla użytkownika',  array('type'=>$form->TEXTAREA, 'rows'=>5));
 
 		echo $form->comment('Opis dla administratorów', array('type'=>$form->TEXTAREA, 'rows'=>10));
-
-		
-echo "<script type=\"text/javascript\">";
-echo "var templates = [];";
-for ($i = 0; $i < count($templates); $i++) {
-	echo "templates[".$i."] = [".$templates[$i]['id'].",\"".$templates[$i]['description']."\",".$templates[$i]['type_id'].",".$templates[$i]['duration']."]; ";
-}
-echo "function insertValues() {";
-echo "var selIndex = document.getElementById(\"penaltyAdd_templateId\").selectedIndex; ";
-echo "var selId = document.getElementById(\"penaltyAdd_templateId\")[selIndex].value; ";
-echo "var desc = ''; ";
-echo "var typeId = ''; ";
-echo "var duration = '30'; ";
-echo "for (var i = 0; i < templates.length; i++) {";
-echo "if (selIndex > 0 && templates[i][0] == selId) {";
-echo "desc = templates[i][1]; ";
-echo "typeId = templates[i][2]; ";
-echo "duration = templates[i][3]; ";
-echo "break; ";
-echo "}}";
-echo "document.getElementById(\"penaltyAdd_reason\").value = desc; ";
-echo "document.getElementById(\"penaltyAdd_duration\").value = duration; ";
-echo "}";
-echo "</script>";
-
 	}
 
 	public function penaltyLastAdded(array $d, $showAddedBy = true) {
@@ -150,7 +115,7 @@ echo "</script>";
 			$admin = UFra::factory('UFbean_SruAdmin_Admin');
 			$admin->getFromSession();
 			$d['admin'] = $admin;
-			if($acl->sruAdmin('admin', 'editPenalties', $d['admin']->id, $d['createdById'])) {
+			if ($acl->sruAdmin('penalty', 'editOne', $d['id'])) {
 				$form = UFra::factory('UFlib_Form', 'penaltyEdit', $d);
 				echo $form->_start();
 				echo $form->_fieldset('Edycja kary');
@@ -159,8 +124,7 @@ echo "</script>";
 				echo $form->_end();
 				echo $form->_end(true);
 			} else {
-				//echo date(self::TIME_YYMMDD, $d['startAt']).' &mdash; '.$d['endAt'].' <strong>(nie możesz modyfikować tej kary)</strong>';
-				echo '<p><em>Kara trwa:</em> '.date(self::TIME_YYMMDD_HHMM, $d['startAt']).' &mdash; <strong>'.$d['endAt'].'</strong></p>';
+				echo '<p><em>Kara trwa:</em> '.date(self::TIME_YYMMDD_HHMM, $d['startAt']).' &mdash; <strong>'.$d['endAt'].'</strong>'.($d['amnestyAfter']<$d['endAt']?' (amnestia będzie możliwa po '.date(self::TIME_YYMMDD_HHMM, $d['amnestyAfter']).')':'').'</p>';
 			}
 		} else {
 			echo '<p><em>Kara trwała:</em> '.date(self::TIME_YYMMDD_HHMM, $d['startAt']).' &mdash; '.$d['endAt'].'</p>';
@@ -168,6 +132,9 @@ echo "</script>";
 
 		if (!is_null($computers)) {
 			$computers->write('computerList');
+		}
+		if (!is_null($d['templateTitle'])) {
+			echo '<p><em>Szablon:</em> '.$this->_escape($d['templateTitle']).'</p>';
 		}
 		echo '<p><em>Powód:</em> '.nl2br($this->_escape($d['reason'])).'</p>';
 		echo '<span id="penaltyMoreSwitch"></span><div id="penaltyMore">';

@@ -21,6 +21,8 @@ extends UFmap {
 		'amnestyAfter' => 'b.amnesty_after',
 		'amnestyById'  => 'b.amnesty_by',
 		'active'       => 'b.active',
+		'templateId'   => 'b.template_id',
+		'templateTitle' => 't.title',
 		
 		'createdByName' => 'a1.name',
 		
@@ -47,6 +49,8 @@ extends UFmap {
 		'amnestyAfter' => self::NULL_TS,
 		'amnestyById'  => self::NULL_INT,
 		'active'       => self::BOOL,
+		'templateId'   => self::INT,
+		'templateTitle' => self::TEXT,
 		
 		'createdByName' => self::TEXT,
 		'modifiedByName' => self::TEXT,
@@ -64,12 +68,14 @@ extends UFmap {
 		'a2' => 'admins',
 		'a3' => 'admins',
 		'u' => 'users',
+		't' => 'penalty_templates',
 	);
 	protected $joinOns = array(
 		'a1' => 'b.created_by=a1.id',
 		'a2' => 'b.modified_by=a2.id',
 		'a3' => 'b.amnesty_by=a3.id',
 		'u' => 'b.user_id=u.id',
+		't' => 'b.template_id=t.id',
 	);
 	protected $pk = 'b.id';
 }

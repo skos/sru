@@ -754,32 +754,70 @@ extends UFbox {
 	}
 	
 	public function penaltyAdd() {
-			
 		try {
 				
 			$bean = UFra::factory('UFbean_SruAdmin_Penalty');
+			if ($this->_srv->get('req')->get->is('templateId') && $this->_srv->get('req')->get->templateId>0) {
+				try {
+					$tpl = UFra::factory('UFbean_SruAdmin_PenaltyTemplate');
+					$tpl->getByPK($this->_srv->get('req')->get->templateId);
+					$bean->reason = $tpl->reason;
+					$bean->duration = $tpl->duration;
+					$bean->after = $tpl->amnesty;
+					$typeId = $tpl->typeId;
+				} catch (UFex_Dao_NotFound $e) {
+				}
+			}
 			$d['penalty'] = $bean;
 					
 			$user = $this->_getUserFromGet();
 			$d['user'] = $user;
-			
 			try{
 				$comp = UFra::factory('UFbean_Sru_ComputerList');
 				$d['computers'] =& $comp;
 				$comp->listByUserId($d['user']->id); 
-				$d['computerId'] = $this->_srv->get('req')->get->computerId;
+				if (isset($typeId)) {
+					switch ($typeId) {
+						case UFbean_SruAdmin_Penalty::TYPE_WARNING:
+							$d['computerId'] = 0;
+							break;
+						case UFbean_SruAdmin_Penalty::TYPE_COMPUTER:
+							$d['computerId'] = $this->_srv->get('req')->get->computerId;
+							break;
+						case UFbean_SruAdmin_Penalty::TYPE_COMPUTERS:
+							$d['computerId'] = '';
+							break;
+					}
+				} else {
+					$d['computerId'] = $this->_srv->get('req')->get->computerId;
+				}
 			} catch (UFex_Dao_NotFound $e) {
 			} catch (UFex_Core_DataNotFound $e) {
 				$d['computerId'] = null;
 			}
 			
-			$templates = UFra::factory('UFbean_SruAdmin_PenaltyTemplatesList');
+			$templates = UFra::factory('UFbean_SruAdmin_PenaltyTemplateList');
 			$templates->listAll();
 			$d['templates'] = $templates;		
-			
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
 			return $this->render('userNotFound');
+		}		
+
+	}
+	
+	public function penaltyTemplateChoose() {
+		try {
+			$bean = UFra::factory('UFbean_SruAdmin_PenaltyTemplateList');
+			$bean->listAll();
+			$d['templates'] = $bean;		
+
+			$user = $this->_getUserFromGet();
+			$d['user'] = $user;
+			
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound');
 		}		
 	}
 

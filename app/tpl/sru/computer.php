@@ -107,7 +107,7 @@ extends UFtpl_Common {
 		if (strlen($d['comment'])) {
 			echo '<p class="comment">'.nl2br($this->_escape($d['comment'])).'</p>';
 		}
-		echo '<p class="nav"><a href="'.$urlNav.'">Dane</a> <a href="'.$url.'/penalties/:add/'.$d['userId'].'/computer:'.$d['id'].'">Ukarz</a> <a href="'.$urlNav.'/history">Historia zmian</a>  <a href="'.$urlNav.'/:edit">Edycja</a> ';
+		echo '<p class="nav"><a href="'.$urlNav.'">Dane</a> <a href="'.$url.'/penalties/:add/computer:'.$d['id'].'">Ukarz</a> <a href="'.$urlNav.'/history">Historia zmian</a>  <a href="'.$urlNav.'/:edit">Edycja</a> ';
 		if($d['active'])
 		{
 			echo '<a href="'.$urlNav.'/:del"> Wyrejestruj</a>';

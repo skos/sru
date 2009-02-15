@@ -20,6 +20,7 @@ extends UFmap {
 		'amnestyAfter' => 'amnesty_after',
 		'amnestyById'  => 'amnesty_by',
 		'active'       => 'active',
+		'templateId'   => 'template_id',
 	);
 
 	protected $columnTypes = array(
@@ -37,6 +38,8 @@ extends UFmap {
 		'amnestyAfter' => self::NULL_TS,
 		'amnestyById'  => self::NULL_INT,
 		'active'       => self::BOOL,
+		'templateId'   => self::INT,
+		'after'        => self::INT,	// tylko do walidacji formularza
 		'duration'     => self::INT,	// tylko do walidacji formularza
 		'computerId'   => self::NULL_INT,	// tylko do walidacji formularza
 	);
@@ -47,6 +50,7 @@ extends UFmap {
 
 	protected $valids = array(
 		'typeId' => array('intMin'=>1),
+		'after' => array('intMin'=>0),
 		'reason' => array('textMin'=>1),
 		'duration' => array('intMin'=>1),
 	);

@@ -2,7 +2,7 @@
 /**
  * admin
  */
-class UFdao_SruAdmin_PenaltyTemplates
+class UFdao_SruAdmin_PenaltyTemplate
 extends UFdao {
 
 	public function listAll($page=1, $perPage=10, $overFetch=0) {

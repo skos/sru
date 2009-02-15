@@ -56,19 +56,4 @@ extends UFlib_ClassWithService {
 	public function logout() {
 		return $this->_loggedIn();
 	}
-	
-	// edycja kar
-	public function editPenalties($id, $createdBy) {
-		$sess = $this->_srv->get('session');
-		
-		if($this->_loggedIn() && $id == $createdBy) //swoje kary mozna edytowac
-		{
-			return true;	
-		}	
-		if($this->_loggedIn() && $sess->is('typeId') && ($sess->typeId == self::CENTRAL || $sess->typeId == self::CAMPUS) )
-		{
-			return true;
-		}
-		return false;
-	}	
 }

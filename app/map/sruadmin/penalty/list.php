@@ -21,6 +21,8 @@ extends UFmap_SruAdmin_Penalty_Get {
 		'amnestyAfter' => 'b.amnesty_after',
 		'amnestyById'  => 'b.amnesty_by',
 		'active'       => 'b.active',
+		'templateId'   => 'b.template_id',
+		'templateTitle' => 't.title',
 		
 		'userName'     => 'u.name',
 		'userSurname'  => 'u.surname',
@@ -46,6 +48,8 @@ extends UFmap_SruAdmin_Penalty_Get {
 		'amnestyAfter' => self::NULL_TS,
 		'amnestyById'  => self::NULL_INT,
 		'active'       => self::BOOL,
+		'templateId'   => self::INT,
+		'templateTitle' => self::TEXT,
 		
 		'userName'     => self::TEXT,
 		'userSurname'  => self::TEXT,
@@ -62,11 +66,13 @@ extends UFmap_SruAdmin_Penalty_Get {
 		'u' => 'users',
 		'a' => 'admins',
 		'c' => 'admins',
+		't' => 'penalty_templates',
 	);
 	protected $joinOns = array(
 		'u' => 'b.user_id=u.id',
 		'a' => 'b.created_by=a.id',
 		'c' => 'b.modified_by=c.id',
+		't' => 'b.template_id=t.id',
 	);
 	protected $pk = 'b.id';
 }

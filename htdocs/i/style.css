@@ -42,10 +42,10 @@ img { border-style: none; }
 #main fieldset fieldset { padding: 0.5em 0; }
 #main fieldset.radio legend { margin-left: 27%; }
 #main legend { margin-left: 1em; background-color: #eee; padding: 0.1em 1em; font-family: "Georgia", serif; font-weight: bold; }
-#main input.submit { padding: 0.2em 1em; margin-left: 29.5%; }
 #main label { display: block; width: 29.5%; float: left; clear: both; text-align: right; margin-right: 0.5%; }
 #main input.radio, #main input.checkbox { margin-left: 29.5%; margin-top: 0.5em; float: left; clear: both; }
 #main label.radio, #main label.checkbox { width: 66.5%; float: right; clear: none; text-align: left; }
+#main input.submit { padding: 0.2em 1em; margin-left: 29.5%; }
 #main textarea { width: 66.5%; }
 #main .computer p, #main .user p { margin: 0; padding: 0; clear: both; }
 #main .computer p.comment, #main .user p.comment { margin-left: 10.5em; margin-top: 1em; }
@@ -57,28 +57,31 @@ img { border-style: none; }
 #main .rooms ul { list-style-type: none; margin: 0; padding: 0; clear: both; text-align: center; border-top: 1px solid #ccc; overflow: auto; }
 #main .rooms ul.first { border-top-style: none; }
 #main .rooms li { width: 10%; float: left; display: block; }
+#main ul.penaltyTemplates { text-align: left; width: 100%; list-style-type: none; margin: 0; }
+#main ul.penaltyTemplates li { clear: both; }
+#main ul.penaltyTemplates h3 { width: 32%; float: left; margin-top: 0; text-align: right; font-size: 1em; font-family: "Verdana", "Tahoma", "Helvetica", "Arial", sans-serif; }
+#main ul.penaltyTemplates p { width: 66%; float: right; margin-top: 0; }
 #main .displayOnHover span, #main .displayOnHover a { color: white; }
 #main .displayOnHover a:hover { text-decoration: underline; color: red; }
 #main .displayOnHover span:hover { color: black; }
 #main .nav { display: block; }
 #main .ban { background: #ff6c6c; }
 #main .warning { background: #fff4ac; }
+#main #ips { font-size: 0.8em; width: 640px; }
+#main #ips tr { height: 20px; }
+#main #ips td { text-align: center; }
+#main .ds1 { background-color: #ffaa30; }
+#main .ds2 { background-color: #ee3040; }
+#main .ds3 { background-color: #dddddd; }
+#main .ds4 { background-color: #cc50cc; }
+#main .ds5 { background-color: #bb6070; }
+#main .ds5l { background-color: #aa70ff; }
+#main .ds6 { background-color: #70aa00; }
+#main .ds7 { background-color: #80ccaa; }
+#main .ds8 { background-color: #90aabb; }
+#main .ds9 { background-color: #0000cc; }
+#main .ds10 { background-color: #bb00dd; }
+#main .ds11 { background-color: #ccdd00; }
+#main .ds12 { background-color: #ddeeff; }
 
-#foot { text-align: center; font-size: 0.5em; margin-top: 2em; }
-
-#ips tr { height: 20px; }
-#ips { font-size: 0.8em; width: 640px; }
-#ips td { text-align: center; }
-.ds1 { background-color: #ffaa30; }
-.ds2 { background-color: #ee3040; }
-.ds3 { background-color: #dddddd; }
-.ds4 { background-color: #cc50cc; }
-.ds5 { background-color: #bb6070; }
-.ds5l { background-color: #aa70ff; }
-.ds6 { background-color: #70aa00; }
-.ds7 { background-color: #80ccaa; }
-.ds8 { background-color: #90aabb; }
-.ds9 { background-color: #0000cc; }
-.ds10 { background-color: #bb00dd; }
-.ds11 { background-color: #ccdd00; }
-.ds12 { background-color: #ddeeff; }
+#foot { text-align: center; font-size: 0.5em; margin-top: 2em; clear: both; }

@@ -79,7 +79,7 @@ extends UFtpl_Common {
 		$url = $this->url(0).'/computers/'.$d['computer']->id;
 		echo '<div class="computer">';
 		$d['computer']->write('details');
-		echo '</p></div>';
+		echo '</div>';
 	}
 
 	public function titleComputers() {
@@ -239,7 +239,6 @@ extends UFtpl_Common {
 		}		
 		echo '<div class="user">';
 		$d['user']->write('details');
-		echo '<p class="nav"><a href="'.$url.'">Dane</a> <a href="'. $this->url(0).'/penalties/:add/'.$d['user']->id.'">Ukarz</a> <a href="'.$url.'/history">Historia zmian</a> <a href="'.$url.'/:edit">Edycja</a></p>';
 		echo '</div>';
 	}
 
@@ -411,6 +410,14 @@ extends UFtpl_Common {
 		$d['modified']->write('penaltyLastModified', false);
 		echo '</div>';
 	}
+
+	public function penaltyTemplateChoose(array $d) {
+		echo '<h2>Typ kary dla '.$d['user']->name.' '.$d['user']->surname.' ('.$d['user']->login.')</h2>';
+		echo '<ul class="penaltyTemplates">';
+		$d['templates']->write('choose');
+		echo '</ul>';
+	}
+
 	public function adminNotFound() {
 		
 		echo $this->ERR('Nie znaleziono administratora');
@@ -583,8 +590,7 @@ extends UFtpl_Common {
 		echo 'Kara dla '.$d['user']->name.' '.$d['user']->surname.' ('.$d['user']->login.')';
 	}	
 
-	public function penaltyAdd(array $d)
-	{
+	public function penaltyAdd(array $d) {
 		$url = $this->url(0).'/penalties/';
 		$acl = $this->_srv->get('acl');
 		
