@@ -690,12 +690,15 @@ extends UFtpl_Common {
 	}
 	
 	public function ips(array $d) {
-		$acl = $this->_srv->get('acl');		
+		if (!is_null($d['dorm'])) {
+			echo '<h2><a href="'.$this->url(0).'/dormitories/'.$d['dorm']->alias.'">'.$d['dorm']->name.'</a></h2>';
+		} else {
+			echo '<h2>Zestawienie numerów IP</h2>';
+		}
+		echo '<div class="ips">';
 		
-		echo '<h2>Zestawienie numerów IP</h2>';
-		
-		$d['dorms']->write('legendForIps');
-		$d['ips']->write('ips', array_key_exists('dorm', $d) ? $d['dorm'] : null);
+		$d['ips']->write('ips');
+		echo '</div>';
 	}						
 	
 }

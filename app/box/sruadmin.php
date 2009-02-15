@@ -950,21 +950,19 @@ extends UFbox {
 	}
 	public function ips() {
 		try {
-			try {
-				$bean = $this->_getDormFromGet();
-				$d['dorm'] = $bean;
-			} catch (UFex_Dao_NotFound $e) {
-			} catch (UFex_Core_DataNotFound $e) {
-			}
-		
-			$dorms = UFra::factory('UFbean_Sru_DormitoryList');
-			$dorms->listAll();	
-		
 			$bean = UFra::factory('UFbean_SruAdmin_Ips');
-			$bean->listAll();
-			
-			$d['dorms'] = $dorms;
-			$d['ips'] = $bean;	
+			$d['ips'] =& $bean;	
+
+			$d['dorm'] = null;
+			try {
+				$dorm = $this->_getDormFromGet();
+				$d['dorm'] = $dorm;
+				$bean->listByDormitory($dorm->id);
+			} catch (UFex_Dao_NotFound $e) {
+				$bean->listAll();
+			} catch (UFex_Core_DataNotFound $e) {
+				$bean->listAll();
+			}
 		
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
