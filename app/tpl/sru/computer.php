@@ -253,7 +253,7 @@ if (input) {
 			} else {
 				$owner = '(<a href="'.$url.'/users/'.$c['userId'].'">'.$this->_escape($c['userName']).' '.$this->_escape($c['userSurname']).'</a>)';
 			}
-			echo '<li'.(!$c['active']?' class="old">Do '.date(self::TIME_YYMMDD, $c['availableTo']).' ':'>').'<a href="'.$url.'/computers/'.$c['id'].'">'.$c['host'].' <small>'.$c['ip'].'/'.$c['mac'].'</small></a> <span>'.$owner.'</span></li>';
+			echo '<li'.(!$c['active']?' class="old">Do '.date(self::TIME_YYMMDD, $c['availableTo']).' ':'>').(!$c['active']?'<del>':'').'<a href="'.$url.'/computers/'.$c['id'].'">'.$c['host'].' <small>'.$c['ip'].'/'.$c['mac'].'</small></a> <span>'.$owner.'</span>'.(!$c['active']?'</del>':'').'</li>';
 		}
 	}
 
@@ -296,7 +296,7 @@ if (input) {
 	public function shortList(array $d) {
 		$url = $this->url(0).'/computers/';
 		foreach ($d as $c) {
-			echo '<li><a href="'.$url.$c['id'].'">'.$c['host'].' <small>'.$c['ip'].'/'.$c['mac'].'</small></a> <span>'.date(self::TIME_YYMMDD, $c['availableTo']).'</span></li>';
+			echo '<li>'.(!$c['active']?'<del>':'').'<a href="'.$url.$c['id'].'">'.$c['host'].' <small>'.$c['ip'].'/'.$c['mac'].'</small></a> <span>'.date(self::TIME_YYMMDD, $c['availableTo']).'</span>'.(!$c['active']?'</del>':'').'</li>';
 		}
 	}
 

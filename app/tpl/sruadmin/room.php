@@ -33,7 +33,7 @@ extends UFtpl_Common {
 	public function details(array $d) {
 		
 		$url = $this->url(0);
-		echo '<h2>'.$d['alias'].' ('.$d['dormitoryAlias'].')<br/><small>(liczba użytkowników:'.$d['userCount'].' liczba komputerów:'.$d['computerCount'].')</small></h2>';
+		echo '<h2>'.$d['alias'].' ('.$d['dormitoryAlias'].')<br/><small>(liczba użytkowników: '.$d['userCount'].' &bull; liczba komputerów: '.$d['computerCount'].')</small></h2>';
 		if ($d['comment']) {
 			echo '<p class="comment">'.nl2br($this->_escape($d['comment'])).'</p>';		
 		}

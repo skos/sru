@@ -20,6 +20,9 @@ img { border-style: none; }
 #nav a { padding: 0.5em 1em; }
 #nav a:hover, #nav a:active, #nav a:focus { background-color: #eee; }
 
+.adminBar { position: absolute; width: 10%; right: 1%; top: 0; font-size: 0.75em; text-align: right; }
+.adminBar fieldset { border-style: none; }
+
 #main h1, #main h2, #main h3, #main h4, #main h5, #main h6 { color: #666; font-weight: normal; font-family: "Georgia", serif; margin-top: 1em; margin-bottom: 1em; text-align: center; }
 #main h2 { margin-top: 0.8em; margin-bottom: 0.8em; }
 #main h3 { margin-top: 0.5em; margin-bottom: 0.5em; }
