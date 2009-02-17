@@ -1,7 +1,6 @@
 COMMENT ON COLUMN penalty_templates.description IS 'opis dla administratora';
 
-ALTER TABLE penalty_templates
-   ADD COLUMN reason text NOT NULL DEFAULT '';
+ALTER TABLE penalty_templates ADD COLUMN reason pg_catalog.text NOT NULL DEFAULT ''::pg_catalog.text;
 
 UPDATE penalty_templates SET reason=description;
 
