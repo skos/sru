@@ -42,13 +42,13 @@ extends UFact {
 					throw UFra::factory('UFex_Dao_DataNotValid', 'User not in Walet database', 0, E_WARNING,  array('walet' => 'notFound'));
 				}
 			}
-				
-			$bean->save();
 
 			if ($this->_srv->get('req')->post->{self::PREFIX}['changeComputersLocations'] && $locationId!==$bean->locationId) {
 				$comps = UFra::factory('UFbean_Sru_ComputerList');
 				$comps->updateLocationByUserId($bean->locationId, $bean->id, $this->_srv->get('session')->authAdmin);
 			}
+
+			$bean->save();
 
 			$this->postDel(self::PREFIX);
 			$this->markOk(self::PREFIX);

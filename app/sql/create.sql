@@ -36,29 +36,15 @@ ALTER TABLE ONLY public.computers_bans DROP CONSTRAINT computers_bans_penalty_id
 ALTER TABLE ONLY public.computers_bans DROP CONSTRAINT computers_bans_computer_id_fkey;
 ALTER TABLE ONLY public.admins DROP CONSTRAINT admins_dormitory_id_fkey;
 DROP TRIGGER users_update ON public.users;
+DROP TRIGGER users_counters ON public.users;
+DROP TRIGGER users_computers ON public.users;
+DROP TRIGGER penalties_users ON public.penalties;
+DROP TRIGGER penalties_computers_bans ON public.penalties;
+DROP TRIGGER locations_counters ON public.locations;
+DROP TRIGGER ipv4s_counters ON public.ipv4s;
 DROP TRIGGER computers_update ON public.computers;
-DROP RULE update_counter_inc ON public.users;
-DROP RULE update_counter_dec ON public.users;
-DROP RULE update_computers_bans_off ON public.penalties;
-DROP RULE update_banned_off ON public.computers_bans;
-DROP RULE update_banned_off ON public.penalties;
-DROP RULE update_active_on ON public.users;
-DROP RULE update_active_off_computer ON public.users;
-DROP RULE update_active_off ON public.users;
-DROP RULE udpate_users_counter ON public.locations;
-DROP RULE udpate_counter_inc ON public.computers;
-DROP RULE udpate_counter_dec ON public.computers;
-DROP RULE udpate_computers_counter ON public.locations;
-DROP RULE udpate_active_on ON public.computers;
-DROP RULE udpate_active_off ON public.computers;
-DROP RULE insert_counter ON public.computers_bans;
-DROP RULE insert_counter ON public.penalties;
-DROP RULE insert_counter ON public.computers;
-DROP RULE insert_counter ON public.users;
-DROP RULE insert_banned_on ON public.computers_bans;
-DROP RULE insert_banned_on ON public.penalties;
-DROP RULE delete_counter ON public.computers;
-DROP RULE delete_counter ON public.users;
+DROP TRIGGER computers_counters ON public.computers;
+DROP TRIGGER computer_ban_computers ON public.computers_bans;
 DROP INDEX public.users_walet_all_key;
 DROP INDEX public.users_surname_key;
 DROP INDEX public.fki_penalties_user_id;
@@ -123,7 +109,16 @@ DROP SEQUENCE public.bans_id_seq;
 DROP TABLE public.admins;
 DROP SEQUENCE public.admins_id_seq;
 DROP FUNCTION public.user_update();
+DROP FUNCTION public.user_counters();
+DROP FUNCTION public.user_computers();
+DROP FUNCTION public.remove_bans();
+DROP FUNCTION public.penalty_users();
+DROP FUNCTION public.penalty_computers_bans();
+DROP FUNCTION public.location_counters();
+DROP FUNCTION public.ipv4_counters();
 DROP FUNCTION public.computer_update();
+DROP FUNCTION public.computer_counters();
+DROP FUNCTION public.computer_ban_computers();
 DROP PROCEDURAL LANGUAGE plpgsql;
 DROP SCHEMA public;
 --
@@ -145,6 +140,81 @@ COMMENT ON SCHEMA public IS 'Standard public schema';
 --
 
 CREATE PROCEDURAL LANGUAGE plpgsql;
+
+
+--
+-- Name: computer_ban_computers(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION computer_ban_computers() RETURNS "trigger"
+    AS $$BEGIN
+IF ('INSERT' = TG_OP) THEN
+	UPDATE computers
+		SET banned = true, bans = bans + 1
+		WHERE id = NEW.computer_id;
+ELSIF ('UPDATE' = TG_OP AND OLD.active = true AND NEW.active = false AND
+(SELECT count(id) AS count FROM computers_bans WHERE active AND computer_id = OLD.computer_id) < 1) THEN
+	UPDATE computers
+		SET banned = false
+		WHERE id = OLD.computer_id;
+END IF;
+RETURN NEW;
+END;$$
+    LANGUAGE plpgsql;
+
+
+--
+-- Name: FUNCTION computer_ban_computers(); Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON FUNCTION computer_ban_computers() IS 'modyfikuje komputery, ktorych dotyczy kara';
+
+
+--
+-- Name: computer_counters(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION computer_counters() RETURNS "trigger"
+    AS $$
+DECLARE
+	change INT := 0; -- 2 = dodaj w nowym, 1 = usun w starym, 3 = usun w starym i dodaj w nowym
+BEGIN
+IF ('INSERT' = TG_OP AND NEW.active) THEN
+	change := 2;
+ELSIF ('UPDATE' = TG_OP) THEN
+	IF (OLD.location_id <> NEW.location_id) THEN
+		change := 3;
+	END IF;
+	IF (OLD.active = false AND NEW.active = true) THEN
+		change := 2;
+	ELSIF (OLD.active = true AND NEW.active = false) THEN
+		change := 1;
+	ELSIF (OLD.active = false AND NEW.active = false) THEN
+		change := 0;
+	END IF;
+ELSIF ('DELETE' = TG_OP AND OLD.active) THEN
+	change := 1;
+END IF;
+IF (1 = change OR 3 = change) THEN
+	UPDATE locations
+		SET computers_count = computers_count - 1
+		WHERE id = OLD.location_id;
+END IF;
+IF (2 = change OR 3 = change) THEN
+	UPDATE locations
+		SET computers_count = computers_count + 1
+		WHERE id = NEW.location_id;
+END IF;
+RETURN NEW;
+END;$$
+    LANGUAGE plpgsql;
+
+
+--
+-- Name: FUNCTION computer_counters(); Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON FUNCTION computer_counters() IS 'modyfikuje liczniki liczace komputery';
 
 
 --
@@ -201,6 +271,252 @@ END;$$
 
 
 --
+-- Name: FUNCTION computer_update(); Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON FUNCTION computer_update() IS 'archiwizacja danych komputera';
+
+
+--
+-- Name: ipv4_counters(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION ipv4_counters() RETURNS "trigger"
+    AS $$BEGIN
+IF ('INSERT' = TG_OP AND NEW.dormitory_id IS NOT NULL) THEN
+	UPDATE dormitories
+		SET computers_max = computers_max + 1
+		WHERE id = NEW.dormitory_id;
+ELSIF ('UPDATE' = TG_OP AND NEW.dormitory_id<>OLD.dormitory_id) THEN
+	IF (OLD.dormitory_id IS NOT NULL) THEN
+		UPDATE dormitories
+			SET computers_max = computers_max - 1
+			WHERE id = OLD.dormitory_id;
+	END IF;
+	IF (NEW.dormitory_id IS NOT NULL) THEN
+		UPDATE dormitories
+			SET computers_max = computers_max + 1
+			WHERE id = NEW.dormitory_id;
+	END IF;
+ELSIF ('DELETE' = TG_OP AND OLD.dormitory_id IS NOT NULL) THEN
+	UPDATE dormitories
+		SET computers_max = computers_max - 1
+		WHERE id = OLD.dormitory_id;
+END IF;
+RETURN NEW;
+END;$$
+    LANGUAGE plpgsql;
+
+
+--
+-- Name: FUNCTION ipv4_counters(); Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON FUNCTION ipv4_counters() IS 'modyfikuje liczniki ip-kow';
+
+
+--
+-- Name: location_counters(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION location_counters() RETURNS "trigger"
+    AS $$BEGIN
+IF ('UPDATE' = TG_OP) THEN
+	IF (OLD.computers_count <> NEW.computers_count) THEN
+		UPDATE dormitories
+			SET computers_count = computers_count + NEW.computers_count - OLD.computers_count
+			WHERE id = NEW.dormitory_id;
+	END IF;
+	IF (OLD.users_count <> NEW.users_count) THEN
+		UPDATE dormitories
+			SET users_count = users_count + NEW.users_count - OLD.users_count
+			WHERE id = NEW.dormitory_id;
+	END IF;
+	IF (OLD.users_max <> NEW.users_max) THEN
+		UPDATE dormitories
+			SET users_max = users_max + NEW.users_max - OLD.users_max
+			WHERE id = NEW.dormitory_id;
+	END IF;
+	IF (OLD.dormitory_id <> NEW.dormitory_id) THEN
+		UPDATE dormitories
+			SET users_max = users_max - NEW.users_max -- new.users_max, bo nieco wyzej juz zmodyfikowalismy users_max dla danego akademika
+			WHERE id = OLD.dormitory_id;
+		UPDATE dormitories
+			SET users_max = users_max + NEW.users_max
+			WHERE id = NEW.dormitory_id;
+	END IF;
+ELSIF ('INSERT' = TG_OP AND NEW.users_max<>0) THEN
+	UPDATE dormitories
+		SET users_max = users_max + NEW.users_max
+		WHERE id = NEW.dormitory_id;
+ELSIF ('DELETE' = TG_OP AND OLD.users_max<>0) THEN
+	UPDATE dormitories
+		SET users_max = users_max - OLD.users_max
+		WHERE id = OLD.dormitory_id;
+END IF;
+RETURN NEW;
+END;$$
+    LANGUAGE plpgsql;
+
+
+--
+-- Name: FUNCTION location_counters(); Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON FUNCTION location_counters() IS 'modyfikuje liczniki uzytkownikow i komputerow';
+
+
+--
+-- Name: penalty_computers_bans(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION penalty_computers_bans() RETURNS "trigger"
+    AS $$BEGIN
+IF ('UPDATE' = TG_OP AND OLD.active = true AND NEW.active = false) THEN
+	 UPDATE computers_bans
+		SET active = false
+		WHERE penalty_id = OLD.id;
+END IF;
+RETURN NEW;
+END;$$
+    LANGUAGE plpgsql;
+
+
+--
+-- Name: FUNCTION penalty_computers_bans(); Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON FUNCTION penalty_computers_bans() IS 'modyfikuje bany na komputery';
+
+
+--
+-- Name: penalty_users(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION penalty_users() RETURNS "trigger"
+    AS $$BEGIN
+IF ('INSERT' = TG_OP) THEN
+	IF NEW.type_id<>1 THEN	-- nie ostrzezenie
+		UPDATE users
+			SET banned = true, bans = bans + 1
+			WHERE id = NEW.user_id;
+	ELSE
+		UPDATE users
+			SET bans = bans + 1
+			WHERE id = NEW.user_id;
+	END IF;
+ELSIF ('UPDATE' = TG_OP AND OLD.active=true AND NEW.active = false) THEN
+	UPDATE users
+		SET banned = false
+		WHERE users.id = old.user_id;
+END IF;
+RETURN NEW;
+END;$$
+    LANGUAGE plpgsql;
+
+
+--
+-- Name: FUNCTION penalty_users(); Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON FUNCTION penalty_users() IS 'modyfikuje dane uzytkownika';
+
+
+--
+-- Name: remove_bans(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION remove_bans() RETURNS integer
+    AS $$
+DECLARE
+        updated INT;
+BEGIN
+        UPDATE penalties SET active = 'false' WHERE active = 'true' and end_at < now();
+
+        GET DIAGNOSTICS updated = ROW_COUNT;
+        RETURN updated;
+END;
+$$
+    LANGUAGE plpgsql;
+
+
+--
+-- Name: user_computers(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION user_computers() RETURNS "trigger"
+    AS $$BEGIN
+IF ('UPDATE' = TG_OP AND OLD.active=true AND NEW.active=false) THEN
+	UPDATE computers
+		SET	active = false,
+			modified_by = new.modified_by,
+			modified_at = new.modified_at,
+			avail_to = new.modified_at
+		WHERE user_id = NEW.id AND active = true;
+
+END IF;
+RETURN NEW;
+END;$$
+    LANGUAGE plpgsql;
+
+
+--
+-- Name: FUNCTION user_computers(); Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON FUNCTION user_computers() IS 'zmienia dane komputerow';
+
+
+--
+-- Name: user_counters(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION user_counters() RETURNS "trigger"
+    AS $$
+DECLARE
+	change INT := 0; -- 1 = usun ze starego, 2 = dodaj do nowego, 3 = obie akcje
+BEGIN
+IF ('INSERT' = TG_OP AND NEW.active) THEN
+	change := 2;
+ELSIF ('UPDATE' = TG_OP) THEN
+	IF (OLD.location_id <> NEW.location_id) THEN
+		change := 3;
+	END IF;
+	IF (OLD.active = false AND NEW.active = true) THEN
+		change := 2;
+	ELSIF (OLD.active = true AND NEW.active = false) THEN
+		change := 1;
+	ELSIF (OLD.active = false AND NEW.active = false) THEN
+		change := 0;
+	END IF;
+ELSIF ('DELETE' = TG_OP AND OLD.active) THEN
+	UPDATE locations
+		SET users_count = users_count - 1
+		WHERE id = OLD.location_id;
+END IF;
+IF (1 = change OR 3 = change) THEN
+	UPDATE locations
+		SET users_count = users_count - 1
+		WHERE id = OLD.location_id;
+END IF;
+IF (2 = change OR 3 = change) THEN
+	UPDATE locations
+		SET users_count = users_count + 1
+		WHERE id = NEW.location_id;
+END IF;
+RETURN NEW;
+END;$$
+    LANGUAGE plpgsql;
+
+
+--
+-- Name: FUNCTION user_counters(); Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON FUNCTION user_counters() IS 'modyfikuje liczniki liczace uzytkownikow';
+
+
+--
 -- Name: user_update(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -248,6 +564,13 @@ end if;
 return NEW;
 END;$$
     LANGUAGE plpgsql;
+
+
+--
+-- Name: FUNCTION user_update(); Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON FUNCTION user_update() IS 'archiwizacja danych uzytkownika';
 
 
 --
@@ -433,7 +756,7 @@ CREATE TABLE computers (
     "comment" pg_catalog.text DEFAULT ''::pg_catalog.text NOT NULL,
     active boolean DEFAULT true NOT NULL,
     type_id smallint DEFAULT 1 NOT NULL,
-    bans smallint DEFAULT 0 NOT NULL,
+    bans integer DEFAULT 0 NOT NULL,
     can_admin boolean DEFAULT false NOT NULL,
     banned boolean DEFAULT false NOT NULL
 );
@@ -1775,157 +2098,23 @@ CREATE INDEX users_walet_all_key ON users_walet USING btree (hash, room, dorm);
 
 
 --
--- Name: delete_counter; Type: RULE; Schema: public; Owner: -
+-- Name: computer_ban_computers; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE RULE delete_counter AS ON DELETE TO users DO UPDATE locations SET users_count = (locations.users_count - 1) WHERE (locations.id = old.location_id);
-
-
---
--- Name: delete_counter; Type: RULE; Schema: public; Owner: -
---
-
-CREATE RULE delete_counter AS ON DELETE TO computers DO UPDATE locations SET computers_count = (locations.computers_count - 1) WHERE (locations.id = old.location_id);
+CREATE TRIGGER computer_ban_computers
+    AFTER INSERT OR DELETE OR UPDATE ON computers_bans
+    FOR EACH ROW
+    EXECUTE PROCEDURE computer_ban_computers();
 
 
 --
--- Name: insert_banned_on; Type: RULE; Schema: public; Owner: -
+-- Name: computers_counters; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE RULE insert_banned_on AS ON INSERT TO penalties WHERE (new.type_id <> 1) DO UPDATE users SET banned = true WHERE (users.id = new.user_id);
-
-
---
--- Name: insert_banned_on; Type: RULE; Schema: public; Owner: -
---
-
-CREATE RULE insert_banned_on AS ON INSERT TO computers_bans DO UPDATE computers SET banned = true WHERE (computers.id = new.computer_id);
-
-
---
--- Name: insert_counter; Type: RULE; Schema: public; Owner: -
---
-
-CREATE RULE insert_counter AS ON INSERT TO users DO UPDATE locations SET users_count = (locations.users_count + 1) WHERE (locations.id = new.location_id);
-
-
---
--- Name: insert_counter; Type: RULE; Schema: public; Owner: -
---
-
-CREATE RULE insert_counter AS ON INSERT TO computers DO UPDATE locations SET computers_count = (locations.computers_count + 1) WHERE (locations.id = new.location_id);
-
-
---
--- Name: insert_counter; Type: RULE; Schema: public; Owner: -
---
-
-CREATE RULE insert_counter AS ON INSERT TO penalties DO UPDATE users SET bans = (users.bans + 1) WHERE (users.id = new.user_id);
-
-
---
--- Name: insert_counter; Type: RULE; Schema: public; Owner: -
---
-
-CREATE RULE insert_counter AS ON INSERT TO computers_bans DO UPDATE computers SET bans = (computers.bans + 1) WHERE (computers.id = new.computer_id);
-
-
---
--- Name: udpate_active_off; Type: RULE; Schema: public; Owner: -
---
-
-CREATE RULE udpate_active_off AS ON UPDATE TO computers WHERE ((old.active = true) AND (new.active = false)) DO UPDATE locations SET computers_count = (locations.computers_count - 1) WHERE (locations.id = old.location_id);
-
-
---
--- Name: udpate_active_on; Type: RULE; Schema: public; Owner: -
---
-
-CREATE RULE udpate_active_on AS ON UPDATE TO computers WHERE ((old.active = false) AND (new.active = true)) DO UPDATE locations SET computers_count = (locations.computers_count + 1) WHERE (locations.id = new.location_id);
-
-
---
--- Name: udpate_computers_counter; Type: RULE; Schema: public; Owner: -
---
-
-CREATE RULE udpate_computers_counter AS ON UPDATE TO locations WHERE (old.computers_count <> new.computers_count) DO UPDATE dormitories SET computers_count = ((dormitories.computers_count + new.computers_count) - old.computers_count) WHERE (dormitories.id = new.dormitory_id);
-
-
---
--- Name: udpate_counter_dec; Type: RULE; Schema: public; Owner: -
---
-
-CREATE RULE udpate_counter_dec AS ON UPDATE TO computers WHERE (new.location_id <> old.location_id) DO UPDATE locations SET computers_count = (locations.computers_count - 1) WHERE (locations.id = old.location_id);
-
-
---
--- Name: udpate_counter_inc; Type: RULE; Schema: public; Owner: -
---
-
-CREATE RULE udpate_counter_inc AS ON UPDATE TO computers WHERE (new.location_id <> old.location_id) DO UPDATE locations SET computers_count = (locations.computers_count + 1) WHERE (locations.id = new.location_id);
-
-
---
--- Name: udpate_users_counter; Type: RULE; Schema: public; Owner: -
---
-
-CREATE RULE udpate_users_counter AS ON UPDATE TO locations WHERE (old.users_count <> new.users_count) DO UPDATE dormitories SET users_count = ((dormitories.users_count + new.users_count) - old.users_count) WHERE (dormitories.id = new.dormitory_id);
-
-
---
--- Name: update_active_off; Type: RULE; Schema: public; Owner: -
---
-
-CREATE RULE update_active_off AS ON UPDATE TO users WHERE ((old.active = true) AND (new.active = false)) DO UPDATE locations SET users_count = (locations.users_count - 1) WHERE (locations.id = old.location_id);
-
-
---
--- Name: update_active_off_computer; Type: RULE; Schema: public; Owner: -
---
-
-CREATE RULE update_active_off_computer AS ON UPDATE TO users WHERE ((old.active = true) AND (new.active = false)) DO UPDATE computers SET active = false, modified_by = new.modified_by, modified_at = new.modified_at, avail_to = new.modified_at WHERE ((computers.user_id = new.id) AND (computers.active = true));
-
-
---
--- Name: update_active_on; Type: RULE; Schema: public; Owner: -
---
-
-CREATE RULE update_active_on AS ON UPDATE TO users WHERE ((old.active = false) AND (new.active = true)) DO UPDATE locations SET users_count = (locations.users_count + 1) WHERE (locations.id = new.location_id);
-
-
---
--- Name: update_banned_off; Type: RULE; Schema: public; Owner: -
---
-
-CREATE RULE update_banned_off AS ON UPDATE TO penalties WHERE ((old.active = true) AND (new.active = false)) DO UPDATE users SET banned = false WHERE (users.id = old.user_id);
-
-
---
--- Name: update_banned_off; Type: RULE; Schema: public; Owner: -
---
-
-CREATE RULE update_banned_off AS ON UPDATE TO computers_bans WHERE (((old.active = true) AND (new.active = false)) AND ((SELECT count(computers_bans.id) AS count FROM computers_bans WHERE (computers_bans.active AND (computers_bans.computer_id = old.computer_id))) < 2)) DO UPDATE computers SET banned = false WHERE (computers.id = old.computer_id);
-
-
---
--- Name: update_computers_bans_off; Type: RULE; Schema: public; Owner: -
---
-
-CREATE RULE update_computers_bans_off AS ON UPDATE TO penalties WHERE ((old.active = true) AND (new.active = false)) DO UPDATE computers_bans SET active = false WHERE (computers_bans.penalty_id = old.id);
-
-
---
--- Name: update_counter_dec; Type: RULE; Schema: public; Owner: -
---
-
-CREATE RULE update_counter_dec AS ON UPDATE TO users WHERE (old.location_id <> new.location_id) DO UPDATE locations SET users_count = (locations.users_count - 1) WHERE (locations.id = old.location_id);
-
-
---
--- Name: update_counter_inc; Type: RULE; Schema: public; Owner: -
---
-
-CREATE RULE update_counter_inc AS ON UPDATE TO users WHERE (new.location_id <> old.location_id) DO UPDATE locations SET users_count = (locations.users_count + 1) WHERE (locations.id = new.location_id);
+CREATE TRIGGER computers_counters
+    AFTER INSERT OR DELETE OR UPDATE ON computers
+    FOR EACH ROW
+    EXECUTE PROCEDURE computer_counters();
 
 
 --
@@ -1943,6 +2132,66 @@ CREATE TRIGGER computers_update
 --
 
 COMMENT ON TRIGGER computers_update ON computers IS 'zapisuje historie zmian';
+
+
+--
+-- Name: ipv4s_counters; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER ipv4s_counters
+    AFTER INSERT OR DELETE OR UPDATE ON ipv4s
+    FOR EACH ROW
+    EXECUTE PROCEDURE ipv4_counters();
+
+
+--
+-- Name: locations_counters; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER locations_counters
+    AFTER INSERT OR DELETE OR UPDATE ON locations
+    FOR EACH ROW
+    EXECUTE PROCEDURE location_counters();
+
+
+--
+-- Name: penalties_computers_bans; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER penalties_computers_bans
+    AFTER INSERT OR DELETE OR UPDATE ON penalties
+    FOR EACH ROW
+    EXECUTE PROCEDURE penalty_computers_bans();
+
+
+--
+-- Name: penalties_users; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER penalties_users
+    AFTER INSERT OR DELETE OR UPDATE ON penalties
+    FOR EACH ROW
+    EXECUTE PROCEDURE penalty_users();
+
+
+--
+-- Name: users_computers; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER users_computers
+    AFTER INSERT OR DELETE OR UPDATE ON users
+    FOR EACH ROW
+    EXECUTE PROCEDURE user_computers();
+
+
+--
+-- Name: users_counters; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER users_counters
+    AFTER INSERT OR DELETE OR UPDATE ON users
+    FOR EACH ROW
+    EXECUTE PROCEDURE user_counters();
 
 
 --
