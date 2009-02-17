@@ -944,15 +944,13 @@ extends UFbox {
 				$dorm = $this->_getDormFromGet();
 				$d['dorm'] = $dorm;
 				$bean->listByDormitory($dorm->id);
-			} catch (UFex_Dao_NotFound $e) {
-				$bean->listAll();
 			} catch (UFex_Core_DataNotFound $e) {
 				$bean->listAll();
 			}
 		
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
-			return $this->render(__FUNCTION__.'NotFound');
+			return $this->render(__FUNCTION__.'NotFound', $d);
 		}
 	}					
 }

@@ -701,4 +701,12 @@ extends UFtpl_Common {
 		echo '</div>';
 	}						
 	
+	public function ipsNotFound(array $d) {
+		if (!is_null($d['dorm'])) {
+			echo '<h2><a href="'.$this->url(0).'/dormitories/'.$d['dorm']->alias.'">'.$d['dorm']->name.'</a></h2>';
+		} else {
+			echo '<h2>Zestawienie numerów IP</h2>';
+		}
+		echo $this->ERR('Brak adresów IP dla tego DS-u');
+	}
 }
