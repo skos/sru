@@ -172,4 +172,10 @@ container.appendChild(button);
 changeVisibility();
 </script><?
 	}		
+
+	public function apiPast(array $d) {
+		foreach ($d as $p) {	
+			echo $p['id']."\n";
+		}
+	}
 }

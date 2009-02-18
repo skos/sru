@@ -85,4 +85,25 @@ extends UFbox {
 			return '';
 		}
 	}
+
+	public function penaltiesPast() {
+		try {
+			$bean = UFra::factory('UFbean_SruAdmin_PenaltyList');	
+			$bean->listPast();
+			$d['penalties'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return '';
+		}
+	}
+
+	public function error403() {
+		UFlib_Http::notAuthorised('SRU');
+		return '';
+	}
+
+	public function status200() {
+		return '';
+	}
 }

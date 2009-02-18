@@ -28,4 +28,8 @@ extends UFtpl_Common {
 	public function error404() {
 		header('HTTP/1.0 404 Not Found');
 	}
+
+	public function penaltiesPast(array $d) {
+		$d['penalties']->write('apiPast');
+	}
 }

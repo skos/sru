@@ -6,14 +6,19 @@ class UFdao_SruAdmin_Admin
 extends UFdao {
 
 	public function getByLoginPassword($login, $password) {
-		$mapping = $this->mapping('get');
+		$key = $this->cachePrefix.'/'.__FUNCTION__.'/'.md5($login.'*#$%^@@!'.$password);
+		try {
+			return $this->cacheGet($key);
+		} catch (UFex_Core_DataNotFound $e) {
+			$mapping = $this->mapping('get');
 
-		$query = $this->prepareSelect($mapping);
-		$query->where($mapping->active, true);
-		$query->where($mapping->login, $login);
-		$query->where($mapping->password, $password);
+			$query = $this->prepareSelect($mapping);
+			$query->where($mapping->active, true);
+			$query->where($mapping->login, $login);
+			$query->where($mapping->password, $password);
 
-		return $this->doSelectFirst($query);
+			return $this->doSelectFirst($query);
+		}
 	}
 
 	public function getByLogin($login) {
@@ -70,4 +75,14 @@ extends UFdao {
 		
 		return $this->doSelect($query);
 	}	
+
+	public function getFromHttp() {
+		$server = $this->_srv->get('req')->server;
+		$login = $server->PHP_AUTH_USER;
+		$password = $server->PHP_AUTH_USER;
+		$password = UFbean_Sru_User::generatePassword($login, $password);
+
+		return $this->getByLoginPassword($login, $password);
+	}
+
 }

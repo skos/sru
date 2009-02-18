@@ -13,6 +13,18 @@ extends UFctl {
 		$get->view = '-';
 		if ($segCount>0) {
 			switch ($req->segment(1)) {
+				case 'penalties':
+					if ($segCount>1) {
+						switch ($req->segment(2)) {
+							case 'past':
+								$get->view = 'penalties/past';
+								break;
+							default:
+								$get->view = 'penalty';
+								$get->penaltyId = (int)$req->segment(2);
+								break;
+						}
+					}
 				case 'dhcp':
 					if ($segCount>1) {
 						switch ($req->segment(2)) {
@@ -51,11 +63,44 @@ extends UFctl {
 		}
 	}
 
-	protected function chooseView($view = null) {
+	protected function chooseAction($action = null) {
 		$req = $this->_srv->get('req');
+		$get = $req->get;
+		$post = $req->post;
+		$acl = $this->_srv->get('acl');
+
+		if ('penalty' == $get->view && $req->server->is('REQUEST_METHOD') && $req->server->REQUEST_METHOD && $acl->sruApi('penalty', 'amnesty')) {
+			$act = 'Penalty_Amnesty';
+		}
+
+		if (isset($act)) {
+			$action = 'SruApi_'.$act;
+		}
+
+		return $action;
+	}
+
+	protected function chooseView($view = null) {
+		$msg = $this->_srv->get('msg');
+		$req = $this->_srv->get('req');
+		$acl = $this->_srv->get('acl');
 		$get = $req->get;
 
 		switch ($get->view) {
+			case 'penalties/past':
+				if ($acl->sruApi('penalty', 'show')) {
+					return 'SruApi_PenaltiesPast';
+				} else {
+					return 'SruApi_Error403';
+				}
+			case 'penalty':
+				if ($msg->get('penaltyAmnesty/ok')) {
+					return 'SruApi_Status200';
+				} elseif ($msg->get('penaltyAmnesty/error')) {
+					return 'SruApi_Error403';
+				} else {
+					return 'SruApi_Error404';
+				}
 			case 'dhcp/stud':
 				return 'SruApi_DhcpStuds';
 			case 'dhcp/adm':

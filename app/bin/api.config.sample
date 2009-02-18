@@ -1,0 +1,2 @@
+url='http://sru'	# bez "/" na koncu
+authString='-'	# zakodowane login i haslo wysylane przy http-basic-auth
