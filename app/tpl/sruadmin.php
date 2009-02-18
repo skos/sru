@@ -406,8 +406,6 @@ extends UFtpl_Common {
 		{
 			echo '<p class="nav"><a href="'.$url.'/:edit">Edycja</a></p>';
 		}
-		$d['added']->write('penaltyLastAdded', false);
-		$d['modified']->write('penaltyLastModified', false);
 		echo '</div>';
 	}
 
@@ -708,5 +706,15 @@ extends UFtpl_Common {
 			echo '<h2>Zestawienie numerów IP</h2>';
 		}
 		echo $this->ERR('Brak adresów IP dla tego DS-u');
+	}
+
+	public function adminPenaltiesAdded(array $d) {
+		echo '<h3>Kary i ostrzeżenia ostatnio dodane</h3>';
+		$d['added']->write('penaltyLastAdded', false);
+	}
+
+	public function adminPenaltiesModified(array $d) {
+		echo '<h3>Kary i ostrzeżenia ostatnio modyfikowane</h3>';
+		$d['modified']->write('penaltyLastModified', false);
 	}
 }

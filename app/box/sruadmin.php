@@ -518,14 +518,6 @@ extends UFbox {
 
 			$d['admin'] = $bean;
 			
-			$added = UFra::factory('UFbean_SruAdmin_PenaltyList');
-			$added->listLastAddedById($bean->id);
-			$d['added'] = $added;
-
-			$modified = UFra::factory('UFbean_SruAdmin_PenaltyList');
-			$modified->listLastAddedById($bean->id);
-			$d['modified'] = $modified;
-			
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
 			return $this->render(__FUNCTION__.'NotFound');
@@ -953,4 +945,32 @@ extends UFbox {
 			return $this->render(__FUNCTION__.'NotFound', $d);
 		}
 	}					
+
+	public function adminPenaltiesAdded() {
+		try {
+			$bean = $this->_getAdminFromGet();
+			
+			$added = UFra::factory('UFbean_SruAdmin_PenaltyList');
+			$added->listLastAddedById($bean->id);
+			$d['added'] = $added;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return '';
+		}
+	}
+
+	public function adminPenaltiesModified() {
+		try {
+			$bean = $this->_getAdminFromGet();
+			
+			$modified = UFra::factory('UFbean_SruAdmin_PenaltyList');
+			$modified->listLastModifiedById($bean->id);
+			$d['modified'] = $modified;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return '';
+		}
+	}
 }

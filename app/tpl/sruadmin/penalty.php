@@ -74,11 +74,10 @@ extends UFtpl_Common {
 
 	public function penaltyLastAdded(array $d, $showAddedBy = true) {
 		$url = $this->url(0);
-		echo '<h3>Kary i ostrzeżenia ostatnio dodane</h3>';
 
 		foreach ($d as $c) {	
 			echo '<li>';
-			echo '<small>dodana: '.date(self::TIME_YYMMDD_HHMM, $c['startAt']);
+			echo '<small>'.($showAddedBy?'dodana: ':'').date(self::TIME_YYMMDD_HHMM, $c['startAt']);
 			echo ' dla: <a href="'.$url.'/penalties/'.$c['id'].'">'.$this->_escape($c['userName']).' '.$this->_escape($c['userSurname']).' ('.$this->_escape($c['userLogin']).')</a>';
 			if ($showAddedBy == true) {
 				echo ' przez: <a href="'.$url.'/admins/'.$c['createdById'].'">'.$this->_escape($c['creatorName']).'</a>';
@@ -90,11 +89,10 @@ extends UFtpl_Common {
 
 	public function penaltyLastModified(array $d, $showAddedBy = true) {
 		$url = $this->url(0);
-		echo '<h3>Kary i ostrzeżenia ostatnio modyfikowane</h3>';
 
 		foreach ($d as $c) {	
 			echo '<li>';
-			echo '<small>zmodyfikowana: '.date(self::TIME_YYMMDD_HHMM, $c['modifiedAt']);
+			echo '<small>'.($showAddedBy?'zmodyfikowana: ':'').date(self::TIME_YYMMDD_HHMM, $c['modifiedAt']);
 			echo ' dla: <a href="'.$url.'/penalties/'.$c['id'].'">'.$this->_escape($c['userName']).' '.$this->_escape($c['userSurname']).' ('.$this->_escape($c['userLogin']).')</a>';
 			if ($showAddedBy == true) {
 				echo ' przez: <a href="'.$url.'/admins/'.$c['modifiedById'].'">'.$this->_escape($c['modifierName']).'</a>';
