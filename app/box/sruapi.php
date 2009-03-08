@@ -106,4 +106,19 @@ extends UFbox {
 	public function status200() {
 		return '';
 	}
+
+	public function computersLocations() {
+		try {
+			$dorm = UFra::factory('UFbean_Sru_Dormitory');
+			$dorm->getByAlias($this->_srv->get('req')->get->dormAlias);
+			$bean = UFra::factory('UFbean_Sru_ComputerList');
+			$bean->listActiveStudsByDormitoryId($dorm->id);
+
+			$d['computers'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return '';
+		}
+	}
 }

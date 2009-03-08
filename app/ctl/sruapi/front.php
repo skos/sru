@@ -59,6 +59,18 @@ extends UFctl {
 				case 'ethers':
 					$get->view = 'ethers';
 					break;
+				case 'dormitories':
+					if ($segCount>1) {
+						$get->dormAlias = $req->segment(2);
+						if ($segCount>2) {
+							switch ($req->segment(3)) {
+								case 'computers':
+									$get->view = 'dormitory/computers';
+									break;
+							}
+						}
+					}
+					
 			}
 		}
 	}
@@ -115,6 +127,12 @@ extends UFctl {
 				return 'SruApi_DnsRev';
 			case 'ethers':
 				return 'SruApi_Ethers';
+			case 'dormitory/computers':
+				if ($acl->sruApi('computer', 'showLocations')) {
+					return 'SruApi_ComputersLocations';
+				} else {
+					return 'SruApi_Error403';
+				}
 			default:
 				return 'SruApi_Error404';
 		}

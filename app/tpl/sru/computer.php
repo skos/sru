@@ -318,4 +318,10 @@ if (input) {
 		));		
 	
 	}
+
+	public function apiComputersLocations(array $d) {
+		foreach ($d as $c) {
+			echo $c['mac']."\t".$c['ip']."\t".$c['locationAlias']."\n";
+		}
+	}
 }

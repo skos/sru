@@ -260,4 +260,16 @@ extends UFdao {
 
 		return $this->doSelect($query);
 	}			
+
+	public function listActiveStudsByDormitoryId($dormId) {
+	
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->dormitoryId, $dormId);
+		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_STUDENT);
+		$query->order($mapping->mac);
+
+		return $this->doSelect($query);
+	}			
 }

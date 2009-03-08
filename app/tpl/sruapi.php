@@ -32,4 +32,8 @@ extends UFtpl_Common {
 	public function penaltiesPast(array $d) {
 		$d['penalties']->write('apiPast');
 	}
+
+	public function computersLocations(array $d) {
+		$d['computers']->write('apiComputersLocations');
+	}
 }
