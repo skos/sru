@@ -573,11 +573,9 @@ extends UFtpl_Common {
 			echo $this->OK('Kara została założona');
 		}		
 		
-		echo '<h2>Aktywne kary &bull; <a href='.$url.'actions/>Ostatnie akcje</a></h2><ul>';
+		echo '<h2>Aktywne kary &bull; <a href="'.$url.'actions">Ostatnie akcje</a></h2>';
 
 		$d['penalties']->write('listPenalty');
-
-		echo '</ul>';
 	}	
 
 	public function penaltiesNotFound() {
@@ -672,10 +670,13 @@ extends UFtpl_Common {
 		$url = $this->url(0).'/penalties/';
 		$acl = $this->_srv->get('acl');		
 		
-		echo '<h2><a href='.$url.'>Aktywne kary</a> &bull; Ostatnie akcje</h2>';
-
+		echo '<h2><a href="'.$url.'">Aktywne kary</a> &bull; Ostatnie akcje</h2>';
+		
+		echo '<h3>Modyfikacje</h3><ul>';
 		$d['modified']->write('penaltyLastModified');
+		echo '</ul><h3>Nowe</h3><ul>';
 		$d['added']->write('penaltyLastAdded');
+		echo '</ul>';
 
 	}
 

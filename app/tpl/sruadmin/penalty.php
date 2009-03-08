@@ -19,7 +19,7 @@ extends UFtpl_Common {
 
 	public function listPenalty(array $d) {
 		$url = $this->url(0);
-		echo '<h3>Wszystkich kar: '. count($d) .'</h3>';
+		echo '<h3>Wszystkich kar: '. count($d) .'</h3><ul>';
 
 		foreach ($d as $c) {	
 			echo '<li>';
@@ -27,6 +27,7 @@ extends UFtpl_Common {
 			echo '<a href="'.$url.'/penalties/'.$c['id'].'">'.$this->_escape($c['userName']).' '.$this->_escape($c['userSurname']).' ('.$this->_escape($c['userLogin']).')</a>';
 			echo '</li>';
 		}
+		echo '</ul>';
 	}
 
 	public function listUserPenalty(array $d) {
@@ -77,10 +78,12 @@ extends UFtpl_Common {
 
 		foreach ($d as $c) {	
 			echo '<li>';
-			echo '<small>'.($showAddedBy?'dodana: ':'').date(self::TIME_YYMMDD_HHMM, $c['startAt']);
-			echo ' dla: <a href="'.$url.'/penalties/'.$c['id'].'">'.$this->_escape($c['userName']).' '.$this->_escape($c['userSurname']).' ('.$this->_escape($c['userLogin']).')</a>';
+			echo date(self::TIME_YYMMDD_HHMM, $c['startAt']);
+			echo ' dla: <a href="'.$url.'/penalties/'.$c['id'].'">'.$this->_escape($c['userName']).' '.$this->_escape($c['userSurname']).'</a>';
 			if ($showAddedBy == true) {
-				echo ' przez: <a href="'.$url.'/admins/'.$c['createdById'].'">'.$this->_escape($c['creatorName']).'</a>';
+				echo ' <small>przez: <a href="'.$url.'/admins/'.$c['createdById'].'">'.$this->_escape($c['creatorName']).'</a>';
+			} else {
+				echo ' <small>';
 			}
 			echo ' typu: '.$this->_escape($this->penaltyTypes[$c['typeId']]).'</small> ';
 			echo '</li>';
@@ -92,10 +95,12 @@ extends UFtpl_Common {
 
 		foreach ($d as $c) {	
 			echo '<li>';
-			echo '<small>'.($showAddedBy?'zmodyfikowana: ':'').date(self::TIME_YYMMDD_HHMM, $c['modifiedAt']);
-			echo ' dla: <a href="'.$url.'/penalties/'.$c['id'].'">'.$this->_escape($c['userName']).' '.$this->_escape($c['userSurname']).' ('.$this->_escape($c['userLogin']).')</a>';
+			echo date(self::TIME_YYMMDD_HHMM, $c['modifiedAt']);
+			echo ' dla: <a href="'.$url.'/penalties/'.$c['id'].'">'.$this->_escape($c['userName']).' '.$this->_escape($c['userSurname']).' </a>';
 			if ($showAddedBy == true) {
-				echo ' przez: <a href="'.$url.'/admins/'.$c['modifiedById'].'">'.$this->_escape($c['modifierName']).'</a>';
+				echo ' <small>przez: <a href="'.$url.'/admins/'.$c['modifiedById'].'">'.$this->_escape($c['modifierName']).'</a>';
+			} else {
+				echo ' <small>';
 			}
 			echo ' typu: '.$this->_escape($this->penaltyTypes[$c['typeId']]).'</small> ';
 			echo '</li>';
