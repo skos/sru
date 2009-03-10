@@ -301,7 +301,7 @@ extends UFbox {
 			$bean->search($tmp);
 			if (1 == count($bean)) {
 				$get->userId = $bean[0]['id'];
-				return $this->user().$this->userComputers();
+				return $this->user().$this->userComputers().$this->userInactiveComputers();
 			}
 
 			$d['users'] = $bean;
