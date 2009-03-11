@@ -321,6 +321,9 @@ if (input) {
 
 	public function apiComputersLocations(array $d) {
 		foreach ($d as $c) {
+			if ($c['banned']) {
+				$c['ip'] = str_replace('153.19.', '192.168.', $c['ip']);
+			}
 			echo $c['mac']."\t".$c['ip']."\t".$c['locationAlias']."\n";
 		}
 	}
