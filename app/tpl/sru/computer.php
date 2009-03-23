@@ -258,7 +258,7 @@ if (input) {
 	}
 
 	private function showMacHint() {
-		echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://skos.ds.pg.gda.pl/wiki/faq/rejestracja"><small>Co to jest MAC?</small></a><br/>';
+		echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://skos.ds.pg.gda.pl/wiki/faq/rejestracja"><small>Co to jest MAC?</small></a><br/>';
 	}
 
 	public function configDhcp(array $d) {
