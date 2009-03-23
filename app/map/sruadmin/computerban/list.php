@@ -21,6 +21,8 @@ extends UFmap {
 		'modifiedById' => 'p.modified_by',
 		'modifiedAt'   => 'p.modified_at',
 		'active'       => 'b.active',
+		'templateId'   => 'p.template_id',
+		'templateTitle' => 't.title',
 	);
 
 	protected $columnTypes = array(
@@ -39,6 +41,8 @@ extends UFmap {
 		'modifiedById' => self::NULL_INT, 
 		'modifiedAt'   => self::NULL_TS,
 		'active'       => self::BOOL,
+		'templateId'   => self::INT,
+		'templateTitle' => self::TEXT,
 	);
 
 	protected $tables = array(
@@ -48,11 +52,13 @@ extends UFmap {
 	protected $joins = array(
 		'c' => 'computers',
 		'p' => 'penalties',
+		't' => 'penalty_templates',
 	);
 
 	protected $joinOns = array(
 		'c' => 'b.computer_id=c.id',
 		'p' => 'b.penalty_id=p.id',
+		't' => 'p.template_id=t.id'
 	);
 
 	protected $pk = 'id';

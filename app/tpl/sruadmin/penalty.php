@@ -24,7 +24,7 @@ extends UFtpl_Common {
 		foreach ($d as $c) {	
 			echo '<li>';
 			echo '<small>'.date(self::TIME_YYMMDD, $c['startAt']).' &mdash; '.date(self::TIME_YYMMDD, $c['endAt']).'</small> ';
-			echo '<a href="'.$url.'/penalties/'.$c['id'].'">'.$this->_escape($c['userName']).' '.$this->_escape($c['userSurname']).' ('.$this->_escape($c['userLogin']).')</a>';
+			echo '<a href="'.$url.'/penalties/'.$c['id'].'">'.$this->_escape($c['userName']).' '.$this->_escape($c['userSurname']).' ('.$this->_escape($c['userLogin']).')</a> <small>za: '.$this->_escape($c['templateTitle']).'</small>';
 			echo '</li>';
 		}
 		echo '</ul>';
@@ -46,7 +46,7 @@ extends UFtpl_Common {
 				echo '<li>';
 			}
 			echo '<small>'.date(self::TIME_YYMMDD, $c['startAt']).' &mdash; '.date(self::TIME_YYMMDD_HHMM, $c['endAt']).'</small> ';
-			echo '<a href="'.$url.'/penalties/'.$c['id'].'">Typ: '.$this->_escape($this->penaltyTypes[$c['typeId']]).'</a>';
+			echo '<a href="'.$url.'/penalties/'.$c['id'].'">za: '.$this->_escape($c['templateTitle']).'</a>';
 			if ($c['endAt'] > time()) {
 				echo '</b>';
 			}
@@ -85,7 +85,7 @@ extends UFtpl_Common {
 			} else {
 				echo ' <small>';
 			}
-			echo ' typu: '.$this->_escape($this->penaltyTypes[$c['typeId']]).'</small> ';
+			echo ' za: '.$this->_escape($c['templateTitle']).'</small> ';
 			echo '</li>';
 		}
 	}
@@ -102,7 +102,7 @@ extends UFtpl_Common {
 			} else {
 				echo ' <small>';
 			}
-			echo ' typu: '.$this->_escape($this->penaltyTypes[$c['typeId']]).'</small> ';
+			echo ' za: '.$this->_escape($c['templateTitle']).'</small> ';
 			echo '</li>';
 		}
 	}
