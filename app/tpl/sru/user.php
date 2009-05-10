@@ -247,9 +247,10 @@ extends UFtpl_Common {
 			echo $this->ERR('Użytkownik nie jest zameldowany w tym pokoju.<br />'.$form->ignoreWalet('Zignoruj'.($pswd?' <strong>(ponownie wpisz hasło)</strong>':''), array('type'=>$form->CHECKBOX)));
 		}
 		echo $form->login('Login');
-		echo $form->email('E-mail');
 		echo $form->name('Imię');
 		echo $form->surname('Nazwisko');
+		echo $form->email('E-mail');
+		echo $form->gg('Gadu-Gadu');
 		
 		$tmp = array();
 		foreach ($faculties as $fac) {
@@ -274,7 +275,6 @@ extends UFtpl_Common {
 		));
 		echo $form->locationAlias('Pokój');
 		echo $form->changeComputersLocations('Zmień miejsce także wszystkim zarejestrowanym komputerom', array('type'=>$form->CHECKBOX));
-		echo $form->gg('Gadu-Gadu');
 		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
 		echo $form->_fieldset('Zmiana hasła');
 			echo $form->password('Nowe hasło', array('type'=>$form->PASSWORD,  ));

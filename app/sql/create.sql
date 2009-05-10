@@ -152,11 +152,13 @@ IF ('INSERT' = TG_OP) THEN
 	UPDATE computers
 		SET banned = true, bans = bans + 1
 		WHERE id = NEW.computer_id;
-ELSIF ('UPDATE' = TG_OP AND OLD.active = true AND NEW.active = false AND
+ELSIF ('UPDATE' = TG_OP) THEN
+IF (OLD.active = true AND NEW.active = false AND
 (SELECT count(id) AS count FROM computers_bans WHERE active AND computer_id = OLD.computer_id) < 1) THEN
 	UPDATE computers
 		SET banned = false
 		WHERE id = OLD.computer_id;
+END IF;
 END IF;
 RETURN NEW;
 END;$$
@@ -179,8 +181,10 @@ CREATE FUNCTION computer_counters() RETURNS "trigger"
 DECLARE
 	change INT := 0; -- 2 = dodaj w nowym, 1 = usun w starym, 3 = usun w starym i dodaj w nowym
 BEGIN
-IF ('INSERT' = TG_OP AND NEW.active) THEN
+IF ('INSERT' = TG_OP) THEN
+IF (NEW.active) THEN
 	change := 2;
+END IF;
 ELSIF ('UPDATE' = TG_OP) THEN
 	IF (OLD.location_id <> NEW.location_id) THEN
 		change := 3;
@@ -192,8 +196,10 @@ ELSIF ('UPDATE' = TG_OP) THEN
 	ELSIF (OLD.active = false AND NEW.active = false) THEN
 		change := 0;
 	END IF;
-ELSIF ('DELETE' = TG_OP AND OLD.active) THEN
+ELSIF ('DELETE' = TG_OP) THEN
+IF (OLD.active) THEN
 	change := 1;
+END IF;
 END IF;
 IF (1 = change OR 3 = change) THEN
 	UPDATE locations
@@ -283,25 +289,31 @@ COMMENT ON FUNCTION computer_update() IS 'archiwizacja danych komputera';
 
 CREATE FUNCTION ipv4_counters() RETURNS "trigger"
     AS $$BEGIN
-IF ('INSERT' = TG_OP AND NEW.dormitory_id IS NOT NULL) THEN
-	UPDATE dormitories
-		SET computers_max = computers_max + 1
-		WHERE id = NEW.dormitory_id;
-ELSIF ('UPDATE' = TG_OP AND NEW.dormitory_id<>OLD.dormitory_id) THEN
-	IF (OLD.dormitory_id IS NOT NULL) THEN
-		UPDATE dormitories
-			SET computers_max = computers_max - 1
-			WHERE id = OLD.dormitory_id;
-	END IF;
+IF ('INSERT' = TG_OP) THEN
 	IF (NEW.dormitory_id IS NOT NULL) THEN
 		UPDATE dormitories
 			SET computers_max = computers_max + 1
 			WHERE id = NEW.dormitory_id;
 	END IF;
-ELSIF ('DELETE' = TG_OP AND OLD.dormitory_id IS NOT NULL) THEN
-	UPDATE dormitories
-		SET computers_max = computers_max - 1
-		WHERE id = OLD.dormitory_id;
+ELSIF ('UPDATE' = TG_OP) THEN
+	IF (NEW.dormitory_id<>OLD.dormitory_id) THEN
+		IF (OLD.dormitory_id IS NOT NULL) THEN
+			UPDATE dormitories
+				SET computers_max = computers_max - 1
+				WHERE id = OLD.dormitory_id;
+		END IF;
+		IF (NEW.dormitory_id IS NOT NULL) THEN
+			UPDATE dormitories
+				SET computers_max = computers_max + 1
+				WHERE id = NEW.dormitory_id;
+		END IF;
+	END IF;
+ELSIF ('DELETE' = TG_OP) THEN
+	IF (OLD.dormitory_id IS NOT NULL) THEN
+		UPDATE dormitories
+			SET computers_max = computers_max - 1
+			WHERE id = OLD.dormitory_id;
+	END IF;
 END IF;
 RETURN NEW;
 END;$$
@@ -345,14 +357,18 @@ IF ('UPDATE' = TG_OP) THEN
 			SET users_max = users_max + NEW.users_max
 			WHERE id = NEW.dormitory_id;
 	END IF;
-ELSIF ('INSERT' = TG_OP AND NEW.users_max<>0) THEN
-	UPDATE dormitories
-		SET users_max = users_max + NEW.users_max
-		WHERE id = NEW.dormitory_id;
-ELSIF ('DELETE' = TG_OP AND OLD.users_max<>0) THEN
-	UPDATE dormitories
-		SET users_max = users_max - OLD.users_max
-		WHERE id = OLD.dormitory_id;
+ELSIF ('INSERT' = TG_OP) THEN
+	IF (NEW.users_max<>0) THEN
+		UPDATE dormitories
+			SET users_max = users_max + NEW.users_max
+			WHERE id = NEW.dormitory_id;
+	END IF;
+ELSIF ('DELETE' = TG_OP) THEN
+	IF (OLD.users_max<>0) THEN
+		UPDATE dormitories
+			SET users_max = users_max - OLD.users_max
+			WHERE id = OLD.dormitory_id;
+	END IF;
 END IF;
 RETURN NEW;
 END;$$
@@ -372,10 +388,12 @@ COMMENT ON FUNCTION location_counters() IS 'modyfikuje liczniki uzytkownikow i k
 
 CREATE FUNCTION penalty_computers_bans() RETURNS "trigger"
     AS $$BEGIN
-IF ('UPDATE' = TG_OP AND OLD.active = true AND NEW.active = false) THEN
+IF ('UPDATE' = TG_OP) THEN
+IF (OLD.active = true AND NEW.active = false) THEN
 	 UPDATE computers_bans
 		SET active = false
 		WHERE penalty_id = OLD.id;
+END IF;
 END IF;
 RETURN NEW;
 END;$$
@@ -405,10 +423,12 @@ IF ('INSERT' = TG_OP) THEN
 			SET bans = bans + 1
 			WHERE id = NEW.user_id;
 	END IF;
-ELSIF ('UPDATE' = TG_OP AND OLD.active=true AND NEW.active = false) THEN
-	UPDATE users
-		SET banned = false
-		WHERE users.id = old.user_id;
+ELSIF ('UPDATE' = TG_OP) THEN
+	IF (OLD.active=true AND NEW.active = false) THEN
+		UPDATE users
+			SET banned = false
+			WHERE users.id = old.user_id;
+	END IF;
 END IF;
 RETURN NEW;
 END;$$
@@ -446,7 +466,8 @@ $$
 
 CREATE FUNCTION user_computers() RETURNS "trigger"
     AS $$BEGIN
-IF ('UPDATE' = TG_OP AND OLD.active=true AND NEW.active=false) THEN
+IF ('UPDATE' = TG_OP) THEN
+IF (OLD.active=true AND NEW.active=false) THEN
 	UPDATE computers
 		SET	active = false,
 			modified_by = new.modified_by,
@@ -454,6 +475,7 @@ IF ('UPDATE' = TG_OP AND OLD.active=true AND NEW.active=false) THEN
 			avail_to = new.modified_at
 		WHERE user_id = NEW.id AND active = true;
 
+END IF;
 END IF;
 RETURN NEW;
 END;$$
@@ -476,8 +498,10 @@ CREATE FUNCTION user_counters() RETURNS "trigger"
 DECLARE
 	change INT := 0; -- 1 = usun ze starego, 2 = dodaj do nowego, 3 = obie akcje
 BEGIN
-IF ('INSERT' = TG_OP AND NEW.active) THEN
-	change := 2;
+IF ('INSERT' = TG_OP) THEN
+	IF (NEW.active) THEN
+		change := 2;
+	END IF;
 ELSIF ('UPDATE' = TG_OP) THEN
 	IF (OLD.location_id <> NEW.location_id) THEN
 		change := 3;
@@ -489,10 +513,12 @@ ELSIF ('UPDATE' = TG_OP) THEN
 	ELSIF (OLD.active = false AND NEW.active = false) THEN
 		change := 0;
 	END IF;
-ELSIF ('DELETE' = TG_OP AND OLD.active) THEN
-	UPDATE locations
-		SET users_count = users_count - 1
-		WHERE id = OLD.location_id;
+ELSIF ('DELETE' = TG_OP) THEN
+	IF (OLD.active) THEN
+		UPDATE locations
+			SET users_count = users_count - 1
+			WHERE id = OLD.location_id;
+	END IF;
 END IF;
 IF (1 = change OR 3 = change) THEN
 	UPDATE locations
@@ -1560,7 +1586,8 @@ CREATE TABLE users (
     "comment" pg_catalog.text DEFAULT ''::pg_catalog.text NOT NULL,
     name character varying(100) NOT NULL,
     active boolean DEFAULT true NOT NULL,
-    banned boolean DEFAULT false NOT NULL
+    banned boolean DEFAULT false NOT NULL,
+    gg pg_catalog.text
 );
 
 
@@ -1667,6 +1694,13 @@ COMMENT ON COLUMN users.active IS 'czy uzytkownik moze logowac sie do systemu?';
 --
 
 COMMENT ON COLUMN users.banned IS 'czy uzytkownik jest w tej chwili zabanowany?';
+
+
+--
+-- Name: COLUMN users.gg; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN users.gg IS 'numer gadu-gadu';
 
 
 --
