@@ -553,6 +553,7 @@ if
 	NEW.surname!=OLD.surname OR
 	NEW.login!=OLD.login OR
 	NEW.email!=OLD.email OR
+	NEW.gg!=OLD.gg OR
 	NEW.faculty_id!=OLD.faculty_id OR
 	NEW.study_year_id!=OLD.study_year_id OR
 	NEW.location_id!=OLD.location_id OR
@@ -565,6 +566,7 @@ then
 		surname,
 		login,
 		email,
+		gg,
 		faculty_id,
 		study_year_id,
 		location_id,
@@ -578,6 +580,7 @@ then
 		OLD.surname,
 		OLD.login,
 		OLD.email,
+		OLD.gg,
 		OLD.faculty_id,
 		OLD.study_year_id,
 		OLD.location_id,
@@ -1587,7 +1590,7 @@ CREATE TABLE users (
     name character varying(100) NOT NULL,
     active boolean DEFAULT true NOT NULL,
     banned boolean DEFAULT false NOT NULL,
-    gg pg_catalog.text
+    gg pg_catalog.text NOT NULL
 );
 
 
@@ -1731,7 +1734,8 @@ CREATE TABLE users_history (
     "comment" pg_catalog.text NOT NULL,
     id bigint DEFAULT nextval('users_history_id_seq'::regclass) NOT NULL,
     "login" character varying NOT NULL,
-    active boolean NOT NULL
+    active boolean NOT NULL,
+    gg pg_catalog.text DEFAULT ''::pg_catalog.text NOT NULL
 );
 
 
@@ -1817,6 +1821,13 @@ COMMENT ON COLUMN users_history."comment" IS 'komentarz';
 --
 
 COMMENT ON COLUMN users_history."login" IS 'login';
+
+
+--
+-- Name: COLUMN users_history.gg; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN users_history.gg IS 'gadu-gadu';
 
 
 --

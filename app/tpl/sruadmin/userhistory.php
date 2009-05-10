@@ -17,6 +17,7 @@ extends UFtpl_Common {
 				case 'name': $changes[] = 'Imię: '.$this->_escape($val).$arr.$this->_escape($new[$key]); break;
 				case 'surname': $changes[] = 'Nazwisko: '.$this->_escape($val).$arr.$this->_escape($new[$key]); break;
 				case 'email': $changes[] = 'E-mail: '.$val.$arr.$new[$key]; break;
+				case 'gg': $changes[] = 'Gadu-Gadu: '.$val.$arr.$new[$key]; break;
 				case 'facultyId':
 					$oldF = is_null($old['facultyAlias'])?'N/D':$old['facultyAlias'];
 					$newF = is_null($new['facultyAlias'])?'N/D':$new['facultyAlias'];
@@ -45,6 +46,7 @@ extends UFtpl_Common {
 			'name' => $current->name,
 			'surname' => $current->surname,
 			'email' => $current->email,
+			'gg' => $current->gg,
 			'facultyId' => $current->facultyId,
 			'facultyName' => $current->facultyName,
 			'facultyAlias' => $current->facultyAlias,
