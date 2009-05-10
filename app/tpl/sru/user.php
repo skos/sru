@@ -35,6 +35,8 @@ extends UFtpl_Common {
 		'surnname/regexp' => 'Nazwisko zawiera niedozwolone znaki',
 		'surname/textMax' => 'Nazwisko jest za długie',
 		'email' => 'Podaj prawidłowy email',
+		'gg' => 'Podaj prawidłowy numer',
+		'gg/textMin' => 'Numer zbyt krótki',
 		'facultyId' => 'Wybierz wydział',
 		'studyYearId' => 'Wybierz rok studiów',
 		'dormitory' => 'Wybierz akademik',
@@ -137,6 +139,8 @@ extends UFtpl_Common {
 			'labels' => $form->_labelize($tmp),
 		));
 		echo $form->locationAlias('Pokój');
+		echo $form->gg('Gadu-Gadu');
+
 		echo $form->_fieldset('Zmiana chronionych danych');
 			echo $form->password3('Aktualne hasło', array('type'=>$form->PASSWORD));
 			echo '<p>Do zmiany poniższych danych wymagane jest podanie aktualnego hasła.</p>';
@@ -181,6 +185,9 @@ extends UFtpl_Common {
 		echo '<h1>'.$this->_escape($d['name']).' '.$this->_escape($d['surname']).'</h1>';
 		echo '<p><em>Login:</em> '.$d['login'].(!$d['active']?' <strong>(konto nieaktywne)</strong>':'').'</p>';
 		echo '<p><em>E-mail:</em> <a href="mailto:'.$d['email'].'">'.$d['email'].'</a></p>';
+		if ($d['gg']) {
+			echo '<p><em>Gadu-Gadu:</em> <a href="gg:'.$d['gg'].'">'.$d['gg'].'</a></p>';
+		}
 		echo '<p><em>Miejsce:</em> <a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'/'.$d['locationAlias'].'">'.$d['locationAlias'].'</a> <small>(<a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'">'.$d['dormitoryAlias'].'</a>)</small></p>';
 		echo '<p><em>Wydział:</em> '.(!is_null($d['facultyName'])?$d['facultyName']:'N/D').'</p>';
 		echo '<p><em>Rok studiów:</em> '.self::$studyYears[$d['studyYearId']].'</p>';
@@ -267,6 +274,7 @@ extends UFtpl_Common {
 		));
 		echo $form->locationAlias('Pokój');
 		echo $form->changeComputersLocations('Zmień miejsce także wszystkim zarejestrowanym komputerom', array('type'=>$form->CHECKBOX));
+		echo $form->gg('Gadu-Gadu');
 		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
 		echo $form->_fieldset('Zmiana hasła');
 			echo $form->password('Nowe hasło', array('type'=>$form->PASSWORD,  ));
