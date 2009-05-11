@@ -11,6 +11,7 @@ extends UFmap {
 		'name'           => 'name',
 		'surname'        => 'surname',
 		'email'          => 'email',
+		'gg'             => 'gg',
 		'facultyId'      => 'faculty_id',
 		'studyYearId'    => 'study_year_id',
 		'locationId'     => 'location_id',
@@ -23,6 +24,7 @@ extends UFmap {
 		'name'           => self::TEXT,
 		'surname'        => self::TEXT,
 		'email'          => self::TEXT,
+		'gg'             => self::TEXT,
 		'facultyId'      => self::NULL_INT,
 		'studyYearId'    => self::NULL_INT,
 		'dormitory'      => self::TEXT,	// kolumna tylko do walidacji
@@ -40,6 +42,7 @@ extends UFmap {
 		'name' => array('textMin'=>1, 'textMax'=>100),
 		'surname' => array('textMin'=>1, 'textMax'=>100),
 		'email' => array('email'=>true, 'textMax'=>100),
+		'gg' => array('regexp'=>'^(|[0-9]{5,50})$'),
 		'facultyId' => array('textMin'=>1, 'regexp'=>'^(1|2|3|4|5|6|7|8|9|0)$'),
 		'studyYearId' => array('textMin'=>1, 'regexp'=>'^(1|2|3|4|5|6|7|8|9|10|11|0)$'),
 		'dormitory' => array('textMin'=>1),

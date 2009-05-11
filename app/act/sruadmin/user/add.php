@@ -13,6 +13,7 @@ extends UFact {
 			$bean = UFra::factory('UFbean_Sru_User');
 			$bean->fillFromPost(self::PREFIX, array('password'));
 			$bean->modifiedById = $this->_srv->get('session')->authAdmin;
+			$bean->gg = '';
 			$post = $this->_srv->get('req')->post->{self::PREFIX};
 
 			// wygenerowanie hasla

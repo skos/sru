@@ -14,6 +14,7 @@ extends UFact {
 			$bean = UFra::factory('UFbean_Sru_User');
 			$bean->fillFromPost(self::PREFIX);
 			$bean->active = false;
+			$bean->gg = '';
 
 			// wygenerowanie hasla
 			$password = md5($bean->login.NOW);
