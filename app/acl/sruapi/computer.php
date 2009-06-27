@@ -8,4 +8,8 @@ extends UFacl_SruApi {
 	public function showLocations() {
 		return $this->_loggedIn();
 	}
+
+	public function edit() {
+		return $this->_loggedIn();
+	}
 }

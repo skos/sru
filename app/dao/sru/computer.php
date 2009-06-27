@@ -273,4 +273,21 @@ extends UFdao {
 
 		return $this->doSelect($query);
 	}			
+
+	public function updateAvailableMaxTo($date, $modifiedBy) {
+		$mapping = $this->mapping('set');
+
+		$query = UFra::factory('UFlib_Db_Query');
+		$query->tables($mapping->tables());
+		$query->joins($mapping->joins(), $mapping->joinOns());
+		$data = array(
+			$mapping->availableMaxTo => strtotime($date),
+			$mapping->modifiedById => $modifiedBy,
+			$mapping->modifiedAt => NOW,
+		);
+		$query->values($mapping->columns(), $data,  $mapping->columnTypes());
+		$query->where($mapping->active, true);
+		$return = $this->doUpdate($query);
+		return $return;
+	}
 }

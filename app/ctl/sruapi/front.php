@@ -70,7 +70,19 @@ extends UFctl {
 							}
 						}
 					}
-					
+					break;
+				case 'computers':
+					if ($segCount > 1) {
+						switch ($req->segment(2)) {
+							case 'available':
+								// zmiana max czasu rejestracji
+								if ($segCount > 2) {
+									$get->view = 'computer/changeAvailable';
+									$get->availableMaxTo = $req->segment(3);
+								}
+								break;
+						}
+					}
 			}
 		}
 	}
@@ -81,8 +93,10 @@ extends UFctl {
 		$post = $req->post;
 		$acl = $this->_srv->get('acl');
 
-		if ('penalty' == $get->view && $req->server->is('REQUEST_METHOD') && $req->server->REQUEST_METHOD && $acl->sruApi('penalty', 'amnesty')) {
+		if ('penalty' == $get->view && $req->server->is('REQUEST_METHOD') && 'DEL' == $req->server->REQUEST_METHOD && $acl->sruApi('penalty', 'amnesty')) {
 			$act = 'Penalty_Amnesty';
+		} elseif ('computer/changeAvailable' == $get->view && $acl->sruApi('computer', 'edit')) {
+			$act = 'Computer_ChangeAvailable';
 		}
 
 		if (isset($act)) {
@@ -104,6 +118,14 @@ extends UFctl {
 					return 'SruApi_PenaltiesPast';
 				} else {
 					return 'SruApi_Error403';
+				}
+			case 'computer':
+				if ($msg->get('computer/changeAvailable/ok')) {
+					return 'SruApi_Status200';
+				} elseif ($msg->get('computer/changeAvailable/error')) {
+					return 'SruApi_Error403';
+				} else {
+					return 'SruApi_Error404';
 				}
 			case 'penalty':
 				if ($msg->get('penaltyAmnesty/ok')) {

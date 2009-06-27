@@ -12,4 +12,8 @@ extends UFbeanList {
 	public function updateLocationByUserId($location, $user, $modifiedBy=null) {
 		$this->data = $this->dao->updateLocationByUserId($location, $user, $modifiedBy);
 	}
+
+	public function updateAvailableMaxTo($date, $modifiedBy=null) {
+		return $this->dao->updateAvailableMaxTo($date, $modifiedBy);
+	}
 }
