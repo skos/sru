@@ -42,7 +42,7 @@ extends UFtpl_Common {
 			echo $this->OK('Konto zostało założone');
 		}
 		echo $d['user']->write('formAdd', $d['dormitories'], $d['faculties'], $d['admin']);
-		echo '<br/><b>Założenie konta oznacza akceptację <a href="../regulamin.html">Regulaminu SKOS PG</a>.</b><br/><br/>';
+		echo '<br/><b>Założenie konta oznacza akceptację <a href="http://skos.ds.pg.gda.pl/skos/wiki/regulamin">Regulaminu SKOS PG</a>.</b><br/><br/>';
 		echo $form->_submit('Załóż');
 		echo $form->_end();
 		echo $form->_end(true);
