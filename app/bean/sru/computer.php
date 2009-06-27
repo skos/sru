@@ -89,4 +89,10 @@ extends UFbeanSingle {
 		} catch (UFex_Dao_NotFound $e) {
 		}
 	}
+
+	protected function validateAvailableTo($val, $change) {
+		if (strtotime($val) > $this->data['availableMaxTo']) {
+			return 'tooOld';
+		}
+	}
 }

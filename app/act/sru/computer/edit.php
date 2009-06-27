@@ -12,7 +12,7 @@ extends UFact {
 		try {
 			$bean = UFra::factory('UFbean_Sru_Computer');
 			$bean->getByUserIdPK((int)$this->_srv->get('session')->auth, (int)$this->_srv->get('req')->get->computerId);
-			$bean->fillFromPost(self::PREFIX, null, array('mac'));
+			$bean->fillFromPost(self::PREFIX, null, array('mac', 'availableTo'));
 			$bean->modifiedById = null;
 			$bean->modifiedAt = NOW;
 			$bean->save();

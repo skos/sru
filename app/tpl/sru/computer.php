@@ -25,6 +25,8 @@ extends UFtpl_Common {
 		'ip/noFreeAdmin' => 'Nie ma wolnych IP w tym DS-ie',
 		'ip/notFound' => 'Niedozwolony adres IP',
 		'ip/duplicated' => 'IP zajęte',
+		'availableTo' => 'Nieprawidłowy format',
+		'availableTo/tooOld' => 'Data nie może być większa od maksymalnej daty',
 		'availableMaxTo' => 'Nieprawidłowy format',
 		'dormitory' => 'Wybierz akademik',
 		'locationAlias' => 'Podaj pokój',
@@ -116,11 +118,14 @@ extends UFtpl_Common {
 	}
 
 	public function formEdit(array $d) {
+		$d['availableTo'] = date(self::TIME_YYMMDD, $d['availableTo']);
 		$form = UFra::factory('UFlib_Form', 'computerEdit', $d, $this->errors);
 
 		echo '<h1>'.$d['host'].'.ds.pg.gda.pl</h1>';
 		echo $form->mac('MAC');
 		$this->showMacHint();
+		echo $form->availableTo('Rejestracja do');
+		echo '<small>Maksymalnie do '.date(self::TIME_YYMMDD, $d['availableMaxTo']).'</small><br />';
 	}
 
 	public function formEditAdmin(array $d, $dormitories, $history=null) {
