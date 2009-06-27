@@ -10,4 +10,6 @@ extends UFconf {
 	protected $noEthers = array(
 		'153.19.208.22',
 	);
+
+	protected $checkWalet = true;	// sprawdzac dane uzytkownikow z baza osiedla?
 }
