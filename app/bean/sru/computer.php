@@ -91,8 +91,9 @@ extends UFbeanSingle {
 	}
 
 	protected function validateAvailableTo($val, $change) {
-		if (strtotime($val) > $this->data['availableMaxTo']) {
-			return 'tooOld';
+		$time = strtotime($val);
+		if ($time > $this->data['availableMaxTo']) {
+			return 'tooNew';
 		}
 	}
 }

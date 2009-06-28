@@ -26,7 +26,7 @@ extends UFtpl_Common {
 		'ip/notFound' => 'Niedozwolony adres IP',
 		'ip/duplicated' => 'IP zajęte',
 		'availableTo' => 'Nieprawidłowy format',
-		'availableTo/tooOld' => 'Data nie może być większa od maksymalnej daty',
+		'availableTo/tooNew' => 'Data nie może być większa od maksymalnej daty',
 		'availableMaxTo' => 'Nieprawidłowy format',
 		'dormitory' => 'Wybierz akademik',
 		'locationAlias' => 'Podaj pokój',

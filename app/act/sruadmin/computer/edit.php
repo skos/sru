@@ -45,9 +45,25 @@ extends UFact {
 				}
 			}
 
+			if ('' == $post['availableMaxTo']) {
+				$post['availableMaxTo'] = 'NOW';
+				$this->_srv->get('req')->post->{self::PREFIX} = $post;
+			}
 			$bean->fillFromPost(self::PREFIX, array('typeId'));
+			if (!$bean->active && $bean->availableMaxTo > NOW) {
+				// przywrocenie aktywnosci komputera, jezeli podano
+				// przyszla date waznosci rejestracji
+				$bean->active = true;
+				$bean->availableTo = $bean->availableMaxTo;
+			}
+			if ($bean->availableMaxTo < NOW) {
+				$bean->availableMaxTo = NOW;
+			}
 			if ($bean->availableTo>$bean->availableMaxTo) {
 				$bean->availableTo = $bean->availableMaxTo;
+			}
+			if ($bean->availableTo <= NOW) {
+				$bean->active = false;
 			}
 			$bean->modifiedById = $this->_srv->get('session')->authAdmin;
 			$bean->modifiedAt = NOW;
