@@ -11,6 +11,8 @@ extends UFmap {
 		'dormitoryAlias' => 'id.alias',
 		'computerId'   => 'c.id',
 		'computerHost' => 'c.host',
+		'admin' => 'c.can_admin',
+		'banned' => 'c.banned',
 		'computerDormitoryId' => 'cl.dormitory_id',
 		'computerDormitoryAlias' => 'cd.alias',
 	);
@@ -20,6 +22,8 @@ extends UFmap {
 		'dormitoryAlias' => self::NULL_TEXT,
 		'computerId'   => self::NULL_INT,
 		'computerHost' => self::NULL_TEXT,
+		'admin'		=> self::BOOL,
+		'banned'	=> self::BOOL,
 		'computerDormitoryId' => self::NULL_INT,
 		'computerDormitoryAlias' => self::NULL_TEXT,
 	);

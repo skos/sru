@@ -18,15 +18,24 @@ extends UFtpl_Common {
 				if (isset($row[$i])) {
 					$ip =& $row[$i];
 					if (isset($ip['computerId'])) {
-						if ($ip['computerDormitoryId'] === $ip['dormitoryId']) {
-							// ds-y sie zgadzaja
-							echo '<a href="'.$url.$ip['computerId'].'" title="'.$ip['computerHost'].' ('.$ip['computerDormitoryAlias'].')">'.substr($ip['ip'], 11).'</a>';
+						if ($ip['admin']) {
+							// admin
+							echo '<a href="'.$url.$ip['computerId'].'" title="'.$ip['computerHost'].' ('.$ip['computerDormitoryAlias'].')"><ispan class="admin">'.substr($ip['ip'], 11).'</span></a>';
 						} elseif (!isset($ip['dormitoryAlias'])) {
 							// ip nie ma przypisanego ds-u
-							echo '<a href="'.$url.$ip['computerId'].'" title="'.$ip['computerHost'].' ('.$ip['computerDormitoryAlias'].') / '.$ip['ip'].' (bez DS)"><em>'.substr($ip['ip'], 11).'</em></a>';
+							echo '<a href="'.$url.$ip['computerId'].'" title="'.$ip['computerHost'].' ('.$ip['computerDormitoryAlias'].') / '.$ip['ip'].' (bez DS)"><span class="not_signed">'.substr($ip['ip'], 11).'</span></a>';
+						} else if ($ip['banned'] && $ip['computerDormitoryId'] !== $ip['dormitoryId']) {
+							// kara i ds komputera i ds ip-ka nie sa zgodne
+							echo '<a href="'.$url.$ip['computerId'].'" title="'.$ip['computerHost'].' ('.$ip['computerDormitoryAlias'].') / '.$ip['ip'].' ('.$ip['dormitoryAlias'].')"><span class="banned_wrong_dorm">'.substr($ip['ip'], 11).'</span></a>';
+						} else if ($ip['banned']) {
+							// kara
+							echo '<a href="'.$url.$ip['computerId'].'" title="'.$ip['computerHost'].' ('.$ip['computerDormitoryAlias'].') / '.$ip['ip'].' ('.$ip['dormitoryAlias'].')"><span class="banned">'.substr($ip['ip'], 11).'</span></a>';
+						} else if ($ip['computerDormitoryId'] === $ip['dormitoryId']) {
+							// ds-y sie zgadzaja
+							echo '<a href="'.$url.$ip['computerId'].'" title="'.$ip['computerHost'].' ('.$ip['computerDormitoryAlias'].')">'.substr($ip['ip'], 11).'</a>';
 						} else {
 							// ds komputera i ds ip-ka nie sa zgodne
-							echo '<a href="'.$url.$ip['computerId'].'" title="'.$ip['computerHost'].' ('.$ip['computerDormitoryAlias'].') / '.$ip['ip'].' ('.$ip['dormitoryAlias'].')"><strong>'.substr($ip['ip'], 11).'</strong></a>';
+							echo '<a href="'.$url.$ip['computerId'].'" title="'.$ip['computerHost'].' ('.$ip['computerDormitoryAlias'].') / '.$ip['ip'].' ('.$ip['dormitoryAlias'].')"><span class="wrong_dorm">'.substr($ip['ip'], 11).'</span></a>';
 						}
 					} else {
 						echo substr($ip['ip'], 11);
@@ -36,7 +45,11 @@ extends UFtpl_Common {
 			}
 			echo '</tr>';
 		}
-		echo '</table>';
+		echo '</table><br/>';
+	}
+	
+	protected function showLegend() {
+		echo '<table><tr><td>OK</td><td><span class="admin">admin</span></td><td><span class="not_signed">brak przypisania DS</span></td></tr><tr><td><span class="wrong_dorm">brak zgodności DS</span></td><td><span class="banned">kara</span></td><td><span class="banned_wrong_dorm">kara i brak zgodności DS</span></td></tr></table><br/>';
 	}
 
 	public function ips(array $d) {		
@@ -47,6 +60,8 @@ extends UFtpl_Common {
 		// pobranie pierwszej klasy (moze byc roznie zaindeksowany, dlatego takie obejscie)
 		$classOld = current($d);
 		$classOld = substr($classOld['ip'], 7, 3);
+
+		$this->showLegend();
 
 		$tmp = array();
 		foreach ($d as &$ip) {
