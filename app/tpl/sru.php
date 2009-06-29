@@ -49,10 +49,10 @@ extends UFtpl_Common {
 	}
 
 	public function userAddMailTitle(array $d) {
-		echo 'Witamy w sieci SKOS';
+		echo 'Witamy w sieci SKOS / Welcome in SKOS network';
 	}
 
-	protected function userAddMailBody(array $d, $info='') {
+	protected function userAddMailBody(array $d, $info='', $infoEn='') {
 		echo 'Witamy w Sieci Komputerowej Osiedla Studenckiego Politechniki Gdańskiej!'."\n";
 		echo "\n";
 		echo 'Jeżeli otrzymałeś/aś tę wiadomość, a nie chciałeś/aś założyć konta w SKOS PG,'."\n";
@@ -78,13 +78,34 @@ extends UFtpl_Common {
 		echo "\n";
 		echo 'Wszelkie informacje na temat funkcjonowania sieci, godzin dyżurów'."\n";
 		echo 'administratorów SKOS PG oraz Regulamin SKOS PG znajdziesz na stronie'."\n";
+		echo 'http://skos.pg.gda.pl/ , zaś bieżące komunikaty na grupie dyskusyjnej ds.siec.komunikaty'."\n";
+		echo "\n\n";
+		echo '- - - ENGLISH VERSION - - -'."\n";
+		echo 'Welcome in Gdańsk University of Technology Students’ District Computer Network (polish acronym - SKOS PG)!' . "\n";
+		echo "\n";
+		echo 'If you received this message but you didn’t want to create an account in SKOS PG, please ignore it.' . "\n";
+		echo $infoEn;
+		echo "\n";
+		echo 'If you have problems using Internet in our network, please refer to FAQ:'."\n";
 		echo 'http://skos.pg.gda.pl/'."\n";
 		echo "\n";
-		echo '-- '."\n";
-		echo 'Pozdrawiamy,'."\n";
-		echo 'Administratorzy SKOS PG'."\n";
+		echo '- - - - - - - - - - -'."\n";
+		echo "\n";
+		echo 'Account was created for:'."\n";
+		echo $d['user']->write('userAddMailBodyEnglish', $d['password']);
+		echo "\n";
+		echo 'User Register System (System Rejestracji Użytkowników): http://'.$d['host'].'/'."\n";
+		echo 'PLEASE CHANGE YOUR PASSWORD AFTER THE FIRST LOGON!'."\n";
+		echo "\n";
+		echo '- - - - - - - - - - -'."\n";
+		echo "\n";
+		echo 'Any information about our network you can find on our page'."\n";
 		echo 'http://skos.pg.gda.pl/'."\n";
-		echo '[wiadomość została wygenerowana automatycznie]'."\n";
+		echo '-- '."\n";
+		echo 'Pozdrawiamy / Regards,'."\n";
+		echo 'Administratorzy SKOS PG / SKOS PG Administrators'."\n";
+		echo 'http://skos.pg.gda.pl/'."\n";
+		echo '[wiadomość została wygenerowana automatycznie / this message was generated automatically]'."\n";
 	}
 
 	public function userAddMailBodyNoToken(array $d) {
@@ -92,7 +113,11 @@ extends UFtpl_Common {
 		$info .= 'Aby dokończyć proces aktywacji konta, zgłoś się do swojego administratora'."\n";
 		$info .= 'lokalnego z wejściówką do DS-u. Godziny, w których możesz go zastać znajdziesz'."\n";
 		$info .= 'tutaj: http://skos.pg.gda.pl/'."\n";
-		$this->userAddMailBody($d, $info);
+		$infoEn = "\n";
+		$infoEn .= 'To finish activation procedure you must go to your local administrator in his duty hours:'."\n";
+		$infoEn .= 'http://skos.pg.gda.pl/'."\n";
+		$infoEn .= 'with your tenant card.'."\n";
+		$this->userAddMailBody($d, $info, $infoEn);
 	}
 
 	public function userAddMailBodyNoInfo(array $d) {
@@ -103,7 +128,10 @@ extends UFtpl_Common {
 		$info = "\n";
 		$info .= 'Aby aktywować swoje konto, kliknij:'."\n";
 		$info .= 'http://'.$d['host'].$this->url(0).'/'.$d['token']->token."\n";
-		$this->userAddMailBody($d, $info);
+		$infoEn = "\n";
+		$infoEn .= 'To activate your account click here:'."\n";
+		$infoEn .= 'http://'.$d['host'].$this->url(0).'/'.$d['token']->token."\n";
+		$this->userAddMailBody($d, $info, $infoEn);
 	}
 
 	public function mailHeaders() {

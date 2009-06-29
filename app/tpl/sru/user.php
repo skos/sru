@@ -291,6 +291,16 @@ extends UFtpl_Common {
 		echo 'Login: '.$d['login']."\n";
 		echo 'Twoje hasło to: '.$password."\n";
 	}
+	
+	public function userAddMailBodyEnglish(array $d, $password) {
+		echo 'Name: '.$d['name']."\n";
+		echo 'Surname: '.$d['surname']."\n";
+		echo $d['dormitoryName']."\n";
+		echo 'Room: '.$d['locationAlias']."\n";
+		echo 'Login: '.$d['login']."\n";
+		echo 'Your password: '.$password."\n";
+	}
+
 
 	public function shortList(array $d) {
 		$url = $this->url(0).'/users/';
