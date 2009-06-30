@@ -133,12 +133,14 @@ extends UFtpl_Common {
 			$d = $history + $d;
 		}
 		$d['availableMaxTo'] = date(self::TIME_YYMMDD, $d['availableMaxTo']);
+		$d['availableTo'] = date(self::TIME_YYMMDD, $d['availableTo']);
 		$d['dormitory'] = $d['dormitoryId'];
 		$form = UFra::factory('UFlib_Form', 'computerEdit', $d, $this->errors);
 
 		echo $form->host('Nazwa');
 		echo $form->mac('MAC');
 		echo $form->ip('IP');
+		echo $form->availableTo('Rejestracja do');
 		echo $form->availableMaxTo('Rejestracja max do', array('id'=>'availableMaxTo'));
 		foreach ($dormitories as $dorm) {
 			$tmp[$dorm['id']] = $dorm['name'];
