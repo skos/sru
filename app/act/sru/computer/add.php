@@ -67,8 +67,9 @@ extends UFact {
 			$bean->userId = $user->id;
 			$bean->ip = $ip->ip;
 			$conf = UFra::shared('UFconf_Sru');
-			$bean->availableTo = $conf->computerAvailableTo;
+			// availableMaxTo musi byc ustawione przed availableTo
 			$bean->availableMaxTo = $conf->computerAvailableMaxTo;
+			$bean->availableTo = $conf->computerAvailableTo;
 			$bean->save();
 
 			$this->postDel(self::PREFIX);
