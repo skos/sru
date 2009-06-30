@@ -718,4 +718,38 @@ extends UFtpl_Common {
 		echo '<h3>Kary i ostrzeżenia ostatnio modyfikowane</h3>';
 		$d['modified']->write('penaltyLastModified', false);
 	}
+	
+	public function mailHeaders() {
+		echo 'MIME-Version: 1.0'."\n";
+		echo 'Content-Type: text/plain; charset=UTF-8'."\n";
+		echo 'Content-Transfer-Encoding: 8bit'."\n";
+		echo 'From: Administratorzy SKOS <adnet@ds.pg.gda.pl>'."\n";
+	}
+	
+	public function penaltyAddMailTitle(array $d) {
+		echo '[SRU] Nałozono nową karę w DS'.substr($d['user']->dormitoryAlias, 2);
+	}
+	
+	public function penaltyAddMailBody(array $d) {
+		echo 'Została nałożona nowa kara w DS'.substr($d['user']->dormitoryAlias, 2)."\n";
+		echo 'Kara trwa do: '.date(self::TIME_YYMMDD_HHMM, $d['penalty']->endAt)."\n";
+		echo 'Kara nałożona na host(y): ';
+		foreach ($d['computers'] as $computer) {
+			if (is_array($computer)) {
+				echo $computer['host'].' ';
+			} else {
+				echo $computer->host.' ';
+			}
+		}
+		echo "\n";
+		echo 'Zbanowany użytkownik: '.$d['user']->name.' "'.$d['user']->login.'" '.$d['user']->surname."\n";
+		echo 'Banujacy: '.$d['admin']->name."\n";
+		echo 'Powód: '.$d['penalty']->reason."\n";
+		echo 'Komentarz: '.$d['penalty']->comment."\n";
+	}
+	
+	
+	public function penaltyAddMailHeaders(array $d) {
+		$this->mailHeaders();
+	}
 }

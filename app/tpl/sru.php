@@ -374,4 +374,49 @@ extends UFtpl_Common {
 	public function userRecoverPasswordMailHeaders(array $d) {
 		$this->mailHeaders();
 	}
+	
+	public function penaltyAddMailTitle(array $d) {
+		echo '[SRU] Otrzymał(a/e)ś karę / You got a new ban';
+	}
+	
+	public function penaltyAddMailBody(array $d) {
+		echo 'Informujemy, że otrzymał(a/e)ś karę w SKOS PG.'."\n";
+		echo 'Kara trwa do: '.date(self::TIME_YYMMDD_HHMM, $d['penalty']->endAt)."\n";
+		echo 'Kara nałożona na host(y): ';
+		foreach ($d['computers'] as $computer) {
+			if (is_array($computer)) {
+				echo $computer['host'].' ';
+			} else {
+				echo $computer->host.' ';
+			}
+		}
+		echo 'Powód: '.$d['penalty']->reason."\n";
+		echo "\n".'Szczegółowe informacje znajdziesz w Systemie Rejestracji Użytkownika: http://sru.ds.pg.gda.pl';
+		echo ' (Twój login to: '.$d['user']->login.')';
+		echo "\n\n";
+		echo '- - - ENGLISH VERSION - - -'."\n";
+		echo 'We inform, that you got ban in out network.'."\n";
+		echo 'Banned till: '.date(self::TIME_YYMMDD_HHMM, $d['penalty']->endAt)."\n";
+		echo 'Banned host(s): ';
+		foreach ($d['computers'] as $computer) {
+			if (is_array($computer)) {
+				echo $computer['host'].' ';
+			} else {
+				echo $computer->host.' ';
+			}
+		}
+		echo 'Reason: '.$d['penalty']->reason."\n";
+		echo "\n".'You can find more information in User Register System: http://sru.ds.pg.gda.pl';
+		echo ' (your login: '.$d['user']->login.')';
+		echo "\n";
+		echo '-- '."\n";
+		echo 'Pozdrawiamy / Regards,'."\n";
+		echo 'Administratorzy SKOS PG / SKOS PG Administrators'."\n";
+		echo 'http://skos.pg.gda.pl/'."\n";
+		echo '[wiadomość została wygenerowana automatycznie / this message was generated automatically]'."\n";
+	}
+	
+	public function penaltyAddMailHeaders(array $d) {
+		$this->mailHeaders();
+	}
 }

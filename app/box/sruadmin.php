@@ -973,4 +973,17 @@ extends UFbox {
 			return '';
 		}
 	}
+	
+	public function penaltyAddMailTitle($user) {
+		$d['user'] = $user;
+		return $this->render(__FUNCTION__, $d);
+	}
+	
+	public function penaltyAddMailBody($penalty, $user, $computers, $admin) {
+		$d['penalty'] = $penalty;
+		$d['user'] = $user;
+		$d['computers'] = $computers;
+		$d['admin'] = $admin;
+		return $this->render(__FUNCTION__, $d);
+	}
 }
