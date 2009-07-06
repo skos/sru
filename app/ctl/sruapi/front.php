@@ -74,12 +74,26 @@ extends UFctl {
 				case 'computers':
 					if ($segCount > 1) {
 						switch ($req->segment(2)) {
+							case 'outdated':
+								$get->view = 'computers/outdated';
+								break;
 							case 'available':
 								// zmiana max czasu rejestracji
 								if ($segCount > 2) {
 									$get->view = 'computer/changeAvailable';
 									$get->availableMaxTo = $req->segment(3);
 								}
+								break;
+						}
+					}
+					break;
+				case 'computer':
+					if ($segCount > 1) {
+						switch ($req->segment(2)) {
+							default:
+								// pojedynczy komputer - deaktywacja
+								$get->view = 'computer';
+								$get->computerHost = $req->segment(2);
 								break;
 						}
 					}
@@ -93,8 +107,10 @@ extends UFctl {
 		$post = $req->post;
 		$acl = $this->_srv->get('acl');
 
-		if ('penalty' == $get->view && $req->server->is('REQUEST_METHOD') && 'DEL' == $req->server->REQUEST_METHOD && $acl->sruApi('penalty', 'amnesty')) {
+		if ('penalty' == $get->view && $req->server->is('REQUEST_METHOD') && 'DELETE' == $req->server->REQUEST_METHOD && $acl->sruApi('penalty', 'amnesty')) {
 			$act = 'Penalty_Amnesty';
+		} elseif ('computer' == $get->view && 'DELETE' == $req->server->REQUEST_METHOD && $acl->sruApi('computer', 'edit')) {
+			$act = 'Computer_Deactivate';
 		} elseif ('computer/changeAvailable' == $get->view && $acl->sruApi('computer', 'edit')) {
 			$act = 'Computer_ChangeAvailable';
 		}
@@ -119,10 +135,18 @@ extends UFctl {
 				} else {
 					return 'SruApi_Error403';
 				}
-			case 'computer':
+			case 'computer/changeAvailable':
 				if ($msg->get('computer/changeAvailable/ok')) {
 					return 'SruApi_Status200';
 				} elseif ($msg->get('computer/changeAvailable/error')) {
+					return 'SruApi_Error403';
+				} else {
+					return 'SruApi_Error404';
+				}
+			case 'computer':
+				if ($msg->get('computerDel/ok')) {
+					return 'SruApi_Status200';
+				} elseif ($msg->get('computerDel/error')) {
 					return 'SruApi_Error403';
 				} else {
 					return 'SruApi_Error404';
@@ -152,6 +176,12 @@ extends UFctl {
 			case 'dormitory/computers':
 				if ($acl->sruApi('computer', 'showLocations')) {
 					return 'SruApi_ComputersLocations';
+				} else {
+					return 'SruApi_Error403';
+				}
+			case 'computers/outdated':
+				if ($acl->sruApi('computer', 'show')) {
+					return 'SruApi_ComputersOutdated';
 				} else {
 					return 'SruApi_Error403';
 				}

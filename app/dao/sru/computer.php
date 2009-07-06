@@ -290,4 +290,16 @@ extends UFdao {
 		$return = $this->doUpdate($query);
 		return $return;
 	}
+
+	public function listOutdated($limit=100) {
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->active, true);
+		$query->where($mapping->availableTo, time(), $query->LT);
+		#$query->order($mapping->host, $query->ASC);
+		$query->limit($limit);
+
+		return $this->doSelect($query);
+	}
 }

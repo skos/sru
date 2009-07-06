@@ -36,4 +36,8 @@ extends UFtpl_Common {
 	public function computersLocations(array $d) {
 		$d['computers']->write('apiComputersLocations');
 	}
+
+	public function computersOutdated(array $d) {
+		$d['computers']->write('apiComputersOutdated');
+	}
 }

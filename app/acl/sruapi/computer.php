@@ -9,6 +9,10 @@ extends UFacl_SruApi {
 		return $this->_loggedIn();
 	}
 
+	public function show() {
+		return $this->_loggedIn();
+	}
+
 	public function edit() {
 		return $this->_loggedIn();
 	}

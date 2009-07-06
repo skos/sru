@@ -334,4 +334,10 @@ if (input) {
 			echo $c['mac']."\t".$c['ip']."\t".$c['locationAlias']."\n";
 		}
 	}
+
+	public function apiComputersOutdated(array $d) {
+		foreach ($d as $c) {
+			echo $c['host']."\n";
+		}
+	}
 }

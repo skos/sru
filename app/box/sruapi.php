@@ -121,4 +121,17 @@ extends UFbox {
 			return '';
 		}
 	}
+
+	public function computersOutdated() {
+		try {
+			$bean = UFra::factory('UFbean_Sru_ComputerList');
+			$bean->listOutdated();
+
+			$d['computers'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return '';
+		}
+	}
 }

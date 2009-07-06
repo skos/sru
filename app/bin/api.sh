@@ -1,4 +1,8 @@
-. $BASE/api.config
+if [ -z $BASE ]; then
+	. api.config
+else
+	. $BASE/api.config
+fi
 
 function log() {
 	echo $(date) $(basename "$0") "$1" >> "$LOGFILE"
