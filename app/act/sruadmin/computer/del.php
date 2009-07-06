@@ -15,8 +15,14 @@ extends UFact {
 			}
 			$bean = UFra::factory('UFbean_Sru_Computer');
 			$bean->getByPK((int)$this->_srv->get('req')->get->computerId);
+
+			$admin = UFra::factory('UFbean_SruAdmin_Admin');
+			$admin->getFromSession();
+
 			$bean->active = false;
 			$bean->availableTo = NOW;
+			$bean->modifiedAt = NOW;
+			$bean->modifiedById = $admin->id;
 			$bean->save();
 
 			$this->postDel(self::PREFIX);
