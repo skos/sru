@@ -731,25 +731,102 @@ extends UFtpl_Common {
 	}
 	
 	public function penaltyAddMailBody(array $d) {
-		echo 'Została nałożona nowa kara w DS'.substr($d['user']->dormitoryAlias, 2)."\n";
-		echo 'Kara trwa do: '.date(self::TIME_YYMMDD_HHMM, $d['penalty']->endAt)."\n";
-		echo 'Kara nałożona na host(y): ';
-		foreach ($d['computers'] as $computer) {
-			if (is_array($computer)) {
-				echo $computer['host'].' ';
-			} else {
-				echo $computer->host.' ';
+		if ($d['penalty']-> typeId == UFbean_SruAdmin_Penalty::TYPE_WARNING) {
+			echo 'Zostało nałożone nowe OSTRZEŻENIE';
+		} else {
+			echo 'Została nałożona nowa KARA';
+		}
+		echo ' w DS'.substr($d['user']->dormitoryAlias, 2)."\n";
+		echo 'Trwa do: '.date(self::TIME_YYMMDD_HHMM, $d['penalty']->endAt)."\n";
+		if ($d['penalty']-> typeId != UFbean_SruAdmin_Penalty::TYPE_WARNING) {
+			echo 'Kara nałożona na host(y): ';
+			foreach ($d['computers'] as $computer) {
+				if (is_array($computer)) {
+					echo $computer['host'].' ';
+				} else {
+					echo $computer->host.' ';
+				}
 			}
 		}
 		echo "\n";
-		echo 'Zbanowany użytkownik: '.$d['user']->name.' "'.$d['user']->login.'" '.$d['user']->surname."\n";
-		echo 'Banujacy: '.$d['admin']->name."\n";
+		echo 'Użytkownik: '.$d['user']->name.' "'.$d['user']->login.'" '.$d['user']->surname."\n";
+		echo 'Admin: '.$d['admin']->name."\n";
 		echo 'Powód: '.$d['penalty']->reason."\n";
 		echo 'Komentarz: '.$d['penalty']->comment."\n";
 	}
 	
 	
 	public function penaltyAddMailHeaders(array $d) {
+		$this->mailHeaders();
+	}
+
+	public function dataChangedMailTitle(array $d) {
+		echo '[SRU] Twoje dane zostały zmienione / Your data has been changed';
+	}
+	
+	public function dataChangedMailBody(array $d) {
+		echo 'Informujemy, że Twoje dane w SKOS PG uległy zmianie.'."\n\n";
+		echo 'Imię: '.$d['user']->name."\n";
+		echo 'Nazwisko: '.$d['user']->surname."\n";
+		echo $d['user']->dormitoryName."\n";
+		echo 'Pokój: '.$d['user']->locationAlias."\n";
+		echo 'Login: '.$d['user']->login."\n";
+		echo 'Numer GG: '.$d['user']->gg."\n";
+		echo "\n".'- - - ENGLISH VERSION - - -'."\n";
+		echo 'We inform, that your personal data in SKOS PG has been changed:'."\n\n";
+		echo 'Name: '.$d['user']->name."\n";
+		echo 'Surname: '.$d['user']->surname."\n";
+		echo $d['user']->dormitoryName."\n";
+		echo 'Room: '.$d['user']->locationAlias."\n";
+		echo 'Login: '.$d['user']->login."\n";
+		echo 'GG number: '.$d['user']->gg."\n";
+		echo '-- '."\n";
+		echo 'Pozdrawiamy / Regards,'."\n";
+		echo 'Administratorzy SKOS PG / SKOS PG Administrators'."\n";
+		echo 'http://skos.pg.gda.pl/'."\n";
+		echo '[wiadomość została wygenerowana automatycznie / this message was generated automatically]'."\n";
+	}
+	
+	public function dataChangedMailHeaders(array $d) {
+		$this->mailHeaders();
+	}
+
+	public function hostChangedMailTitle(array $d) {
+		echo '[SRU] Dane Twojego hosta zostały zmienione / Your host data has been changed';
+	}
+	
+	public function hostChangedMailBody(array $d) {
+		if ($d['action'] == UFact_SruAdmin_Computer_Add::PREFIX) {
+			echo 'Informujemy, że do Twojego konta w SKOS PG dodano nowego hosta.'."\n\n";
+		} else if ($d['action'] == UFact_SruAdmin_Computer_Edit::PREFIX) {
+			echo 'Informujemy, że dane Twojego hosta w SKOS PG uległy zmianie.'."\n\n";
+		} else {
+			echo 'Informujemy, że Twój host w SKOS PG został deaktywowany.'."\n\n";
+		}
+		echo 'Nazwa hosta: '.$d['host']->host."\n";
+		echo 'Ważny do: '.date(self::TIME_YYMMDD,$d['host']->availableTo)."\n";
+		echo 'IP: '.$d['host']->ip."\n";
+		echo 'Adres MAC: '.$d['host']->mac."\n";
+		echo "\n".'- - - ENGLISH VERSION - - -'."\n";
+		if ($d['action'] == UFact_SruAdmin_Computer_Add::PREFIX) {
+			echo 'We inform, that a new host has been added to your SKOS PG account.'."\n\n";
+		} else if ($d['action'] == UFact_SruAdmin_Computer_Edit::PREFIX) {
+			echo 'We inform, that data of your host in SKOS PG has been changed.'."\n\n";
+		} else {
+			echo 'We inform, that your host in SKOS PG has been deactivated.'."\n\n";
+		}
+		echo 'Host name: '.$d['host']->host."\n";
+		echo 'Available to: '.date(self::TIME_YYMMDD,$d['host']->availableTo)."\n";
+		echo 'IP: '.$d['host']->ip."\n";
+		echo 'MAC address: '.$d['host']->mac."\n";
+		echo '-- '."\n";
+		echo 'Pozdrawiamy / Regards,'."\n";
+		echo 'Administratorzy SKOS PG / SKOS PG Administrators'."\n";
+		echo 'http://skos.pg.gda.pl/'."\n";
+		echo '[wiadomość została wygenerowana automatycznie / this message was generated automatically]'."\n";
+	}
+	
+	public function hostChangedMailHeaders(array $d) {
 		$this->mailHeaders();
 	}
 }

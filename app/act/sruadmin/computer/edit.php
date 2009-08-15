@@ -11,6 +11,7 @@ extends UFact {
 	public function go() {
 		try {
 			$this->begin();
+
 			$bean = UFra::factory('UFbean_Sru_Computer');
 			$bean->getByPK((int)$this->_srv->get('req')->get->computerId);
 
@@ -68,6 +69,16 @@ extends UFact {
 			$bean->modifiedById = $this->_srv->get('session')->authAdmin;
 			$bean->modifiedAt = NOW;
 			$bean->save();
+
+			$user = UFra::factory('UFbean_Sru_User');
+			$user->getByPK($bean->userId);
+
+			// wyslanie maila do usera
+			$box = UFra::factory('UFbox_SruAdmin');
+			$title = $box->hostChangedMailTitle($bean);
+			$body = $box->hostChangedMailBody($bean, self::PREFIX);
+			$headers = $box->hostChangedMailHeaders($bean);
+			mail($user->email, $title, $body, $headers);
 
 			$this->postDel(self::PREFIX);
 			$this->markOk(self::PREFIX);

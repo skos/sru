@@ -63,6 +63,13 @@ extends UFact {
 				$comps = UFra::factory('UFbean_Sru_ComputerList');
 				$comps->updateLocationByUserId($bean->locationId, $bean->id);
 			}
+
+			// wyslanie maila do usera
+			$box = UFra::factory('UFbox_Sru');
+			$title = $box->dataChangedMailTitle($bean);
+			$body = $box->dataChangedMailBody($bean);
+			$headers = $box->dataChangedMailHeaders($bean);
+			mail($bean->email, $title, $body, $headers);
 	
 			$this->postDel(self::PREFIX);
 			$this->markOk(self::PREFIX);

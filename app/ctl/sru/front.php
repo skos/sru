@@ -9,7 +9,7 @@ extends UFctl {
 		$req = $this->_srv->get('req');
 		$get = $req->get;
 		$acl = $this->_srv->get('acl');
-		
+
 		$segCount = $req->segmentsCount();
 		if (0 == $segCount) {
 			$get->view = 'user/main';

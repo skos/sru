@@ -986,4 +986,15 @@ extends UFbox {
 		$d['admin'] = $admin;
 		return $this->render(__FUNCTION__, $d);
 	}
+
+	public function dataChangedMailBody($user) {
+		$d['user'] = $user;
+		return $this->render(__FUNCTION__, $d);
+	}
+
+	public function hostChangedMailBody($host, $action) {
+		$d['host'] = $host;
+		$d['action'] = $action;
+		return $this->render(__FUNCTION__, $d);
+	}
 }

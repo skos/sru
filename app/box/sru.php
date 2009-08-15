@@ -15,7 +15,6 @@ extends UFbox {
 
 	public function login() {
 		$bean = UFra::factory('UFbean_Sru_User');
-
 		$d['user'] = $bean;
 
 		return $this->render(__FUNCTION__, $d);
@@ -230,6 +229,17 @@ extends UFbox {
 		$d['penalty'] = $penalty;
 		$d['user'] = $user;
 		$d['computers'] = $computers;
+		return $this->render(__FUNCTION__, $d);
+	}
+
+	public function dataChangedMailBody($user) {
+		$d['user'] = $user;
+		return $this->render(__FUNCTION__, $d);
+	}
+
+	public function hostChangedMailBody($host, $action) {
+		$d['host'] = $host;
+		$d['action'] = $action;
 		return $this->render(__FUNCTION__, $d);
 	}
 }
