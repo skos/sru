@@ -28,12 +28,14 @@ extends UFact {
 			$user = UFra::factory('UFbean_Sru_User');
 			$user->getByPK($bean->userId);
 
-			// wyslanie maila do usera
-			$box = UFra::factory('UFbox_SruAdmin');
-			$title = $box->hostChangedMailTitle($bean);
-			$body = $box->hostChangedMailBody($bean, self::PREFIX);
-			$headers = $box->hostChangedMailHeaders($bean);
-			mail($user->email, $title, $body, $headers);
+			if ($conf->sendEmail) {
+				// wyslanie maila do usera
+				$box = UFra::factory('UFbox_SruAdmin');
+				$title = $box->hostChangedMailTitle($bean);
+				$body = $box->hostChangedMailBody($bean, self::PREFIX);
+				$headers = $box->hostChangedMailHeaders($bean);
+				mail($user->email, $title, $body, $headers);
+			}
 
 			$this->postDel(self::PREFIX);
 			$this->markOk(self::PREFIX);

@@ -64,12 +64,14 @@ extends UFact {
 				$comps->updateLocationByUserId($bean->locationId, $bean->id);
 			}
 
-			// wyslanie maila do usera
-			$box = UFra::factory('UFbox_Sru');
-			$title = $box->dataChangedMailTitle($bean);
-			$body = $box->dataChangedMailBody($bean);
-			$headers = $box->dataChangedMailHeaders($bean);
-			mail($bean->email, $title, $body, $headers);
+			if ($conf->sendEmail) {
+				// wyslanie maila do usera
+				$box = UFra::factory('UFbox_Sru');
+				$title = $box->dataChangedMailTitle($bean);
+				$body = $box->dataChangedMailBody($bean);
+				$headers = $box->dataChangedMailHeaders($bean);
+				mail($bean->email, $title, $body, $headers);
+			}
 	
 			$this->postDel(self::PREFIX);
 			$this->markOk(self::PREFIX);

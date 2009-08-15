@@ -65,33 +65,35 @@ extends UFact {
 				$penalty->save(false);
 			}
 
-			// wyslanie maila do usera
-			$box = UFra::factory('UFbox_Sru');
-			$title = $box->penaltyAddMailTitle($bean);
-			if (UFbean_SruAdmin_Penalty::TYPE_COMPUTERS === $bean->typeId) {
-				$computers = UFra::factory('UFbean_Sru_ComputerList');
-				try {
-					$computers->listByUserId($user->id);
-				} catch (UFex_Dao_NotFound $e) {
-					// uzytkownik nie ma komputerow
+			if ($conf->sendEmail) {
+				// wyslanie maila do usera
+				$box = UFra::factory('UFbox_Sru');
+				$title = $box->penaltyAddMailTitle($bean);
+				if (UFbean_SruAdmin_Penalty::TYPE_COMPUTERS === $bean->typeId) {
+					$computers = UFra::factory('UFbean_Sru_ComputerList');
+					try {
+						$computers->listByUserId($user->id);
+					} catch (UFex_Dao_NotFound $e) {
+						// uzytkownik nie ma komputerow
+					}
+				} elseif (UFbean_SruAdmin_Penalty::TYPE_COMPUTER === $bean->typeId) {
+					$computer = UFra::factory('UFbean_Sru_Computer');
+					$computer->getByUserIdPK($user->id, $bean->computerId);
+					$computers[0]= $computer;
 				}
-			} elseif (UFbean_SruAdmin_Penalty::TYPE_COMPUTER === $bean->typeId) {
-				$computer = UFra::factory('UFbean_Sru_Computer');
-				$computer->getByUserIdPK($user->id, $bean->computerId);
-				$computers[0]= $computer;
+				$body = $box->penaltyAddMailBody($bean, $user, $computers);
+				$headers = $box->penaltyAddMailHeaders($bean);
+				mail($user->email, $title, $body, $headers);
+				
+				// wyslanie maila do admina
+				$admin = UFra::factory('UFbean_SruAdmin_Admin');
+				$admin->getByPK($bean->createdById);
+				$box = UFra::factory('UFbox_SruAdmin');
+				$title = $box->penaltyAddMailTitle($user);
+				$body = $box->penaltyAddMailBody($bean, $user, $computers, $admin);
+				$headers = $box->penaltyAddMailHeaders($bean);
+				mail("admin-".$user->dormitoryAlias."@ds.pg.gda.pl", $title, $body, $headers);
 			}
-			$body = $box->penaltyAddMailBody($bean, $user, $computers);
-			$headers = $box->penaltyAddMailHeaders($bean);
-			mail($user->email, $title, $body, $headers);
-			
-			// wyslanie maila do admina
-			$admin = UFra::factory('UFbean_SruAdmin_Admin');
-			$admin->getByPK($bean->createdById);
-			$box = UFra::factory('UFbox_SruAdmin');
-			$title = $box->penaltyAddMailTitle($user);
-			$body = $box->penaltyAddMailBody($bean, $user, $computers, $admin);
-			$headers = $box->penaltyAddMailHeaders($bean);
-			mail("admin-".$user->dormitoryAlias."@ds.pg.gda.pl", $title, $body, $headers);
 
 			$this->postDel(self::PREFIX);
 			$this->markOk(self::PREFIX);

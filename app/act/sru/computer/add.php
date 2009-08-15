@@ -72,12 +72,14 @@ extends UFact {
 			$bean->availableTo = $conf->computerAvailableTo;
 			$bean->save();
 
-			// wyslanie maila do usera
-			$box = UFra::factory('UFbox_Sru');
-			$title = $box->hostChangedMailTitle($bean);
-			$body = $box->hostChangedMailBody($bean, self::PREFIX);
-			$headers = $box->hostChangedMailHeaders($bean);
-			mail($user->email, $title, $body, $headers);
+			if ($conf->sendEmail) {
+				// wyslanie maila do usera
+				$box = UFra::factory('UFbox_Sru');
+				$title = $box->hostChangedMailTitle($bean);
+				$body = $box->hostChangedMailBody($bean, self::PREFIX);
+				$headers = $box->hostChangedMailHeaders($bean);
+				mail($user->email, $title, $body, $headers);
+			}
 
 			$this->postDel(self::PREFIX);
 			$this->markOk(self::PREFIX);
