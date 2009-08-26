@@ -60,7 +60,7 @@ extends UFtpl_Common {
 		echo $info;
 		echo "\n";
 		echo 'W razie jakichkolwiek problemów zachęcamy do skorzystania z FAQ:'."\n";
-		echo 'http://skos.pg.gda.pl/'."\n";
+		echo 'http://skos.ds.pg.gda.pl/'."\n";
 		echo "\n";
 		echo '- - - - - - - - - - -'."\n";
 		echo "\n";
@@ -78,7 +78,7 @@ extends UFtpl_Common {
 		echo "\n";
 		echo 'Wszelkie informacje na temat funkcjonowania sieci, godzin dyżurów'."\n";
 		echo 'administratorów SKOS PG oraz Regulamin SKOS PG znajdziesz na stronie'."\n";
-		echo 'http://skos.pg.gda.pl/ , zaś bieżące komunikaty na grupie dyskusyjnej ds.siec.komunikaty'."\n";
+		echo 'http://skos.ds.pg.gda.pl/ , zaś bieżące komunikaty na grupie dyskusyjnej ds.siec.komunikaty'."\n";
 		echo "\n\n";
 		echo '- - - ENGLISH VERSION - - -'."\n";
 		echo 'Welcome in Gdańsk University of Technology Students’ District Computer Network (polish acronym - SKOS PG)!' . "\n";
@@ -87,7 +87,7 @@ extends UFtpl_Common {
 		echo $infoEn;
 		echo "\n";
 		echo 'If you have problems using Internet in our network, please refer to FAQ:'."\n";
-		echo 'http://skos.pg.gda.pl/'."\n";
+		echo 'http://skos.ds.pg.gda.pl/'."\n";
 		echo "\n";
 		echo '- - - - - - - - - - -'."\n";
 		echo "\n";
@@ -100,11 +100,11 @@ extends UFtpl_Common {
 		echo '- - - - - - - - - - -'."\n";
 		echo "\n";
 		echo 'Any information about our network you can find on our page'."\n";
-		echo 'http://skos.pg.gda.pl/'."\n";
+		echo 'http://skos.ds.pg.gda.pl/'."\n";
 		echo '-- '."\n";
 		echo 'Pozdrawiamy / Regards,'."\n";
 		echo 'Administratorzy SKOS PG / SKOS PG Administrators'."\n";
-		echo 'http://skos.pg.gda.pl/'."\n";
+		echo 'http://skos.ds.pg.gda.pl/'."\n";
 		echo '[wiadomość została wygenerowana automatycznie / this message was generated automatically]'."\n";
 	}
 
@@ -112,10 +112,10 @@ extends UFtpl_Common {
 		$info = "\n";
 		$info .= 'Aby dokończyć proces aktywacji konta, zgłoś się do swojego administratora'."\n";
 		$info .= 'lokalnego z wejściówką do DS-u. Godziny, w których możesz go zastać znajdziesz'."\n";
-		$info .= 'tutaj: http://skos.pg.gda.pl/'."\n";
+		$info .= 'tutaj: http://skos.ds.pg.gda.pl/'."\n";
 		$infoEn = "\n";
 		$infoEn .= 'To finish activation procedure you must go to your local administrator in his duty hours:'."\n";
-		$infoEn .= 'http://skos.pg.gda.pl/'."\n";
+		$infoEn .= 'http://skos.ds.pg.gda.pl/'."\n";
 		$infoEn .= 'with your tenant card.'."\n";
 		$this->userAddMailBody($d, $info, $infoEn);
 	}
@@ -358,7 +358,7 @@ extends UFtpl_Common {
 		echo '-- '."\n";
 		echo 'Pozdrawiamy / Regards,'."\n";
 		echo 'Administratorzy SKOS PG / SKOS PG Administrators'."\n";
-		echo 'http://skos.pg.gda.pl/'."\n";
+		echo 'http://skos.ds.pg.gda.pl/'."\n";
 		echo '[wiadomość została wygenerowana automatycznie / this message was generated automatically]'."\n";
 	}
 
@@ -375,7 +375,7 @@ extends UFtpl_Common {
 		echo '-- '."\n";
 		echo 'Pozdrawiamy / Regards,'."\n";
 		echo 'Administratorzy SKOS PG / SKOS PG Administrators'."\n";
-		echo 'http://skos.pg.gda.pl/'."\n";
+		echo 'http://skos.ds.pg.gda.pl/'."\n";
 		echo '[wiadomość została wygenerowana automatycznie / this message was generated automatically]'."\n";
 	}
 
@@ -436,7 +436,7 @@ extends UFtpl_Common {
 		echo '-- '."\n";
 		echo 'Pozdrawiamy / Regards,'."\n";
 		echo 'Administratorzy SKOS PG / SKOS PG Administrators'."\n";
-		echo 'http://skos.pg.gda.pl/'."\n";
+		echo 'http://skos.ds.pg.gda.pl/'."\n";
 		echo '[wiadomość została wygenerowana automatycznie / this message was generated automatically]'."\n";
 	}
 	
@@ -467,7 +467,7 @@ extends UFtpl_Common {
 		echo '-- '."\n";
 		echo 'Pozdrawiamy / Regards,'."\n";
 		echo 'Administratorzy SKOS PG / SKOS PG Administrators'."\n";
-		echo 'http://skos.pg.gda.pl/'."\n";
+		echo 'http://skos.ds.pg.gda.pl/'."\n";
 		echo '[wiadomość została wygenerowana automatycznie / this message was generated automatically]'."\n";
 	}
 	
@@ -506,7 +506,7 @@ extends UFtpl_Common {
 		echo '-- '."\n";
 		echo 'Pozdrawiamy / Regards,'."\n";
 		echo 'Administratorzy SKOS PG / SKOS PG Administrators'."\n";
-		echo 'http://skos.pg.gda.pl/'."\n";
+		echo 'http://skos.ds.pg.gda.pl/'."\n";
 		echo '[wiadomość została wygenerowana automatycznie / this message was generated automatically]'."\n";
 	}
 	
