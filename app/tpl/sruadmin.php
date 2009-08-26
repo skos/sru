@@ -719,11 +719,14 @@ extends UFtpl_Common {
 		$d['modified']->write('penaltyLastModified', false);
 	}
 	
-	public function mailHeaders() {
+	public function mailHeaders(array $headers = array()) {
 		echo 'MIME-Version: 1.0'."\n";
 		echo 'Content-Type: text/plain; charset=UTF-8'."\n";
 		echo 'Content-Transfer-Encoding: 8bit'."\n";
 		echo 'From: Administratorzy SKOS <adnet@ds.pg.gda.pl>'."\n";
+		foreach ($headers as $header => $value) {
+			echo $header.': '.$value."\n";
+		}
 	}
 	
 	public function penaltyAddMailTitle(array $d) {
@@ -757,7 +760,7 @@ extends UFtpl_Common {
 	
 	
 	public function penaltyAddMailHeaders(array $d) {
-		$this->mailHeaders();
+		$this->mailHeaders(array('X-SRU'=>'penaltyAdd'));
 	}
 
 	public function dataChangedMailTitle(array $d) {
@@ -766,20 +769,12 @@ extends UFtpl_Common {
 	
 	public function dataChangedMailBody(array $d) {
 		echo 'Informujemy, że Twoje dane w SKOS PG uległy zmianie.'."\n\n";
-		echo 'Imię: '.$d['user']->name."\n";
-		echo 'Nazwisko: '.$d['user']->surname."\n";
-		echo $d['user']->dormitoryName."\n";
-		echo 'Pokój: '.$d['user']->locationAlias."\n";
-		echo 'Login: '.$d['user']->login."\n";
-		echo 'Numer GG: '.$d['user']->gg."\n";
+		$d['user']->write('mailChange', $d['history']);
+
 		echo "\n".'- - - ENGLISH VERSION - - -'."\n";
 		echo 'We inform, that your personal data in SKOS PG has been changed:'."\n\n";
-		echo 'Name: '.$d['user']->name."\n";
-		echo 'Surname: '.$d['user']->surname."\n";
-		echo $d['user']->dormitoryName."\n";
-		echo 'Room: '.$d['user']->locationAlias."\n";
-		echo 'Login: '.$d['user']->login."\n";
-		echo 'GG number: '.$d['user']->gg."\n";
+		$d['user']->write('mailChangeEn', $d['history']);
+
 		echo '-- '."\n";
 		echo 'Pozdrawiamy / Regards,'."\n";
 		echo 'Administratorzy SKOS PG / SKOS PG Administrators'."\n";
@@ -788,7 +783,7 @@ extends UFtpl_Common {
 	}
 	
 	public function dataChangedMailHeaders(array $d) {
-		$this->mailHeaders();
+		$this->mailHeaders(array('X-SRU'=>'userChange'));
 	}
 
 	public function hostChangedMailTitle(array $d) {
@@ -803,10 +798,8 @@ extends UFtpl_Common {
 		} else {
 			echo 'Informujemy, że Twój host w SKOS PG został deaktywowany.'."\n\n";
 		}
-		echo 'Nazwa hosta: '.$d['host']->host."\n";
-		echo 'Ważny do: '.date(self::TIME_YYMMDD,$d['host']->availableTo)."\n";
-		echo 'IP: '.$d['host']->ip."\n";
-		echo 'Adres MAC: '.$d['host']->mac."\n";
+		$d['host']->write('mailChange', $d['history']);
+
 		echo "\n".'- - - ENGLISH VERSION - - -'."\n";
 		if ($d['action'] == UFact_SruAdmin_Computer_Add::PREFIX) {
 			echo 'We inform, that a new host has been added to your SKOS PG account.'."\n\n";
@@ -815,10 +808,8 @@ extends UFtpl_Common {
 		} else {
 			echo 'We inform, that your host in SKOS PG has been deactivated.'."\n\n";
 		}
-		echo 'Host name: '.$d['host']->host."\n";
-		echo 'Available to: '.date(self::TIME_YYMMDD,$d['host']->availableTo)."\n";
-		echo 'IP: '.$d['host']->ip."\n";
-		echo 'MAC address: '.$d['host']->mac."\n";
+		$d['host']->write('mailChangeEn', $d['history']);
+
 		echo '-- '."\n";
 		echo 'Pozdrawiamy / Regards,'."\n";
 		echo 'Administratorzy SKOS PG / SKOS PG Administrators'."\n";
@@ -827,6 +818,6 @@ extends UFtpl_Common {
 	}
 	
 	public function hostChangedMailHeaders(array $d) {
-		$this->mailHeaders();
+		$this->mailHeaders(array('X-SRU'=>'hostChange'));
 	}
 }

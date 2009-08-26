@@ -5,23 +5,58 @@
 class UFtpl_SruAdmin_ComputerHistory
 extends UFtpl_Common {
 
+	static protected $names = array(
+		'host' => 'Host',
+		'mac' => 'Adres MAC',
+		'ip' => 'IP',
+		'locationId' => 'Miejsce',
+		'availableTo' => 'Rejestracja do',
+		'availableMaxTo' => 'Rejestracja max do',
+		'comment' => 'Komentarz',
+		'canAdmin' => 'Administrator',
+		'active' => 'Aktywny',
+	);
+
+	static protected $namesEn = array(
+		'host' => 'Host name',
+		'mac' => 'MAC address',
+		'ip' => 'IP',
+		'locationId' => 'Room',
+		'availableTo' => 'Available to',
+		'availableMaxTo' => 'Available max to',
+		'comment' => 'Comment',
+		'canAdmin' => 'Administrator',
+		'active' => 'Active',
+	);
+
 	protected function _diff(array $old, array $new) {
 		$changes = array();
 		$arr = ' &rarr; ';
+		$names = self::$names;
 		foreach ($old as $key=>$val) {
 			if (!array_key_exists($key, $new) || $val === $new[$key]) {
 				continue;
 			}
 			switch ($key) {
-				case 'host': $changes[] = 'Host: '.$val.$arr.$new[$key]; break;
-				case 'mac': $changes[] = 'MAC: '.$val.$arr.$new[$key]; break;
-				case 'ip': $changes[] = 'IP: '.$val.$arr.$new[$key]; break;
-				case 'locationId': $changes[] = 'Miejsce: '.$old['locationAlias'].'<small>&nbsp;('.$old['dormitoryAlias'].')</small>'.$arr.$new['locationAlias'].'<small>&nbsp;('.$new['dormitoryAlias'].')</small>'; break;
-				case 'availableTo': $changes[] = 'Rejestracja do: '. date(self::TIME_YYMMDD, $val).$arr. date(self::TIME_YYMMDD, $new[$key]); break;
-				case 'availableMaxTo': $changes[] = 'Rejestracja max do: '. date(self::TIME_YYMMDD, $val).$arr. date(self::TIME_YYMMDD, $new[$key]); break;
-				case 'comment': $changes[] = 'Komentarz: <q>'.$val.'</q>'.$arr.'<q>'.$new[$key].'</q>'; break;
-				case 'canAdmin': $changes[] = 'Administrator: '.($val?'tak':'nie').$arr.($new[$key]?'tak':'nie'); break;
-				case 'active': $changes[] = 'Aktywny: '.($val?'tak':'nie').$arr.($new[$key]?'tak':'nie'); break;
+				case 'host':
+				case 'mac':
+				case 'ip':
+					$changes[] = $names[$key].': '.$val.$arr.$new[$key];
+					break;
+				case 'locationId':
+					$changes[] = $names[$key].': '.$old['locationAlias'].'<small>&nbsp;('.$old['dormitoryAlias'].')</small>'.$arr.$new['locationAlias'].'<small>&nbsp;('.$new['dormitoryAlias'].')</small>';
+					break;
+				case 'availableTo':
+				case 'availableMaxTo':
+					$changes[] = $names[$key].': '.date(self::TIME_YYMMDD, $val).$arr.date(self::TIME_YYMMDD, $new[$key]);
+					break;
+				case 'comment':
+					$changes[] = $names[$key].': <q>'.$val.'</q>'.$arr.'<q>'.$new[$key].'</q>';
+					break;
+				case 'canAdmin':
+				case 'active':
+					$changes[] = $names[$key].': '.($val?'tak':'nie').$arr.($new[$key]?'tak':'nie');
+					break;
 				default: continue;
 			}
 		}
@@ -79,5 +114,42 @@ extends UFtpl_Common {
 		echo date(self::TIME_YYMMDD_HHMM, $curr['modifiedAt']).' &mdash; '.$changed;
 		echo '<ul><li>Utworzono</li></ul>';
 		echo '</li>';
+	}
+
+	public function mail(array $d, $new, $names=null) {
+		foreach ($d as $old) {
+			break;
+		}
+		if (is_null($names)) {
+			$names = self::$names;
+		}
+		$changes = array();
+		$arr = ' => ';
+		foreach ($old as $key=>$val) {
+			switch ($key) {
+				case 'host':
+				case 'mac':
+				case 'ip':
+					echo $names[$key].': '.$val
+						.($val!==$new[$key] ? $arr.$new[$key] : '')
+						."\n";
+					break;
+				case 'locationId':
+					echo $names[$key].': '.$old['locationAlias'].' ('.$old['dormitoryAlias'].')'
+						.($val!==$new[$key] ? $arr.$new['locationAlias'].' ('.$new['dormitoryAlias'].')' : '')
+						."\n";
+					break;
+				case 'availableTo':
+					echo $names[$key].': '.date(self::TIME_YYMMDD, $val)
+						.($val!==$new[$key] ? $arr.date(self::TIME_YYMMDD, $new[$key]) : '')
+						."\n";
+					break;
+				default: continue;
+			}
+		}
+	}
+
+	public function mailEn(array $d, $new, $names=null) {
+		$this->mail($d, $new, self::$namesEn);
 	}
 }

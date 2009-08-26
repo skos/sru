@@ -8,6 +8,16 @@ extends UFbeanSingle {
 	protected $_locationId = null;
 	protected $_password = null;
 
+	protected $notifyAbout = array(
+		'login',
+		'name',
+		'surname',
+		'email',
+		'gg',
+		'studyYearId',
+		'locationId',
+	);
+
 	/**
 	 * zaszyfrowane haslo
 	 * 
@@ -75,5 +85,12 @@ extends UFbeanSingle {
 		} catch (UFex $e) {
 			return 'noRoom';
 		}
+	}
+
+	public function notifyByEmail() {
+		// nie mozna tego zrobic w jednej linii, bo php rzuca bledem "Can't use
+		// function return value in write context"
+		$ans = array_intersect(array_keys($this->dataChanged), $this->notifyAbout);
+		return !empty($ans);
 	}
 }

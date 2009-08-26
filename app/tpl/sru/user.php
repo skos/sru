@@ -313,4 +313,30 @@ extends UFtpl_Common {
 		echo '<a href="'. $this->url(0) .'/">Strona główna</a> | ';
 		echo $this->_escape($d['name']) .' &quot;'. $this->_escape($d['login']) .'&quot; '. $this->_escape($d['surname']) . ' | ';
 	}
+
+	public function mailChange(array $d, $history = null) {
+		if ($history instanceof UFbean_SruAdmin_UserHistoryList) {
+			$history->write('mail', $d);
+		} else {
+			echo 'Imię: '.$d['name']."\n";
+			echo 'Nazwisko: '.$d['surname']."\n";
+			echo $d['dormitoryName']."\n";
+			echo 'Pokój: '.$d['locationAlias']."\n";
+			echo 'Login: '.$d['login']."\n";
+			echo 'Numer GG: '.$d['gg']."\n";
+		}
+	}
+
+	public function mailChangeEn(array $d, $history = null) {
+		if ($history instanceof UFbean_SruAdmin_UserHistoryList) {
+			$history->write('mailEn', $d);
+		} else {
+			echo 'Imię: '.$d['name']."\n";
+			echo 'Nazwisko: '.$d['surname']."\n";
+			echo $d['dormitoryName']."\n";
+			echo 'Pokój: '.$d['locationAlias']."\n";
+			echo 'Login: '.$d['login']."\n";
+			echo 'Numer GG: '.$d['gg']."\n";
+		}
+	}
 }

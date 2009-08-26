@@ -10,6 +10,13 @@ extends UFbeanSingle {
 	const TYPE_ADMINISTRATION = 3;
 	const TYPE_SERVER = 4;
 
+	protected $notifyAbout = array(
+		'host',
+		'ip',
+		'mac',
+		'availableTo',
+	);
+
 	protected function validateHost($val, $change) {
 		try {
 			$bean = UFra::factory('UFbean_Sru_Computer');
@@ -95,5 +102,12 @@ extends UFbeanSingle {
 		if ($time > $this->data['availableMaxTo']) {
 			return 'tooNew';
 		}
+	}
+
+	public function notifyByEmail() {
+		// nie mozna tego zrobic w jednej linii, bo php rzuca bledem "Can't use
+		// function return value in write context"
+		$ans = array_intersect(array_keys($this->dataChanged), $this->notifyAbout);
+		return !empty($ans);
 	}
 }

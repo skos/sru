@@ -53,11 +53,13 @@ extends UFact {
 
 			$bean->save();
 
-			if ($conf->sendEmail) {
+			if ($conf->sendEmail && $bean->notifyByEmail()) {
+				$history = UFra::factory('UFbean_SruAdmin_UserHistoryList');
+				$history->listByUserId($bean->id, 1);
 				// wyslanie maila do usera
 				$box = UFra::factory('UFbox_SruAdmin');
 				$title = $box->dataChangedMailTitle($bean);
-				$body = $box->dataChangedMailBody($bean);
+				$body = $box->dataChangedMailBody($bean, $history);
 				$headers = $box->dataChangedMailHeaders($bean);
 				mail($bean->email, $title, $body, $headers);
 			}

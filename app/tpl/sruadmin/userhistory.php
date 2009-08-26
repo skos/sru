@@ -5,28 +5,55 @@
 class UFtpl_SruAdmin_UserHistory
 extends UFtpl_Common {
 
+	static protected $names = array(
+		'login' => 'Login',
+		'name' => 'Imię',
+		'surname' => 'Nazwisko',
+		'email' => 'E-mail',
+		'gg' => 'Gadu-Gadu',
+		'facultyId' => 'Wydział',
+		'locationId' => 'Miejsce',
+		'studyYearId' => 'Rok studiów',
+		'comment' => 'Komentarz',
+		'active' => 'Aktywny',
+	);
+
+	static protected $namesEn = array(
+		'login' => 'Login',
+		'name' => 'Name',
+		'surname' => 'Surname',
+		'email' => 'E-mail',
+		'gg' => 'Gadu-Gadu',
+		'facultyId' => 'Faculty',
+		'locationId' => 'Room',
+		'studyYearId' => 'Study year',
+		'comment' => 'Comment',
+		'active' => 'Active',
+	);
+
 	protected function _diff(array $old, array $new) {
 		$changes = array();
 		$arr = ' &rarr; ';
+		$names = self::$names;
 		foreach ($old as $key=>$val) {
 			if (!array_key_exists($key, $new) || $val === $new[$key]) {
 				continue;
 			}
 			switch ($key) {
-				case 'login': $changes[] = 'Login: '.$val.$arr.$new[$key]; break;
-				case 'name': $changes[] = 'Imię: '.$this->_escape($val).$arr.$this->_escape($new[$key]); break;
-				case 'surname': $changes[] = 'Nazwisko: '.$this->_escape($val).$arr.$this->_escape($new[$key]); break;
-				case 'email': $changes[] = 'E-mail: '.$val.$arr.$new[$key]; break;
-				case 'gg': $changes[] = 'Gadu-Gadu: '.$val.$arr.$new[$key]; break;
+				case 'login': $changes[] = $names[$key].': '.$val.$arr.$new[$key]; break;
+				case 'name': $changes[] = $names[$key].': '.$this->_escape($val).$arr.$this->_escape($new[$key]); break;
+				case 'surname': $changes[] = $names[$key].': '.$this->_escape($val).$arr.$this->_escape($new[$key]); break;
+				case 'email': $changes[] = $names[$key].': '.$val.$arr.$new[$key]; break;
+				case 'gg': $changes[] = $names[$key].': '.$val.$arr.$new[$key]; break;
 				case 'facultyId':
 					$oldF = is_null($old['facultyAlias'])?'N/D':$old['facultyAlias'];
 					$newF = is_null($new['facultyAlias'])?'N/D':$new['facultyAlias'];
-					$changes[] = 'Wydział: '.$oldF.$arr.$newF;
+					$changes[] = $names[$key].': '.$oldF.$arr.$newF;
 					break;
-				case 'locationId': $changes[] = 'Miejsce: '.$old['locationAlias'].'<small>&nbsp;('.$old['dormitoryAlias'].')</small>'.$arr.$new['locationAlias'].'<small>&nbsp;('.$new['dormitoryAlias'].')</small>'; break;
-				case 'studyYearId': $changes[] = 'Rok studiów: '. UFtpl_Sru_User::$studyYears[$val].$arr.UFtpl_Sru_User::$studyYears[$new[$key]]; break;
-				case 'comment': $changes[] = 'Komentarz: <q>'.$val.'</q>'.$arr.'<q>'.$new[$key].'</q>'; break;
-				case 'active': $changes[] = 'Aktywny: '.($val?'tak':'nie').$arr.($new[$key]?'tak':'nie'); break;
+				case 'locationId': $changes[] = $names[$key].': '.$old['locationAlias'].'<small>&nbsp;('.$old['dormitoryAlias'].')</small>'.$arr.$new['locationAlias'].'<small>&nbsp;('.$new['dormitoryAlias'].')</small>'; break;
+				case 'studyYearId': $changes[] = $names[$key].': '. UFtpl_Sru_User::$studyYears[$val].$arr.UFtpl_Sru_User::$studyYears[$new[$key]]; break;
+				case 'comment': $changes[] = $names[$key].': <q>'.$val.'</q>'.$arr.'<q>'.$new[$key].'</q>'; break;
+				case 'active': $changes[] = $names[$key].': '.($val?'tak':'nie').$arr.($new[$key]?'tak':'nie'); break;
 				default: continue;
 			}
 		}
@@ -86,5 +113,44 @@ extends UFtpl_Common {
 		echo date(self::TIME_YYMMDD_HHMM, $curr['modifiedAt']).' &mdash; '.$changed;
 		echo '<ul><li>Utworzono</li></ul>';
 		echo '</li>';
+	}
+
+	public function mail(array $d, $new, $names=null) {
+		foreach ($d as $old) {
+			break;
+		}
+		if (is_null($names)) {
+			$names = self::$names;
+		}
+		$changes = array();
+		$arr = ' => ';
+		foreach ($old as $key=>$val) {
+			switch ($key) {
+				case 'login':
+				case 'name':
+				case 'surname':
+				case 'gg':
+				case 'email':
+					echo $names[$key].': '.$val
+						.($val!==$new[$key] ? $arr.$new[$key] : '')
+						."\n";
+					break;
+				case 'locationId':
+					echo $names[$key].': '.$old['locationAlias'].' ('.$old['dormitoryAlias'].')'
+						.($val!==$new[$key] ? $arr.$new['locationAlias'].' ('.$new['dormitoryAlias'].')' : '')
+						."\n";
+					break;
+				case 'studyYearId':
+					echo $names[$key].': '. UFtpl_Sru_User::$studyYears[$val]
+						.($val!==$new[$key] ? $arr.UFtpl_Sru_User::$studyYears[$new[$key]] : '')
+						."\n";
+						break;
+				default: continue;
+			}
+		}
+	}
+
+	public function mailEn(array $d, $new, $names=null) {
+		$this->mail($d, $new, self::$namesEn);
 	}
 }

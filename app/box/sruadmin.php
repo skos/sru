@@ -987,14 +987,16 @@ extends UFbox {
 		return $this->render(__FUNCTION__, $d);
 	}
 
-	public function dataChangedMailBody($user) {
+	public function dataChangedMailBody($user, $history) {
 		$d['user'] = $user;
+		$d['history'] = $history;
 		return $this->render(__FUNCTION__, $d);
 	}
 
-	public function hostChangedMailBody($host, $action) {
+	public function hostChangedMailBody($host, $action, $history) {
 		$d['host'] = $host;
 		$d['action'] = $action;
+		$d['history'] = $history;
 		return $this->render(__FUNCTION__, $d);
 	}
 }

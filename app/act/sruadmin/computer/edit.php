@@ -73,11 +73,14 @@ extends UFact {
 			$user = UFra::factory('UFbean_Sru_User');
 			$user->getByPK($bean->userId);
 
-			if ($conf->sendEmail) {
+			$conf = UFra::shared('UFconf_Sru');
+			if ($conf->sendEmail && $bean->notifyByEmail()) {
+				$history = UFra::factory('UFbean_SruAdmin_ComputerHistoryList');
+				$history->listByComputerId($bean->id, 1);
 				// wyslanie maila do usera
 				$box = UFra::factory('UFbox_SruAdmin');
 				$title = $box->hostChangedMailTitle($bean);
-				$body = $box->hostChangedMailBody($bean, self::PREFIX);
+				$body = $box->hostChangedMailBody($bean, self::PREFIX, $history);
 				$headers = $box->hostChangedMailHeaders($bean);
 				mail($user->email, $title, $body, $headers);
 			}

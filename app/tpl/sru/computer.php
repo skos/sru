@@ -340,4 +340,26 @@ if (input) {
 			echo $c['host']."\n";
 		}
 	}
+
+	public function mailChange(array $d, $history = null) {
+		if ($history instanceof UFbean_SruAdmin_ComputerHistoryList) {
+			$history->write('mail', $d);
+		} else {
+			echo 'Nazwa hosta: '.$d['host']."\n";
+			echo 'Ważny do: '.date(self::TIME_YYMMDD,$d['availableTo'])."\n";
+			echo 'IP: '.$d['ip']."\n";
+			echo 'Adres MAC: '.$d['mac']."\n";
+		}
+	}
+
+	public function mailChangeEn(array $d, $history = null) {
+		if ($history instanceof UFbean_SruAdmin_ComputerHistoryList) {
+			$history->write('mailEn', $d);
+		} else {
+			echo 'Host name: '.$d['host']."\n";
+			echo 'Available to: '.date(self::TIME_YYMMDD,$d['availableTo'])."\n";
+			echo 'IP: '.$d['ip']."\n";
+			echo 'MAC address: '.$d['mac']."\n";
+		}
+	}
 }
