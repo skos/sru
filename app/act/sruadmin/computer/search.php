@@ -11,6 +11,9 @@ extends UFact {
 	public function go() {
 		try {
 			$post = $this->_srv->get('req')->post->{self::PREFIX};
+			foreach ($post as &$tmp) {
+				$tmp = trim($tmp);
+			}
 
 			$bean = UFra::factory('UFbean_Sru_Computer');
 
