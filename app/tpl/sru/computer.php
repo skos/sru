@@ -63,7 +63,7 @@ extends UFtpl_Common {
 
 	public function details(array $d) {
 		$url = $this->url(0);
-		$urlNav = $this->url(2);
+		$urlNav = $this->url(0).'/computers/'.$d['id'];
 		echo '<h1>'.$d['host'].'</h1>';
 		if (is_null($d['userId'])) {
 			$user = 'BRAK';
