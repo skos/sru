@@ -1,6 +1,6 @@
 <?
 /**
- * szablon beana usera
+ * szablon beana kary
  */
 class UFtpl_Sru_Penalty
 extends UFtpl_Common {
