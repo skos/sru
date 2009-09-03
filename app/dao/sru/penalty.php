@@ -1,6 +1,6 @@
 <?
 /**
- * user
+ * kara
  */
 class UFdao_Sru_Penalty
 extends UFdao {

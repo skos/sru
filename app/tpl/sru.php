@@ -182,6 +182,28 @@ extends UFtpl_Common {
 		echo "<h3>Hurra! Brak kar i ostrzeżeń! ;)</h3>";
 	}
 
+	public function userServicesEdit(array $d) {
+		$form = UFra::factory('UFlib_Form');
+		echo '<h2>Dostępne usługi</h2>';
+		echo $form->_start();
+
+		if ($this->_srv->get('msg')->get('serviceEdit/ok')) {
+			echo $this->OK('Zmiany zostały zapisane');
+		}
+
+		echo $d['allServices']->write('formEdit', $d['userServices']);
+		echo $form->_end(true);
+	}
+
+
+	public function titleServices() {
+		echo 'Panel Usług Użytkownika';
+	}
+
+	public function userServicesNotFound() {
+		echo "<h3>Nie znaleziono usług</h3>";
+	}
+
 	public function userMainMenu() {
 		echo '<div class="mainMenu"><h1>System Rejestracji Użytkowników</h1>';
 		if ($this->_srv->get('msg')->get('userConfirm/ok')) {

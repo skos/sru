@@ -61,6 +61,9 @@ extends UFctl {
 							case 'history':
 								$get->view = 'users/user/history';
 								break;
+							case 'servicehistory':
+								$get->view = 'users/user/servicehistory';
+								break;
 							case 'penalties':
 								$get->view = 'users/user/penalties';
 								break;
@@ -132,6 +135,8 @@ extends UFctl {
 				return 'SruAdmin_User';
 			case 'users/user/history':
 				return 'SruAdmin_UserHistory';
+			case 'users/user/servicehistory':
+				return 'SruAdmin_ServiceHistory';
 			case 'users/user/edit':
 				if ($msg->get('userDel/ok')) {
 					return 'SruAdmin_Main';

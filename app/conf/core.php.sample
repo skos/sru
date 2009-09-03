@@ -8,9 +8,9 @@ extends UFconf {
 	protected $db = array(
 		'driver'    => 'Postgresql',
 		'host'      => 'localhost',
-		'user'      => '-',
-		'pass'      => '-',
-		'base'      => '-',
+		'user'      => 'postgres',
+		'pass'      => 'qweasdzxc1',
+		'base'      => 'asdsruasd',
 		'encoding'  => 'utf8',
 		'collation' => 'utf8_polish_ci',
 		'pconnect'  => true,

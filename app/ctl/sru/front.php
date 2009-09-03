@@ -42,6 +42,9 @@ extends UFctl {
 				case 'penalties':
 					$get->view = 'user/penalties';
 					break;
+				case 'services':
+					$get->view = 'user/services';
+					break;
 				default:
 					if (UFlib_Valid::regexp($req->segment(1),'^[0-9a-f]{32}$')) {
 						$get->userToken = $req->segment(1);
@@ -78,6 +81,8 @@ extends UFctl {
 			$act = 'Computer_Add';
 		} elseif ('user/computer/edit' == $get->view && $post->is('computerDel') && $acl->sru('computer', 'del')) {
 			$act = 'Computer_Del';
+		} elseif ('user/services' == $get->view && $post->is('serviceEdit') && $acl->sru('service', 'edit')) {
+			$act = 'Service_Edit';
 		}
 
 		if (isset($act)) {
@@ -152,6 +157,12 @@ extends UFctl {
 			case 'user/penalties':
 				if ($acl->sru('user', 'logout')) {
 					return 'Sru_UserPenalties';
+				} else {
+					return 'Sru_Error403';
+				}
+			case 'user/services':
+				if ($acl->sru('user', 'logout')) {
+					return 'Sru_UserServices';
 				} else {
 					return 'Sru_Error403';
 				}

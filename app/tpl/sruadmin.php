@@ -40,7 +40,8 @@ extends UFtpl_Common {
 
 	public function menuAdmin() {
 		echo '<ul id="nav">';
-		echo '<li><a href="'.UFURL_BASE.'/admin/">Szukaj</a></li>';	
+		echo '<li><a href="'.UFURL_BASE.'/admin/">Szukaj</a></li>';
+		echo '<li><a href="'.UFURL_BASE.'/admin/services/">Usługi</a></li>';		
 		echo '<li><a href="'.UFURL_BASE.'/admin/computers/">Komputery</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/penalties/">Kary</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/dormitories/">Akademiki</a></li>';
@@ -315,12 +316,22 @@ extends UFtpl_Common {
 
 	public function userHistory(array $d) {
 		echo '<div class="user">';
-		echo '<h2>Historia zmian</h2>';
+		echo '<h2>Historia profilu</h2>';
 		echo '<ol class="history">';
 		$d['history']->write('table', $d['user']);
 		echo '</ol>';
 		echo '</div>';
 	}
+
+	public function serviceHistory(array $d) {
+		echo '<div class="user">';
+		echo '<h2>Historia usług</h2>';
+		echo '<ol class="history">';
+		$d['servicehistory']->write('table', $d['user']);
+		echo '</ol>';
+		echo '</div>';
+	}
+
 	public function titleAdmins() {
 		echo 'Administratorzy';
 	}	
@@ -718,6 +729,45 @@ extends UFtpl_Common {
 		echo '<h3>Kary i ostrzeżenia ostatnio modyfikowane</h3>';
 		$d['modified']->write('penaltyLastModified', false);
 	}
+
+	public function servicesEdit(array $d) {
+		$form = UFra::factory('UFlib_Form');
+		echo '<h2>Usługi Użytkowników</h2>';
+		
+		if ($this->_srv->get('msg')->get('serviceEdit/ok')) {
+			echo $this->OK('Zmiany zostały zapisane');
+		}
+
+		echo $form->_start();
+		if (isset($d['toActivate']))
+		{
+			echo '<h3>Do aktywacji:</h3>';
+			echo $d['toActivate']->write('formToActivate');
+		}
+		echo $form->_end(true);
+		
+		echo $form->_start();
+		if (isset($d['toDeactivate']))
+		{
+			echo '<h3>Do deaktywacji:</h3>';
+			echo $d['toDeactivate']->write('formToDeactivate');
+		}
+		echo $form->_end(true);
+
+		echo $form->_start();
+		if (isset($d['active']))
+		{
+			echo '<h3>Istniejące:</h3>';
+			echo $d['active']->write('formToDeactivate');
+		}
+		echo $form->_end(true);
+	}
+
+
+	public function titleServices() {
+		echo 'Panel Usług Użytkowników';
+	}
+
 	
 	public function mailHeaders(array $headers = array()) {
 		echo 'MIME-Version: 1.0'."\n";

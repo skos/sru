@@ -213,7 +213,7 @@ extends UFtpl_Common {
 		if (strlen($d['comment'])) {
 			echo '<p><em>Komentarz:</em></p><p class="comment">'.nl2br($this->_escape($d['comment'])).'</p>';
 		}
-		echo '<p class="nav"><a href="'.$urlUser.'">Dane</a> <a href="'. $url.'/penalties/:add/user:'.$d['id'].'">Ukarz</a> <a href="'.$urlUser.'/history">Historia zmian</a> <a href="'.$urlUser.'/:edit">Edycja</a></p>';
+		echo '<p class="nav"><a href="'.$urlUser.'">Dane</a> <a href="'. $url.'/penalties/:add/user:'.$d['id'].'">Ukarz</a> <a href="'.$urlUser.'/history">Historia profilu</a> <a href="'.$urlUser.'/servicehistory">Historia usług</a> <a href="'.$urlUser.'/:edit">Edycja</a></p>';
 	}
 
 	public function titleDetails(array $d) {

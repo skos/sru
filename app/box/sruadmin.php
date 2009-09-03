@@ -426,6 +426,24 @@ extends UFbox {
 		return $this->render(__FUNCTION__, $d);
 	}
 
+	public function serviceHistory() {
+		try {
+			$bean = $this->_getUserFromGet();
+			$d['user'] = $bean;
+		} catch (UFex_Dao_NotFound $e) {
+			return '';
+		}
+
+		$history = UFra::factory('UFbean_SruAdmin_ServiceHistoryList');
+		try {
+			$history->listByUserId($bean->id);
+		} catch (UFex_Dao_NotFound $e) {
+		}
+		$d['servicehistory'] = $history;
+
+		return $this->render(__FUNCTION__, $d);
+	}
+
 	public function adminBar() {
 		try {
 			$bean = UFra::factory('UFbean_SruAdmin_Admin');
@@ -924,6 +942,37 @@ extends UFbox {
 		{
 			return $this->render('penaltiesNotFound');
 		}
+	}
+
+	public function servicesEdit() 
+	{
+		
+		$d[''] = null;
+		try 
+		{		
+			$bean = UFra::factory('UFbean_SruAdmin_UserServiceList');	
+			$bean->listToActivate();
+			$d['toActivate'] = $bean;
+		}
+		catch (UFex_Dao_NotFound $e) {}
+
+		try 
+		{		
+			$bean = UFra::factory('UFbean_SruAdmin_UserServiceList');	
+			$bean->listToDeactivate();
+			$d['toDeactivate'] = $bean;
+		}
+		catch (UFex_Dao_NotFound $e) {}
+
+		try 
+		{
+			$bean = UFra::factory('UFbean_SruAdmin_UserServiceList');
+			$bean->listActive();
+			$d['active'] = $bean;
+		}
+		catch (UFex_Dao_NotFound $e) {}
+		
+		return $this->render(__FUNCTION__, $d);
 	}
 
 	public function ips() {

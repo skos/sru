@@ -211,6 +211,35 @@ extends UFbox {
 		}
 	}
 
+	public function userServicesEdit() {
+		try 
+		{
+			$user = UFra::factory('UFbean_Sru_User');
+			$user->getFromSession();
+			
+			try 
+			{
+				$bean = UFra::factory('UFbean_Sru_UserServiceList');	
+				$bean->listAllByUserId($user->id);
+				$d['userServices'] = $bean;
+			}
+			catch (UFex_Dao_NotFound $e) 
+			{
+				$d['userServices'] = null;
+			}
+
+			$bean = UFra::factory('UFbean_Sru_ServiceList');	
+			$bean->listAllServices();
+			$d['allServices'] = $bean;
+			
+			return $this->render(__FUNCTION__, $d);
+		} 
+		catch (UFex_Dao_NotFound $e) 
+		{
+			return $this->render('userServicesNotFound');
+		}
+	}
+
 	public function userRecoverPasswordMailBodyToken($user, $token) {
 		$d['user'] = $user;
 		$d['token'] = $token;
