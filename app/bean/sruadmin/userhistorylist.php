@@ -1,7 +1,7 @@
 <?
 /**
- * historia usług użytkownika
+ * historia uzytkownikow
  */
-class UFbean_SruAdmin_ServiceHistoryList
+class UFbean_SruAdmin_UserHistoryList
 extends UFbeanList {
 }

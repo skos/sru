@@ -213,9 +213,7 @@ extends UFtpl_Common {
 		echo '<li><a href="'.$this->url(0).'/profile">Profil</a></li>';
 		echo '<li><a href="'.$this->url(0).'/computers">Komputery</a></li>';
 		echo '<li><a href="'.$this->url(0).'/penalties">Kary</a></li>';
-		/*
 		echo '<li><a href="'.$this->url(0).'/services">Usługi</a></li>';
-		*/
 		echo '</ul></div>';
 	}
 
