@@ -49,6 +49,7 @@ img { border-style: none; }
 #main input.radio, #main input.checkbox { margin-left: 29.5%; margin-top: 0.5em; float: left; clear: both; }
 #main label.radio, #main label.checkbox { width: 66.5%; float: right; clear: none; text-align: left; }
 #main input.submit { padding: 0.2em 1em; margin-left: 29.5%; }
+#main p.services input.submit { margin-left: 0px;}
 #main textarea { width: 66.5%; }
 #main .computer p, #main .user p { margin: 0; padding: 0; clear: both; }
 #main .computer p.comment, #main .user p.comment { margin-left: 10.5em; margin-top: 1em; }

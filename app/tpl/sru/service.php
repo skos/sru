@@ -7,7 +7,7 @@ extends UFtpl_Common {
 	public function formEdit(array $d, $userServices) {
 		$form = UFra::factory('UFlib_Form', 'serviceEdit', $d);
 		echo $form->_fieldset();
-		echo '<table width="95%">';
+		echo '<table width="100%">';
 		echo '<tr><th>Nazwa usługi</th><th>Stan usługi</th><th></th></tr>';
 
 		foreach ($d as $c) {
@@ -37,11 +37,25 @@ extends UFtpl_Common {
 			echo $c['name'];
 
 			echo '</td><td>'.$active.'</td><td>';
-			if ($toActivate) echo $form->_submit('Aktywuj', array('name'=>'serviceEdit[activate]['.$c['id'].']'));
-			elseif ($toActivate === false) echo $form->_submit('Deaktywuj', array('name'=>'serviceEdit[deactivate]['.$servId.']'));
+			if ($toActivate === true || $toActivate === false) echo '<a href="#" onclick="return changeVisibility('.$c['id'].');">Zmień stan</a>';
 			echo '</td></tr>';
+			echo '<tr><td colspan="3">';
+			echo '<p class="services" id="serviceMore'.$c['id'].'" style="display: none; text-align: center;">';
+			if ($toActivate) echo $form->_submit('Aktywuj usługę: '.$c['name'], array('name'=>'serviceEdit[activate]['.$c['id'].']'));
+			elseif ($toActivate === false) echo $form->_submit('Deaktywuj usługę: '.$c['name'], array('name'=>'serviceEdit[deactivate]['.$servId.']'));
+			echo '<br/><br/></p></td></tr>';
 		}
 		echo '</table>';
 		echo $form->_end();
+?><script type="text/javascript">
+function changeVisibility(id) {
+	var tr = document.getElementById('serviceMore' + id);
+	if (tr.style.display == 'none') {
+		tr.style.display = 'block';
+	} else {
+		tr.style.display = 'none';
+	}
+}
+</script><?
 	}
 }
