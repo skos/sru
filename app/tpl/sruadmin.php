@@ -42,7 +42,6 @@ extends UFtpl_Common {
 		echo '<ul id="nav">';
 		echo '<li><a href="'.UFURL_BASE.'/admin/">Szukaj</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/services/">Usługi</a></li>';		
-		echo '<li><a href="'.UFURL_BASE.'/admin/computers/">Komputery</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/penalties/">Kary</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/dormitories/">Akademiki</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/admins/">Administratorzy</a></li>';
@@ -475,6 +474,8 @@ extends UFtpl_Common {
 
 		$d['dorms']->write('listDorms');
 
+		echo '<hr style="border-top: 1px solid #DDDDDD;"/>';
+		echo '<ul><li><a href="'.UFURL_BASE.'/admin/computers/">Serwery, administracja, organizacje</a></li></ul>';
 		echo '</div>';
 					
 	}
