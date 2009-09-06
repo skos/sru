@@ -26,6 +26,7 @@ extends UFact {
 			if ($conf->sendEmail) {
 				// wyslanie maila do usera
 				$box = UFra::factory('UFbox_Sru');
+				$bean->getByPK($bean->id);	// pobranie nowych danych, np. aliasu ds-u
 				$title = $box->hostChangedMailTitle($bean);
 				$body = $box->hostChangedMailBody($bean, self::PREFIX);
 				$headers = $box->hostChangedMailHeaders($bean);

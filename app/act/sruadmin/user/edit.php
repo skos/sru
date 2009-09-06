@@ -56,6 +56,7 @@ extends UFact {
 			if ($conf->sendEmail && $bean->notifyByEmail()) {
 				$history = UFra::factory('UFbean_SruAdmin_UserHistoryList');
 				$history->listByUserId($bean->id, 1);
+				$bean->getByPK($bean->id);	// pobranie nowych danych, np. aliasu ds-u
 				// wyslanie maila do usera
 				$box = UFra::factory('UFbox_SruAdmin');
 				$title = $box->dataChangedMailTitle($bean);

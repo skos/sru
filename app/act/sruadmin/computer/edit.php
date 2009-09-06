@@ -77,6 +77,7 @@ extends UFact {
 			if ($conf->sendEmail && $bean->notifyByEmail()) {
 				$history = UFra::factory('UFbean_SruAdmin_ComputerHistoryList');
 				$history->listByComputerId($bean->id, 1);
+				$bean->getByPK($bean->id);	// pobranie nowych danych, np. aliasu ds-u
 				// wyslanie maila do usera
 				$box = UFra::factory('UFbox_SruAdmin');
 				$title = $box->hostChangedMailTitle($bean);
