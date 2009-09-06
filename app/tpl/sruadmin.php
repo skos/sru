@@ -810,6 +810,29 @@ extends UFtpl_Common {
 	}
 	
 	
+	public function penaltyEditMailHeaders(array $d) {
+		$this->mailHeaders(array('X-SRU'=>'penaltyEdit'));
+	}
+
+	public function penaltyEditMailTitle(array $d) {
+		echo '[SRU] Zmodyfikowano karę w DS'.substr($d['user']->dormitoryAlias, 2);
+	}
+	
+	public function penaltyEditMailBody(array $d) {
+		if ($d['penalty']-> typeId == UFbean_SruAdmin_Penalty::TYPE_WARNING) {
+			echo 'Zmodyfikowano OSTRZEŻENIE';
+		} else {
+			echo 'Zmodyfikowano KARĘ';
+		}
+		echo ' w DS'.substr($d['user']->dormitoryAlias, 2)."\n";
+		echo 'Trwa do: '.date(self::TIME_YYMMDD_HHMM, $d['penalty']->endAt)."\n";
+		echo 'Użytkownik: '.$d['user']->name.' "'.$d['user']->login.'" '.$d['user']->surname."\n";
+		echo 'Admin modyfikujący: '.$d['admin']->name."\n";
+		echo 'Powód: '.$d['penalty']->reason."\n";
+		echo 'Komentarz: '.$d['penalty']->comment."\n";
+	}
+	
+	
 	public function penaltyAddMailHeaders(array $d) {
 		$this->mailHeaders(array('X-SRU'=>'penaltyAdd'));
 	}

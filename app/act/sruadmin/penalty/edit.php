@@ -42,6 +42,26 @@ extends UFact {
 			
 			$bean->save();
 
+			$conf = UFra::shared('UFconf_Sru');
+			if ($conf->sendEmail) {
+				$user = UFra::factory('UFbean_Sru_User');
+				$user->getByPK($bean->userId);
+
+				// wyslanie maila do usera
+				$box = UFra::factory('UFbox_Sru');
+				$title = $box->penaltyEditMailTitle($bean);
+				$body = $box->penaltyEditMailBody($bean, $user);
+				$headers = $box->penaltyEditMailHeaders($bean);
+				mail($user->email, $title, $body, $headers);
+				
+				// wyslanie maila do admina
+				$box = UFra::factory('UFbox_SruAdmin');
+				$title = $box->penaltyEditMailTitle($user);
+				$body = $box->penaltyEditMailBody($bean, $user, $admin);
+				$headers = $box->penaltyEditMailHeaders($bean);
+				mail("admin-".$user->dormitoryAlias."@ds.pg.gda.pl", $title, $body, $headers);
+			}
+
 			$this->postDel(self::PREFIX);
 			$this->markOk(self::PREFIX);
 			$this->commit();

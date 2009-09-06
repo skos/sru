@@ -1036,6 +1036,18 @@ extends UFbox {
 		return $this->render(__FUNCTION__, $d);
 	}
 
+	public function penaltyEditMailTitle($user) {
+		$d['user'] = $user;
+		return $this->render(__FUNCTION__, $d);
+	}
+	
+	public function penaltyEditMailBody($penalty, $user, $admin) {
+		$d['penalty'] = $penalty;
+		$d['user'] = $user;
+		$d['admin'] = $admin;
+		return $this->render(__FUNCTION__, $d);
+	}
+
 	public function dataChangedMailBody($user, $history) {
 		$d['user'] = $user;
 		$d['history'] = $history;

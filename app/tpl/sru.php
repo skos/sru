@@ -404,7 +404,11 @@ extends UFtpl_Common {
 	}
 	
 	public function penaltyAddMailTitle(array $d) {
-		echo '[SRU] Otrzymał(a/e)ś karę / You got a new ban';
+		if ($d['penalty']-> typeId == UFbean_SruAdmin_Penalty::TYPE_WARNING) {
+			echo '[SRU] Otrzymał(a/e)ś ostrzeżenie / You got a new warning';
+		} else {
+			echo '[SRU] Otrzymał(a/e)ś karę / You got a new penalty';
+		}
 	}
 	
 	public function penaltyAddMailBody(array $d) {
@@ -431,13 +435,13 @@ extends UFtpl_Common {
 		echo ' (Twój login to: '.$d['user']->login.')';
 		echo "\n\n";
 		echo '- - - ENGLISH VERSION - - -'."\n";
-		echo 'We inform, that you got '."\n";
+		echo 'We inform, that you got ';
 		if ($d['penalty']-> typeId == UFbean_SruAdmin_Penalty::TYPE_WARNING) {
 			echo 'WARNING';
 		} else {
-			echo 'BAN';
+			echo 'PENALTY';
 		}
-		echo ' in out network.';
+		echo ' in out network.'."\n";
 		echo 'Valid till: '.date(self::TIME_YYMMDD_HHMM, $d['penalty']->endAt)."\n";
 		if ($d['penalty']->typeId != UFbean_SruAdmin_Penalty::TYPE_WARNING) {
 			echo 'Banned host(s): ';
@@ -461,6 +465,51 @@ extends UFtpl_Common {
 	}
 	
 	public function penaltyAddMailHeaders(array $d) {
+		$this->mailHeaders();
+	}
+
+	public function penaltyEditMailTitle(array $d) {
+		if ($d['penalty']-> typeId == UFbean_SruAdmin_Penalty::TYPE_WARNING) {
+			echo '[SRU] Zmodyfikowano Twoje ostrzeżenie / Your warning was modified';
+		} else {
+			echo '[SRU] Zmodyfikowano Twoją karę / Your penalty was modified';
+		}
+	}
+	
+	public function penaltyEditMailBody(array $d) {
+		echo 'Informujemy, że zmodyfikowano ';
+		if ($d['penalty']-> typeId == UFbean_SruAdmin_Penalty::TYPE_WARNING) {
+			echo 'Twoje OSTRZEŻENIE';
+		} else {
+			echo 'Twoją KARĘ';
+		}
+		echo ' w SKOS PG.'."\n";
+		echo 'Teraz trwa do: '.date(self::TIME_YYMMDD_HHMM, $d['penalty']->endAt)."\n";
+		echo 'Powód: '.$d['penalty']->reason."\n";
+		echo "\n".'Szczegółowe informacje znajdziesz w Systemie Rejestracji Użytkownika: http://sru.ds.pg.gda.pl';
+		echo ' (Twój login to: '.$d['user']->login.')';
+		echo "\n\n";
+		echo '- - - ENGLISH VERSION - - -'."\n";
+		echo 'We inform, that your ';
+		if ($d['penalty']-> typeId == UFbean_SruAdmin_Penalty::TYPE_WARNING) {
+			echo 'WARNING';
+		} else {
+			echo 'PENALTY';
+		}
+		echo ' was modified in out network.'."\n";
+		echo 'Now valid till: '.date(self::TIME_YYMMDD_HHMM, $d['penalty']->endAt)."\n";
+		echo 'Reason: '.$d['penalty']->reason."\n";
+		echo "\n".'You can find more information in User Register System: http://sru.ds.pg.gda.pl';
+		echo ' (your login: '.$d['user']->login.')';
+		echo "\n";
+		echo '-- '."\n";
+		echo 'Pozdrawiamy / Regards,'."\n";
+		echo 'Administratorzy SKOS PG / SKOS PG Administrators'."\n";
+		echo 'http://skos.ds.pg.gda.pl/'."\n";
+		echo '[wiadomość została wygenerowana automatycznie / this message was generated automatically]'."\n";
+	}
+	
+	public function penaltyEditMailHeaders(array $d) {
 		$this->mailHeaders();
 	}
 

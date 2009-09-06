@@ -20,7 +20,11 @@ extends UFact {
 			$bean->endAt = NOW + $bean->duration * 24 * 3600;
 			$bean->createdAt = NOW;
 			$bean->createdById = $this->_srv->get('session')->authAdmin; 
-			$bean->amnestyAfter = NOW + $bean->after * 24 * 3600;
+			if ($bean->after > $bean->duration) {
+				$bean->amnestyAfter = $bean->endAt;
+			} else {
+				$bean->amnestyAfter = NOW + $bean->after * 24 * 3600;
+			}
 			
 			if (null === $bean->computerId) {
 				$bean->typeId = UFbean_SruAdmin_Penalty::TYPE_COMPUTERS;
@@ -65,6 +69,7 @@ extends UFact {
 				$penalty->save(false);
 			}
 
+			$conf = UFra::shared('UFconf_Sru');
 			if ($conf->sendEmail) {
 				// wyslanie maila do usera
 				$box = UFra::factory('UFbox_Sru');
@@ -80,6 +85,8 @@ extends UFact {
 					$computer = UFra::factory('UFbean_Sru_Computer');
 					$computer->getByUserIdPK($user->id, $bean->computerId);
 					$computers[0]= $computer;
+				} else {
+					$computers = null;
 				}
 				$body = $box->penaltyAddMailBody($bean, $user, $computers);
 				$headers = $box->penaltyAddMailHeaders($bean);

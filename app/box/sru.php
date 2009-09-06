@@ -253,11 +253,27 @@ extends UFbox {
 		$d['host'] = $this->_srv->get('req')->server->HTTP_HOST;
 		return $this->render(__FUNCTION__, $d);
 	}
+
+	public function penaltyAddMailTitle($penalty) {
+		$d['penalty'] = $penalty;
+		return $this->render(__FUNCTION__, $d);
+	}
 	
 	public function penaltyAddMailBody($penalty, $user, $computers) {
 		$d['penalty'] = $penalty;
 		$d['user'] = $user;
 		$d['computers'] = $computers;
+		return $this->render(__FUNCTION__, $d);
+	}
+
+	public function penaltyEditMailTitle($penalty) {
+		$d['penalty'] = $penalty;
+		return $this->render(__FUNCTION__, $d);
+	}
+	
+	public function penaltyEditMailBody($penalty, $user) {
+		$d['penalty'] = $penalty;
+		$d['user'] = $user;
 		return $this->render(__FUNCTION__, $d);
 	}
 
