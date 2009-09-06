@@ -29,6 +29,7 @@ extends UFact {
 				$walet->getFromWalet($bean->name, $bean->surname, $bean->locationAlias, $bean->dormitory);
 			} catch (UFex_Dao_NotFound $e) {
 				throw UFra::factory('UFex_Dao_DataNotValid', 'User not in Walet database', 0, E_WARNING,  array('walet' => 'notFound'));
+			}
 			$conf = UFra::shared('UFconf_Sru');
 			if ($conf->checkWalet) {
 				// sprawdzenie w bazie osiedla
