@@ -18,6 +18,12 @@ ALTER TABLE ONLY public.users_history DROP CONSTRAINT users_history_modified_by_
 ALTER TABLE ONLY public.users_history DROP CONSTRAINT users_history_location_id_fkey;
 ALTER TABLE ONLY public.users_history DROP CONSTRAINT users_history_faculty_id_fkey;
 ALTER TABLE ONLY public.users DROP CONSTRAINT users_faculty_id_fkey;
+ALTER TABLE ONLY public.services DROP CONSTRAINT services_user_id_fkey;
+ALTER TABLE ONLY public.services DROP CONSTRAINT services_serv_type_id_fkey;
+ALTER TABLE ONLY public.services_history DROP CONSTRAINT services_history_user_id_fkey;
+ALTER TABLE ONLY public.services_history DROP CONSTRAINT services_history_serv_type_id_fkey;
+ALTER TABLE ONLY public.services_history DROP CONSTRAINT services_history_serv_id_fkey;
+ALTER TABLE ONLY public.services_history DROP CONSTRAINT services_history_modified_by_fkey;
 ALTER TABLE ONLY public.penalties DROP CONSTRAINT penalties_user_id_fkey;
 ALTER TABLE ONLY public.penalties DROP CONSTRAINT penalties_modified_by_fkey;
 ALTER TABLE ONLY public.penalties DROP CONSTRAINT penalties_created_by_fkey;
@@ -38,6 +44,8 @@ ALTER TABLE ONLY public.admins DROP CONSTRAINT admins_dormitory_id_fkey;
 DROP TRIGGER users_update ON public.users;
 DROP TRIGGER users_counters ON public.users;
 DROP TRIGGER users_computers ON public.users;
+DROP TRIGGER user_service_update ON public.services;
+DROP TRIGGER user_service_create ON public.services;
 DROP TRIGGER penalties_users ON public.penalties;
 DROP TRIGGER penalties_computers_bans ON public.penalties;
 DROP TRIGGER locations_counters ON public.locations;
@@ -47,6 +55,7 @@ DROP TRIGGER computers_counters ON public.computers;
 DROP TRIGGER computer_ban_computers ON public.computers_bans;
 DROP INDEX public.users_walet_all_key;
 DROP INDEX public.users_surname_key;
+DROP INDEX public.user_id;
 DROP INDEX public.fki_penalties_user_id;
 DROP INDEX public.fki_penalties_modified_by;
 DROP INDEX public.fki_penalties_created_by;
@@ -63,6 +72,10 @@ ALTER TABLE ONLY public.users DROP CONSTRAINT users_login_key;
 ALTER TABLE ONLY public.users_history DROP CONSTRAINT users_history_pkey;
 ALTER TABLE ONLY public.text DROP CONSTRAINT text_pkey;
 ALTER TABLE ONLY public.text DROP CONSTRAINT text_alias_key;
+ALTER TABLE ONLY public.services DROP CONSTRAINT services_user_id_key;
+ALTER TABLE ONLY public.services_type DROP CONSTRAINT services_type_pkey;
+ALTER TABLE ONLY public.services DROP CONSTRAINT services_pkey;
+ALTER TABLE ONLY public.services_history DROP CONSTRAINT services_history_pkey;
 ALTER TABLE ONLY public.penalty_templates DROP CONSTRAINT penalty_templates_title_key;
 ALTER TABLE ONLY public.penalty_templates DROP CONSTRAINT penalty_templates_pkey;
 ALTER TABLE ONLY public.penalties DROP CONSTRAINT penalties_pkey;
@@ -78,6 +91,9 @@ ALTER TABLE ONLY public.computers_history DROP CONSTRAINT computers_history_pkey
 ALTER TABLE ONLY public.computers_bans DROP CONSTRAINT computers_bans_pkey;
 ALTER TABLE ONLY public.admins DROP CONSTRAINT admins_pkey;
 ALTER TABLE ONLY public.admins DROP CONSTRAINT admins_login_key;
+ALTER TABLE public.services_type ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.services_history ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.services ALTER COLUMN id DROP DEFAULT;
 DROP TABLE public.users_walet;
 DROP TABLE public.users_tokens;
 DROP SEQUENCE public.users_tokens_id_seq;
@@ -88,6 +104,13 @@ DROP TABLE public.users;
 DROP SEQUENCE public.users_id_seq;
 DROP TABLE public.text;
 DROP SEQUENCE public.text_id_seq;
+DROP SEQUENCE public.services_type_id_seq;
+DROP SEQUENCE public.services_id_seq;
+DROP VIEW public.services_history_view;
+DROP TABLE public.services_type;
+DROP SEQUENCE public.services_history_id_seq;
+DROP TABLE public.services_history;
+DROP TABLE public.services;
 DROP TABLE public.penalty_templates;
 DROP SEQUENCE public.penalty_templates_id;
 DROP TABLE public.penalties;
@@ -109,6 +132,8 @@ DROP SEQUENCE public.bans_id_seq;
 DROP TABLE public.admins;
 DROP SEQUENCE public.admins_id_seq;
 DROP FUNCTION public.user_update();
+DROP FUNCTION public.user_service_update();
+DROP FUNCTION public.user_service_create();
 DROP FUNCTION public.user_counters();
 DROP FUNCTION public.user_computers();
 DROP FUNCTION public.remove_bans();
@@ -132,7 +157,7 @@ CREATE SCHEMA public;
 -- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: -
 --
 
-COMMENT ON SCHEMA public IS 'Standard public schema';
+COMMENT ON SCHEMA public IS 'standard public schema';
 
 
 --
@@ -142,23 +167,23 @@ COMMENT ON SCHEMA public IS 'Standard public schema';
 CREATE PROCEDURAL LANGUAGE plpgsql;
 
 
+SET search_path = public, pg_catalog;
+
 --
 -- Name: computer_ban_computers(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION computer_ban_computers() RETURNS "trigger"
+CREATE FUNCTION computer_ban_computers() RETURNS trigger
     AS $$BEGIN
 IF ('INSERT' = TG_OP) THEN
 	UPDATE computers
 		SET banned = true, bans = bans + 1
 		WHERE id = NEW.computer_id;
-ELSIF ('UPDATE' = TG_OP) THEN
-IF (OLD.active = true AND NEW.active = false AND
+ELSIF ('UPDATE' = TG_OP AND OLD.active = true AND NEW.active = false AND
 (SELECT count(id) AS count FROM computers_bans WHERE active AND computer_id = OLD.computer_id) < 1) THEN
 	UPDATE computers
 		SET banned = false
 		WHERE id = OLD.computer_id;
-END IF;
 END IF;
 RETURN NEW;
 END;$$
@@ -176,15 +201,13 @@ COMMENT ON FUNCTION computer_ban_computers() IS 'modyfikuje komputery, ktorych d
 -- Name: computer_counters(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION computer_counters() RETURNS "trigger"
+CREATE FUNCTION computer_counters() RETURNS trigger
     AS $$
 DECLARE
 	change INT := 0; -- 2 = dodaj w nowym, 1 = usun w starym, 3 = usun w starym i dodaj w nowym
 BEGIN
-IF ('INSERT' = TG_OP) THEN
-IF (NEW.active) THEN
+IF ('INSERT' = TG_OP AND NEW.active) THEN
 	change := 2;
-END IF;
 ELSIF ('UPDATE' = TG_OP) THEN
 	IF (OLD.location_id <> NEW.location_id) THEN
 		change := 3;
@@ -196,10 +219,8 @@ ELSIF ('UPDATE' = TG_OP) THEN
 	ELSIF (OLD.active = false AND NEW.active = false) THEN
 		change := 0;
 	END IF;
-ELSIF ('DELETE' = TG_OP) THEN
-IF (OLD.active) THEN
+ELSIF ('DELETE' = TG_OP AND OLD.active) THEN
 	change := 1;
-END IF;
 END IF;
 IF (1 = change OR 3 = change) THEN
 	UPDATE locations
@@ -227,7 +248,7 @@ COMMENT ON FUNCTION computer_counters() IS 'modyfikuje liczniki liczace komputer
 -- Name: computer_update(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION computer_update() RETURNS "trigger"
+CREATE FUNCTION computer_update() RETURNS trigger
     AS $$BEGIN
 if
 	OLD.host!=NEW.host OR
@@ -287,7 +308,7 @@ COMMENT ON FUNCTION computer_update() IS 'archiwizacja danych komputera';
 -- Name: ipv4_counters(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION ipv4_counters() RETURNS "trigger"
+CREATE FUNCTION ipv4_counters() RETURNS trigger
     AS $$BEGIN
 IF ('INSERT' = TG_OP) THEN
 	IF (NEW.dormitory_id IS NOT NULL) THEN
@@ -331,7 +352,7 @@ COMMENT ON FUNCTION ipv4_counters() IS 'modyfikuje liczniki ip-kow';
 -- Name: location_counters(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION location_counters() RETURNS "trigger"
+CREATE FUNCTION location_counters() RETURNS trigger
     AS $$BEGIN
 IF ('UPDATE' = TG_OP) THEN
 	IF (OLD.computers_count <> NEW.computers_count) THEN
@@ -386,7 +407,7 @@ COMMENT ON FUNCTION location_counters() IS 'modyfikuje liczniki uzytkownikow i k
 -- Name: penalty_computers_bans(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION penalty_computers_bans() RETURNS "trigger"
+CREATE FUNCTION penalty_computers_bans() RETURNS trigger
     AS $$BEGIN
 IF ('UPDATE' = TG_OP) THEN
 IF (OLD.active = true AND NEW.active = false) THEN
@@ -411,7 +432,7 @@ COMMENT ON FUNCTION penalty_computers_bans() IS 'modyfikuje bany na komputery';
 -- Name: penalty_users(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION penalty_users() RETURNS "trigger"
+CREATE FUNCTION penalty_users() RETURNS trigger
     AS $$BEGIN
 IF ('INSERT' = TG_OP) THEN
 	IF NEW.type_id<>1 THEN	-- nie ostrzezenie
@@ -464,7 +485,7 @@ $$
 -- Name: user_computers(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION user_computers() RETURNS "trigger"
+CREATE FUNCTION user_computers() RETURNS trigger
     AS $$BEGIN
 IF ('UPDATE' = TG_OP) THEN
 IF (OLD.active=true AND NEW.active=false) THEN
@@ -493,7 +514,7 @@ COMMENT ON FUNCTION user_computers() IS 'zmienia dane komputerow';
 -- Name: user_counters(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION user_counters() RETURNS "trigger"
+CREATE FUNCTION user_counters() RETURNS trigger
     AS $$
 DECLARE
 	change INT := 0; -- 1 = usun ze starego, 2 = dodaj do nowego, 3 = obie akcje
@@ -543,10 +564,71 @@ COMMENT ON FUNCTION user_counters() IS 'modyfikuje liczniki liczace uzytkownikow
 
 
 --
+-- Name: user_service_create(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION user_service_create() RETURNS trigger
+    AS $$BEGIN
+	INSERT INTO services_history (
+		user_id,
+		serv_id,
+		serv_type_id,
+		modified_by,
+		active
+	) VALUES (
+		NEW.user_id,
+		NEW.id,
+		NEW.serv_type_id,
+		NEW.modified_by,
+		'1'
+	);
+return NEW;
+END;$$
+    LANGUAGE plpgsql;
+
+
+--
+-- Name: user_service_update(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION user_service_update() RETURNS trigger
+    AS $$DECLARE
+	state INT; -- 2 = usluga aktywna, 3 = usluga czeka na deaktywacje, 4 = usluga usunieta
+
+BEGIN
+IF (NEW.active = true) THEN
+	state := 2;
+ELSIF (NEW.active is NULL) THEN
+	state := 3;
+ELSE state := 4;
+END IF;
+INSERT INTO services_history (
+	user_id,
+	serv_id,
+	serv_type_id,
+	modified_by,
+	active
+) VALUES (
+	NEW.user_id,
+	NEW.id,
+	NEW.serv_type_id,
+	NEW.modified_by,
+	state
+);
+
+IF (state = 4) THEN 
+	DELETE FROM services WHERE id = NEW.id;
+END IF;
+RETURN NEW;
+END;$$
+    LANGUAGE plpgsql;
+
+
+--
 -- Name: user_update(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION user_update() RETURNS "trigger"
+CREATE FUNCTION user_update() RETURNS trigger
     AS $$BEGIN
 if
 	NEW.name!=OLD.name OR
@@ -623,8 +705,8 @@ SET default_with_oids = false;
 
 CREATE TABLE admins (
     id bigint DEFAULT nextval('admins_id_seq'::regclass) NOT NULL,
-    "login" character varying NOT NULL,
-    "password" character(32) NOT NULL,
+    login character varying NOT NULL,
+    password character(32) NOT NULL,
     last_login_at timestamp without time zone,
     last_login_ip inet,
     name character varying(255) NOT NULL,
@@ -648,17 +730,17 @@ COMMENT ON TABLE admins IS 'administratorzy';
 
 
 --
--- Name: COLUMN admins."login"; Type: COMMENT; Schema: public; Owner: -
+-- Name: COLUMN admins.login; Type: COMMENT; Schema: public; Owner: -
 --
 
-COMMENT ON COLUMN admins."login" IS 'login';
+COMMENT ON COLUMN admins.login IS 'login';
 
 
 --
--- Name: COLUMN admins."password"; Type: COMMENT; Schema: public; Owner: -
+-- Name: COLUMN admins.password; Type: COMMENT; Schema: public; Owner: -
 --
 
-COMMENT ON COLUMN admins."password" IS 'haslo zakodowane md5';
+COMMENT ON COLUMN admins.password IS 'haslo zakodowane md5';
 
 
 --
@@ -782,7 +864,7 @@ CREATE TABLE computers (
     avail_max_to timestamp without time zone NOT NULL,
     modified_by bigint,
     modified_at timestamp without time zone DEFAULT now() NOT NULL,
-    "comment" pg_catalog.text DEFAULT ''::pg_catalog.text NOT NULL,
+    comment pg_catalog.text DEFAULT ''::pg_catalog.text NOT NULL,
     active boolean DEFAULT true NOT NULL,
     type_id smallint DEFAULT 1 NOT NULL,
     bans integer DEFAULT 0 NOT NULL,
@@ -862,10 +944,10 @@ COMMENT ON COLUMN computers.modified_at IS 'czas powstania tej wersji';
 
 
 --
--- Name: COLUMN computers."comment"; Type: COMMENT; Schema: public; Owner: -
+-- Name: COLUMN computers.comment; Type: COMMENT; Schema: public; Owner: -
 --
 
-COMMENT ON COLUMN computers."comment" IS 'komentarz';
+COMMENT ON COLUMN computers.comment IS 'komentarz';
 
 
 --
@@ -984,7 +1066,7 @@ CREATE TABLE computers_history (
     avail_to timestamp without time zone NOT NULL,
     modified_by bigint,
     modified_at timestamp without time zone DEFAULT now() NOT NULL,
-    "comment" pg_catalog.text NOT NULL,
+    comment pg_catalog.text NOT NULL,
     can_admin boolean DEFAULT false NOT NULL,
     id bigint DEFAULT nextval('computers_history_id_seq'::regclass) NOT NULL,
     avail_max_to timestamp without time zone NOT NULL,
@@ -1056,10 +1138,10 @@ COMMENT ON COLUMN computers_history.modified_at IS 'czas powstania tej wersji';
 
 
 --
--- Name: COLUMN computers_history."comment"; Type: COMMENT; Schema: public; Owner: -
+-- Name: COLUMN computers_history.comment; Type: COMMENT; Schema: public; Owner: -
 --
 
-COMMENT ON COLUMN computers_history."comment" IS 'komentarz';
+COMMENT ON COLUMN computers_history.comment IS 'komentarz';
 
 
 --
@@ -1238,7 +1320,7 @@ CREATE SEQUENCE locations_id_seq
 CREATE TABLE locations (
     id bigint DEFAULT nextval('locations_id_seq'::regclass) NOT NULL,
     alias character varying(10) NOT NULL,
-    "comment" pg_catalog.text DEFAULT ''::pg_catalog.text NOT NULL,
+    comment pg_catalog.text DEFAULT ''::pg_catalog.text NOT NULL,
     users_count integer DEFAULT 0 NOT NULL,
     computers_count integer DEFAULT 0 NOT NULL,
     dormitory_id bigint NOT NULL,
@@ -1261,10 +1343,10 @@ COMMENT ON COLUMN locations.alias IS 'unikalna nazwa pokoju, uzywana do budowy u
 
 
 --
--- Name: COLUMN locations."comment"; Type: COMMENT; Schema: public; Owner: -
+-- Name: COLUMN locations.comment; Type: COMMENT; Schema: public; Owner: -
 --
 
-COMMENT ON COLUMN locations."comment" IS 'komentarz do pokoju';
+COMMENT ON COLUMN locations.comment IS 'komentarz do pokoju';
 
 
 --
@@ -1306,7 +1388,7 @@ CREATE TABLE penalties (
     type_id smallint DEFAULT 1 NOT NULL,
     start_at timestamp without time zone DEFAULT now() NOT NULL,
     end_at timestamp without time zone NOT NULL,
-    "comment" pg_catalog.text,
+    comment pg_catalog.text,
     modified_by bigint,
     reason pg_catalog.text NOT NULL,
     modified_at timestamp without time zone,
@@ -1362,10 +1444,10 @@ COMMENT ON COLUMN penalties.end_at IS 'do kiedy kara obowiazuje';
 
 
 --
--- Name: COLUMN penalties."comment"; Type: COMMENT; Schema: public; Owner: -
+-- Name: COLUMN penalties.comment; Type: COMMENT; Schema: public; Owner: -
 --
 
-COMMENT ON COLUMN penalties."comment" IS 'komentarze administratorow';
+COMMENT ON COLUMN penalties.comment IS 'komentarze administratorow';
 
 
 --
@@ -1493,6 +1575,213 @@ COMMENT ON COLUMN penalty_templates.amnesty_after IS 'czas po ktorym mozna udzie
 
 
 --
+-- Name: services; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE services (
+    id bigint NOT NULL,
+    created_at timestamp without time zone DEFAULT now() NOT NULL,
+    user_id bigint NOT NULL,
+    serv_type_id bigint NOT NULL,
+    active boolean DEFAULT false,
+    modified_by bigint
+);
+
+
+--
+-- Name: TABLE services; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON TABLE services IS 'uslugi uzytkownikow';
+
+
+--
+-- Name: COLUMN services.created_at; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN services.created_at IS 'czas utworzenia uslugi';
+
+
+--
+-- Name: COLUMN services.user_id; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN services.user_id IS 'id uzytkownika';
+
+
+--
+-- Name: COLUMN services.serv_type_id; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN services.serv_type_id IS 'id typu/rodzaju uslugi';
+
+
+--
+-- Name: COLUMN services.active; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN services.active IS 'stan uslugi, false-nieaktywna/czeka na aktywacje, true-aktywna, null-do usuniecia';
+
+
+--
+-- Name: services_history; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE services_history (
+    id bigint NOT NULL,
+    modified_at timestamp without time zone DEFAULT now() NOT NULL,
+    user_id bigint NOT NULL,
+    serv_id bigint,
+    serv_type_id bigint NOT NULL,
+    modified_by bigint,
+    active smallint NOT NULL
+);
+
+
+--
+-- Name: TABLE services_history; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON TABLE services_history IS 'historia zmian w uslugach uzytkownika';
+
+
+--
+-- Name: COLUMN services_history.modified_at; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN services_history.modified_at IS 'czas powstania tej wersji';
+
+
+--
+-- Name: COLUMN services_history.user_id; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN services_history.user_id IS 'id uzytkownika';
+
+
+--
+-- Name: COLUMN services_history.serv_id; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN services_history.serv_id IS 'id uslugi';
+
+
+--
+-- Name: COLUMN services_history.serv_type_id; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN services_history.serv_type_id IS 'id typu/rodzaju uslugi';
+
+
+--
+-- Name: COLUMN services_history.modified_by; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN services_history.modified_by IS 'kto przydzielil usluge';
+
+
+--
+-- Name: COLUMN services_history.active; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN services_history.active IS 'stan uslugi';
+
+
+--
+-- Name: services_history_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE services_history_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
+-- Name: services_history_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE services_history_id_seq OWNED BY services_history.id;
+
+
+--
+-- Name: services_type; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE services_type (
+    id bigint NOT NULL,
+    name character varying(255) NOT NULL
+);
+
+
+--
+-- Name: TABLE services_type; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON TABLE services_type IS 'dostepne uslugi';
+
+
+--
+-- Name: COLUMN services_type.name; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN services_type.name IS 'nazwa uslugi';
+
+
+--
+-- Name: services_history_view; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW services_history_view AS
+    SELECT h.modified_at, h.user_id, h.active, t.name AS serv_name, a.id AS admin_id, a.name AS admin FROM ((services_history h LEFT JOIN services_type t ON ((t.id = h.serv_type_id))) LEFT JOIN admins a ON ((h.modified_by = a.id))) ORDER BY h.modified_at DESC;
+
+
+--
+-- Name: VIEW services_history_view; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON VIEW services_history_view IS 'widok historii uslug uzytkownika';
+
+
+--
+-- Name: services_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE services_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
+-- Name: services_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE services_id_seq OWNED BY services.id;
+
+
+--
+-- Name: services_type_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE services_type_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
+-- Name: services_type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE services_type_id_seq OWNED BY services_type.id;
+
+
+--
 -- Name: text_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -1576,8 +1865,8 @@ CREATE SEQUENCE users_id_seq
 
 CREATE TABLE users (
     id bigint DEFAULT nextval('users_id_seq'::regclass) NOT NULL,
-    "login" character varying NOT NULL,
-    "password" character(32) NOT NULL,
+    login character varying NOT NULL,
+    password character(32) NOT NULL,
     surname character varying(100) NOT NULL,
     email character varying(100) NOT NULL,
     faculty_id bigint,
@@ -1586,7 +1875,7 @@ CREATE TABLE users (
     bans smallint DEFAULT 0 NOT NULL,
     modified_by bigint,
     modified_at timestamp without time zone DEFAULT now() NOT NULL,
-    "comment" pg_catalog.text DEFAULT ''::pg_catalog.text NOT NULL,
+    comment pg_catalog.text DEFAULT ''::pg_catalog.text NOT NULL,
     name character varying(100) NOT NULL,
     active boolean DEFAULT true NOT NULL,
     banned boolean DEFAULT false NOT NULL,
@@ -1602,17 +1891,17 @@ COMMENT ON TABLE users IS 'uzytkownicy sieci';
 
 
 --
--- Name: COLUMN users."login"; Type: COMMENT; Schema: public; Owner: -
+-- Name: COLUMN users.login; Type: COMMENT; Schema: public; Owner: -
 --
 
-COMMENT ON COLUMN users."login" IS 'login';
+COMMENT ON COLUMN users.login IS 'login';
 
 
 --
--- Name: COLUMN users."password"; Type: COMMENT; Schema: public; Owner: -
+-- Name: COLUMN users.password; Type: COMMENT; Schema: public; Owner: -
 --
 
-COMMENT ON COLUMN users."password" IS 'haslo zakodowane md5';
+COMMENT ON COLUMN users.password IS 'haslo zakodowane md5';
 
 
 --
@@ -1672,10 +1961,10 @@ COMMENT ON COLUMN users.modified_at IS 'czas powstania tej wersji';
 
 
 --
--- Name: COLUMN users."comment"; Type: COMMENT; Schema: public; Owner: -
+-- Name: COLUMN users.comment; Type: COMMENT; Schema: public; Owner: -
 --
 
-COMMENT ON COLUMN users."comment" IS 'komentarze dotyczace uzytkownika';
+COMMENT ON COLUMN users.comment IS 'komentarze dotyczace uzytkownika';
 
 
 --
@@ -1697,13 +1986,6 @@ COMMENT ON COLUMN users.active IS 'czy uzytkownik moze logowac sie do systemu?';
 --
 
 COMMENT ON COLUMN users.banned IS 'czy uzytkownik jest w tej chwili zabanowany?';
-
-
---
--- Name: COLUMN users.gg; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN users.gg IS 'numer gadu-gadu';
 
 
 --
@@ -1731,9 +2013,9 @@ CREATE TABLE users_history (
     location_id bigint NOT NULL,
     modified_by bigint,
     modified_at timestamp without time zone NOT NULL,
-    "comment" pg_catalog.text NOT NULL,
+    comment pg_catalog.text NOT NULL,
     id bigint DEFAULT nextval('users_history_id_seq'::regclass) NOT NULL,
-    "login" character varying NOT NULL,
+    login character varying NOT NULL,
     active boolean NOT NULL,
     gg pg_catalog.text DEFAULT ''::pg_catalog.text NOT NULL
 );
@@ -1810,17 +2092,17 @@ COMMENT ON COLUMN users_history.modified_at IS 'czas powstania tej wersji';
 
 
 --
--- Name: COLUMN users_history."comment"; Type: COMMENT; Schema: public; Owner: -
+-- Name: COLUMN users_history.comment; Type: COMMENT; Schema: public; Owner: -
 --
 
-COMMENT ON COLUMN users_history."comment" IS 'komentarz';
+COMMENT ON COLUMN users_history.comment IS 'komentarz';
 
 
 --
--- Name: COLUMN users_history."login"; Type: COMMENT; Schema: public; Owner: -
+-- Name: COLUMN users_history.login; Type: COMMENT; Schema: public; Owner: -
 --
 
-COMMENT ON COLUMN users_history."login" IS 'login';
+COMMENT ON COLUMN users_history.login IS 'login';
 
 
 --
@@ -1859,7 +2141,7 @@ CREATE TABLE users_tokens (
     user_id integer NOT NULL,
     token pg_catalog.text NOT NULL,
     valid_to timestamp without time zone DEFAULT (now() + '7 days'::interval) NOT NULL,
-    "type" smallint DEFAULT 0 NOT NULL
+    type smallint DEFAULT 0 NOT NULL
 );
 
 
@@ -1871,10 +2153,10 @@ COMMENT ON COLUMN users_tokens.valid_to IS 'do kiedy token jest wazny';
 
 
 --
--- Name: COLUMN users_tokens."type"; Type: COMMENT; Schema: public; Owner: -
+-- Name: COLUMN users_tokens.type; Type: COMMENT; Schema: public; Owner: -
 --
 
-COMMENT ON COLUMN users_tokens."type" IS 'do czego moze byc ten token wykorzystany
+COMMENT ON COLUMN users_tokens.type IS 'do czego moze byc ten token wykorzystany
 0 - aktywacja konta';
 
 
@@ -1890,11 +2172,32 @@ CREATE TABLE users_walet (
 
 
 --
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE services ALTER COLUMN id SET DEFAULT nextval('services_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE services_history ALTER COLUMN id SET DEFAULT nextval('services_history_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE services_type ALTER COLUMN id SET DEFAULT nextval('services_type_id_seq'::regclass);
+
+
+--
 -- Name: admins_login_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY admins
-    ADD CONSTRAINT admins_login_key UNIQUE ("login", active);
+    ADD CONSTRAINT admins_login_key UNIQUE (login, active);
 
 
 --
@@ -2010,6 +2313,38 @@ ALTER TABLE ONLY penalty_templates
 
 
 --
+-- Name: services_history_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY services_history
+    ADD CONSTRAINT services_history_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: services_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY services
+    ADD CONSTRAINT services_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: services_type_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY services_type
+    ADD CONSTRAINT services_type_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: services_user_id_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY services
+    ADD CONSTRAINT services_user_id_key UNIQUE (user_id, serv_type_id);
+
+
+--
 -- Name: text_alias_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2038,7 +2373,7 @@ ALTER TABLE ONLY users_history
 --
 
 ALTER TABLE ONLY users
-    ADD CONSTRAINT users_login_key UNIQUE ("login");
+    ADD CONSTRAINT users_login_key UNIQUE (login);
 
 
 --
@@ -2126,6 +2461,13 @@ CREATE INDEX fki_penalties_modified_by ON penalties USING btree (modified_by);
 --
 
 CREATE INDEX fki_penalties_user_id ON penalties USING btree (user_id);
+
+
+--
+-- Name: user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX user_id ON services_history USING btree (user_id);
 
 
 --
@@ -2217,6 +2559,40 @@ CREATE TRIGGER penalties_users
     AFTER INSERT OR DELETE OR UPDATE ON penalties
     FOR EACH ROW
     EXECUTE PROCEDURE penalty_users();
+
+
+--
+-- Name: user_service_create; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER user_service_create
+    AFTER INSERT ON services
+    FOR EACH ROW
+    EXECUTE PROCEDURE user_service_create();
+
+
+--
+-- Name: TRIGGER user_service_create ON services; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON TRIGGER user_service_create ON services IS 'dodaje usluge w historii uslug';
+
+
+--
+-- Name: user_service_update; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER user_service_update
+    AFTER UPDATE ON services
+    FOR EACH ROW
+    EXECUTE PROCEDURE user_service_update();
+
+
+--
+-- Name: TRIGGER user_service_update ON services; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON TRIGGER user_service_update ON services IS 'zapisuje zmiany w historii uslug';
 
 
 --
@@ -2390,6 +2766,54 @@ ALTER TABLE ONLY penalties
 
 ALTER TABLE ONLY penalties
     ADD CONSTRAINT penalties_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: services_history_modified_by_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY services_history
+    ADD CONSTRAINT services_history_modified_by_fkey FOREIGN KEY (modified_by) REFERENCES admins(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: services_history_serv_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY services_history
+    ADD CONSTRAINT services_history_serv_id_fkey FOREIGN KEY (serv_id) REFERENCES services(id) ON UPDATE CASCADE ON DELETE SET NULL;
+
+
+--
+-- Name: services_history_serv_type_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY services_history
+    ADD CONSTRAINT services_history_serv_type_id_fkey FOREIGN KEY (serv_type_id) REFERENCES services_type(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: services_history_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY services_history
+    ADD CONSTRAINT services_history_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: services_serv_type_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY services
+    ADD CONSTRAINT services_serv_type_id_fkey FOREIGN KEY (serv_type_id) REFERENCES services_type(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: services_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY services
+    ADD CONSTRAINT services_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
