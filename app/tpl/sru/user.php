@@ -339,4 +339,165 @@ extends UFtpl_Common {
 			echo 'Numer GG: '.$d['gg']."\n";
 		}
 	}
+
+	public function stats(array $d) {
+		echo '<table style="text-align: center; width: 100%;">';
+		echo '<tr><th>Użytkowników</th><th>Kobiet</th><th>Mężczyzn</th></tr>';
+		$sum = count($d);
+		$woman = 0;
+		foreach ($d as $u) {
+			if (substr($u['name'], -1) == 'a') {
+				$woman++;
+			}
+		}
+		echo '<tr><td>'.$sum.'</td><td>'.$woman.'</td><td>'.($sum - $woman).'</td></tr>';
+		echo '</table>';
+		$womanProc = round($woman/$sum,2);
+		$manProc = round(($sum-$woman)/$sum,2);
+		echo '<div style="text-align: center;">';
+		echo '<img src="http://chart.apis.google.com/chart?chs=600x150&chd=t:'.$womanProc.','.$manProc.'&cht=p3&chl=Kobiety '.($womanProc*100).'%|Mężczyźni '.($manProc*100).'%" alt=""/>';
+		echo '</div>';
+
+		echo '<table style="text-align: center; width: 100%;">';
+		echo '<tr><th>Wydział</th><th>Użytkowników</th><th>Kobiet</th><th>Mężczyzn</th></tr>';
+		$faculties = array();
+		foreach ($d as $u) {
+			if(!array_key_exists($u['facultyName'], $faculties)) {
+				$faculties = array_merge($faculties, array($u['facultyName'] => null));
+				$faculties[$u['facultyName']] = array(0=>0, 1=>0);
+			}
+			$faculties[$u['facultyName']][0]++;
+			if (substr($u['name'], -1) == 'a') {
+				$faculties[$u['facultyName']][1]++;
+			}
+		}
+		ksort($faculties);
+		$chartDataWoman = '';
+		$chartDataMan = '';
+		$chartLabel = '';
+		$chartLabelR = '';
+		while ($fac = current($faculties)) {
+			echo '<tr><td>'.key($faculties).'</td>';
+			echo '<td>'.$fac[0].'</td>';
+			echo '<td>'.$fac[1].'</td>';
+			echo '<td>'.($fac[0] - $fac[1]).'</td></tr>';
+			$chartDataWoman = $chartDataWoman.(round($fac[1]/$fac[0]*100)).',';
+			$chartDataMan = $chartDataMan.(round(($fac[0]-$fac[1])/$fac[0]*100)).',';
+			$chartLabel = key($faculties).'|'.$chartLabel;
+			$chartLabelR = (round($fac[1]/$fac[0]*100)).'% / '.(round(($fac[0]-$fac[1])/$fac[0]*100)).'%|'.$chartLabelR;
+			next($faculties);
+		}
+		echo '</table>';
+		$chartDataWoman = substr($chartDataWoman, 0, -1);
+		$chartDataMan = substr($chartDataMan, 0, -1);
+		echo '<div style="text-align: center;">';
+		echo '<img src="http://chart.apis.google.com/chart?chs=600x300&cht=bhs&chco=ff9900,ffebcc&chd=t:';
+		echo $chartDataWoman.'|'.$chartDataMan.'&chxt=y,r&chxl=0:|'.$chartLabel.'1:|'.$chartLabelR.'" alt=""/>';
+		echo '</div>';
+
+		echo '<table style="text-align: center; width: 100%;">';
+		echo '<tr><th>Akademik</th><th>Użytkowników</th><th>Kobiet</th><th>Mężczyzn</th></tr>';
+		$dormitories = array();
+		foreach ($d as $u) {
+			if(!array_key_exists($u['dormitoryAlias'], $dormitories)) {
+				$dormitories = array_merge($dormitories, array($u['dormitoryAlias'] => null));
+				$dormitories[$u['dormitoryAlias']] = array(0=>0, 1=>0);
+			}
+			$dormitories[$u['dormitoryAlias']][0]++;
+			if (substr($u['name'], -1) == 'a') {
+				$dormitories[$u['dormitoryAlias']][1]++;
+			}
+		}
+		ksort($dormitories);
+		$chartDataWoman = '';
+		$chartDataMan = '';
+		$chartLabel = '';
+		$chartLabelR = '';
+		while ($dorm = current($dormitories)) {
+			echo '<tr><td>'.key($dormitories).'</td>';
+			echo '<td>'.$dorm[0].'</td>';
+			echo '<td>'.$dorm[1].'</td>';
+			echo '<td>'.($dorm[0] - $dorm[1]).'</td></tr>';
+			$chartDataWoman = $chartDataWoman.(round($dorm[1]/$dorm[0]*100)).',';
+			$chartDataMan = $chartDataMan.(round(($dorm[0]-$dorm[1])/$dorm[0]*100)).',';
+			$chartLabel = key($dormitories).'|'.$chartLabel;
+			$chartLabelR = (round($dorm[1]/$dorm[0]*100)).'% / '.(round(($dorm[0]-$dorm[1])/$dorm[0]*100)).'%|'.$chartLabelR;
+			next($dormitories);
+		}
+		echo '</table>';
+		$chartDataWoman = substr($chartDataWoman, 0, -1);
+		$chartDataMan = substr($chartDataMan, 0, -1);
+		echo '<div style="text-align: center;">';
+		echo '<img src="http://chart.apis.google.com/chart?chs=600x380&cht=bhs&chco=ff9900,ffebcc&chd=t:';
+		echo $chartDataWoman.'|'.$chartDataMan.'&chxt=y,r&chxl=0:|'.$chartLabel.'1:|'.$chartLabelR.'" alt=""/>';
+		echo '</div>';
+
+		echo '<table style="text-align: center; width: 100%;">';
+		echo '<tr><th>Rok studiów</th><th>Użytkowników</th><th>Kobiet</th><th>Mężczyzn</th></tr>';
+		$years = array();
+		foreach ($d as $u) {
+			if(!array_key_exists('y'.$u['studyYearId'], $years)) {
+				$years = array_merge($years, array('y'.$u['studyYearId'] => null));
+				$years['y'.$u['studyYearId']] = array(0=>0, 1=>0);
+			}
+			$years['y'.$u['studyYearId']][0]++;
+			if (substr($u['name'], -1) == 'a') {
+				$years['y'.$u['studyYearId']][1]++;
+			}
+		}
+		ksort($years);
+		$chartDataWoman = '';
+		$chartDataMan = '';
+		$chartLabel = '';
+		$chartLabelR = '';
+		while ($year = current ($years)) {
+			echo '<tr><td>'.self::$studyYears[substr(key($years),1)].'</td>';
+			echo '<td>'.$year[0].'</td>';
+			echo '<td>'.$year[1].'</td>';
+			echo '<td>'.($year[0] - $year[1]).'</td></tr>';
+			$chartDataWoman = $chartDataWoman.(round($year[1]/$year[0]*100)).',';
+			$chartDataMan = $chartDataMan.(round(($year[0]-$year[1])/$year[0]*100)).',';
+			$chartLabel = self::$studyYears[substr(key($years),1)].'|'.$chartLabel;
+			$chartLabelR = (round($year[1]/$year[0]*100)).'% / '.(round(($year[0]-$year[1])/$year[0]*100)).'%|'.$chartLabelR;
+			next($years);
+		}
+		echo '</table>';
+		$chartDataWoman = substr($chartDataWoman, 0, -1);
+		$chartDataMan = substr($chartDataMan, 0, -1);
+		echo '<div style="text-align: center;">';
+		echo '<img src="http://chart.apis.google.com/chart?chs=600x350&cht=bhs&chco=ff9900,ffebcc&chd=t:';
+		echo $chartDataWoman.'|'.$chartDataMan.'&chxt=y,r&chxl=0:|'.$chartLabel.'1:|'.$chartLabelR.'" alt=""/>';
+		echo '</div>';
+
+		echo '<table style="text-align: center; width: 100%;">';
+		echo '<tr><th>Kary</th><th>Użytkowników</th><th>Kobiet</th><th>Mężczyzn</th></tr>';
+		$sum = 0;
+		$woman = 0;
+		$banSum = 0;
+		$womanBanSum = 0;
+		foreach ($d as $u) {
+			if ($u['banned']) {
+				$sum++;
+				if (substr($u['name'], -1) == 'a') {
+					$woman++;
+				}
+			}
+			$banSum += $u['bans'];
+			if (substr($u['name'], strlen($u['name']) - 1, 1) == 'a') {
+					$womanBanSum += $u['bans'];
+			}
+		}
+		echo '<tr><td>Aktywne</td><td>'.$sum.'</td><td>'.$woman.'</td><td>'.($sum - $woman).'</td></tr>';
+		echo '<tr><td>Suma</td><td>'.$banSum.'</td><td>'.$womanBanSum.'</td><td>'.($banSum - $womanBanSum).'</td></tr>';
+		echo '</table>';
+		$womanProc = round($woman/$sum,2);
+		$manProc = round(($sum-$woman)/$sum,2);
+		$womanSumProc = round($womanBanSum/$banSum,2);
+		$manSumProc = round(($banSum-$womanBanSum)/$banSum,2);
+		echo '<div style="text-align: center;">';
+		echo '<img src="http://chart.apis.google.com/chart?chs=600x200&chd=t:'.$womanProc.','.$manProc.'|'.$womanSumProc.','.$manSumProc;
+		echo '&cht=pc&chl=Aktywne dla kobiet '.($womanProc*100).'%|Aktywne dla mężczyzn '.($manProc*100).'%|Suma dla kobiet ';
+		echo ($womanSumProc*100).'%|Suma dla mężczyzn '.($womanSumProc*100).'%" alt=""/>';
+		echo '</div>';
+	}
 }

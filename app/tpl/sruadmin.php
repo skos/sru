@@ -41,7 +41,8 @@ extends UFtpl_Common {
 	public function menuAdmin() {
 		echo '<ul id="nav">';
 		echo '<li><a href="'.UFURL_BASE.'/admin/">Szukaj</a></li>';
-		echo '<li><a href="'.UFURL_BASE.'/admin/services/">Usługi</a></li>';		
+		echo '<li><a href="'.UFURL_BASE.'/admin/services/">Usługi</a></li>';
+		echo '<li><a href="'.UFURL_BASE.'/admin/stats/">Statystyki</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/penalties/">Kary</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/dormitories/">Akademiki</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/admins/">Administratorzy</a></li>';
@@ -719,6 +720,43 @@ extends UFtpl_Common {
 			echo '<h2>Zestawienie numerów IP</h2>';
 		}
 		echo $this->ERR('Brak adresów IP dla tego DS-u');
+	}
+
+	public function titleStatsUsers() {
+		echo 'Statystyki użytkowników';
+	}
+	
+	public function statsUsers(array $d) {
+		echo '<h2>Użytkownicy | <a href="'.$this->url(1).'/computers">Komputery</a> | <a href="'.$this->url(1).'/penalties">Kary</a></h2>';
+		$d['users']->write('stats');
+	}						
+	
+	public function statsUsersNotFound(array $d) {
+		echo $this->ERR('Błąd wyświetlenia statystyk');
+	}
+
+	public function titleStatsPenalties() {
+		echo 'Statystyki kar';
+	}
+	
+	public function statsPenalties(array $d) {
+		echo '<h2><a href="'.$this->url(1).'">Użytkownicy</a> | <a href="'.$this->url(1).'/computers">Komputery</a> | Kary</h2>';
+	}						
+	
+	public function statsPenaltiesNotFound(array $d) {
+		echo $this->ERR('Błąd wyświetlenia statystyk');
+	}
+
+	public function titleStatsComputers() {
+		echo 'Statystyki komputerów';
+	}
+	
+	public function statsComputers(array $d) {
+		echo '<h2><a href="'.$this->url(1).'">Użytkownicy</a> | Komputery | <a href="'.$this->url(1).'/penalties">Kary</a></h2>';
+	}						
+	
+	public function statsComputersNotFound(array $d) {
+		echo $this->ERR('Błąd wyświetlenia statystyk');
 	}
 
 	public function adminPenaltiesAdded(array $d) {

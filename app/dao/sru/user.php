@@ -126,4 +126,13 @@ extends UFdao {
 
 		return $this->doSelectFirst($query);
 	}
+
+	public function listAllActive() {
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->active, true);
+
+		return $this->doSelect($query);
+	}
 }

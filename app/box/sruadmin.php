@@ -993,7 +993,45 @@ extends UFbox {
 		} catch (UFex_Dao_NotFound $e) {
 			return $this->render(__FUNCTION__.'NotFound', $d);
 		}
-	}					
+	}
+
+	public function statsUsers() {
+		try {
+			$user = UFra::factory('UFbean_Sru_UserList');
+			$user->listAllActive();
+			$d['users'] = $user;
+		
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound', $d);
+		}
+	}
+
+	public function statsPenalties() {
+		try {
+			//$user = UFra::factory('UFbean_Sru_PenaltiesList');
+			//$user->listAllActive();
+			//$d['users'] = $user;
+			$d['penalties'] = null;
+		
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound', $d);
+		}
+	}
+
+	public function statsComputers() {
+		try {
+			//$user = UFra::factory('UFbean_Sru_PenaltiesList');
+			//$user->listAllActive();
+			//$d['users'] = $user;
+			$d['computers'] = null;
+		
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound', $d);
+		}
+	}
 
 	public function adminPenaltiesAdded() {
 		try {
