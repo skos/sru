@@ -341,6 +341,7 @@ extends UFtpl_Common {
 	}
 
 	public function stats(array $d) {
+		echo '<h3>Rozkład płci:</h3>';
 		echo '<table style="text-align: center; width: 100%;">';
 		echo '<tr><th>Użytkowników</th><th>Kobiet</th><th>Mężczyzn</th></tr>';
 		$sum = count($d);
@@ -358,10 +359,14 @@ extends UFtpl_Common {
 		echo '<img src="http://chart.apis.google.com/chart?chs=600x150&chd=t:'.$womanProc.','.$manProc.'&cht=p3&chl=Kobiety '.($womanProc*100).'%|Mężczyźni '.($manProc*100).'%" alt=""/>';
 		echo '</div>';
 
+		echo '<h3>Rozkład płci uwzględniając wydział:</h3>';
 		echo '<table style="text-align: center; width: 100%;">';
 		echo '<tr><th>Wydział</th><th>Użytkowników</th><th>Kobiet</th><th>Mężczyzn</th></tr>';
 		$faculties = array();
 		foreach ($d as $u) {
+			if ($u['facultyName'] == '') {
+				$u['facultyName'] = " N/D";
+			}
 			if(!array_key_exists($u['facultyName'], $faculties)) {
 				$faculties = array_merge($faculties, array($u['facultyName'] => null));
 				$faculties[$u['facultyName']] = array(0=>0, 1=>0);
@@ -395,10 +400,12 @@ extends UFtpl_Common {
 		echo $chartDataWoman.'|'.$chartDataMan.'&chxt=y,r&chxl=0:|'.$chartLabel.'1:|'.$chartLabelR.'" alt=""/>';
 		echo '</div>';
 
+		echo '<h3>Rozkład płci uwzględniając akademik:</h3>';
 		echo '<table style="text-align: center; width: 100%;">';
 		echo '<tr><th>Akademik</th><th>Użytkowników</th><th>Kobiet</th><th>Mężczyzn</th></tr>';
 		$dormitories = array();
 		foreach ($d as $u) {
+			$u['dormitoryAlias'] = ' '.substr($u['dormitoryAlias'], 2);
 			if(!array_key_exists($u['dormitoryAlias'], $dormitories)) {
 				$dormitories = array_merge($dormitories, array($u['dormitoryAlias'] => null));
 				$dormitories[$u['dormitoryAlias']] = array(0=>0, 1=>0);
@@ -414,7 +421,7 @@ extends UFtpl_Common {
 		$chartLabel = '';
 		$chartLabelR = '';
 		while ($dorm = current($dormitories)) {
-			echo '<tr><td>'.key($dormitories).'</td>';
+			echo '<tr><td>DS'.key($dormitories).'</td>';
 			echo '<td>'.$dorm[0].'</td>';
 			echo '<td>'.$dorm[1].'</td>';
 			echo '<td>'.($dorm[0] - $dorm[1]).'</td></tr>';
@@ -432,17 +439,18 @@ extends UFtpl_Common {
 		echo $chartDataWoman.'|'.$chartDataMan.'&chxt=y,r&chxl=0:|'.$chartLabel.'1:|'.$chartLabelR.'" alt=""/>';
 		echo '</div>';
 
+		echo '<h3>Rozkład płci uwzględniając rok studiów:</h3>';
 		echo '<table style="text-align: center; width: 100%;">';
 		echo '<tr><th>Rok studiów</th><th>Użytkowników</th><th>Kobiet</th><th>Mężczyzn</th></tr>';
 		$years = array();
 		foreach ($d as $u) {
 			if(!array_key_exists('y'.$u['studyYearId'], $years)) {
 				$years = array_merge($years, array('y'.$u['studyYearId'] => null));
-				$years['y'.$u['studyYearId']] = array(0=>0, 1=>0);
+				$years[' '.$u['studyYearId']] = array(0=>0, 1=>0);
 			}
-			$years['y'.$u['studyYearId']][0]++;
+			$years[' '.$u['studyYearId']][0]++;
 			if (substr($u['name'], -1) == 'a') {
-				$years['y'.$u['studyYearId']][1]++;
+				$years[' '.$u['studyYearId']][1]++;
 			}
 		}
 		ksort($years);
@@ -469,6 +477,7 @@ extends UFtpl_Common {
 		echo $chartDataWoman.'|'.$chartDataMan.'&chxt=y,r&chxl=0:|'.$chartLabel.'1:|'.$chartLabelR.'" alt=""/>';
 		echo '</div>';
 
+		echo '<h3>Rozkład płci uwzględniając kary:</h3>';
 		echo '<table style="text-align: center; width: 100%;">';
 		echo '<tr><th>Kary</th><th>Użytkowników</th><th>Kobiet</th><th>Mężczyzn</th></tr>';
 		$sum = 0;
