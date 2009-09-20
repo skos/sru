@@ -340,7 +340,7 @@ extends UFtpl_Common {
 		}
 	}
 
-	public function stats(array $d, $allUsers) {
+	public function stats(array $d) {
 		echo '<h3>Rozkład płci:</h3>';
 		echo '<table style="text-align: center; width: 100%;">';
 		echo '<tr><th>Użytkowników</th><th>Kobiet</th><th>Mężczyzn</th></tr>';
