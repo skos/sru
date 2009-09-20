@@ -727,7 +727,7 @@ extends UFtpl_Common {
 	}
 	
 	public function statsUsers(array $d) {
-		echo '<h2>Użytkownicy | <a href="'.$this->url(1).'/computers">Komputery</a> | <a href="'.$this->url(1).'/penalties">Kary</a></h2>';
+		echo '<h2>Użytkownicy | <a href="'.$this->url(1).'/dormitories">Akademiki</a> | <a href="'.$this->url(1).'/penalties">Kary</a></h2>';
 		$d['users']->write('stats');
 	}						
 	
@@ -740,22 +740,23 @@ extends UFtpl_Common {
 	}
 	
 	public function statsPenalties(array $d) {
-		echo '<h2><a href="'.$this->url(1).'">Użytkownicy</a> | <a href="'.$this->url(1).'/computers">Komputery</a> | Kary</h2>';
+		echo '<h2><a href="'.$this->url(1).'">Użytkownicy</a> | <a href="'.$this->url(1).'/dormitories">Akademiki</a> | Kary</h2>';
 	}						
 	
 	public function statsPenaltiesNotFound(array $d) {
 		echo $this->ERR('Błąd wyświetlenia statystyk');
 	}
 
-	public function titleStatsComputers() {
-		echo 'Statystyki komputerów';
+	public function titleStatsDormitories() {
+		echo 'Statystyki akademików';
 	}
 	
-	public function statsComputers(array $d) {
-		echo '<h2><a href="'.$this->url(1).'">Użytkownicy</a> | Komputery | <a href="'.$this->url(1).'/penalties">Kary</a></h2>';
+	public function statsDormitories(array $d) {
+		echo '<h2><a href="'.$this->url(1).'">Użytkownicy</a> | Akademiki | <a href="'.$this->url(1).'/penalties">Kary</a></h2>';
+		$d['users']->write('statsDorms');
 	}						
 	
-	public function statsComputersNotFound(array $d) {
+	public function statsDormitoriesNotFound(array $d) {
 		echo $this->ERR('Błąd wyświetlenia statystyk');
 	}
 

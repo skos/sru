@@ -1007,12 +1007,11 @@ extends UFbox {
 		}
 	}
 
-	public function statsPenalties() {
+	public function statsDormitories() {
 		try {
-			//$user = UFra::factory('UFbean_Sru_PenaltiesList');
-			//$user->listAllActive();
-			//$d['users'] = $user;
-			$d['penalties'] = null;
+			$user = UFra::factory('UFbean_Sru_UserList');
+			$user->listAllActive();
+			$d['users'] = $user;
 		
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
@@ -1020,12 +1019,12 @@ extends UFbox {
 		}
 	}
 
-	public function statsComputers() {
+	public function statsPenalties() {
 		try {
 			//$user = UFra::factory('UFbean_Sru_PenaltiesList');
 			//$user->listAllActive();
 			//$d['users'] = $user;
-			$d['computers'] = null;
+			$d['penalties'] = null;
 		
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {

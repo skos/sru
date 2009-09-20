@@ -21,8 +21,8 @@ extends UFctl {
 				case 'penalties':
 					$get->view = 'stats/penalties';
 					break;
-				case 'computers':
-					$get->view = 'stats/computers';
+				case 'dormitories':
+					$get->view = 'stats/dormitories';
 					break;
 				default:
 					$get->view = 'error404';
@@ -65,8 +65,8 @@ extends UFctl {
 				return 'SruAdmin_StatsUsers';
 			case 'stats/penalties':
 				return 'SruAdmin_StatsPenalties';
-			case 'stats/computers':
-				return 'SruAdmin_StatsComputers';
+			case 'stats/dormitories':
+				return 'SruAdmin_StatsDormitories';
 			default:
 				return 'Sru_Error404';
 		}
