@@ -368,12 +368,12 @@ extends UFtpl_Common {
 				$u['facultyName'] = " N/D";
 			}
 			if(!array_key_exists($u['facultyName'], $faculties)) {
-				$faculties = array_merge($faculties, array($u['facultyName'] => null));
-				$faculties[$u['facultyName']] = array(0=>0, 1=>0);
+				$faculties[$u['facultyName']] = new PeopleCounter();
 			}
-			$faculties[$u['facultyName']][0]++;
 			if (substr($u['name'], -1) == 'a') {
-				$faculties[$u['facultyName']][1]++;
+				$faculties[$u['facultyName']]->addUser(true);
+			} else {
+				$faculties[$u['facultyName']]->addUser();
 			}
 		}
 		ksort($faculties);
@@ -383,13 +383,13 @@ extends UFtpl_Common {
 		$chartLabelR = '';
 		while ($fac = current($faculties)) {
 			echo '<tr><td>'.key($faculties).'</td>';
-			echo '<td>'.$fac[0].'</td>';
-			echo '<td>'.$fac[1].'</td>';
-			echo '<td>'.($fac[0] - $fac[1]).'</td></tr>';
-			$chartDataWoman = $chartDataWoman.(round($fac[1]/$fac[0]*100)).',';
-			$chartDataMan = $chartDataMan.(round(($fac[0]-$fac[1])/$fac[0]*100)).',';
+			echo '<td>'.$fac->getUsers().'</td>';
+			echo '<td>'.$fac->getWomen().'</td>';
+			echo '<td>'.($fac->getUsers() - $fac->getWomen()).'</td></tr>';
+			$chartDataWoman = $chartDataWoman.(round($fac->getWomen()/$fac->getUsers()*100)).',';
+			$chartDataMan = $chartDataMan.(round(($fac->getUsers()-$fac->getWomen())/$fac->getUsers()*100)).',';
 			$chartLabel = key($faculties).'|'.$chartLabel;
-			$chartLabelR = (round($fac[1]/$fac[0]*100)).'% / '.(round(($fac[0]-$fac[1])/$fac[0]*100)).'%|'.$chartLabelR;
+			$chartLabelR = (round($fac->getWomen()/$fac->getUsers()*100)).'% / '.(round(($fac->getUsers()-$fac->getWomen())/$fac->getUsers()*100)).'%|'.$chartLabelR;
 			next($faculties);
 		}
 		echo '</table>';
@@ -407,13 +407,14 @@ extends UFtpl_Common {
 		foreach ($d as $u) {
 			$u['dormitoryAlias'] = ' '.substr($u['dormitoryAlias'], 2);
 			if(!array_key_exists($u['dormitoryAlias'], $dormitories)) {
-				$dormitories = array_merge($dormitories, array($u['dormitoryAlias'] => null));
-				$dormitories[$u['dormitoryAlias']] = array(0=>0, 1=>0);
+				$dormitories[$u['dormitoryAlias']] = new ExtenededPeopleCounter();
 			}
-			$dormitories[$u['dormitoryAlias']][0]++;
 			if (substr($u['name'], -1) == 'a') {
-				$dormitories[$u['dormitoryAlias']][1]++;
+				$dormitories[$u['dormitoryAlias']]->addUser(true);
+			} else {
+				$dormitories[$u['dormitoryAlias']]->addUser();
 			}
+			$dormitories[$u['dormitoryAlias']]->addToGroup($u['facultyName'], $u['name']);
 		}
 		ksort($dormitories);
 		$chartDataWoman = '';
@@ -422,13 +423,13 @@ extends UFtpl_Common {
 		$chartLabelR = '';
 		while ($dorm = current($dormitories)) {
 			echo '<tr><td>DS'.key($dormitories).'</td>';
-			echo '<td>'.$dorm[0].'</td>';
-			echo '<td>'.$dorm[1].'</td>';
-			echo '<td>'.($dorm[0] - $dorm[1]).'</td></tr>';
-			$chartDataWoman = $chartDataWoman.(round($dorm[1]/$dorm[0]*100)).',';
-			$chartDataMan = $chartDataMan.(round(($dorm[0]-$dorm[1])/$dorm[0]*100)).',';
-			$chartLabel = key($dormitories).'|'.$chartLabel;
-			$chartLabelR = (round($dorm[1]/$dorm[0]*100)).'% / '.(round(($dorm[0]-$dorm[1])/$dorm[0]*100)).'%|'.$chartLabelR;
+			echo '<td>'.$dorm->getUsers().'</td>';
+			echo '<td>'.$dorm->getWomen().'</td>';
+			echo '<td>'.($dorm->getUsers() - $dorm->getWomen()).'</td></tr>';
+			$chartDataWoman = $chartDataWoman.(round($dorm->getWomen()/$dorm->getUsers()*100)).',';
+			$chartDataMan = $chartDataMan.(round(($dorm->getUsers()-$dorm->getWomen())/$dorm->getUsers()*100)).',';
+			$chartLabel = 'DS'.key($dormitories).'|'.$chartLabel;
+			$chartLabelR = (round($dorm->getWomen()/$dorm->getUsers()*100)).'% / '.(round(($dorm->getUsers()-$dorm->getWomen())/$dorm->getUsers()*100)).'%|'.$chartLabelR;
 			next($dormitories);
 		}
 		echo '</table>';
@@ -444,13 +445,13 @@ extends UFtpl_Common {
 		echo '<tr><th>Rok studiów</th><th>Użytkowników</th><th>Kobiet</th><th>Mężczyzn</th></tr>';
 		$years = array();
 		foreach ($d as $u) {
-			if(!array_key_exists('y'.$u['studyYearId'], $years)) {
-				$years = array_merge($years, array('y'.$u['studyYearId'] => null));
-				$years[' '.$u['studyYearId']] = array(0=>0, 1=>0);
+			if(!array_key_exists(' '.$u['studyYearId'], $years)) {
+				$years[' '.$u['studyYearId']] = new PeopleCounter();
 			}
-			$years[' '.$u['studyYearId']][0]++;
 			if (substr($u['name'], -1) == 'a') {
-				$years[' '.$u['studyYearId']][1]++;
+				$years[' '.$u['studyYearId']]->addUser(true);
+			} else {
+				$years[' '.$u['studyYearId']]->addUser();
 			}
 		}
 		ksort($years);
@@ -460,13 +461,13 @@ extends UFtpl_Common {
 		$chartLabelR = '';
 		while ($year = current ($years)) {
 			echo '<tr><td>'.self::$studyYears[substr(key($years),1)].'</td>';
-			echo '<td>'.$year[0].'</td>';
-			echo '<td>'.$year[1].'</td>';
-			echo '<td>'.($year[0] - $year[1]).'</td></tr>';
-			$chartDataWoman = $chartDataWoman.(round($year[1]/$year[0]*100)).',';
-			$chartDataMan = $chartDataMan.(round(($year[0]-$year[1])/$year[0]*100)).',';
+			echo '<td>'.$year->getUsers().'</td>';
+			echo '<td>'.$year->getWomen().'</td>';
+			echo '<td>'.($year->getUsers() - $year->getWomen()).'</td></tr>';
+			$chartDataWoman = $chartDataWoman.(round($year->getWomen()/$year->getUsers()*100)).',';
+			$chartDataMan = $chartDataMan.(round(($year->getUsers()-$year->getWomen())/$year->getUsers()*100)).',';
 			$chartLabel = self::$studyYears[substr(key($years),1)].'|'.$chartLabel;
-			$chartLabelR = (round($year[1]/$year[0]*100)).'% / '.(round(($year[0]-$year[1])/$year[0]*100)).'%|'.$chartLabelR;
+			$chartLabelR = (round($year->getWomen()/$year->getUsers()*100)).'% / '.(round(($year->getUsers()-$year->getWomen())/$year->getUsers()*100)).'%|'.$chartLabelR;
 			next($years);
 		}
 		echo '</table>';
@@ -508,5 +509,79 @@ extends UFtpl_Common {
 		echo '&cht=pc&chl=Aktywne dla kobiet '.($womanProc*100).'%|Aktywne dla mężczyzn '.($manProc*100).'%|Suma dla kobiet ';
 		echo ($womanSumProc*100).'%|Suma dla mężczyzn '.($womanSumProc*100).'%" alt=""/>';
 		echo '</div>';
+
+		echo '<h3>Rozkład płci uwzględniając akademik i wydział:</h3>';
+		reset($dormitories);
+		while ($dorm = current($dormitories)) {
+			echo '<h4>DS'.key($dormitories).'</h4>';
+			echo '<table style="text-align: center; width: 100%;">';
+			echo '<tr><th>Wydział</th><th>Użytkowników</th><th>Kobiet</th><th>Mężczyzn</th></tr>';
+			$chartDataFac = '';
+			$chartLabel = '';
+			$faculties = $dorm->getGroup();
+			while ($fac = current($faculties)) {
+				echo '<tr><td>'.key($faculties).'</td>';
+				echo '<td>'.$fac->getUsers().'</td>';
+				echo '<td>'.$fac->getWomen().'</td>';
+				echo '<td>'.($fac->getUsers() - $fac->getWomen()).'</td></tr>';
+				$chartDataFac = (round($fac->getUsers()/$dorm->getUsers()*100)).','.$chartDataFac;
+				$chartLabel = key($faculties).': '.round($fac->getUsers()/$dorm->getUsers()*100).'%|'.$chartLabel;
+				next($faculties);
+			}
+			echo '</table>';
+			$chartDataFac = substr($chartDataFac, 0, -1);
+			echo '<div style="text-align: center;">';
+			echo '<img src="http://chart.apis.google.com/chart?chs=800x150&chd=t:'.$chartDataFac;
+			echo '&cht=p3&chl='.$chartLabel.' alt=""/>';
+			echo '</div>';
+
+			next($dormitories);
+		}
+	}
+}
+
+class PeopleCounter
+{
+	private $users = 0;
+	private $women = 0;
+	
+	public function addUser($woman = false) {
+		$this->users++;
+		if ($woman) {
+			$this->women++;
+		}
+	}
+
+	public function getUsers() {
+		return $this->users;
+	}
+
+	public function getWomen() {
+		return $this->women;
+	}
+}
+
+class ExtenededPeopleCounter
+extends PeopleCounter
+{
+	private $group = array();
+
+	public function addToGroup($key, $value) {
+		if ($key == '') {
+			$key = ' N/D';
+		}
+		if(!array_key_exists(' '.$key, $this->group)) {
+			$this->group[' '.$key] = new PeopleCounter();
+		}
+		if (substr($value, -1) == 'a') {
+			$this->group[' '.$key]->addUser(true);
+		} else {
+			$this->group[' '.$key]->addUser();
+		}
+	}
+
+	public function getGroup() {
+		ksort($this->group);
+		return $this->group;
 	}
 }
