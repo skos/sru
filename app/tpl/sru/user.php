@@ -340,7 +340,7 @@ extends UFtpl_Common {
 		}
 	}
 
-	public function stats(array $d) {
+	public function stats(array $d, $allUsers) {
 		echo '<h3>Rozkład płci:</h3>';
 		echo '<table style="text-align: center; width: 100%;">';
 		echo '<tr><th>Użytkowników</th><th>Kobiet</th><th>Mężczyzn</th></tr>';
@@ -442,6 +442,8 @@ extends UFtpl_Common {
 		echo '<table style="text-align: center; width: 100%;">';
 		echo '<tr><th>Kary</th><th>Użytkowników</th><th>Kobiet</th><th>Mężczyzn</th></tr>';
 		$banned = array();
+		$bansNumber = array();
+		$bansNumber[0] = 0;
 		$sum = 0;
 		$woman = 0;
 		$banSum = 0;
@@ -461,6 +463,13 @@ extends UFtpl_Common {
 				$urlUser = $this->url(0).'/users/'.$u['id'];
 				$keyString = '<a href="'.$urlUser.'">'.$u['name'].' "'.$u['login'].'" '.$u['surname'].'</a>';
 				$banned[$keyString] = $u['bans'];
+				if(!array_key_exists($u['bans'], $bansNumber)) {
+					$bansNumber[$u['bans']] = 1;
+				} else {
+					$bansNumber[$u['bans']]++;
+				}
+			} else {
+				$bansNumber[0]++;
 			}
 		}
 		echo '<tr><td>Aktywne</td><td>'.$sum.'</td><td>'.$woman.'</td><td>'.($sum - $woman).'</td></tr>';
@@ -501,6 +510,24 @@ extends UFtpl_Common {
 		echo '<div style="text-align: center;">';
 		echo '<img src="http://chart.apis.google.com/chart?chs=400x290&cht=bhs&chco=ff9900,ffebcc&chd=t:';
 		echo $chartData.'&chxt=y&chxl=0:|'.$chartLabel.'&chds=0,'.current($banned).'" alt=""/>';
+		echo '</div>';
+
+		echo '<h3>Rozkład ilości kar:</h3>';
+		echo '<table style="text-align: center; width: 100%;">';
+		echo '<tr><th>Ilość kar</th><th>Ilość ukaranych</th></tr>';
+		$chartData = '';
+		$chartLabel = '';
+		while ($b = current ($bansNumber)) {
+			echo '<tr><td>'.key($bansNumber).'</td><td>'.$b.'</td></tr>';
+			$chartData = (round($b/count($d), 2)*100).','.$chartData;
+			$chartLabel = key($bansNumber).' kar: '.(round($b/count($d), 2)*100).'%|'.$chartLabel;
+			next ($bansNumber);
+		}
+		echo '</table>';
+		$chartData = substr($chartData, 0, -1);
+		echo '<div style="text-align: center;">';
+		echo '<img src="http://chart.apis.google.com/chart?chs=600x150&chd=t:'.$chartData.'&cht=p3';
+		echo '&chl='.$chartLabel.'%" alt=""/>';
 		echo '</div>';
 	}
 

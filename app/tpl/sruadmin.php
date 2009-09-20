@@ -729,7 +729,7 @@ extends UFtpl_Common {
 	public function statsUsers(array $d) {
 		echo '<h2>Użytkownicy | <a href="'.$this->url(1).'/dormitories">Akademiki</a> | <a href="'.$this->url(1).'/penalties">Kary</a></h2>';
 		$d['users']->write('stats');
-	}						
+	}
 	
 	public function statsUsersNotFound(array $d) {
 		echo $this->ERR('Błąd wyświetlenia statystyk');
@@ -741,7 +741,7 @@ extends UFtpl_Common {
 	
 	public function statsPenalties(array $d) {
 		echo '<h2><a href="'.$this->url(1).'">Użytkownicy</a> | <a href="'.$this->url(1).'/dormitories">Akademiki</a> | Kary</h2>';
-	}						
+	}
 	
 	public function statsPenaltiesNotFound(array $d) {
 		echo $this->ERR('Błąd wyświetlenia statystyk');
