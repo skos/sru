@@ -741,6 +741,7 @@ extends UFtpl_Common {
 	
 	public function statsPenalties(array $d) {
 		echo '<h2><a href="'.$this->url(1).'">Użytkownicy</a> | <a href="'.$this->url(1).'/dormitories">Akademiki</a> | Kary</h2>';
+		$d['penalties']->write('stats');
 	}
 	
 	public function statsPenaltiesNotFound(array $d) {

@@ -1021,10 +1021,9 @@ extends UFbox {
 
 	public function statsPenalties() {
 		try {
-			//$user = UFra::factory('UFbean_Sru_PenaltiesList');
-			//$user->listAllActive();
-			//$d['users'] = $user;
-			$d['penalties'] = null;
+			$penalty = UFra::factory('UFbean_SruAdmin_PenaltyList');
+			$penalty->listAllPenalties();
+			$d['penalties'] = $penalty;
 		
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {

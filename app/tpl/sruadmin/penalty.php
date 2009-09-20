@@ -186,4 +186,117 @@ changeVisibility();
 			echo $p['id']."\n";
 		}
 	}
+
+	public function stats(array $d) {
+		$banners = array();
+		$templates = array();
+		$types = array();
+		$modified = 0;
+		$amnestied = 0;
+		foreach ($d as $p) {
+			if(!array_key_exists($p['creatorName'], $banners)) {
+				$banners[$p['creatorName']] = 1;
+			} else {
+				$banners[$p['creatorName']]++;
+			}
+
+			if ($p['templateTitle'] == '') {
+				$p['templateTitle'] = 'N/D';
+			}
+			if(!array_key_exists($p['templateTitle'], $templates)) {
+				$templates[$p['templateTitle']] = 1;
+			} else {
+				$templates[$p['templateTitle']]++;
+			}
+
+			if(!array_key_exists($p['typeId'], $types)) {
+				$types[$p['typeId']] = 1;
+			} else {
+				$types[$p['typeId']]++;
+			}
+			if ($p['modifiedById'] != '') {
+				$modified++;
+			}
+			if ($p['amnestyById'] != '') {
+				$amnestied++;
+			}
+		}
+
+		echo '<h3>Top 10 karzących:</h3>';
+		echo '<table style="text-align: center; width: 100%;">';
+		echo '<tr><th>Admin</th><th>Ilość kar</th></tr>';
+		arsort($banners);
+		$i = 0;
+		$chartData = '';
+		$chartLabel = '';
+		while ($b = current ($banners)) {
+			echo '<tr><td>'.key($banners).'</td><td>'.$b.'</td></tr>';
+			$chartData = $chartData.$b.',';
+			$chartLabel = str_replace('"', '\'', key($banners)).'|'.$chartLabel;
+			$i++;
+			if ($i >= 10) {
+				break;
+			}
+			next ($banners);
+		}
+		echo '</table>';
+		reset($banners);
+		$chartData = substr($chartData, 0, -1);
+		echo '<div style="text-align: center;">';
+		echo '<img src="http://chart.apis.google.com/chart?chs=600x290&cht=bhs&chco=ff9900,ffebcc&chd=t:';
+		echo $chartData.'&chxt=y&chxl=0:|'.$chartLabel.'&chds=0,'.current($banners).'" alt=""/>';
+		echo '</div>';
+
+		echo '<h3>Rozkład używanych szablonów kar:</h3>';
+		echo '<table style="text-align: center; width: 100%;">';
+		echo '<tr><th>Szablon</th><th>Kar</th></tr>';
+		arsort($templates);
+		$chartData = '';
+		$chartLabel = '';
+		while ($t = current ($templates)) {
+			echo '<tr><td>'.key($templates).'</td>';
+			echo '<td>'.$t.'</td></tr>';
+			$chartData = (round($t/count($d)*100)).','.$chartData;
+			$chartLabel = key($templates).': '.(round($t/count($d)*100)).'%|'.$chartLabel;
+			next($templates);
+		}
+		echo '</table>';
+		$chartData = substr($chartData, 0, -1);
+		echo '<div style="text-align: center;">';
+		echo '<img src="http://chart.apis.google.com/chart?chs=600x150&chd=t:'.$chartData;
+		echo '&cht=p3&chl='.$chartLabel.'" alt=""/>';
+		echo '</div>';
+
+		echo '<h3>Rozkład kar wg typu:</h3>';
+		echo '<table style="text-align: center; width: 100%;">';
+		echo '<tr><th>Typ</th><th>Kar</th></tr>';
+		arsort($types);
+		$chartData = '';
+		$chartLabel = '';
+		while ($t = current ($types)) {
+			echo '<tr><td>'.$this->penaltyTypes[key($types)].'</td>';
+			echo '<td>'.$t.'</td></tr>';
+			$chartData = (round($t/count($d)*100)).','.$chartData;
+			$chartLabel = $this->penaltyTypes[key($types)].': '.(round($t/count($d)*100)).'%|'.$chartLabel;
+			next($types);
+		}
+		echo '</table>';
+		$chartData = substr($chartData, 0, -1);
+		echo '<div style="text-align: center;">';
+		echo '<img src="http://chart.apis.google.com/chart?chs=600x150&chd=t:'.$chartData;
+		echo '&cht=p3&chl='.$chartLabel.'" alt=""/>';
+		echo '</div>';
+
+		echo '<h3>Kary modyfikowane i zdjęte:</h3>';
+		echo '<table style="text-align: center; width: 100%;">';
+		echo '<tr><th>Kara</th><th>Ilość</th></tr>';
+		echo '<tr><td>Wszystkie</td><td>'.count($d).'</td></tr>';
+		echo '<tr><td>Modyfikowane</td><td>'.$modified.'</td></tr>';
+		echo '<tr><td>Zdjęte</td><td>'.$amnestied.'</td></tr>';
+		echo '</table>';
+		echo '<div style="text-align: center;">';
+		echo '<img src="http://chart.apis.google.com/chart?chs=600x110&cht=bhs&chco=ff9900,ffebcc&chd=t:';
+		echo count($d).','.$modified.','.$amnestied.'&chxt=y&chxl=0:|Zdjęte|Modyfikowane|Wszystkie&chds=0,'.count($d).'" alt=""/>';
+		echo '</div>';
+	}
 }

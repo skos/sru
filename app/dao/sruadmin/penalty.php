@@ -81,4 +81,13 @@ extends UFdao {
 
 		return $this->doSelect($query);
 	}
+
+	public function listAllPenalties() {
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		$query->order($mapping->endAt,  $query->ASC);
+		
+		return $this->doSelect($query);
+	}
 }
