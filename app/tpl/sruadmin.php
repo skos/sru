@@ -41,10 +41,10 @@ extends UFtpl_Common {
 	public function menuAdmin() {
 		echo '<ul id="nav">';
 		echo '<li><a href="'.UFURL_BASE.'/admin/">Szukaj</a></li>';
-		echo '<li><a href="'.UFURL_BASE.'/admin/services/">Usługi</a></li>';
-		echo '<li><a href="'.UFURL_BASE.'/admin/stats/">Statystyki</a></li>';
+		echo '<li><a href="'.UFURL_BASE.'/admin/migration/">Użytkownicy</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/penalties/">Kary</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/dormitories/">Akademiki</a></li>';
+		echo '<li><a href="'.UFURL_BASE.'/admin/stats/">Statystyki</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/admins/">Administratorzy</a></li>';
 		echo '</ul>';
 	}
@@ -722,6 +722,19 @@ extends UFtpl_Common {
 		echo $this->ERR('Brak adresów IP dla tego DS-u');
 	}
 
+	public function titleMigration() {
+		echo 'Lista niezgodności z bazą Walet (migracja)';
+	}
+	
+	public function migration(array $d) {
+		echo '<h2>Migracja | <a href="'.$this->url(0).'/services">Usługi</a></h2>';
+		$d['migration']->write('migration', $d['users']);
+	}
+	
+	public function migrationNotFound(array $d) {
+		echo $this->ERR('Błąd wyświetlenia modułu migracji');
+	}
+
 	public function titleStatsUsers() {
 		echo 'Statystyki użytkowników';
 	}
@@ -773,7 +786,7 @@ extends UFtpl_Common {
 
 	public function servicesEdit(array $d) {
 		$form = UFra::factory('UFlib_Form');
-		echo '<h2>Usługi Użytkowników</h2>';
+		echo '<h2><a href="'.$this->url(0).'/migration">Migracja</a> | Usługi</h2>';
 		
 		if ($this->_srv->get('msg')->get('serviceEdit/ok')) {
 			echo $this->OK('Zmiany zostały zapisane');

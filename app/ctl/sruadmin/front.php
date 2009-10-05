@@ -47,6 +47,10 @@ extends UFctl {
 					$ctl = UFra::factory('UFctl_SruAdmin_Stats');
 					$ctl->go();
 					return false;
+				case 'migration':
+					$ctl = UFra::factory('UFctl_SruAdmin_Migration');
+					$ctl->go();
+					return false;
 				default:
 					$get->view = 'error404';
 					break;

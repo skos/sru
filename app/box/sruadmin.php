@@ -995,6 +995,26 @@ extends UFbox {
 		}
 	}
 
+	public function migration() {
+		try {
+			try {
+				$bean = UFra::factory('UFbean_SruAdmin_MigrationList');
+				$bean->listAll();
+			} catch (UFex_Dao_NotFound $e) {
+				$bean = null;
+			}
+			$d['migration'] = $bean;
+
+			$users = UFra::factory('UFbean_Sru_UserList');
+			$users->listAllActive();
+			$d['users'] = $users;
+		
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound', $d);
+		}
+	}
+
 	public function statsUsers() {
 		try {
 			$user = UFra::factory('UFbean_Sru_UserList');
