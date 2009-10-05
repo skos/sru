@@ -42,7 +42,7 @@ extends UFact {
 					$body = $box->userRecoverPasswordMailBodyPassword($bean, $password);
 					$headers = $box->userRecoverPasswordMailHeaders($bean);
 
-					mail($bean->email, $title, $body, $headers);
+					mail($bean->email, '=?UTF-8?B?'.base64_encode($title).'?=', $body, $headers);
 					$this->markOk(self::PREFIX.'Password');
 					break;
 			}

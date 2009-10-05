@@ -90,7 +90,7 @@ extends UFact {
 				}
 				$body = $box->penaltyAddMailBody($bean, $user, $computers);
 				$headers = $box->penaltyAddMailHeaders($bean);
-				mail($user->email, $title, $body, $headers);
+				mail($user->email, '=?UTF-8?B?'.base64_encode($title).'?=', $body, $headers);
 				
 				// wyslanie maila do admina
 				$admin = UFra::factory('UFbean_SruAdmin_Admin');
@@ -99,7 +99,7 @@ extends UFact {
 				$title = $box->penaltyAddMailTitle($user);
 				$body = $box->penaltyAddMailBody($bean, $user, $computers, $admin);
 				$headers = $box->penaltyAddMailHeaders($bean);
-				mail("admin-".$user->dormitoryAlias."@ds.pg.gda.pl", $title, $body, $headers);
+				mail("admin-".$user->dormitoryAlias."@ds.pg.gda.pl", '=?UTF-8?B?'.base64_encode($title).'?=', $body, $headers);
 			}
 
 			$this->postDel(self::PREFIX);

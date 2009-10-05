@@ -365,7 +365,8 @@ extends UFtpl_Common {
 	}
 
 	public function userRecoverPasswordMailTitle(array $d) {
-		echo '[SRU] Zmiana hasła';
+		$conf = UFra::shared('UFconf_Sru');
+		echo $conf->emailPrefix.' Zmiana hasła';
 	}
 
 	public function userRecoverPasswordMailBodyToken(array $d) {
@@ -404,10 +405,11 @@ extends UFtpl_Common {
 	}
 	
 	public function penaltyAddMailTitle(array $d) {
+		$conf = UFra::shared('UFconf_Sru');
 		if ($d['penalty']-> typeId == UFbean_SruAdmin_Penalty::TYPE_WARNING) {
-			echo '[SRU] Otrzymał(a/e)ś ostrzeżenie / You got a new warning';
+			echo $conf->emailPrefix.' Otrzymał(a/e)ś ostrzeżenie / You got a new warning';
 		} else {
-			echo '[SRU] Otrzymał(a/e)ś karę / You got a new penalty';
+			echo $conf->emailPrefix.' Otrzymał(a/e)ś karę / You got a new penalty';
 		}
 	}
 	
@@ -469,10 +471,11 @@ extends UFtpl_Common {
 	}
 
 	public function penaltyEditMailTitle(array $d) {
+		$conf = UFra::shared('UFconf_Sru');
 		if ($d['penalty']-> typeId == UFbean_SruAdmin_Penalty::TYPE_WARNING) {
-			echo '[SRU] Zmodyfikowano Twoje ostrzeżenie / Your warning was modified';
+			echo $conf->emailPrefix.' Zmodyfikowano Twoje ostrzeżenie / Your warning was modified';
 		} else {
-			echo '[SRU] Zmodyfikowano Twoją karę / Your penalty was modified';
+			echo $conf->emailPrefix.' Zmodyfikowano Twoją karę / Your penalty was modified';
 		}
 	}
 	
@@ -514,7 +517,8 @@ extends UFtpl_Common {
 	}
 
 	public function dataChangedMailTitle(array $d) {
-		echo '[SRU] Zmieniłeś swoje dane / You have changed your data';
+		$conf = UFra::shared('UFconf_Sru');
+		echo $conf->emailPrefix.' Zmieniłeś swoje dane / You have changed your data';
 	}
 	
 	public function dataChangedMailBody(array $d) {
@@ -545,7 +549,8 @@ extends UFtpl_Common {
 	}
 
 	public function hostChangedMailTitle(array $d) {
-		echo '[SRU] Zmieniłeś dane Twojego hosta / You have changed your host data';
+		$conf = UFra::shared('UFconf_Sru');
+		echo $conf->emailPrefix.' Zmieniłeś dane Twojego hosta / You have changed your host data';
 	}
 	
 	public function hostChangedMailBody(array $d) {

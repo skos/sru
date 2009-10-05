@@ -62,7 +62,7 @@ extends UFact {
 				$title = $box->dataChangedMailTitle($bean);
 				$body = $box->dataChangedMailBody($bean, $history);
 				$headers = $box->dataChangedMailHeaders($bean);
-				mail($bean->email, $title, $body, $headers);
+				mail($bean->email, '=?UTF-8?B?'.base64_encode($title).'?=', $body, $headers);
 			}
 
 			$this->postDel(self::PREFIX);

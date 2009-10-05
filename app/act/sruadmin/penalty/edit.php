@@ -52,14 +52,14 @@ extends UFact {
 				$title = $box->penaltyEditMailTitle($bean);
 				$body = $box->penaltyEditMailBody($bean, $user);
 				$headers = $box->penaltyEditMailHeaders($bean);
-				mail($user->email, $title, $body, $headers);
+				mail($user->email, '=?UTF-8?B?'.base64_encode($title).'?=', $body, $headers);
 				
 				// wyslanie maila do admina
 				$box = UFra::factory('UFbox_SruAdmin');
 				$title = $box->penaltyEditMailTitle($user);
 				$body = $box->penaltyEditMailBody($bean, $user, $admin);
 				$headers = $box->penaltyEditMailHeaders($bean);
-				mail("admin-".$user->dormitoryAlias."@ds.pg.gda.pl", $title, $body, $headers);
+				mail("admin-".$user->dormitoryAlias."@ds.pg.gda.pl", '=?UTF-8?B?'.base64_encode($title).'?=', $body, $headers);
 			}
 
 			$this->postDel(self::PREFIX);

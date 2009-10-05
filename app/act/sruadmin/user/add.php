@@ -45,7 +45,7 @@ extends UFact {
 			$title = $box->userAddMailTitle($bean);
 			$body = $box->userAddMailBodyNoInfo($bean, $password);
 			$headers = $box->userAddMailHeaders($bean);
-			mail($bean->email, $title, $body, $headers);
+			mail($bean->email, '=?UTF-8?B?'.base64_encode($title).'?=', $body, $headers);
 
 			$this->postDel(self::PREFIX);
 			$this->markOk(self::PREFIX);

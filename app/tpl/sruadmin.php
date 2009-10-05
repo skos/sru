@@ -834,7 +834,8 @@ extends UFtpl_Common {
 	}
 	
 	public function penaltyAddMailTitle(array $d) {
-		echo '[SRU] Nałozono nową karę w DS'.substr($d['user']->dormitoryAlias, 2);
+		$conf = UFra::shared('UFconf_Sru');
+		echo $conf->emailPrefix.' Nałożono nową karę w DS'.substr($d['user']->dormitoryAlias, 2);
 	}
 	
 	public function penaltyAddMailBody(array $d) {
@@ -868,7 +869,8 @@ extends UFtpl_Common {
 	}
 
 	public function penaltyEditMailTitle(array $d) {
-		echo '[SRU] Zmodyfikowano karę w DS'.substr($d['user']->dormitoryAlias, 2);
+		$conf = UFra::shared('UFconf_Sru');
+		echo $conf->emailPrefix.' Zmodyfikowano karę w DS'.substr($d['user']->dormitoryAlias, 2);
 	}
 	
 	public function penaltyEditMailBody(array $d) {
@@ -891,7 +893,8 @@ extends UFtpl_Common {
 	}
 
 	public function dataChangedMailTitle(array $d) {
-		echo '[SRU] Twoje dane zostały zmienione / Your data has been changed';
+		$conf = UFra::shared('UFconf_Sru');
+		echo $conf->emailPrefix.' Twoje dane zostały zmienione / Your data has been changed';
 	}
 	
 	public function dataChangedMailBody(array $d) {
@@ -914,7 +917,8 @@ extends UFtpl_Common {
 	}
 
 	public function hostChangedMailTitle(array $d) {
-		echo '[SRU] Dane Twojego hosta zostały zmienione / Your host data has been changed';
+		$conf = UFra::shared('UFconf_Sru');
+		echo $conf->emailPrefix.' Dane Twojego hosta zostały zmienione / Your host data has been changed';
 	}
 	
 	public function hostChangedMailBody(array $d) {
