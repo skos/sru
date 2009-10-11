@@ -1110,7 +1110,7 @@ extends UFbox {
 		return $this->render(__FUNCTION__, $d);
 	}
 
-	public function hostChangedMailBody($host, $action, $history) {
+	public function hostChangedMailBody($host, $action, $history = null) {
 		$d['host'] = $host;
 		$d['action'] = $action;
 		$d['history'] = $history;
