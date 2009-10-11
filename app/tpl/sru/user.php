@@ -517,6 +517,7 @@ extends UFtpl_Common {
 		echo '<tr><th>Ilość kar</th><th>Ilość ukaranych</th></tr>';
 		$chartData = '';
 		$chartLabel = '';
+		ksort($bansNumber);
 		while ($b = current ($bansNumber)) {
 			echo '<tr><td>'.key($bansNumber).'</td><td>'.$b.'</td></tr>';
 			$chartData = (round($b/count($d), 2)*100).','.$chartData;
