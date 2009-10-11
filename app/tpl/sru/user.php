@@ -482,7 +482,7 @@ extends UFtpl_Common {
 		echo '<div style="text-align: center;">';
 		echo '<img src="http://chart.apis.google.com/chart?chs=600x200&chd=t:'.$womanProc.','.$manProc.'|'.$womanSumProc.','.$manSumProc;
 		echo '&cht=pc&chl=Aktywne dla kobiet: '.($womanProc*100).'%|Aktywne dla mężczyzn: '.($manProc*100).'%|Suma dla kobiet: ';
-		echo ($womanSumProc*100).'%|Suma dla mężczyzn: '.($womanSumProc*100).'%" alt=""/>';
+		echo ($womanSumProc*100).'%|Suma dla mężczyzn: '.($manSumProc*100).'%" alt=""/>';
 		echo '</div>';
 
 		echo '<h3>Top 10 ukaranych:</h3>';

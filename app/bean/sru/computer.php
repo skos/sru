@@ -12,7 +12,6 @@ extends UFbeanSingle {
 
 	protected $notifyAbout = array(
 		'host',
-		'ip',
 		'mac',
 		'availableTo',
 	);
