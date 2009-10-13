@@ -22,6 +22,7 @@ extends UFact {
 			$user = UFra::factory('UFbean_Sru_User');
 			$user->getFromSession();
 
+			$conf = UFra::shared('UFconf_Sru');
 			if ($conf->sendEmail) {
 				// wyslanie maila do usera
 				$box = UFra::factory('UFbox_Sru');
