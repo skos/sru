@@ -78,10 +78,11 @@ img { border-style: none; }
 #main .ips td { color: #aaa; text-align: center; width: 6%; border: 1px solid #eee; }
 #main .ips td a { display: block; }
 #main .ips td a:hover { background-color: #eee; }
-#main .ips td .not_signed { display: block; font-style: normal; background-color: #ffc; }
-#main .ips td .wrong_dorm { display: block; background-color: #fcc; font-weight: normal; }
-#main .ips td .admin { display: block; background-color: #ccf; font-weight: normal; }
-#main .ips td .banned { display: block; background-color: #fc0; font-weight: normal; }
-#main .ips td .banned_wrong_dorm { display: block; background-color: #666; font-weight: normal; }
+#main .ips td .normal { display: block; font-style: normal; color: #003d9a;}
+#main .ips td .not_signed { display: block; font-style: normal; background-color: #ffc; color: #003d9a;}
+#main .ips td .wrong_dorm { display: block; background-color: #fcc; font-weight: normal; color: #003d9a;}
+#main .ips td .admin { display: block; background-color: #ccf; font-weight: normal; color: #003d9a;}
+#main .ips td .banned { display: block; background-color: #fc0; font-weight: normal; color: #003d9a;}
+#main .ips td .banned_wrong_dorm { display: block; background-color: #666; font-weight: normal; color: #003d9a;}
 
 #foot { text-align: center; font-size: 0.5em; margin-top: 2em; clear: both; }

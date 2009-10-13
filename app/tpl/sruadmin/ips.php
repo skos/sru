@@ -49,10 +49,10 @@ extends UFtpl_Common {
 	}
 	
 	protected function showLegend() {
-		echo '<table><tr><td>OK</td><td><span class="admin">admin</span></td><td><span class="not_signed">brak przypisania DS</span></td></tr><tr><td><span class="wrong_dorm">brak zgodności DS</span></td><td><span class="banned">kara</span></td><td><span class="banned_wrong_dorm">kara i brak zgodności DS</span></td></tr></table><br/>';
+		echo '<table><tr><td><span class="normal">OK</span></td><td><span class="admin">admin</span></td><td><span class="not_signed">brak przypisania DS</span></td></tr><tr><td><span class="wrong_dorm">brak zgodności DS</span></td><td><span class="banned">kara</span></td><td><span class="banned_wrong_dorm">kara i brak zgodności DS</span></td></tr></table><br/>';
 	}
 
-	public function ips(array $d) {		
+	public function ips(array $d, $dorm) {
 		$url = $this->url(0).'/computers/';
 
 		$perLine = 16;
@@ -63,17 +63,37 @@ extends UFtpl_Common {
 
 		$this->showLegend();
 
+		if (!isset($dorm)) {
+			$this->writeAll($d, $dorm, $perLine, $classOld, $url);
+		} else {
+			$this->writeAll($d, $dorm, $perLine, $classOld, $url, true);
+			echo '<hr/><br/>';
+			$this->writeAll($d, $dorm, $perLine, $classOld, $url, false);
+		}
+	}
+
+	private function writeAll($d, $dorm, $perLine, $classOld, $url, $validDorm = null) {
 		$tmp = array();
 		foreach ($d as &$ip) {
 			$class = substr($ip['ip'], 7, 3);
 			if ($class != $classOld) {
-				$this->writeClass($tmp, $perLine, $url);
+				$dormId = current($tmp);
+				$dormId = current($dormId);
+				$dormId = $dormId['dormitoryId'];
+				if (!isset($validDorm) || ($validDorm === true && $dormId === $dorm->id) || ($validDorm === false && $dormId !== $dorm->id)) {
+					$this->writeClass($tmp, $perLine, $url, $dorm);
+				}
 				$tmp = array();
 			}
 			$pos = (int)substr($ip['ip'], 11);	// ostatni czlon ip
 			$tmp[(int)floor($pos/$perLine)][$pos%$perLine] =& $ip;
 			$classOld = $class;
 		}
-		$this->writeClass($tmp, $perLine, $url);
-	}		
+		$dormId = current($tmp);
+		$dormId = current($dormId);
+		$dormId = $dormId['dormitoryId'];
+		if (!isset($validDorm) || ($validDorm === true && $dormId === $dorm->id) || ($validDorm === false && $dormId !== $dorm->id)) {
+			$this->writeClass($tmp, $perLine, $url, $dorm);
+		}
+	}
 }

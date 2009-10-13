@@ -709,7 +709,7 @@ extends UFtpl_Common {
 		}
 		echo '<div class="ips">';
 		
-		$d['ips']->write('ips');
+		$d['ips']->write('ips', $d['dorm']);
 		echo '</div>';
 	}						
 	
