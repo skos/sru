@@ -15,6 +15,7 @@ extends UFtpl_Common {
 		'reason' => 'Podaj opis',
 		'duration' => 'Podaj długość',
 		'after' => 'Podaj minimalną długość',
+		'newComment/notNull' => 'Podaj komentarz modyfikacji',
 	);	
 
 	public function listPenalty(array $d) {
@@ -114,7 +115,6 @@ extends UFtpl_Common {
 		$d['endAt'] = date(self::TIME_YYMMDD_HHMM, $d['endAt']);
 		$url = $this->url(0);
 		
-		
 		echo '<p><em>Ukarany:</em> <a href="'.$url.'/users/'.$d['userId'].'">'.$this->_escape($d['userName']).' '.$this->_escape($d['userSurname']).' ('.$d['userLogin'].')</a></p>';
 
 		if ($d['active']) {
@@ -123,13 +123,10 @@ extends UFtpl_Common {
 			$admin->getFromSession();
 			$d['admin'] = $admin;
 			if ($acl->sruAdmin('penalty', 'editOne', $d['id'])) {
-				$form = UFra::factory('UFlib_Form', 'penaltyEdit', $d);
+				$form = UFra::factory('UFlib_Form', 'penaltyEdit', $d, $this->errors);
 				echo $form->_start();
 				echo $form->_fieldset('Edycja kary');
 				echo $form->endAt('Od '.date(self::TIME_YYMMDD, $d['startAt']).' do');
-				echo $form->_submit('Zmień');
-				echo $form->_end();
-				echo $form->_end(true);
 			} else {
 				echo '<p><em>Kara trwa:</em> '.date(self::TIME_YYMMDD_HHMM, $d['startAt']).' &mdash; <strong>'.$d['endAt'].'</strong>'.($d['amnestyAfter']<$d['endAt']?' (amnestia będzie możliwa po '.date(self::TIME_YYMMDD_HHMM, $d['amnestyAfter']).')':'').'</p>';
 			}
@@ -143,19 +140,29 @@ extends UFtpl_Common {
 		if (!is_null($d['templateTitle'])) {
 			echo '<p><em>Szablon:</em> '.$this->_escape($d['templateTitle']).'</p>';
 		}
-		echo '<p><em>Powód:</em> '.nl2br($this->_escape($d['reason'])).'</p>';
+		if ($d['active']) {
+				$amnestyDays = ($d['amnestyAfter'] - $d['startAt']) / 24 / 3600;
+				echo $form->after('Min. długość (dni)', array('value'=>$amnestyDays));
+				echo $form->reason('Powód:', array('type'=>$form->TEXTAREA, 'rows'=>5));
+				echo $form->newComment('Komentarz do modyfikacji:', array('type'=>$form->TEXTAREA, 'rows'=>5));
+				echo $form->_submit('Zmień');
+				echo $form->_end();
+				echo $form->_end(true);
+		} else {
+			echo '<p><em>Powód:</em> '.nl2br($this->_escape($d['reason'])).'</p>';
+		}
 		echo '<span id="penaltyMoreSwitch"></span><div id="penaltyMore">';
 		echo '<p class="displayOnHover"><em>Karzący:</em> <span><a href="'.$url.'/admins/'.$d['createdById'].'">'.$this->_escape($d['createdByName']).'</a><small> ('.date(self::TIME_YYMMDD_HHMM, $d['createdAt']) .')</small></span></p>';
 
 		if($d['modifiedById']) {
-			echo '<p class="displayOnHover"><em>Modyfikacja:</em> <span><a href="'.$url.'/admins/'.$d['modifiedById'].'">'.$this->_escape($d['modifiedByName']). '</a> <small>('.date(self::TIME_YYMMDD_HHMM, $d['modifiedAt']).')</small></span></p>';							
+			echo '<p class="displayOnHover"><em>Ostatnia modyfikacja:</em> <span><a href="'.$url.'/admins/'.$d['modifiedById'].'">'.$this->_escape($d['modifiedByName']). '</a> <small>('.date(self::TIME_YYMMDD_HHMM, $d['modifiedAt']).')</small></span></p>';							
 		}
 		
 		if($d['amnestyById']) {
 			echo '<p class="displayOnHover"><em>Amnestia:</em> <span><a href="'.$url.'/admins/'.$d['amnestyById'].'">'.$this->_escape($d['amnestyByName']).'</a> <small>('.date(self::TIME_YYMMDD_HHMM, $d['amnestyAt']).')</small></span></p>';							
 		}	
 		
-		echo '<p><em>Komentarz:</em> '.nl2br($this->_escape($d['comment'])).'</p>';
+		echo '<p><em>Komentarz:</em> '.nl2br($d['comment']).'</p>';
 		echo '<p><em>Typ:</em> '.$this->_escape($this->penaltyTypes[$d['typeId']]).'</p>';
 		echo '</div>';
 ?><script type="text/javascript">

@@ -31,6 +31,12 @@ extends UFact {
 			} else {
 				$bean->fillFromPost(self::PREFIX, null, array('endAt'));
 			}
+			$bean->fillFromPost(self::PREFIX, null, array('reason', 'after'));
+			if ($post['newComment'] == '') {
+				throw UFra::factory('UFex_Dao_DataNotValid', 'Modification comment cannot be null', 0, E_WARNING, array('newComment' => 'notNull'));
+			}
+			$bean->comment = $bean->comment.'<br/>- - -<br/>'.date(UFtpl_Common::TIME_YYMMDD_HHMM, time()).' '.$admin->name.' dodał:<br/>'.$post['newComment'];
+			$bean->amnestyAfter = $bean->startAt + $bean->after * 24 * 3600;
 			$bean->modifiedAt = NOW;
 			$bean->modifiedById = $this->_srv->get('session')->authAdmin; 
 			if ($bean->endAt <= NOW) {

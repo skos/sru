@@ -12,6 +12,9 @@ extends UFmap {
 		'amnestyAt'    => 'amnesty_at',
 		'amnestyById'  => 'amnesty_by',
 		'active'       => 'active',
+		'reason'       => 'reason',
+		'comment'      => 'comment',
+		'amnestyAfter' => 'amnesty_after',
 	);
 
 	protected $columnTypes = array(
@@ -21,6 +24,10 @@ extends UFmap {
 		'amnestyAt'    => self::NULL_TS,
 		'amnestyById'  => self::NULL_INT,
 		'active'       => self::BOOL,
+		'reason'       => self::TEXT,
+		'comment'      => self::TEXT,
+		'amnestyAfter' => self::NULL_TS,
+		'after'        => self::INT,	// tylko do walidacji formularza
 	);
 
 	protected $tables = array(
