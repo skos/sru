@@ -205,7 +205,8 @@ extends UFtpl_Common {
 			$changed = '<a href="'.$url.'/admins/'.$d['modifiedById'].'">'.$this->_escape($d['modifiedBy']).'</a>';;
 		}
 		echo '<p><em>Zmiana:</em> '.date(self::TIME_YYMMDD_HHMM, $d['modifiedAt']).'<small> ('.$changed.')</small></p>';
-		echo '<p class="displayOnHover"><em>Znajdź na:</em>';
+		echo '<div id="userMore">';
+		echo '<p><em>Znajdź na:</em>';
 		echo ' <a href="http://www.google.pl/search?q='.urlencode($d['name'].' '.$d['surname']).'">google</a>';
 		echo ' <a href="http://nasza-klasa.pl/search?query='.urlencode($d['name'].' '.$d['surname']).'">nasza-klasa</a>';
 		echo ' <a href="http://wyczajka.net/p/'.urlencode($d['name'].'_'.$d['surname']).'">wyczajka</a>';
@@ -213,7 +214,29 @@ extends UFtpl_Common {
 		if (strlen($d['comment'])) {
 			echo '<p><em>Komentarz:</em></p><p class="comment">'.nl2br($this->_escape($d['comment'])).'</p>';
 		}
-		echo '<p class="nav"><a href="'.$urlUser.'">Dane</a> <a href="'. $url.'/penalties/:add/user:'.$d['id'].'">Ukarz</a> <a href="'.$urlUser.'/history">Historia profilu</a> <a href="'.$urlUser.'/servicehistory">Historia usług</a> <a href="'.$urlUser.'/:edit">Edycja</a></p>';
+		echo '</div>';
+		echo '<p class="nav"><span id="userMoreSwitch"></span> <a href="'.$urlUser.'">Dane</a> <a href="'. $url.'/penalties/:add/user:'.$d['id'].'">Ukarz</a> <a href="'.$urlUser.'/history">Historia profilu</a> <a href="'.$urlUser.'/servicehistory">Historia usług</a> <a href="'.$urlUser.'/:edit">Edycja</a></p>';
+?><script type="text/javascript">
+function changeVisibility() {
+	var div = document.getElementById('userMore');
+	if (div.sruHidden != true) {
+		div.style.display = 'none';
+		div.sruHidden = true;
+	} else {
+		div.style.display = 'block';
+		div.sruHidden = false;
+	}
+}
+var container = document.getElementById('userMoreSwitch');
+var button = document.createElement('a');
+button.onclick = function() {
+	changeVisibility();
+}
+var txt = document.createTextNode('Szczegóły');
+button.appendChild(txt);
+container.appendChild(button);
+changeVisibility();
+</script><?
 	}
 
 	public function titleDetails(array $d) {
