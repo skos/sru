@@ -140,7 +140,7 @@ extends UFtpl_Common {
 		if (!is_null($d['templateTitle'])) {
 			echo '<p><em>Szablon:</em> '.$this->_escape($d['templateTitle']).'</p>';
 		}
-		if ($d['active']) {
+		if ($d['active'] && $acl->sruAdmin('penalty', 'editOne', $d['id'])) {
 				$amnestyDays = ($d['amnestyAfter'] - $d['startAt']) / 24 / 3600;
 				echo $form->after('Min. długość (dni)', array('value'=>$amnestyDays));
 				echo $form->reason('Powód:', array('type'=>$form->TEXTAREA, 'rows'=>5));
@@ -181,11 +181,28 @@ var button = document.createElement('a');
 button.onclick = function() {
 	changeVisibility();
 }
-var txt = document.createTextNode('Szczegóły...');
+var txt = document.createTextNode('Szczegóły');
 button.appendChild(txt);
 container.appendChild(button);
 changeVisibility();
+<?
+		if ($d['active'] && $acl->sruAdmin('penalty', 'editOne', $d['id'])) {
+?>
+input = document.getElementById('penaltyEdit_endAt');
+if (input) {
+	button = document.createElement('input');
+	button.setAttribute('value', 'Zdejmij karę');
+	button.setAttribute('type', 'button');
+	button.onclick = function() {
+		input = document.getElementById('penaltyEdit_endAt');
+		input.value = '';
+	}
+	input.parentNode.insertBefore(button, input.nextSibling);
+	space = document.createTextNode(' ');
+	input.parentNode.insertBefore(space, input.nextSibling);
+}
 </script><?
+		}
 	}
 
 	public function apiPast(array $d) {
