@@ -859,12 +859,30 @@ extends UFbox {
 			} else {
 				$d['computers'] = null;
 			}
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}
+	}
+
+	public function penaltyHistory() {
+		try {
+			$bean = $this->_getPenaltyFromGet();
+			$d['penalty'] = $bean;
+
+			$history = UFra::factory('UFbean_SruAdmin_PenaltyHistoryList');
+			try {
+				$history->listByPenaltyId($bean->id);
+			} catch (UFex_Dao_NotFound $e) {
+			}
+			$d['history'] = $history;
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
 			return $this->render(__FUNCTION__.'NotFound');
 		}
-	}	
+	}
+
 	public function userPenalties() 
 	{
 		try 

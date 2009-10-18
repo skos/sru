@@ -64,6 +64,9 @@ extends UFctl_Common {
 				case 'actions':
 					$get->view = 'penalties/actions';
 					break;
+				case 'history':
+					$get->view = 'penalties/history';
+					break;
 				default:
 					$get->view = 'penalties/penalty';
 					$id = (int)$req->segment(2);
@@ -72,7 +75,16 @@ extends UFctl_Common {
 						break;
 					}
 					$get->penaltyId = $id;
-
+					if ($segCount > 2) {
+						switch ($req->segment(3)) {
+							case 'history':
+								$get->view = 'penalties/penalty/history';
+								break;
+							default:
+								$get->view = 'error404';
+								break;
+						}
+					}
 				}
 		}		
 
@@ -88,7 +100,7 @@ extends UFctl_Common {
 			$act = 'Admin_Logout';
 		} elseif ($post->is('adminLogin') && $acl->sruAdmin('admin', 'login')) {
 			$act = 'Admin_Login';
-		} elseif ('penalties/penalty' == $get->view && $post->is('penaltyEdit') && $acl->sruAdmin('penalty', 'edit')) {
+		} elseif (('penalties/penalty' == $get->view || 'penalties/penalty/history' == $get->view) && $post->is('penaltyEdit') && $acl->sruAdmin('penalty', 'edit')) {
 			$act = 'Penalty_Edit';
 		} elseif ('penalties/add' == $get->view && $post->is('penaltyAdd') && $acl->sruAdmin('penalty', 'add')) {
 			$act = 'Penalty_Add';
@@ -134,7 +146,9 @@ extends UFctl_Common {
 					return 'Sru_Error404';
 				}	
 			case 'penalties/actions':
-				return 'SruAdmin_PenaltyActions';										
+				return 'SruAdmin_PenaltyActions';
+			case 'penalties/penalty/history':
+				return 'SruAdmin_PenaltyHistory';
 			default:
 				return 'Sru_Error404';
 		}

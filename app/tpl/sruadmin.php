@@ -625,6 +625,12 @@ extends UFtpl_Common {
 	}
 
 	public function penalty(array $d) {
+		if ($this->_srv->get('msg')->get('penaltyEdit/ok')) {
+			echo $this->OK('Zmiany zostały wprowadzone');
+		} elseif ($this->_srv->get('msg')->get('penaltyEdit/errors/endAt')) {
+			echo $this->ERR('Nieprawidłowa data');
+		}
+
 		echo '<div class="penalty">';	
 		echo '<h2>';
 
@@ -634,16 +640,16 @@ extends UFtpl_Common {
 			echo 'Kara';
 		}
 		echo '</h2>';
-		if ($this->_srv->get('msg')->get('penaltyEdit/ok')) {
-			echo $this->OK('Zmiany zostały wprowadzone');
-		} elseif ($this->_srv->get('msg')->get('penaltyEdit/errors/endAt')) {
-			echo $this->ERR('Nieprawidłowa data');
-		}
 		
 		$d['penalty']->write('details', $d['computers']);
 		
 		echo '</div>';
 	}
+
+	public function penaltyHistory(array $d) {
+		$d['history']->write('history', $d['penalty']);
+	}
+
 	public function penaltyNotFound() {
 		echo $this->ERR('Nie znaleziono kary');
 	}

@@ -144,14 +144,14 @@ extends UFtpl_Common {
 				$amnestyDays = ($d['amnestyAfter'] - $d['startAt']) / 24 / 3600;
 				echo $form->after('Min. długość (dni)', array('value'=>$amnestyDays));
 				echo $form->reason('Powód:', array('type'=>$form->TEXTAREA, 'rows'=>5));
-				echo $form->newComment('Komentarz do modyfikacji:', array('type'=>$form->TEXTAREA, 'rows'=>5));
+				echo $form->newComment('Komentarz:', array('type'=>$form->TEXTAREA, 'rows'=>5, 'value'=>$d['comment']));
 				echo $form->_submit('Zmień');
 				echo $form->_end();
 				echo $form->_end(true);
 		} else {
 			echo '<p><em>Powód:</em> '.nl2br($this->_escape($d['reason'])).'</p>';
 		}
-		echo '<span id="penaltyMoreSwitch"></span><div id="penaltyMore">';
+		echo '<span id="penaltyMoreSwitch"></span> <a href="'.$url.'/penalties/'.$d['id'].'/history/">Historia kary</a><div id="penaltyMore">';
 		echo '<p class="displayOnHover"><em>Karzący:</em> <span><a href="'.$url.'/admins/'.$d['createdById'].'">'.$this->_escape($d['createdByName']).'</a><small> ('.date(self::TIME_YYMMDD_HHMM, $d['createdAt']) .')</small></span></p>';
 
 		if($d['modifiedById']) {
@@ -162,7 +162,7 @@ extends UFtpl_Common {
 			echo '<p class="displayOnHover"><em>Amnestia:</em> <span><a href="'.$url.'/admins/'.$d['amnestyById'].'">'.$this->_escape($d['amnestyByName']).'</a> <small>('.date(self::TIME_YYMMDD_HHMM, $d['amnestyAt']).')</small></span></p>';							
 		}	
 		
-		echo '<p><em>Komentarz:</em> '.nl2br($d['comment']).'</p>';
+		echo '<p><em>Komentarz:</em> '.nl2br($this->_escape($d['comment'])).'</p>';
 		echo '<p><em>Typ:</em> '.$this->_escape($this->penaltyTypes[$d['typeId']]).'</p>';
 		echo '</div>';
 ?><script type="text/javascript">
@@ -186,7 +186,7 @@ button.appendChild(txt);
 container.appendChild(button);
 changeVisibility();
 </script><?
-	}		
+	}
 
 	public function apiPast(array $d) {
 		foreach ($d as $p) {	
