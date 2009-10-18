@@ -21,22 +21,34 @@ extends UFact {
 			$acl = $this->_srv->get('acl');
 			$admin = UFra::factory('UFbean_SruAdmin_Admin');
 			$admin->getFromSession();
-			if(!$acl->sruAdmin('penalty', 'editOne', $bean->id)) {
-				UFra::error('Admin '.$d['admin']->id.' dont have permission to edit this penalty');
-				return;
-			}
 
-			if ('' === $post['endAt']) {
-				$bean->endAt = NOW;
-			} else if (date(UFtpl_Common::TIME_YYMMDD_HHMM, $bean->endAt) !== $post['endAt']) {
-				$bean->fillFromPost(self::PREFIX, null, array('endAt'));
+			if($acl->sruAdmin('penalty', 'editOneFull', $bean->id)) {
+				if ('' === $post['endAt']) {
+					$bean->endAt = NOW;
+				} else if (date(UFtpl_Common::TIME_YYMMDD_HHMM, $bean->endAt) !== $post['endAt']) {
+					$bean->fillFromPost(self::PREFIX, null, array('endAt'));
+				}
+				$bean->fillFromPost(self::PREFIX, null, array('reason', 'after'));
+				if ($post['newComment'] == '' || $post['newComment'] == $bean->comment) {
+					throw UFra::factory('UFex_Dao_DataNotValid', 'Modification comment cannot be null', 0, E_WARNING, array('newComment' => 'notNull'));
+				}
+				$bean->comment = $post['newComment'];
+				$bean->amnestyAfter = $bean->startAt + $bean->after * 24 * 3600;
+			} else {
+				if(!$acl->sruAdmin('penalty', 'editOne', $bean->id)) {
+					UFra::error('Admin '.$d['admin']->id.' dont have permission to edit this penalty');
+					return;
+				}
+
+				if ('' === $post['endAt']) {
+					$bean->endAt = $bean->amnestyAfter;
+				} else if (date(UFtpl_Common::TIME_YYMMDD_HHMM, $bean->endAt) !== $post['endAt']) {
+					$bean->fillFromPost(self::PREFIX, null, array('endAt'));
+					if ($bean->endAt < $bean->amnestyAfter) {
+						throw UFra::factory('UFex_Dao_DataNotValid', 'Modification comment cannot be null', 0, E_WARNING, array('endAt' => 'tooShort'));
+					}
+				}
 			}
-			$bean->fillFromPost(self::PREFIX, null, array('reason', 'after'));
-			if ($post['newComment'] == '' || $post['newComment'] == $bean->comment) {
-				throw UFra::factory('UFex_Dao_DataNotValid', 'Modification comment cannot be null', 0, E_WARNING, array('newComment' => 'notNull'));
-			}
-			$bean->comment = $post['newComment'];
-			$bean->amnestyAfter = $bean->startAt + $bean->after * 24 * 3600;
 			$bean->modifiedAt = NOW;
 			$bean->modifiedById = $this->_srv->get('session')->authAdmin; 
 			if ($bean->endAt <= NOW) {
@@ -45,7 +57,7 @@ extends UFact {
 				$bean->amnestyAt = NOW;
 				$bean->active = false;
 			}
-			
+
 			$bean->save();
 
 			$conf = UFra::shared('UFconf_Sru');

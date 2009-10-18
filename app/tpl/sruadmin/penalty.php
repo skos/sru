@@ -16,6 +16,7 @@ extends UFtpl_Common {
 		'duration' => 'Podaj długość',
 		'after' => 'Podaj minimalną długość',
 		'newComment/notNull' => 'Podaj komentarz modyfikacji',
+		'endAt/tooShort' => 'Nie możesz skrócić kary poniżej minimalnego czasu',
 	);	
 
 	public function listPenalty(array $d) {
@@ -140,18 +141,24 @@ extends UFtpl_Common {
 		if (!is_null($d['templateTitle'])) {
 			echo '<p><em>Szablon:</em> '.$this->_escape($d['templateTitle']).'</p>';
 		}
-		if ($d['active'] && $acl->sruAdmin('penalty', 'editOne', $d['id'])) {
-				$amnestyDays = ($d['amnestyAfter'] - $d['startAt']) / 24 / 3600;
+		if ($d['active']) {
+			$amnestyDays = ($d['amnestyAfter'] - $d['startAt']) / 24 / 3600;
+			if ($acl->sruAdmin('penalty', 'editOneFull', $d['id'])) {
 				echo $form->after('Min. długość (dni)', array('value'=>$amnestyDays));
 				echo $form->reason('Powód:', array('type'=>$form->TEXTAREA, 'rows'=>5));
 				echo $form->newComment('Komentarz:', array('type'=>$form->TEXTAREA, 'rows'=>5, 'value'=>$d['comment']));
-				echo $form->_submit('Zmień');
-				echo $form->_end();
-				echo $form->_end(true);
+			} else {
+				echo '<p><em>Min. długość:</em> '.$amnestyDays.' dni</p>';
+			}
 		} else {
 			echo '<p><em>Powód:</em> '.nl2br($this->_escape($d['reason'])).'</p>';
 		}
-		echo '<span id="penaltyMoreSwitch"></span> <a href="'.$url.'/penalties/'.$d['id'].'/history/">Historia kary</a><div id="penaltyMore">';
+		if ($d['active'] && $acl->sruAdmin('penalty', 'editOne', $d['id'])) {
+			echo $form->_submit('Zmień');
+			echo $form->_end();
+			echo $form->_end(true);	
+		}
+		echo '<p><span id="penaltyMoreSwitch"></span> <a href="'.$url.'/penalties/'.$d['id'].'/history/">Historia kary</a><div id="penaltyMore"></p>';
 		echo '<p class="displayOnHover"><em>Karzący:</em> <span><a href="'.$url.'/admins/'.$d['createdById'].'">'.$this->_escape($d['createdByName']).'</a><small> ('.date(self::TIME_YYMMDD_HHMM, $d['createdAt']) .')</small></span></p>';
 
 		if($d['modifiedById']) {
@@ -203,8 +210,11 @@ if (input) {
 	space = document.createTextNode(' ');
 	input.parentNode.insertBefore(space, input.nextSibling);
 }
-</script><?
+<?
 		}
+?>
+</script>
+<?
 	}
 
 	public function apiPast(array $d) {

@@ -206,7 +206,7 @@ extends UFtpl_Common {
 		}
 		echo '<p><em>Zmiana:</em> '.date(self::TIME_YYMMDD_HHMM, $d['modifiedAt']).'<small> ('.$changed.')</small></p>';
 		echo '<div id="userMore">';
-		echo '<p><em>Znajdź na:</em>';
+		echo '<p class="displayOnHover"><em>Znajdź na:</em>';
 		echo ' <a href="http://www.google.pl/search?q='.urlencode($d['name'].' '.$d['surname']).'">google</a>';
 		echo ' <a href="http://nasza-klasa.pl/search?query='.urlencode($d['name'].' '.$d['surname']).'">nasza-klasa</a>';
 		echo ' <a href="http://wyczajka.net/p/'.urlencode($d['name'].'_'.$d['surname']).'">wyczajka</a>';

@@ -40,11 +40,37 @@ extends UFlib_ClassWithService {
 		}
 		
 		if ($sess->authAdmin == $bean->createdById) {	//swoje kary mozna edytowac
-			return true;	
+			return true;
 		} elseif ($sess->typeId == UFacl_SruAdmin_Admin::CENTRAL || $sess->typeId == UFacl_SruAdmin_Admin::CAMPUS) {
 			return true;
 		} else {
-			return ($bean->amnestyAfter<NOW);
+			return ($bean->amnestyAfter<$bean->endAt);
 		}
-	}	
+	}
+
+	/**
+	 * sprawdza uprawnienia do pelnej edycji danej kary
+	 * 
+	 * @param int $id - id kary
+	 * @return bool
+	 */
+	public function editOneFull($id) {
+		if (!$this->_loggedIn()) {
+			return false;
+		}
+		$sess = $this->_srv->get('session');
+		$bean = UFra::factory('UFbean_SruAdmin_Penalty');
+		try {
+			$bean->getByPK($id);
+		} catch (Exception $e) {
+			return false;
+		}
+		
+		if ($sess->authAdmin == $bean->createdById) {	//swoje kary mozna edytowac
+			return true;	
+		} elseif ($sess->typeId == UFacl_SruAdmin_Admin::CENTRAL || $sess->typeId == UFacl_SruAdmin_Admin::CAMPUS) {
+			return true;
+		}
+		return false;
+	}
 }
