@@ -8,7 +8,6 @@ CREATE SEQUENCE services_type_id_seq
   MAXVALUE 9223372036854775807
   START 4
   CACHE 1;
-ALTER TABLE services_type_id_seq OWNER TO postgres;
 
 -- Sequence: services_history_id_seq
 
@@ -20,7 +19,6 @@ CREATE SEQUENCE services_history_id_seq
   MAXVALUE 9223372036854775807
   START 1
   CACHE 1;
-ALTER TABLE services_history_id_seq OWNER TO postgres;
 
 -- Sequence: services_id_seq
 
@@ -32,7 +30,6 @@ CREATE SEQUENCE services_id_seq
   MAXVALUE 9223372036854775807
   START 1
   CACHE 1;
-ALTER TABLE services_id_seq OWNER TO postgres;
 
 -- Table: services_type
 
@@ -45,7 +42,6 @@ CREATE TABLE services_type
   CONSTRAINT services_type_pkey PRIMARY KEY (id)
 )
 WITH (OIDS=FALSE);
-ALTER TABLE services_type OWNER TO postgres;
 COMMENT ON TABLE services_type IS 'dostepne uslugi';
 COMMENT ON COLUMN services_type."name" IS 'nazwa uslugi';
 
@@ -75,7 +71,6 @@ CREATE TABLE services
   CONSTRAINT services_user_id_key UNIQUE (user_id, serv_type_id)
 )
 WITH (OIDS=FALSE);
-ALTER TABLE services OWNER TO postgres;
 COMMENT ON TABLE services IS 'uslugi uzytkownikow';
 COMMENT ON COLUMN services.created_at IS 'czas utworzenia uslugi';
 COMMENT ON COLUMN services.user_id IS 'id uzytkownika';
@@ -101,7 +96,6 @@ CREATE TABLE services_history
       ON UPDATE CASCADE ON DELETE CASCADE
 )
 WITH (OIDS=FALSE);
-ALTER TABLE services_history OWNER TO postgres;
 COMMENT ON TABLE services_history IS 'historia zmian w uslugach uzytkownika';
 COMMENT ON COLUMN services_history.modified_at IS 'czas powstania tej wersji';
 COMMENT ON COLUMN services_history.user_id IS 'id uzytkownika';
@@ -142,9 +136,7 @@ $BODY$BEGIN
 	);
 return NEW;
 END;$BODY$
-  LANGUAGE 'plpgsql' VOLATILE
-  COST 100;
-ALTER FUNCTION user_service_create() OWNER TO postgres;
+  LANGUAGE 'plpgsql' VOLATILE;
 
 -- Function: user_service_update()
 
@@ -185,9 +177,7 @@ BEGIN
 --END IF;
 RETURN NEW;
 END;$BODY$
-  LANGUAGE 'plpgsql' VOLATILE
-  COST 100;
-ALTER FUNCTION user_service_update() OWNER TO postgres;
+  LANGUAGE 'plpgsql' VOLATILE;
 
 -- Trigger: user_service_create on services
 
@@ -222,5 +212,4 @@ CREATE OR REPLACE VIEW services_history_view AS
    LEFT JOIN admins a ON h.modified_by = a.id
   ORDER BY h.modified_at DESC;
 
-ALTER TABLE services_history_view OWNER TO postgres;
 COMMENT ON VIEW services_history_view IS 'widok historii uslug uzytkownika';

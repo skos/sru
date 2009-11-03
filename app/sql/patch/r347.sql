@@ -21,7 +21,6 @@ CREATE TABLE penalties_history
       ON UPDATE CASCADE ON DELETE RESTRICT
 )
 WITH (OIDS=FALSE);
-ALTER TABLE penalties_history OWNER TO postgres;
 COMMENT ON TABLE penalties_history IS 'historia kar nalozonych na uzytkownikow';
 
 
@@ -60,9 +59,7 @@ then
 end if;
 return NEW;
 END;$BODY$
-  LANGUAGE 'plpgsql' VOLATILE
-  COST 100;
-ALTER FUNCTION penalty_update() OWNER TO postgres;
+  LANGUAGE 'plpgsql' VOLATILE;
 COMMENT ON FUNCTION penalty_update() IS 'archiwizacja informacji o karze';
 
 
