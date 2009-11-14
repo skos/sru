@@ -215,7 +215,7 @@ extends UFtpl_Common {
 			echo '<p><em>Komentarz:</em></p><p class="comment">'.nl2br($this->_escape($d['comment'])).'</p>';
 		}
 		echo '</div>';
-		echo '<p class="nav"><span id="userMoreSwitch"></span> <a href="'.$urlUser.'">Dane</a> <a href="'. $url.'/penalties/:add/user:'.$d['id'].'">Ukarz</a> <a href="'.$urlUser.'/history">Historia profilu</a> <a href="'.$urlUser.'/servicehistory">Historia usług</a> <a href="'.$urlUser.'/:edit">Edycja</a></p>';
+		echo '<p class="nav"><a href="'.$urlUser.'">Dane</a> <a href="'. $url.'/penalties/:add/user:'.$d['id'].'">Ukarz</a> <a href="'.$urlUser.'/history">Historia profilu</a> <a href="'.$urlUser.'/servicehistory">Historia usług</a> <a href="'.$urlUser.'/:edit">Edycja</a> <span id="userMoreSwitch"></span></p>';
 ?><script type="text/javascript">
 function changeVisibility() {
 	var div = document.getElementById('userMore');
