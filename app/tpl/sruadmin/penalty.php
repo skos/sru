@@ -162,14 +162,14 @@ extends UFtpl_Common {
 		echo '<p class="displayOnHover"><em>Karzący:</em> <span><a href="'.$url.'/admins/'.$d['createdById'].'">'.$this->_escape($d['createdByName']).'</a><small> ('.date(self::TIME_YYMMDD_HHMM, $d['createdAt']) .')</small></span></p>';
 
 		if($d['modifiedById']) {
-			echo '<p class="displayOnHover"><em>Ostatnia modyfikacja:</em> <span><a href="'.$url.'/admins/'.$d['modifiedById'].'">'.$this->_escape($d['modifiedByName']). '</a> <small>('.date(self::TIME_YYMMDD_HHMM, $d['modifiedAt']).')</small></span></p>';							
+			echo '<p class="displayOnHover"><em>Ost. modyfikacja:</em> <span><a href="'.$url.'/admins/'.$d['modifiedById'].'">'.$this->_escape($d['modifiedByName']). '</a> <small>('.date(self::TIME_YYMMDD_HHMM, $d['modifiedAt']).')</small></span></p>';							
 		}
 		
 		if($d['amnestyById']) {
 			echo '<p class="displayOnHover"><em>Amnestia:</em> <span><a href="'.$url.'/admins/'.$d['amnestyById'].'">'.$this->_escape($d['amnestyByName']).'</a> <small>('.date(self::TIME_YYMMDD_HHMM, $d['amnestyAt']).')</small></span></p>';							
 		}	
 		
-		echo '<p><em>Komentarz:</em> '.nl2br($this->_escape($d['comment'])).'</p>';
+		echo '<p><em>Ost. komentarz:</em> '.nl2br($this->_escape($d['comment'])).'</p>';
 		echo '<p><em>Typ:</em> '.$this->_escape($this->penaltyTypes[$d['typeId']]).'</p>';
 		echo '</div>';
 ?><script type="text/javascript">
