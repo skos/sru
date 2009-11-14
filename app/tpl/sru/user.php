@@ -370,7 +370,7 @@ changeVisibility();
 		$sum = 0;
 		$woman = 0;
 		foreach ($d as $u) {
-			if ($u['name'] == 'ADMINISTRACJA') {
+			if ($u['name'] == 'ADMINISTRACJA' || $u['name'] == 'SKOS' || $u['name'] == 'Samorząd Studentów' || $u['name'] == 'Studencka Agencja') {
 				continue;
 			}
 			$sum++;
@@ -572,7 +572,7 @@ changeVisibility();
 			if(!array_key_exists($u['dormitoryAlias'], $dormitories)) {
 				$dormitories[$u['dormitoryAlias']] = new ExtenededPeopleCounter();
 			}
-			if ($u['name'] == 'ADMINISTRACJA') {
+			if ($u['name'] == 'ADMINISTRACJA' || $u['name'] == 'SKOS' || $u['name'] == 'Samorząd Studentów' || $u['name'] == 'Studencka Agencja') {
 				continue;
 			}
 			if (strtolower(substr($u['name'], -1)) == 'a') {
