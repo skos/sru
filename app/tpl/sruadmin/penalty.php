@@ -224,16 +224,37 @@ if (input) {
 	}
 
 	public function stats(array $d) {
+		$activePenalties = 0;
 		$banners = array();
+		$bannersActive = array();
+		$warningers = array();
+		$warningersActive = array();
+		$admins = array();
 		$templates = array();
+		$templatesActive = array();
 		$types = array();
+		$typesActive = array();
 		$modified = 0;
 		$amnestied = 0;
 		foreach ($d as $p) {
-			if(!array_key_exists($p['creatorName'], $banners)) {
-				$banners[$p['creatorName']] = 1;
+			if ($p['active'] === true) {
+				$activePenalties++;
+			}
+			if(!array_key_exists($p['creatorName'], $admins)) {
+				$admins[$p['creatorName']] = $p['createdById'];
+				$warningers[$p['creatorName']] = 0;
+				$warningersActive[$p['creatorName']] = 0;
+				$banners[$p['creatorName']] = 0;
+				$bannersActive[$p['creatorName']] = 0;
+			}
+			if (UFbean_SruAdmin_Penalty::TYPE_WARNING == $p['typeId']) {
+				$warningers[$p['creatorName']]++;
+				if ($p['active'] === true) {
+					$warningersActive[$p['creatorName']] = 1;
+				}
 			} else {
 				$banners[$p['creatorName']]++;
+				$bannersActive[$p['creatorName']]++;
 			}
 
 			if ($p['templateTitle'] == '') {
@@ -241,14 +262,34 @@ if (input) {
 			}
 			if(!array_key_exists($p['templateTitle'], $templates)) {
 				$templates[$p['templateTitle']] = 1;
+				if ($p['active'] === true) {
+					$templatesActive[$p['templateTitle']] = 1;
+				}
 			} else {
 				$templates[$p['templateTitle']]++;
+				if ($p['active'] === true) {
+					if(!array_key_exists($p['templateTitle'], $templatesActive)) {
+						$templatesActive[$p['templateTitle']] = 1;
+					} else {
+						$templatesActive[$p['templateTitle']]++;
+					}
+				}
 			}
 
 			if(!array_key_exists($p['typeId'], $types)) {
 				$types[$p['typeId']] = 1;
+				if ($p['active'] === true) {
+					$typesActive[$p['typeId']] = 1;
+				}
 			} else {
 				$types[$p['typeId']]++;
+				if ($p['active'] === true) {
+					if(!array_key_exists($p['typeId'], $typesActive)) {
+						$typesActive[$p['typeId']] = 1;
+					} else {
+						$typesActive[$p['typeId']]++;
+					}
+				}
 			}
 			if ($p['modifiedById'] != '') {
 				$modified++;
@@ -260,14 +301,18 @@ if (input) {
 
 		echo '<h3>Top 10 karzących:</h3>';
 		echo '<table style="text-align: center; width: 100%;">';
-		echo '<tr><th>Admin</th><th>Ilość kar</th></tr>';
+		echo '<tr><th>Admin</th><th>Ilość kar</th><th>Ilość ostrzeżeń</th></tr>';
 		arsort($banners);
 		$i = 0;
 		$chartData = '';
+		$chartDataW = '';
 		$chartLabel = '';
 		while ($b = current ($banners)) {
-			echo '<tr><td>'.key($banners).'</td><td>'.$b.'</td></tr>';
+			$urlAdmin = $this->url(0).'/admins/'.$admins[key($banners)];
+			$warningsNum = $warningers[key($banners)];
+			echo '<tr><td><a href="'.$urlAdmin.'">'.key($banners).'</td></a><td>'.$b.'</td><td>'.$warningsNum.'</td></tr>';
 			$chartData = $chartData.$b.',';
+			$chartDataW = $chartDataW.$warningsNum.',';
 			$chartLabel = str_replace('"', '\'', key($banners)).'|'.$chartLabel;
 			$i++;
 			if ($i >= 10) {
@@ -278,9 +323,40 @@ if (input) {
 		echo '</table>';
 		reset($banners);
 		$chartData = substr($chartData, 0, -1);
+		$chartDataW = substr($chartDataW, 0, -1);
 		echo '<div style="text-align: center;">';
 		echo '<img src="http://chart.apis.google.com/chart?chs=600x290&cht=bhs&chco=ff9900,ffebcc&chd=t:';
-		echo $chartData.'&chxt=y&chxl=0:|'.$chartLabel.'&chds=0,'.current($banners).'" alt=""/>';
+		echo $chartData.'|'.$chartDataW.'&chxt=y&chxl=0:|'.$chartLabel.'&chds=0,'.current($banners).'" alt=""/>';
+		echo '</div>';
+
+		echo '<h3>Top 10 karzących (aktywne kary):</h3>';
+		echo '<table style="text-align: center; width: 100%;">';
+		echo '<tr><th>Admin</th><th>Ilość kar</th><th>Ilość ostrzeżeń</th></tr>';
+		arsort($bannersActive);
+		$i = 0;
+		$chartData = '';
+		$chartDataW = '';
+		$chartLabel = '';
+		while ($b = current ($bannersActive)) {
+			$urlAdmin = $this->url(0).'/admins/'.$admins[key($bannersActive)];
+			$warningsNum = $warningersActive[key($bannersActive)];
+			echo '<tr><td><a href="'.$urlAdmin.'">'.key($bannersActive).'</td></a><td>'.$b.'</td><td>'.$warningsNum.'</td></tr>';
+			$chartData = $chartData.$b.',';
+			$chartDataW = $chartDataW.$warningsNum.',';
+			$chartLabel = str_replace('"', '\'', key($bannersActive)).'|'.$chartLabel;
+			$i++;
+			if ($i >= 10) {
+				break;
+			}
+			next ($bannersActive);
+		}
+		echo '</table>';
+		reset($bannersActive);
+		$chartData = substr($chartData, 0, -1);
+		$chartDataW = substr($chartDataW, 0, -1);
+		echo '<div style="text-align: center;">';
+		echo '<img src="http://chart.apis.google.com/chart?chs=600x290&cht=bhs&chco=ff9900,ffebcc&chd=t:';
+		echo $chartData.'|'.$chartDataW.'&chxt=y&chxl=0:|'.$chartLabel.'&chds=0,'.current($bannersActive).'" alt=""/>';
 		echo '</div>';
 
 		echo '<h3>Rozkład używanych szablonów kar:</h3>';
@@ -303,6 +379,26 @@ if (input) {
 		echo '&cht=p3&chl='.$chartLabel.'" alt=""/>';
 		echo '</div>';
 
+		echo '<h3>Rozkład używanych szablonów aktywnych kar:</h3>';
+		echo '<table style="text-align: center; width: 100%;">';
+		echo '<tr><th>Szablon</th><th>Kar</th></tr>';
+		arsort($templatesActive);
+		$chartData = '';
+		$chartLabel = '';
+		while ($t = current ($templatesActive)) {
+			echo '<tr><td>'.key($templatesActive).'</td>';
+			echo '<td>'.$t.'</td></tr>';
+			$chartData = (round($t/$activePenalties*100)).','.$chartData;
+			$chartLabel = key($templatesActive).': '.(round($t/$activePenalties*100)).'%|'.$chartLabel;
+			next($templatesActive);
+		}
+		echo '</table>';
+		$chartData = substr($chartData, 0, -1);
+		echo '<div style="text-align: center;">';
+		echo '<img src="http://chart.apis.google.com/chart?chs=600x150&chd=t:'.$chartData;
+		echo '&cht=p3&chl='.$chartLabel.'" alt=""/>';
+		echo '</div>';
+
 		echo '<h3>Rozkład kar wg typu:</h3>';
 		echo '<table style="text-align: center; width: 100%;">';
 		echo '<tr><th>Typ</th><th>Kar</th></tr>';
@@ -315,6 +411,26 @@ if (input) {
 			$chartData = (round($t/count($d)*100)).','.$chartData;
 			$chartLabel = $this->penaltyTypes[key($types)].': '.(round($t/count($d)*100)).'%|'.$chartLabel;
 			next($types);
+		}
+		echo '</table>';
+		$chartData = substr($chartData, 0, -1);
+		echo '<div style="text-align: center;">';
+		echo '<img src="http://chart.apis.google.com/chart?chs=600x150&chd=t:'.$chartData;
+		echo '&cht=p3&chl='.$chartLabel.'" alt=""/>';
+		echo '</div>';
+
+		echo '<h3>Rozkład aktywnych kar wg typu:</h3>';
+		echo '<table style="text-align: center; width: 100%;">';
+		echo '<tr><th>Typ</th><th>Kar</th></tr>';
+		arsort($typesActive);
+		$chartData = '';
+		$chartLabel = '';
+		while ($t = current ($typesActive)) {
+			echo '<tr><td>'.$this->penaltyTypes[key($typesActive)].'</td>';
+			echo '<td>'.$t.'</td></tr>';
+			$chartData = (round($t/$activePenalties*100)).','.$chartData;
+			$chartLabel = $this->penaltyTypes[key($typesActive)].': '.(round($t/$activePenalties*100)).'%|'.$chartLabel;
+			next($typesActive);
 		}
 		echo '</table>';
 		$chartData = substr($chartData, 0, -1);

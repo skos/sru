@@ -367,10 +367,14 @@ changeVisibility();
 		echo '<h3>Rozkład płci:</h3>';
 		echo '<table style="text-align: center; width: 100%;">';
 		echo '<tr><th>Użytkowników</th><th>Kobiet</th><th>Mężczyzn</th></tr>';
-		$sum = count($d);
+		$sum = 0;
 		$woman = 0;
 		foreach ($d as $u) {
-			if (substr($u['name'], -1) == 'a') {
+			if ($u['name'] == 'ADMINISTRACJA') {
+				continue;
+			}
+			$sum++;
+			if (strtolower(substr($u['name'], -1)) == 'a') {
 				$woman++;
 			}
 		}
@@ -537,14 +541,14 @@ changeVisibility();
 
 		echo '<h3>Rozkład ilości kar:</h3>';
 		echo '<table style="text-align: center; width: 100%;">';
-		echo '<tr><th>Ilość kar</th><th>Ilość ukaranych</th></tr>';
+		echo '<tr><th>Ilość kar</th><th>Ilość osób</th></tr>';
 		$chartData = '';
 		$chartLabel = '';
 		ksort($bansNumber);
 		while ($b = current ($bansNumber)) {
 			echo '<tr><td>'.key($bansNumber).'</td><td>'.$b.'</td></tr>';
-			$chartData = (round($b/count($d), 2)*100).','.$chartData;
-			$chartLabel = key($bansNumber).' kar: '.(round($b/count($d), 2)*100).'%|'.$chartLabel;
+			$chartData = (round($b/$sum, 2)*100).','.$chartData;
+			$chartLabel = key($bansNumber).' kar: '.(round($b/$sum, 2)*100).'%|'.$chartLabel;
 			next ($bansNumber);
 		}
 		echo '</table>';
@@ -560,13 +564,18 @@ changeVisibility();
 		echo '<table style="text-align: center; width: 100%;">';
 		echo '<tr><th>Akademik</th><th>Użytkowników</th><th>Kobiet</th><th>Mężczyzn</th></tr>';
 		$dormitories = array();
+		$dormitoriesId = array();
 		$banSum = 0;
+		$activeBanSum = 0;
 		foreach ($d as $u) {
 			$u['dormitoryAlias'] = ' '.substr($u['dormitoryAlias'], 2);
 			if(!array_key_exists($u['dormitoryAlias'], $dormitories)) {
 				$dormitories[$u['dormitoryAlias']] = new ExtenededPeopleCounter();
 			}
-			if (substr($u['name'], -1) == 'a') {
+			if ($u['name'] == 'ADMINISTRACJA') {
+				continue;
+			}
+			if (strtolower(substr($u['name'], -1)) == 'a') {
 				$dormitories[$u['dormitoryAlias']]->addUser(true);
 			} else {
 				$dormitories[$u['dormitoryAlias']]->addUser();
@@ -574,22 +583,32 @@ changeVisibility();
 			$dormitories[$u['dormitoryAlias']]->addToGroupFaculty($u['facultyName'], $u['name']);
 			$dormitories[$u['dormitoryAlias']]->addToGroupYear($u['studyYearId'], $u['name']);
 			$dormitories[$u['dormitoryAlias']]->addBans($u['bans']);
+			$dormitories[$u['dormitoryAlias']]->addActiveBans($u['activeBans']);
 			$banSum = $banSum + $u['bans'];
+			$activeBanSum = $activeBanSum + $u['activeBans'];
 		}
+
 		ksort($dormitories);
 		$chartDataWoman = '';
 		$chartDataMan = '';
 		$chartLabel = '';
 		$chartLabelR = '';
 		while ($dorm = current($dormitories)) {
-			echo '<tr><td>DS'.key($dormitories).'</td>';
+			echo '<tr><td><a href="'.$this->url(0).'/dormitories/ds'.substr(key($dormitories),1).'">DS'.key($dormitories).'</a></td>';
 			echo '<td>'.$dorm->getUsers().'</td>';
 			echo '<td>'.$dorm->getWomen().'</td>';
 			echo '<td>'.($dorm->getUsers() - $dorm->getWomen()).'</td></tr>';
-			$chartDataWoman = $chartDataWoman.(round($dorm->getWomen()/$dorm->getUsers()*100)).',';
-			$chartDataMan = $chartDataMan.(round(($dorm->getUsers()-$dorm->getWomen())/$dorm->getUsers()*100)).',';
+			if ($dorm->getUsers() == 0) {
+				$sufixW = 0;
+				$sufixM = 0;
+			} else {
+				$sufixW = round($dorm->getWomen()/$dorm->getUsers()*100);
+				$sufixM = round(($dorm->getUsers()-$dorm->getWomen())/$dorm->getUsers()*100);
+			}
+			$chartDataWoman = $chartDataWoman.$sufixW.',';
+			$chartDataMan = $chartDataMan.$sufixM.',';
 			$chartLabel = 'DS'.key($dormitories).'|'.$chartLabel;
-			$chartLabelR = (round($dorm->getWomen()/$dorm->getUsers()*100)).'% / '.(round(($dorm->getUsers()-$dorm->getWomen())/$dorm->getUsers()*100)).'%|'.$chartLabelR;
+			$chartLabelR = $sufixW.'% / '.$sufixM.'%|'.$chartLabelR;
 			next($dormitories);
 		}
 		echo '</table>';
@@ -659,14 +678,46 @@ changeVisibility();
 		echo '<h3>Rozkład kar uwzględniając akademik:</h3>';
 		reset($dormitories);
 		echo '<table style="text-align: center; width: 100%;">';
-		echo '<tr><th>Akademik</th><th>Kar</th></tr>';
+		echo '<tr><th>Akademik</th><th>Kar</th><th>Kar na mieszkańca</th></tr>';
 		$chartData = '';
 		$chartLabel = '';
 		while ($dorm = current($dormitories)) {
-			echo '<tr><td>DS'.key($dormitories).'</td>';
-			echo '<td>'.$dorm->getBans().'</td></tr>';
+			echo '<tr><td><a href="'.$this->url(0).'/dormitories/ds'.substr(key($dormitories),1).'">DS'.key($dormitories).'</a></td>';
+			echo '<td>'.$dorm->getBans().'</td>';
+			if ($dorm->getUsers() == 0) {
+				$bansPerUser = 0;
+			} else {
+				$bansPerUser = round(($dorm->getBans()/$dorm->getUsers()),3);
+			}
+			echo '<td>'.$bansPerUser.'</td></tr>';
 			$chartData = $dorm->getBans().','.$chartData;
 			$chartLabel = 'DS'.key($dormitories).': '.round($dorm->getBans()/$banSum*100).'%|'.$chartLabel;
+			next($dormitories);
+		}
+		echo '</table>';
+		$chartData = substr($chartData, 0, -1);
+		echo '<div style="text-align: center;">';
+		echo '<img src="http://chart.apis.google.com/chart?chs=800x150&chd=t:'.$chartData;
+		echo '&cht=p3&chl='.$chartLabel.' alt=""/>';
+		echo '</div>';
+
+		echo '<h3>Rozkład aktywnych kar uwzględniając akademik:</h3>';
+		reset($dormitories);
+		echo '<table style="text-align: center; width: 100%;">';
+		echo '<tr><th>Akademik</th><th>Kar</th><th>Kar na mieszkańca</th></tr>';
+		$chartData = '';
+		$chartLabel = '';
+		while ($dorm = current($dormitories)) {
+			echo '<tr><td><a href="'.$this->url(0).'/dormitories/ds'.substr(key($dormitories),1).'">DS'.key($dormitories).'</a></td>';
+			echo '<td>'.$dorm->getActiveBans().'</td>';
+			if ($dorm->getUsers() == 0) {
+				$bansPerUser = 0;
+			} else {
+				$bansPerUser = round(($dorm->getActiveBans()/$dorm->getUsers()),3);
+			}
+			echo '<td>'.$bansPerUser.'</td></tr>';
+			$chartData = $dorm->getActiveBans().','.$chartData;
+			$chartLabel = 'DS'.key($dormitories).': '.round($dorm->getActiveBans()/$banSum*100).'%|'.$chartLabel;
 			next($dormitories);
 		}
 		echo '</table>';
@@ -705,6 +756,7 @@ extends PeopleCounter
 	private $groupFaculty = array();
 	private $groupYear = array();
 	private $bans = 0;
+	private $activeBans = 0;
 
 	public function addToGroupFaculty($key, $value) {
 		if ($key == '') {
@@ -726,6 +778,14 @@ extends PeopleCounter
 
 	public function getBans() {
 		return $this->bans;
+	}
+
+	public function addActiveBans($value) {
+		$this->activeBans = $this->activeBans + $value;
+	}
+
+	public function getActiveBans() {
+		return $this->activeBans;
 	}
 
 	public function addToGroupYear($key, $value) {

@@ -128,7 +128,7 @@ extends UFdao {
 	}
 
 	public function listAllActive() {
-		$mapping = $this->mapping('list');
+		$mapping = $this->mapping('stats');
 
 		$query = $this->prepareSelect($mapping);
 		$query->where($mapping->active, true);
