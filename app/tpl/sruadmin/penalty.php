@@ -204,7 +204,7 @@ if (input) {
 		input = document.getElementById('penaltyEdit_endAt');
 		input.value = '';
 		input = document.getElementById('penaltyEdit_newComment');
-		input.value = '*Wcześniejsze zdjęcie kary*';
+		input.focus();
 	}
 	input.parentNode.insertBefore(button, input.nextSibling);
 	space = document.createTextNode(' ');

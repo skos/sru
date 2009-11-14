@@ -45,7 +45,7 @@ extends UFact {
 				} else if (date(UFtpl_Common::TIME_YYMMDD_HHMM, $bean->endAt) !== $post['endAt']) {
 					$bean->fillFromPost(self::PREFIX, null, array('endAt'));
 					if ($bean->endAt < $bean->amnestyAfter) {
-						throw UFra::factory('UFex_Dao_DataNotValid', 'Modification comment cannot be null', 0, E_WARNING, array('endAt' => 'tooShort'));
+						throw UFra::factory('UFex_Dao_DataNotValid', 'Modification before amnesty date', 0, E_WARNING, array('endAt' => 'tooShort'));
 					}
 				}
 			}
