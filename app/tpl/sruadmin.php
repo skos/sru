@@ -914,7 +914,7 @@ extends UFtpl_Common {
 		echo '-- '."\n";
 		echo 'Pozdrawiamy / Regards,'."\n";
 		echo 'Administratorzy SKOS PG / SKOS PG Administrators'."\n";
-		echo 'http://skos.pg.gda.pl/'."\n";
+		echo 'http://skos.ds.pg.gda.pl/'."\n";
 		echo '[wiadomość została wygenerowana automatycznie / this message was generated automatically]'."\n";
 	}
 	
@@ -950,7 +950,7 @@ extends UFtpl_Common {
 		echo '-- '."\n";
 		echo 'Pozdrawiamy / Regards,'."\n";
 		echo 'Administratorzy SKOS PG / SKOS PG Administrators'."\n";
-		echo 'http://skos.pg.gda.pl/'."\n";
+		echo 'http://skos.ds.pg.gda.pl/'."\n";
 		echo '[wiadomość została wygenerowana automatycznie / this message was generated automatically]'."\n";
 	}
 	
