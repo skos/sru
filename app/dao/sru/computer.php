@@ -177,24 +177,6 @@ extends UFdao {
 		}
 	}
 
-	public function updateLocationByUserId($location, $user, $modifiedBy=null) {
-		$mapping = $this->mapping('set');
-
-		$query = UFra::factory('UFlib_Db_Query');
-		$query->tables($mapping->tables());
-		$query->joins($mapping->joins(), $mapping->joinOns());
-		$data = array(
-			$mapping->locationId => $location,
-			$mapping->modifiedById => $modifiedBy,
-			$mapping->modifiedAt => NOW,
-		);
-		$query->values($mapping->columns(), $data,  $mapping->columnTypes());
-		$query->where($mapping->userId, $user);
-		$query->where($mapping->active, true);
-
-		$return = $this->doUpdate($query);
-		return $return;
-	}
 	public function listAllServers() {
 		$mapping = $this->mapping('list');
 
@@ -301,5 +283,25 @@ extends UFdao {
 		$query->limit($limit);
 
 		return $this->doSelect($query);
+	}
+
+	public function updateLocationByHost($host, $location,  $ip, $modifiedBy=null) {
+		$mapping = $this->mapping('set');
+
+		$query = UFra::factory('UFlib_Db_Query');
+		$query->tables($mapping->tables());
+		$query->joins($mapping->joins(), $mapping->joinOns());
+		$data = array(
+			$mapping->locationId => $location,
+			$mapping->ip => $ip,
+			$mapping->modifiedById => $modifiedBy,
+			$mapping->modifiedAt => NOW,
+		);
+		$query->values($mapping->columns(), $data,  $mapping->columnTypes());
+		$query->where($mapping->host, $host);
+		$query->where($mapping->active, true);
+
+		$return = $this->doUpdate($query);
+		return $return;
 	}
 }

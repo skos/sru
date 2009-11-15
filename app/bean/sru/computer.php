@@ -109,4 +109,8 @@ extends UFbeanSingle {
 		$ans = array_intersect(array_keys($this->dataChanged), $this->notifyAbout);
 		return !empty($ans);
 	}
+
+	public function updateLocationByHost($host, $location, $ip, $modifiedBy=null) {
+		return $this->dao->updateLocationByHost($host, $location, $ip, $modifiedBy);
+	}
 }

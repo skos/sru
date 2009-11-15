@@ -44,7 +44,6 @@ extends UFtpl_Common {
 		'locationAlias/noDormitory' => 'Wybierz akademik',
 		'locationAlias/noRoom' => 'Pokój nie istnieje',
 		'password3/invalid' => 'Podałeś nieprawidłowe hasło',
-
 	);
 
 	public function formLogin(array $d) {
@@ -116,6 +115,10 @@ extends UFtpl_Common {
 		echo '<h1>'.$d['name'].' '.$d['surname'].'</h1>';
 		if ($this->_srv->get('msg')->get('userEdit/errors/walet/notFound')) {
 			echo $this->ERR('Użytkownik nie jest zameldowany w tym pokoju');
+		}
+
+		if ($this->_srv->get('msg')->get('userEdit/errors/ip/noFree')) {
+			echo $this->ERR('Nie ma wolnych IP w tym DS-ie - skontaktuj się ze swoim administratorem lokalnym w godzinach dyżurów');
 		}
 		$tmp = array();
 		foreach ($faculties as $fac) {
@@ -268,6 +271,9 @@ changeVisibility();
 			} catch (UFex $e) {
 			}
 			echo $this->ERR('Użytkownik nie jest zameldowany w tym pokoju.<br />'.$form->ignoreWalet('Zignoruj'.($pswd?' <strong>(ponownie wpisz hasło)</strong>':''), array('type'=>$form->CHECKBOX)));
+		}
+		if ($this->_srv->get('msg')->get('userEdit/errors/ip/noFreeAdmin')) {
+			echo $this->ERR('Nie ma wolnych IP w tym DS-ie');
 		}
 		echo $form->login('Login');
 		echo $form->name('Imię');
