@@ -61,17 +61,17 @@ extends UFact {
 			$bean->save();
 
 			$conf = UFra::shared('UFconf_Sru');
-			if ($conf->sendEmail) {
-				$user = UFra::factory('UFbean_Sru_User');
-				$user->getByPK($bean->userId);
-
+			$user = UFra::factory('UFbean_Sru_User');
+			$user->getByPK($bean->userId);
+			if ($conf->sendEmail && $bean->notifyByEmail()) {
 				// wyslanie maila do usera
 				$box = UFra::factory('UFbox_Sru');
 				$title = $box->penaltyEditMailTitle($bean);
 				$body = $box->penaltyEditMailBody($bean, $user);
 				$headers = $box->penaltyEditMailHeaders($bean);
 				mail($user->email, '=?UTF-8?B?'.base64_encode($title).'?=', $body, $headers);
-				
+			}
+			if ($conf->sendEmail) {
 				// wyslanie maila do admina
 				$box = UFra::factory('UFbox_SruAdmin');
 				$title = $box->penaltyEditMailTitle($user);
