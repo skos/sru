@@ -175,8 +175,7 @@ extends UFtpl_Common {
 	}
 
 	public function computerSearch(array $d) {
-		$form = UFra::factory('UFlib_Form');
-
+		$form = UFra::factory('UFlib_Form');	
 		echo '<div class="computerSearch">';
 		echo $form->_start($this->url(0).'/computers/search');
 		echo $form->_fieldset('Znajdź komputer');
@@ -196,9 +195,15 @@ extends UFtpl_Common {
 	}
 
 	public function computerSearchResults(array $d) {
-		echo '<div class="computerSearchResults"><ul>';
-		echo $d['computers']->write('searchResults');
-		echo '</ul></div>';
+		if ($this->_srv->get('msg')->get('computerSearch/errors/host/invalidDomain')) {
+			echo $this->ERR('Komputer nie należy do naszej domeny');
+		}
+		else
+		{	
+			echo '<div class="computerSearchResults"><ul>';
+			echo $d['computers']->write('searchResults');
+			echo '</ul></div>';
+		}
 	}
 
 	public function computerSearchResultsNotFound() {
