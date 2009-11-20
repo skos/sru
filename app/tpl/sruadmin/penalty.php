@@ -158,7 +158,9 @@ extends UFtpl_Common {
 			echo $form->_end();
 			echo $form->_end(true);	
 		}
-		echo '<p><span id="penaltyMoreSwitch"></span> <a href="'.$url.'/penalties/'.$d['id'].'/history/">Historia kary</a><div id="penaltyMore"></p>';
+		$urlPenalty = $url.'/penalties/'.$d['id'];
+		echo '<p class="nav"><a href="'.$urlPenalty.'">Dane</a> <a href="'.$url.'/penalties/'.$d['id'].'/history/">Historia kary</a> <span id="penaltyMoreSwitch"></span></p>';
+		echo '<div id="penaltyMore">';
 		echo '<p class="displayOnHover"><em>Karzący:</em> <span><a href="'.$url.'/admins/'.$d['createdById'].'">'.$this->_escape($d['createdByName']).'</a><small> ('.date(self::TIME_YYMMDD_HHMM, $d['createdAt']) .')</small></span></p>';
 
 		if($d['modifiedById']) {
@@ -204,6 +206,7 @@ if (input) {
 		input = document.getElementById('penaltyEdit_endAt');
 		input.value = '';
 		input = document.getElementById('penaltyEdit_newComment');
+		input.value = '';
 		input.focus();
 	}
 	input.parentNode.insertBefore(button, input.nextSibling);
