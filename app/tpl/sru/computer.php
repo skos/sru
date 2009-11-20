@@ -106,15 +106,38 @@ extends UFtpl_Common {
 			$changed = '<a href="'.$url.'/admins/'.$d['modifiedById'].'">'.$this->_escape($d['modifiedBy']).'</a>';;
 		}
 		echo '<p><em>Zmiana:</em> '.date(self::TIME_YYMMDD_HHMM, $d['modifiedAt']).'<small> ('.$changed.')</small></p>';
+		echo '<div id="computerMore">';
 		if (strlen($d['comment'])) {
-			echo '<p class="comment">'.nl2br($this->_escape($d['comment'])).'</p>';
+			echo '<p><em>Komentarz:</em></p><p class="comment">'.nl2br($this->_escape($d['comment'])).'</p>';
 		}
+		echo '</div>';
 		echo '<p class="nav"><a href="'.$urlNav.'">Dane</a> <a href="'.$url.'/penalties/:add/computer:'.$d['id'].'">Ukarz</a> <a href="'.$urlNav.'/history">Historia zmian</a>  <a href="'.$urlNav.'/:edit">Edycja</a> ';
 		if($d['active'])
 		{
 			echo '<a href="'.$urlNav.'/:del"> Wyrejestruj</a>';
 		}
-		echo '</p>';
+		echo ' <span id="computerMoreSwitch"></span></p>';
+?><script type="text/javascript">
+function changeVisibility() {
+	var div = document.getElementById('computerMore');
+	if (div.sruHidden != true) {
+		div.style.display = 'none';
+		div.sruHidden = true;
+	} else {
+		div.style.display = 'block';
+		div.sruHidden = false;
+	}
+}
+var container = document.getElementById('computerMoreSwitch');
+var button = document.createElement('a');
+button.onclick = function() {
+	changeVisibility();
+}
+var txt = document.createTextNode('Szczegóły');
+button.appendChild(txt);
+container.appendChild(button);
+changeVisibility();
+</script><?
 	}
 
 	public function formEdit(array $d) {
