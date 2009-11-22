@@ -520,7 +520,7 @@ changeVisibility();
 
 		echo '<h3>Top 10 ukaranych:</h3>';
 		echo '<table style="text-align: center; width: 100%;">';
-		echo '<tr><th>Login</th><th>Ilość kar</th></tr>';
+		echo '<tr><th>Login</th><th>Liczba kar</th></tr>';
 		arsort($banned);
 		$topBanSum = 0;
 		$i = 0;
@@ -545,9 +545,9 @@ changeVisibility();
 		echo $chartData.'&chxt=y&chxl=0:|'.$chartLabel.'&chds=0,'.current($banned).'" alt=""/>';
 		echo '</div>';
 
-		echo '<h3>Rozkład ilości kar:</h3>';
+		echo '<h3>Rozkład liczby kar:</h3>';
 		echo '<table style="text-align: center; width: 100%;">';
-		echo '<tr><th>Ilość kar</th><th>Ilość osób</th></tr>';
+		echo '<tr><th>Liczba kar</th><th>Liczba osób</th></tr>';
 		$chartData = '';
 		$chartLabel = '';
 		ksort($bansNumber);

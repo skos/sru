@@ -304,7 +304,7 @@ if (input) {
 
 		echo '<h3>Top 10 karzących:</h3>';
 		echo '<table style="text-align: center; width: 100%;">';
-		echo '<tr><th>Admin</th><th>Ilość kar</th><th>Ilość ostrzeżeń</th></tr>';
+		echo '<tr><th>Admin</th><th>Liczba kar</th><th>Liczba ostrzeżeń</th></tr>';
 		arsort($banners);
 		$i = 0;
 		$chartData = '';
@@ -334,7 +334,7 @@ if (input) {
 
 		echo '<h3>Top 10 karzących (aktywne kary):</h3>';
 		echo '<table style="text-align: center; width: 100%;">';
-		echo '<tr><th>Admin</th><th>Ilość kar</th><th>Ilość ostrzeżeń</th></tr>';
+		echo '<tr><th>Admin</th><th>Liczba kar</th><th>Liczba ostrzeżeń</th></tr>';
 		arsort($bannersActive);
 		$i = 0;
 		$chartData = '';
@@ -444,7 +444,7 @@ if (input) {
 
 		echo '<h3>Kary modyfikowane i zdjęte:</h3>';
 		echo '<table style="text-align: center; width: 100%;">';
-		echo '<tr><th>Kara</th><th>Ilość</th></tr>';
+		echo '<tr><th>Kara</th><th>Liczba</th></tr>';
 		echo '<tr><td>Wszystkie</td><td>'.count($d).'</td></tr>';
 		echo '<tr><td>Modyfikowane</td><td>'.$modified.'</td></tr>';
 		echo '<tr><td>Zdjęte</td><td>'.$amnestied.'</td></tr>';
