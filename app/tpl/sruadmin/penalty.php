@@ -253,11 +253,13 @@ if (input) {
 			if (UFbean_SruAdmin_Penalty::TYPE_WARNING == $p['typeId']) {
 				$warningers[$p['creatorName']]++;
 				if ($p['active'] === true) {
-					$warningersActive[$p['creatorName']] = 1;
+					$warningersActive[$p['creatorName']]++;
 				}
 			} else {
 				$banners[$p['creatorName']]++;
-				$bannersActive[$p['creatorName']]++;
+				if ($p['active'] === true) {
+					$bannersActive[$p['creatorName']]++;
+				}
 			}
 
 			if ($p['templateTitle'] == '') {
@@ -302,7 +304,7 @@ if (input) {
 			}
 		}
 
-		echo '<h3>Top 10 karzących:</h3>';
+		echo '<h3>Liczba nałożonych kar przez poszczególnych adminów:</h3>';
 		echo '<table style="text-align: center; width: 100%;">';
 		echo '<tr><th>Admin</th><th>Liczba kar</th><th>Liczba ostrzeżeń</th></tr>';
 		arsort($banners);
@@ -318,9 +320,6 @@ if (input) {
 			$chartDataW = $chartDataW.$warningsNum.',';
 			$chartLabel = str_replace('"', '\'', key($banners)).'|'.$chartLabel;
 			$i++;
-			if ($i >= 10) {
-				break;
-			}
 			next ($banners);
 		}
 		echo '</table>';
@@ -328,11 +327,11 @@ if (input) {
 		$chartData = substr($chartData, 0, -1);
 		$chartDataW = substr($chartDataW, 0, -1);
 		echo '<div style="text-align: center;">';
-		echo '<img src="http://chart.apis.google.com/chart?chs=600x290&cht=bhs&chco=ff9900,ffebcc&chd=t:';
+		echo '<img src="http://chart.apis.google.com/chart?chs=600x'.($i*28+5).'&cht=bhs&chco=ff9900,ffebcc&chd=t:';
 		echo $chartData.'|'.$chartDataW.'&chxt=y&chxl=0:|'.$chartLabel.'&chds=0,'.current($banners).'" alt=""/>';
 		echo '</div>';
 
-		echo '<h3>Top 10 karzących (aktywne kary):</h3>';
+		echo '<h3>Liczba nałożonych kar przez poszczególnych adminów (aktywne kary):</h3>';
 		echo '<table style="text-align: center; width: 100%;">';
 		echo '<tr><th>Admin</th><th>Liczba kar</th><th>Liczba ostrzeżeń</th></tr>';
 		arsort($bannersActive);
@@ -348,9 +347,6 @@ if (input) {
 			$chartDataW = $chartDataW.$warningsNum.',';
 			$chartLabel = str_replace('"', '\'', key($bannersActive)).'|'.$chartLabel;
 			$i++;
-			if ($i >= 10) {
-				break;
-			}
 			next ($bannersActive);
 		}
 		echo '</table>';
@@ -358,7 +354,7 @@ if (input) {
 		$chartData = substr($chartData, 0, -1);
 		$chartDataW = substr($chartDataW, 0, -1);
 		echo '<div style="text-align: center;">';
-		echo '<img src="http://chart.apis.google.com/chart?chs=600x290&cht=bhs&chco=ff9900,ffebcc&chd=t:';
+		echo '<img src="http://chart.apis.google.com/chart?chs=600x'.($i * 28+5).'&cht=bhs&chco=ff9900,ffebcc&chd=t:';
 		echo $chartData.'|'.$chartDataW.'&chxt=y&chxl=0:|'.$chartLabel.'&chds=0,'.current($bannersActive).'" alt=""/>';
 		echo '</div>';
 
