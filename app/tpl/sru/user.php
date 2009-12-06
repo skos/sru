@@ -687,6 +687,7 @@ changeVisibility();
 		echo '<tr><th>Akademik</th><th>Kar</th><th>Kar na mieszkańca</th></tr>';
 		$chartData = '';
 		$chartLabel = '';
+		$avSum = 0;
 		while ($dorm = current($dormitories)) {
 			echo '<tr><td><a href="'.$this->url(0).'/dormitories/ds'.substr(key($dormitories),1).'">DS'.key($dormitories).'</a></td>';
 			echo '<td>'.$dorm->getBans().'</td>';
@@ -699,7 +700,9 @@ changeVisibility();
 			$chartData = $dorm->getBans().','.$chartData;
 			$chartLabel = 'DS'.key($dormitories).': '.round($dorm->getBans()/$banSum*100).'%|'.$chartLabel;
 			next($dormitories);
+			$avSum += $bansPerUser;
 		}
+		echo '<td>ŚREDNIO:</td><td>'.round(($banSum/count($dormitories)),1).'</td><td>'.round(($avSum/count($dormitories)),3).'</td>';
 		echo '</table>';
 		$chartData = substr($chartData, 0, -1);
 		echo '<div style="text-align: center;">';
@@ -713,6 +716,7 @@ changeVisibility();
 		echo '<tr><th>Akademik</th><th>Kar</th><th>Kar na mieszkańca</th></tr>';
 		$chartData = '';
 		$chartLabel = '';
+		$avSum = 0;
 		while ($dorm = current($dormitories)) {
 			echo '<tr><td><a href="'.$this->url(0).'/dormitories/ds'.substr(key($dormitories),1).'">DS'.key($dormitories).'</a></td>';
 			echo '<td>'.$dorm->getActiveBans().'</td>';
@@ -723,9 +727,11 @@ changeVisibility();
 			}
 			echo '<td>'.$bansPerUser.'</td></tr>';
 			$chartData = $dorm->getActiveBans().','.$chartData;
-			$chartLabel = 'DS'.key($dormitories).': '.round($dorm->getActiveBans()/$banSum*100).'%|'.$chartLabel;
+			$chartLabel = 'DS'.key($dormitories).': '.round($dorm->getActiveBans()/$activeBanSum*100).'%|'.$chartLabel;
 			next($dormitories);
+			$avSum += $bansPerUser;
 		}
+		echo '<td>ŚREDNIO:</td><td>'.round(($activeBanSum/count($dormitories)),1).'</td><td>'.round(($avSum/count($dormitories)),3).'</td>';
 		echo '</table>';
 		$chartData = substr($chartData, 0, -1);
 		echo '<div style="text-align: center;">';

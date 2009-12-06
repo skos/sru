@@ -231,7 +231,6 @@ if (input) {
 		$banners = array();
 		$bannersActive = array();
 		$warningers = array();
-		$warningersActive = array();
 		$admins = array();
 		$templates = array();
 		$templatesActive = array();
@@ -239,6 +238,9 @@ if (input) {
 		$typesActive = array();
 		$modified = 0;
 		$amnestied = 0;
+		$banSum = 0;
+		$activeBanSum = 0;
+		$warningSum = 0;
 		foreach ($d as $p) {
 			if ($p['active'] === true) {
 				$activePenalties++;
@@ -246,19 +248,18 @@ if (input) {
 			if(!array_key_exists($p['creatorName'], $admins)) {
 				$admins[$p['creatorName']] = $p['createdById'];
 				$warningers[$p['creatorName']] = 0;
-				$warningersActive[$p['creatorName']] = 0;
 				$banners[$p['creatorName']] = 0;
 				$bannersActive[$p['creatorName']] = 0;
 			}
 			if (UFbean_SruAdmin_Penalty::TYPE_WARNING == $p['typeId']) {
 				$warningers[$p['creatorName']]++;
-				if ($p['active'] === true) {
-					$warningersActive[$p['creatorName']]++;
-				}
+				$warningSum++;
 			} else {
 				$banners[$p['creatorName']]++;
+				$banSum++;
 				if ($p['active'] === true) {
 					$bannersActive[$p['creatorName']]++;
+					$activeBanSum++;
 				}
 			}
 
@@ -322,6 +323,7 @@ if (input) {
 			$i++;
 			next ($banners);
 		}
+		echo '<td>ŚREDNIO:</td><td>'.round(($banSum/count($banners)),1).'</td><td>'.round(($warningSum/count($banners)),1).'</td>';
 		echo '</table>';
 		reset($banners);
 		$chartData = substr($chartData, 0, -1);
@@ -331,31 +333,28 @@ if (input) {
 		echo $chartData.'|'.$chartDataW.'&chxt=y&chxl=0:|'.$chartLabel.'&chds=0,'.current($banners).'" alt=""/>';
 		echo '</div>';
 
-		echo '<h3>Liczba nałożonych kar przez poszczególnych adminów (aktywne kary):</h3>';
+		echo '<h3>Liczba nałożonych aktywnych kar przez poszczególnych adminów:</h3>';
 		echo '<table style="text-align: center; width: 100%;">';
-		echo '<tr><th>Admin</th><th>Liczba kar</th><th>Liczba ostrzeżeń</th></tr>';
+		echo '<tr><th>Admin</th><th>Liczba kar</th></tr>';
 		arsort($bannersActive);
 		$i = 0;
 		$chartData = '';
-		$chartDataW = '';
 		$chartLabel = '';
 		while ($b = current ($bannersActive)) {
 			$urlAdmin = $this->url(0).'/admins/'.$admins[key($bannersActive)];
-			$warningsNum = $warningersActive[key($bannersActive)];
-			echo '<tr><td><a href="'.$urlAdmin.'">'.key($bannersActive).'</td></a><td>'.$b.'</td><td>'.$warningsNum.'</td></tr>';
+			echo '<tr><td><a href="'.$urlAdmin.'">'.key($bannersActive).'</td></a><td>'.$b.'</td></tr>';
 			$chartData = $chartData.$b.',';
-			$chartDataW = $chartDataW.$warningsNum.',';
 			$chartLabel = str_replace('"', '\'', key($bannersActive)).'|'.$chartLabel;
 			$i++;
 			next ($bannersActive);
 		}
+		echo '<td>ŚREDNIO:</td><td>'.round(($activeBanSum/count($banners)),1).'</td>';
 		echo '</table>';
 		reset($bannersActive);
 		$chartData = substr($chartData, 0, -1);
-		$chartDataW = substr($chartDataW, 0, -1);
 		echo '<div style="text-align: center;">';
 		echo '<img src="http://chart.apis.google.com/chart?chs=600x'.($i * 28+5).'&cht=bhs&chco=ff9900,ffebcc&chd=t:';
-		echo $chartData.'|'.$chartDataW.'&chxt=y&chxl=0:|'.$chartLabel.'&chds=0,'.current($bannersActive).'" alt=""/>';
+		echo $chartData.'&chxt=y&chxl=0:|'.$chartLabel.'&chds=0,'.current($bannersActive).'" alt=""/>';
 		echo '</div>';
 
 		echo '<h3>Rozkład używanych szablonów kar:</h3>';
