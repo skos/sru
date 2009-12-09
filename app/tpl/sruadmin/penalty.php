@@ -142,11 +142,10 @@ extends UFtpl_Common {
 			echo '<p><em>Szablon:</em> '.$this->_escape($d['templateTitle']).'</p>';
 		}
 		if ($d['active']) {
-			$amnestyDays = ($d['amnestyAfter'] - $d['startAt']) / 24 / 3600;
+			$amnestyDays = ($_POST['penaltyEdit']['after'] == '') ? (($d['amnestyAfter'] - $d['startAt']) / 24 / 3600) : (intval($_POST['penaltyEdit']['after']));
 			if ($acl->sruAdmin('penalty', 'editOneFull', $d['id'])) {
 				echo $form->after('Min. długość (dni)', array('value'=>$amnestyDays));
 				echo $form->reason('Powód:', array('type'=>$form->TEXTAREA, 'rows'=>5));
-				echo $form->newComment('Komentarz:', array('type'=>$form->TEXTAREA, 'rows'=>5, 'value'=>$d['comment']));
 			} else {
 				echo '<p><em>Min. długość:</em> '.$amnestyDays.' dni</p>';
 			}
@@ -154,6 +153,7 @@ extends UFtpl_Common {
 			echo '<p><em>Powód:</em> '.nl2br($this->_escape($d['reason'])).'</p>';
 		}
 		if ($d['active'] && $acl->sruAdmin('penalty', 'editOne', $d['id'])) {
+			echo $form->newComment('Komentarz:', array('type'=>$form->TEXTAREA, 'rows'=>5, 'value'=>$d['comment']));
 			echo $form->_submit('Zmień');
 			echo $form->_end();
 			echo $form->_end(true);	

@@ -29,10 +29,6 @@ extends UFact {
 					$bean->fillFromPost(self::PREFIX, null, array('endAt'));
 				}
 				$bean->fillFromPost(self::PREFIX, null, array('reason', 'after'));
-				if ($post['newComment'] == '' || $post['newComment'] == $bean->comment) {
-					throw UFra::factory('UFex_Dao_DataNotValid', 'Modification comment cannot be null', 0, E_WARNING, array('newComment' => 'notNull'));
-				}
-				$bean->comment = $post['newComment'];
 				$bean->amnestyAfter = $bean->startAt + $bean->after * 24 * 3600;
 			} else {
 				if(!$acl->sruAdmin('penalty', 'editOne', $bean->id)) {
@@ -49,6 +45,10 @@ extends UFact {
 					}
 				}
 			}
+			if ($post['newComment'] == '' || $post['newComment'] == $bean->comment) {
+				throw UFra::factory('UFex_Dao_DataNotValid', 'Modification comment cannot be null', 0, E_WARNING, array('newComment' => 'notNull'));
+			}
+			$bean->comment = $post['newComment'];
 			$bean->modifiedAt = NOW;
 			$bean->modifiedById = $this->_srv->get('session')->authAdmin; 
 			if ($bean->endAt <= NOW) {
