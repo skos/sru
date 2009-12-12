@@ -142,7 +142,7 @@ extends UFtpl_Common {
 			echo '<p><em>Szablon:</em> '.$this->_escape($d['templateTitle']).'</p>';
 		}
 		if ($d['active']) {
-			$amnestyDays = ($_POST['penaltyEdit']['after'] == '') ? (($d['amnestyAfter'] - $d['startAt']) / 24 / 3600) : (intval($_POST['penaltyEdit']['after']));
+			$amnestyDays = (!isset($_POST['penaltyEdit']) || $_POST['penaltyEdit']['after'] == '') ? (($d['amnestyAfter'] - $d['startAt']) / 24 / 3600) : (intval($_POST['penaltyEdit']['after']));
 			if ($acl->sruAdmin('penalty', 'editOneFull', $d['id'])) {
 				echo $form->after('Min. długość (dni)', array('value'=>$amnestyDays));
 				echo $form->reason('Powód:', array('type'=>$form->TEXTAREA, 'rows'=>5));

@@ -870,8 +870,10 @@ extends UFtpl_Common {
 		echo "\n";
 		echo 'Użytkownik: '.$d['user']->name.' "'.$d['user']->login.'" '.$d['user']->surname."\n";
 		echo 'Admin: '.$d['admin']->name."\n";
+		echo 'Szablon: '.$d['penalty']->templateTitle."\n";
 		echo 'Powód: '.$d['penalty']->reason."\n";
 		echo 'Komentarz: '.$d['penalty']->comment."\n";
+		echo 'Link: https://'.$d['host'].'/admin/penalties/'.$d['penalty']->id."\n";
 	}
 	
 	
@@ -894,8 +896,10 @@ extends UFtpl_Common {
 		echo 'Trwa do: '.date(self::TIME_YYMMDD_HHMM, $d['penalty']->endAt)."\n";
 		echo 'Użytkownik: '.$d['user']->name.' "'.$d['user']->login.'" '.$d['user']->surname."\n";
 		echo 'Admin modyfikujący: '.$d['admin']->name."\n";
+		echo 'Szablon: '.$d['penalty']->templateTitle."\n";
 		echo 'Powód: '.$d['penalty']->reason."\n";
 		echo 'Komentarz: '.$d['penalty']->comment."\n";
+		echo 'Link: https://'.$d['host'].'/admin/penalties/'.$d['penalty']->id."\n";
 	}
 	
 	

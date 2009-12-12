@@ -1107,6 +1107,7 @@ extends UFbox {
 		$d['user'] = $user;
 		$d['computers'] = $computers;
 		$d['admin'] = $admin;
+		$d['host'] = $this->_srv->get('req')->server->HTTP_HOST;
 		return $this->render(__FUNCTION__, $d);
 	}
 
@@ -1119,6 +1120,7 @@ extends UFbox {
 		$d['penalty'] = $penalty;
 		$d['user'] = $user;
 		$d['admin'] = $admin;
+		$d['host'] = $this->_srv->get('req')->server->HTTP_HOST;
 		return $this->render(__FUNCTION__, $d);
 	}
 
