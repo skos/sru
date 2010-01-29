@@ -432,6 +432,13 @@ extends UFtpl_Common {
 		echo '</ul>';
 	}
 
+	public function penaltyTemplateEdit(array $d) {
+		echo '<h2>Edycja typu kary dla '.$d['penalty']->userName.' '.$d['penalty']->userSurname.' ('.$d['penalty']->userLogin.')</h2>';
+		echo '<ul class="penaltyTemplates">';
+		$d['templates']->write('choose');
+		echo '</ul>';
+	}
+
 	public function adminNotFound() {
 		
 		echo $this->ERR('Nie znaleziono administratora');
@@ -632,10 +639,7 @@ extends UFtpl_Common {
 	public function penalty(array $d) {
 		if ($this->_srv->get('msg')->get('penaltyEdit/ok')) {
 			echo $this->OK('Zmiany zostały wprowadzone');
-		} elseif ($this->_srv->get('msg')->get('penaltyEdit/errors/endAt')) {
-			echo $this->ERR('Nieprawidłowa data');
 		}
-
 		echo '<div class="penalty">';	
 		echo '<h2>';
 
@@ -647,6 +651,30 @@ extends UFtpl_Common {
 		echo '</h2>';
 		
 		$d['penalty']->write('details', $d['computers']);
+		
+		echo '</div>';
+	}
+
+	public function titlePenaltyEdit(array $d) {
+		echo 'Edycja kary';
+	}
+
+	public function penaltyEdit(array $d) {
+		if ($this->_srv->get('msg')->get('penaltyEdit/errors/endAt')) {
+			echo $this->ERR('Nieprawidłowa data');
+		}
+
+		echo '<div class="penalty">';	
+		echo '<h2>Edycja ';
+
+		if (UFbean_SruAdmin_Penalty::TYPE_WARNING == $d['penalty']->typeId) {
+			echo 'Ostrzeżenia';
+		} else {
+			echo 'Kary';
+		}
+		echo '</h2>';
+		$templateTitle = isset($d['templateTitle']) ? $d['templateTitle'] : null;
+		$d['penalty']->write('formEdit', $d['computers'], $templateTitle);
 		
 		echo '</div>';
 	}
@@ -696,10 +724,12 @@ extends UFtpl_Common {
 		
 		echo '<h2><a href="'.$url.'">Aktywne kary</a> &bull; Ostatnie akcje</h2>';
 		
-		echo '<h3>Modyfikacje</h3><ul>';
-		$d['modified']->write('penaltyLastModified');
-		echo '</ul><h3>Nowe</h3><ul>';
-		$d['added']->write('penaltyLastAdded');
+		echo '<h3>Modyfikacje kar</h3><ul>';
+		$d['modifiedPenalties']->write('penaltyLastModified');
+		echo '</ul><h3>Nowe kary</h3><ul>';
+		$d['addedPenalties']->write('penaltyLastAdded');
+		echo '</ul><h3>Nowe ostrzeżenia</h3><ul>';
+		$d['addedWarnings']->write('penaltyLastAdded');
 		echo '</ul>';
 
 	}
@@ -786,13 +816,18 @@ extends UFtpl_Common {
 	}
 
 	public function adminPenaltiesAdded(array $d) {
-		echo '<h3>Kary i ostrzeżenia ostatnio dodane</h3>';
-		$d['added']->write('penaltyLastAdded', false);
+		echo '<h3>Kary ostatnio dodane</h3>';
+		$d['addedPenalties']->write('penaltyLastAdded', false);
+	}
+
+	public function adminWarningsAdded(array $d) {
+		echo '<h3>Ostrzeżenia ostatnio dodane</h3>';
+		$d['addedWarnings']->write('penaltyLastAdded', false);
 	}
 
 	public function adminPenaltiesModified(array $d) {
-		echo '<h3>Kary i ostrzeżenia ostatnio modyfikowane</h3>';
-		$d['modified']->write('penaltyLastModified', false);
+		echo '<h3>Kary ostatnio modyfikowane</h3>';
+		$d['modifiedPenalties']->write('penaltyLastModified');
 	}
 
 	public function servicesEdit(array $d) {
@@ -871,6 +906,7 @@ extends UFtpl_Common {
 		echo 'Użytkownik: '.$d['user']->name.' "'.$d['user']->login.'" '.$d['user']->surname."\n";
 		echo 'Admin: '.$d['admin']->name."\n";
 		echo 'Szablon: '.$d['penalty']->templateTitle."\n";
+		echo 'Min. długość (dni): '.(($d['penalty']->amnestyAfter - $d['penalty']->startAt) / 24 / 3600)."\n";
 		echo 'Powód: '.$d['penalty']->reason."\n";
 		echo 'Komentarz: '.$d['penalty']->comment."\n";
 		echo 'Link: https://'.$d['host'].'/admin/penalties/'.$d['penalty']->id."\n";
@@ -893,11 +929,19 @@ extends UFtpl_Common {
 			echo 'Zmodyfikowano KARĘ';
 		}
 		echo ' w DS'.substr($d['user']->dormitoryAlias, 2)."\n";
-		echo 'Trwa do: '.date(self::TIME_YYMMDD_HHMM, $d['penalty']->endAt)."\n";
+		echo 'Trwa do: '.date(self::TIME_YYMMDD_HHMM, $d['penalty']->endAt);
+		echo ($d['penalty']->endAt != $d['oldPenalty']->endAt) ? ' (było: '.date(self::TIME_YYMMDD_HHMM, $d['oldPenalty']->endAt).')' : '';
+		echo "\n";
 		echo 'Użytkownik: '.$d['user']->name.' "'.$d['user']->login.'" '.$d['user']->surname."\n";
 		echo 'Admin modyfikujący: '.$d['admin']->name."\n";
-		echo 'Szablon: '.$d['penalty']->templateTitle."\n";
+		echo 'Szablon: '.$d['newTpl'];
+		echo ($d['penalty']->templateTitle != $d['newTpl']) ? ' (było: '.$d['oldPenalty']->templateTitle.')' : '';
+		echo "\n";
+		echo 'Min. długość (dni): '.(($d['penalty']->amnestyAfter - $d['penalty']->startAt) / 24 / 3600);
+		echo ($d['penalty']->amnestyAfter != $d['oldPenalty']->amnestyAfter) ? ' (było: '.(($d['oldPenalty']->amnestyAfter - $d['oldPenalty']->startAt) / 24 / 3600).')' : '';
+		echo "\n";
 		echo 'Powód: '.$d['penalty']->reason."\n";
+		echo ($d['penalty']->reason != $d['oldPenalty']->reason) ? ' (było: '.$d['oldPenalty']->reason.')' : '';
 		echo 'Komentarz: '.$d['penalty']->comment."\n";
 		echo 'Link: https://'.$d['host'].'/admin/penalties/'.$d['penalty']->id."\n";
 	}

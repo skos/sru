@@ -17,6 +17,40 @@ extends UFlib_ClassWithService {
 		return $this->_loggedIn();
 	}
 
+	public function addForUser($id) {
+		if (!$this->_loggedIn()) {
+			return false;
+		}
+		$bean = UFra::factory('UFbean_Sru_User');
+		try {
+			$bean->getByPK($id);
+		} catch (Exception $e) {
+			return false;
+		}
+		// można karać tylko aktywnych użytkowników
+		if ($bean->active === false) {
+			return false;
+		}
+		return true;
+	}
+
+	public function addForComputer($id) {
+		if (!$this->_loggedIn()) {
+			return false;
+		}
+		$bean = UFra::factory('UFbean_Sru_Computer');
+		try {
+			$bean->getByPK($id);
+		} catch (Exception $e) {
+			return false;
+		}
+		// można karać tylko aktywne komputery
+		if ($bean->active === false) {
+			return false;
+		}
+		return true;
+	}
+
 	public function del() {
 		return $this->_loggedIn();
 	}
@@ -36,6 +70,11 @@ extends UFlib_ClassWithService {
 		try {
 			$bean->getByPK($id);
 		} catch (Exception $e) {
+			return false;
+		}
+
+		// można edytowac tylko aktywne kary
+		if ($bean->active === false) {
 			return false;
 		}
 		
@@ -66,6 +105,11 @@ extends UFlib_ClassWithService {
 			return false;
 		}
 		
+		// można edytowac tylko aktywne kary
+		if ($bean->active === false) {
+			return false;
+		}
+
 		if ($sess->authAdmin == $bean->createdById) {	//swoje kary mozna edytowac
 			return true;	
 		} elseif ($sess->typeId == UFacl_SruAdmin_Admin::CENTRAL || $sess->typeId == UFacl_SruAdmin_Admin::CAMPUS) {

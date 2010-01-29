@@ -38,44 +38,37 @@ extends UFdao {
 		return $this->doSelect($query);
 	}
 
-	public function listLastAdded($page=1, $perPage=10, $overFetch=0) {
+	public function listLastAdded($type = null, $id = null, $page=1, $perPage=10, $overFetch=0) {
 		$mapping = $this->mapping('list');
 
 		$query = $this->prepareSelect($mapping);
+		if (isset($type)) {
+			if ($type == 1) {
+				$query->where($mapping->typeId, 1);
+			} else {
+				$query->where($mapping->typeId, 1, $query->NOT_EQ);
+			}
+		}
+		if (isset($id)) {
+			$query->where($mapping->createdById, $id);
+		}
 		$query->order($mapping->startAt, $query->DESC);
 		$query->limit(10);
 		
 		return $this->doSelect($query);
 	}
 
-	public function listLastModified($page=1, $perPage=10, $overFetch=0) {
-		$mapping = $this->mapping('list');
+	public function listLastModified($type = null, $id = null, $page=1, $perPage=10, $overFetch=0) {
+		$mapping = $this->mapping('listDetails');
 
 		$query = $this->prepareSelect($mapping);
 		$query->where($mapping->modifiedAt, 0, $query->GTE);
-		$query->order($mapping->modifiedAt,  $query->DESC);
-		$query->limit(10);
-
-		return $this->doSelect($query);
-	}
-	
-	public function listLastAddedById($id, $page=1, $perPage=10, $overFetch=0) {
-		$mapping = $this->mapping('list');
-
-		$query = $this->prepareSelect($mapping);
-		$query->where($mapping->createdById, $id);
-		$query->order($mapping->startAt, $query->DESC);
-		$query->limit(10);
-		
-		return $this->doSelect($query);
-	}
-
-	public function listLastModifiedById($id, $page=1, $perPage=10, $overFetch=0) {
-		$mapping = $this->mapping('list');
-
-		$query = $this->prepareSelect($mapping);
-		$query->where($mapping->modifiedById, $id);
-		$query->where($mapping->modifiedAt, 0, $query->GTE);
+		if (isset($id)) {
+			$query->where($mapping->modifiedById, $id);
+		}
+		if (isset($type)) {
+			$query->where($mapping->typeId, 1, $query->NOT_EQ);
+		}
 		$query->order($mapping->modifiedAt,  $query->DESC);
 		$query->limit(10);
 

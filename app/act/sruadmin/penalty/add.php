@@ -12,6 +12,12 @@ extends UFact {
 			$this->begin();
 			$user = UFra::factory('UFbean_Sru_User');
 			$user->getByPK($this->_srv->get('req')->get->userId);
+
+			$acl = $this->_srv->get('acl');
+			if(!$acl->sruAdmin('penalty', 'addForUser', $user->id)) {
+				UFra::error('Inactive user cannot be banned');
+				return;
+			}
 			
 			$bean = UFra::factory('UFbean_SruAdmin_Penalty');
 			$bean->fillFromPost(self::PREFIX, null, array('duration', 'reason', 'comment', 'computerId', 'after'));
@@ -25,7 +31,6 @@ extends UFact {
 			} else {
 				$bean->amnestyAfter = NOW + $bean->after * 24 * 3600;
 			}
-			
 			if (null === $bean->computerId) {
 				$bean->typeId = UFbean_SruAdmin_Penalty::TYPE_COMPUTERS;
 			} elseif (0 === $bean->computerId) {
@@ -33,6 +38,11 @@ extends UFact {
 				$bean->active = false;
 			} else {
 				$bean->typeId = UFbean_SruAdmin_Penalty::TYPE_COMPUTER;
+				$computerId = $bean->computerId;
+				if(!$acl->sruAdmin('penalty', 'addForComputer', $bean->computerId)) {
+					UFra::error('Inactive computer cannot be banned');
+					return;
+				}
 			}
 
 			try {
@@ -42,7 +52,7 @@ extends UFact {
 			} catch (UFex_Core_DataNotFound $e) {
 			} catch (UFex_Dao_NotFound $e) {
 			}
-				
+
 			$id = $bean->save();
 			$bean->getByPK($id);	// uzupelnione dane dociagane z innych tabel
 
@@ -62,7 +72,7 @@ extends UFact {
 				}
 			} elseif (UFbean_SruAdmin_Penalty::TYPE_COMPUTER === $bean->typeId) {
 				$computer = UFra::factory('UFbean_Sru_Computer');
-				$computer->getByUserIdPK($user->id, $bean->computerId);
+				$computer->getByUserIdPK($user->id, $computerId);
 
 				$penalty = UFra::factory('UFbean_SruAdmin_ComputerBan');
 				$penalty->penaltyId = $id;
@@ -84,7 +94,7 @@ extends UFact {
 					}
 				} elseif (UFbean_SruAdmin_Penalty::TYPE_COMPUTER === $bean->typeId) {
 					$computer = UFra::factory('UFbean_Sru_Computer');
-					$computer->getByUserIdPK($user->id, $bean->computerId);
+					$computer->getByUserIdPK($user->id, $computerId);
 					$computers[0]= $computer;
 				} else {
 					$computers = null;

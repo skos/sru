@@ -831,6 +831,21 @@ extends UFbox {
 		}		
 	}
 
+	public function penaltyTemplateEdit() {
+		try {
+			$bean = UFra::factory('UFbean_SruAdmin_PenaltyTemplateList');
+			$bean->listAll();
+			$d['templates'] = $bean;		
+
+			$bean = $this->_getPenaltyFromGet();
+			$d['penalty'] = $bean;
+			
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}		
+	}
+
 	public function titlePenaltyAdd() {
 		try {
 			$bean = $this->_getUserFromGet();
@@ -846,6 +861,43 @@ extends UFbox {
 	public function penalty() {
 		try {
 			$bean = $this->_getPenaltyFromGet();
+			$d['penalty'] = $bean;
+			
+			if (UFbean_SruAdmin_Penalty::TYPE_COMPUTER === $bean->typeId || UFbean_SruAdmin_Penalty::TYPE_COMPUTERS === $bean->typeId) {
+				try {
+					$computers = UFra::factory('UFbean_SruAdmin_ComputerBanList');
+					$computers->listByPenaltyId($bean->id);
+					$d['computers'] = $computers;
+				} catch (UFex_Dao_NotFound $e) {
+					$d['computers'] = null;
+				}
+			} else {
+				$d['computers'] = null;
+			}
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}
+	}
+
+	public function penaltyEdit() {
+		try {
+			$bean = $this->_getPenaltyFromGet();
+
+			if ($this->_srv->get('req')->get->is('templateId') && $this->_srv->get('req')->get->templateId>0) {
+				try {
+					$tpl = UFra::factory('UFbean_SruAdmin_PenaltyTemplate');
+					$tpl->getByPK($this->_srv->get('req')->get->templateId);
+					$bean->reason = $tpl->reason;
+					$bean->duration = $tpl->duration;
+					$bean->endAt = ($bean->startAt + $tpl->duration * 24 * 3600);
+					$bean->after = $tpl->amnesty;
+					$bean->amnestyAfter = ($bean->startAt + $tpl->amnesty * 24 * 3600);
+					$bean->templateId = $tpl->id;
+					$d['templateTitle'] = $tpl->title;
+				} catch (UFex_Dao_NotFound $e) {
+				}
+			}
 			$d['penalty'] = $bean;
 			
 			if (UFbean_SruAdmin_Penalty::TYPE_COMPUTER === $bean->typeId || UFbean_SruAdmin_Penalty::TYPE_COMPUTERS === $bean->typeId) {
@@ -946,13 +998,17 @@ extends UFbox {
 	public function penaltyActions() {
 		try 
 		{
-			$bean = UFra::factory('UFbean_SruAdmin_PenaltyList');	
-			$bean->listLastAdded();
-			$d['added'] = $bean;
+			$bean = UFra::factory('UFbean_SruAdmin_PenaltyList');
+			$bean->listLastAdded(2);
+			$d['addedPenalties'] = $bean;
 
 			$bean = UFra::factory('UFbean_SruAdmin_PenaltyList');
-			$bean->listLastModified();
-			$d['modified'] = $bean;
+			$bean->listLastAdded(1);
+			$d['addedWarnings'] = $bean;
+
+			$bean = UFra::factory('UFbean_SruAdmin_PenaltyList');
+			$bean->listLastModified(2);
+			$d['modifiedPenalties'] = $bean;
 
 			return $this->render(__FUNCTION__, $d);
 		} 
@@ -1074,8 +1130,22 @@ extends UFbox {
 			$bean = $this->_getAdminFromGet();
 			
 			$added = UFra::factory('UFbean_SruAdmin_PenaltyList');
-			$added->listLastAddedById($bean->id);
-			$d['added'] = $added;
+			$added->listLastAdded(2, $bean->id);
+			$d['addedPenalties'] = $added;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return '';
+		}
+	}
+
+	public function adminWarningsAdded() {
+		try {
+			$bean = $this->_getAdminFromGet();
+
+			$added = UFra::factory('UFbean_SruAdmin_PenaltyList');
+			$added->listLastAdded(1, $bean->id);
+			$d['addedWarnings'] = $added;
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
@@ -1088,8 +1158,8 @@ extends UFbox {
 			$bean = $this->_getAdminFromGet();
 			
 			$modified = UFra::factory('UFbean_SruAdmin_PenaltyList');
-			$modified->listLastModifiedById($bean->id);
-			$d['modified'] = $modified;
+			$modified->listLastModified(2, $bean->id);
+			$d['modifiedPenalties'] = $modified;
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
@@ -1116,8 +1186,10 @@ extends UFbox {
 		return $this->render(__FUNCTION__, $d);
 	}
 	
-	public function penaltyEditMailBody($penalty, $user, $admin) {
+	public function penaltyEditMailBody($penalty, $oldPenalty, $newTpl, $user, $admin) {
 		$d['penalty'] = $penalty;
+		$d['oldPenalty'] = $oldPenalty;
+		$d['newTpl'] = $newTpl;
 		$d['user'] = $user;
 		$d['admin'] = $admin;
 		$d['host'] = $this->_srv->get('req')->server->HTTP_HOST;

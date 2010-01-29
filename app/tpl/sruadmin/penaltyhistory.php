@@ -53,6 +53,17 @@ extends UFtpl_Common {
 			'createdAt' => $current->createdAt,
 		);
 		$urlAdmin = $this->url(0).'/admins/';
+		if (!$current->active) {
+			echo '<li>';
+			if ($current->amnestyById) {
+				$changed = '<a href="'.$urlAdmin.$current->amnestyById.'">'.$this->_escape($current->amnestyByName).'</a>';
+			} else {
+				$changed = 'AUTOMAT';
+			}
+			echo date(self::TIME_YYMMDD_HHMM, $current->endAt).' &mdash; '.$changed;
+			echo '<ul><li>Zakończona</li></ul>';
+			echo '</li>';
+		}
 		foreach ($d as $c) {
 			echo '<li>';
 			$changed = '<a href="'.$urlAdmin.$curr['modifiedById'].'">'.$this->_escape($curr['modifiedBy']).'</a>';

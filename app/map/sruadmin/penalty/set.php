@@ -15,6 +15,7 @@ extends UFmap {
 		'reason'       => 'reason',
 		'comment'      => 'comment',
 		'amnestyAfter' => 'amnesty_after',
+		'templateId'   => 'template_id',
 	);
 
 	protected $columnTypes = array(
@@ -27,6 +28,7 @@ extends UFmap {
 		'reason'       => self::TEXT,
 		'comment'      => self::TEXT,
 		'amnestyAfter' => self::NULL_TS,
+		'templateId'   => self::INT,
 		'after'        => self::INT,	// tylko do walidacji formularza
 	);
 

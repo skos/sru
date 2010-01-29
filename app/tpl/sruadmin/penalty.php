@@ -81,8 +81,16 @@ extends UFtpl_Common {
 	public function penaltyLastAdded(array $d, $showAddedBy = true) {
 		$url = $this->url(0);
 
-		foreach ($d as $c) {	
-			echo '<li>';
+		foreach ($d as $c) {
+			if ($c['endAt'] > time()) {
+				if (UFbean_SruAdmin_Penalty::TYPE_WARNING == $c['typeId']) {
+					echo '<li class="warning">';
+				} else {
+					echo '<li class="ban">';
+				}
+			} else {
+				echo '<li>';
+			}
 			echo date(self::TIME_YYMMDD_HHMM, $c['startAt']);
 			echo ' dla: <a href="'.$url.'/penalties/'.$c['id'].'">'.$this->_escape($c['userName']).' '.$this->_escape($c['userSurname']).'</a>';
 			if ($showAddedBy == true) {
@@ -95,42 +103,37 @@ extends UFtpl_Common {
 		}
 	}
 
-	public function penaltyLastModified(array $d, $showAddedBy = true) {
+	public function penaltyLastModified(array $d) {
 		$url = $this->url(0);
 
 		foreach ($d as $c) {	
-			echo '<li>';
-			echo date(self::TIME_YYMMDD_HHMM, $c['modifiedAt']);
-			echo ' dla: <a href="'.$url.'/penalties/'.$c['id'].'">'.$this->_escape($c['userName']).' '.$this->_escape($c['userSurname']).' </a>';
-			if ($showAddedBy == true) {
-				echo ' <small>przez: <a href="'.$url.'/admins/'.$c['modifiedById'].'">'.$this->_escape($c['modifierName']).'</a>';
+			if ($c['endAt'] > time()) {
+				if (UFbean_SruAdmin_Penalty::TYPE_WARNING == $c['typeId']) {
+					echo '<li class="warning">';
+				} else {
+					echo '<li class="ban">';
+				}
 			} else {
-				echo ' <small>';
+				echo '<li>';
 			}
-			echo ($this->_escape($c['templateTitle']) != null ? ' za: '.$this->_escape($c['templateTitle']) : '');
+			echo date(self::TIME_YYMMDD_HHMM, $c['modifiedAt']);
+			echo ' dla: <a href="'.$url.'/penalties/'.$c['id'].'">'.$this->_escape($c['userName']).' '.$this->_escape($c['userSurname']).'</a> ';
+			echo ' <small>modyfikowana '.$c['modificationCount'].' raz(y)</small>';
+			echo '<small>, ostatnio przez: <a href="'.$url.'/admins/'.$c['modifiedById'].'">'.$this->_escape($c['modifierName']).'</a>';
+			echo ($this->_escape($c['templateTitle']) != null ? ', za: '.$this->_escape($c['templateTitle']) : '');
 			echo '</small></li>';
 		}
 	}
 
 	public function details(array $d, $computers) {
+		$endAtTimestamp = $d['endAt'];
 		$d['endAt'] = date(self::TIME_YYMMDD_HHMM, $d['endAt']);
 		$url = $this->url(0);
 		
 		echo '<p><em>Ukarany:</em> <a href="'.$url.'/users/'.$d['userId'].'">'.$this->_escape($d['userName']).' '.$this->_escape($d['userSurname']).' ('.$d['userLogin'].')</a></p>';
 
 		if ($d['active']) {
-			$acl = $this->_srv->get('acl');
-			$admin = UFra::factory('UFbean_SruAdmin_Admin');
-			$admin->getFromSession();
-			$d['admin'] = $admin;
-			if ($acl->sruAdmin('penalty', 'editOne', $d['id'])) {
-				$form = UFra::factory('UFlib_Form', 'penaltyEdit', $d, $this->errors);
-				echo $form->_start();
-				echo $form->_fieldset('Edycja kary');
-				echo $form->endAt('Od '.date(self::TIME_YYMMDD, $d['startAt']).' do');
-			} else {
-				echo '<p><em>Kara trwa:</em> '.date(self::TIME_YYMMDD_HHMM, $d['startAt']).' &mdash; <strong>'.$d['endAt'].'</strong>'.($d['amnestyAfter']<$d['endAt']?' (amnestia będzie możliwa po '.date(self::TIME_YYMMDD_HHMM, $d['amnestyAfter']).')':'').'</p>';
-			}
+			echo '<p><em>Kara trwa:</em> '.date(self::TIME_YYMMDD_HHMM, $d['startAt']).' &mdash; <strong>'.$d['endAt'].'</strong>'.($d['amnestyAfter']<$endAtTimestamp?' (modyfikacja możliwa po '.date(self::TIME_YYMMDD_HHMM, $d['amnestyAfter']).')':'').'</p>';
 		} else {
 			echo '<p><em>Kara trwała:</em> '.date(self::TIME_YYMMDD_HHMM, $d['startAt']).' &mdash; '.$d['endAt'].'</p>';
 		}
@@ -141,25 +144,18 @@ extends UFtpl_Common {
 		if (!is_null($d['templateTitle'])) {
 			echo '<p><em>Szablon:</em> '.$this->_escape($d['templateTitle']).'</p>';
 		}
-		if ($d['active']) {
-			$amnestyDays = (!isset($_POST['penaltyEdit']) || $_POST['penaltyEdit']['after'] == '') ? (($d['amnestyAfter'] - $d['startAt']) / 24 / 3600) : (intval($_POST['penaltyEdit']['after']));
-			if ($acl->sruAdmin('penalty', 'editOneFull', $d['id'])) {
-				echo $form->after('Min. długość (dni)', array('value'=>$amnestyDays));
-				echo $form->reason('Powód:', array('type'=>$form->TEXTAREA, 'rows'=>5));
-			} else {
-				echo '<p><em>Min. długość:</em> '.$amnestyDays.' dni</p>';
-			}
-		} else {
-			echo '<p><em>Powód:</em> '.nl2br($this->_escape($d['reason'])).'</p>';
-		}
-		if ($d['active'] && $acl->sruAdmin('penalty', 'editOne', $d['id'])) {
-			echo $form->newComment('Komentarz:', array('type'=>$form->TEXTAREA, 'rows'=>5, 'value'=>$d['comment']));
-			echo $form->_submit('Zmień');
-			echo $form->_end();
-			echo $form->_end(true);	
-		}
+
+		$amnestyDays = ($d['amnestyAfter'] - $d['startAt']) / 24 / 3600;
+		echo '<p><em>Min. długość:</em> '.$amnestyDays.' dni</p>';
+		echo '<p><em>Powód:</em> '.nl2br($this->_escape($d['reason'])).'</p>';
+
 		$urlPenalty = $url.'/penalties/'.$d['id'];
-		echo '<p class="nav"><a href="'.$urlPenalty.'">Dane</a> <a href="'.$url.'/penalties/'.$d['id'].'/history/">Historia kary</a> <span id="penaltyMoreSwitch"></span></p>';
+		echo '<p class="nav"><a href="'.$urlPenalty.'">Dane</a> <a href="'.$url.'/penalties/'.$d['id'].'/history/">Historia kary</a> ';
+		$acl = $this->_srv->get('acl');
+		if ($acl->sruAdmin('penalty', 'editOne', $d['id'])) {
+			echo '<a href="'.$urlPenalty.'/:edit">Edycja</a> ';
+		}
+		echo '<span id="penaltyMoreSwitch"></span></p>';
 		echo '<div id="penaltyMore">';
 		echo '<p class="displayOnHover"><em>Karzący:</em> <span><a href="'.$url.'/admins/'.$d['createdById'].'">'.$this->_escape($d['createdByName']).'</a><small> ('.date(self::TIME_YYMMDD_HHMM, $d['createdAt']) .')</small></span></p>';
 
@@ -194,30 +190,70 @@ var txt = document.createTextNode('Szczegóły');
 button.appendChild(txt);
 container.appendChild(button);
 changeVisibility();
-<?
-		if ($d['active'] && $acl->sruAdmin('penalty', 'editOne', $d['id'])) {
-?>
-input = document.getElementById('penaltyEdit_endAt');
-if (input) {
-	button = document.createElement('input');
-	button.setAttribute('value', 'Zdejmij karę');
-	button.setAttribute('type', 'button');
-	button.onclick = function() {
-		input = document.getElementById('penaltyEdit_endAt');
-		input.value = '';
-		input = document.getElementById('penaltyEdit_newComment');
-		input.value = '';
-		input.focus();
+</script><?
 	}
-	input.parentNode.insertBefore(button, input.nextSibling);
-	space = document.createTextNode(' ');
-	input.parentNode.insertBefore(space, input.nextSibling);
-}
-<?
+
+	public function formEdit(array $d, $computers, $templateTitle = null) {
+		$d['endAt'] = date(self::TIME_YYMMDD_HHMM, $d['endAt']);
+		$url = $this->url(0);
+		echo '<p><em>Ukarany:</em> <a href="'.$url.'/users/'.$d['userId'].'">'.$this->_escape($d['userName']).' '.$this->_escape($d['userSurname']).' ('.$d['userLogin'].')</a></p>';
+
+		$acl = $this->_srv->get('acl');
+		$admin = UFra::factory('UFbean_SruAdmin_Admin');
+		$admin->getFromSession();
+		$d['admin'] = $admin;
+		$form = UFra::factory('UFlib_Form', 'penaltyEdit', $d, $this->errors);
+		echo $form->_start();
+		echo $form->_fieldset('Edycja kary');
+		echo $form->endAt('Od '.date(self::TIME_YYMMDD, $d['startAt']).' do');
+		echo '<p><em>Typ:</em> '.$this->_escape($this->penaltyTypes[$d['typeId']]).'</p>';
+
+		if (!is_null($computers)) {
+			$computers->write('computerList');
 		}
-?>
-</script>
-<?
+
+		$amnestyDays = (!isset($_POST['penaltyEdit']) || $_POST['penaltyEdit']['after'] == '') ? (($d['amnestyAfter'] - $d['startAt']) / 24 / 3600) : (intval($_POST['penaltyEdit']['after']));
+		$urlPenalty = $url.'/penalties/'.$d['id'];
+		echo '<p><em>Szablon:</em> ';
+		if (isset($templateTitle)) {
+			echo $this->_escape($templateTitle);
+		} else if (!is_null($d['templateTitle'])) {
+			echo $this->_escape($d['templateTitle']);
+		} else {
+			echo 'brak';
+		}
+		if ($acl->sruAdmin('penalty', 'editOneFull', $d['id'])) {
+			echo ' <a href="'.$urlPenalty.'/:edit/changeTemplate">zmień</a></p>';
+			echo $form->after('Min. długość (dni)', array('value'=>$amnestyDays));
+			echo $form->reason('Powód:', array('type'=>$form->TEXTAREA, 'rows'=>5));
+		} else {
+			echo '</p>';
+			echo '<p><em>Min. długość:</em> '.$amnestyDays.' dni</p>';
+		}
+		echo $form->newComment('Komentarz:', array('type'=>$form->TEXTAREA, 'rows'=>10, 'value'=>$d['comment']));
+		echo $form->_submit('Zmień');
+		echo $form->_end();
+		echo $form->_end(true);
+		echo '<p class="nav"><a href="'.$urlPenalty.'">Dane</a> <a href="'.$url.'/penalties/'.$d['id'].'/history/">Historia kary</a></p>';
+                                                                                                                 
+?><script type="text/javascript">
+	input = document.getElementById('penaltyEdit_endAt');                                                                                                                                                         
+	if (input) {                                                                                                                                                                                                  
+		button = document.createElement('input');                                                                                                                                                              
+		button.setAttribute('value', 'Zdejmij karę');                                                                                                                                                          
+		button.setAttribute('type', 'button');                                                                                                                                                                 
+		button.onclick = function() {                                                                                                                                                                          
+			input = document.getElementById('penaltyEdit_endAt');                                                                                                                                          
+			input.value = '';
+			input = document.getElementById('penaltyEdit_newComment');
+			input.value = '';
+			input.focus();
+		}
+		input.parentNode.insertBefore(button, input.nextSibling);
+		space = document.createTextNode(' ');
+		input.parentNode.insertBefore(space, input.nextSibling);
+	}
+</script><?
 	}
 
 	public function apiPast(array $d) {

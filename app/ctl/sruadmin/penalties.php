@@ -64,9 +64,6 @@ extends UFctl_Common {
 				case 'actions':
 					$get->view = 'penalties/actions';
 					break;
-				case 'history':
-					$get->view = 'penalties/history';
-					break;
 				default:
 					$get->view = 'penalties/penalty';
 					$id = (int)$req->segment(2);
@@ -77,6 +74,27 @@ extends UFctl_Common {
 					$get->penaltyId = $id;
 					if ($segCount > 2) {
 						switch ($req->segment(3)) {
+							case ':edit':
+								if ($segCount > 3) {
+									switch ($req->segment(4)) {
+										case 'changeTemplate':
+											if ($segCount == 5 && $this->isParamInt(5, 'template')) {
+												$tmp = (int)$this->fetchParam(5, 'template');
+												$get->templateId = $tmp;
+												$get->view = 'penalties/penalty/edit';
+											} else {
+												$get->view = 'penalties/penalty/editTemplate';
+											}
+											break;
+										default:
+											$get->view = 'error404';
+											break;
+									}
+								} else {
+									$get->view = 'penalties/penalty/edit';
+									break;
+								}
+								break;
 							case 'history':
 								$get->view = 'penalties/penalty/history';
 								break;
@@ -86,8 +104,7 @@ extends UFctl_Common {
 						}
 					}
 				}
-		}		
-
+		}
 	}
 
 	protected function chooseAction($action = null) {
@@ -100,14 +117,11 @@ extends UFctl_Common {
 			$act = 'Admin_Logout';
 		} elseif ($post->is('adminLogin') && $acl->sruAdmin('admin', 'login')) {
 			$act = 'Admin_Login';
-		} elseif (('penalties/penalty' == $get->view || 'penalties/penalty/history' == $get->view) && $post->is('penaltyEdit') && $acl->sruAdmin('penalty', 'edit')) {
+		} elseif ('penalties/penalty/edit' == $get->view && $post->is('penaltyEdit') && $acl->sruAdmin('penalty', 'edit')) {
 			$act = 'Penalty_Edit';
 		} elseif ('penalties/add' == $get->view && $post->is('penaltyAdd') && $acl->sruAdmin('penalty', 'add')) {
 			$act = 'Penalty_Add';
-		}/* elseif ('admins/edit' == $get->view && $post->is('adminEdit') && $acl->sruAdmin('admin', 'edit', $get->adminId)) {
-			$act = 'Admin_Edit';
 		}
-*/
 		if (isset($act)) {
 			$action = 'SruAdmin_'.$act;
 		}
@@ -147,6 +161,20 @@ extends UFctl_Common {
 				}	
 			case 'penalties/actions':
 				return 'SruAdmin_PenaltyActions';
+			case 'penalties/penalty/edit':
+				if ($msg->get('penaltyEdit/ok')) { 
+					return 'SruAdmin_Penalty';
+				} elseif ($acl->sruAdmin('penalty', 'editOne', $get->penaltyId)) {
+					return 'SruAdmin_PenaltyEdit';
+				} else {
+					return 'Sru_Error403';
+				}
+			case 'penalties/penalty/editTemplate':
+				if ($acl->sruAdmin('penalty', 'editOne', $get->penaltyId)) {
+					return 'SruAdmin_PenaltyTemplateEdit';
+				} else {
+					return 'Sru_Error403';
+				}
 			case 'penalties/penalty/history':
 				return 'SruAdmin_PenaltyHistory';
 			default:
