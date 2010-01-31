@@ -768,7 +768,8 @@ extends UFtpl_Common {
 	}
 	
 	public function migration(array $d) {
-		echo '<h2>Migracja | <a href="'.$this->url(0).'/services">Usługi</a></h2>';
+		//echo '<h2>Migracja | <a href="'.$this->url(0).'/services">Usługi</a></h2>';
+		echo '<h2>Migracja</h2>';
 		$d['migration']->write('migration', $d['users']);
 	}
 	

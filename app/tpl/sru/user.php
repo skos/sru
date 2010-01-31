@@ -375,13 +375,14 @@ changeVisibility();
 	}
 
 	public function stats(array $d) {
+		$conf = UFra::shared('UFconf_Sru');
 		echo '<h3>Rozkład płci:</h3>';
 		echo '<table style="text-align: center; width: 100%;">';
 		echo '<tr><th>Użytkowników</th><th>Kobiet</th><th>Mężczyzn</th></tr>';
 		$sum = 0;
 		$woman = 0;
 		foreach ($d as $u) {
-			if ($u['name'] == 'ADMINISTRACJA' || $u['name'] == 'SKOS' || $u['name'] == 'Samorząd Studentów' || $u['name'] == 'Studencka Agencja') {
+			if (in_array($u['name'], $conf->exclusions)) {
 				continue;
 			}
 			$sum++;

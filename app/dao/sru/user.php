@@ -132,6 +132,7 @@ extends UFdao {
 
 		$query = $this->prepareSelect($mapping);
 		$query->where($mapping->active, true);
+		$query->order($mapping->dormitoryId);
 
 		return $this->doSelect($query);
 	}
