@@ -20,7 +20,7 @@ extends UFact {
 			$bean = UFra::factory('UFbean_Sru_User');
 			$post = $this->_srv->get('req')->post->{self::PREFIX};
 			$bean->getFromSession();
-			$locationId = $bean->locationId;
+			$dormitoryId = $bean->dormitoryId;
 			$bean->fillFromPost(self::PREFIX, array('email', 'login','password','name','surname'));
 
 
@@ -59,24 +59,26 @@ extends UFact {
 				
 			$bean->save();
 	
-			if ($locationId != $bean->locationId) {
-				try {
-					$comps = UFra::factory('UFbean_Sru_ComputerList');
-					$comps->listByUserId($bean->id);
-					foreach ($comps as $comp) {
-						try {
+			try {
+				$comps = UFra::factory('UFbean_Sru_ComputerList');
+				$comps->listByUserId($bean->id);
+				foreach ($comps as $comp) {
+					try {
+						$computer = UFra::factory('UFbean_Sru_Computer');
+						$computer->getByHost($comp['host']);
+						$ipAddr = $computer->ip;
+						if ($dormitoryId != $bean->dormitory) {
 							$ip = UFra::factory('UFbean_Sru_Ipv4');
 							$ip->getFreeByDormitoryId(($bean->dormitory));
-							$computer = UFra::factory('UFbean_Sru_Computer');
-							$computer->getByHost($comp['host']);
-							$computer->updateLocationByHost($comp['host'], $bean->locationId, $ip->ip);
-						} catch (UFex_Dao_NotFound $e) {
-							throw UFra::factory('UFex_Dao_DataNotValid', 'No free IP', 0, E_WARNING, array('ip'=>'noFree'));
+							$ipAddr = $ip->ip;
 						}
+						$computer->updateLocationByHost($comp['host'], $bean->locationId, $ipAddr);
+					} catch (UFex_Dao_NotFound $e) {
+						throw UFra::factory('UFex_Dao_DataNotValid', 'No free IP', 0, E_WARNING, array('ip'=>'noFree'));
 					}
-				} catch (UFex_Dao_NotFound $e) {
-					// uzytkownik nie ma komputerow
 				}
+			} catch (UFex_Dao_NotFound $e) {
+				// uzytkownik nie ma komputerow
 			}
 
 			if ($conf->sendEmail) {
