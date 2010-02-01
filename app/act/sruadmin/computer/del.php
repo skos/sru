@@ -20,6 +20,9 @@ extends UFact {
 			$admin->getFromSession();
 
 			$bean->active = false;
+			if ($bean->canAdmin) {
+				$bean->canAdmin = false;
+			}
 			$bean->availableTo = NOW;
 			$bean->modifiedAt = NOW;
 			$bean->modifiedById = $admin->id;

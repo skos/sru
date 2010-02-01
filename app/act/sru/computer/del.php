@@ -16,6 +16,9 @@ extends UFact {
 			$bean = UFra::factory('UFbean_Sru_Computer');
 			$bean->getByUserIdPK((int)$this->_srv->get('session')->auth, (int)$this->_srv->get('req')->get->computerId);
 			$bean->active = false;
+			if ($bean->canAdmin) {
+				$bean->canAdmin = false;
+			}
 			$bean->availableTo = NOW;
 			$bean->save();
 
