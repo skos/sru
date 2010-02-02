@@ -376,6 +376,7 @@ changeVisibility();
 
 	public function stats(array $d) {
 		$conf = UFra::shared('UFconf_Sru');
+		echo '<div class="stats">';
 		echo '<h3>Rozkład płci:</h3>';
 		echo '<table style="text-align: center; width: 100%;">';
 		echo '<tr><th>Użytkowników</th><th>Kobiet</th><th>Mężczyzn</th></tr>';
@@ -569,9 +570,11 @@ changeVisibility();
 		echo '<img src="http://chart.apis.google.com/chart?chs=600x150&chd=t:'.$chartData.'&cht=p3';
 		echo '&chl='.$chartLabel.'%" alt=""/>';
 		echo '</div>';
+		echo '</div>';
 	}
 
 	function statsDorms(array $d) {
+		echo '<div class="stats">';
 		echo '<h3>Rozkład płci uwzględniając akademik:</h3>';
 		echo '<table style="text-align: center; width: 100%;">';
 		echo '<tr><th>Akademik</th><th>Użytkowników</th><th>Kobiet</th><th>Mężczyzn</th></tr>';
@@ -743,6 +746,7 @@ changeVisibility();
 		echo '<div style="text-align: center;">';
 		echo '<img src="http://chart.apis.google.com/chart?chs=800x150&chd=t:'.$chartData;
 		echo '&cht=p3&chl='.$chartLabel.' alt=""/>';
+		echo '</div>';
 		echo '</div>';
 	}
 }

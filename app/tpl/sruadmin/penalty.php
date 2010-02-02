@@ -341,6 +341,7 @@ changeVisibility();
 			}
 		}
 
+		echo '<div class="stats">';
 		echo '<h3>Liczba nałożonych kar przez poszczególnych adminów:</h3>';
 		echo '<table style="text-align: center; width: 100%;">';
 		echo '<tr><th>Admin</th><th>Liczba kar</th><th>Liczba ostrzeżeń</th></tr>';
@@ -483,6 +484,7 @@ changeVisibility();
 		echo '<div style="text-align: center;">';
 		echo '<img src="http://chart.apis.google.com/chart?chs=600x110&cht=bhs&chco=ff9900,ffebcc&chd=t:';
 		echo count($d).','.$modified.','.$amnestied.'&chxt=y&chxl=0:|Zdjęte|Modyfikowane|Wszystkie&chds=0,'.count($d).'" alt=""/>';
+		echo '</div>';
 		echo '</div>';
 	}
 }
