@@ -17,6 +17,23 @@ extends UFlib_ClassWithService {
 		return $this->_loggedIn();
 	}
 
+	public function addForUser($id) {
+		if (!$this->_loggedIn()) {
+			return false;
+		}
+		$bean = UFra::factory('UFbean_Sru_User');
+		try {
+			$bean->getByPK($id);
+		} catch (Exception $e) {
+			return false;
+		}
+		// hosta można dodać tylko aktywnemu użytkownikowi
+		if ($bean->active === false) {
+			return false;
+		}
+		return true;
+	}
+
 	public function del() {
 		return $this->_loggedIn();
 	}

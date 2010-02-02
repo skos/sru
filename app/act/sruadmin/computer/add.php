@@ -13,6 +13,12 @@ extends UFact {
 			$user = UFra::factory('UFbean_Sru_User');  
 			$user->getByPK((int)$this->_srv->get('req')->get->userId);
 
+			$acl = $this->_srv->get('acl');
+			if(!$acl->sruAdmin('computer', 'addForUser', $user->id)) {
+				UFra::error('Host cannot be registered for inactive user');
+				return;
+			}
+
 			$bean = UFra::factory('UFbean_Sru_Computer');
 			$post = $this->_srv->get('req')->post->{self::PREFIX};
 			if($post['ip'] == '') {

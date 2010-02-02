@@ -270,9 +270,10 @@ extends UFtpl_Common {
 		}		
 		echo $d['computers']->write('listAdmin');
 		echo '</ul>';
-		
-		echo '<p class="nav"><a href="'.$url.':add">Dodaj komputer</a></p>';
-		
+		$acl = $this->_srv->get('acl');
+		if($acl->sruAdmin('computer', 'addForUser', $d['user']->id)) {
+			echo '<p class="nav"><a href="'.$url.':add">Dodaj komputer</a></p>';
+		}
 	}
 	public function userInactiveComputers(array $d) {
 		$url = $this->url(2).'/computers/';
@@ -287,7 +288,10 @@ extends UFtpl_Common {
 	public function userComputersNotFound(array $d) {
 		$url = $this->url(0).'/users/'.$d['user']->id.'/computers/';
 		echo '<h2>Komputery użytkownika</h2>';
-		echo '<p class="nav"><a href="'.$url.':add">Dodaj komputer</a></p>';
+		$acl = $this->_srv->get('acl');
+		if($acl->sruAdmin('computer', 'addForUser', $d['user']->id)) {
+			echo '<p class="nav"><a href="'.$url.':add">Dodaj komputer</a></p>';
+		}
 	}
 	public function userInactiveComputersNotFound() {
 	}
