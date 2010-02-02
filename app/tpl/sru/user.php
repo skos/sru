@@ -376,21 +376,32 @@ changeVisibility();
 
 	public function stats(array $d) {
 		$conf = UFra::shared('UFconf_Sru');
-		echo '<div class="stats">';
-		echo '<h3>Rozkład płci:</h3>';
-		echo '<table style="text-align: center; width: 100%;">';
-		echo '<tr><th>Użytkowników</th><th>Kobiet</th><th>Mężczyzn</th></tr>';
 		$sum = 0;
 		$woman = 0;
+		$faculties = array();
 		foreach ($d as $u) {
 			if (in_array($u['name'], $conf->exclusions)) {
 				continue;
 			}
-			$sum++;
+			if ($u['facultyName'] == '') {
+				$u['facultyName'] = " N/D";
+			}
+			if(!array_key_exists($u['facultyName'], $faculties)) {
+				$faculties[$u['facultyName']] = new PeopleCounter();
+			}
 			if (strtolower(substr($u['name'], -1)) == 'a') {
+				$sum++;
 				$woman++;
+				$faculties[$u['facultyName']]->addUser(true);
+			} else {
+				$sum++;
+				$faculties[$u['facultyName']]->addUser();
 			}
 		}
+		echo '<div class="stats">';
+		echo '<h3>Rozkład płci:</h3>';
+		echo '<table style="text-align: center; width: 100%;">';
+		echo '<tr><th>Użytkowników</th><th>Kobiet</th><th>Mężczyzn</th></tr>';
 		echo '<tr><td>'.$sum.'</td><td>'.$woman.'</td><td>'.($sum - $woman).'</td></tr>';
 		echo '</table>';
 		$womanProc = round($woman/$sum,2);
@@ -402,20 +413,6 @@ changeVisibility();
 		echo '<h3>Rozkład płci uwzględniając wydział:</h3>';
 		echo '<table style="text-align: center; width: 100%;">';
 		echo '<tr><th>Wydział</th><th>Użytkowników</th><th>Kobiet</th><th>Mężczyzn</th></tr>';
-		$faculties = array();
-		foreach ($d as $u) {
-			if ($u['facultyName'] == '') {
-				$u['facultyName'] = " N/D";
-			}
-			if(!array_key_exists($u['facultyName'], $faculties)) {
-				$faculties[$u['facultyName']] = new PeopleCounter();
-			}
-			if (substr($u['name'], -1) == 'a') {
-				$faculties[$u['facultyName']]->addUser(true);
-			} else {
-				$faculties[$u['facultyName']]->addUser();
-			}
-		}
 		ksort($faculties);
 		$chartDataWoman = '';
 		$chartDataMan = '';
@@ -574,10 +571,7 @@ changeVisibility();
 	}
 
 	function statsDorms(array $d) {
-		echo '<div class="stats">';
-		echo '<h3>Rozkład płci uwzględniając akademik:</h3>';
-		echo '<table style="text-align: center; width: 100%;">';
-		echo '<tr><th>Akademik</th><th>Użytkowników</th><th>Kobiet</th><th>Mężczyzn</th></tr>';
+		$conf = UFra::shared('UFconf_Sru');
 		$dormitories = array();
 		$dormitoriesId = array();
 		$banSum = 0;
@@ -587,7 +581,7 @@ changeVisibility();
 			if(!array_key_exists($u['dormitoryAlias'], $dormitories)) {
 				$dormitories[$u['dormitoryAlias']] = new ExtenededPeopleCounter();
 			}
-			if ($u['name'] == 'ADMINISTRACJA' || $u['name'] == 'SKOS' || $u['name'] == 'Samorząd Studentów' || $u['name'] == 'Studencka Agencja') {
+			if (in_array($u['name'], $conf->exclusions)) {
 				continue;
 			}
 			if (strtolower(substr($u['name'], -1)) == 'a') {
@@ -602,7 +596,10 @@ changeVisibility();
 			$banSum = $banSum + $u['bans'];
 			$activeBanSum = $activeBanSum + $u['activeBans'];
 		}
-
+		echo '<div class="stats">';
+		echo '<h3>Rozkład płci uwzględniając akademik:</h3>';
+		echo '<table style="text-align: center; width: 100%;">';
+		echo '<tr><th>Akademik</th><th>Użytkowników</th><th>Kobiet</th><th>Mężczyzn</th></tr>';
 		ksort($dormitories);
 		$chartDataWoman = '';
 		$chartDataMan = '';

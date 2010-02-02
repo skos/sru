@@ -360,7 +360,7 @@ changeVisibility();
 			$i++;
 			next ($banners);
 		}
-		echo '<td>ŚREDNIO:</td><td>'.round(($banSum/count($banners)),1).'</td><td>'.round(($warningSum/count($banners)),1).'</td>';
+		echo '<td>ŚREDNIO:</td><td>'.round(($banSum/$i),1).'</td><td>'.round(($warningSum/$i),1).'</td>';
 		echo '</table>';
 		reset($banners);
 		$chartData = substr($chartData, 0, -1);
@@ -385,7 +385,7 @@ changeVisibility();
 			$i++;
 			next ($bannersActive);
 		}
-		echo '<td>ŚREDNIO:</td><td>'.round(($activeBanSum/count($banners)),1).'</td>';
+		echo '<td>ŚREDNIO:</td><td>'.round(($activeBanSum/$i),1).'</td>';
 		echo '</table>';
 		reset($bannersActive);
 		$chartData = substr($chartData, 0, -1);
