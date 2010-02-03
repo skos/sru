@@ -481,15 +481,17 @@ changeVisibility();
 		$banned = array();
 		$bansNumber = array();
 		$bansNumber[0] = 0;
-		$sum = 0;
-		$woman = 0;
+		$bannedSum = 0;
+		$bannedWomanSum = 0;
+		$activeBannedSum = 0;
+		$activeBannedWomanSum = 0;
 		$banSum = 0;
 		$womanBanSum = 0;
 		foreach ($d as $u) {
 			if ($u['banned']) {
-				$sum++;
+				$activeBannedSum++;
 				if (substr($u['name'], -1) == 'a') {
-					$woman++;
+					$activeBannedWomanSum++;
 				}
 			}
 			$banSum += $u['bans'];
@@ -497,6 +499,10 @@ changeVisibility();
 					$womanBanSum += $u['bans'];
 			}
 			if ($u['bans'] > 0) {
+				$bannedSum++;
+				if (substr($u['name'], strlen($u['name']) - 1, 1) == 'a') {
+						$bannedWomanSum++;
+				}
 				$urlUser = $this->url(0).'/users/'.$u['id'];
 				$keyString = '<a href="'.$urlUser.'">'.$u['name'].' "'.$u['login'].'" '.$u['surname'].'</a>';
 				$banned[$keyString] = $u['bans'];
@@ -509,16 +515,18 @@ changeVisibility();
 				$bansNumber[0]++;
 			}
 		}
-		echo '<tr><td>Aktywne</td><td>'.$sum.'</td><td>'.$woman.'</td><td>'.($sum - $woman).'</td></tr>';
-		echo '<tr><td>Suma</td><td>'.$banSum.'</td><td>'.$womanBanSum.'</td><td>'.($banSum - $womanBanSum).'</td></tr>';
+		echo '<tr><td>Aktywne (użytkownicy)</td><td>'.$activeBannedSum.'</td><td>'.$activeBannedWomanSum.'</td><td>'.($activeBannedSum - $activeBannedWomanSum).'</td></tr>';
+		echo '<tr><td>Suma (użytkownicy)</td><td>'.$bannedSum.'</td><td>'.$bannedWomanSum.'</td><td>'.($bannedSum - $bannedWomanSum).'</td></tr>';
+		echo '<tr><td>Suma (kary)</td><td>'.$banSum.'</td><td>'.$womanBanSum.'</td><td>'.($banSum - $womanBanSum).'</td></tr>';
+		echo '<tr><td>ŚREDNIO (kar/użytkownik)</td><td>'.round($banSum/$bannedSum,2).'</td><td>'.round($womanBanSum/$bannedSum,2).'</td><td>'.round(($banSum - $womanBanSum)/$bannedSum,2).'</td></tr>';
 		echo '</table>';
-		$womanProc = round($woman/$sum,2);
-		$manProc = round(($sum-$woman)/$sum,2);
-		$womanSumProc = round($womanBanSum/$banSum,2);
-		$manSumProc = round(($banSum-$womanBanSum)/$banSum,2);
+		$womanActiveProc = round($activeBannedWomanSum/$activeBannedSum,2);
+		$manActiveProc = round(($activeBannedSum - $activeBannedWomanSum)/$activeBannedSum,2);
+		$womanSumProc = round($bannedWomanSum/$bannedSum,2);
+		$manSumProc = round(($bannedSum-$bannedWomanSum)/$bannedSum,2);
 		echo '<div style="text-align: center;">';
-		echo '<img src="http://chart.apis.google.com/chart?chs=600x200&chd=t:'.$womanProc.','.$manProc.'|'.$womanSumProc.','.$manSumProc;
-		echo '&cht=pc&chl=Aktywne dla kobiet: '.($womanProc*100).'%|Aktywne dla mężczyzn: '.($manProc*100).'%|Suma dla kobiet: ';
+		echo '<img src="http://chart.apis.google.com/chart?chs=600x200&chd=t:'.$womanActiveProc.','.$manActiveProc.'|'.$womanSumProc.','.$manSumProc;
+		echo '&cht=pc&chl=Aktywne dla kobiet: '.($womanActiveProc*100).'%|Aktywne dla mężczyzn: '.($manActiveProc*100).'%|Suma dla kobiet: ';
 		echo ($womanSumProc*100).'%|Suma dla mężczyzn: '.($manSumProc*100).'%" alt=""/>';
 		echo '</div>';
 
@@ -555,6 +563,7 @@ changeVisibility();
 		$chartData = '';
 		$chartLabel = '';
 		ksort($bansNumber);
+
 		while ($b = current ($bansNumber)) {
 			echo '<tr><td>'.key($bansNumber).'</td><td>'.$b.'</td></tr>';
 			$chartData = (round($b/$sum, 2)*100).','.$chartData;
