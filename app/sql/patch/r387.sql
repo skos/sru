@@ -19,5 +19,5 @@ END IF;
 END IF;
 RETURN NEW;
 END;$BODY$
-  LANGUAGE 'plpgsql' VOLATILE
+  LANGUAGE 'plpgsql' VOLATILE;
 COMMENT ON FUNCTION user_computers() IS 'zmienia dane komputerow';

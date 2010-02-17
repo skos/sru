@@ -29,5 +29,5 @@ IF ('INSERT' = TG_OP OR ('UPDATE' = TG_OP AND NEW.active = true)) THEN
 END IF;
 RETURN NEW;
 END;$BODY$
-  LANGUAGE 'plpgsql' VOLATILE
+  LANGUAGE 'plpgsql' VOLATILE;
 COMMENT ON FUNCTION computer_add() IS 'naklada kare na nowy komputer, jesli uzytkownik jest zbanowany';
