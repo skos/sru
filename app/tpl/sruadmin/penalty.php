@@ -38,7 +38,7 @@ extends UFtpl_Common {
 		echo '<h3>Wszystkich kar i ostrzeżeń: '. count($d) .'</h3>';
 
 		foreach ($d as $c) {	
-			if ($c['endAt'] > time()) {
+			if ($c['active']) {
 				if (UFbean_SruAdmin_Penalty::TYPE_WARNING == $c['typeId']) {
 					echo '<li class="warning">';
 				} else {
@@ -52,7 +52,7 @@ extends UFtpl_Common {
 			echo '<a href="'.$url.'/penalties/'.$c['id'].'">';
 			echo ($this->_escape($c['templateTitle']) != null ? 'za: '.$this->_escape($c['templateTitle']) : $this->_escape($this->penaltyTypes[$c['typeId']]).' (nieznany szablon)');
 			echo'</a>';
-			if ($c['endAt'] > time()) {
+			if ($c['active']) {
 				echo '</b>';
 			}
 			echo '</li>';
@@ -82,7 +82,7 @@ extends UFtpl_Common {
 		$url = $this->url(0);
 
 		foreach ($d as $c) {
-			if ($c['endAt'] > time()) {
+			if ($c['active']) {
 				if (UFbean_SruAdmin_Penalty::TYPE_WARNING == $c['typeId']) {
 					echo '<li class="warning">';
 				} else {
@@ -107,7 +107,7 @@ extends UFtpl_Common {
 		$url = $this->url(0);
 
 		foreach ($d as $c) {	
-			if ($c['endAt'] > time()) {
+			if ($c['active']) {
 				if (UFbean_SruAdmin_Penalty::TYPE_WARNING == $c['typeId']) {
 					echo '<li class="warning">';
 				} else {
