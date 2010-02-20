@@ -445,7 +445,7 @@ changeVisibility();
 			if(!array_key_exists(' '.$u['studyYearId'], $years)) {
 				$years[' '.$u['studyYearId']] = new PeopleCounter();
 			}
-			if (substr($u['name'], -1) == 'a') {
+			if (strtolower(substr($u['name'], -1)) == 'a') {
 				$years[' '.$u['studyYearId']]->addUser(true);
 			} else {
 				$years[' '.$u['studyYearId']]->addUser();
@@ -490,17 +490,17 @@ changeVisibility();
 		foreach ($d as $u) {
 			if ($u['banned']) {
 				$activeBannedSum++;
-				if (substr($u['name'], -1) == 'a') {
+				if (strtolower(substr($u['name'], -1)) == 'a') {
 					$activeBannedWomanSum++;
 				}
 			}
 			$banSum += $u['bans'];
-			if (substr($u['name'], strlen($u['name']) - 1, 1) == 'a') {
+			if (strtolower(substr($u['name'], - 1)) == 'a') {
 					$womanBanSum += $u['bans'];
 			}
 			if ($u['bans'] > 0) {
 				$bannedSum++;
-				if (substr($u['name'], strlen($u['name']) - 1, 1) == 'a') {
+				if (strtolower(substr($u['name'], -1)) == 'a') {
 						$bannedWomanSum++;
 				}
 				$urlUser = $this->url(0).'/users/'.$u['id'];
@@ -793,7 +793,7 @@ extends PeopleCounter
 		if(!array_key_exists(' '.$key, $this->groupFaculty)) {
 			$this->groupFaculty[' '.$key] = new PeopleCounter();
 		}
-		if (substr($value, -1) == 'a') {
+		if (strtolower(substr($value, -1)) == 'a') {
 			$this->groupFaculty[' '.$key]->addUser(true);
 		} else {
 			$this->groupFaculty[' '.$key]->addUser();
@@ -820,7 +820,7 @@ extends PeopleCounter
 		if(!array_key_exists(' '.$key, $this->groupYear)) {
 			$this->groupYear[' '.$key] = new PeopleCounter();
 		}
-		if (substr($value, -1) == 'a') {
+		if (strtolower(substr($value, -1)) == 'a') {
 			$this->groupYear[' '.$key]->addUser(true);
 		} else {
 			$this->groupYear[' '.$key]->addUser();
