@@ -354,10 +354,12 @@ changeVisibility();
 			$urlAdmin = $this->url(0).'/admins/'.$admins[key($banners)];
 			$warningsNum = $warningers[key($banners)];
 			echo '<tr><td><a href="'.$urlAdmin.'">'.key($banners).'</td></a><td>'.$b.'</td><td>'.$warningsNum.'</td></tr>';
-			$chartData = $chartData.$b.',';
-			$chartDataW = $chartDataW.$warningsNum.',';
-			$chartLabel = str_replace('"', '\'', key($banners)).'|'.$chartLabel;
-			$i++;
+			if ($i < 10) {
+				$chartData = $chartData.$b.',';
+				$chartDataW = $chartDataW.$warningsNum.',';
+				$chartLabel = str_replace('"', '\'', key($banners)).'|'.$chartLabel;
+				$i++;
+			}
 			next ($banners);
 		}
 		echo '<td>ŚREDNIO:</td><td>'.round(($banSum/$i),1).'</td><td>'.round(($warningSum/$i),1).'</td>';
@@ -366,7 +368,7 @@ changeVisibility();
 		$chartData = substr($chartData, 0, -1);
 		$chartDataW = substr($chartDataW, 0, -1);
 		echo '<div style="text-align: center;">';
-		echo '<img src="http://chart.apis.google.com/chart?chs=600x'.($i*28+5).'&cht=bhs&chco=ff9900,ffebcc&chd=t:';
+		echo '<img src="http://chart.apis.google.com/chart?chs=600x'.($i * 28+5).'&cht=bhs&chco=ff9900,ffebcc&chd=t:';
 		echo $chartData.'|'.$chartDataW.'&chxt=y&chxl=0:|'.$chartLabel.'&chds=0,'.current($banners).'" alt=""/>';
 		echo '</div>';
 
@@ -380,9 +382,11 @@ changeVisibility();
 		while ($b = current ($bannersActive)) {
 			$urlAdmin = $this->url(0).'/admins/'.$admins[key($bannersActive)];
 			echo '<tr><td><a href="'.$urlAdmin.'">'.key($bannersActive).'</td></a><td>'.$b.'</td></tr>';
-			$chartData = $chartData.$b.',';
-			$chartLabel = str_replace('"', '\'', key($bannersActive)).'|'.$chartLabel;
-			$i++;
+			if ($i < 10) {
+				$chartData = $chartData.$b.',';
+				$chartLabel = str_replace('"', '\'', key($bannersActive)).'|'.$chartLabel;
+				$i++;
+			}
 			next ($bannersActive);
 		}
 		echo '<td>ŚREDNIO:</td><td>'.round(($activeBanSum/$i),1).'</td>';
