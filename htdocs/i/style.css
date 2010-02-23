@@ -69,7 +69,7 @@ img { border-style: none; }
 #main .displayOnHover a:hover { text-decoration: underline; color: red; }
 #main .displayOnHover span:hover { color: black; }
 #main .nav { display: block; }
-#main .ban { background: #ff6c6c; }
+#main .ban { background: #ffa766; }
 #main .warning { background: #fff4ac; }
 #main .ips { font-size: 0.8em; }
 #main .ips table { width: 100%; border-collapse: collapse; margin-top: 2em; }

@@ -37,14 +37,11 @@ extends UFtpl_Common {
 		$url = $this->url(0);
 		echo '<h3>Wszystkich kar i ostrzeżeń: '. count($d) .'</h3>';
 
-		foreach ($d as $c) {	
-			if ($c['active']) {
-				if (UFbean_SruAdmin_Penalty::TYPE_WARNING == $c['typeId']) {
-					echo '<li class="warning">';
-				} else {
-					echo '<li class="ban">';
-				}
-				echo '<b>';
+		foreach ($d as $c) {
+			if (UFbean_SruAdmin_Penalty::TYPE_WARNING == $c['typeId'] && $c['endAt'] > time()) {
+				echo '<li class="warning"><b>';
+			} else if (UFbean_SruAdmin_Penalty::TYPE_WARNING != $c['typeId'] && $c['active']) {
+				echo '<li class="ban"><b>';
 			} else {
 				echo '<li>';
 			}
@@ -52,7 +49,8 @@ extends UFtpl_Common {
 			echo '<a href="'.$url.'/penalties/'.$c['id'].'">';
 			echo ($this->_escape($c['templateTitle']) != null ? 'za: '.$this->_escape($c['templateTitle']) : $this->_escape($this->penaltyTypes[$c['typeId']]).' (nieznany szablon)');
 			echo'</a>';
-			if ($c['active']) {
+			if ((UFbean_SruAdmin_Penalty::TYPE_WARNING == $c['typeId'] && $c['endAt'] > time())
+				||(UFbean_SruAdmin_Penalty::TYPE_WARNING != $c['typeId'] && $c['active'])) {
 				echo '</b>';
 			}
 			echo '</li>';
@@ -82,12 +80,10 @@ extends UFtpl_Common {
 		$url = $this->url(0);
 
 		foreach ($d as $c) {
-			if ($c['active']) {
-				if (UFbean_SruAdmin_Penalty::TYPE_WARNING == $c['typeId']) {
-					echo '<li class="warning">';
-				} else {
-					echo '<li class="ban">';
-				}
+			if (UFbean_SruAdmin_Penalty::TYPE_WARNING == $c['typeId'] && $c['endAt'] > time()) {
+				echo '<li class="warning">';
+			} else if (UFbean_SruAdmin_Penalty::TYPE_WARNING != $c['typeId'] && $c['active']) {
+				echo '<li class="ban">';
 			} else {
 				echo '<li>';
 			}
@@ -107,12 +103,10 @@ extends UFtpl_Common {
 		$url = $this->url(0);
 
 		foreach ($d as $c) {	
-			if ($c['active']) {
-				if (UFbean_SruAdmin_Penalty::TYPE_WARNING == $c['typeId']) {
-					echo '<li class="warning">';
-				} else {
-					echo '<li class="ban">';
-				}
+			if (UFbean_SruAdmin_Penalty::TYPE_WARNING == $c['typeId'] && $c['endAt'] > time()) {
+				echo '<li class="warning">';
+			} else if (UFbean_SruAdmin_Penalty::TYPE_WARNING != $c['typeId'] && $c['active']) {
+				echo '<li class="ban">';
 			} else {
 				echo '<li>';
 			}
