@@ -22,7 +22,6 @@ extends UFact {
 			$password = substr($password, 0, 8);
 			$bean->password = $bean->generatePassword($bean->login, $password);
 
-
 			// sprawdzenie w bazie osiedla
 			$walet = UFra::factory('UFbean_Sru_User');
 			$conf = UFra::shared('UFconf_Sru');

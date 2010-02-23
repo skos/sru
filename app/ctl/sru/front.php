@@ -108,7 +108,7 @@ extends UFctl {
 				}
 			case 'user/add':
 				if ($msg->get('userAdd/ok')) {
-					return 'Sru_Login';
+					return 'Sru_UserAdded';
 				} elseif ($acl->sru('user', 'add')) {
 					return 'Sru_UserAdd';
 				} else {

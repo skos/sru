@@ -15,9 +15,7 @@ extends UFtpl_Common {
 		echo $form->_start();
 		echo $form->_fieldset('Zaloguj się');
 
-		if ($this->_srv->get('msg')->get('userAdd/ok')) {
-			echo $this->OK('Konto zostało założone. Hasło otrzymasz wkrótce na maila.');
-		} elseif ($this->_srv->get('msg')->get('userConfirm/errors/token/invalid')) {
+		if ($this->_srv->get('msg')->get('userConfirm/errors/token/invalid')) {
 			echo $this->ERR('Token w linku jest nieprawidłowy.');
 		} elseif ($this->_srv->get('msg')->get('userLogin/errors')) {
 			echo $this->ERR('Nieprawidłowy login lub hasło. Czy aktywowałeś swoje konto u administratora lub linkiem z maila?');
@@ -38,14 +36,22 @@ extends UFtpl_Common {
 
 		echo $form->_start();
 		echo $form->_fieldset('Załóż konto');
-		if ($this->_srv->get('msg')->get('userAdd/ok')) {
-			echo $this->OK('Konto zostało założone');
-		}
 		echo $d['user']->write('formAdd', $d['dormitories'], $d['faculties'], $d['admin']);
 		echo '<br/><b>Założenie konta oznacza akceptację <a href="http://skos.ds.pg.gda.pl/skos/wiki/regulamin">Regulaminu SKOS PG</a>.</b><br/><br/>';
 		echo $form->_submit('Załóż');
 		echo $form->_end();
 		echo $form->_end(true);
+	}
+
+	public function titleUserAdded() {
+		echo 'Założono konto';
+	}
+
+	public function userAdded(array $d) {
+
+		if ($this->_srv->get('msg')->get('userAdd/ok')) {
+			echo $this->OK('Konto zostało założone. Hasło otrzymasz wkrótce na maila.<br /><br /><a href="'.$this->url(0).'">Kliknij tutaj, aby się zalogować</a>');
+		}
 	}
 
 	public function userAddMailTitle(array $d) {
@@ -347,7 +353,7 @@ extends UFtpl_Common {
 		$form = UFra::factory('UFlib_Form', 'sendPassword');
 
 		echo $form->_start($this->url(0));
-		echo $form->_fieldset('Zmień hasło');
+		echo $form->_fieldset('Nie pamiętam hasła');
 
 		if ($this->_isOK('sendPassword')) {
 			echo $this->OK('Kliknij link, który został wysłany na maila.');
