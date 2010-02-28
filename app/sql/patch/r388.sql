@@ -11,7 +11,7 @@ $BODY$DECLARE
 	computer_ban computers_bans%ROWTYPE;
 
 BEGIN
-IF NEW.bans > 0 THEN
+IF NEW.banned = true THEN
 	RETURN NEW;
 END IF;
 IF ('INSERT' = TG_OP OR ('UPDATE' = TG_OP AND NEW.active = true)) THEN
