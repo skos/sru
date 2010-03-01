@@ -206,7 +206,7 @@ changeVisibility();
 			$computers->write('computerList');
 		}
 
-		$amnestyDays = (!isset($_POST['penaltyEdit']) || $_POST['penaltyEdit']['after'] == '') ? (($d['amnestyAfter'] - $d['startAt']) / 24 / 3600) : (intval($_POST['penaltyEdit']['after']));
+		$amnestyDays = (!isset($_POST['penaltyEdit']['after'])) ? (($d['amnestyAfter'] - $d['startAt']) / 24 / 3600) : (intval($_POST['penaltyEdit']['after']));
 		$urlPenalty = $url.'/penalties/'.$d['id'];
 		echo '<p><em>Szablon:</em> ';
 		if (isset($templateTitle)) {

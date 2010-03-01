@@ -55,6 +55,7 @@ extends UFact {
 						throw UFra::factory('UFex_Dao_DataNotValid', 'Modification before amnesty date', 0, E_WARNING, array('endAt' => 'tooShort'));
 					}
 				}
+				$tplTitle = $bean->templateTitle;
 			}
 			if ($post['newComment'] == '' || $post['newComment'] == $bean->comment) {
 				throw UFra::factory('UFex_Dao_DataNotValid', 'Modification comment cannot be null', 0, E_WARNING, array('newComment' => 'notNull'));
