@@ -132,6 +132,15 @@ extends UFdao {
 
 		$query = $this->prepareSelect($mapping);
 		$query->where($mapping->active, true);
+
+		return $this->doSelect($query);
+	}
+
+	public function listAllForMigration() {
+		$mapping = $this->mapping('migration');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->active, true);
 		$query->order($mapping->dormitoryId);
 
 		return $this->doSelect($query);

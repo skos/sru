@@ -23,7 +23,14 @@ extends UFtpl_Common {
 					echo '<h4>'.$u['dormitoryName'].'</h4><ul>';
 					$lastDorm = $u['dormitoryName'];
 				}
-				echo '<li><a href="'.$url.'/users/'.$u['id'].'">'.$u['name'].' "'.$u['login'].'" '.$u['surname'].'</a></li>';
+				if ($u['wrongDataBans'] > 0) {
+					echo '<li class="ban">';
+				} else if ($u['wrongDataWarnings'] > 0) {
+					echo '<li class="warning">';
+				} else {
+					echo '<li>';
+				}
+				echo '<a href="'.$url.'/users/'.$u['id'].'">'.$u['name'].' "'.$u['login'].'" '.$u['surname'].'</a></li>';
 			}
 		}
 		echo '</ul>';
@@ -47,7 +54,14 @@ extends UFtpl_Common {
 					$waletLoc[1]--;
 				}
 				$waletLocDisp = $waletLoc[0].' DS'.$waletLoc[1];
-				echo '<li><a href="'.$url.'/users/'.$u['id'].'">'.$u['name'].' "'.$u['login'].'" '.$u['surname'].' ('.$currLocDisp.' / '.$waletLocDisp.')</a></li>';
+				if ($u['wrongDataBans'] > 0) {
+					echo '<li class="ban">';
+				} else if ($u['wrongDataWarnings'] > 0) {
+					echo '<li class="warning">';
+				} else {
+					echo '<li>';
+				}
+				echo '<a href="'.$url.'/users/'.$u['id'].'">'.$u['name'].' "'.$u['login'].'" '.$u['surname'].' ('.$currLocDisp.' / '.$waletLocDisp.')</a></li>';
 			}
 		}
 		echo '</ul>';

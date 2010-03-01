@@ -1080,7 +1080,7 @@ extends UFbox {
 			$d['migration'] = $bean;
 
 			$users = UFra::factory('UFbean_Sru_UserList');
-			$users->listAllActive();
+			$users->listAllForMigration();
 			$d['users'] = $users;
 		
 			return $this->render(__FUNCTION__, $d);
