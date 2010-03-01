@@ -40,8 +40,7 @@ extends UFtpl_Common {
 
 	public function menuAdmin() {
 		echo '<ul id="nav">';
-		echo '<li><a href="'.UFURL_BASE.'/admin/">Szukaj</a></li>';
-		echo '<li><a href="'.UFURL_BASE.'/admin/migration/">Użytkownicy</a></li>';
+		echo '<li><a href="'.UFURL_BASE.'/admin/">Użytkownicy</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/penalties/">Kary</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/dormitories/">Akademiki</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/stats/">Statystyki</a></li>';
@@ -216,6 +215,8 @@ extends UFtpl_Common {
 
 	public function userSearch(array $d) {
 		$form = UFra::factory('UFlib_Form');
+
+		echo '<h2>Szukaj | <a href="'.$this->url(0).'/migration">Migracja</a></h2>';
 
 		echo '<div class="userSearch">';
 		echo $form->_start($this->url(0).'/users/search');
@@ -773,8 +774,7 @@ extends UFtpl_Common {
 	}
 	
 	public function migration(array $d) {
-		//echo '<h2>Migracja | <a href="'.$this->url(0).'/services">Usługi</a></h2>';
-		echo '<h2>Migracja</h2>';
+		echo '<h2><a href="'.$this->url(0).'/">Szukaj</a> | Migracja</h2>';
 		$d['migration']->write('migration', $d['users']);
 	}
 	
