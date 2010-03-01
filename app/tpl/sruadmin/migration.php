@@ -10,7 +10,11 @@ extends UFtpl_Common {
 		$hashes = array();
 		$conf = UFra::shared('UFconf_Sru');
 		foreach ($d as $m) {
-			$hashes[$m['hash']] = $m['room'].' '.$m['dorm'];
+			if (array_key_exists($m['hash'], $hashes)) {
+				$hashes[$m['hash']] = $hashes[$m['hash']]."||".$m['room'].' '.$m['dorm'];
+			} else {
+				$hashes[$m['hash']] = $m['room'].' '.$m['dorm'];
+			}
 		}
 		echo '<h3>Niezgodności w imieniu lub nazwisku</h3>';
 		$lastDorm = '';
@@ -40,7 +44,19 @@ extends UFtpl_Common {
 		foreach ($users as $u) {
 			$hash = md5($u['surname'].' '.$u['name']);
 			$currLoc = strtoupper($u['locationAlias']).' '.$u['dormitoryId'];
-			if (array_key_exists($hash, $hashes) && $hashes[$hash] != $currLoc) {
+			if (array_key_exists($hash, $hashes)) {
+				$waletLocs = explode("||", $hashes[$hash]);
+				$dataOk = false;
+				foreach ($waletLocs as $wl) {
+					$waletLoc = explode(" ", $wl);
+					if ($wl == $currLoc) {
+						$dataOk = true;
+						break;
+					}
+				}
+				if ($dataOk) {
+					continue;
+				}
 				if ($lastDorm != $u['dormitoryName']) {
 					if ($lastDorm != '') {
 						echo '</ul>';
@@ -49,9 +65,13 @@ extends UFtpl_Common {
 					$lastDorm = $u['dormitoryName'];
 				}
 				$currLocDisp = strtoupper($u['locationAlias']).' '.strtoupper($u['dormitoryAlias']);
-				$waletLoc = explode(" ", $hashes[$hash]);
 				if ($waletLoc[1] != null && $waletLoc[1] != "") {
-					$waletLoc[1]--;
+					if ($waletLoc[1] == 6) {
+						$waletLoc[1] = '5Ł';
+					}
+					if ($waletLoc[1] > 6) {
+						$waletLoc[1]--;
+					}
 				}
 				$waletLocDisp = $waletLoc[0].' DS'.$waletLoc[1];
 				if ($u['wrongDataBans'] > 0) {
