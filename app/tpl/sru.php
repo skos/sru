@@ -50,7 +50,7 @@ extends UFtpl_Common {
 	public function userAdded(array $d) {
 
 		if ($this->_srv->get('msg')->get('userAdd/ok')) {
-			echo $this->OK('Konto zostało założone. Hasło otrzymasz wkrótce na maila.<br /><br /><a href="'.$this->url(0).'">Kliknij tutaj, aby się zalogować</a>');
+			echo $this->OK('Konto zostało założone. Hasło otrzymasz wkrótce na maila. <b>Przypominamy</b>, że aby móc zalogować się, trzeba aktywować konto u administratora.<br /><br /><a href="'.$this->url(0).'">Kliknij tutaj, aby się zalogować</a>');
 		}
 	}
 
