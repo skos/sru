@@ -24,9 +24,9 @@ img { border-style: none; }
 .adminBar fieldset { border-style: none; }
 
 #main h1, #main h2, #main h3, #main h4, #main h5, #main h6 { color: #666; font-weight: normal; font-family: "Georgia", serif; margin-top: 1em; margin-bottom: 1em; text-align: center; }
-#main h2 { margin-top: 0.8em; margin-bottom: 0.8em; }
-#main h3 { margin-top: 0.5em; margin-bottom: 0.5em; }
-#main h4 { margin-top: 0.3em; margin-bottom: 0.3em; }
+#main h2 { margin-top: 0.8em; margin-bottom: 0.8em; background: #bee86c; }
+#main h3 { margin-top: 0.5em; margin-bottom: 0.5em; background: #ceea98; }
+#main h4 { margin-top: 0.3em; margin-bottom: 0.3em; background: #eaffc1; }
 #main h5 { margin-top: 0.1em; margin-bottom: 0.1em; }
 #main h6 { margin-top: 0; margin-bottom: 0; }
 #main ul.admin { margin-left: 2em; }
@@ -84,6 +84,5 @@ img { border-style: none; }
 #main .ips td .admin { display: block; background-color: #ccf; font-weight: normal; color: #003d9a;}
 #main .ips td .banned { display: block; background-color: #fc0; font-weight: normal; color: #003d9a;}
 #main .ips td .banned_wrong_dorm { display: block; background-color: #666; font-weight: normal; color: #003d9a;}
-#main .stats h3 {background: #dfffa2;}
 
 #foot { text-align: center; font-size: 0.5em; margin-top: 2em; clear: both; }
