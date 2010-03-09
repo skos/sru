@@ -8,21 +8,28 @@ extends UFtpl_Common {
 	public function listRooms(array $d) {
 		$url = $this->url(0).'/dormitories/';
 		
-		$lastFlor = '-';	
+		$lastFlor = '-';
 		
-		foreach ($d as $c)
-		{	
-			if($lastFlor != $c['alias'][0])
-			{
+		$dorm = isset($d[0]['dormitoryAlias']) ? $d[0]['dormitoryAlias'] : '';
+		$aliases = array();
+		$i = 0;
+		foreach ($d as $c) {
+			$aliases[$i] = $c['alias'];
+			$i++;
+		}
+		sort($aliases, SORT_NUMERIC);
+
+		foreach ($aliases as $c) {
+			if($lastFlor != $c[0]) {
 				if($lastFlor != '-') {
 					echo '</ul><ul>';
 				} else {
 					echo '<ul class="first">';
-				}				
-				$lastFlor = $c['alias'][0];	
+				}
+				$lastFlor = $c[0];
 				
 			}
-			echo '<li><a href="'.$url.$c['dormitoryAlias'].'/'.$c['alias'].'">'.$c['alias'].'</a></li>';
+			echo '<li><a href="'.$url.$dorm.'/'.$c.'">'.$c.'</a></li>';
 		}
 		echo '</ul>';
 	}
