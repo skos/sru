@@ -15,7 +15,11 @@ extends UFact {
 			$bean->fillFromPost(self::PREFIX);
 			$bean->active = false;
 			$bean->gg = '';
+			$post = $this->_srv->get('req')->post->{self::PREFIX};
 
+			if (isset($post['facultyId']) && $post['facultyId'] == '0' && isset($post['studyYearId']) && $post['studyYearId'] != '0') {
+				throw UFra::factory('UFex_Dao_DataNotValid', 'Data "studyYearId" differ from "N/A"', 0, E_WARNING, array('studyYearId' => 'noFaculty'));
+			}
 			// wygenerowanie hasla
 			$password = md5($bean->login.NOW);
 			$password = base_convert($password, 16, 35);

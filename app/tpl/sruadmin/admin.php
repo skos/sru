@@ -129,7 +129,10 @@ extends UFtpl_Common {
 
 		$tmp = array();
 		foreach ($dormitories as $dorm) {
-			$tmp[$dorm['id']] = $dorm['name'];
+			$temp = explode("ds", $dorm['alias']);
+			if($temp[1] == '5l')
+				$temp[1] = '5Ł';
+			$tmp[$dorm['id']] = $temp[1] . ' ' . $dorm['name'];
 		}
 		$tmp['0'] = 'N/D';
 		echo $form->dormitoryId('Akademik', array(
@@ -170,7 +173,10 @@ extends UFtpl_Common {
 
 		$tmp = array();
 		foreach ($dormitories as $dorm) {
-			$tmp[$dorm['id']] = $dorm['name'];
+			$temp = explode("ds", $dorm['alias']);
+			if($temp[1] == '5l')
+				$temp[1] = '5Ł';
+			$tmp[$dorm['id']] = $temp[1] . ' ' . $dorm['name'];
 		}
 		$tmp[''] = 'N/D';
 		echo $form->dormitoryId('Akademik', array(

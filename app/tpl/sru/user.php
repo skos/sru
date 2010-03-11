@@ -44,6 +44,7 @@ extends UFtpl_Common {
 		'locationAlias/noDormitory' => 'Wybierz akademik',
 		'locationAlias/noRoom' => 'Pokój nie istnieje',
 		'password3/invalid' => 'Podałeś nieprawidłowe hasło',
+		'studyYearId/noFaculty' => 'Nieokreślony wydział',
 	);
 
 	public function formLogin(array $d) {
@@ -92,7 +93,10 @@ extends UFtpl_Common {
 		));
 		$tmp = array();
 		foreach ($dormitories as $dorm) {
-			$tmp[$dorm['id']] = $dorm['name'];
+			$temp = explode("ds", $dorm['alias']);
+			if($temp[1] == '5l')
+				$temp[1] = '5Ł';
+			$tmp[$dorm['id']] = $temp[1] . ' ' . $dorm['name'];
 		}
 		echo $form->dormitory('Akademik', array(
 			'type' => $form->SELECT,
@@ -135,7 +139,10 @@ extends UFtpl_Common {
 		));
 		$tmp = array();
 		foreach ($dormitories as $dorm) {
-			$tmp[$dorm['id']] = $dorm['name'];
+			$temp = explode("ds", $dorm['alias']);
+			if($temp[1] == '5l')
+				$temp[1] = '5Ł';
+			$tmp[$dorm['id']] = $temp[1] . ' ' . $dorm['name'];
 		}
 		echo $form->dormitory('Akademik', array(
 			'type' => $form->SELECT,
@@ -167,7 +174,10 @@ extends UFtpl_Common {
 
 		$tmp = array();
 		foreach ($dorms as $dorm) {
-			$tmp[$dorm['alias']] = $dorm['name'];
+			$temp = explode("ds", $dorm['alias']);
+			if($temp[1] == '5l')
+				$temp[1] = '5Ł';
+			$tmp[$dorm['alias']] = $temp[1] . ' ' . $dorm['name'];
 		}
 		echo $form->dormitory('Akademik', array(
 			'type' => $form->SELECT,
@@ -301,7 +311,10 @@ changeVisibility();
 		));
 		$tmp = array();
 		foreach ($dormitories as $dorm) {
-			$tmp[$dorm['id']] = $dorm['name'];
+			$temp = explode("ds", $dorm['alias']);
+			if($temp[1] == '5l')
+				$temp[1] = '5Ł';
+			$tmp[$dorm['id']] = $temp[1] . ' ' . $dorm['name'];
 		}
 		echo $form->dormitory('Akademik', array(
 			'type' => $form->SELECT,
