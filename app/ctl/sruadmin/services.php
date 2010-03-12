@@ -11,7 +11,22 @@ extends UFctl {
 		$get = $req->get;
 		$acl = $this->_srv->get('acl');
 		
-		$get->view = 'services';
+		$segCount = $req->segmentsCount();
+
+		// wyzsze segmenty sprawdzane sa w front'ie
+		if (1 == $segCount) {
+			$get->view = 'services/main';
+		} else {
+			switch ($req->segment(2)) {
+				case 'list':
+					$get->view = 'services/list';
+					break;
+				default:
+					$get->view = 'error404';
+					break;
+			}
+		}
+
 	}
 	protected function chooseAction($action = null) {
 		$req = $this->_srv->get('req');
@@ -23,8 +38,8 @@ extends UFctl {
 			$act = 'Admin_Logout';
 		} elseif ($post->is('adminLogin') && $acl->sruAdmin('admin', 'login')) {
 			$act = 'Admin_Login';
-		} elseif ('services' == $get->view && $post->is('serviceEdit')) {
-			$act = 'Service_Edit';		
+		} elseif (('services/main' == $get->view || 'services/list' == $get->view) && $post->is('serviceEdit')) {
+			$act = 'Service_Edit';
 		}
 		
 		if (isset($act)) {
@@ -46,8 +61,10 @@ extends UFctl {
 		
 		switch ($get->view) 
 		{
-			case 'services':
+			case 'services/main':
 				return 'SruAdmin_Services';
+			case 'services/list':
+				return 'SruAdmin_ServicesList';
 			default:
 				return 'Sru_Error404';
 		}

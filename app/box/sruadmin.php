@@ -1018,14 +1018,27 @@ extends UFbox {
 		}
 	}
 
-	public function servicesEdit() 
-	{
-		
+	public function servicesEdit() {
 		$d[''] = null;
+		try {
+			$allServices = UFra::factory('UFbean_Sru_ServiceList');	
+			$allServices->listAllServices();
+			$d['allServices'] = $allServices;
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render('userServicesNotFound');
+		}
+
+		$serviceType = null;
+		if ($this->_srv->get('req')->post->is('serviceSelect')) {
+			$get = $this->_srv->get('req')->post->__get('serviceSelect');
+			if (isset($get['serviceId']) && $get['serviceId'] > 0) {
+				$serviceType = $get['serviceId'];
+			}
+		}
 		try 
 		{		
 			$bean = UFra::factory('UFbean_SruAdmin_UserServiceList');	
-			$bean->listToActivate();
+			$bean->listToActivate($serviceType);
 			$d['toActivate'] = $bean;
 		}
 		catch (UFex_Dao_NotFound $e) {}
@@ -1033,15 +1046,36 @@ extends UFbox {
 		try 
 		{		
 			$bean = UFra::factory('UFbean_SruAdmin_UserServiceList');	
-			$bean->listToDeactivate();
+			$bean->listToDeactivate($serviceType);
 			$d['toDeactivate'] = $bean;
 		}
 		catch (UFex_Dao_NotFound $e) {}
 
+		return $this->render(__FUNCTION__, $d);
+	}
+
+	public function servicesList() {
+		$d[''] = null;
+		try {
+			$allServices = UFra::factory('UFbean_Sru_ServiceList');	
+			$allServices->listAllServices();
+			$d['allServices'] = $allServices;
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render('userServicesNotFound');
+		}
+
+		$serviceType = null;
+		if ($this->_srv->get('req')->post->is('serviceSelect')) {
+			$get = $this->_srv->get('req')->post->__get('serviceSelect');
+			if (isset($get['serviceId']) && $get['serviceId'] > 0) {
+				$serviceType = $get['serviceId'];
+			}
+		}
+
 		try 
 		{
 			$bean = UFra::factory('UFbean_SruAdmin_UserServiceList');
-			$bean->listActive();
+			$bean->listActive($serviceType);
 			$d['active'] = $bean;
 		}
 		catch (UFex_Dao_NotFound $e) {}

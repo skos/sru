@@ -852,7 +852,23 @@ extends UFtpl_Common {
 	public function servicesEdit(array $d) {
 		$form = UFra::factory('UFlib_Form');
 		echo '<h2><a href="'.$this->url(0).'/">Szukaj</a> | <a href="'.$this->url(0).'/migration">Migracja</a> | Usługi</h2>';
+		echo '<h3>Zadania &bull; <a href="'.$this->url(0).'/services/list">Aktywne</a></h3>';
 		
+		$form = UFra::factory('UFlib_Form', 'serviceSelect', $d);
+		echo $form->_start();
+		echo $form->_fieldset();
+		$tmp = array();
+		$tmp['0'] = 'Wszystkie';
+		foreach ($d['allServices'] as $srv) {
+			$tmp[$srv['id']] = $srv['name'];
+		}
+		echo $form->serviceId('Wyświetl usługi: ', array(
+			'type' => $form->SELECT,
+			'labels' => $form->_labelize($tmp),
+		));
+		echo $form->_submit('Wyświetl');
+		echo $form->_end();
+
 		if ($this->_srv->get('msg')->get('serviceEdit/ok')) {
 			echo $this->OK('Zmiany zostały zapisane');
 		}
@@ -872,6 +888,31 @@ extends UFtpl_Common {
 			echo $d['toDeactivate']->write('formToDeactivate');
 		}
 		echo $form->_end(true);
+	}
+
+	public function servicesList(array $d) {
+		$form = UFra::factory('UFlib_Form');
+		echo '<h2><a href="'.$this->url(0).'/">Szukaj</a> | <a href="'.$this->url(0).'/migration">Migracja</a> | Usługi</h2>';
+		echo '<h3><a href="'.$this->url(0).'/services">Zadania</a> &bull; Aktywne</h3>';
+		
+		$form = UFra::factory('UFlib_Form', 'serviceSelect', $d);
+		echo $form->_start();
+		echo $form->_fieldset();
+		$tmp = array();
+		$tmp['0'] = 'Wszystkie';
+		foreach ($d['allServices'] as $srv) {
+			$tmp[$srv['id']] = $srv['name'];
+		}
+		echo $form->serviceId('Wyświetl usługi: ', array(
+			'type' => $form->SELECT,
+			'labels' => $form->_labelize($tmp),
+		));
+		echo $form->_submit('Wyświetl');
+		echo $form->_end();
+
+		if ($this->_srv->get('msg')->get('serviceEdit/ok')) {
+			echo $this->OK('Zmiany zostały zapisane');
+		}
 
 		echo $form->_start();
 		if (isset($d['active']))

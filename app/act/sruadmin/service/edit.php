@@ -31,17 +31,17 @@ extends UFact {
 				$userServId =  key($post['activateFull']);
 				$bean->getByPK((int)$userServId);
 				$bean->state = true;
-			} else {
+			} else if (isset($post['deactivateFull'])) {
 				$userServId =  key($post['deactivateFull']);
 				$bean->getByPK((int)$userServId);
 				$bean->state = false;
 			}
 			
-			$bean->modifiedById = $this->_srv->get('session')->authAdmin;
-			$bean->save();
-			$this->markOk(self::PREFIX);
-			$this->postDel(self::PREFIX);
-			$this->commit();
+ 			$bean->modifiedById = $this->_srv->get('session')->authAdmin;
+ 			$bean->save();
+ 			$this->markOk(self::PREFIX);
+ 			$this->postDel(self::PREFIX);
+ 			$this->commit();
 
 		} catch (UFex_Dao_DataNotValid $e) {
 			$this->rollback();
