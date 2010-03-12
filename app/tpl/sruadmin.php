@@ -216,7 +216,7 @@ extends UFtpl_Common {
 	public function userSearch(array $d) {
 		$form = UFra::factory('UFlib_Form');
 
-		echo '<h2>Szukaj | <a href="'.$this->url(0).'/migration">Migracja</a></h2>';
+		echo '<h2>Szukaj | <a href="'.$this->url(0).'/migration">Migracja</a> | <a href="'.$this->url(0).'/services">Usługi</a></h2>';
 
 		echo '<div class="userSearch">';
 		echo $form->_start($this->url(0).'/users/search');
@@ -268,7 +268,7 @@ extends UFtpl_Common {
 		
 		if ($this->_srv->get('msg')->get('computerAdd/ok')) {
 			echo $this->OK('Komputer został dodany');
-		}		
+		}
 		echo $d['computers']->write('listAdmin');
 		echo '</ul>';
 		$acl = $this->_srv->get('acl');
@@ -284,7 +284,20 @@ extends UFtpl_Common {
 		echo $d['computers']->write('listAdmin');
 		echo '</ul>';
 		
-	}	
+	}
+
+	public function userServicesEdit(array $d) {
+		$form = UFra::factory('UFlib_Form');
+		echo '<h2>Usługi Użytkownika</h2>';
+		echo $form->_start();
+
+		if ($this->_srv->get('msg')->get('serviceEdit/ok')) {
+			echo $this->OK('Zmiany zostały zapisane');
+		}
+
+		echo $d['allServices']->write('formEdit', $d['userServices']);
+		echo $form->_end(true);
+	}
 
 	public function userComputersNotFound(array $d) {
 		$url = $this->url(0).'/users/'.$d['user']->id.'/computers/';
@@ -774,7 +787,7 @@ extends UFtpl_Common {
 	}
 	
 	public function migration(array $d) {
-		echo '<h2><a href="'.$this->url(0).'/">Szukaj</a> | Migracja</h2>';
+		echo '<h2><a href="'.$this->url(0).'/">Szukaj</a> | Migracja | <a href="'.$this->url(0).'/services">Usługi</a></h2>';
 		$d['migration']->write('migration', $d['users']);
 	}
 	
@@ -838,7 +851,7 @@ extends UFtpl_Common {
 
 	public function servicesEdit(array $d) {
 		$form = UFra::factory('UFlib_Form');
-		echo '<h2><a href="'.$this->url(0).'/migration">Migracja</a> | Usługi</h2>';
+		echo '<h2><a href="'.$this->url(0).'/">Szukaj</a> | <a href="'.$this->url(0).'/migration">Migracja</a> | Usługi</h2>';
 		
 		if ($this->_srv->get('msg')->get('serviceEdit/ok')) {
 			echo $this->OK('Zmiany zostały zapisane');

@@ -301,7 +301,7 @@ extends UFbox {
 			$bean->search($tmp);
 			if (1 == count($bean)) {
 				$get->userId = $bean[0]['id'];
-				return $this->user().$this->userComputers().$this->userInactiveComputers();
+				return $this->user().$this->userComputers().$this->userInactiveComputers().$this->userServicesEdit();
 			}
 
 			$d['users'] = $bean;
@@ -1047,6 +1047,33 @@ extends UFbox {
 		catch (UFex_Dao_NotFound $e) {}
 		
 		return $this->render(__FUNCTION__, $d);
+	}
+
+	public function userServicesEdit() {
+		try {
+			$user = $this->_getUserFromGet();
+			
+			try 
+			{
+				$bean = UFra::factory('UFbean_Sru_UserServiceList');	
+				$bean->listAllByUserId($user->id);
+				$d['userServices'] = $bean;
+			}
+			catch (UFex_Dao_NotFound $e) 
+			{
+				$d['userServices'] = null;
+			}
+
+			$bean = UFra::factory('UFbean_Sru_ServiceList');	
+			$bean->listAllServices();
+			$d['allServices'] = $bean;
+			
+			return $this->render(__FUNCTION__, $d);
+		} 
+		catch (UFex_Dao_NotFound $e) 
+		{
+			return $this->render('userServicesNotFound');
+		}
 	}
 
 	public function ips() {

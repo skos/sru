@@ -212,8 +212,7 @@ extends UFbox {
 	}
 
 	public function userServicesEdit() {
-		try 
-		{
+		try {
 			$user = UFra::factory('UFbean_Sru_User');
 			$user->getFromSession();
 			

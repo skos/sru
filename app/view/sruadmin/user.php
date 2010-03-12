@@ -12,5 +12,6 @@ extends UFview_SruAdmin {
 		$this->append('body', $box->user());
 		$this->append('body', $box->userComputers());
 		$this->append('body', $box->userInactiveComputers());
+		$this->append('body', $box->userServicesEdit());
 	}
 }

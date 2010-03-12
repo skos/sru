@@ -11,14 +11,28 @@ extends UFact {
 		try {
 			$this->begin();
 			$bean = UFra::factory('UFbean_SruAdmin_UserService');
+
 			$post = $this->_srv->get('req')->post->{self::PREFIX};
 
 			if (isset($post['activate'])) {
-				$userServId =  key($post['activate']);
+				$user = UFra::factory('UFbean_Sru_User');
+				$user->getByPK($this->_srv->get('req')->get->userId);
+				$servId =  key($post['activate']);
+				$bean->state = false;
+				$bean->servType = $servId;
+				$bean->userId=$user->id;
+			} else if (isset($post['deactivate'])) {
+				$user = UFra::factory('UFbean_Sru_User');
+				$user->getByPK($this->_srv->get('req')->get->userId);
+				$userServId =  key($post['deactivate']);
+				$bean->getByPK((int)$userServId);
+				$bean->state = null;
+			} else if (isset($post['activateFull'])) {
+				$userServId =  key($post['activateFull']);
 				$bean->getByPK((int)$userServId);
 				$bean->state = true;
 			} else {
-				$userServId =  key($post['deactivate']);
+				$userServId =  key($post['deactivateFull']);
 				$bean->getByPK((int)$userServId);
 				$bean->state = false;
 			}

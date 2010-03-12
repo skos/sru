@@ -11,6 +11,7 @@ extends UFdao {
 		$query = $this->prepareSelect($mapping);
 		$query->where($mapping->state, false);
 		$query->order($mapping->servName,  $query->ASC);
+		$query->order($mapping->userLogin,  $query->ASC);
 	
 		return $this->doSelect($query);
 	}
@@ -21,6 +22,7 @@ extends UFdao {
 		$query = $this->prepareSelect($mapping);
 		$query->where($mapping->state, null);
 		$query->order($mapping->servName,  $query->ASC);
+		$query->order($mapping->userLogin,  $query->ASC);
 	
 		return $this->doSelect($query);
 	}
@@ -31,6 +33,7 @@ extends UFdao {
 		$query = $this->prepareSelect($mapping);
 		$query->where($mapping->state, true);
 		$query->order($mapping->servName,  $query->ASC);
+		$query->order($mapping->userLogin,  $query->ASC);
 	
 		return $this->doSelect($query);
 	}
