@@ -37,7 +37,7 @@ extends UFtpl_Common {
 			echo $c['name'];
 
 			echo '</td><td>'.$active.'</td><td>';
-			if ($toActivate === true || $toActivate === false) echo '<a href="#" onclick="return changeVisibility('.$c['id'].');">Zmień stan</a>';
+			if ($toActivate === true || $toActivate === false) echo '<a href="#" onclick="return changeConfirmationVisibility('.$c['id'].');">Zmień stan</a>';
 			echo '</td></tr>';
 			echo '<tr><td colspan="3">';
 			echo '<p class="services" id="serviceMore'.$c['id'].'" style="display: none; text-align: center;">';
@@ -48,7 +48,7 @@ extends UFtpl_Common {
 		echo '</table>';
 		echo $form->_end();
 ?><script type="text/javascript">
-function changeVisibility(id) {
+function changeConfirmationVisibility(id) {
 	var tr = document.getElementById('serviceMore' + id);
 	if (tr.style.display == 'none') {
 		tr.style.display = 'block';
