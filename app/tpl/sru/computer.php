@@ -11,6 +11,14 @@ extends UFtpl_Common {
 		3 => 'Administracja',
 		4 => 'Serwer',
 	);
+
+	protected $computerSearchTypes = array(
+		5 => '',
+		1 => 'Student',
+		2 => 'Organizacja',
+		3 => 'Administracja',
+		4 => 'Serwer',
+	);
 	
 	protected $errors = array(
 		'host' => 'Nieprawidłowa nazwa',
@@ -275,6 +283,7 @@ if (input) {
 		$d = $searched + $d;
 		$form = UFra::factory('UFlib_Form', 'computerSearch', $d, $this->errors);
 
+		echo $form->typeId('Typ', array('type' => $form->SELECT,'labels' => $form->_labelize($this->computerSearchTypes),));
 		echo $form->host('Host');
 		echo $form->ip('IP (153.19.)');
 		echo $form->mac('MAC');

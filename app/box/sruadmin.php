@@ -182,6 +182,10 @@ extends UFbox {
 		$get = $this->_srv->get('req')->get;
 		$tmp = array();
 		try {
+			$tmp['typeId'] = $get->searchedTypeId;
+		} catch (UFex_Core_DataNotFound $e) {
+		}
+		try {
 			$tmp['host'] = $get->searchedHost;
 		} catch (UFex_Core_DataNotFound $e) {
 		}
@@ -193,8 +197,9 @@ extends UFbox {
 			$tmp['ip'] = $get->searchedIp;
 		} catch (UFex_Core_DataNotFound $e) {
 		}
-		$d['searched'] = $tmp;
 
+		$d['searched'] = $tmp;
+	
 		return $this->render(__FUNCTION__, $d);
 	}
 
@@ -206,6 +211,10 @@ extends UFbox {
 
 			$get = $this->_srv->get('req')->get;
 			$tmp = array();
+			try {
+				$tmp['typeId'] = $get->searchedTypeId;
+			} catch (UFex_Core_DataNotFound $e) {
+			}
 			try {
 				$tmp['host'] = $get->searchedHost;
 			} catch (UFex_Core_DataNotFound $e) {

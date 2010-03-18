@@ -18,6 +18,10 @@ extends UFact {
 			$bean = UFra::factory('UFbean_Sru_Computer');
 
 			$finds = array();
+			if (isset($post['typeId']) && !empty($post['typeId']) && $post['typeId'] != "5") {
+			
+				$finds[] = 'typeId:'.urlencode($post['typeId']);
+			}
 			if (isset($post['host']) && !empty($post['host'])) {
 				$val = urlencode($post['host']);
 				$master_exploder = explode('.', $val);
@@ -35,7 +39,6 @@ extends UFact {
 				$finds[] = 'ip:'.urlencode($post['ip']);
 			}
 			if (count($finds)) {
-				
 				UFlib_Http::redirect(UFURL_BASE.'/'.implode('/', $this->_srv->get('req')->segments(0)).'/computers/search/'.implode('/', $finds));
 			}
 		} catch (UFex_Dao_DataNotValid $e) {

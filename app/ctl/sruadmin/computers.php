@@ -20,8 +20,12 @@ extends UFctl {
 				case 'search':
 					$get->view = 'computers/search';
 					for ($i=3; $i<=$segCount; ++$i) {
+						
 						$tmp = explode(':', $req->segment($i), 2);
 						switch ($tmp[0]) {
+							case 'typeId':
+								$get->searchedTypeId = urldecode($tmp[1]);
+								break;
 							case 'host':
 								$get->searchedHost = urldecode($tmp[1]);
 								break;
