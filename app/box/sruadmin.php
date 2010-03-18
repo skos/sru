@@ -1030,7 +1030,7 @@ extends UFbox {
 
 		$serviceType = null;
 		if ($this->_srv->get('req')->post->is('serviceSelect')) {
-			$get = $this->_srv->get('req')->post->__get('serviceSelect');
+			$get = $this->_srv->get('req')->post->serviceSelect;
 			if (isset($get['serviceId']) && $get['serviceId'] > 0) {
 				$serviceType = $get['serviceId'];
 			}
@@ -1066,7 +1066,7 @@ extends UFbox {
 
 		$serviceType = null;
 		if ($this->_srv->get('req')->post->is('serviceSelect')) {
-			$get = $this->_srv->get('req')->post->__get('serviceSelect');
+			$get = $this->_srv->get('req')->post->serviceSelect;
 			if (isset($get['serviceId']) && $get['serviceId'] > 0) {
 				$serviceType = $get['serviceId'];
 			}

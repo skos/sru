@@ -21,7 +21,7 @@ extends UFtpl_Common {
 
 		foreach ($aliases as $c) {
 			if(($lastRoom[0] != $c[0] && ((int)$c < 1 || (int)$c > 9)) || (int)$lastRoom == 0 || ((int)$lastRoom < 100 && (int)$c >= 100)) {
-				if($lastFlor != '-') {
+				if($lastRoom != '0') {
 					echo '</ul><ul>';
 				} else {
 					echo '<ul class="first">';
