@@ -24,6 +24,9 @@ extends UFtpl_Common {
 					if ($lastDorm != '') {
 						echo '</ul>';
 					}
+					if ($u['dormitoryId'] == 13) {
+						break;
+					}
 					echo '<h4>'.$u['dormitoryName'].'</h4><ul>';
 					$lastDorm = $u['dormitoryName'];
 				}
