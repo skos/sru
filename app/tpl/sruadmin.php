@@ -288,7 +288,7 @@ extends UFtpl_Common {
 
 	public function userServicesEdit(array $d) {
 		$form = UFra::factory('UFlib_Form');
-		echo '<h2>Usługi Użytkownika</h2>';
+		echo '<h2>Usługi użytkownika</h2>';
 		echo $form->_start();
 
 		if ($this->_srv->get('msg')->get('serviceEdit/ok')) {
