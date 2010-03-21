@@ -31,6 +31,10 @@ extends UFbox {
 		return $this->configDhcp(UFbean_Sru_Computer::TYPE_ADMINISTRATION);
 	}
 
+	public function dhcpSrv() {
+		return $this->configDhcp(UFbean_Sru_Computer::TYPE_SERVER);
+	}
+
 	public function dnsRev() {
 		try {
 			$bean = UFra::factory('UFbean_Sru_ComputerList');
@@ -49,7 +53,8 @@ extends UFbox {
 			$bean = UFra::factory('UFbean_Sru_ComputerList');
 			$bean->listAllActiveByType(array(
 				UFbean_Sru_Computer::TYPE_STUDENT,
-				UFbean_Sru_Computer::TYPE_ORGANIZATION
+				UFbean_Sru_Computer::TYPE_ORGANIZATION,
+				UFbean_Sru_Computer::TYPE_SERVER
 			));
 
 			$d['computers'] = $bean;
