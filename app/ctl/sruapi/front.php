@@ -37,9 +37,6 @@ extends UFctl {
 							case 'org':
 								$get->view = 'dhcp/org';
 								break;
-							case 'srv':
-								$get->view = 'dhcp/srv';
-								break;
 						}
 					}
 					break;
@@ -168,8 +165,6 @@ extends UFctl {
 				return 'SruApi_DhcpAdm';
 			case 'dhcp/org':
 				return 'SruApi_DhcpOrg';
-			case 'dhcp/srv':
-				return 'SruApi_DhcpSrv';
 			case 'dns/ds':
 				return 'SruApi_DnsDs';
 			case 'dns/adm':
