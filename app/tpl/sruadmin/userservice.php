@@ -17,12 +17,12 @@ extends UFtpl_Common {
 			$i++;
 			echo '<tr><td>'.$i.'.</td>';
 			$activateString = $c['userLogin'];
-			//jeżeli shell lub poczta to zapodawaj stringi dla Oczątka ;)
-			if ($c['servType'] == 1 || $c['servType'] == 2) {
+			//jeżeli shell to zapodawaj stringi dla Oczątka ;)
+			if ($c['servType'] == 1) {
 				$activateString = $activateString.','.$this->_escape($c['userName']).' '.$this->_escape($c['userSurname']).',studs';
 			}
 			echo '<td>'.$c['servName'].'</td>';
-			echo '<td><a href="'.$url.'/users/'.$c['userId'].'">'.$this->_escape($c['userName']).' '.$this->_escape($c['userSurname']).'</a></td>';
+			echo '<td><a href="'.$url.'/users/'.$c['userId'].'">'.$this->_escape($c['userName']).' '.$this->_escape($c['userSurname']).'</a><br/>'.$c['userEmail'].'</td>';
 			echo '<td style="text-align:center;">'.$activateString.'</td><td>';
 			echo $form->_submit('Aktywuj', array('name'=>'serviceEdit[activateFull]['.$c['id'].']'));
 			echo '</td></tr>';

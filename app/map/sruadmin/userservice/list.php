@@ -13,6 +13,7 @@ extends UFmap {
 		'userName'	=> 'u.name',
 		'userSurname'	=> 'u.surname',
 		'userLogin'	=> 'u.login',
+		'userEmail'	=> 'u.email',
 		'servName'	=> 't.name'
 
 	);
@@ -24,6 +25,7 @@ extends UFmap {
 		'userName'	=> self::TEXT,
 		'userSurname'	=> self::TEXT,
 		'userLogin'	=> self::TEXT,
+		'userEmail'	=> self::TEXT,
 		'servName'	=> self::TEXT
 	);
 	protected $tables = array(
