@@ -15,4 +15,5 @@ extends UFconf {
 	protected $sendEmail = true;	// wysylac maile dot. kar, edycji danych i danych kompow?
 	protected $emailPrefix = '[SRU]';	// prefix maili wysyłanych ze SRU
 	protected $exclusions = array('ADMINISTRACJA', 'SKOS', 'Samorząd Studentów', 'Studencka Agencja');	// wykluczenia nazw (imion) ze zliczeń etc.
+	protected $excludedWalet = array(21, 2993 , 3673, 3, 5438, 5609, 5682); // wykluczeni z migracji: Hrynek, Hinte, Laszo, LCF, mieszkańcy 115 DS4
 }

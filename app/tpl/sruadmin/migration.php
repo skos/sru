@@ -19,7 +19,7 @@ extends UFtpl_Common {
 		echo '<h3>Niezgodności w imieniu lub nazwisku</h3>';
 		$lastDorm = '';
 		foreach ($users as $u) {
-			if (!array_key_exists(md5($u['surname'].' '.$u['name']), $hashes) && !in_array($u['name'], $conf->exclusions)) {
+			if (!array_key_exists(md5($u['surname'].' '.$u['name']), $hashes) && !in_array($u['name'], $conf->exclusions) && !in_array($u['id'], $conf->excludedWalet)) {
 				if ($lastDorm != $u['dormitoryName']) {
 					if ($lastDorm != '') {
 						echo '</ul>';

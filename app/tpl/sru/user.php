@@ -431,6 +431,8 @@ changeVisibility();
 		$chartDataMan = '';
 		$chartLabel = '';
 		$chartLabelR = '';
+		$chartDataFac = '';
+		$chartLabelFac = '';
 		while ($fac = current($faculties)) {
 			echo '<tr><td>'.key($faculties).'</td>';
 			echo '<td>'.$fac->getUsers().'</td>';
@@ -440,11 +442,19 @@ changeVisibility();
 			$chartDataMan = $chartDataMan.(round(($fac->getUsers()-$fac->getWomen())/$fac->getUsers()*100)).',';
 			$chartLabel = key($faculties).'|'.$chartLabel;
 			$chartLabelR = (round($fac->getWomen()/$fac->getUsers()*100)).'% / '.(round(($fac->getUsers()-$fac->getWomen())/$fac->getUsers()*100)).'%|'.$chartLabelR;
+			$chartDataFac = (round($fac->getUsers()/$sum*100)).','.$chartDataFac;
+			$chartLabelFac = key($faculties).': '.round($fac->getUsers()/$sum*100).'%|'.$chartLabelFac;
 			next($faculties);
 		}
 		echo '</table>';
 		$chartDataWoman = substr($chartDataWoman, 0, -1);
 		$chartDataMan = substr($chartDataMan, 0, -1);
+		$chartDataFac = substr($chartDataFac, 0, -1);
+
+		echo '<div style="text-align: center;">';
+		echo '<img src="http://chart.apis.google.com/chart?chs=800x150&chd=t:'.$chartDataFac;
+		echo '&cht=p3&chl='.$chartLabelFac.' alt=""/>';
+
 		echo '<div style="text-align: center;">';
 		echo '<img src="http://chart.apis.google.com/chart?chs=600x300&cht=bhs&chco=ff9900,ffebcc&chd=t:';
 		echo $chartDataWoman.'|'.$chartDataMan.'&chxt=y,r&chxl=0:|'.$chartLabel.'1:|'.$chartLabelR.'" alt=""/>';
@@ -469,6 +479,8 @@ changeVisibility();
 		$chartDataMan = '';
 		$chartLabel = '';
 		$chartLabelR = '';
+		$chartDataYear = '';
+		$chartLabelYear = '';
 		while ($year = current ($years)) {
 			echo '<tr><td>'.self::$studyYears[substr(key($years),1)].'</td>';
 			echo '<td>'.$year->getUsers().'</td>';
@@ -478,11 +490,18 @@ changeVisibility();
 			$chartDataMan = $chartDataMan.(round(($year->getUsers()-$year->getWomen())/$year->getUsers()*100)).',';
 			$chartLabel = self::$studyYears[substr(key($years),1)].'|'.$chartLabel;
 			$chartLabelR = (round($year->getWomen()/$year->getUsers()*100)).'% / '.(round(($year->getUsers()-$year->getWomen())/$year->getUsers()*100)).'%|'.$chartLabelR;
+			$chartDataYear = (round($year->getUsers()/$sum*100)).','.$chartDataYear;
+			$chartLabelYear = self::$studyYears[substr(key($years),1)].': '.round($year->getUsers()/$sum*100).'%|'.$chartLabelYear;
 			next($years);
 		}
 		echo '</table>';
 		$chartDataWoman = substr($chartDataWoman, 0, -1);
 		$chartDataMan = substr($chartDataMan, 0, -1);
+		$chartDataYear = substr($chartDataYear, 0, -1);
+
+		echo '<div style="text-align: center;">';
+		echo '<img src="http://chart.apis.google.com/chart?chs=600x150&chd=t:'.$chartDataYear;
+		echo '&cht=p3&chl='.$chartLabelYear.' alt=""/>';
 		echo '<div style="text-align: center;">';
 		echo '<img src="http://chart.apis.google.com/chart?chs=600x350&cht=bhs&chco=ff9900,ffebcc&chd=t:';
 		echo $chartDataWoman.'|'.$chartDataMan.'&chxt=y,r&chxl=0:|'.$chartLabel.'1:|'.$chartLabelR.'" alt=""/>';
@@ -531,7 +550,7 @@ changeVisibility();
 		echo '<tr><td>Aktywne (użytkownicy)</td><td>'.$activeBannedSum.'</td><td>'.$activeBannedWomanSum.'</td><td>'.($activeBannedSum - $activeBannedWomanSum).'</td></tr>';
 		echo '<tr><td>Suma (użytkownicy)</td><td>'.$bannedSum.'</td><td>'.$bannedWomanSum.'</td><td>'.($bannedSum - $bannedWomanSum).'</td></tr>';
 		echo '<tr><td>Suma (kary)</td><td>'.$banSum.'</td><td>'.$womanBanSum.'</td><td>'.($banSum - $womanBanSum).'</td></tr>';
-		echo '<tr><td>ŚREDNIO (kar/użytkownik)</td><td>'.round($banSum/$bannedSum,2).'</td><td>'.round($womanBanSum/$bannedSum,2).'</td><td>'.round(($banSum - $womanBanSum)/$bannedSum,2).'</td></tr>';
+		echo '<tr><td>ŚREDNIO (kar/użytkownik)</td><td>'.round($banSum/$bannedSum,2).'</td><td>'.round($womanBanSum/$bannedWomanSum,2).'</td><td>'.round(($banSum - $womanBanSum)/($bannedSum - $bannedWomanSum),2).'</td></tr>';
 		echo '</table>';
 		$womanActiveProc = round($activeBannedWomanSum/$activeBannedSum,2);
 		$manActiveProc = round(($activeBannedSum - $activeBannedWomanSum)/$activeBannedSum,2);

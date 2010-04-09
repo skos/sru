@@ -11,6 +11,7 @@ extends UFtpl_Common {
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pl" lang="pl">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta name="robots" CONTENT="noindex,nofollow,noarchive"> 
 <link rel="stylesheet" href="<?=UFURL_BASE;?>/i/style.css" type="text/css" media="screen" />
 <title><?=$d['title'];?></title>
 </head>

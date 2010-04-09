@@ -180,6 +180,7 @@ extends UFtpl_Common {
 		echo $form->_fieldset('Znajdź komputer');
 		echo $d['computer']->write('formSearch', $d['searched']);
 		echo $form->_submit('Znajdź');
+		echo ' <a href="'.UFURL_BASE.'/admin/computers/">Serwery, administracja, organizacje</a>';
 		echo $form->_end();
 		echo $form->_end(true);
 		echo '</div>';
@@ -504,11 +505,7 @@ extends UFtpl_Common {
 		echo '<h2>Akademiki</h2>';
 
 		$d['dorms']->write('listDorms');
-
-		echo '<hr style="border-top: 1px solid #DDDDDD;"/>';
-		echo '<ul><li><a href="'.UFURL_BASE.'/admin/computers/">Serwery, administracja, organizacje</a></li></ul>';
 		echo '</div>';
-					
 	}
 	public function titleDorm(array $d) {
 		echo $d['dorm']->write('titleDetails');
@@ -616,7 +613,7 @@ extends UFtpl_Common {
 			echo $this->OK('Kara została założona');
 		}		
 		
-		echo '<h2>Aktywne kary | <a href="'.$url.'actions">Ostatnie akcje</a></h2>';
+		echo '<h2><a href="'.$url.'">Ostatnie akcje</a>| Aktywne kary</h2>';
 
 		$d['penalties']->write('listPenalty');
 	}	
@@ -741,7 +738,7 @@ extends UFtpl_Common {
 		$url = $this->url(0).'/penalties/';
 		$acl = $this->_srv->get('acl');		
 		
-		echo '<h2><a href="'.$url.'">Aktywne kary</a> | Ostatnie akcje</h2>';
+		echo '<h2>Ostatnie akcje | <a href="'.$url.'active">Aktywne kary</a></h2>';
 		
 		echo '<h3>Modyfikacje kar</h3><ul>';
 		$d['modifiedPenalties']->write('penaltyLastModified');

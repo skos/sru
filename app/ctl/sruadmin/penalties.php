@@ -61,8 +61,8 @@ extends UFctl_Common {
 
 					$get->view = 'penalties/add';
 					break;
-				case 'actions':
-					$get->view = 'penalties/actions';
+				case 'active':
+					$get->view = 'penalties/active';
 					break;
 				default:
 					$get->view = 'penalties/penalty';
@@ -142,7 +142,7 @@ extends UFctl_Common {
 		switch ($get->view) 
 		{
 			case 'penalties/main':
-				return 'SruAdmin_Penalties';
+				return 'SruAdmin_PenaltyActions';
 			case 'penalties/penalty':
 				return 'SruAdmin_Penalty';
 			case 'penalties/add':
@@ -159,8 +159,8 @@ extends UFctl_Common {
 				} else {
 					return 'Sru_Error404';
 				}	
-			case 'penalties/actions':
-				return 'SruAdmin_PenaltyActions';
+			case 'penalties/active':
+				return 'SruAdmin_Penalties';
 			case 'penalties/penalty/edit':
 				if ($msg->get('penaltyEdit/ok')) { 
 					return 'SruAdmin_Penalty';
