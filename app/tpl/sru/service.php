@@ -41,8 +41,14 @@ extends UFtpl_Common {
 			echo '</td></tr>';
 			echo '<tr><td colspan="3">';
 			echo '<p class="services" id="serviceMore'.$c['id'].'" style="display: none; text-align: center;">';
-			if ($toActivate) echo $form->_submit('Aktywuj usługę: '.$c['name'], array('name'=>'serviceEdit[activate]['.$c['id'].']'));
-			elseif ($toActivate === false) echo $form->_submit('Deaktywuj usługę: '.$c['name'], array('name'=>'serviceEdit[deactivate]['.$servId.']'));
+			if ($toActivate) {
+				echo 'Klikając poniższy guzik zgłaszasz chęć posiadania usługi <b>'.$c['name'].'</b>.<br/> Usługa zostanie aktywowana po zatwierdzeniu przez administratora, potwierdzenie otrzymasz na adres e-mail podany w SRU.<br/><br/>';
+				echo $form->_submit('Aktywuj usługę: '.$c['name'], array('name'=>'serviceEdit[activate]['.$c['id'].']'));
+			}
+			elseif ($toActivate === false) {
+				echo 'Klikając poniższy guzik zgłaszasz chęć usunięcia usługi <b>'.$c['name'].'</b>.<br/> Usługa zostanie deaktywowana po zatwierdzeniu przez administratora, potwierdzenie otrzymasz na adres e-mail podany w SRU.<br/><br/>';
+				echo $form->_submit('Deaktywuj usługę: '.$c['name'], array('name'=>'serviceEdit[deactivate]['.$servId.']'));
+			}
 			echo '<br/><br/></p></td></tr>';
 		}
 		echo '</table>';
