@@ -37,9 +37,10 @@ extends UFdao {
 			$mapping = $this->mapping('search');
 
 			$query = $this->prepareSelect($mapping);
+			$query->order($mapping->dormitoryId, $query->ASC);
+			$query->order($mapping->room, $query->ASC);
 			$query->order($mapping->surnameSearch, $query->ASC);
 			$query->order($mapping->nameSearch, $query->ASC);
-			$query->order($mapping->locationAlias, $query->ASC);
 			$query->order($mapping->active, $query->DESC);
 			foreach ($params as $var=>$val) {
 				switch ($var) {
