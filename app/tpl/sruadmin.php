@@ -78,7 +78,7 @@ extends UFtpl_Common {
 		}			
 		$url = $this->url(0).'/computers/'.$d['computer']->id;
 		echo '<div class="computer">';
-		$d['computer']->write('details');
+		$d['computer']->write('details', $d['switchPort']);
 		echo '</div>';
 	}
 
@@ -502,7 +502,7 @@ extends UFtpl_Common {
 		$url = $this->url(0).'/admins/';
 			
 		echo '<div class="dormitories">';
-		echo '<h2>Akademiki</h2>';
+		echo '<h2>Akademiki | <a href="'.$this->url(0).'/switches">Switche</a></h2>';
 
 		$d['dorms']->write('listDorms');
 		echo '</div>';
@@ -536,6 +536,135 @@ extends UFtpl_Common {
 	}		
 	public function dormsNotFound() {
 		echo $this->ERR('Nie znaleziono akademików');
+	}
+
+	public function titleSwitches() {
+		echo 'Switche';
+	}	
+	public function switches(array $d) {
+		$url = $this->url(0).'/switches/';
+			
+		echo '<div class="switches">';
+		echo '<h2><a href="'.$this->url(0).'/dormitories">Akademiki</a> | Switche</h2>';
+
+		if ($this->_srv->get('msg')->get('switchAdd/ok')) {
+			echo $this->OK('Switch został dodany');
+		}
+
+		$d['switches']->write('listSwitches');
+		echo '</div>';
+	}
+	public function switchesNotFound() {
+		$url = $this->url(0).'/switches/';
+		echo $this->ERR('Nie znaleziono switchy<br/><a href="'.$url.':add">Dodaj nowego switcha</a>');
+	}
+
+	public function titleSwitch(array $d) {
+		echo $d['switch']->write('titleDetails');
+	}	
+	public function switchDetails(array $d) {
+		if ($this->_srv->get('msg')->get('switchEdit/ok')) {
+			echo $this->OK('Dane switcha zostały zmienione');
+		}
+		if ($this->_srv->get('msg')->get('switchPortsEdit/ok')) {
+			echo $this->OK('Dane portów switcha zostały zmienione');
+		}
+		if ($this->_srv->get('msg')->get('switchLockoutsEdit/ok')) {
+			echo $this->OK('Zablokowane adresy MAC na switchu zostały zmienione');
+		}
+		$d['switch']->write('headerDetails');
+		$d['switch']->write('details', $d['info'], $d['lockouts']);
+	}
+	public function switchPorts(array $d) {
+		$d['ports']->write('listPorts', $d['switch'], $d['portStatuses']);
+	}
+	public function switchPortDetails(array $d) {
+		if ($this->_srv->get('msg')->get('switchPortEdit/ok')) {
+			echo $this->OK('Dane portu switcha zostały zmienione');
+		}
+		$d['port']->write('details', $d['switch'], $d['macs'], $d['alias']);
+	}
+	public function switchNotFound() {
+		echo $this->ERR('Nie znaleziono switcha');
+	}
+	public function switchPortsNotFound(array $d)
+	{
+		echo $this->ERR('Nie znaleziono portów switcha');
+	}
+
+	public function switchAdd(array $d) {
+		$form = UFra::factory('UFlib_Form');
+		$url = $this->url(0);
+
+		echo '<h2>Dodawanie nowego switcha</h2>';
+		echo $form->_start();
+		echo $d['switch']->write('formAdd', $d['dormitories'], $d['swModels']);
+		echo $form->_submit('Dodaj');
+		echo ' <a href="'.$url.'/switches/">Powrót</a>';
+		echo $form->_end();
+		echo $form->_end(true);
+	}
+
+	public function titleSwitchAdd(array $d) {
+		echo 'Dodawanie nowego switcha';
+	}
+
+	public function switchEdit(array $d) {
+		$form = UFra::factory('UFlib_Form');
+		$url = $this->url(0);
+
+		echo '<h2>Edycja switcha</h2>';
+		echo $form->_start();
+		echo $d['switch']->write('formEdit', $d['dormitories'], $d['swModels']);
+		echo $form->_submit('Zapisz');
+		echo ' <a href="'.$url.'/switches/'.$d['switch']->id.'">Powrót</a>';
+		echo $form->_end();
+		echo $form->_end(true);
+	}
+
+	public function titleSwitchEdit(array $d) {
+		echo $d['switch']->write('titleEditDetails');
+	}
+
+	public function switchPortsEdit(array $d) {
+		$form = UFra::factory('UFlib_Form');
+		$url = $this->url(0);
+
+		echo '<h2>Edycja portów switcha</h2>';
+		echo $form->_start();
+		echo $d['ports']->write('formEdit', $d['switch'], $d['enabledSwitches'], $d['portAliases']);
+		echo $form->_submit('Zapisz');
+		echo ' <a href="'.$url.'/switches/'.$d['switch']->id.'">Powrót</a>';
+		echo $form->_end();
+		echo $form->_end(true);
+	}
+
+	public function switchPortEdit(array $d) {
+		$url = $this->url(0);
+		$form = UFra::factory('UFlib_Form');
+		echo $form->_start();
+		echo $d['port']->write('formEditOne', $d['switch'], $d['enabledSwitches'], $d['status']);
+		echo $form->_submit('Zapisz');
+		echo ' <a href="'.$url.'/switches/'.$d['switch']->id.'/port/'.$d['port']->id.'">Powrót</a>';
+		echo $form->_end();
+		echo $form->_end(true);
+	}
+
+	public function titleSwitchPortsEdit(array $d) {
+		echo $d['switch']->write('titlePortsEditDetails');
+	}
+
+	public function switchLockoutsEdit(array $d) {
+		$form = UFra::factory('UFlib_Form');
+		$url = $this->url(0);
+
+		echo '<h3>Edycja zablokowanych adresów MAC na switchu</h3>';
+		echo $form->_start();
+		echo $d['switch']->write('formEditLockouts', $d['lockouts']);
+		echo $form->_submit('Zapisz');
+		echo ' <a href="'.$url.'/switches/'.$d['switch']->id.'">Powrót</a>';
+		echo $form->_end();
+		echo $form->_end(true);
 	}
 
 	public function titleRoom(array $d) {

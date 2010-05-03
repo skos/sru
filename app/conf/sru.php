@@ -16,4 +16,9 @@ extends UFconf {
 	protected $emailPrefix = '[SRU]';	// prefix maili wysyłanych ze SRU
 	protected $exclusions = array('ADMINISTRACJA', 'SKOS', 'Samorząd Studentów', 'Studencka Agencja');	// wykluczenia nazw (imion) ze zliczeń etc.
 	protected $excludedWalet = array(); // wykluczeni z migracji
+
+	protected $switchFirmware = array( // aktualne wersje firmware'u używanych switchy
+	);
+
+	protected $masterSwitch = '10.90.90.20';
 }

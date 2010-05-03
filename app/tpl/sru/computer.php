@@ -69,7 +69,7 @@ extends UFtpl_Common {
 		//echo '<p><a href="https://sru.ds.pg.gda.pl/lanstats/?ip='.$ip[2].'.'.$ip[3].'"><img src="https://sru.ds.pg.gda.pl/lanstats/153.19.'.$ip[2].'/'.str_pad($ip[3], 3, '0', STR_PAD_LEFT).'.'.$tag.'.png" alt="Statystyki transferów" /></a></p>';
 	}
 
-	public function details(array $d) {
+	public function details(array $d, $switchPort) {
 		$url = $this->url(0);
 		$urlNav = $this->url(0).'/computers/'.$d['id'];
 		echo '<h1>'.$d['host'].'</h1>';
@@ -82,7 +82,13 @@ extends UFtpl_Common {
 			echo '<p><em>Typ komputera:</em> '.$this->computerTypes[$d['typeId']].'</p>';
 		}
 		echo '<p><em>Właściciel:</em> '.$user.'</p>';
-		echo '<p><em>MAC:</em> '.$d['mac'].'</p>';
+		echo '<p><em>MAC:</em> ';
+		if ($switchPort != null) {
+			echo '<a href="'.$this->url(0).'/switches/'.$switchPort->switchId.'/port/'.$switchPort->id.'">'.$d['mac'].'</a>';
+		} else {
+			echo $d['mac'];
+		}
+		echo '</p>';
 		echo '<p><em>IP:</em> <a href="http://stats.ds.pg.gda.pl/?ip='.substr ($d['ip'], 7, 7).'">'.$d['ip'].'</a></p>';
 		if (!$d['active']) {
 			$max = 'BRAK <small>(było '.date(self::TIME_YYMMDD, $d['availableTo']).')</small>';

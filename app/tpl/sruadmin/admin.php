@@ -100,7 +100,7 @@ extends UFtpl_Common {
 		echo '<p><em>Telefon:</em> '.$d['phone'].'</p>';
 		echo '<p><em>Gadu-Gadu:</em> '.$d['gg'].'</p>';
 		echo '<p><em>Jabber:</em> '.$d['jid'].'</p>';
-		echo '<p><em>Adres:</em> '.$d['address'].'</p>';							
+		echo '<p><em>Adres:</em> '.$d['address'].'</p>';
 	}	
 
 	public function titleAdd(array $d) {
