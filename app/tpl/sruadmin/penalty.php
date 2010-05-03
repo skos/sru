@@ -408,7 +408,7 @@ changeVisibility();
 		echo '</table>';
 		$chartData = substr($chartData, 0, -1);
 		echo '<div style="text-align: center;">';
-		echo '<img src="http://chart.apis.google.com/chart?chs=600x150&chd=t:'.$chartData;
+		echo '<img src="http://chart.apis.google.com/chart?chs=600x200&chd=t:'.$chartData;
 		echo '&cht=p3&chl='.$chartLabel.'" alt=""/>';
 		echo '</div>';
 
