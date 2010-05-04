@@ -33,6 +33,10 @@ extends UFlib_Snmp {
 	public function uFlib_Snmp_Hp ($ip = null) {
 		snmp_set_valueretrieval(SNMP_VALUE_PLAIN);
 		$this->ip = $ip;
+		// ustawienie community
+		$conf = UFra::shared('UFconf_Sru');
+		$this->communityR = $conf->communityRead;
+		$this->communityW = $conf->communityWrite;
 	}
 
 	public function getInfo() {

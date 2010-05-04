@@ -20,5 +20,7 @@ extends UFconf {
 	protected $switchFirmware = array( // aktualne wersje firmware'u używanych switchy
 	);
 
-	protected $masterSwitch = '10.90.90.20';
+	protected $masterSwitch = '';
+	protected $communityRead = '';
+	protected $communityWrite = '';
 }
