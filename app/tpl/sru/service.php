@@ -42,7 +42,7 @@ extends UFtpl_Common {
 			echo '<tr><td colspan="3">';
 			echo '<p class="services" id="serviceMore'.$c['id'].'" style="display: none; text-align: center;">';
 			if ($toActivate) {
-				echo 'Klikając poniższy guzik zgłaszasz chęć posiadania usługi <b>'.$c['name'].'</b>.<br/> Usługa zostanie aktywowana po zatwierdzeniu przez administratora, potwierdzenie otrzymasz na adres e-mail podany w SRU.<br/><br/>';
+				echo 'Klikając poniższy guzik zgłaszasz chęć posiadania usługi:<br/><b>'.$c['name'].'</b>.<br/>Usługa zostanie aktywowana po zatwierdzeniu przez administratora, potwierdzenie otrzymasz na adres e-mail podany w SRU.<br/><br/>';
 				echo $form->_submit('Aktywuj usługę: '.$c['name'], array('name'=>'serviceEdit[activate]['.$c['id'].']'));
 			}
 			elseif ($toActivate === false) {
