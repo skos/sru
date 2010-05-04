@@ -92,10 +92,10 @@ extends UFtpl_Common {
 		echo '<p><em>Na stanie od:</em> '.(is_null($d['received']) ? '' : date(self::TIME_YYMMDD, $d['received'])).'</p>';
 		if (!is_null($info)) {
 			echo '<p><em>IOS:</em> '.$info['ios'].'</p>';
-			$uptimeD = round($info['uptime'] / (100 * 60 * 60 * 24), 0);
-			$uptimeH = round($info['uptime'] / (100 * 60 * 60), 0) - $uptimeD * 24;
-			$uptimeM = round($info['uptime'] / (100 * 60), 0) - $uptimeD * 24 * 60 - $uptimeH * 60;
-			$uptimeS = round($info['uptime'] / (100), 0) - $uptimeD * 24 * 60 * 60 - $uptimeH * 60 * 60 - $uptimeM * 60;
+			$uptimeD = floor($info['uptime'] / (100 * 60 * 60 * 24));
+			$uptimeH = floor($info['uptime'] / (100 * 60 * 60)) - $uptimeD * 24;
+			$uptimeM = floor($info['uptime'] / (100 * 60)) - $uptimeD * 24 * 60 - $uptimeH * 60;
+			$uptimeS = floor($info['uptime'] / (100)) - $uptimeD * 24 * 60 * 60 - $uptimeH * 60 * 60 - $uptimeM * 60;
 			echo '<p><em>Uptime:</em> '.$uptimeD.' dni, '.$uptimeH.' godzin, '.$uptimeM.' minut, '.$uptimeS.' sekund</p>';
 			echo '<p><em>CPU:</em> '.$info['cpu'].'%</p>';
 			echo '<p><em>Pamięć zużyta:</em> '.round($info['memUsed']/$info['memAll']*100,2).'%</p>';
