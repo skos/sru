@@ -16,7 +16,7 @@ extends UFtpl_Common {
 		'mac/wrongFormat' => 'Błędny format adresu MAC',
 	);
 
-	private function displaySwitchName($dormitoryAlias, $hierarchyNo) {
+	public static function displaySwitchName($dormitoryAlias, $hierarchyNo) {
 		if (is_null($hierarchyNo)) {
 			$swName = 'nieużywany';
 		} else {

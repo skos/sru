@@ -157,7 +157,14 @@ changeMacVisibility();
 		}
 		$copyAliases = (isset($this->_srv->get('msg')->info['copyAliasesFromSwitch']) && !is_null($portAliases));
 
+		$i = 0;
+		echo '<table style="width: 100%;">';
 		foreach ($d as $c) {
+			if ($i % 2 == 0) {
+				echo '<tr><td>';
+			} else {
+				echo '<td>';
+			}
 			echo '<p><em>Port '.$c['ordinalNo'].':</em>';
 			if ($portAliases != null) {
 				echo ' '.$portAliases[$c['ordinalNo'] - 1];
@@ -187,14 +194,14 @@ changeMacVisibility();
 				}
 			} catch (UFex_Core_DataNotFound $e) {
 			}
-			echo $form->locationAlias('Przypisany pokój', array('name'=>'switchPortsEdit['.$c['id'].'][locationAlias]', 'id'=>'switchPortsEdit['.$c['id'].'][locationAlias]', 'value'=>$locationAlias));
+			echo $form->locationAlias('Pokój', array('name'=>'switchPortsEdit['.$c['id'].'][locationAlias]', 'id'=>'switchPortsEdit['.$c['id'].'][locationAlias]', 'value'=>$locationAlias));
 			if ($this->_srv->get('msg')->get('switchPortsEdit/errors/locationAlias/noRoom_'.$c['ordinalNo'])) {
 				echo '<strong>Pokój nie istnieje w akademiku przypisanym do switcha</strong><br/>';
 			}
 			if ($this->_srv->get('msg')->get('switchPortsEdit/errors/locationAlias/roomAndSwitch_'.$c['ordinalNo'])) {
 				echo '<strong>Nie można jednocześnie podać lokalizacji i podłączonego switcha</strong><br/>';
 			}
-			echo $form->connectedSwitchId('Podłączony switch', array(
+			echo $form->connectedSwitchId('Switch', array(
 				'type' => $form->SELECT,
 				'labels' => $form->_labelize($tmp, '', ''),
 				'name'=>'switchPortsEdit['.$c['id'].'][connectedSwitchId]',
@@ -206,7 +213,14 @@ changeMacVisibility();
 			}
 			echo $form->comment('Komentarz', array('name'=>'switchPortsEdit['.$c['id'].'][comment]', 'id'=>'switchPortsEdit['.$c['id'].'][comment]', 'value'=>$comment));
 			echo $form->ordinalNo('', array('type'=>$form->HIDDEN, 'name'=>'switchPortsEdit['.$c['id'].'][ordinalNo]', 'id'=>'switchPortsEdit['.$c['id'].'][ordinalNo]', 'value'=>$c['ordinalNo']));
+			if ($i % 2 == 0) {
+				echo '</td>';
+			} else {
+				echo '</td></tr>';
+			}
+			$i++;
 		}
+		echo '</table>';
 		if (!is_null($portAliases)) {
 			echo '<br/><strong>Zapisanie danych spowoduje zapisanie danych także na switch.</strong>';
 		}
