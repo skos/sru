@@ -59,7 +59,9 @@ extends UFact {
 					if ($port['locationAlias'] != '') {
 						$result = $hp->setPortAlias($port['ordinalNo'], $port['locationAlias']);
 					} else if ($port['connectedSwitchId'] != '') {
-						$result = $hp->setPortAlias($port['ordinalNo'], $switch->dormitoryAlias.'-hp'.$switch->hierarchyNo);
+						$connectedSwitch = UFra::factory('UFbean_SruAdmin_Switch');
+						$connectedSwitch->getByPK($port['connectedSwitchId']);
+						$result = $hp->setPortAlias($bean->ordinalNo, $connectedSwitch->dormitoryAlias.'-hp'.$connectedSwitch->hierarchyNo);
 					} else if ($port['comment'] != '') {
 						$result = $hp->setPortAlias($port['ordinalNo'], $port['comment']);
 					} else {
