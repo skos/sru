@@ -185,7 +185,10 @@ changeVisibility();
 		echo $form->availableTo('Rejestracja do');
 		echo $form->availableMaxTo('Rejestracja max do', array('id'=>'availableMaxTo'));
 		foreach ($dormitories as $dorm) {
-			$tmp[$dorm['id']] = $dorm['name'];
+			$temp = explode("ds", $dorm['alias']);
+			if($temp[1] == '5l')
+				$temp[1] = '5Ł';
+			$tmp[$dorm['id']] = $temp[1] . ' ' . $dorm['name'];
 		}
 		echo $form->dormitory('Akademik', array(
 			'type' => $form->SELECT,
