@@ -613,7 +613,7 @@ extends UFtpl_Common {
 		$form = UFra::factory('UFlib_Form');
 		$url = $this->url(0);
 
-		echo '<h2>Edycja switcha</h2>';
+		echo '<h2>Edycja switcha '.UFtpl_SruAdmin_Switch::displaySwitchName($d['switch']->dormitoryAlias, $d['switch']->hierarchyNo).'</h2>';
 		echo $form->_start();
 		echo $d['switch']->write('formEdit', $d['dormitories'], $d['swModels']);
 		echo $form->_submit('Zapisz');
