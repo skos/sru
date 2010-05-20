@@ -121,12 +121,16 @@ changeMacVisibility();
 			}
 			echo '">';
 			echo '<a href="'.$url.$switch->id.'/port/'.$d[$i]['id'].'">';
-			echo $d[$i]['admin'] ?'<i>' : '';
-			echo $d[$i]['ordinalNo'].'<br/><small>(';
-			echo is_null($d[$i]['connectedSwitchId']) ? $d[$i]['locationAlias'] : ($d[$i]['connectedSwitchDorm'].'-hp'.$d[$i]['connectedSwitchNo']);
+			echo $d[$i]['admin'] ?'<strong>' : '';
+			echo $d[$i]['ordinalNo'];
+			echo $d[$i]['admin'] ?'</strong>' : '';
+			echo '</a>';
+			echo ($d[$i]['comment'] == '') ? '' : ' <img src="'.UFURL_BASE.'/i/gwiazdka.png" />';
+			echo '<br/><small>(';
+			echo is_null($d[$i]['connectedSwitchId']) ? ('<a href="'.$this->url(0).'/dormitories/'.$d[$i]['dormitoryAlias'].'/'.$d[$i]['locationAlias'].'">'.
+				$d[$i]['locationAlias'].'</a>') : ('<a href="'.$url.$d[$i]['connectedSwitchId'].'">'.$d[$i]['connectedSwitchDorm'].'-hp'.$d[$i]['connectedSwitchNo'].'</a>');
 			echo ')</small>';
-			echo $d[$i]['admin'] ?'</i>' : '';
-			echo '</a></td>';
+			echo '</td>';
 			if (($i + 1) % 8 == 0) {
 				echo '</tr>';
 			}
