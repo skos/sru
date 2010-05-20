@@ -633,6 +633,9 @@ extends UFtpl_Common {
 		echo '<h2>Edycja portów switcha '.UFtpl_SruAdmin_Switch::displaySwitchName($d['switch']->dormitoryAlias, $d['switch']->hierarchyNo).'</h2>';
 		echo $form->_start();
 		echo $d['ports']->write('formEdit', $d['switch'], $d['enabledSwitches'], $d['portAliases']);
+		if (!is_null($d['portAliases'])) {
+			echo '<br/><strong>Zapisanie danych spowoduje zapisanie danych także na switch.</strong>';
+		}
 		echo $form->_submit('Zapisz');
 		echo ' <a href="'.$url.'/switches/'.$d['switch']->id.'">Powrót</a>';
 		echo $form->_end();
