@@ -55,6 +55,16 @@ extends UFlib_Snmp {
 		return $info;
 	}
 
+	public function getStdInfo() {
+		$info = array();
+		$ios = @snmpwalk($this->ip , $this->communityR , $this->OIDs['ios'], $this->timeout);
+		if ($ios == false) {
+			return null;
+		}
+		$info['serialNo'] = trim(@snmpget($this->ip, $this->communityR, $this->OIDs['serialNo'], $this->timeout));
+		return $info;
+	}
+
 	public function getPortAliases() {
 		$aliases = @snmpwalk($this->ip , $this->communityR, $this->OIDs['portAliases'], $this->timeout);
 		if ($aliases == false) {

@@ -83,24 +83,14 @@ extends UFtpl_Common {
 		if (!is_null($info)) {
 			echo '<a href="'.$url.'/switches/'.$d['id'].'/:lockoutsedit">Zmień zablokowane adresy MAC</a> ';
 		}
-		echo '<span id="switchMoreSwitch"></span></p>';
+		echo '<a href="'.$url.'/switches/'.$d['id'].'/tech">Technikalia</a> <span id="switchMoreSwitch"></span></p>';
 		echo '<div id="switchMore">';
 		echo '<p><em>Nr seryjny:</em> '.$d['serialNo'].'</p>';
-		echo '<p><em>Akademik:</em> '.$d['dormitoryName'].'</p>';
+		echo '<p><em>Akademik:</em> <a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'">'.$d['dormitoryName'].'</a></p>';
 		echo '<p><em>Lokalizacja:</em> '.$d['localization'].'</p>';
 		echo '<p><em>Sprawny:</em> '.($d['operational'] ? 'tak' : 'nie').'</p>';
 		echo '<p><em>Nr inwentarzowy:</em> '.$d['inventoryNo'].'</p>';
 		echo '<p><em>Na stanie od:</em> '.(is_null($d['received']) ? '' : date(self::TIME_YYMMDD, $d['received'])).'</p>';
-		if (!is_null($info)) {
-			echo '<p><em>IOS:</em> '.$info['ios'].'</p>';
-			$uptimeD = floor($info['uptime'] / (100 * 60 * 60 * 24));
-			$uptimeH = floor($info['uptime'] / (100 * 60 * 60)) - $uptimeD * 24;
-			$uptimeM = floor($info['uptime'] / (100 * 60)) - $uptimeD * 24 * 60 - $uptimeH * 60;
-			$uptimeS = floor($info['uptime'] / (100)) - $uptimeD * 24 * 60 * 60 - $uptimeH * 60 * 60 - $uptimeM * 60;
-			echo '<p><em>Uptime:</em> '.$uptimeD.' dni, '.$uptimeH.' godzin, '.$uptimeM.' minut, '.$uptimeS.' sekund</p>';
-			echo '<p><em>CPU:</em> '.$info['cpu'].'%</p>';
-			echo '<p><em>Pamięć zużyta:</em> '.round($info['memUsed']/$info['memAll']*100,2).'%</p>';
-		}
 		echo '<p><em>Zablokowane adresy MAC:</em><br/>';
 		if (!is_null($lockouts)) {
 			foreach ($lockouts as $lockout) {
@@ -131,6 +121,25 @@ button.appendChild(txt);
 container.appendChild(button);
 changeVisibility();
 </script><?
+	}
+
+	public function techDetails(array $d, $info) {
+		$url = $this->url(0);
+
+		echo '<h3>Dane techniczne urządzenia</h3>';
+		if (!is_null($info)) {
+			echo '<p><em>IOS:</em> '.$info['ios'].'</p>';
+			$uptimeD = floor($info['uptime'] / (100 * 60 * 60 * 24));
+			$uptimeH = floor($info['uptime'] / (100 * 60 * 60)) - $uptimeD * 24;
+			$uptimeM = floor($info['uptime'] / (100 * 60)) - $uptimeD * 24 * 60 - $uptimeH * 60;
+			$uptimeS = floor($info['uptime'] / (100)) - $uptimeD * 24 * 60 * 60 - $uptimeH * 60 * 60 - $uptimeM * 60;
+			echo '<p><em>Uptime:</em> '.$uptimeD.' dni, '.$uptimeH.' godzin, '.$uptimeM.' minut, '.$uptimeS.' sekund</p>';
+			echo '<p><em>CPU:</em> '.$info['cpu'].'%</p>';
+			echo '<img src="http://chart.apis.google.com/chart?chs=400x150&cht=gom&chd=t:'.$info['cpu'].'&chco=00FF00,FFFF00,FF8040,FF0000&chxt=x,y&chxl=0:||1:|0%|100%" alt=""/>';
+			$mem = round($info['memUsed']/$info['memAll']*100,2);
+			echo '<p><em>Pamięć zużyta:</em> '.$mem.'%</p>';
+			echo '<img src="http://chart.apis.google.com/chart?chs=400x150&cht=gom&chd=t:'.$mem.'&chco=00FF00,FFFF00,FF8040,FF0000&chxt=x,y&chxl=0:||1:|0%|100%" alt=""/>';
+		}
 	}
 	
 	public function formAdd(array $d, $dormitories, $models) {

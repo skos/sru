@@ -32,6 +32,9 @@ extends UFctl {
 
 					if ($segCount > 2) {
 						switch ($req->segment(3)) {
+							case 'tech':
+								$get->view = 'switches/tech';
+								break;
 							case ':edit':
 								$get->view = 'switches/edit';
 								break;
@@ -54,6 +57,9 @@ extends UFctl {
 
 										if ($segCount > 4) {
 												switch ($req->segment(5)) {
+													case 'macs':
+														$get->view = 'port/macs';
+														break;
 													case ':edit':
 														$get->view = 'port/edit';
 														break;
@@ -119,6 +125,8 @@ extends UFctl {
 				return 'SruAdmin_Switches';
 			case 'switches/switch':
 				return 'SruAdmin_Switch';
+			case 'switches/tech':
+				return 'SruAdmin_SwitchTech';
 			case 'switches/add':
 				if ($msg->get('switchAdd/ok')) {
 					return 'SruAdmin_Switches';
@@ -153,6 +161,8 @@ extends UFctl {
 				}
 			case 'port/main':
 				return 'SruAdmin_SwitchPort';
+			case 'port/macs':
+				return 'SruAdmin_SwitchPortMacs';
 			case 'port/edit':
 				if ($msg->get('switchPortEdit/ok')) { 
 					return 'SruAdmin_SwitchPort';

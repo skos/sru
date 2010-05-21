@@ -685,11 +685,28 @@ extends UFbox {
 			$d['switch'] = $bean;
 			if (!is_null($d['switch']->ip)) {
 				$switch = UFra::factory('UFlib_Snmp_Hp', $d['switch']->ip);
-				$d['info'] = $switch->getInfo();
+				$d['info'] = $switch->getStdInfo();
 				$d['lockouts'] = $switch->getLockouts();
 			} else {
 				$d['info'] = null;
 				$d['lockouts'] = null;
+			}
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render('switchNotFound');
+		}
+	}
+
+	public function switchTech() {
+		try {
+			$bean = $this->_getSwitchFromGet();
+			$d['switch'] = $bean;
+			if (!is_null($d['switch']->ip)) {
+				$switch = UFra::factory('UFlib_Snmp_Hp', $d['switch']->ip);
+				$d['info'] = $switch->getInfo();
+			} else {
+				$d['info'] = null;
 			}
 
 			return $this->render(__FUNCTION__, $d);
@@ -728,11 +745,29 @@ extends UFbox {
 
 			if (!is_null($d['switch']->ip)) {
 				$switch = UFra::factory('UFlib_Snmp_Hp', $d['switch']->ip);
-				$d['macs'] = $switch->getMacsFromPort($bean->ordinalNo);
 				$d['alias'] = $switch->getPortAlias($bean->ordinalNo);
 			} else {
-				$d['macs'] = null;
 				$d['alias'] = null;
+			}
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render('switchNotFound');
+		}
+	}
+
+	public function switchPortMacs() {
+		try {
+			$bean = $this->_getSwitchPortFromGet();
+			$d['port'] = $bean;
+			$switch = $this->_getSwitchFromGet();
+			$d['switch'] = $switch;
+
+			if (!is_null($d['switch']->ip)) {
+				$switch = UFra::factory('UFlib_Snmp_Hp', $d['switch']->ip);
+				$d['macs'] = $switch->getMacsFromPort($bean->ordinalNo);
+			} else {
+				$d['macs'] = null;
 			}
 
 			return $this->render(__FUNCTION__, $d);

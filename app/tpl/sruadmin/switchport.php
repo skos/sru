@@ -12,7 +12,7 @@ extends UFtpl_Common {
 		'connectedSwitchId/switchAndAdmin' => 'Switch nie może być podłączony do portu admina',
 	);
 
-	public function details(array $d, $switch, $macs, $alias) {
+	public function details(array $d, $switch, $alias) {
 		$url = $this->url(0).'/switches/';
 
 		echo '<h3>Port '.$d['ordinalNo'].'</h3>';
@@ -24,46 +24,25 @@ extends UFtpl_Common {
 		if (!is_null($alias) && $alias != '') {
 			echo '<p><em>Alias portu: </em>'.$alias.'</p>';
 		}
+		echo '<p><em>Port admina:</em> '.($d['admin'] ? 'tak' : 'nie').'</p>';
+		echo '<p><em>Komentarz:</em> '.$d['comment'].'</p>';
+		echo '<p class="nav"><a href="'.$url.'">Wróć do listy</a> ';
+		echo '<a href="'.$url.$switch->id.'/port/'.$d['id'].'/macs">Pokaż adresy MAC</a> ';
+		echo '<a href="'.$url.$switch->id.'/port/'.$d['id'].'/:edit">Edytuj port</a></p>';
+	}
+
+	public function portMacs(array $d, $switch, $macs) {
+		$url = $this->url(0).'/switches/';
+
+		echo '<h3>Adresy MAC na porcie '.$d['ordinalNo'].'</h3>';
 		echo '<p><em>Adresy MAC na porcie:</em><br/>';
 		if (!is_null($macs)) {
-			if (count($macs) > 3) {
-				echo '<span id="macMoreSwitch"></span></p>';
-				echo '<div id="macMore">';
-			}
 			foreach ($macs as $mac) {
 				echo '<a href="'.$this->url(0).'/computers/search/mac:'.$mac.'">'.$mac.'</a><br/>';
 			}
-			if (count($macs) > 3) {
-				echo '</div>';
-			}
 		}
 		echo '</p>';
-		echo '<p><em>Port admina:</em> '.($d['admin'] ? 'tak' : 'nie').'</p>';
-		echo '<p><em>Komentarz:</em> '.$d['comment'].'</p>';
 		echo '<p class="nav"><a href="'.$url.'">Wróć do listy</a> <a href="'.$url.$switch->id.'/port/'.$d['id'].'/:edit">Edytuj port</a></p>';
-		if (count($macs) > 3) {
-?><script type="text/javascript">
-function changeMacVisibility() {
-	var div = document.getElementById('macMore');
-	if (div.sruHidden != true) {
-		div.style.display = 'none';
-		div.sruHidden = true;
-	} else {
-		div.style.display = 'block';
-		div.sruHidden = false;
-	}
-}
-var container = document.getElementById('macMoreSwitch');
-var button = document.createElement('a');
-button.onclick = function() {
-	changeMacVisibility();
-}
-var txt = document.createTextNode('Rozwiń');
-button.appendChild(txt);
-container.appendChild(button);
-changeMacVisibility();
-</script><?
-		}
 	}
 
 	public function formEditOne(array $d, $switch, $enabledSwitches, $status) {

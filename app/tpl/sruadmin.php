@@ -575,6 +575,9 @@ extends UFtpl_Common {
 		$d['switch']->write('headerDetails');
 		$d['switch']->write('details', $d['info'], $d['lockouts']);
 	}
+	public function switchTech(array $d) {
+		$d['switch']->write('techDetails', $d['info']);
+	}
 	public function switchPorts(array $d) {
 		$d['ports']->write('listPorts', $d['switch'], $d['portStatuses']);
 	}
@@ -582,7 +585,10 @@ extends UFtpl_Common {
 		if ($this->_srv->get('msg')->get('switchPortEdit/ok')) {
 			echo $this->OK('Dane portu switcha zostały zmienione');
 		}
-		$d['port']->write('details', $d['switch'], $d['macs'], $d['alias']);
+		$d['port']->write('details', $d['switch'], $d['alias']);
+	}
+	public function switchPortMacs(array $d) {
+		$d['port']->write('portMacs', $d['switch'],$d['macs']);
 	}
 	public function switchNotFound() {
 		echo $this->ERR('Nie znaleziono switcha');
