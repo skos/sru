@@ -235,6 +235,16 @@ changeMacVisibility();
 			}
 			$i++;
 		}
-		echo '</table></div>';
+		echo '</table>';
+		if (!is_null($portAliases)) {
+			echo '<br/><strong>Zapisanie danych spowoduje zapisanie danych także na switch.</strong>';
+			echo '<table style="margin-left:auto; margin-right:auto;"><tr><td>';
+			echo $form->_submit('Zapisz');
+			echo '</td><td>';
+			echo $form->_submit('Skopiuj aliasy ze switcha', array('name'=>'copyAliasesFromSwitch', 'id'=>'copyAliasesFromSwitch'));
+			echo '</td><td><a href="'.$url.'/switches/'.$switch->id.'">Powrót</a></td></tr></table>';
+		}
+		$copyAliases = (isset($this->_srv->get('msg')->info['copyAliasesFromSwitch']) && !is_null($portAliases));
+		echo '</div>';
 	}
 }
