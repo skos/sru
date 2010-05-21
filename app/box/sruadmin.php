@@ -1462,6 +1462,78 @@ extends UFbox {
 		}
 	}
 	
+	/**
+	 * Ostatnio modyfikowani użytkownicy
+	 *
+	 */
+	public function adminUsersModified() {
+		try{
+			$bean = $this->_getAdminFromGet();
+			
+			$modified = UFra::factory('UFbean_Sru_UserList');
+			$modified->listLastModified($bean->id);
+			$d['modifiedUsers'] = $modified;
+			
+			return $this->render(__FUNCTION__, $d);
+		}catch(UFex_Dao_NotFound $e){
+			return '';
+		}	
+	}
+	
+	/**
+	 * Ostatnio modyfikowane komputery
+	 *
+	 */
+	public function adminComputersModified() {
+		try{
+			$bean = $this->_getAdminFromGet();
+			
+			$modified = UFra::factory('UFbean_Sru_ComputerList');
+			$modified->listLastModified($bean->id);
+			$d['modifiedComputers'] = $modified;
+			
+			return $this->render(__FUNCTION__, $d);
+		}catch(UFex_Dao_NotFound $e){
+			return '';
+		}	
+	}
+	
+	/**
+	 * Ostatnio modyfikowane usługi
+	 *
+	 */
+	public function adminUserServicesModified() {
+		try{
+			$bean = $this->_getAdminFromGet();
+			
+			$modified = UFra::factory('UFbean_Sru_UserServiceList');
+			$modified->listLastModified($bean->id);
+			$d['modifiedUserServices'] = $modified;
+			
+			return $this->render(__FUNCTION__, $d);
+		}catch(UFex_Dao_NotFound $e){
+			return '';
+		}	
+	}
+	
+	/**
+	 * Ostatnio dodane usługi
+	 *
+	 */
+	public function adminUserServicesAdded() {
+		try{
+			$bean = $this->_getAdminFromGet();
+			
+			$modified = UFra::factory('UFbean_Sru_UserServiceList');
+			$modified->listLastAdded($bean->id);
+			$d['addedUserServices'] = $modified;
+			
+			return $this->render(__FUNCTION__, $d);
+		}catch(UFex_Dao_NotFound $e){
+			return '';
+		}	
+	}
+	
 	public function penaltyAddMailTitle($user) {
 		$d['user'] = $user;
 		return $this->render(__FUNCTION__, $d);

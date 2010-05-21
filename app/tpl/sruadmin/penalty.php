@@ -88,7 +88,7 @@ extends UFtpl_Common {
 				echo '<li>';
 			}
 			echo date(self::TIME_YYMMDD_HHMM, $c['startAt']);
-			echo ' dla: <a href="'.$url.'/penalties/'.$c['id'].'">'.$this->_escape($c['userName']).' '.$this->_escape($c['userSurname']).'</a>';
+			echo ' dla: <a href="'.$url.'/penalties/'.$c['id'].'">'.$this->_escape($c['userName']).' "'.$c['userLogin'].'" '.$this->_escape($c['userSurname']).'</a>';
 			if ($showAddedBy == true) {
 				echo ' <small>przez: <a href="'.$url.'/admins/'.$c['createdById'].'">'.$this->_escape($c['creatorName']).'</a>';
 			} else {
@@ -111,7 +111,7 @@ extends UFtpl_Common {
 				echo '<li>';
 			}
 			echo date(self::TIME_YYMMDD_HHMM, $c['modifiedAt']);
-			echo ' dla: <a href="'.$url.'/penalties/'.$c['id'].'">'.$this->_escape($c['userName']).' '.$this->_escape($c['userSurname']).'</a> ';
+			echo ' dla: <a href="'.$url.'/penalties/'.$c['id'].'">'.$this->_escape($c['userName']).' "'.$c['userLogin'].'" '.$this->_escape($c['userSurname']).'</a> ';
 			echo ' <small>modyfikowana '.$c['modificationCount'].' raz(y)</small>';
 			echo '<small>, ostatnio przez: <a href="'.$url.'/admins/'.$c['modifiedById'].'">'.$this->_escape($c['modifierName']).'</a>';
 			echo ($this->_escape($c['templateTitle']) != null ? ', za: '.$this->_escape($c['templateTitle']) : '');
@@ -124,7 +124,7 @@ extends UFtpl_Common {
 		$d['endAt'] = date(self::TIME_YYMMDD_HHMM, $d['endAt']);
 		$url = $this->url(0);
 		
-		echo '<p><em>Ukarany:</em> <a href="'.$url.'/users/'.$d['userId'].'">'.$this->_escape($d['userName']).' '.$this->_escape($d['userSurname']).' ('.$d['userLogin'].')</a></p>';
+		echo '<p><em>Ukarany:</em> <a href="'.$url.'/users/'.$d['userId'].'">'.$this->_escape($d['userName']).' "'.$c['userLogin'].'" '.$this->_escape($d['userSurname']).' ('.$d['userLogin'].')</a></p>';
 
 		if ($d['active']) {
 			echo '<p><em>Kara trwa:</em> '.date(self::TIME_YYMMDD_HHMM, $d['startAt']).' &mdash; <strong>'.$d['endAt'].'</strong>'.($d['amnestyAfter']<$endAtTimestamp?' (modyfikacja możliwa po '.date(self::TIME_YYMMDD_HHMM, $d['amnestyAfter']).')':'').'</p>';

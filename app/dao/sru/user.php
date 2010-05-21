@@ -146,4 +146,22 @@ extends UFdao {
 
 		return $this->doSelect($query);
 	}
+	
+	/**
+	 * Funkcja konstruująca zapytanie wyciągające 10 ostatnio zmodyfikowanych/dodanych użytkowników.
+	 *
+	 */
+	public function listLastModified($id = null, $page=1, $perPage=10, $overFetch=0) {
+		$mapping = $this->mapping('get');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->modifiedAt, 0, $query->GTE);
+		if (isset($id)) {
+			$query->where($mapping->modifiedById, $id);
+		}
+		$query->order($mapping->modifiedAt,  $query->DESC);
+		$query->limit(10);
+
+		return $this->doSelect($query);
+	}
 }

@@ -47,6 +47,22 @@ extends UFtpl_Common {
 		'studyYearId/noFaculty' => 'Nieokreślony wydział',
 	);
 
+	/*
+	 * Szablon wyświetlania ostatnio modyfikowanych użytkowników
+	 * 
+	 */
+	public function userLastModified(array $d){
+		$url = $this->url(0);
+		
+		foreach($d as $c){
+			echo '<li>';
+			echo date(self::TIME_YYMMDD_HHMM, $c['modifiedAt']);
+			echo ' zmodyfikował/dodał użytkownika: <small><a href="'.$url.'/users/'.$c['id'].'">';
+			echo $this->_escape($c['name']).' "'.$c['login'].'" '.$this->_escape($c['surname']).'</a></small>';
+			echo '</li>';
+		}
+	}
+	
 	public function formLogin(array $d) {
 		$form = UFra::factory('UFlib_Form', 'userLogin', $d);
 
@@ -868,4 +884,5 @@ extends PeopleCounter
 		ksort($this->groupYear);
 		return $this->groupYear;
 	}
+	
 }

@@ -972,6 +972,42 @@ extends UFtpl_Common {
 		echo '<h3>Kary ostatnio modyfikowane</h3>';
 		$d['modifiedPenalties']->write('penaltyLastModified');
 	}
+	
+	/**
+	 * Tytuł do sekcji ostatnich akcji na użytkownikach
+	 *
+	 */
+	public function adminUsersModified(array $d) {
+		echo '<h3>Osoby ostatnio modyfikowane/dodane</h3>';
+		$d['modifiedUsers']->write('userLastModified');
+	}
+	
+	/**
+	 * Tytuł do sekcji ostatnich akcji na komputerach
+	 *
+	 */
+	public function adminComputersModified(array $d) {
+		echo '<h3>Komputery ostatnio modyfikowane/dodane</h3>';
+		$d['modifiedComputers']->write('computerLastModified');
+	}
+	
+	/**
+	 * Tytuł do sekcji ostatnio modyfikowanych usług
+	 *
+	 */
+	public function adminUserServicesModified(array $d) {
+		echo '<h3>Usługi ostatnio modyfikowane</h3>';
+		$d['modifiedUserServices']->write('userServiceLastModified');
+	}
+	
+	/**
+	 * Tytuł do sekcji ostatnio dodanych usług
+	 *
+	 */
+	public function adminUserServicesAdded(array $d) {
+		echo '<h3>Usługi ostatnio dodane</h3>';
+		$d['addedUserServices']->write('userServiceLastAdded');
+	}
 
 	public function servicesEdit(array $d) {
 		$form = UFra::factory('UFlib_Form');
