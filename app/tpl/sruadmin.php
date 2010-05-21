@@ -613,7 +613,7 @@ extends UFtpl_Common {
 		$form = UFra::factory('UFlib_Form');
 		$url = $this->url(0);
 
-		echo '<h2>Edycja switcha '.UFtpl_SruAdmin_Switch::displaySwitchName($d['switch']->dormitoryAlias, $d['switch']->hierarchyNo).'</h2>';
+		echo '<h2>Edycja switcha <a href="'.$this->url(0).'/switches/'.$d['switch']->id.'">'.UFtpl_SruAdmin_Switch::displaySwitchName($d['switch']->dormitoryAlias, $d['switch']->hierarchyNo).'</a></h2>';
 		echo $form->_start();
 		echo $d['switch']->write('formEdit', $d['dormitories'], $d['swModels']);
 		echo $form->_submit('Zapisz');
@@ -630,7 +630,7 @@ extends UFtpl_Common {
 		$form = UFra::factory('UFlib_Form');
 		$url = $this->url(0);
 
-		echo '<h2>Edycja portów switcha '.UFtpl_SruAdmin_Switch::displaySwitchName($d['switch']->dormitoryAlias, $d['switch']->hierarchyNo).'</h2>';
+		echo '<h2>Edycja portów switcha <a href="'.$this->url(0).'/switches/'.$d['switch']->id.'">'.UFtpl_SruAdmin_Switch::displaySwitchName($d['switch']->dormitoryAlias, $d['switch']->hierarchyNo).'</a></h2>';
 		echo $form->_start();
 		echo $d['ports']->write('formEdit', $d['switch'], $d['enabledSwitches'], $d['portAliases']);
 		echo $form->_end();

@@ -27,12 +27,13 @@ extends UFtpl_Common {
 
 	public function listSwitches(array $d) {
 		$url = $this->url(0).'/switches/';
+		$urlds = $this->url(0).'/dormitories/';
 		$lastDom = '-';
 
 		foreach ($d as $c) {
 			if($lastDom != $c['dormitoryId']) {
 				if($lastDom != '-') echo '</ul>';
-				echo '<h3>'.$c['dormitoryName'].'</h3>';
+				echo '<h3><a href="'.$urlds.$c['dormitoryAlias'].'">'.$c['dormitoryName'].'</a></h3>';
 				echo '<ul>';
 			}
 			
@@ -55,9 +56,9 @@ extends UFtpl_Common {
 	}
 
 	public function headerDetails(array $d) {
-		echo '<h2>Switch ';
+		echo '<h2>Switch <a href="'.$this->url(0).'/switches/'.$d['id'].'">';
 		echo $this->displaySwitchName($d['dormitoryAlias'], $d['hierarchyNo']);
-		echo '</h2>';
+		echo '</a></h2>';
 	}
 
 	public function details(array $d, $info, $lockouts) {
