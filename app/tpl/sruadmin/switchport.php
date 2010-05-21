@@ -93,7 +93,8 @@ changeMacVisibility();
 			'labels' => $form->_labelize($tmp, '', ''),
 		));
 		if (!is_null($status)) {
-			echo $form->portEnabled('Port włączony', array('type'=>$form->CHECKBOX, 'value'=>($status == UFlib_Snmp_Hp::DISABLED ? false : true)));
+			echo $form->portStatus('', array('type'=>$form->HIDDEN, 'value'=>($status == UFlib_Snmp_Hp::DISABLED ? 0 : 1)));
+			echo $form->portEnabled('Port włączony', array('type'=>$form->CHECKBOX, 'value'=>($status == UFlib_Snmp_Hp::DISABLED ? 0 : 1)));
 		}
 		echo $form->admin('Port admina', array('type'=>$form->CHECKBOX));
 		echo $form->comment('Komentarz');
