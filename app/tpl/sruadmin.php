@@ -551,7 +551,7 @@ extends UFtpl_Common {
 			echo $this->OK('Switch został dodany');
 		}
 
-		$d['switches']->write('listSwitches');
+		$d['switches']->write('listSwitches', $d['dorm']);
 		echo '</div>';
 	}
 	public function switchesNotFound() {

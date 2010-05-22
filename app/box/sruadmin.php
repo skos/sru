@@ -670,7 +670,14 @@ extends UFbox {
 	public function switches() {
 		try {
 			$bean = UFra::factory('UFbean_SruAdmin_SwitchList');
-			$bean->listAll();
+			$d['dorm'] = null;
+			try {
+				$dorm = $this->_getDormFromGet();
+				$d['dorm'] = $dorm;
+				$bean->listByDormitoryId($dorm->id);
+			} catch (UFex_Core_DataNotFound $e) {
+				$bean->listAll();
+			}
 			$d['switches'] = $bean;
 
 			return $this->render(__FUNCTION__, $d);

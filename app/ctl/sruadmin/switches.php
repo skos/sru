@@ -21,6 +21,18 @@ extends UFctl {
 				case ':add':
 					$get->view = 'switches/add';
 					break;
+				case 'dorm':
+					if (2 == $segCount) {
+						$get->view = 'error404';
+					} else {
+						switch ($req->segment(3)) {
+							default:
+								$get->view = 'switches/main';
+								$id = $req->segment(3);
+								$get->dormAlias = $id;
+						}
+					}
+					break;
 				default:
 					$get->view = 'switches/switch';
 					$id = (int)$req->segment(2);
@@ -45,29 +57,33 @@ extends UFctl {
 								$get->view = 'switches/portsedit';
 								break;
 							case 'port':
-								switch ($req->segment(4)) {
-									default:
-										$get->view = 'port/main';
-										$id = (int)$req->segment(4);
-										if ($id <= 0) {
-											$get->view = 'error404';
-											break;
-										}
-										$get->portId = $id;
+								if (3 == $segCount) {
+									$get->view = 'error404';
+								} else {
+									switch ($req->segment(4)) {
+										default:
+											$get->view = 'port/main';
+											$id = (int)$req->segment(4);
+											if ($id <= 0) {
+												$get->view = 'error404';
+												break;
+											}
+											$get->portId = $id;
 
-										if ($segCount > 4) {
-												switch ($req->segment(5)) {
-													case 'macs':
-														$get->view = 'port/macs';
-														break;
-													case ':edit':
-														$get->view = 'port/edit';
-														break;
-													default:
-														$get->view = 'error404';
-														break;
-												}
-										}
+											if ($segCount > 4) {
+													switch ($req->segment(5)) {
+														case 'macs':
+															$get->view = 'port/macs';
+															break;
+														case ':edit':
+															$get->view = 'port/edit';
+															break;
+														default:
+															$get->view = 'error404';
+															break;
+													}
+											}
+									}
 								}
 								break;
 							default:
@@ -77,7 +93,6 @@ extends UFctl {
 					}
 				}
 		}
-
 	}
 	protected function chooseAction($action = null) {
 		$req = $this->_srv->get('req');

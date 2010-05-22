@@ -25,7 +25,7 @@ extends UFtpl_Common {
 		return $swName;
 	}
 
-	public function listSwitches(array $d) {
+	public function listSwitches(array $d, $dorm) {
 		$url = $this->url(0).'/switches/';
 		$urlds = $this->url(0).'/dormitories/';
 		$lastDom = '-';
@@ -46,7 +46,11 @@ extends UFtpl_Common {
 			
 		}
 		echo '</ul>';
-		echo '<p class="nav"><a href="'.$url.':add">Dodaj nowego switcha</a></p>';
+		echo '<p class="nav"><a href="'.$url.':add">Dodaj nowego switcha</a>';
+		if (!is_null($dorm)) {
+			echo ' <a href="'.$url.'">Pokaż wszystkie</a>';
+		}
+		echo '</p>';
 	}
 
 	public function titleDetails(array $d) {
