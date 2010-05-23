@@ -39,7 +39,7 @@ extends UFact {
 				}
 			}
 
-			if (!is_null($post['lockouts'])) {
+			if (isset($post['lockouts'])) {
 				while (key($post['lockouts'])) {
 					if (current($post['lockouts'])) {
 						$result = $hp->setLockoutMac(key($post['lockouts']), false);
