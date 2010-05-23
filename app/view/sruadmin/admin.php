@@ -15,7 +15,7 @@ extends UFview_SruAdmin {
 		$this->append('body', $box->adminPenaltiesModified());
 		$this->append('body', $box->adminUsersModified());
 		$this->append('body', $box->adminComputersModified());
-		$this->append('body', $box->adminUserServicesAdded());
 		$this->append('body', $box->adminUserServicesModified());
+		$this->append('body', $box->adminUserServicesRequested());
 	}
 }

@@ -1564,7 +1564,7 @@ extends UFbox {
 	}
 	
 	/**
-	 * Ostatnio modyfikowane usługi
+	 * Ostatnio modyfikowane usługi (poziom administratora)
 	 *
 	 */
 	public function adminUserServicesModified() {
@@ -1572,7 +1572,7 @@ extends UFbox {
 			$bean = $this->_getAdminFromGet();
 			
 			$modified = UFra::factory('UFbean_Sru_UserServiceList');
-			$modified->listLastModified($bean->id);
+			$modified->listLastModified($bean->id, 1);
 			$d['modifiedUserServices'] = $modified;
 			
 			return $this->render(__FUNCTION__, $d);
@@ -1582,16 +1582,16 @@ extends UFbox {
 	}
 	
 	/**
-	 * Ostatnio dodane usługi
+	 * Ostatnio modyfikowane usługi (poziom użytkownika)
 	 *
 	 */
-	public function adminUserServicesAdded() {
+	public function adminUserServicesRequested() {
 		try{
 			$bean = $this->_getAdminFromGet();
 			
 			$modified = UFra::factory('UFbean_Sru_UserServiceList');
-			$modified->listLastAdded($bean->id);
-			$d['addedUserServices'] = $modified;
+			$modified->listLastModified($bean->id, 2);
+			$d['requestedUserServices'] = $modified;
 			
 			return $this->render(__FUNCTION__, $d);
 		}catch(UFex_Dao_NotFound $e){

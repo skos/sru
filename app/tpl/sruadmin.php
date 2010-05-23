@@ -1006,17 +1006,17 @@ extends UFtpl_Common {
 	 *
 	 */
 	public function adminUserServicesModified(array $d) {
-		echo '<h3>Usługi ostatnio modyfikowane</h3>';
+		echo '<h3>Usługi aktywowane/dezaktywowane (poziom admina)</h3>';
 		$d['modifiedUserServices']->write('userServiceLastModified');
 	}
 	
 	/**
-	 * Tytuł do sekcji ostatnio dodanych usług
+	 * Tytuł do sekcji ostatnich próśb o aktywację/dezaktywację usług
 	 *
 	 */
-	public function adminUserServicesAdded(array $d) {
-		echo '<h3>Usługi ostatnio dodane</h3>';
-		$d['addedUserServices']->write('userServiceLastAdded');
+	public function adminUserServicesRequested(array $d) {
+		echo '<h3>Usługi aktywowane/dezaktywowane (poziom usera)</h3>';
+		$d['requestedUserServices']->write('userServiceLastRequested');
 	}
 
 	public function servicesEdit(array $d) {
