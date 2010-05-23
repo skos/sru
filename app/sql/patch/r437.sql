@@ -110,7 +110,8 @@ ALTER TABLE ONLY switches_port
     ADD CONSTRAINT switches_port_switch_fkey FOREIGN KEY (switch) REFERENCES switches(id);
 
 INSERT INTO switches_model (id, model_name, model_no, ports_no) VALUES (1, 'HP2848', 'J4904A', 48);
-INSERT INTO switches_model (id, model_name, model_no, ports_no) VALUES (2, 'HP2810', 'J9022A', 48);
-INSERT INTO switches_model (id, model_name, model_no, ports_no) VALUES (3, 'HP3400cl', 'J8435A', 48);
-INSERT INTO switches_model (id, model_name, model_no, ports_no) VALUES (4, 'HP3500yl', 'J9311A', 48);
+INSERT INTO switches_model (id, model_name, model_no, ports_no) VALUES (2, 'HP2810-48G', 'J9022A', 48);
+INSERT INTO switches_model (id, model_name, model_no, ports_no) VALUES (3, 'HP3400cl-48G,', 'J4906A', 48);
+INSERT INTO switches_model (id, model_name, model_no, ports_no) VALUES (4, 'HP3500yl-48G,', 'J8693A', 48);
 INSERT INTO switches_model (id, model_name, model_no, ports_no) VALUES (5, 'HP6108', 'J4902A', 8);
+INSERT INTO switches_model (id, model_name, model_no, ports_no) VALUES (6, 'HP2810-24G', 'J9021A', 24);
