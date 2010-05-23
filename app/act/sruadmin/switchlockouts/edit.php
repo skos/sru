@@ -24,6 +24,15 @@ extends UFact {
 				if (!preg_match($pattern, $post['mac'])) {
 					throw UFra::factory('UFex_Dao_DataNotValid', 'MAC format error', 0, E_WARNING, array('mac' => 'wrongFormat'));
 				}
+				if (strlen($post['mac']) < 17) {
+					$mac = $post['mac'];
+					for ($i = 0; $i < 5; $i++) {
+						if ($mac[$i * 3 + 2] != ':' && $mac[$i * 3 + 2] != '-') {
+							$mac = substr($mac, 0, $i * 3 + 2).':'.substr($mac, $i * 3 + 2);
+						}
+					}
+					$post['mac'] = $mac;
+				}
 				$result = $hp->setLockoutMac($post['mac']);
 				if (!$result) {
 					throw UFra::factory('UFex_Dao_DataNotValid', 'Writing to switch error', 0, E_WARNING, array('switch' => 'writingError'));

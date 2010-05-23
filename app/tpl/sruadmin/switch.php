@@ -234,7 +234,7 @@ changeVisibility();
 	public function formEditLockouts(array $d, $lockouts) {
 		$form = UFra::factory('UFlib_Form', 'switchLockoutsEdit', $d, $this->errors);
 		echo $form->_fieldset();
-		if ($this->_srv->get('msg')->get('switchPortEdit/errors/switch/writingError')) {
+		if ($this->_srv->get('msg')->get('switchLockoutsEdit/errors/switch/writingError')) {
 			echo $this->ERR('Nie udało się zapisać danych na switcha');
 		}
 		if (!is_null($lockouts)) {
