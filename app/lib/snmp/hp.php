@@ -62,6 +62,7 @@ extends UFlib_Snmp {
 		if ($ios == false) {
 			return null;
 		}
+		$info['ios'] = $ios[0];
 		$info['serialNo'] = trim(@snmpget($this->ip, $this->communityR, $this->OIDs['serialNo'], $this->timeout));
 		return $info;
 	}

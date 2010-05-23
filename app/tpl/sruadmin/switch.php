@@ -139,10 +139,12 @@ changeVisibility();
 			$uptimeS = floor($info['uptime'] / (100)) - $uptimeD * 24 * 60 * 60 - $uptimeH * 60 * 60 - $uptimeM * 60;
 			echo '<p><em>Uptime:</em> '.$uptimeD.' dni, '.$uptimeH.' godzin, '.$uptimeM.' minut, '.$uptimeS.' sekund</p>';
 			echo '<p><em>CPU:</em> '.$info['cpu'].'%</p>';
-			echo '<img src="http://chart.apis.google.com/chart?chs=400x150&cht=gom&chd=t:'.$info['cpu'].'&chco=00FF00,FFFF00,FF8040,FF0000&chxt=x,y&chxl=0:||1:|0%|100%" alt=""/>';
 			$mem = round($info['memUsed']/$info['memAll']*100,2);
 			echo '<p><em>Pamięć zużyta:</em> '.$mem.'%</p>';
-			echo '<img src="http://chart.apis.google.com/chart?chs=400x150&cht=gom&chd=t:'.$mem.'&chco=00FF00,FFFF00,FF8040,FF0000&chxt=x,y&chxl=0:||1:|0%|100%" alt=""/>';
+			echo '<table><tr>';
+			echo '<td><img src="http://chart.apis.google.com/chart?chs=300x150&cht=gom&chd=t:'.$info['cpu'].'&chco=00FF00,FFFF00,FF8040,FF0000&chxt=x,y&chxl=0:||1:|0%|100%" alt=""/></td>';
+			echo '<td><img src="http://chart.apis.google.com/chart?chs=300x150&cht=gom&chd=t:'.$mem.'&chco=00FF00,FFFF00,FF8040,FF0000&chxt=x,y&chxl=0:||1:|0%|100%" alt=""/></td>';
+			echo '</tr></table>';
 		}
 	}
 	
