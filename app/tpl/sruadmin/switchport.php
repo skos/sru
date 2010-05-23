@@ -47,6 +47,13 @@ extends UFtpl_Common {
 
 	public function formEditOne(array $d, $switch, $enabledSwitches, $status) {
 		$post = $this->_srv->get('req')->post;
+		
+		try {
+			$portEnabled = $post->switchPortEdit['portEnabled'];
+
+		} catch (UFex_Core_DataNotFound  $e) {
+			$portEnabled = ($status == UFlib_Snmp_Hp::DISABLED ? 0 : 1);
+		}
 
 		$form = UFra::factory('UFlib_Form', 'switchPortEdit', $d, $this->errors);
 		echo $form->_fieldset();
@@ -73,7 +80,7 @@ extends UFtpl_Common {
 		));
 		if (!is_null($status)) {
 			echo $form->portStatus('', array('type'=>$form->HIDDEN, 'value'=>($status == UFlib_Snmp_Hp::DISABLED ? 0 : 1)));
-			echo $form->portEnabled('Port włączony', array('type'=>$form->CHECKBOX, 'value'=>($status == UFlib_Snmp_Hp::DISABLED ? 0 : 1)));
+			echo $form->portEnabled('Port włączony', array('type'=>$form->CHECKBOX, 'value'=>$portEnabled));
 		}
 		echo $form->admin('Port admina', array('type'=>$form->CHECKBOX));
 		echo $form->comment('Komentarz');
