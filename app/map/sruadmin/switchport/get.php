@@ -52,7 +52,7 @@ extends UFmap {
 		'c' => 'p.connected_switch=c.id',
 		'd' => 'c.dormitory=d.id',
 		's' => 'p.switch=s.id',
-		'a' => 'l.dormitory_id=a.id',
+		'a' => 's.dormitory=a.id',
 	);
 	protected $pk = 'id';
 }
