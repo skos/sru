@@ -581,6 +581,10 @@ extends UFtpl_Common {
 	public function switchPorts(array $d) {
 		$d['ports']->write('listPorts', $d['switch'], $d['portStatuses']);
 	}
+	public function roomSwitchPorts(array $d) {
+		echo '<h3>Przypisane porty</h3>';
+		$d['ports']->write('listRoomPorts', $d['room'], $d['portStatuses']);
+	}
 	public function switchPortDetails(array $d) {
 		if ($this->_srv->get('msg')->get('switchPortEdit/ok')) {
 			echo $this->OK('Dane portu switcha zostały zmienione');

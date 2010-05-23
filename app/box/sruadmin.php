@@ -743,6 +743,29 @@ extends UFbox {
 		}
 	}
 
+	public function roomSwitchPorts() {
+		try {
+			$bean = $this->_getRoomFromGet();
+			$d['room'] = $bean;
+
+			$ports = UFra::factory('UFbean_SruAdmin_SwitchPortList');
+			$ports->listByLocationId($bean->id);
+			$d['ports'] = $ports;
+			
+			$statuses = array();
+			foreach ($ports as $port) {
+				$switch = UFra::factory('UFlib_Snmp_Hp', $port['switchIp']);
+				$status = $switch->getPortStatus($port['ordinalNo']);
+				$statuses[] = $status;
+			}
+			$d['portStatuses'] = $statuses;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render('switchPortsNotFound');
+		}
+	}
+
 	public function switchPortDetails() {
 		try {
 			$bean = $this->_getSwitchPortFromGet();

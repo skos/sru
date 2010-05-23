@@ -123,6 +123,50 @@ extends UFtpl_Common {
 		echo '</div>';
 	}
 
+	public function listRoomPorts(array $d, $room, $portStatuses) {
+		$url = $this->url(0).'/switches/';
+		$i = 0;
+		$switch = 0;
+
+		echo '<div class="switchports">';
+		foreach ($d as $port) {
+			if ($switch != $port['switchId']) {
+				if ($switch != 0) echo '</table>';
+				echo '<h4>Switch <a href="'.$url.$port['switchId'].'">'.UFtpl_SruAdmin_Switch::displaySwitchName($port['dormitoryAlias'], $port['switchNo']).'</a></h4>';
+				$switch = $port['switchId'];
+				echo '<table>';
+			}
+			if ($i % 8 == 0) {
+				echo '<tr>';
+			}
+			echo '<td title="'.$this->_escape($port['comment']).'" class="';
+			if ($portStatuses == null) {
+				echo "unknown";
+			} else if ($portStatuses[$i] == UFlib_Snmp_Hp::DISABLED) {
+				echo "disabled";
+			} else if ($portStatuses[$i] == UFlib_Snmp_Hp::DOWN) {
+				echo "down";
+			} else {
+				echo "up";
+			}
+			echo '">';
+			echo '<a href="'.$url.$port['switchId'].'/port/'.$port['id'].'">';
+			echo $port['admin'] ?'<strong>' : '';
+			echo $port['ordinalNo'];
+			echo $port['admin'] ?'</strong>' : '';
+			echo '</a>';
+			echo ($port['comment'] == '') ? '' : ' <img src="'.UFURL_BASE.'/i/gwiazdka.png" />';
+			echo '</td>';
+			if (($i + 1) % 8 == 0) {
+				echo '</tr>';
+			}
+			$i++;
+		}
+		echo '</table>';
+		echo '<p class="nav"><a href="'.$url.'dorm/'.$room->dormitoryAlias.'">Pokaż switche akademika</a> </p>';
+		echo '</div>';
+	}
+
 	public function formEdit(array $d, $switch, $enabledSwitches, $portAliases) {
 		$post = $this->_srv->get('req')->post;
 		$url = $this->url(0);

@@ -107,10 +107,13 @@ extends UFlib_Snmp {
 		if ($status == false) {
 			return null;
 		}
+		$activity = @snmpget($this->ip, $this->communityR, $this->OIDs['portActivities'].'.'.$port, $this->timeout);
 		if ($status == 2) {
 			$result = self::DISABLED;
+		} else if ($activity == 2) {
+			$result = self::DOWN;
 		} else {
-			$result = self::ENABLED;
+			$result = self::UP;
 		}
 		return $result;
 	}

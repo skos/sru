@@ -15,6 +15,17 @@ extends UFdao {
 		return $this->doSelect($query);
 	}
 
+	public function listByLocationId($id) {
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->locationId, $id);
+		$query->order($mapping->switchNo, $query->ASC);
+		$query->order($mapping->ordinalNo, $query->ASC);
+
+		return $this->doSelect($query);
+	}
+
 	public function getByIpAndOrdinalNo($ip, $ordinalNo) {
 		$mapping = $this->mapping('get');
 
