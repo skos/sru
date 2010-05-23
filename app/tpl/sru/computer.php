@@ -52,8 +52,8 @@ extends UFtpl_Common {
 		foreach($d as $c){
 			echo '<li>';
 			echo date(self::TIME_YYMMDD_HHMM, $c['modifiedAt']);
-			echo ' zmodyfikował/dodał komputer: <a href="'.$url.'/computers/'.$c['id'].'">';
-			echo $this->_escape($c['host']).'</a> należący do użytkownika <small>';
+			echo '<small> zmodyfikował/dodał komputer: </small><a href="'.$url.'/computers/'.$c['id'].'">';
+			echo $this->_escape($c['host']).'</a><small> należący do użytkownika ';
 			echo '<a href="'.$url.'/users/'.$c['userId'].'">'.$this->_escape($c['userName']).' "';
 			echo $c['login'].'" '.$this->_escape($c['userSurname']).'</a> ';
 			echo '</small></li>';
