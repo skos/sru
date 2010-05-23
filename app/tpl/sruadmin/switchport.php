@@ -126,17 +126,27 @@ extends UFtpl_Common {
 	public function listRoomPorts(array $d, $room, $portStatuses) {
 		$url = $this->url(0).'/switches/';
 		$i = 0;
+		$j = 0;
 		$switch = 0;
 
 		echo '<div class="switchports">';
 		foreach ($d as $port) {
 			if ($switch != $port['switchId']) {
-				if ($switch != 0) echo '</table>';
+				if ($switch != 0) {
+					if (($j + 1) % 8 != 0) {
+						while (($j + 1) % 8 != 0) {
+							echo '<td></td>';
+							$j++;
+						}
+						echo '</tr>';
+					}
+					echo '</table>';
+				}
 				echo '<h4>Switch <a href="'.$url.$port['switchId'].'">'.UFtpl_SruAdmin_Switch::displaySwitchName($port['dormitoryAlias'], $port['switchNo']).'</a></h4>';
 				$switch = $port['switchId'];
 				echo '<table>';
 			}
-			if ($i % 8 == 0) {
+			if ($j % 8 == 0) {
 				echo '<tr>';
 			}
 			echo '<td title="'.$this->_escape($port['comment']).'" class="';
@@ -157,10 +167,18 @@ extends UFtpl_Common {
 			echo '</a>';
 			echo ($port['comment'] == '') ? '' : ' <img src="'.UFURL_BASE.'/i/gwiazdka.png" />';
 			echo '</td>';
-			if (($i + 1) % 8 == 0) {
+			if (($j + 1) % 8 == 0) {
 				echo '</tr>';
 			}
 			$i++;
+			$j++;
+		}
+		if (($j + 1) % 8 != 0) {
+			while (($j + 1) % 8 != 0) {
+				echo '<td></td>';
+				$j++;
+			}
+			echo '</tr>';
 		}
 		echo '</table>';
 		echo '<p class="nav"><a href="'.$url.'dorm/'.$room->dormitoryAlias.'">Pokaż switche akademika</a> </p>';
