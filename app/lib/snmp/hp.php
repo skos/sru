@@ -28,6 +28,7 @@ extends UFlib_Snmp {
 		'macs' => '1.3.6.1.4.1.11.2.14.2.10.5.1.3.1',
 		'lockouts' => 'mib-2.17.7.1.3.1.1.4.4095',
 		'port' => '.1.3.6.1.2.1.17.4.3.1.2',
+		'trunk' => '1.3.6.1.4.1.11.2.14.11.5.1.7.1.3.1.1.8',
 	);
 
 	public function uFlib_Snmp_Hp ($ip = null) {
@@ -176,6 +177,17 @@ extends UFlib_Snmp {
 
 				// sprawdzamy, czy na znalezionym porcie jest jakis switch
 				try {
+					if ($portUser > 48) {
+						$name = $portUser - 50;
+						if ($name < 0) $name = $name + 2;
+						$trunks = @snmpwalk($switchIp, $this->communityR, $this->OIDs['trunk'], $this->timeout);
+						for ($i = 0; $i < count($trunks); $i++) {
+							if ($trunks[$i] == $name) {
+								$portUser = $i + 1;
+								break;
+							}
+						}
+					}
 					$switchPort = UFra::factory('UFbean_SruAdmin_SwitchPort');
 					$switchPort->getByIpAndOrdinalNo($switchIp, $portUser);
 					if (!is_null($switchPort->connectedSwitchIp)) {
