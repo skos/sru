@@ -26,7 +26,7 @@ extends UFtpl_Common {
 		}
 		echo '<p><em>Port admina:</em> '.($d['admin'] ? 'tak' : 'nie').'</p>';
 		echo '<p><em>Komentarz:</em> '.$d['comment'].'</p>';
-		echo '<p class="nav"><a href="'.$url.'">Wróć do listy</a> ';
+		echo '<p class="nav"><a href="'.$url.'dorm/'.$d['dormitoryAlias'].'">Wróć do listy</a> <a href="'.$url.'">Pokaż wszystkie</a> ';
 		echo '<a href="'.$url.$switch->id.'/port/'.$d['id'].'/macs">Pokaż adresy MAC</a> ';
 		echo '<a href="'.$url.$switch->id.'/port/'.$d['id'].'/:edit">Edytuj port</a></p>';
 	}
@@ -42,7 +42,8 @@ extends UFtpl_Common {
 			}
 		}
 		echo '</p>';
-		echo '<p class="nav"><a href="'.$url.'">Wróć do listy</a> <a href="'.$url.$switch->id.'/port/'.$d['id'].'/:edit">Edytuj port</a></p>';
+		echo '<p class="nav"><a href="'.$url.'dorm/'.$d['dormitoryAlias'].'">Wróć do listy</a> <a href="'.$url.'">Pokaż wszystkie</a> ';
+		echo '<a href="'.$url.$switch->id.'/port/'.$d['id'].'/:edit">Edytuj port</a></p>';
 	}
 
 	public function formEditOne(array $d, $switch, $enabledSwitches, $status) {
@@ -126,7 +127,8 @@ extends UFtpl_Common {
 			}
 		}
 		echo '</table>';
-		echo '<p class="nav"><a href="'.$url.'">Wróć do listy</a> <a href="'.$url.$switch->id.'/:portsedit">Edytuj porty</a></p>';
+		echo '<p class="nav"><a href="'.$url.'dorm/'.$switch->dormitoryAlias.'">Wróć do listy</a> <a href="'.$url.'">Pokaż wszystkie</a> ';
+		echo '<a href="'.$url.$switch->id.'/:portsedit">Edytuj porty</a></p>';
 		echo '</div>';
 	}
 

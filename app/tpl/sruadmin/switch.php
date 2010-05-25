@@ -83,7 +83,7 @@ extends UFtpl_Common {
 		echo '<h3>Dane urządzenia</h3>';
 		echo '<p><em>Model:</em> '.$d['model'].' ('.$d['modelNo'].')</p>';
 		echo '<p><em>IP:</em> '.$d['ip'].'</p>';
-		echo '<p class="nav"><a href="'.$url.'/switches/">Wróć do listy</a> <a href="'.$url.'/switches/'.$d['id'].'/:edit">Edytuj</a> ';
+		echo '<p class="nav"><a href="'.$url.'/switches/dorm/'.$d['dormitoryAlias'].'">Wróć do listy</a> <a href="'.$url.'/switches/">Pokaż wszystkie</a> <a href="'.$url.'/switches/'.$d['id'].'/:edit">Edytuj</a> ';
 		if (!is_null($info)) {
 			echo '<a href="'.$url.'/switches/'.$d['id'].'/:lockoutsedit">Zmień zablokowane adresy MAC</a> ';
 		}
