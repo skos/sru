@@ -102,9 +102,9 @@ extends UFtpl_Common {
 		echo '<p><em>Właściciel:</em> '.$user.'</p>';
 		echo '<p><em>MAC:</em> ';
 		if ($switchPort != null) {
-			echo '<a href="'.$this->url(0).'/switches/'.$switchPort->switchId.'/port/'.$switchPort->id.'">'.$d['mac'].'</a> ';
+			echo '<a href="'.$this->url(0).'/switches/'.$switchPort->switchId.'/port/'.$switchPort->id.'/macs">'.$d['mac'].'</a> ';
 			echo '<small>(<a href="'.$this->url(0).'/switches/'.$switchPort->switchId.'">'.UFtpl_SruAdmin_Switch::displaySwitchName($switchPort->dormitoryAlias, $switchPort->switchNo).'</a>, ';
-			echo 'port '.$switchPort->ordinalNo.')</small>';
+			echo '<a href="'.$this->url(0).'/switches/'.$switchPort->switchId.'/port/'.$switchPort->id.'">port '.$switchPort->ordinalNo.'</a>)</small>';
 		} else {
 			echo $d['mac'];
 		}
