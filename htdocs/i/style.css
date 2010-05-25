@@ -92,5 +92,6 @@ img { border-style: none; }
 #main .switchports td.down { background-color: #ffa37f;}
 #main .switchports td.up { background-color: #a4ff42;}
 #main .switchports td.unknown { background-color: white;}
+#main .inoperational { background-color: #ffa766; }
 
 #foot { text-align: center; font-size: 0.5em; margin-top: 2em; clear: both; }

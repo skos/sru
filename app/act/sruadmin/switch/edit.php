@@ -22,6 +22,10 @@ extends UFact {
 				if (!is_null($exists) && $exists['id'] != $bean->id) {
 					throw UFra::factory('UFex_Dao_DataNotValid', 'Data hierarchyNo dupliacted in dormitory', 0, E_WARNING, array('hierarchyNo' => 'duplicated'));
 				}
+			} else {
+				if (!is_null($bean->ip)) {
+					throw UFra::factory('UFex_Dao_DataNotValid', 'IP address without hierarchy no', 0, E_WARNING, array('ip' => 'noHierachyNo'));
+				}
 			}
 			if ($modelId != $bean->modelId && (!array_key_exists('ignoreModelChange', $post) || 0 == $post['ignoreModelChange'])) {
 				throw UFra::factory('UFex_Dao_DataNotValid', 'Change of switch model', 0, E_WARNING,  array('model' => 'change'));

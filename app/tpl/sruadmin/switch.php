@@ -12,6 +12,7 @@ extends UFtpl_Common {
 		'inventoryNo/duplicated' => 'Numer inwentarzowy jest już zajęty',
 		'hierarchyNo/duplicated' => 'Numer w hierarchii jest już zajęty',
 		'ip/duplicated' => 'Numer IP jest już zajęty',
+		'ip/noHierachyNo' => 'Numer IP może być przydzielony jedynie switchowi z numerem hierarchii',
 		'dormitoryId' => 'Podaj akademik',
 		'mac/wrongFormat' => 'Błędny format adresu MAC',
 	);
@@ -37,10 +38,16 @@ extends UFtpl_Common {
 				echo '<ul>';
 			}
 			
-			echo '<li><a href="'.$url.$c['id'].'">';
+			echo '<li>';
+			echo is_null($c['ip']) ? '<del>' : '';
+			echo $c['operational'] ? '' : '<span class="inoperational">';
+			echo '<a href="'.$url.$c['id'].'">';
 			echo $this->displaySwitchName($c['dormitoryAlias'], $c['hierarchyNo']);
 			echo ' ('.$this->_escape($c['model']).')';
-			echo '</a></li>';
+			echo '</a>';
+			echo $c['operational'] ? '' : '</span>';
+			echo is_null($c['ip']) ? '</del>' : '';
+			echo '</li>';
 			
 			$lastDom = $c['dormitoryId'];
 			

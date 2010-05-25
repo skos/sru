@@ -20,6 +20,10 @@ extends UFact {
 				if (!is_null($exists)) {
 					throw UFra::factory('UFex_Dao_DataNotValid', 'Data hierarchyNo dupliacted in dormirory', 0, E_WARNING, array('hierarchyNo' => 'duplicated'));
 				}
+			} else {
+				if (!is_null($bean->ip)) {
+					throw UFra::factory('UFex_Dao_DataNotValid', 'IP address without hierarchy no', 0, E_WARNING, array('ip' => 'noHierachyNo'));
+				}
 			}
 			$id = $bean->save();
 
