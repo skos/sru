@@ -217,6 +217,10 @@ changeVisibility();
 			'labels' => $form->_labelize($tmp),
 		));
 		echo $form->locationAlias('Pokój');
+		echo $form->typeId('Typ', array(
+			'type' => $form->SELECT,
+			'labels' => $form->_labelize($this->computerTypes),
+		));
 		echo $form->_fieldset('Uprawnienia');
 		echo $form->canAdmin('Komputer administratora', array('type'=>$form->CHECKBOX));
 		echo $form->_end();

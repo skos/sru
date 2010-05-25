@@ -50,7 +50,7 @@ extends UFact {
 				$post['availableMaxTo'] = 'NOW';
 				$this->_srv->get('req')->post->{self::PREFIX} = $post;
 			}
-			$bean->fillFromPost(self::PREFIX, array('typeId'));
+			$bean->fillFromPost(self::PREFIX, null, array('typeId')); // zgodnie z ticketem #176 filtr wyłączony
 			if (!$bean->active && $bean->availableMaxTo > NOW) {
 				// przywrocenie aktywnosci komputera, jezeli podano
 				// przyszla date waznosci rejestracji
