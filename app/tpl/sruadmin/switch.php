@@ -47,7 +47,12 @@ extends UFtpl_Common {
 			echo '</a>';
 			echo $c['operational'] ? '' : '</span>';
 			echo is_null($c['ip']) ? '</del>' : '';
-			echo '</li>';
+			echo ' - <small><a href="'.$url.''.$c['id'].'/:edit">Edytuj</a>';
+			if (!is_null($c['ip'])) {
+				echo ' &bull; <a href="'.$url.''.$c['id'].'/:lockoutsedit">Lockout-MAC</a>';
+				echo ' &bull; <a href="'.$url.$c['id'].'/tech">Technikalia</a>';
+			}
+			echo '</small></li>';
 			
 			$lastDom = $c['dormitoryId'];
 			
@@ -92,7 +97,7 @@ extends UFtpl_Common {
 		echo '<p><em>IP:</em> '.$d['ip'].'</p>';
 		echo '<p class="nav"><a href="'.$url.'/switches/dorm/'.$d['dormitoryAlias'].'">Wróć do listy</a> <a href="'.$url.'/switches/">Pokaż wszystkie</a> <a href="'.$url.'/switches/'.$d['id'].'/:edit">Edytuj</a> ';
 		if (!is_null($info)) {
-			echo '<a href="'.$url.'/switches/'.$d['id'].'/:lockoutsedit">Zmień zablokowane adresy MAC</a> ';
+			echo '<a href="'.$url.'/switches/'.$d['id'].'/:lockoutsedit">Lockout-MAC</a> ';
 		}
 		echo '<a href="'.$url.'/switches/'.$d['id'].'/tech">Technikalia</a> <span id="switchMoreSwitch"></span></p>';
 		echo '<div id="switchMore">';

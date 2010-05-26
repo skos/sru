@@ -9,6 +9,5 @@ extends UFview_SruAdmin {
 		$this->append('title', $box->titleSwitch());
 		$this->append('body', $box->switchDetails());
 		$this->append('body', $box->switchTech());
-		$this->append('body', $box->switchPorts());
 	}
 }
