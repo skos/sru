@@ -101,7 +101,7 @@ extends UFtpl_Common {
 				echo '<tr>';
 			}
 			echo '<td title="'.$this->_escape($d[$i]['comment']).'" class="';
-			if ($portStatuses == null) {
+			if ($portStatuses == null || !isset($portStatuses[$i])) {
 				echo "unknown";
 			} else if ($portStatuses[$i] == UFlib_Snmp_Hp::DISABLED) {
 				echo "disabled";

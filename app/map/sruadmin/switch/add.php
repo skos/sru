@@ -37,7 +37,7 @@ extends UFmap {
 	protected $valids = array(
 		'serialNo' => array('textMin'=>1, 'textMax'=>100, 'regexp'=>'^[-a-zA-Z0-9\.@_]+$'),
 		'dormitoryId' => array('textMin'=>1),
-		'ip' => array('regexp'=>'^[0-9]{1,3}(\.[0-9]{1,3}){3}$'),
+		'ip' => array('regexp'=>'^[0-9]{1,3}(\.[0-9]{1,3}){3}$|^$'),
 	);
 	protected $pk = 'id';
 }

@@ -13,7 +13,14 @@ extends UFact {
 			$bean = UFra::factory('UFbean_SruAdmin_Switch');
 			$bean->getByPK((int)$this->_srv->get('req')->get->switchId);
 			$modelId = $bean->modelId;
-			$bean->fillFromPost(self::PREFIX);
+
+			try {
+				$bean->fillFromPost(self::PREFIX);
+			} catch (UFex_Db_QueryFailed $e) {
+				$this->rollback();
+				$this->markErrors(self::PREFIX, array('ip'=>'regexp'));
+				return;
+			}
 			$post = $this->_srv->get('req')->post->{self::PREFIX};
 
 			if (!is_null($bean->hierarchyNo)) {

@@ -13,13 +13,14 @@ extends UFtpl_Common {
 		'hierarchyNo/duplicated' => 'Numer w hierarchii jest już zajęty',
 		'ip/duplicated' => 'Numer IP jest już zajęty',
 		'ip/noHierachyNo' => 'Numer IP może być przydzielony jedynie switchowi z numerem hierarchii',
+		'ip/regexp' => 'Błędny format numeru IP',
 		'dormitoryId' => 'Podaj akademik',
 		'mac/wrongFormat' => 'Błędny format adresu MAC',
 	);
 
 	public static function displaySwitchName($dormitoryAlias, $hierarchyNo) {
 		if (is_null($hierarchyNo)) {
-			$swName = 'nieużywany';
+			$swName = $dormitoryAlias.'-nieużywany';
 		} else {
 			$swName =  $dormitoryAlias.'-hp'.$hierarchyNo;
 		}
