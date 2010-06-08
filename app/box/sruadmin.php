@@ -1083,7 +1083,7 @@ extends UFbox {
 				}
 			}
 			$d['penalty'] = $bean;
-					
+
 			$user = $this->_getUserFromGet();
 			$d['user'] = $user;
 			try{
@@ -1106,6 +1106,11 @@ extends UFbox {
 					$d['computerId'] = $this->_srv->get('req')->get->computerId;
 				}
 			} catch (UFex_Dao_NotFound $e) {
+				if ($typeId == UFbean_SruAdmin_Penalty::TYPE_WARNING) {
+					$d['computerId'] = 0;
+				} else {
+					$d['computerId'] = '';
+				}
 			} catch (UFex_Core_DataNotFound $e) {
 				$d['computerId'] = null;
 			}
