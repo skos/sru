@@ -245,7 +245,10 @@ extends UFtpl_Common {
 		echo ' <a href="http://www.google.pl/search?q='.urlencode($d['name'].' '.$d['surname']).'">google</a>';
 		echo ' <a href="http://nasza-klasa.pl/search?query='.urlencode($d['name'].' '.$d['surname']).'">nasza-klasa</a>';
 		echo ' <a href="http://wyczajka.net/p/'.urlencode($d['name'].'_'.$d['surname']).'">wyczajka</a>';
+		echo ' <a href="http://www.facebook.com/#!/search/?q='.urlencode($d['name'].' '.$d['surname']).'">face-booczek</a>';
 		echo '</p>';
+		
+
 		if (strlen($d['comment'])) {
 			echo '<p><em>Komentarz:</em></p><p class="comment">'.nl2br($this->_escape($d['comment'])).'</p>';
 		}
@@ -253,9 +256,15 @@ extends UFtpl_Common {
 		echo '<p class="nav"><a href="'.$urlUser.'">Dane</a> ';
 		$acl = $this->_srv->get('acl');
 		if ($acl->sruAdmin('penalty', 'addForUser', $d['id'])) {
-			echo '<a href="'. $url.'/penalties/:add/user:'.$d['id'].'">Ukarz</a> ';
+			echo '&bull; <a href="'. $url.'/penalties/:add/user:'.$d['id'].'">Ukarz</a> ';
 		}
-		echo '<a href="'.$urlUser.'/history">Historia profilu</a> <a href="'.$urlUser.'/servicehistory">Historia usług</a> <a href="'.$urlUser.'/:edit">Edycja</a> <span id="userMoreSwitch"></span></p>';
+		echo 	'&bull; <a href="'.$urlUser.'/history">Historia profilu</a>
+		  	&bull; <a href="'.$urlUser.'/servicehistory">Historia usług</a>
+		 	&bull; <a href="'.$urlUser.'/:edit">Edycja</a>
+		  	&bull; <span id="userMoreSwitch"></span>'; 
+	
+		if (strlen($d['comment'])) echo ' <img src="'.UFURL_BASE.'/i/gwiazdka.png" />';
+		echo '<p>';
 ?><script type="text/javascript">
 function changeVisibility() {
 	var div = document.getElementById('userMore');

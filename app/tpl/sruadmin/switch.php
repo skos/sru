@@ -96,11 +96,14 @@ extends UFtpl_Common {
 		echo '<h3>Dane urządzenia</h3>';
 		echo '<p><em>Model:</em> '.$d['model'].' ('.$d['modelNo'].')</p>';
 		echo '<p><em>IP:</em> '.$d['ip'].'</p>';
-		echo '<p class="nav"><a href="'.$url.'/switches/dorm/'.$d['dormitoryAlias'].'">Wróć do listy</a> <a href="'.$url.'/switches/">Pokaż wszystkie</a> <a href="'.$url.'/switches/'.$d['id'].'/:edit">Edytuj</a> ';
+		echo '<p class="nav"><a href="'.$url.'/switches/dorm/'.$d['dormitoryAlias'].'">Wróć do listy</a> &bull; 
+			 <a href="'.$url.'/switches/">Pokaż wszystkie</a> &bull; 
+			 <a href="'.$url.'/switches/'.$d['id'].'/:edit">Edytuj</a> &bull; ';
 		if (!is_null($info)) {
-			echo '<a href="'.$url.'/switches/'.$d['id'].'/:lockoutsedit">Lockout-MAC</a> ';
+			echo '<a href="'.$url.'/switches/'.$d['id'].'/:lockoutsedit">Lockout-MAC</a> &bull; ';
 		}
-		echo '<a href="'.$url.'/switches/'.$d['id'].'/tech">Technikalia</a> <span id="switchMoreSwitch"></span></p>';
+		echo '<a href="'.$url.'/switches/'.$d['id'].'/tech">Technikalia</a> &bull; 
+			 <span id="switchMoreSwitch"></span></p>';
 		echo '<div id="switchMore">';
 		echo '<p><em>Nr seryjny:</em> '.$d['serialNo'].'</p>';
 		echo '<p><em>Akademik:</em> <a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'">'.$d['dormitoryName'].'</a></p>';

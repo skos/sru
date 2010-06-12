@@ -26,9 +26,10 @@ extends UFtpl_Common {
 		}
 		echo '<p><em>Port admina:</em> '.($d['admin'] ? 'tak' : 'nie').'</p>';
 		echo '<p><em>Komentarz:</em> '.$d['comment'].'</p>';
-		echo '<p class="nav"><a href="'.$url.'dorm/'.$d['dormitoryAlias'].'">Wróć do listy</a> <a href="'.$url.'">Pokaż wszystkie</a> ';
-		echo '<a href="'.$url.$switch->id.'/port/'.$d['id'].'/macs">Pokaż adresy MAC</a> ';
-		echo '<a href="'.$url.$switch->id.'/port/'.$d['id'].'/:edit">Edytuj port</a></p>';
+		echo '<p class="nav"><a href="'.$url.'dorm/'.$d['dormitoryAlias'].'">Wróć do listy</a> &bull; 
+			 <a href="'.$url.'">Pokaż wszystkie</a> &bull; 
+			<a href="'.$url.$switch->id.'/port/'.$d['id'].'/macs">Pokaż adresy MAC</a> &bull; 
+			<a href="'.$url.$switch->id.'/port/'.$d['id'].'/:edit">Edytuj port</a></p>';
 	}
 
 	public function portMacs(array $d, $switch, $macs) {
@@ -127,9 +128,11 @@ extends UFtpl_Common {
 			}
 		}
 		echo '</table>';
-		echo '<p class="nav"><a href="'.$url.'dorm/'.$switch->dormitoryAlias.'">Wróć do listy</a> <a href="'.$url.'">Pokaż wszystkie</a> ';
-		echo '<a href="'.$url.$switch->id.'/:portsedit">Edytuj porty</a></p>';
-		echo '</div>';
+		echo '<p class="nav"><a href="'.$url.'dorm/'.$switch->dormitoryAlias.'">Wróć do listy</a> &bull; 
+			 <a href="'.$url.'">Pokaż wszystkie</a> &bull; 
+			<a href="'.$url.$switch->id.'/:portsedit">Edytuj porty</a>
+			</p>
+			</div>';
 	}
 
 	public function listRoomPorts(array $d, $room, $portStatuses) {

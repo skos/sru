@@ -145,17 +145,20 @@ extends UFtpl_Common {
 			echo '<p><em>Komentarz:</em></p><p class="comment">'.nl2br($this->_escape($d['comment'])).'</p>';
 		}
 		echo '</div>';
-		echo '<p class="nav"><a href="'.$urlNav.'">Dane</a> ';
+		echo '<p class="nav"><a href="'.$urlNav.'">Dane</a> &bull; ';
 		$acl = $this->_srv->get('acl');
 		if ($acl->sruAdmin('penalty', 'addForComputer', $d['id'])) {
-			echo '<a href="'.$url.'/penalties/:add/computer:'.$d['id'].'">Ukarz</a>  ';
+			echo '<a href="'.$url.'/penalties/:add/computer:'.$d['id'].'">Ukarz</a> &bull; ';
 		}
-		echo '<a href="'.$urlNav.'/history">Historia zmian</a>  <a href="'.$urlNav.'/:edit">Edycja</a> ';
+		echo '<a href="'.$urlNav.'/history">Historia zmian</a> &bull;
+			<a href="'.$urlNav.'/:edit">Edycja</a> &bull; ';
 		if($d['active'])
 		{
-			echo '<a href="'.$urlNav.'/:del"> Wyrejestruj</a>';
+			echo '<a href="'.$urlNav.'/:del"> Wyrejestruj</a> &bull; ';
 		}
-		echo ' <span id="computerMoreSwitch"></span></p>';
+		echo '<span id="computerMoreSwitch"></span>';
+		if (strlen($d['comment'])) echo ' <img src="'.UFURL_BASE.'/i/gwiazdka.png" />';
+		echo '</p>';
 ?><script type="text/javascript">
 function changeVisibility() {
 	var div = document.getElementById('computerMore');
