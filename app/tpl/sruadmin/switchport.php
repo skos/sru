@@ -208,6 +208,9 @@ extends UFtpl_Common {
 			$tmp[$sw['id']] = $sw['dormitoryAlias'].'-hp'.$sw['hierarchyNo'];
 		}
 
+		if ($this->_srv->get('msg')->get('switchPortsEdit/errors/locationAlias')) {
+			echo $this->ERR('W formularzu znalazł się błąd uniemożliwiający zapis danych.<br/>Szczegóły błędu znajdują się przy odpowiednim porcie.');
+		}
 		if ($this->_srv->get('msg')->get('switchPortsEdit/errors/switch/writingError')) {
 			echo $this->ERR('Nie udało się zapisać danych na switcha');
 		}
