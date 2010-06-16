@@ -1443,6 +1443,7 @@ extends UFbox {
 		try {
 			$conf = UFra::shared('UFconf_Sru');
 			if (!$conf->checkWalet) {
+				$d['users'] = null;
 				return $this->render(__FUNCTION__.'Disabled', $d);
 			}
 
