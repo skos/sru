@@ -1441,6 +1441,11 @@ extends UFbox {
 
 	public function migration() {
 		try {
+			$conf = UFra::shared('UFconf_Sru');
+			if (!$conf->checkWalet) {
+				return $this->render(__FUNCTION__.'Disabled', $d);
+			}
+
 			$users = UFra::factory('UFbean_Sru_UserList');
 			$users->listAllForMigration();
 			$d['users'] = $users;

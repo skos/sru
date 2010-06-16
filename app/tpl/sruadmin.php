@@ -929,6 +929,10 @@ extends UFtpl_Common {
 		echo $this->ERR('Błąd wyświetlenia modułu migracji');
 	}
 
+	public function migrationDisabled(array $d) {
+		echo $this->ERR('Moduł migracji jest nieaktywny');
+	}
+
 	public function titleStatsUsers() {
 		echo 'Statystyki użytkowników';
 	}
