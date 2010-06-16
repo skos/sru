@@ -30,9 +30,9 @@ extends UFtpl_Common {
 			case 2:
 				return 'zostało aktywowane.';
 			case 3:
-				return 'oczekiwało na deaktywację.';
+				return 'oczekiwało na dezaktywację.';
 			case 4:
-				return 'zostało deaktywowane.';
+				return 'zostało dezaktywowane.';
 		}
 	}
 }

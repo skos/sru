@@ -1058,7 +1058,7 @@ extends UFtpl_Common {
 		echo $form->_start();
 		if (isset($d['toDeactivate']))
 		{
-			echo '<h3>Do deaktywacji:</h3>';
+			echo '<h3>Do dezaktywacji:</h3>';
 			echo $d['toDeactivate']->write('formToDeactivate');
 		}
 		echo $form->_end(true);
@@ -1221,7 +1221,7 @@ extends UFtpl_Common {
 		} else if ($d['action'] == UFact_SruAdmin_Computer_Edit::PREFIX) {
 			echo 'Informujemy, że dane Twojego hosta w SKOS PG uległy zmianie.'."\n\n";
 		} else {
-			echo 'Informujemy, że Twój host w SKOS PG został deaktywowany.'."\n\n";
+			echo 'Informujemy, że Twój host w SKOS PG został dezaktywowany.'."\n\n";
 		}
 		$d['host']->write('mailChange', $d['history']);
 

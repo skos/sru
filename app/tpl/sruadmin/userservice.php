@@ -44,7 +44,7 @@ extends UFtpl_Common {
 			echo '<td>'.$c['servName'].'</td>';
 			echo '<td><a href="'.$url.'/users/'.$c['userId'].'">'.$this->_escape($c['userName']).' '.$this->_escape($c['userSurname']).'</a></td>';
 			echo '<td style="text-align:center;">'.$c['userLogin'].'</td><td>';
-			echo $form->_submit('Deaktywuj', array('name'=>'serviceEdit[deactivateFull]['.$c['id'].']'));
+			echo $form->_submit('Dezaktywuj', array('name'=>'serviceEdit[deactivateFull]['.$c['id'].']'));
 			echo '</td></tr>';
 		}
 		echo '</table>';
