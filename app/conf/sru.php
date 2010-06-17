@@ -23,4 +23,6 @@ extends UFconf {
 	protected $masterSwitch = '';
 	protected $communityRead = '';
 	protected $communityWrite = '';
+	protected $roomRegex = '';
+	protected $switchRegex = '';
 }

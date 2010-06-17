@@ -228,6 +228,9 @@ extends UFtpl_Common {
 		}
 		$copyAliases = (isset($this->_srv->get('msg')->info['copyAliasesFromSwitch']) && !is_null($portAliases));
 
+		$conf = UFra::shared('UFconf_Sru');
+		$switchRegex = $conf->switchRegex;
+		$roomRegex = $conf->roomRegex;
 		$i = 0;
 		echo '<table style="width: 100%;">';
 		foreach ($d as $c) {
@@ -246,13 +249,13 @@ extends UFtpl_Common {
 			$comment = $c['comment'];
 			try {
 				$copied = false;
-				if ($copyAliases && preg_match('/^[0-9]+/', $portAliases[$c['ordinalNo'] - 1]) > 0) {
+				if ($copyAliases && preg_match($roomRegex, $portAliases[$c['ordinalNo'] - 1]) > 0) {
 					$locationAlias = $portAliases[$c['ordinalNo'] - 1];
 					$copied = true;
 				} else if (isset($post->switchPortsEdit[$c['id']]['locationAlias'])) {
 					$locationAlias = $post->switchPortsEdit[$c['id']]['locationAlias'];
 				}
-				if ($copyAliases && preg_match('/^ds/', $portAliases[$c['ordinalNo'] - 1]) > 0) {
+				if ($copyAliases && preg_match($switchRegex, $portAliases[$c['ordinalNo'] - 1]) > 0) {
 					$connectedSwitchId = array_search($portAliases[$c['ordinalNo'] - 1], $tmp);
 					$copied = true;
 				} else if (isset($post->switchPortsEdit[$c['id']]['connectedSwitchId'])) {
