@@ -18,11 +18,15 @@ extends UFbeanSingle {
 		return md5($login.$password);
 	}
 
-	/*
-	public function validate($var, $val, $change) {
-		parent::validate($var, $val, $change);
+	/**
+	 * zaszyfrowane haslo do PAM i innych
+	 * 
+	 * @param string $password - haslo
+	 * @return string
+	 */
+	static function generatePamPassword($password) {
+		return md5($password);
 	}
-	*/
 
 	protected function validateLogin($val, $change) {
 		try {

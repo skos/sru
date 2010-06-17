@@ -187,6 +187,18 @@ extends UFbox {
 			$bean->getFromSession();
 			$d['user'] = $bean;
 
+			$sess = $this->_srv->get('session');
+			try {
+				$d['lastLoginIp'] = $sess->lastLoginIp;
+			} catch (UFex_Core_DataNotFound $e) {
+				$d['lastLoginIp'] = null;
+			}
+			try {
+				$d['lastLoginAt'] = $sess->lastLoginAt;
+			} catch (UFex_Core_DataNotFound $e) {
+				$d['lastLoginAt'] = null;
+			}
+
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
 			return '';

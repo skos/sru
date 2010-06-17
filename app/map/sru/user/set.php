@@ -19,6 +19,8 @@ extends UFmap {
 		'modifiedAt'     => 'modified_at',
 		'comment'        => 'comment',
 		'active'         => 'active',
+		'lastLoginAt'	 => 'last_login_at',
+		'lastLoginIp'	 => 'last_login_ip',
 	);
 	protected $columnTypes = array(
 		'login'          => self::TEXT,
@@ -36,6 +38,8 @@ extends UFmap {
 		'modifiedAt'     => self::TS,
 		'comment'        => self::TEXT,
 		'active'         => self::BOOL,
+		'lastLoginAt'	 => self::TS,
+		'lastLoginIp'	 => self::TEXT,
 	);
 	protected $tables = array(
 		'' => 'users',

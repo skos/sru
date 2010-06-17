@@ -18,26 +18,27 @@ extends UFact {
 			
 			$password = UFbean_Sru_User::generatePassword($login, $password);
 			$bean->getByLoginPassword($login, $password);
+
+			if (is_null($bean->password2)) {
+				$bean->password2 = UFbean_SruAdmin_Admin::generatePamPassword($password);
+			}
 			
 			$sess = $this->_srv->get('session');
 			$sess->authAdmin = $bean->id;
 					
 			$sess->name  		= $bean->name;
-			$sess->typeId 		= $bean->typeId;			
+			$sess->typeId 		= $bean->typeId;
 			$sess->lastLoginIp  = $bean->lastLoginIp;
 			$sess->lastLoginAt  = $bean->lastLoginAt;
 			
 		
-			if($serv->is('HTTP_X_FORWARDED_FOR') && $serv->HTTP_X_FORWARDED_FOR != '' )
-			{
+			if($serv->is('HTTP_X_FORWARDED_FOR') && $serv->HTTP_X_FORWARDED_FOR != '' ) {
 				$bean->lastLoginIp = $serv->HTTP_X_FORWARDED_FOR;
-			}
-			else
-			{
+			} else {
 				$bean->lastLoginIp =  $serv->REMOTE_ADDR;
 			}
 			$bean->lastLoginAt = NOW;
-			$bean->save();			
+			$bean->save();
 			
 			$this->postDel(self::PREFIX);
 			$this->markOk(self::PREFIX);

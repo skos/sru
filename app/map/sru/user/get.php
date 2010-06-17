@@ -29,6 +29,8 @@ extends UFmap {
 		'comment'        => 'u.comment',
 		'active'         => 'u.active',
 		'banned'         => 'u.banned',
+		'lastLoginAt'    => 'u.last_login_at',
+		'lastLoginIp'    => 'u.last_login_ip',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -54,6 +56,8 @@ extends UFmap {
 		'comment'        => self::TEXT,
 		'active'         => self::BOOL,
 		'banned'         => self::BOOL,
+		'lastLoginAt'    => self::NULL_TS,
+		'lastLoginIp'    => self::NULL_TEXT,
 	);
 	protected $tables = array(
 		'u' => 'users',

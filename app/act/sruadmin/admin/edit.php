@@ -19,7 +19,8 @@ extends UFact {
 				
 			if(isset($post['password']) && $post['password'] != '' )
 			{
-				$bean->password = $post['password'];	
+				$bean->password = $post['password'];
+				$bean->password2 = $bean->generatePamPassword($post['password']);
 			}
 			
 			if(isset($post['typeId']) && $acl->sruAdmin('admin', 'advancedEdit'))

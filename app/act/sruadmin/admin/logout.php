@@ -13,9 +13,9 @@ extends UFact {
 			$sess = $this->_srv->get('session');
 			$sess->del('authAdmin');
 			$sess->del('name');
-			$sess->del('typeId');			
+			$sess->del('typeId');
 			$sess->del('lastLoginIp');
-			$sess->del('lastLoginAt');			
+			$sess->del('lastLoginAt');
 			
 			$this->postDel(self::PREFIX);
 			$this->markOk(self::PREFIX);

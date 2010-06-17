@@ -8,6 +8,7 @@ class UFmap_SruAdmin_Admin_Set
 extends UFmap {
 	protected $columns = array(
 		'password'       => 'password',
+		'password2'       => 'password2',
 		'lastLoginAt'	 => 'last_login_at',
 		'lastLoginIp'	 => 'last_login_ip',
 		'name'           => 'name',
@@ -17,11 +18,12 @@ extends UFmap {
 		'jid'            => 'jid',
 		'email'          => 'email',
 		'address'        => 'address',
-		'active'		 => 'active',
+		'active'	 => 'active',
 		'dormitoryId'    => 'dormitory_id',
 	);
 	protected $columnTypes = array(
 		'password'       => self::TEXT,
+		'password2'       => self::TEXT,
 		'lastLoginAt'	 => self::TS,
 		'lastLoginIp'	 => self::TEXT,
 		'name'           => self::TEXT,
@@ -31,7 +33,7 @@ extends UFmap {
 		'jid'            => self::TEXT,
 		'email'          => self::TEXT,
 		'address'        => self::TEXT,
-		'active'		 => self::BOOL,
+		'active'	 => self::BOOL,
 		'dormitoryId'    => self::NULL_INT,
 	);	
 	protected $tables = array(

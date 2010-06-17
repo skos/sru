@@ -241,6 +241,13 @@ extends UFtpl_Common {
 		}
 		echo '<p><em>Zmiana:</em> '.date(self::TIME_YYMMDD_HHMM, $d['modifiedAt']).'<small> ('.$changed.')</small></p>';
 		echo '<div id="userMore">';
+		if (!is_null($d['lastLoginAt']) && $d['lastLoginAt'] != 0 ) {
+		echo '<p><em>Ost. logowanie:</em> '.date(self::TIME_YYMMDD_HHMM, $d['lastLoginAt']);
+			if (!is_null($d['lastLoginIp'])) {
+				echo '<small> ('.$d['lastLoginIp'].')</small>';
+			}
+			echo '</p>';
+		}
 		echo '<p class="displayOnHover"><em>Znajdź na:</em>';
 		echo ' <a href="http://www.google.pl/search?q='.urlencode($d['name'].' '.$d['surname']).'">google</a>';
 		echo ' <a href="http://nasza-klasa.pl/search?query='.urlencode($d['name'].' '.$d['surname']).'">nasza-klasa</a>';
@@ -389,9 +396,15 @@ changeVisibility();
 		}
 	}
 
-	public function userBar(array $d) {
+	public function userBar(array $d, $ip, $time) {
 		echo '<a href="'. $this->url(0) .'/">Strona główna</a> | ';
 		echo $this->_escape($d['name']) .' &quot;'. $this->_escape($d['login']) .'&quot; '. $this->_escape($d['surname']) . ' | ';
+		if (!is_null($time) && $time != 0 ) {
+			echo '<small>Ostatnie&nbsp;logowanie: '.date(self::TIME_YYMMDD_HHMM, $time).'</small> | ' ;
+		}
+		if (!is_null($ip)) {
+			echo '<small>IP ostatniego logowania: '.$ip.'</small> | ' ;
+		}
 	}
 
 	public function mailChange(array $d, $history = null) {

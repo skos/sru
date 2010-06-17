@@ -10,7 +10,10 @@ extends UFact {
 
 	public function go() {
 		try {
-			$this->_srv->get('session')->del('auth');
+			$sess = $this->_srv->get('session');
+			$sess->del('auth');
+			$sess->del('lastLoginIp');
+			$sess->del('lastLoginAt');
 			
 			$this->postDel(self::PREFIX);
 			$this->markOk(self::PREFIX);
