@@ -651,7 +651,11 @@ changeVisibility();
 		$banSum = 0;
 		$activeBanSum = 0;
 		foreach ($d as $u) {
-			$u['dormitoryAlias'] = ' '.substr($u['dormitoryAlias'], 2);
+			if (substr($u['dormitoryAlias'], 0, 2) != 'ds') {
+				$u['dormitoryAlias'] = ' '.strtoupper($u['dormitoryAlias']);
+			} else {
+				$u['dormitoryAlias'] = ' '.substr($u['dormitoryAlias'], 2);
+			}
 			if(!array_key_exists($u['dormitoryAlias'], $dormitories)) {
 				$dormitories[$u['dormitoryAlias']] = new ExtenededPeopleCounter();
 			}
@@ -680,7 +684,7 @@ changeVisibility();
 		$chartLabel = '';
 		$chartLabelR = '';
 		while ($dorm = current($dormitories)) {
-			echo '<tr><td><a href="'.$this->url(0).'/dormitories/ds'.substr(key($dormitories),1).'">DS'.key($dormitories).'</a></td>';
+			echo '<tr><td>'.$this->displayDormUrl(substr(key($dormitories),1)).'</td>';
 			echo '<td>'.$dorm->getUsers().'</td>';
 			echo '<td>'.$dorm->getWomen().'</td>';
 			echo '<td>'.($dorm->getUsers() - $dorm->getWomen()).'</td></tr>';
@@ -769,7 +773,7 @@ changeVisibility();
 		$chartLabel = '';
 		$avSum = 0;
 		while ($dorm = current($dormitories)) {
-			echo '<tr><td><a href="'.$this->url(0).'/dormitories/ds'.substr(key($dormitories),1).'">DS'.key($dormitories).'</a></td>';
+			echo '<tr><td>'.$this->displayDormUrl(substr(key($dormitories),1)).'</td>';
 			echo '<td>'.$dorm->getBans().'</td>';
 			if ($dorm->getUsers() == 0) {
 				$bansPerUser = 0;
@@ -798,7 +802,7 @@ changeVisibility();
 		$chartLabel = '';
 		$avSum = 0;
 		while ($dorm = current($dormitories)) {
-			echo '<tr><td><a href="'.$this->url(0).'/dormitories/ds'.substr(key($dormitories),1).'">DS'.key($dormitories).'</a></td>';
+			echo '<tr><td>'.$this->displayDormUrl(substr(key($dormitories),1)).'</td>';
 			echo '<td>'.$dorm->getActiveBans().'</td>';
 			if ($dorm->getUsers() == 0) {
 				$bansPerUser = 0;
@@ -819,6 +823,14 @@ changeVisibility();
 		echo '&cht=p3&chl='.$chartLabel.' alt=""/>';
 		echo '</div>';
 		echo '</div>';
+	}
+
+	private function displayDormUrl($dorm) {
+		if (is_numeric(substr($dorm, 0, 1))) {
+			return '<a href="'.$this->url(0).'/dormitories/ds'.$dorm.'">DS '.$dorm.'</a>';
+		} else {
+			return '<a href="'.$this->url(0).'/dormitories/'.strtolower($dorm).'">'.$dorm.'</a>';
+		}
 	}
 }
 

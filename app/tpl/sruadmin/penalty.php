@@ -399,17 +399,24 @@ changeVisibility();
 		arsort($templates);
 		$chartData = '';
 		$chartLabel = '';
+		$other = 0;
 		while ($t = current ($templates)) {
 			echo '<tr><td>'.key($templates).'</td>';
 			echo '<td>'.$t.'</td></tr>';
-			$chartData = (round($t/count($d)*100)).','.$chartData;
-			$chartLabel = key($templates).': '.(round($t/count($d)*100)).'%|'.$chartLabel;
+			if ($t/count($d)*100 < 1) {
+				$other = $other + $t;
+			} else {
+				$chartData = (round($t/count($d)*100)).','.$chartData;
+				$chartLabel = key($templates).': '.(round($t/count($d)*100)).'%|'.$chartLabel;
+			}
 			next($templates);
 		}
 		echo '</table>';
+		$chartData = (round($other/count($d)*100)).','.$chartData;
+		$chartLabel = 'inne: '.(round($other/count($d)*100)).'%|'.$chartLabel;
 		$chartData = substr($chartData, 0, -1);
 		echo '<div style="text-align: center;">';
-		echo '<img src="http://chart.apis.google.com/chart?chs=600x200&chd=t:'.$chartData;
+		echo '<img src="http://chart.apis.google.com/chart?chs=600x150&chd=t:'.$chartData;
 		echo '&cht=p3&chl='.$chartLabel.'" alt=""/>';
 		echo '</div>';
 
