@@ -41,12 +41,12 @@ extends UFtpl_Common {
 			
 			echo '<li>';
 			echo is_null($c['ip']) ? '<del>' : '';
-			echo $c['operational'] ? '' : '<span class="inoperational">';
+			echo $c['inoperational'] ? '<span class="inoperational">' : '';
 			echo '<a href="'.$url.$c['id'].'">';
 			echo $this->displaySwitchName($c['dormitoryAlias'], $c['hierarchyNo']);
 			echo ' ('.$this->_escape($c['model']).')';
 			echo '</a>';
-			echo $c['operational'] ? '' : '</span>';
+			echo $c['inoperational'] ? '</span>' : '';
 			echo is_null($c['ip']) ? '</del>' : '';
 			echo ' - <small><a href="'.$url.''.$c['id'].'/:edit">Edytuj</a>';
 			if (!is_null($c['ip'])) {
@@ -108,7 +108,7 @@ extends UFtpl_Common {
 		echo '<p><em>Nr seryjny:</em> '.$d['serialNo'].'</p>';
 		echo '<p><em>Akademik:</em> <a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'">'.$d['dormitoryName'].'</a></p>';
 		echo '<p><em>Lokalizacja:</em> '.$d['localization'].'</p>';
-		echo '<p><em>Sprawny:</em> '.($d['operational'] ? 'tak' : 'nie').'</p>';
+		echo '<p><em>Uszkodzony:</em> '.($d['inoperational'] ? 'tak' : 'nie').'</p>';
 		echo '<p><em>Nr inwentarzowy:</em> '.$d['inventoryNo'].'</p>';
 		echo '<p><em>Na stanie od:</em> '.(is_null($d['received']) ? '' : date(self::TIME_YYMMDD, $d['received'])).'</p>';
 		echo '<p><em>Zablokowane adresy MAC:</em><br/>';
@@ -166,7 +166,7 @@ changeVisibility();
 	}
 	
 	public function formAdd(array $d, $dormitories, $models) {
-		$d['operational'] = true;
+		$d['inoperational'] = false;
 		$form = UFra::factory('UFlib_Form', 'switchAdd', $d, $this->errors);
 
 		echo $form->_fieldset();
@@ -197,7 +197,7 @@ changeVisibility();
 		echo $form->localization('Lokalizacja');
 		echo $form->inventoryNo('Nr inwentarzowy');
 		echo $form->received('Na stanie od');
-		echo $form->operational('Sprawny', array('type'=>$form->CHECKBOX));
+		echo $form->inoperational('Uszkodzony', array('type'=>$form->CHECKBOX));
 		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
 	}
 
@@ -247,7 +247,7 @@ changeVisibility();
 		echo $form->localization('Lokalizacja');
 		echo $form->inventoryNo('Nr inwentarzowy');
 		echo $form->received('Na stanie od');
-		echo $form->operational('Sprawny', array('type'=>$form->CHECKBOX));
+		echo $form->inoperational('Uszkodzony', array('type'=>$form->CHECKBOX));
 		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
 	}
 
