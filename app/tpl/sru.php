@@ -438,7 +438,7 @@ extends UFtpl_Common {
 				}
 			}
 		}
-		echo 'Powód: '.$d['penalty']->reason."\n";
+		echo "\n".'Powód: '.$d['penalty']->reason."\n";
 		echo "\n".'Szczegółowe informacje znajdziesz w Systemie Rejestracji Użytkownika: http://sru.ds.pg.gda.pl';
 		echo ' (Twój login to: '.$d['user']->login.')';
 		echo "\n\n";
@@ -449,7 +449,7 @@ extends UFtpl_Common {
 		} else {
 			echo 'PENALTY';
 		}
-		echo ' in out network.'."\n";
+		echo ' in SKOS PG network.'."\n";
 		echo 'Valid till: '.date(self::TIME_YYMMDD_HHMM, $d['penalty']->endAt)."\n";
 		if ($d['penalty']->typeId != UFbean_SruAdmin_Penalty::TYPE_WARNING) {
 			echo 'Banned host(s): ';
@@ -461,7 +461,7 @@ extends UFtpl_Common {
 				}
 			}
 		}
-		echo 'Reason: '.$d['penalty']->reason."\n";
+		echo "\n".'Reason: '.$d['penalty']->reason."\n";
 		echo "\n".'You can find more information in User Register System: http://sru.ds.pg.gda.pl';
 		echo ' (your login: '.$d['user']->login.')';
 		echo "\n";
@@ -505,7 +505,7 @@ extends UFtpl_Common {
 		} else {
 			echo 'PENALTY';
 		}
-		echo ' was modified in out network.'."\n";
+		echo ' was modified in SKOS PG network.'."\n";
 		echo 'Now valid till: '.date(self::TIME_YYMMDD_HHMM, $d['penalty']->endAt)."\n";
 		echo 'Reason: '.$d['penalty']->reason."\n";
 		echo "\n".'You can find more information in User Register System: http://sru.ds.pg.gda.pl';
