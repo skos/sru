@@ -710,7 +710,11 @@ changeVisibility();
 			}
 			$chartDataWoman = $chartDataWoman.$sufixW.',';
 			$chartDataMan = $chartDataMan.$sufixM.',';
-			$chartLabel = 'DS'.key($dormitories).'|'.$chartLabel;
+			if (is_numeric(substr(key($dormitories), 1, 1))) {
+				$chartLabel = 'DS'.key($dormitories).'|'.$chartLabel;
+			} else {
+				$chartLabel = key($dormitories).'|'.$chartLabel;
+			}
 			$chartLabelR = $sufixW.'% / '.$sufixM.'%|'.$chartLabelR;
 			next($dormitories);
 		}
@@ -725,7 +729,7 @@ changeVisibility();
 		echo '<h3>Rozkład płci uwzględniając akademik i wydział:</h3>';
 		reset($dormitories);
 		while ($dorm = current($dormitories)) {
-			echo '<h4>DS'.key($dormitories).'</h4>';
+			echo '<h4>'.$this->displayDormUrl(substr(key($dormitories),1)).'</h4>';
 			echo '<table style="text-align: center; width: 100%;">';
 			echo '<tr><th>Wydział</th><th>Użytkowników</th><th>Kobiet</th><th>Mężczyzn</th></tr>';
 			$chartDataFac = '';
@@ -753,7 +757,7 @@ changeVisibility();
 		echo '<h3>Rozkład płci uwzględniając akademik i rok studiów:</h3>';
 		reset($dormitories);
 		while ($dorm = current($dormitories)) {
-			echo '<h4>DS'.key($dormitories).'</h4>';
+			echo '<h4>'.$this->displayDormUrl(substr(key($dormitories),1)).'</h4>';
 			echo '<table style="text-align: center; width: 100%;">';
 			echo '<tr><th>Rok studiów</th><th>Użytkowników</th><th>Kobiet</th><th>Mężczyzn</th></tr>';
 			$chartDataYear = '';
@@ -795,7 +799,11 @@ changeVisibility();
 			}
 			echo '<td>'.$bansPerUser.'</td></tr>';
 			$chartData = $dorm->getBans().','.$chartData;
-			$chartLabel = 'DS'.key($dormitories).': '.round($dorm->getBans()/$banSum*100).'%|'.$chartLabel;
+			if (is_numeric(substr(key($dormitories), 1, 1))) {
+				$chartLabel = 'DS'.key($dormitories).': '.round($dorm->getBans()/$banSum*100).'%|'.$chartLabel;
+			} else {
+				$chartLabel = key($dormitories).': '.round($dorm->getBans()/$banSum*100).'%|'.$chartLabel;
+			}
 			next($dormitories);
 			$avSum += $bansPerUser;
 		}
@@ -824,7 +832,11 @@ changeVisibility();
 			}
 			echo '<td>'.$bansPerUser.'</td></tr>';
 			$chartData = $dorm->getActiveBans().','.$chartData;
-			$chartLabel = 'DS'.key($dormitories).': '.round($dorm->getActiveBans()/$activeBanSum*100).'%|'.$chartLabel;
+			if (is_numeric(substr(key($dormitories), 1, 1))) {
+				$chartLabel = 'DS'.key($dormitories).': '.round($dorm->getActiveBans()/$activeBanSum*100).'%|'.$chartLabel;
+			} else {
+				$chartLabel = key($dormitories).': '.round($dorm->getActiveBans()/$activeBanSum*100).'%|'.$chartLabel;
+			}
 			next($dormitories);
 			$avSum += $bansPerUser;
 		}
