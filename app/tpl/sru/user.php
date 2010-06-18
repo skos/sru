@@ -397,13 +397,13 @@ changeVisibility();
 	}
 
 	public function userBar(array $d, $ip, $time) {
-		echo '<a href="'. $this->url(0) .'/">Strona główna</a> | ';
-		echo $this->_escape($d['name']) .' &quot;'. $this->_escape($d['login']) .'&quot; '. $this->_escape($d['surname']) . ' | ';
+		echo 'Witaj, '.$this->_escape($d['name']) .' &quot;'. $this->_escape($d['login']) .'&quot; '. $this->_escape($d['surname']) . '!<br/>';
+		
 		if (!is_null($time) && $time != 0 ) {
-			echo '<small>Ostatnie&nbsp;logowanie: '.date(self::TIME_YYMMDD_HHMM, $time).'</small> | ' ;
+			echo '<small>Ostatnie&nbsp;logowanie: '.date(self::TIME_YYMMDD_HHMM, $time).'</small>' ;
 		}
 		if (!is_null($ip)) {
-			echo '<small>IP ostatniego logowania: '.$ip.'</small> | ' ;
+			echo '<small>, z IP: '.$ip.'</small><br/>' ;
 		}
 	}
 
