@@ -94,7 +94,7 @@ extends UFtpl_Common {
 		}
 
 		echo '<h3>Dane urządzenia</h3>';
-		echo '<p><em>Model:</em> '.$d['model'].' ('.$d['modelNo'].')</p>';
+		echo '<p'.($d['inoperational'] ? ' class="inoperational"' : '').'><em>Model:</em> '.$d['model'].' ('.$d['modelNo'].')</p>';
 		echo '<p><em>IP:</em> '.$d['ip'].'</p>';
 		echo '<p class="nav"><a href="'.$url.'/switches/dorm/'.$d['dormitoryAlias'].'">Wróć do listy</a> &bull; 
 			 <a href="'.$url.'/switches/">Pokaż wszystkie</a> &bull; 
@@ -108,7 +108,7 @@ extends UFtpl_Common {
 		echo '<p><em>Nr seryjny:</em> '.$d['serialNo'].'</p>';
 		echo '<p><em>Akademik:</em> <a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'">'.$d['dormitoryName'].'</a></p>';
 		echo '<p><em>Lokalizacja:</em> '.$d['localization'].'</p>';
-		echo '<p><em>Uszkodzony:</em> '.($d['inoperational'] ? 'tak' : 'nie').'</p>';
+		echo '<p'.($d['inoperational'] ? ' class="inoperational"' : '').'><em>Uszkodzony:</em> '.($d['inoperational'] ? 'tak' : 'nie').'</p>';
 		echo '<p><em>Nr inwentarzowy:</em> '.$d['inventoryNo'].'</p>';
 		echo '<p><em>Na stanie od:</em> '.(is_null($d['received']) ? '' : date(self::TIME_YYMMDD, $d['received'])).'</p>';
 		echo '<p><em>Zablokowane adresy MAC:</em><br/>';
