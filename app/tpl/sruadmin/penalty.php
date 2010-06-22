@@ -145,10 +145,10 @@ extends UFtpl_Common {
 
 		$urlPenalty = $url.'/penalties/'.$d['id'];
 		echo '<p class="nav"><a href="'.$urlPenalty.'">Dane</a> &bull; 
-			<a href="'.$url.'/penalties/'.$d['id'].'/history/">Historia kary</a> &bull ';
+			<a href="'.$url.'/penalties/'.$d['id'].'/history/">Historia kary</a> &bull; ';
 		$acl = $this->_srv->get('acl');
 		if ($acl->sruAdmin('penalty', 'editOne', $d['id'])) {
-			echo '<a href="'.$urlPenalty.'/:edit">Edycja</a> &bull ';
+			echo '<a href="'.$urlPenalty.'/:edit">Edycja</a> &bull; ';
 		}
 		echo '<span id="penaltyMoreSwitch"></span></p>';
 		echo '<div id="penaltyMore">';
