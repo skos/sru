@@ -165,6 +165,7 @@ extends UFbox {
 		$bean = UFra::factory('UFbean_Sru_Computer');
 
 		$d['computer'] = $bean;
+		$d['macAddress'] = $this->getMacAddress();
 
 		return $this->render(__FUNCTION__, $d);
 	}
@@ -297,5 +298,17 @@ extends UFbox {
 		$d['host'] = $host;
 		$d['action'] = $action;
 		return $this->render(__FUNCTION__, $d);
+	}
+
+	private function getMacAddress() {
+		$serv = $this->_srv->get('req')->server;
+		if($serv->is('HTTP_X_FORWARDED_FOR') && $serv->HTTP_X_FORWARDED_FOR != '' ) {
+			$ip = $serv->HTTP_X_FORWARDED_FOR;
+		} else {
+			$ip =  $serv->REMOTE_ADDR;
+		}
+		$mac = `arp -an | grep "($ip)" | cut -f 4 -d " "`;
+
+		return $mac;
 	}
 }

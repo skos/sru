@@ -263,13 +263,17 @@ if (input) {
 		<?
 	}
 
-	public function formAdd(array $d, $admin=false) {
+	public function formAdd(array $d, $admin = false, $macAddress = null) {
+		$post = $this->_srv->get('req')->post;
+		$mac = $macAddress;
+		try {
+			$mac = $post->computerAdd['mac']; //jeśli jest w poście, to przypisz
+		} catch (UFex_Core_DataNotFound $e) {
+		}
 		$form = UFra::factory('UFlib_Form', 'computerAdd', $d, $this->errors);
-
 		if (!$admin && $this->_srv->get('msg')->get('computerAdd/errors/ip/noFree')) {
 			echo $this->ERR($this->errors['ip/noFree']);
 		}		
-
 		if ($admin) {
 			echo $form->typeId('Typ', array(
 				'type' => $form->SELECT,
@@ -295,8 +299,34 @@ if (input) {
 }
 </script><?
 		}
-		echo $form->mac('MAC');
+		echo '<span id="macContainer"><a href="#" id="macMoreSwitch">';
+		if (!$this->_srv->get('msg')->get('computerAdd/errors/mac') && $mac != null && $mac == $macAddress) {
+			echo 'Rejestruję się z <b>nie swojego</b> komputera<br/><br/>';
+		}
+		echo '</a></span>';
+		echo '<div id="macMore">';
+		echo $form->mac('MAC', array('value'=>$mac));
 		$this->showMacHint();
+		echo '</div>';
+
+?><script type="text/javascript">
+var moreLink = document.getElementById('macMoreSwitch');
+var container = document.getElementById('macContainer');
+var macField = document.getElementById('computerAdd_mac');
+var div = document.getElementById('macMore');
+moreLink.onclick = function() {
+	div.style.display = 'block';
+	container.removeChild(moreLink);
+	macField.value = '';
+}
+<?
+if (!$this->_srv->get('msg')->get('computerAdd/errors/mac') && $mac != null && $mac == $macAddress) {
+?>
+div.style.display = 'none';
+<?
+}
+?>
+</script><?
 	}
 
 	public function formDel(array $d) {
