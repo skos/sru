@@ -307,6 +307,9 @@ extends UFbox {
 		} else {
 			$ip =  $serv->REMOTE_ADDR;
 		}
+		if (strlen($ip) < 9 || substr($ip, 0, 9) != '192.168.0') {
+			return null;
+		}
 		$mac = `arp -an | grep "($ip)" | cut -f 4 -d " "`;
 
 		return trim($mac);
