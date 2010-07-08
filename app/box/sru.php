@@ -309,6 +309,6 @@ extends UFbox {
 		}
 		$mac = `arp -an | grep "($ip)" | cut -f 4 -d " "`;
 
-		return $mac;
+		return trim($mac);
 	}
 }
