@@ -52,7 +52,7 @@ extends UFtpl_Common {
 				if (is_null($c['dormitoryName'])) {
 					echo '<h3>Spoza akademików</h3>';
 				} else {
-					echo '<h3>'.$c['dormitoryName'].'</h3>';
+					echo '<h3><a href="'.$this->url(0).'/dormitories/'.$c['dormitoryAlias'].'">'.$c['dormitoryName'].'</a></h3>';
 				}
 				echo '<ul>';		
 			}
