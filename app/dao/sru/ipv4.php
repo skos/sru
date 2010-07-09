@@ -11,6 +11,7 @@ extends UFdao {
 		$query = $this->prepareSelect($mapping);
 		$query->where($mapping->dormitoryId, $dormitory);
 		$query->where($mapping->host, null);
+		$query->where($mapping->lastVisible, time() - 60*60 ,$query->LTE);
 
 		return $this->doSelectFirst($query);
 	}
