@@ -190,6 +190,9 @@ changeVisibility();
 	}
 
 	public function formEdit(array $d, $activate = false) {
+		if ($this->_srv->get('msg')->get('computerEdit/errors/ip/noFree')) {
+			echo $this->ERR($this->errors['ip/noFree']);
+		}
 		if ($activate) {
 			$d['availableTo'] = date(self::TIME_YYMMDD, $d['availableMaxTo']);
 		} else {
@@ -287,7 +290,7 @@ if (input) {
 		$form = UFra::factory('UFlib_Form', 'computerAdd', $d, $this->errors);
 		if (!$admin && $this->_srv->get('msg')->get('computerAdd/errors/ip/noFree')) {
 			echo $this->ERR($this->errors['ip/noFree']);
-		}		
+		}
 		if ($admin) {
 			echo $form->typeId('Typ', array(
 				'type' => $form->SELECT,

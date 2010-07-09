@@ -12,6 +12,8 @@ extends UFact {
 		try {
 			$bean = UFra::factory('UFbean_Sru_Computer');
 			$bean->getByUserIdPK((int)$this->_srv->get('session')->auth, (int)$this->_srv->get('req')->get->computerId);
+			$user = UFra::factory('UFbean_Sru_User');
+			$user->getByPK($bean->userId);
 			$bean->fillFromPost(self::PREFIX, null, array('mac', 'availableTo'));
 			if ($bean->availableTo > $bean->availableMaxTo) {
 				$bean->availableTo = $bean->availableMaxTo;
@@ -24,10 +26,18 @@ extends UFact {
 				// przyszla date waznosci rejestracji
 				$bean->active = true;
 				$bean->availableMaxTo = $bean->availableTo;
-				//aktualizacja lokalizacji komputera
-				//$user = UFra::factory('UFbean_Sru_User');
-				//$user->getByPK($bean->userId);
-				//$bean->locationId = $user->locationId;
+				// aktualizacja lokalizacji komputera
+				$bean->locationId = $user->locationId;
+				// przypisanie nowego IP
+				try {
+					$ip = UFra::factory('UFbean_Sru_Ipv4');
+					$ip->getFreeByDormitoryId($bean->dormitoryId);
+					$bean->ip = $ip->ip;
+				} catch (UFex_Dao_NotFound $e) {
+					$this->rollback();
+					$this->markErrors(self::PREFIX, array('ip'=>'noFree'));
+					return;
+				}
 			}
 			if ($bean->availableTo <= NOW) {
 				$bean->active = false;
@@ -35,9 +45,6 @@ extends UFact {
 			$bean->modifiedById = null;
 			$bean->modifiedAt = NOW;
 			$bean->save();
-
-			$user = UFra::factory('UFbean_Sru_User');
-			$user->getByPK($bean->userId);
 
 			$conf = UFra::shared('UFconf_Sru');
 			if ($conf->sendEmail) {
