@@ -67,6 +67,13 @@ extends UFtpl_Common {
 		}
 	}
 
+	public function listToActivate(array $d) {
+		$url = $this->url(1).'/';
+		foreach ($d as $c) {
+			echo '<li><a href="'.$url.$c['id'].'/:activate">'.$c['host'].' <small>'.$c['mac'].'</small></a></li>';
+		}
+	}
+
 	public function titleDetails(array $d) {
 		echo 'Komputer "'.$d['host'].'"';
 	}
@@ -182,8 +189,12 @@ changeVisibility();
 </script><?
 	}
 
-	public function formEdit(array $d) {
-		$d['availableTo'] = date(self::TIME_YYMMDD, $d['availableTo']);
+	public function formEdit(array $d, $activate = false) {
+		if ($activate) {
+			$d['availableTo'] = date(self::TIME_YYMMDD, $d['availableMaxTo']);
+		} else {
+			$d['availableTo'] = date(self::TIME_YYMMDD, $d['availableTo']);
+		}
 		$form = UFra::factory('UFlib_Form', 'computerEdit', $d, $this->errors);
 
 		echo '<h1>'.$d['host'].'.ds.pg.gda.pl</h1>';
@@ -193,7 +204,7 @@ changeVisibility();
 		echo '<small>Maksymalnie do '.date(self::TIME_YYMMDD, $d['availableMaxTo']).'</small><br />';
 	}
 
-	public function formEditAdmin(array $d, $dormitories, $history=null) {
+	public function formEditAdmin(array $d, $dormitories, $history = null) {
 		if (is_array($history)) {
 			$d = $history + $d;
 		}
@@ -214,6 +225,9 @@ changeVisibility();
 			} else if($temp[1] == '5l')
 				$temp[1] = '5Ł';
 			$tmp[$dorm['id']] = $temp[1] . ' ' . $dorm['name'];
+		}
+		if (!$d['active']) {
+			echo '<b>Przywrócenie komputera zaktualizuje jego lokalizację.</b>';
 		}
 		echo $form->dormitory('Akademik', array(
 			'type' => $form->SELECT,

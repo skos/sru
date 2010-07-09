@@ -926,10 +926,12 @@ extends UFtpl_Common {
 	}
 	
 	public function migrationNotFound(array $d) {
+		echo '<h2><a href="'.$this->url(0).'/">Szukaj</a> | Migracja | <a href="'.$this->url(0).'/services">Usługi</a></h2>';
 		echo $this->ERR('Błąd wyświetlenia modułu migracji');
 	}
 
 	public function migrationDisabled(array $d) {
+		echo '<h2><a href="'.$this->url(0).'/">Szukaj</a> | Migracja | <a href="'.$this->url(0).'/services">Usługi</a></h2>';
 		echo $this->ERR('Moduł migracji jest nieaktywny');
 	}
 

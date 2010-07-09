@@ -28,6 +28,8 @@ extends UFctl {
 								$get->computerId = (int)$req->segment(2);
 								if ($segCount > 2 && ':edit' == $req->segment(3)) {
 									$get->view = 'user/computer/edit';
+								} else if ($segCount > 2 && ':activate' == $req->segment(3)) {
+									$get->view = 'user/computer/activate';
 								} else {
 									$get->view = 'user/computer';
 								}
@@ -76,6 +78,8 @@ extends UFctl {
 		} elseif ('user/add' == $get->view && $post->is('userAdd') && $acl->sru('user', 'add')) {
 			$act = 'User_Add';
 		} elseif ('user/computer/edit' == $get->view && $post->is('computerEdit') && $acl->sru('computer', 'edit')) {
+			$act = 'Computer_Edit';
+		} elseif ('user/computer/activate' == $get->view && $post->is('computerEdit') && $acl->sru('computer', 'edit')) {
 			$act = 'Computer_Edit';
 		} elseif ('user/computer/add' == $get->view && $post->is('computerAdd') && $acl->sru('computer', 'add')) {
 			$act = 'Computer_Add';
@@ -142,9 +146,19 @@ extends UFctl {
 				}
 			case 'user/computer/edit':
 				if ($msg->get('computerDel/ok')) {
-					return 'Sru_UserComputers';	
+					return 'Sru_UserComputers';
+				} else if ($msg->get('computerEdit/ok')) {
+					return 'Sru_UserComputers';
 				} elseif ($acl->sru('computer', 'edit')) {
 					return 'Sru_UserComputerEdit';
+				} else {
+					return 'Sru_Error403';
+				}
+			case 'user/computer/activate':
+				if ($msg->get('computerEdit/ok')) {
+					return 'Sru_UserComputers';
+				} else if ($acl->sru('computer', 'edit')) {
+					return 'Sru_UserComputerActivate';
 				} else {
 					return 'Sru_Error403';
 				}

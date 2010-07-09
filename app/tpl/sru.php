@@ -263,7 +263,9 @@ extends UFtpl_Common {
 
 	public function userComputers(array $d) {
 		echo '<h1>Twoje komputery</h1><ul>';
-		if ($this->_srv->get('msg')->get('computerAdd/ok')) {
+		if ($this->_srv->get('msg')->get('computerEdit/ok')) {
+			echo $this->OK('Dane zostały zmienione');
+		} else if ($this->_srv->get('msg')->get('computerAdd/ok')) {
 			echo $this->OK('Komputer został dodany');
 		} elseif ($this->_srv->get('msg')->get('computerDel/ok')) {
 			echo $this->OK('Komputer został wyrejestrowany');
@@ -273,9 +275,19 @@ extends UFtpl_Common {
 		echo '<p>Samodzielnie możesz dodać tylko jeden komputer. Jeżeli chcesz zarejestrować kolejny, zgłoś się do administratora lokalnego.</p>';
 	}
 
-	public function userComputersNotFound() {
+	public function userComputersNotFound(array $d) {
 		echo '<h1>Twoje komputery</h1>';
-		echo $this->ERR('Nie posiadasz komputerów. <a href="'.$this->url(1).'/:add">Dodaj komputer</a>.');
+		if ($this->_srv->get('msg')->get('computerEdit/ok')) {
+			echo $this->OK('Dane zostały zmienione');
+		}
+		if ($d != null) {
+			echo $this->ERR('Nie posiadasz komputerów.');
+			echo '<p>Przywróć komputer:</p>';
+			$d['computers']->write('listToActivate');
+			echo '<p><a href="'.$this->url(1).'/:add">lub dodaj nowy komputer</a>.</p>';
+		} else {
+			echo $this->ERR('Nie posiadasz komputerów. <a href="'.$this->url(1).'/:add">Dodaj komputer</a>.');
+		}
 	}
 
 	public function titleUserComputer(array $d) {
@@ -302,14 +314,15 @@ extends UFtpl_Common {
 
 		echo $form->_start($this->url(3).'/');
 		echo $form->_fieldset('Zmień dane komputera');
-		if ($this->_srv->get('msg')->get('computerEdit/ok')) {
-			echo $this->OK('Dane zostały zmienione');
-		}
-		echo $d['computer']->write('formEdit');
+		echo $d['computer']->write('formEdit', $d['activate']);
 		echo $form->_submit('Zapisz');
 		echo $form->_end();
 		echo $form->_end(true);
-		echo '<p class="nav"><a href="'.$this->url(2).'">Powrót</a></p>';
+		if ($d['activate']) {
+			echo '<p class="nav"><a href="'.$this->url(1).'">Powrót</a></p>';
+		} else {
+			echo '<p class="nav"><a href="'.$this->url(2).'">Powrót</a></p>';
+		}
 	}
 
 	public function titleUserComputerAdd() {

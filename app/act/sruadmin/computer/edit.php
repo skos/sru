@@ -46,8 +46,13 @@ extends UFact {
 				}
 			}
 
-			if ('' == $post['availableMaxTo']) {
+			if ($post['availableMaxTo'] == '') {
 				$post['availableMaxTo'] = 'NOW';
+				$this->_srv->get('req')->post->{self::PREFIX} = $post;
+			}
+			if ($post['availableTo'] == '') {
+				//jeśli pusta data rejestracji, ustaw na maksymalną
+				$post['availableTo'] = $post['availableMaxTo'];
 				$this->_srv->get('req')->post->{self::PREFIX} = $post;
 			}
 			$bean->fillFromPost(self::PREFIX); // zgodnie z ticketem #176 filtr wyłączony
@@ -56,11 +61,15 @@ extends UFact {
 				// przyszla date waznosci rejestracji
 				$bean->active = true;
 				$bean->availableTo = $bean->availableMaxTo;
+				//aktualizacja lokalizacji komputera
+				$user = UFra::factory('UFbean_Sru_User');
+				$user->getByPK($bean->userId);
+				$bean->locationId = $user->locationId;
 			}
 			if ($bean->availableMaxTo < NOW) {
 				$bean->availableMaxTo = NOW;
 			}
-			if ($bean->availableTo>$bean->availableMaxTo) {
+			if ($bean->availableTo > $bean->availableMaxTo) {
 				$bean->availableTo = $bean->availableMaxTo;
 			}
 			if ($bean->availableTo <= NOW) {

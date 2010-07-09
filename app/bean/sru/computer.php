@@ -96,13 +96,6 @@ extends UFbeanSingle {
 		}
 	}
 
-	protected function validateAvailableTo($val, $change) {
-		$time = strtotime($val);
-		if ($time > $this->data['availableMaxTo']) {
-			return 'tooNew';
-		}
-	}
-
 	public function notifyByEmail() {
 		// nie mozna tego zrobic w jednej linii, bo php rzuca bledem "Can't use
 		// function return value in write context"

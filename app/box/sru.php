@@ -121,7 +121,19 @@ extends UFbox {
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
-			return $this->render(__FUNCTION__.'NotFound');
+			try {
+				// jeżeli nie ma aktywnych, spróbujmy poszukać niekatywnych
+				$user = UFra::factory('UFbean_Sru_User');
+				$user->getFromSession();
+
+				$bean = UFra::factory('UFbean_Sru_ComputerList');
+				$bean->listByUserIdInactive($user->id); 
+
+				$d['computers'] = $bean;
+				return $this->render(__FUNCTION__.'NotFound', $d);
+			} catch (UFex_Dao_NotFound $e) {
+				return $this->render(__FUNCTION__.'NotFound');
+			}
 		}
 	}
 
@@ -149,11 +161,12 @@ extends UFbox {
 		}
 	}
 
-	public function userComputerEdit() {
+	public function userComputerEdit($activate = false) {
 		try {
 			$bean = $this->_getComputerFromGetByCurrentUser();
 
 			$d['computer'] = $bean;
+			$d['activate'] = $activate;
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
