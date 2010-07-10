@@ -1,6 +1,6 @@
 <?
 /**
- * wdodanie uzytkownika
+ * dodanie uzytkownika
  */
 class UFmap_Sru_User_Add
 extends UFmap {
@@ -17,6 +17,7 @@ extends UFmap {
 		'locationId'     => 'location_id',
 		'modifiedById'   => 'modified_by',
 		'active'         => 'active',
+		'lang'		 => 'lang',
 	);
 	protected $columnTypes = array(
 		'login'          => self::TEXT,
@@ -32,6 +33,7 @@ extends UFmap {
 		'locationId'     => self::INT,
 		'modifiedById'   => self::NULL_INT,
 		'active'         => self::BOOL,
+		'lang'           => self::TEXT,
 	);
 	protected $tables = array(
 		'' => 'users',

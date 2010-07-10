@@ -20,6 +20,11 @@ extends UFtpl_Common {
 		0 => 'N/D',
 	);
 
+	static public $languages = array(
+		'pl' => 'polski',
+		'en' => 'English',
+	);
+
 	protected $errors = array(
 		'login' => 'Podaj login',
 		'login/regexp' => 'Login zawiera niedozwolone znaki',
@@ -121,6 +126,11 @@ extends UFtpl_Common {
 			'labels' => $form->_labelize($tmp, '', ''),
 		));
 		echo $form->locationAlias('Pokój');
+		echo $form->gg('Gadu-Gadu');
+		echo $form->lang('Język', array(
+			'type' => $form->SELECT,
+			'labels' => $form->_labelize(self::$languages),
+		));
 	}
 
 	public function formEdit(array $d, $dormitories, $faculties) {
@@ -170,6 +180,10 @@ extends UFtpl_Common {
 		));
 		echo $form->locationAlias('Pokój');
 		echo $form->gg('Gadu-Gadu');
+		echo $form->lang('Język', array(
+			'type' => $form->SELECT,
+			'labels' => $form->_labelize(self::$languages),
+		));
 
 		echo $form->_fieldset('Zmiana chronionych danych');
 			echo $form->password3('Aktualne hasło', array('type'=>$form->PASSWORD));
@@ -248,6 +262,7 @@ extends UFtpl_Common {
 			}
 			echo '</p>';
 		}
+		echo '<p><em>Język:</em> '.self::$languages[$d['lang']];
 		echo '<p class="displayOnHover"><em>Znajdź na:</em>';
 		echo ' <a href="http://www.google.pl/search?q='.urlencode($d['name'].' '.$d['surname']).'">google</a>';
 		echo ' <a href="http://nasza-klasa.pl/search?query='.urlencode($d['name'].' '.$d['surname']).'">nasza-klasa</a>';
@@ -334,6 +349,10 @@ changeVisibility();
 		echo $form->surname('Nazwisko');
 		echo $form->email('E-mail');
 		echo $form->gg('Gadu-Gadu');
+		echo $form->lang('Język', array(
+			'type' => $form->SELECT,
+			'labels' => $form->_labelize(self::$languages),
+		));
 		
 		$tmp = array();
 		foreach ($faculties as $fac) {
@@ -371,25 +390,6 @@ changeVisibility();
 		echo $form->active('Konto aktywne', array('type'=>$form->CHECKBOX));
 	}
 
-	public function userAddMailBody(array $d, $password) {
-		echo 'Imię: '.$d['name']."\n";
-		echo 'Nazwisko: '.$d['surname']."\n";
-		echo $d['dormitoryName']."\n";
-		echo 'Pokój: '.$d['locationAlias']."\n";
-		echo 'Login: '.$d['login']."\n";
-		echo 'Twoje hasło to: '.$password."\n";
-	}
-	
-	public function userAddMailBodyEnglish(array $d, $password) {
-		echo 'Name: '.$d['name']."\n";
-		echo 'Surname: '.$d['surname']."\n";
-		echo $d['dormitoryName']."\n";
-		echo 'Room: '.$d['locationAlias']."\n";
-		echo 'Login: '.$d['login']."\n";
-		echo 'Your password: '.$password."\n";
-	}
-
-
 	public function shortList(array $d) {
 		$url = $this->url(0).'/users/';
 		foreach ($d as $c) {
@@ -408,7 +408,145 @@ changeVisibility();
 		}
 	}
 
-	public function mailChange(array $d, $history = null) {
+	public function userAddMailTitlePolish(array $d) {
+		echo 'Witamy w sieci SKOS';
+	}
+
+	public function userAddMailTitleEnglish(array $d) {
+		echo 'Welcome in SKOS network';
+	}
+
+	public function userAddMailBodyPolish(array $d, $password) {
+		echo 'Witamy w Sieci Komputerowej Osiedla Studenckiego Politechniki Gdańskiej!'."\n";
+		echo "\n";
+		echo 'Jeżeli otrzymałeś/aś tę wiadomość, a nie chciałeś/aś założyć konta w SKOS PG,'."\n";
+		echo 'prosimy o zignorowanie tej wiadomości.'."\n\n";
+		echo 'Aby dokończyć proces aktywacji konta, zgłoś się do swojego administratora'."\n";
+		echo 'lokalnego z wejściówką do DS-u. Godziny, w których możesz go zastać znajdziesz'."\n";
+		echo 'tutaj: http://skos.ds.pg.gda.pl/'."\n";
+		echo "\n";
+		echo 'W razie jakichkolwiek problemów zachęcamy do skorzystania z FAQ:'."\n";
+		echo 'http://skos.ds.pg.gda.pl/'."\n";
+		echo "\n";
+		echo '- - - - - - - - - - -'."\n";
+		echo "\n";
+		echo 'Dane, na które zostało założone konto:'."\n";
+		echo 'Imię: '.$d['name']."\n";
+		echo 'Nazwisko: '.$d['surname']."\n";
+		echo $d['dormitoryName']."\n";
+		echo 'Pokój: '.$d['locationAlias']."\n";
+		echo 'Login: '.$d['login']."\n";
+		echo 'Twoje hasło to: '.$password."\n";
+		echo "\n";
+		echo 'System Rejestracji Użytkowników: http://sru.ds.pg.gda.pl/'."\n";
+		echo 'PROSIMY O ZMIANĘ HASŁA ZARAZ PO PIERWSZYM ZALOGOWANIU SIĘ!'."\n";
+		echo "\n";
+		echo '- - - - - - - - - - -'."\n";
+		echo "\n";
+		echo 'Nasza sieć obejmuje swoim zasięgiem sieci LAN wszystkich Domów Studenckich'."\n";
+		echo 'Politechniki Gdańskiej, jest częścią Uczelnianej Sieci Komputerowej (USK PG) i'."\n";
+		echo 'dołączona jest bezpośrednio do sieci TASK.'."\n";
+		echo "\n";
+		echo 'Wszelkie informacje na temat funkcjonowania sieci, godzin dyżurów'."\n";
+		echo 'administratorów SKOS PG oraz Regulamin SKOS PG znajdziesz na stronie'."\n";
+		echo 'http://skos.ds.pg.gda.pl/ , zaś bieżące komunikaty na grupie dyskusyjnej ds.siec.komunikaty'."\n";
+	}
+	
+	public function userAddMailBodyEnglish(array $d, $password) {
+		echo 'Welcome in Gdańsk University of Technology Students’ Campus Computer Network (polish acronym - SKOS PG)!' . "\n";
+		echo "\n";
+		echo 'If you received this message but you didn’t want to create an account in SKOS PG, please ignore it.' . "\n";
+		echo 'To finish activation procedure you must go to your local administrator in his duty hours:'."\n";
+		echo 'http://skos.ds.pg.gda.pl/'."\n";
+		echo 'with your dormitory card.'."\n";
+		echo "\n";
+		echo 'If you have problems using Internet in our network, please refer to FAQ:'."\n";
+		echo 'http://skos.ds.pg.gda.pl/'."\n";
+		echo "\n";
+		echo '- - - - - - - - - - -'."\n";
+		echo "\n";
+		echo 'Account was created for:'."\n";
+		echo 'Name: '.$d['name']."\n";
+		echo 'Surname: '.$d['surname']."\n";
+		echo $d['dormitoryName']."\n";
+		echo 'Room: '.$d['locationAlias']."\n";
+		echo 'Login: '.$d['login']."\n";
+		echo 'Your password: '.$password."\n";
+		echo "\n";
+		echo 'User Registration System (System Rejestracji Użytkowników): http://sru.ds.pg.gda.pl/'."\n";
+		echo 'PLEASE CHANGE YOUR PASSWORD AFTER THE FIRST LOGON!'."\n";
+		echo "\n";
+		echo '- - - - - - - - - - -'."\n";
+		echo "\n";
+		echo 'Any information about our network you can find on our page'."\n";
+		echo 'http://skos.ds.pg.gda.pl/'."\n";
+	}
+
+	public function userRecoverPasswordMailTitlePolish(array $d) {
+		echo 'Zmiana hasła';
+	}
+
+	public function userRecoverPasswordMailTitleEnglish(array $d) {
+		echo 'Password recovery';
+	}
+
+	public function userRecoverPasswordMailBodyTokenPolish(array $d, $token, $host) {
+		echo 'Kliknij poniższy link, aby zmienić hasło do Twojego konta w SRU'."\n";
+		echo '(Systemie Rejestracji Użytkowników):'."\n";
+		echo 'http://'.$host.$this->url(0).'/'.$token->token."\n\n";
+		echo 'Otrzymasz KOLEJNY e-mail zawierający nowe hasło do SRU.'."\n\n";
+	}
+
+	public function userRecoverPasswordMailBodyTokenEnglish(array $d, $token, $host) {
+		echo 'Follow this link to change your password in User Register System:'."\n";
+		echo 'http://'.$host.$this->url(0).'/'.$token->token."\n\n";
+		echo 'You will receive THE NEXT e-mail with the new password.'."\n\n";
+	}
+
+	public function userRecoverPasswordMailBodyPasswordPolish(array $d, $password, $host) {
+		echo 'Twój login: '.$d['login']."\n";
+		echo 'Twoje nowe hasło: '.$password."\n\n";
+		echo 'System Rejestracji Użytkowników: http://'.$host.'/'."\n";
+		echo 'PROSIMY O ZMIANĘ HASŁA ZARAZ PO PIERWSZYM ZALOGOWANIU!'."\n\n";
+	}
+
+	public function userRecoverPasswordMailBodyPasswordEnglish(array $d, $password, $host) {
+		echo 'Your login: '.$d['login']."\n";
+		echo 'Your new password: '.$password."\n\n";
+		echo 'User Register System: http://'.$host.'/'."\n";
+		echo 'PLEASE CHANGE YOUR PASSWORD JUST AFTER THE FIRS LOG IN!'."\n\n";
+	}
+
+	public function dataChangedMailTitlePolish(array $d) {
+		echo 'Twoje dane zostały zmienione';
+	}
+
+	public function dataChangedMailTitleEnglish(array $d) {
+		echo 'Your personal data have been changed';
+	}
+	
+	public function dataChangedMailBodyPolish(array $d) {
+		echo 'Potwierdzamy, że zmiana Twoich danych w SKOS PG została zapisana.'."\n\n";
+		echo 'Imię: '.$d['name']."\n";
+		echo 'Nazwisko: '.$d['surname']."\n";
+		echo $d['dormitoryName']."\n";
+		echo 'Pokój: '.$d['locationAlias']."\n";
+		echo 'Login: '.$d['login']."\n";
+		echo 'Numer GG: '.$d['gg']."\n";
+	}
+
+	public function dataChangedMailBodyEnglish(array $d) {
+		echo 'We comfirm, that change of your personal data in SKOS PG has been saved.'."\n\n";
+		echo 'Name: '.$d['name']."\n";
+		echo 'Surname: '.$d['surname']."\n";
+		echo $d['dormitoryName']."\n";
+		echo 'Room: '.$d['locationAlias']."\n";
+		echo 'Login: '.$d['login']."\n";
+		echo 'GG number: '.$d['gg']."\n";
+	}
+
+	public function dataAdminChangedMailBodyPolish(array $d, $history = null) {
+		echo 'Informujemy, że Twoje dane w SKOS PG uległy zmianie.'."\n\n";
 		if ($history instanceof UFbean_SruAdmin_UserHistoryList) {
 			$history->write('mail', $d);
 		} else {
@@ -421,16 +559,17 @@ changeVisibility();
 		}
 	}
 
-	public function mailChangeEn(array $d, $history = null) {
+	public function dataAdminChangedMailBodyEnglish(array $d, $history = null) {
+		echo 'We inform, that your personal data in SKOS PG has been changed.'."\n\n";
 		if ($history instanceof UFbean_SruAdmin_UserHistoryList) {
 			$history->write('mailEn', $d);
 		} else {
-			echo 'Imię: '.$d['name']."\n";
-			echo 'Nazwisko: '.$d['surname']."\n";
+			echo 'Name: '.$d['name']."\n";
+			echo 'Surname: '.$d['surname']."\n";
 			echo $d['dormitoryName']."\n";
-			echo 'Pokój: '.$d['locationAlias']."\n";
+			echo 'Room: '.$d['locationAlias']."\n";
 			echo 'Login: '.$d['login']."\n";
-			echo 'Numer GG: '.$d['gg']."\n";
+			echo 'GG Number: '.$d['gg']."\n";
 		}
 	}
 

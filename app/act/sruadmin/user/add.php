@@ -46,10 +46,10 @@ extends UFact {
 
 			// wyslanie maila
 			$box = UFra::factory('UFbox_Sru');
+			$sender = UFra::factory('UFlib_Sender');
 			$title = $box->userAddMailTitle($bean);
-			$body = $box->userAddMailBodyNoInfo($bean, $password);
-			$headers = $box->userAddMailHeaders($bean);
-			mail($bean->email, '=?UTF-8?B?'.base64_encode($title).'?=', $body, $headers);
+			$body = $box->userAddMailBody($bean, $password);
+			$sender->send($bean, $title, $body, self::PREFIX);
 
 			$this->postDel(self::PREFIX);
 			$this->markOk(self::PREFIX);

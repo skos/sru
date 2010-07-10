@@ -257,6 +257,118 @@ changeVisibility();
 		}
 	}
 
+	public function penaltyAddMailTitlePolish(array $d) {
+		if ($d['typeId'] == UFbean_SruAdmin_Penalty::TYPE_WARNING) {
+			echo 'Otrzymał(a/e)ś ostrzeżenie';
+		} else {
+			echo 'Otrzymał(a/e)ś karę';
+		}
+	}
+
+	public function penaltyAddMailTitleEnglish(array $d) {
+		if ($d['typeId'] == UFbean_SruAdmin_Penalty::TYPE_WARNING) {
+			echo 'You got a new warning';
+		} else {
+			echo 'You got a new penalty';
+		}
+	}
+
+	public function penaltyAddMailBodyPolish(array $d, $user, $computers) {
+		echo 'Informujemy, że otrzymał(a/e)ś ';
+		if ($d['penalty']-> typeId == UFbean_SruAdmin_Penalty::TYPE_WARNING) {
+			echo 'OSTRZEŻENIE';
+		} else {
+			echo 'KARĘ';
+		}
+		echo ' w SKOS PG.'."\n";
+		echo 'Trwa do: '.date(self::TIME_YYMMDD_HHMM, $d['endAt'])."\n";
+		if ($d['typeId'] != UFbean_SruAdmin_Penalty::TYPE_WARNING) {
+			echo 'Kara nałożona na host(y): ';
+			foreach ($computers as $computer) {
+				if (is_array($computer)) {
+					echo $computer['host'].' ';
+				} else {
+					echo $computer->host.' ';
+				}
+			}
+		}
+		echo "\n".'Powód: '.$d['reason']."\n";
+		echo "\n".'Szczegółowe informacje znajdziesz w Systemie Rejestracji Użytkownika: http://sru.ds.pg.gda.pl';
+		echo ' (Twój login to: '.$user->login.')';
+		echo "\n\n";
+	}
+
+	public function penaltyAddMailBodyEnglish(array $d, $user, $computers) {
+		echo 'We inform, that you got the ';
+		if ($d['typeId'] == UFbean_SruAdmin_Penalty::TYPE_WARNING) {
+			echo 'WARNING';
+		} else {
+			echo 'PENALTY';
+		}
+		echo ' in SKOS PG network.'."\n";
+		echo 'Valid till: '.date(self::TIME_YYMMDD_HHMM, $d['endAt'])."\n";
+		if ($d['typeId'] != UFbean_SruAdmin_Penalty::TYPE_WARNING) {
+			echo 'Banned host(s): ';
+			foreach ($computers as $computer) {
+				if (is_array($computer)) {
+					echo $computer['host'].' ';
+				} else {
+					echo $computer->host.' ';
+				}
+			}
+		}
+		echo "\n".'Reason: '.$d['reason']."\n";
+		echo "\n".'You can find more information in User Register System: http://sru.ds.pg.gda.pl';
+		echo ' (your login: '.$user->login.')';
+		echo "\n";
+	}
+
+	public function penaltyEditMailTitlePolish(array $d) {
+		if ($d['typeId'] == UFbean_SruAdmin_Penalty::TYPE_WARNING) {
+			echo 'Zmodyfikowano Twoje ostrzeżenie';
+		} else {
+			echo 'Zmodyfikowano Twoją karę';
+		}
+	}
+
+	public function penaltyEditMailTitleEnglish(array $d) {
+		if ($d['typeId'] == UFbean_SruAdmin_Penalty::TYPE_WARNING) {
+			echo 'Your warning was modified';
+		} else {
+			echo 'Your penalty was modified';
+		}
+	}
+	
+	public function penaltyEditMailBodyPolish(array $d, $user) {
+		echo 'Informujemy, że zmodyfikowano ';
+		if ($d['typeId'] == UFbean_SruAdmin_Penalty::TYPE_WARNING) {
+			echo 'Twoje OSTRZEŻENIE';
+		} else {
+			echo 'Twoją KARĘ';
+		}
+		echo ' w SKOS PG.'."\n";
+		echo 'Teraz trwa do: '.date(self::TIME_YYMMDD_HHMM, $d['endAt'])."\n";
+		echo 'Powód: '.$d['reason']."\n";
+		echo "\n".'Szczegółowe informacje znajdziesz w Systemie Rejestracji Użytkownika: http://sru.ds.pg.gda.pl';
+		echo ' (Twój login to: '.$user->login.')';
+		echo "\n\n";
+	}
+
+	public function penaltyEditMailBodyEnglish(array $d, $user) {
+		echo 'We inform, that your ';
+		if ($d['typeId'] == UFbean_SruAdmin_Penalty::TYPE_WARNING) {
+			echo 'WARNING';
+		} else {
+			echo 'PENALTY';
+		}
+		echo ' was modified in SKOS PG network.'."\n";
+		echo 'Now valid till: '.date(self::TIME_YYMMDD_HHMM, $d['endAt'])."\n";
+		echo 'Reason: '.$d['reason']."\n";
+		echo "\n".'You can find more information in User Register System: http://sru.ds.pg.gda.pl';
+		echo ' (your login: '.$user->login.')';
+		echo "\n";
+	}
+
 	public function stats(array $d) {
 		$activePenalties = 0;
 		$banners = array();

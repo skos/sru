@@ -68,10 +68,10 @@ extends UFact {
 			if ($conf->sendEmail) {
 				// wyslanie maila do usera
 				$box = UFra::factory('UFbox_SruAdmin');
-				$title = $box->hostChangedMailTitle($bean);
-				$body = $box->hostChangedMailBody($bean, self::PREFIX);
-				$headers = $box->hostChangedMailHeaders($bean);
-				mail($user->email, '=?UTF-8?B?'.base64_encode($title).'?=', $body, $headers);
+				$sender = UFra::factory('UFlib_Sender');
+				$title = $box->hostChangedMailTitle($bean, $user);
+				$body = $box->hostChangedMailBody($bean, self::PREFIX, $user);
+				$sender->send($user, $title, $body, self::PREFIX);
 			}
 
 			$this->postDel(self::PREFIX);

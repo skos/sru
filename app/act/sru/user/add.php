@@ -14,7 +14,6 @@ extends UFact {
 			$bean = UFra::factory('UFbean_Sru_User');
 			$bean->fillFromPost(self::PREFIX);
 			$bean->active = false;
-			$bean->gg = '';
 			$post = $this->_srv->get('req')->post->{self::PREFIX};
 
 			if (isset($post['facultyId']) && $post['facultyId'] == '0' && isset($post['studyYearId']) && $post['studyYearId'] != '0') {
@@ -45,22 +44,10 @@ extends UFact {
 
 			// wyslanie maila
 			$box = UFra::factory('UFbox_Sru');
+			$sender = UFra::factory('UFlib_Sender');
 			$title = $box->userAddMailTitle($bean);
-			try {
-				$oldUser = UFra::factory('UFbean_Sru_User');
-				$oldUser->getOldByEmail($bean->email);
-
-				$token = UFra::factory('UFbean_Sru_Token');
-				$token->token = md5($id.NOW);
-				$token->userId = $id;
-				$token->save();
-
-				$body = $box->userAddMailBodyToken($bean, $password, $token);
-			} catch (UFex_Dao_NotFound $e) {
-				$body = $box->userAddMailBodyNoToken($bean, $password);
-			}
-			$headers = $box->userAddMailHeaders($bean);
-			mail($bean->email,'=?UTF-8?B?'.base64_encode($title).'?=', $body, $headers);
+			$body = $box->userAddMailBody($bean, $password);
+			$sender->send($bean, $title, $body);
 
 			$this->postDel(self::PREFIX);
 			$this->markOk(self::PREFIX);

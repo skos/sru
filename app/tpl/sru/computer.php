@@ -463,7 +463,51 @@ div.style.display = 'none';
 		}
 	}
 
-	public function mailChange(array $d, $history = null) {
+	public function hostChangedMailTitlePolish(array $d) {
+		echo 'Dane Twojego hosta zostały zmienione';
+	}
+
+	public function hostChangedMailTitleEnglish(array $d) {
+		echo 'Your host data have been changed';
+	}
+
+	public function hostChangedMailBodyPolish(array $d, $action) {
+		if ($action == UFact_Sru_Computer_Add::PREFIX) {
+			echo 'Potwierdzamy, że do Twojego konta w SKOS PG został dodany nowy host.'."\n\n";
+		} else if ($action == UFact_Sru_Computer_Edit::PREFIX) {
+			echo 'Potwierdzamy, że zmiana danych Twojego hosta w SKOS PG została zapisana.'."\n\n";
+		} else {
+			echo 'Potwierdzamy dezaktywację Twojego hosta w SKOS PG.'."\n\n";
+		}
+		echo 'Nazwa hosta: '.$d['host']."\n";
+		echo 'Ważny do: '.date(self::TIME_YYMMDD,$d['availableTo'])."\n";
+		echo 'IP: '.$d['ip']."\n";
+		echo 'Adres MAC: '.$d['mac']."\n";
+	}
+	
+	public function hostChangedMailBodyEnglish(array $d, $action) {
+		if ($action == UFact_Sru_Computer_Add::PREFIX) {
+			echo 'We confirm, that a new host has been added to your SKOS PG account.'."\n\n";
+		} else if ($action == UFact_Sru_Computer_Edit::PREFIX) {
+			echo 'We confirm, that change ofyour host data in SKOS PG has been saved.'."\n\n";
+		} else {
+			echo 'We confirm, that your host in SKOS PG has been deactivated.'."\n\n";
+		}
+		echo 'Host name: '.$d['host']."\n";
+		echo 'Available to: '.date(self::TIME_YYMMDD,$d['availableTo'])."\n";
+		echo 'IP: '.$d['ip']."\n";
+		echo 'MAC address: '.$d['mac']."\n";
+	}
+
+	public function hostAdminChangedMailBodyPolish(array $d, $action, $history = null) {
+		if ($action == UFact_SruAdmin_Computer_Add::PREFIX) {
+			echo 'Informujemy, że do Twojego konta w SKOS PG dodano nowego hosta.'."\n\n";
+		} else if ($action == UFact_SruAdmin_Computer_Edit::PREFIX) {
+			echo 'Informujemy, że dane Twojego hosta w SKOS PG uległy zmianie.'."\n\n";
+		} else {
+			echo 'Informujemy, że Twój host w SKOS PG został dezaktywowany.'."\n\n";
+		}
+
 		if ($history instanceof UFbean_SruAdmin_ComputerHistoryList) {
 			$history->write('mail', $d);
 		} else {
@@ -474,7 +518,15 @@ div.style.display = 'none';
 		}
 	}
 
-	public function mailChangeEn(array $d, $history = null) {
+	public function hostAdminChangedMailBodyEnglish(array $d, $action, $history = null) {
+		if ($action == UFact_SruAdmin_Computer_Add::PREFIX) {
+			echo 'We inform, that a new host has been added to your SKOS PG account.'."\n\n";
+		} else if ($action == UFact_SruAdmin_Computer_Edit::PREFIX) {
+			echo 'We inform, that data of your host in SKOS PG has been changed.'."\n\n";
+		} else {
+			echo 'We inform, that your host in SKOS PG has been deactivated.'."\n\n";
+		}
+
 		if ($history instanceof UFbean_SruAdmin_ComputerHistoryList) {
 			$history->write('mailEn', $d);
 		} else {

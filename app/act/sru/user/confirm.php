@@ -38,11 +38,10 @@ extends UFact {
 					$bean->save();
 
 					$box = UFra::factory('UFbox_Sru');
+					$sender = UFra::factory('UFlib_Sender');
 					$title = $box->userRecoverPasswordMailTitle($bean);
 					$body = $box->userRecoverPasswordMailBodyPassword($bean, $password);
-					$headers = $box->userRecoverPasswordMailHeaders($bean);
-
-					mail($bean->email, '=?UTF-8?B?'.base64_encode($title).'?=', $body, $headers);
+					$sender->send($bean, $title, $body);
 					$this->markOk(self::PREFIX.'Password');
 					break;
 			}

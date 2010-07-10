@@ -84,7 +84,8 @@ extends UFact {
 			if ($conf->sendEmail) {
 				// wyslanie maila do usera
 				$box = UFra::factory('UFbox_Sru');
-				$title = $box->penaltyAddMailTitle($bean);
+				$sender = UFra::factory('UFlib_Sender');
+				$title = $box->penaltyAddMailTitle($bean, $user);
 				if (UFbean_SruAdmin_Penalty::TYPE_COMPUTERS === $bean->typeId) {
 					$computers = UFra::factory('UFbean_Sru_ComputerList');
 					try {
@@ -100,17 +101,15 @@ extends UFact {
 					$computers = null;
 				}
 				$body = $box->penaltyAddMailBody($bean, $user, $computers);
-				$headers = $box->penaltyAddMailHeaders($bean);
-				mail($user->email, '=?UTF-8?B?'.base64_encode($title).'?=', $body, $headers);
+				$sender->send($user, $title, $body, self::PREFIX);
 				
 				// wyslanie maila do admina
 				$admin = UFra::factory('UFbean_SruAdmin_Admin');
 				$admin->getByPK($bean->createdById);
 				$box = UFra::factory('UFbox_SruAdmin');
-				$title = $box->penaltyAddMailTitle($user);
+				$title = $box->penaltyAddMailTitle($bean, $user);
 				$body = $box->penaltyAddMailBody($bean, $user, $computers, $admin);
-				$headers = $box->penaltyAddMailHeaders($bean);
-				mail("admin-".$user->dormitoryAlias."@ds.pg.gda.pl", '=?UTF-8?B?'.base64_encode($title).'?=', $body, $headers);
+				$sender->sendMail("admin-".$user->dormitoryAlias."@ds.pg.gda.pl", $title, $body, self::PREFIX);
 			}
 
 			$this->postDel(self::PREFIX);

@@ -1103,21 +1103,13 @@ extends UFtpl_Common {
 	public function titleServices() {
 		echo 'Panel Usług Użytkowników';
 	}
-
-	
-	public function mailHeaders(array $headers = array()) {
-		echo 'MIME-Version: 1.0'."\n";
-		echo 'Content-Type: text/plain; charset=UTF-8'."\n";
-		echo 'Content-Transfer-Encoding: 8bit'."\n";
-		echo 'From: Administratorzy SKOS <adnet@ds.pg.gda.pl>'."\n";
-		foreach ($headers as $header => $value) {
-			echo $header.': '.$value."\n";
-		}
-	}
 	
 	public function penaltyAddMailTitle(array $d) {
-		$conf = UFra::shared('UFconf_Sru');
-		echo $conf->emailPrefix.' Nałożono nową karę w DS'.substr($d['user']->dormitoryAlias, 2);
+		if ($d['penalty']->typeId == UFbean_SruAdmin_Penalty::TYPE_WARNING) {
+			echo 'Nałożono nowe ostrzeżenie w DS'.substr($d['user']->dormitoryAlias, 2);
+		} else {
+			echo 'Nałożono nową karę w DS'.substr($d['user']->dormitoryAlias, 2);
+		}
 	}
 	
 	public function penaltyAddMailBody(array $d) {
@@ -1147,15 +1139,13 @@ extends UFtpl_Common {
 		echo 'Komentarz: '.$d['penalty']->comment."\n";
 		echo 'Link: https://'.$d['host'].'/admin/penalties/'.$d['penalty']->id."\n";
 	}
-	
-	
-	public function penaltyEditMailHeaders(array $d) {
-		$this->mailHeaders(array('X-SRU'=>'penaltyEdit'));
-	}
 
 	public function penaltyEditMailTitle(array $d) {
-		$conf = UFra::shared('UFconf_Sru');
-		echo $conf->emailPrefix.' Zmodyfikowano karę w DS'.substr($d['user']->dormitoryAlias, 2);
+		if ($d['penalty']->typeId == UFbean_SruAdmin_Penalty::TYPE_WARNING) {
+			echo 'Zmodyfikowano ostrzeżenie w DS'.substr($d['user']->dormitoryAlias, 2);
+		} else {
+			echo 'Zmodyfikowano karę w DS'.substr($d['user']->dormitoryAlias, 2);
+		}
 	}
 	
 	public function penaltyEditMailBody(array $d) {
@@ -1182,69 +1172,36 @@ extends UFtpl_Common {
 		echo 'Komentarz: '.$d['penalty']->comment."\n";
 		echo 'Link: https://'.$d['host'].'/admin/penalties/'.$d['penalty']->id."\n";
 	}
-	
-	
-	public function penaltyAddMailHeaders(array $d) {
-		$this->mailHeaders(array('X-SRU'=>'penaltyAdd'));
-	}
 
 	public function dataChangedMailTitle(array $d) {
-		$conf = UFra::shared('UFconf_Sru');
-		echo $conf->emailPrefix.' Twoje dane zostały zmienione / Your data has been changed';
+		if ($d['user']->lang == 'en') {
+			echo $d['user']->write('dataChangedMailTitleEnglish');
+		} else {
+			echo $d['user']->write('dataChangedMailTitlePolish');
+		}
 	}
 	
 	public function dataChangedMailBody(array $d) {
-		echo 'Informujemy, że Twoje dane w SKOS PG uległy zmianie.'."\n\n";
-		$d['user']->write('mailChange', $d['history']);
-
-		echo "\n".'- - - ENGLISH VERSION - - -'."\n";
-		echo 'We inform, that your personal data in SKOS PG has been changed:'."\n\n";
-		$d['user']->write('mailChangeEn', $d['history']);
-
-		echo '-- '."\n";
-		echo 'Pozdrawiamy / Regards,'."\n";
-		echo 'Administratorzy SKOS PG / SKOS PG Administrators'."\n";
-		echo 'http://skos.ds.pg.gda.pl/'."\n";
-		echo '[wiadomość została wygenerowana automatycznie / this message was generated automatically]'."\n";
-	}
-	
-	public function dataChangedMailHeaders(array $d) {
-		$this->mailHeaders(array('X-SRU'=>'userChange'));
+		if ($d['user']->lang == 'en') {
+			echo $d['user']->write('dataAdminChangedMailBodyEnglish', $d['history']);
+		} else {
+			echo $d['user']->write('dataAdminChangedMailBodyPolish', $d['history']);
+		}
 	}
 
 	public function hostChangedMailTitle(array $d) {
-		$conf = UFra::shared('UFconf_Sru');
-		echo $conf->emailPrefix.' Dane Twojego hosta zostały zmienione / Your host data has been changed';
+		if ($d['user']->lang == 'en') {
+			echo $d['host']->write('hostChangedMailTitleEnglish');
+		} else {
+			echo $d['host']->write('hostChangedMailTitlePolish');
+		}
 	}
 	
 	public function hostChangedMailBody(array $d) {
-		if ($d['action'] == UFact_SruAdmin_Computer_Add::PREFIX) {
-			echo 'Informujemy, że do Twojego konta w SKOS PG dodano nowego hosta.'."\n\n";
-		} else if ($d['action'] == UFact_SruAdmin_Computer_Edit::PREFIX) {
-			echo 'Informujemy, że dane Twojego hosta w SKOS PG uległy zmianie.'."\n\n";
+		if ($d['user']->lang == 'en') {
+			echo $d['host']->write('hostAdminChangedMailBodyEnglish', $d['action'], $d['history']);
 		} else {
-			echo 'Informujemy, że Twój host w SKOS PG został dezaktywowany.'."\n\n";
+			echo $d['host']->write('hostAdminChangedMailBodyPolish', $d['action'], $d['history']);
 		}
-		$d['host']->write('mailChange', $d['history']);
-
-		echo "\n".'- - - ENGLISH VERSION - - -'."\n";
-		if ($d['action'] == UFact_SruAdmin_Computer_Add::PREFIX) {
-			echo 'We inform, that a new host has been added to your SKOS PG account.'."\n\n";
-		} else if ($d['action'] == UFact_SruAdmin_Computer_Edit::PREFIX) {
-			echo 'We inform, that data of your host in SKOS PG has been changed.'."\n\n";
-		} else {
-			echo 'We inform, that your host in SKOS PG has been deactivated.'."\n\n";
-		}
-		$d['host']->write('mailChangeEn', $d['history']);
-
-		echo '-- '."\n";
-		echo 'Pozdrawiamy / Regards,'."\n";
-		echo 'Administratorzy SKOS PG / SKOS PG Administrators'."\n";
-		echo 'http://skos.ds.pg.gda.pl/'."\n";
-		echo '[wiadomość została wygenerowana automatycznie / this message was generated automatically]'."\n";
-	}
-	
-	public function hostChangedMailHeaders(array $d) {
-		$this->mailHeaders(array('X-SRU'=>'hostChange'));
 	}
 }

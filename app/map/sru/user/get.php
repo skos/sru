@@ -31,6 +31,7 @@ extends UFmap {
 		'banned'         => 'u.banned',
 		'lastLoginAt'    => 'u.last_login_at',
 		'lastLoginIp'    => 'u.last_login_ip',
+		'lang'		 => 'u.lang',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -58,6 +59,7 @@ extends UFmap {
 		'banned'         => self::BOOL,
 		'lastLoginAt'    => self::NULL_TS,
 		'lastLoginIp'    => self::NULL_TEXT,
+		'lang'           => self::TEXT,
 	);
 	protected $tables = array(
 		'u' => 'users',

@@ -21,6 +21,7 @@ extends UFmap {
 		'active'         => 'active',
 		'lastLoginAt'	 => 'last_login_at',
 		'lastLoginIp'	 => 'last_login_ip',
+		'lang'		 => 'lang',
 	);
 	protected $columnTypes = array(
 		'login'          => self::TEXT,
@@ -40,6 +41,7 @@ extends UFmap {
 		'active'         => self::BOOL,
 		'lastLoginAt'	 => self::TS,
 		'lastLoginIp'	 => self::TEXT,
+		'lang'           => self::TEXT,
 	);
 	protected $tables = array(
 		'' => 'users',

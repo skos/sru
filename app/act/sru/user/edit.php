@@ -89,11 +89,11 @@ extends UFact {
 			if ($conf->sendEmail) {
 				// wyslanie maila do usera
 				$box = UFra::factory('UFbox_Sru');
+				$sender = UFra::factory('UFlib_Sender');
 				$bean->getByPK($bean->id);	// pobranie nowych danych, np. aliasu ds-u
 				$title = $box->dataChangedMailTitle($bean);
 				$body = $box->dataChangedMailBody($bean);
-				$headers = $box->dataChangedMailHeaders($bean);
-				mail($bean->email, '=?UTF-8?B?'.base64_encode($title).'?=', $body, $headers);
+				$sender->send($bean, $title, $body);
 			}
 	
 			$this->postDel(self::PREFIX);

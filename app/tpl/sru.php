@@ -54,103 +54,6 @@ extends UFtpl_Common {
 		}
 	}
 
-	public function userAddMailTitle(array $d) {
-		echo 'Witamy w sieci SKOS / Welcome in SKOS network';
-	}
-
-	protected function userAddMailBody(array $d, $info='', $infoEn='') {
-		echo 'Witamy w Sieci Komputerowej Osiedla Studenckiego Politechniki Gdańskiej!'."\n";
-		echo "\n";
-		echo 'Jeżeli otrzymałeś/aś tę wiadomość, a nie chciałeś/aś założyć konta w SKOS PG,'."\n";
-		echo 'prosimy o zignorowanie tej wiadomości.'."\n";
-		echo $info;
-		echo "\n";
-		echo 'W razie jakichkolwiek problemów zachęcamy do skorzystania z FAQ:'."\n";
-		echo 'http://skos.ds.pg.gda.pl/'."\n";
-		echo "\n";
-		echo '- - - - - - - - - - -'."\n";
-		echo "\n";
-		echo 'Dane, na które zostało założone konto:'."\n";
-		echo $d['user']->write('userAddMailBody', $d['password']);
-		echo "\n";
-		echo 'System Rejestracji Użytkowników: http://'.$d['host'].'/'."\n";
-		echo 'PROSIMY O ZMIANĘ HASŁA ZARAZ PO PIERWSZYM ZALOGOWANIU SIĘ!'."\n";
-		echo "\n";
-		echo '- - - - - - - - - - -'."\n";
-		echo "\n";
-		echo 'Nasza sieć obejmuje swoim zasięgiem sieci LAN wszystkich Domów Studenckich'."\n";
-		echo 'Politechniki Gdańskiej, jest częścią Uczelnianej Sieci Komputerowej (USK PG) i'."\n";
-		echo 'dołączona jest bezpośrednio do sieci TASK.'."\n";
-		echo "\n";
-		echo 'Wszelkie informacje na temat funkcjonowania sieci, godzin dyżurów'."\n";
-		echo 'administratorów SKOS PG oraz Regulamin SKOS PG znajdziesz na stronie'."\n";
-		echo 'http://skos.ds.pg.gda.pl/ , zaś bieżące komunikaty na grupie dyskusyjnej ds.siec.komunikaty'."\n";
-		echo "\n\n";
-		echo '- - - ENGLISH VERSION - - -'."\n";
-		echo 'Welcome in Gdańsk University of Technology Students’ District Computer Network (polish acronym - SKOS PG)!' . "\n";
-		echo "\n";
-		echo 'If you received this message but you didn’t want to create an account in SKOS PG, please ignore it.' . "\n";
-		echo $infoEn;
-		echo "\n";
-		echo 'If you have problems using Internet in our network, please refer to FAQ:'."\n";
-		echo 'http://skos.ds.pg.gda.pl/'."\n";
-		echo "\n";
-		echo '- - - - - - - - - - -'."\n";
-		echo "\n";
-		echo 'Account was created for:'."\n";
-		echo $d['user']->write('userAddMailBodyEnglish', $d['password']);
-		echo "\n";
-		echo 'User Register System (System Rejestracji Użytkowników): http://'.$d['host'].'/'."\n";
-		echo 'PLEASE CHANGE YOUR PASSWORD AFTER THE FIRST LOGON!'."\n";
-		echo "\n";
-		echo '- - - - - - - - - - -'."\n";
-		echo "\n";
-		echo 'Any information about our network you can find on our page'."\n";
-		echo 'http://skos.ds.pg.gda.pl/'."\n";
-		echo '-- '."\n";
-		echo 'Pozdrawiamy / Regards,'."\n";
-		echo 'Administratorzy SKOS PG / SKOS PG Administrators'."\n";
-		echo 'http://skos.ds.pg.gda.pl/'."\n";
-		echo '[wiadomość została wygenerowana automatycznie / this message was generated automatically]'."\n";
-	}
-
-	public function userAddMailBodyNoToken(array $d) {
-		$info = "\n";
-		$info .= 'Aby dokończyć proces aktywacji konta, zgłoś się do swojego administratora'."\n";
-		$info .= 'lokalnego z wejściówką do DS-u. Godziny, w których możesz go zastać znajdziesz'."\n";
-		$info .= 'tutaj: http://skos.ds.pg.gda.pl/'."\n";
-		$infoEn = "\n";
-		$infoEn .= 'To finish activation procedure you must go to your local administrator in his duty hours:'."\n";
-		$infoEn .= 'http://skos.ds.pg.gda.pl/'."\n";
-		$infoEn .= 'with your tenant card.'."\n";
-		$this->userAddMailBody($d, $info, $infoEn);
-	}
-
-	public function userAddMailBodyNoInfo(array $d) {
-		$this->userAddMailBody($d);
-	}
-
-	public function userAddMailBodyToken(array $d) {
-		$info = "\n";
-		$info .= 'Aby aktywować swoje konto, kliknij:'."\n";
-		$info .= 'http://'.$d['host'].$this->url(0).'/'.$d['token']->token."\n";
-		$infoEn = "\n";
-		$infoEn .= 'To activate your account click here:'."\n";
-		$infoEn .= 'http://'.$d['host'].$this->url(0).'/'.$d['token']->token."\n";
-		$this->userAddMailBody($d, $info, $infoEn);
-	}
-
-	public function mailHeaders() {
-		echo 'MIME-Version: 1.0'."\n";
-		echo 'Content-Type: text/plain; charset=UTF-8'."\n";
-		echo 'Content-Transfer-Encoding: 8bit'."\n";
-		echo 'From: Administratorzy SKOS <adnet@ds.pg.gda.pl>'."\n";
-	}
-
-	public function userAddMailHeaders(array $d) {
-		$this->mailHeaders();
-	}
-
 	public function titleMain() {
 		echo 'System Rejestracji Użytkowników';
 	}
@@ -385,227 +288,107 @@ extends UFtpl_Common {
 		echo $form->_end(true);
 	}
 
+	public function userAddMailTitle(array $d) {
+		if ($d['user']->lang == 'en') {
+			echo $d['user']->write('userAddMailTitleEnglish');
+		} else {
+			echo $d['user']->write('userAddMailTitlePolish');
+		}
+	}
+
+	public function userAddMailBody(array $d) {
+		if ($d['user']->lang == 'en') {
+			echo $d['user']->write('userAddMailBodyEnglish', $d['password']);
+		} else {
+			echo $d['user']->write('userAddMailBodyPolish', $d['password']);
+		}
+	}
+
 	public function userRecoverPasswordMailTitle(array $d) {
-		$conf = UFra::shared('UFconf_Sru');
-		echo $conf->emailPrefix.' Zmiana hasła';
+		if ($d['user']->lang == 'en') {
+			echo $d['user']->write('userRecoverPasswordMailTitleEnglish');
+		} else {
+			echo $d['user']->write('userRecoverPasswordMailTitlePolish');
+		}
 	}
 
 	public function userRecoverPasswordMailBodyToken(array $d) {
-		echo 'Kliknij poniższy link, aby zmienić hasło do Twojego konta w SRU'."\n";
-		echo '(Systemie Rejestracji Użytkowników):'."\n";
-		echo 'http://'.$d['host'].$this->url(0).'/'.$d['token']->token."\n\n";
-		echo '- - - ENGLISH VERSION - - -'."\n";
-		echo 'Follow this link to change your password in User Register System:'."\n";
-		echo 'http://'.$d['host'].$this->url(0).'/'.$d['token']->token."\n\n";
-		echo '-- '."\n";
-		echo 'Pozdrawiamy / Regards,'."\n";
-		echo 'Administratorzy SKOS PG / SKOS PG Administrators'."\n";
-		echo 'http://skos.ds.pg.gda.pl/'."\n";
-		echo '[wiadomość została wygenerowana automatycznie / this message was generated automatically]'."\n";
+		if ($d['user']->lang == 'en') {
+			echo $d['user']->write('userRecoverPasswordMailBodyTokenEnglish', $d['token'], $d['host']);
+		} else {
+			echo $d['user']->write('userRecoverPasswordMailBodyTokenPolish', $d['token'], $d['host']);
+		}
 	}
 
 	public function userRecoverPasswordMailBodyPassword(array $d) {
-		echo 'Twój login: '.$d['user']->login."\n";
-		echo 'Twoje nowe hasło: '.$d['password']."\n\n";
-		echo 'System Rejestracji Użytkowników: http://'.$d['host'].'/'."\n";
-		echo 'PROSIMY O ZMIANĘ HASŁA ZARAZ PO PIERWSZYM ZALOGOWANIU!'."\n\n";
-		echo '- - - ENGLISH VERSION - - -'."\n";
-		echo 'Your login: '.$d['user']->login."\n";
-		echo 'Your new password: '.$d['password']."\n\n";
-		echo 'User Register System: http://'.$d['host'].'/'."\n";
-		echo 'PLEASE CHANGE YOUR PASSWORD JUST AFTER THE FIRS LOG IN!'."\n\n";
-		echo '-- '."\n";
-		echo 'Pozdrawiamy / Regards,'."\n";
-		echo 'Administratorzy SKOS PG / SKOS PG Administrators'."\n";
-		echo 'http://skos.ds.pg.gda.pl/'."\n";
-		echo '[wiadomość została wygenerowana automatycznie / this message was generated automatically]'."\n";
-	}
-
-	public function userRecoverPasswordMailHeaders(array $d) {
-		$this->mailHeaders();
+		if ($d['user']->lang == 'en') {
+			echo $d['user']->write('userRecoverPasswordMailBodyPasswordEnglish', $d['password'], $d['host']);
+		} else {
+			echo $d['user']->write('userRecoverPasswordMailBodyPasswordPolish', $d['password'], $d['host']);
+		}
 	}
 	
 	public function penaltyAddMailTitle(array $d) {
-		$conf = UFra::shared('UFconf_Sru');
-		if ($d['penalty']-> typeId == UFbean_SruAdmin_Penalty::TYPE_WARNING) {
-			echo $conf->emailPrefix.' Otrzymał(a/e)ś ostrzeżenie / You got a new warning';
+		if ($d['user']->lang == 'en') {
+			echo $d['penalty']->write('penaltyAddMailTitleEnglish');
 		} else {
-			echo $conf->emailPrefix.' Otrzymał(a/e)ś karę / You got a new penalty';
+			echo $d['penalty']->write('penaltyAddMailTitlePolish');
 		}
 	}
 	
 	public function penaltyAddMailBody(array $d) {
-		echo 'Informujemy, że otrzymał(a/e)ś ';
-		if ($d['penalty']-> typeId == UFbean_SruAdmin_Penalty::TYPE_WARNING) {
-			echo 'OSTRZEŻENIE';
+		if ($d['user']->lang == 'en') {
+			echo $d['penalty']->write('penaltyAddMailBodyEnglish', $d['user'], $d['computers']);
 		} else {
-			echo 'KARĘ';
+			echo $d['penalty']->write('penaltyAddMailBodyPolish', $d['user'], $d['computers']);
 		}
-		echo ' w SKOS PG.'."\n";
-		echo 'Trwa do: '.date(self::TIME_YYMMDD_HHMM, $d['penalty']->endAt)."\n";
-		if ($d['penalty']->typeId != UFbean_SruAdmin_Penalty::TYPE_WARNING) {
-			echo 'Kara nałożona na host(y): ';
-			foreach ($d['computers'] as $computer) {
-				if (is_array($computer)) {
-					echo $computer['host'].' ';
-				} else {
-					echo $computer->host.' ';
-				}
-			}
-		}
-		echo "\n".'Powód: '.$d['penalty']->reason."\n";
-		echo "\n".'Szczegółowe informacje znajdziesz w Systemie Rejestracji Użytkownika: http://sru.ds.pg.gda.pl';
-		echo ' (Twój login to: '.$d['user']->login.')';
-		echo "\n\n";
-		echo '- - - ENGLISH VERSION - - -'."\n";
-		echo 'We inform, that you got ';
-		if ($d['penalty']-> typeId == UFbean_SruAdmin_Penalty::TYPE_WARNING) {
-			echo 'WARNING';
-		} else {
-			echo 'PENALTY';
-		}
-		echo ' in SKOS PG network.'."\n";
-		echo 'Valid till: '.date(self::TIME_YYMMDD_HHMM, $d['penalty']->endAt)."\n";
-		if ($d['penalty']->typeId != UFbean_SruAdmin_Penalty::TYPE_WARNING) {
-			echo 'Banned host(s): ';
-			foreach ($d['computers'] as $computer) {
-				if (is_array($computer)) {
-					echo $computer['host'].' ';
-				} else {
-					echo $computer->host.' ';
-				}
-			}
-		}
-		echo "\n".'Reason: '.$d['penalty']->reason."\n";
-		echo "\n".'You can find more information in User Register System: http://sru.ds.pg.gda.pl';
-		echo ' (your login: '.$d['user']->login.')';
-		echo "\n";
-		echo '-- '."\n";
-		echo 'Pozdrawiamy / Regards,'."\n";
-		echo 'Administratorzy SKOS PG / SKOS PG Administrators'."\n";
-		echo 'http://skos.ds.pg.gda.pl/'."\n";
-		echo '[wiadomość została wygenerowana automatycznie / this message was generated automatically]'."\n";
-	}
-	
-	public function penaltyAddMailHeaders(array $d) {
-		$this->mailHeaders();
 	}
 
 	public function penaltyEditMailTitle(array $d) {
-		$conf = UFra::shared('UFconf_Sru');
-		if ($d['penalty']-> typeId == UFbean_SruAdmin_Penalty::TYPE_WARNING) {
-			echo $conf->emailPrefix.' Zmodyfikowano Twoje ostrzeżenie / Your warning was modified';
+		if ($d['user']->lang == 'en') {
+			echo $d['penalty']->write('penaltyEditMailTitleEnglish');
 		} else {
-			echo $conf->emailPrefix.' Zmodyfikowano Twoją karę / Your penalty was modified';
+			echo $d['penalty']->write('penaltyEditMailTitlePolish');
 		}
 	}
 	
 	public function penaltyEditMailBody(array $d) {
-		echo 'Informujemy, że zmodyfikowano ';
-		if ($d['penalty']-> typeId == UFbean_SruAdmin_Penalty::TYPE_WARNING) {
-			echo 'Twoje OSTRZEŻENIE';
+		if ($d['user']->lang == 'en') {
+			echo $d['penalty']->write('penaltyEditMailBodyEnglish', $d['user']);
 		} else {
-			echo 'Twoją KARĘ';
+			echo $d['penalty']->write('penaltyEditMailBodyPolish', $d['user']);
 		}
-		echo ' w SKOS PG.'."\n";
-		echo 'Teraz trwa do: '.date(self::TIME_YYMMDD_HHMM, $d['penalty']->endAt)."\n";
-		echo 'Powód: '.$d['penalty']->reason."\n";
-		echo "\n".'Szczegółowe informacje znajdziesz w Systemie Rejestracji Użytkownika: http://sru.ds.pg.gda.pl';
-		echo ' (Twój login to: '.$d['user']->login.')';
-		echo "\n\n";
-		echo '- - - ENGLISH VERSION - - -'."\n";
-		echo 'We inform, that your ';
-		if ($d['penalty']-> typeId == UFbean_SruAdmin_Penalty::TYPE_WARNING) {
-			echo 'WARNING';
-		} else {
-			echo 'PENALTY';
-		}
-		echo ' was modified in SKOS PG network.'."\n";
-		echo 'Now valid till: '.date(self::TIME_YYMMDD_HHMM, $d['penalty']->endAt)."\n";
-		echo 'Reason: '.$d['penalty']->reason."\n";
-		echo "\n".'You can find more information in User Register System: http://sru.ds.pg.gda.pl';
-		echo ' (your login: '.$d['user']->login.')';
-		echo "\n";
-		echo '-- '."\n";
-		echo 'Pozdrawiamy / Regards,'."\n";
-		echo 'Administratorzy SKOS PG / SKOS PG Administrators'."\n";
-		echo 'http://skos.ds.pg.gda.pl/'."\n";
-		echo '[wiadomość została wygenerowana automatycznie / this message was generated automatically]'."\n";
 	}
 	
-	public function penaltyEditMailHeaders(array $d) {
-		$this->mailHeaders();
-	}
-
 	public function dataChangedMailTitle(array $d) {
-		$conf = UFra::shared('UFconf_Sru');
-		echo $conf->emailPrefix.' Zmieniłeś swoje dane / You have changed your data';
+		if ($d['user']->lang == 'en') {
+			echo $d['user']->write('dataChangedMailTitleEnglish');
+		} else {
+			echo $d['user']->write('dataChangedMailTitlePolish');
+		}
 	}
 	
 	public function dataChangedMailBody(array $d) {
-		echo 'Potwierdzamy, że zmiana Twoich danych w SKOS PG została zapisana.'."\n\n";
-		echo 'Imię: '.$d['user']->name."\n";
-		echo 'Nazwisko: '.$d['user']->surname."\n";
-		echo $d['user']->dormitoryName."\n";
-		echo 'Pokój: '.$d['user']->locationAlias."\n";
-		echo 'Login: '.$d['user']->login."\n";
-		echo 'Numer GG: '.$d['user']->gg."\n";
-		echo "\n".'- - - ENGLISH VERSION - - -'."\n";
-		echo 'We comfirm, that change of your personal data in SKOS PG has been saved.'."\n\n";
-		echo 'Name: '.$d['user']->name."\n";
-		echo 'Surname: '.$d['user']->surname."\n";
-		echo $d['user']->dormitoryName."\n";
-		echo 'Room: '.$d['user']->locationAlias."\n";
-		echo 'Login: '.$d['user']->login."\n";
-		echo 'GG number: '.$d['user']->gg."\n";
-		echo '-- '."\n";
-		echo 'Pozdrawiamy / Regards,'."\n";
-		echo 'Administratorzy SKOS PG / SKOS PG Administrators'."\n";
-		echo 'http://skos.ds.pg.gda.pl/'."\n";
-		echo '[wiadomość została wygenerowana automatycznie / this message was generated automatically]'."\n";
-	}
-	
-	public function dataChangedMailHeaders(array $d) {
-		$this->mailHeaders();
+		if ($d['user']->lang == 'en') {
+			echo $d['user']->write('dataChangedMailBodyEnglish');
+		} else {
+			echo $d['user']->write('dataChangedMailBodyPolish');
+		}
 	}
 
 	public function hostChangedMailTitle(array $d) {
-		$conf = UFra::shared('UFconf_Sru');
-		echo $conf->emailPrefix.' Zmieniłeś dane Twojego hosta / You have changed your host data';
+		if ($d['user']->lang == 'en') {
+			echo $d['host']->write('hostChangedMailTitleEnglish');
+		} else {
+			echo $d['host']->write('hostChangedMailTitlePolish');
+		}
 	}
 	
 	public function hostChangedMailBody(array $d) {
-		if ($d['action'] == UFact_Sru_Computer_Add::PREFIX) {
-			echo 'Potwierdzamy, że do Twojego konta w SKOS PG został dodany nowy host.'."\n\n";
-		} else if ($d['action'] == UFact_Sru_Computer_Edit::PREFIX) {
-			echo 'Potwierdzamy, że zmiana danych Twojego hosta w SKOS PG została zapisana.'."\n\n";
+		if ($d['user']->lang == 'en') {
+			echo $d['host']->write('hostChangedMailBodyEnglish', $d['action']);
 		} else {
-			echo 'Potwierdzamy dezaktywację Twojego hosta w SKOS PG.'."\n\n";
+			echo $d['host']->write('hostChangedMailBodyPolish', $d['action']);
 		}
-		echo 'Nazwa hosta: '.$d['host']->host."\n";
-		echo 'Ważny do: '.date(self::TIME_YYMMDD,$d['host']->availableTo)."\n";
-		echo 'IP: '.$d['host']->ip."\n";
-		echo 'Adres MAC: '.$d['host']->mac."\n";
-		echo "\n".'- - - ENGLISH VERSION - - -'."\n";
-		if ($d['action'] == UFact_Sru_Computer_Add::PREFIX) {
-			echo 'We confirm, that a new host has been added to your SKOS PG account.'."\n\n";
-		} else if ($d['action'] == UFact_Sru_Computer_Edit::PREFIX) {
-			echo 'We confirm, that change ofyour host data in SKOS PG has been saved.'."\n\n";
-		} else {
-			echo 'We confirm, that your host in SKOS PG has been deactivated.'."\n\n";
-		}
-		echo 'Host name: '.$d['host']->host."\n";
-		echo 'Available to: '.date(self::TIME_YYMMDD,$d['host']->availableTo)."\n";
-		echo 'IP: '.$d['host']->ip."\n";
-		echo 'MAC address: '.$d['host']->mac."\n";
-		echo '-- '."\n";
-		echo 'Pozdrawiamy / Regards,'."\n";
-		echo 'Administratorzy SKOS PG / SKOS PG Administrators'."\n";
-		echo 'http://skos.ds.pg.gda.pl/'."\n";
-		echo '[wiadomość została wygenerowana automatycznie / this message was generated automatically]'."\n";
-	}
-	
-	public function hostChangedMailHeaders(array $d) {
-		$this->mailHeaders();
 	}
 }

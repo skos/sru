@@ -1610,8 +1610,9 @@ extends UFbox {
 		}	
 	}
 	
-	public function penaltyAddMailTitle($user) {
+	public function penaltyAddMailTitle($penalty, $user) {
 		$d['user'] = $user;
+		$d['penalty'] = $penalty;
 		return $this->render(__FUNCTION__, $d);
 	}
 	
@@ -1624,8 +1625,9 @@ extends UFbox {
 		return $this->render(__FUNCTION__, $d);
 	}
 
-	public function penaltyEditMailTitle($user) {
+	public function penaltyEditMailTitle($penalty, $user) {
 		$d['user'] = $user;
+		$d['penalty'] = $penalty;
 		return $this->render(__FUNCTION__, $d);
 	}
 	
@@ -1639,15 +1641,27 @@ extends UFbox {
 		return $this->render(__FUNCTION__, $d);
 	}
 
+	public function dataChangedMailTitle($user) {
+		$d['user'] = $user;
+		return $this->render(__FUNCTION__, $d);
+	}
+
 	public function dataChangedMailBody($user, $history) {
 		$d['user'] = $user;
 		$d['history'] = $history;
 		return $this->render(__FUNCTION__, $d);
 	}
 
-	public function hostChangedMailBody($host, $action, $history = null) {
+	public function hostChangedMailTitle($host, $user) {
+		$d['host'] = $host;
+		$d['user'] = $user;
+		return $this->render(__FUNCTION__, $d);
+	}
+
+	public function hostChangedMailBody($host, $action, $user, $history = null) {
 		$d['host'] = $host;
 		$d['action'] = $action;
+		$d['user'] = $user;
 		$d['history'] = $history;
 		return $this->render(__FUNCTION__, $d);
 	}

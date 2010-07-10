@@ -78,18 +78,18 @@ extends UFact {
 			if ($conf->sendEmail && $bean->notifyByEmail()) {
 				// wyslanie maila do usera
 				$box = UFra::factory('UFbox_Sru');
-				$title = $box->penaltyEditMailTitle($bean);
+				$sender = UFra::factory('UFlib_Sender');
+				$title = $box->penaltyEditMailTitle($bean, $user);
 				$body = $box->penaltyEditMailBody($bean, $user);
-				$headers = $box->penaltyEditMailHeaders($bean);
-				mail($user->email, '=?UTF-8?B?'.base64_encode($title).'?=', $body, $headers);
+				$sender->send($user, $title, $body, self::PREFIX);
 			}
 			if ($conf->sendEmail) {
 				// wyslanie maila do admina
 				$box = UFra::factory('UFbox_SruAdmin');
-				$title = $box->penaltyEditMailTitle($user);
+				$sender = UFra::factory('UFlib_Sender');
+				$title = $box->penaltyEditMailTitle($bean, $user);
 				$body = $box->penaltyEditMailBody($bean, $oldBean, $tplTitle, $user, $admin);
-				$headers = $box->penaltyEditMailHeaders($bean);
-				mail("admin-".$user->dormitoryAlias."@ds.pg.gda.pl", '=?UTF-8?B?'.base64_encode($title).'?=', $body, $headers);
+				$sender->sendMail("admin-".$user->dormitoryAlias."@ds.pg.gda.pl", $title, $body, self::PREFIX);
 			}
 
 			$this->postDel(self::PREFIX);

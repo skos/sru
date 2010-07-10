@@ -62,30 +62,10 @@ extends UFbox {
 		return $this->render(__FUNCTION__, $d);
 	}
 
-	public function userAddMailBodyToken($user, $password, $token) {
-		$d['user'] = $user;
-		$d['password'] = $password;
-		$d['token'] = $token;
-		$d['host'] = $this->_srv->get('req')->server->HTTP_HOST;
-		return $this->render(__FUNCTION__, $d);
-	}
-
-	public function userAddMailBodyNoToken($user, $password) {
+	public function userAddMailBody($user, $password) {
 		$d['user'] = $user;
 		$d['password'] = $password;
 		$d['host'] = $this->_srv->get('req')->server->HTTP_HOST;
-		return $this->render(__FUNCTION__, $d);
-	}
-
-	public function userAddMailBodyNoInfo($user, $password) {
-		$d['user'] = $user;
-		$d['password'] = $password;
-		$d['host'] = $this->_srv->get('req')->server->HTTP_HOST;
-		return $this->render(__FUNCTION__, $d);
-	}
-
-	public function userAddMailHeaders($user) {
-		$d['user'] = $user;
 		return $this->render(__FUNCTION__, $d);
 	}
 
@@ -265,6 +245,11 @@ extends UFbox {
 		}
 	}
 
+	public function userRecoverPasswordMailTitle($user) {
+		$d['user'] = $user;
+		return $this->render(__FUNCTION__, $d);
+	}
+
 	public function userRecoverPasswordMailBodyToken($user, $token) {
 		$d['user'] = $user;
 		$d['token'] = $token;
@@ -279,8 +264,9 @@ extends UFbox {
 		return $this->render(__FUNCTION__, $d);
 	}
 
-	public function penaltyAddMailTitle($penalty) {
+	public function penaltyAddMailTitle($penalty, $user) {
 		$d['penalty'] = $penalty;
+		$d['user'] = $user;
 		return $this->render(__FUNCTION__, $d);
 	}
 	
@@ -291,8 +277,9 @@ extends UFbox {
 		return $this->render(__FUNCTION__, $d);
 	}
 
-	public function penaltyEditMailTitle($penalty) {
+	public function penaltyEditMailTitle($penalty, $user) {
 		$d['penalty'] = $penalty;
+		$d['user'] = $user;
 		return $this->render(__FUNCTION__, $d);
 	}
 	
@@ -302,14 +289,26 @@ extends UFbox {
 		return $this->render(__FUNCTION__, $d);
 	}
 
+	public function dataChangedMailTitle($user) {
+		$d['user'] = $user;
+		return $this->render(__FUNCTION__, $d);
+	}
+
 	public function dataChangedMailBody($user) {
 		$d['user'] = $user;
 		return $this->render(__FUNCTION__, $d);
 	}
 
-	public function hostChangedMailBody($host, $action) {
+	public function hostChangedMailTitle($host, $user) {
+		$d['host'] = $host;
+		$d['user'] = $user;
+		return $this->render(__FUNCTION__, $d);
+	}
+
+	public function hostChangedMailBody($host, $action, $user) {
 		$d['host'] = $host;
 		$d['action'] = $action;
+		$d['user'] = $user;
 		return $this->render(__FUNCTION__, $d);
 	}
 
