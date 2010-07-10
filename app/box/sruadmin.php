@@ -1071,11 +1071,18 @@ extends UFbox {
 		try {
 				
 			$bean = UFra::factory('UFbean_SruAdmin_Penalty');
+			$user = $this->_getUserFromGet();
+			$d['user'] = $user;
+
 			if ($this->_srv->get('req')->get->is('templateId') && $this->_srv->get('req')->get->templateId>0) {
 				try {
 					$tpl = UFra::factory('UFbean_SruAdmin_PenaltyTemplate');
 					$tpl->getByPK($this->_srv->get('req')->get->templateId);
-					$bean->reason = $tpl->reason;
+					if ($user->lang == 'en' && $tpl->reasonEn != '') {
+						$bean->reason = $tpl->reasonEn;
+					} else {
+						$bean->reason = $tpl->reason;
+					}
 					$bean->duration = $tpl->duration;
 					$bean->after = $tpl->amnesty;
 					$typeId = $tpl->typeId;
@@ -1084,8 +1091,6 @@ extends UFbox {
 			}
 			$d['penalty'] = $bean;
 
-			$user = $this->_getUserFromGet();
-			$d['user'] = $user;
 			try{
 				$comp = UFra::factory('UFbean_Sru_ComputerList');
 				$d['computers'] =& $comp;
@@ -1192,12 +1197,18 @@ extends UFbox {
 	public function penaltyEdit() {
 		try {
 			$bean = $this->_getPenaltyFromGet();
+			$user = UFra::factory('UFbean_Sru_User');
+			$user->getByPK($bean->userId);
 
 			if ($this->_srv->get('req')->get->is('templateId') && $this->_srv->get('req')->get->templateId>0) {
 				try {
 					$tpl = UFra::factory('UFbean_SruAdmin_PenaltyTemplate');
 					$tpl->getByPK($this->_srv->get('req')->get->templateId);
-					$bean->reason = $tpl->reason;
+					if ($user->lang == 'en' && $tpl->reasonEn != '') {
+						$bean->reason = $tpl->reasonEn;
+					} else {
+						$bean->reason = $tpl->reason;
+					}
 					$bean->duration = $tpl->duration;
 					$bean->endAt = ($bean->startAt + $tpl->duration * 24 * 3600);
 					$bean->after = $tpl->amnesty;

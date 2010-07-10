@@ -57,7 +57,7 @@ extends UFtpl_Common {
 		}
 	}
 
-	public function formAdd(array $d, $computers, $templates, $computerId=null) {
+	public function formAdd(array $d, $computers, $templates, $user, $computerId = null) {
 		if (!isset($d['computerId']) && is_int($computerId)) {
 			$d['computerId'] = $computerId;
 		}

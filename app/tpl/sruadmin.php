@@ -776,7 +776,7 @@ extends UFtpl_Common {
 		echo $form->_start();
 		echo $form->_fieldset();
 		isset($d['computerId']) ? $computerId = $d['computerId'] : $computerId = null;
-		echo $d['penalty']->write('formAdd', $d['computers'], $d['templates'], $computerId);
+		echo $d['penalty']->write('formAdd', $d['computers'], $d['templates'], $d['user'], $computerId);
 		echo $form->_submit('Dodaj');
 		echo $form->_end();
 		echo $form->_end(true);		

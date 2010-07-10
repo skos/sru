@@ -1,0 +1,1 @@
+ALTER TABLE penalty_templates ADD COLUMN reason_en text NOT NULL DEFAULT ''::text;
