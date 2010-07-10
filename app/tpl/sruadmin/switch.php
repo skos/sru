@@ -192,9 +192,9 @@ changeVisibility();
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize($tmp, '', ''),
 		));
-		echo $form->hierarchyNo('Nr w hierarchii');
+		echo $form->hierarchyNo('Nr w hierarchii', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Nr kolejny switcha w akademiku, np. dla pierwszego dsX-hp0. Brak nr oznacza, że switch jest nieużywany" /><br/>'));
 		echo $form->ip('IP');
-		echo $form->localization('Lokalizacja');
+		echo $form->localization('Lokalizacja', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Pomieszczenie w akademiu, gdzie znajduje się switch" /><br/>'));
 		echo $form->inventoryNo('Nr inwentarzowy');
 		echo $form->received('Na stanie od');
 		echo $form->inoperational('Uszkodzony', array('type'=>$form->CHECKBOX));
@@ -242,9 +242,9 @@ changeVisibility();
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize($tmp, '', ''),
 		));
-		echo $form->hierarchyNo('Nr w hierarchii');
+		echo $form->hierarchyNo('Nr w hierarchii', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Nr kolejny switcha w akademiku, np. dla pierwszego dsX-hp0. Brak nr oznacza, że switch jest nieużywany" /><br/>'));
 		echo $form->ip('IP');
-		echo $form->localization('Lokalizacja');
+		echo $form->localization('Lokalizacja', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Pomieszczenie w akademiu, gdzie znajduje się switch" /><br/>'));
 		echo $form->inventoryNo('Nr inwentarzowy');
 		echo $form->received('Na stanie od');
 		echo $form->inoperational('Uszkodzony', array('type'=>$form->CHECKBOX));

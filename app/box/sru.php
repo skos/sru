@@ -156,6 +156,29 @@ extends UFbox {
 
 	public function userComputerAdd() {
 		$bean = UFra::factory('UFbean_Sru_Computer');
+		$user = UFra::factory('UFbean_Sru_User');
+		$user->getFromSession();
+		
+		$used = true;
+		try {
+			$bean->getByHost($user->login);
+		} catch (UFex_Dao_NotFound $e) {
+			$used = false;
+		}
+		if ($used) {
+			for($i = 1; $i < 100; $i++) {
+				try {
+					$bean->getByHost($user->login.$i);
+				} catch (UFex_Dao_NotFound $e) {
+					$used = false;
+					break;
+				}
+			}
+			$bean = UFra::factory('UFbean_Sru_Computer');
+			$bean->host = $user->login.$i;
+		} else {
+			$bean->host = $user->login;
+		}
 
 		$d['computer'] = $bean;
 		$d['macAddress'] = $this->getMacAddress();

@@ -87,7 +87,7 @@ extends UFtpl_Common {
 		echo $form->admin('Port admina', array('type'=>$form->CHECKBOX));
 		echo $form->comment('Komentarz');
 		if (!is_null($status)) {
-			echo $form->copyToSwitch('Zapisz dane na switcha', array('type'=>$form->CHECKBOX));
+			echo $form->copyToSwitch('Zapisz dane na switcha <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Zapis spowoduje nadpisanie aliasu portu na switchu. Będzie to nr pokoju, podłaczony switch (o ile podano) lub komentarz." />', array('type'=>$form->CHECKBOX));
 		}
 	}
 

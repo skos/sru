@@ -201,9 +201,8 @@ changeVisibility();
 		$form = UFra::factory('UFlib_Form', 'computerEdit', $d, $this->errors);
 
 		echo '<h1>'.$d['host'].'.ds.pg.gda.pl</h1>';
-		echo $form->mac('MAC');
-		$this->showMacHint();
-		echo $form->availableTo('Rejestracja do');
+		echo $form->mac('MAC', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Adres sprzętowy komputera" /> '.$this->showMacHint().'<br/>'));
+		echo $form->availableTo('Rejestracja do', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Data, kiedy komputer przestaje być aktywny" /><br/>'));
 		echo '<small>Maksymalnie do '.date(self::TIME_YYMMDD, $d['availableMaxTo']).'</small><br />';
 	}
 
@@ -297,7 +296,7 @@ if (input) {
 				'labels' => $form->_labelize($this->computerTypes),
 			));
 		}
-		echo $form->host('Nazwa');
+		echo $form->host('Nazwa', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Nazwa komputera w sieci - nie musi być zgodna z nazwą w systemie Windows/Linux. Możesz podać inną nazwę niż propozycja SRU." /><br/>'));
 		if ($admin) {
 			echo $form->ip('IP');
 ?><script type="text/javascript">
@@ -322,8 +321,7 @@ if (input) {
 		}
 		echo '</a></span>';
 		echo '<div id="macMore">';
-		echo $form->mac('MAC', array('value'=>$mac));
-		$this->showMacHint();
+		echo $form->mac('MAC', array('value'=>$mac, 'after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Adres sprzętowy komputera" /> '.$this->showMacHint().'<br/>'));
 		echo '</div>';
 
 ?><script type="text/javascript">
@@ -387,7 +385,7 @@ div.style.display = 'none';
 	}
 
 	private function showMacHint() {
-		echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://skos.ds.pg.gda.pl/wiki/faq/rejestracja"><small>Co to jest MAC?</small></a><br/>';
+		return '<a href="http://skos.ds.pg.gda.pl/wiki/faq/rejestracja"><small>Skąd wziąć MAC?</small></a>';
 	}
 
 	public function configDhcp(array $d) {

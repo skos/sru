@@ -126,10 +126,11 @@ extends UFtpl_Common {
 			'labels' => $form->_labelize($tmp, '', ''),
 		));
 		echo $form->locationAlias('Pokój');
-		echo $form->gg('Gadu-Gadu');
+		echo $form->gg('Gadu-Gadu', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Jeżeli podasz nr GG, będą na niego przesyłane informacje o zmianie statusu konta i Twoich komputerów" /><br/>'));
 		echo $form->lang('Język', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$languages),
+			'after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Wiadomości e-mail i GG będa przychodziły w wybranym języku" /><br/>',
 		));
 	}
 
@@ -179,10 +180,11 @@ extends UFtpl_Common {
 			'labels' => $form->_labelize($tmp),
 		));
 		echo $form->locationAlias('Pokój');
-		echo $form->gg('Gadu-Gadu');
+		echo $form->gg('Gadu-Gadu', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Jeżeli podasz nr GG, będą na niego przesyłane informacje o zmianie statusu konta i Twoich komputerów" /><br/>'));
 		echo $form->lang('Język', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$languages),
+			'after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Wiadomości e-mail i GG będa przychodziły w wybranym języku" /><br/>',
 		));
 
 		echo $form->_fieldset('Zmiana chronionych danych');
