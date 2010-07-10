@@ -25,4 +25,12 @@ extends UFconf {
 	protected $communityWrite = '';
 	protected $roomRegex = '';
 	protected $switchRegex = '';
+
+	protected $jabberServer = '';
+	protected $jabberPort = 0;
+	protected $jabberUser = '';
+	protected $jabberPassword = '';
+	protected $jabberResource = '';
+	protected $jabberDomain = '';
+	protected $ggGate = '';
 }

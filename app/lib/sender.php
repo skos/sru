@@ -17,6 +17,9 @@ class UFlib_Sender {
 	// wysyłanie wszystkich powiadomień
 	public function send($user, $title, $body, $action = null) {
 		$this->sendMail($user->email, $title, $body, $action, $user->lang);
+		if ($user->gg != '') {
+			$this->sendGG($user->gg, $body, $user->lang);
+		}
 	}
 
 	// wysyłanie maili
@@ -37,6 +40,28 @@ class UFlib_Sender {
 		mail($email, '=?UTF-8?B?'.base64_encode($title).'?=', $body, $headers);
 	}
 
+	public function sendGG($gg, $text, $lang) {
+		include 'XMPPHP/XMPP.php';
+		$conf = UFra::shared('UFconf_Sru');
+		$conn = new XMPPHP_XMPP($conf->jabberServer, $conf->jabberPort, $conf->jabberUser, $conf->jabberPassword, $conf->jabberResource, $conf->jabberDomain, $printlog=false, $loglevel=XMPPHP_Log::LEVEL_INFO);
+		if ($lang == 'en') {
+			$text .= $this->getGgFooterEnglish();
+		} else {
+			$text .= $this->getGgFooterPolish();
+		}
+
+		try {
+			$conn->useEncryption(false);
+			$conn->connect();
+			$conn->processUntil('session_start');
+			$conn->presence();
+			$conn->message($gg.'@'.$conf->ggGate, $text);
+			$conn->disconnect();
+		} catch(XMPPHP_Exception $e) {
+			die($e->getMessage());
+		} 
+	}
+
 	// nagłówki
 	private function getMailFooterPolish() {
 		$footer = '-- '."\n";
@@ -48,6 +73,24 @@ class UFlib_Sender {
 	}
 
 	private function getMailFooterEnglish() {
+		$footer = '-- '."\n";
+		$footer .= 'Regards,'."\n";
+		$footer .= 'SKOS PG Administrators'."\n";
+		$footer .= 'http://skos.ds.pg.gda.pl/'."\n";
+		$footer .= '[this message was generated automatically]'."\n";
+		return $footer;
+	}
+
+	private function getGgFooterPolish() {
+		$footer = '-- '."\n";
+		$footer .= 'Pozdrawiamy,'."\n";
+		$footer .= 'Administratorzy SKOS PG'."\n";
+		$footer .= 'http://skos.ds.pg.gda.pl/'."\n";
+		$footer .= '[wiadomość została wygenerowana automatycznie]'."\n";
+		return $footer;
+	}
+
+	private function getGgFooterEnglish() {
 		$footer = '-- '."\n";
 		$footer .= 'Regards,'."\n";
 		$footer .= 'SKOS PG Administrators'."\n";
