@@ -4,7 +4,15 @@
  */
 class UFtpl_SruAdmin_ComputerHistory
 extends UFtpl_Common {
-
+	
+	protected $computerTypes = array(
+		0 => 'Niezdefiniowany staroć',
+		1 => 'Student',
+		2 => 'Organizacja',
+		3 => 'Administracja',
+		4 => 'Serwer',
+	);
+	
 	static protected $names = array(
 		'host' => 'Host',
 		'mac' => 'Adres MAC',
@@ -15,6 +23,7 @@ extends UFtpl_Common {
 		'comment' => 'Komentarz',
 		'canAdmin' => 'Administrator',
 		'active' => 'Aktywny',
+		'typeId' => 'Typ',
 	);
 
 	static protected $namesEn = array(
@@ -27,6 +36,7 @@ extends UFtpl_Common {
 		'comment' => 'Comment',
 		'canAdmin' => 'Administrator',
 		'active' => 'Active',
+		'typeId' => 'Typ',
 	);
 
 	protected function _diff(array $old, array $new) {
@@ -56,6 +66,9 @@ extends UFtpl_Common {
 				case 'canAdmin':
 				case 'active':
 					$changes[] = $names[$key].': '.($val?'tak':'nie').$arr.($new[$key]?'tak':'nie');
+					break;
+				case 'typeId':
+					$changes[] = $names[$key].': '.$this->computerTypes[$old['typeId']].$arr.$this->computerTypes[$new['typeId']];
 					break;
 				default: continue;
 			}
@@ -89,6 +102,7 @@ extends UFtpl_Common {
 			'comment' => $current->comment,
 			'canAdmin' => $current->canAdmin,
 			'active' => $current->active,
+			'typeId' => $current->typeId,
 		);
 		$url = $this->url(0).'/computers/'.$current->id;
 		$urlAdmin = $this->url(0).'/admins/';
