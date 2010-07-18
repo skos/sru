@@ -300,6 +300,10 @@ extends UFtpl_Common {
 		echo $form->_end(true);
 	}
 
+	public function userServicesNotFound() {
+		echo $this->ERR('Usług nie znaleziono');
+	}
+
 	public function userComputersNotFound(array $d) {
 		$url = $this->url(0).'/users/'.$d['user']->id.'/computers/';
 		echo '<h2>Komputery użytkownika</h2>';
