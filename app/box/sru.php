@@ -345,7 +345,7 @@ extends UFbox {
 		if (strlen($ip) < 7 || substr($ip, 0, 7) != '172.16.') {
 			return null;
 		}
-		$mac = `arp -an | grep "($ip)" | cut -f 4 -d " "`;
+		$mac = `arping -r -c 1 $ip`;
 
 		return trim($mac);
 	}
