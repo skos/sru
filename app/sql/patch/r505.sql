@@ -11,6 +11,10 @@ IF (OLD.active=true AND NEW.active=false) THEN
 		SET	active = null,
 			modified_by = new.modified_by
 		WHERE user_id = NEW.id AND active = true;
+	UPDATE services
+		SET	active = false,
+			modified_by = new.modified_by
+		WHERE user_id = NEW.id AND active = false;
 
 END IF;
 END IF;
