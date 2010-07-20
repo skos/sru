@@ -66,7 +66,7 @@ extends UFact {
 				$user->getByPK($bean->userId);
 				$bean->locationId = $user->locationId;
 			}
-			if ($bean->availableMaxTo < NOW) {
+			if ($bean->active && $bean->availableMaxTo < NOW) {
 				$bean->availableMaxTo = NOW;
 			}
 			if ($bean->availableTo > $bean->availableMaxTo) {
