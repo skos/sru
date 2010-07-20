@@ -368,7 +368,7 @@ extends UFbox {
 				$user = $this->_getUserFromGet();
 				$d['user'] = $user;
 			} catch (UFex_Dao_NotFound $e) {
-				return $this->render('userNotFound');
+				return $this->render('computersNotFound');
 			}
 
 			$bean = UFra::factory('UFbean_Sru_ComputerList');
