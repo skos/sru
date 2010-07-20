@@ -14,6 +14,7 @@ extends UFbeanSingle {
 		'surname',
 		'email',
 		'gg',
+		'facultyId',
 		'studyYearId',
 		'locationId',
 	);

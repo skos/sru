@@ -26,7 +26,7 @@ extends UFtpl_Common {
 		'gg' => 'Gadu-Gadu',
 		'facultyId' => 'Faculty',
 		'locationId' => 'Room',
-		'studyYearId' => 'Study year',
+		'studyYearId' => 'Year of study',
 		'comment' => 'Comment',
 		'active' => 'Active',
 	);
@@ -138,6 +138,11 @@ extends UFtpl_Common {
 				case 'locationId':
 					echo $names[$key].': '.$old['locationAlias'].' ('.$old['dormitoryAlias'].')'
 						.($val!==$new[$key] ? $arr.$new['locationAlias'].' ('.$new['dormitoryAlias'].')' : '')
+						."\n";
+					break;
+				case 'facultyId':
+					echo $names[$key].': '.$old['facultyName']
+						.($val!==$new[$key] ? $arr.$new['facultyName'] : '')
 						."\n";
 					break;
 				case 'studyYearId':

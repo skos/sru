@@ -475,7 +475,7 @@ changeVisibility();
 		echo 'Login: '.$d['login']."\n";
 		echo 'Your password: '.$password."\n";
 		echo "\n";
-		echo 'User Registration System (System Rejestracji Użytkowników): http://sru.ds.pg.gda.pl/'."\n";
+		echo 'Users’ Registration System (System Rejestracji Użytkowników): http://sru.ds.pg.gda.pl/'."\n";
 		echo 'PLEASE CHANGE YOUR PASSWORD AFTER THE FIRST LOGON!'."\n";
 		echo "\n";
 		echo '- - - - - - - - - - -'."\n";
@@ -500,7 +500,7 @@ changeVisibility();
 	}
 
 	public function userRecoverPasswordMailBodyTokenEnglish(array $d, $token, $host) {
-		echo 'Follow this link to change your password in User Register System:'."\n";
+		echo 'Follow this link to change your password in Users’ Registration System:'."\n";
 		echo 'http://'.$host.$this->url(0).'/'.$token->token."\n\n";
 		echo 'You will receive THE NEXT e-mail with the new password.'."\n\n";
 	}
@@ -515,7 +515,7 @@ changeVisibility();
 	public function userRecoverPasswordMailBodyPasswordEnglish(array $d, $password, $host) {
 		echo 'Your login: '.$d['login']."\n";
 		echo 'Your new password: '.$password."\n\n";
-		echo 'User Register System: http://'.$host.'/'."\n";
+		echo 'Users’ Registration System: http://'.$host.'/'."\n";
 		echo 'PLEASE CHANGE YOUR PASSWORD JUST AFTER THE FIRS LOG IN!'."\n\n";
 	}
 
@@ -529,22 +529,28 @@ changeVisibility();
 	
 	public function dataChangedMailBodyPolish(array $d) {
 		echo 'Potwierdzamy, że zmiana Twoich danych w SKOS PG została zapisana.'."\n\n";
+		echo 'Login: '.$d['login']."\n";
 		echo 'Imię: '.$d['name']."\n";
 		echo 'Nazwisko: '.$d['surname']."\n";
+		echo 'E-mail: '.$d['email']."\n";
+		echo 'Gadu-Gadu: '.$d['gg']."\n";
+		echo 'Wydział: '.$d['facultyName']."\n";
+		echo 'Rok studiów: '.UFtpl_Sru_User::$studyYears[$d['studyYearId']]."\n";
 		echo $d['dormitoryName']."\n";
 		echo 'Pokój: '.$d['locationAlias']."\n";
-		echo 'Login: '.$d['login']."\n";
-		echo 'Numer GG: '.$d['gg']."\n";
 	}
 
 	public function dataChangedMailBodyEnglish(array $d) {
 		echo 'We comfirm, that change of your personal data in SKOS PG has been saved.'."\n\n";
+		echo 'Login: '.$d['login']."\n";
 		echo 'Name: '.$d['name']."\n";
 		echo 'Surname: '.$d['surname']."\n";
+		echo 'E-mail: '.$d['email']."\n";
+		echo 'Gadu-Gadu: '.$d['gg']."\n";
+		echo 'Faculty: '.$d['facultyName']."\n";
+		echo 'Year of study: '.UFtpl_Sru_User::$studyYears[$d['studyYearId']]."\n";
 		echo $d['dormitoryName']."\n";
 		echo 'Room: '.$d['locationAlias']."\n";
-		echo 'Login: '.$d['login']."\n";
-		echo 'GG number: '.$d['gg']."\n";
 	}
 
 	public function dataAdminChangedMailBodyPolish(array $d, $history = null) {
@@ -552,12 +558,15 @@ changeVisibility();
 		if ($history instanceof UFbean_SruAdmin_UserHistoryList) {
 			$history->write('mail', $d);
 		} else {
+			echo 'Login: '.$d['login']."\n";
 			echo 'Imię: '.$d['name']."\n";
 			echo 'Nazwisko: '.$d['surname']."\n";
+			echo 'E-mail: '.$d['email']."\n";
+			echo 'Gadu-Gadu: '.$d['gg']."\n";
+			echo 'Wydział: '.$d['facultyName']."\n";
+			echo 'Rok studiów: '.UFtpl_Sru_User::$studyYears[$d['studyYearId']]."\n";
 			echo $d['dormitoryName']."\n";
 			echo 'Pokój: '.$d['locationAlias']."\n";
-			echo 'Login: '.$d['login']."\n";
-			echo 'Numer GG: '.$d['gg']."\n";
 		}
 	}
 
@@ -566,12 +575,15 @@ changeVisibility();
 		if ($history instanceof UFbean_SruAdmin_UserHistoryList) {
 			$history->write('mailEn', $d);
 		} else {
+			echo 'Login: '.$d['login']."\n";
 			echo 'Name: '.$d['name']."\n";
 			echo 'Surname: '.$d['surname']."\n";
+			echo 'E-mail: '.$d['email']."\n";
+			echo 'Gadu-Gadu: '.$d['gg']."\n";
+			echo 'Faculty: '.$d['facultyName']."\n";
+			echo 'Year of study: '.UFtpl_Sru_User::$studyYears[$d['studyYearId']]."\n";
 			echo $d['dormitoryName']."\n";
 			echo 'Room: '.$d['locationAlias']."\n";
-			echo 'Login: '.$d['login']."\n";
-			echo 'GG Number: '.$d['gg']."\n";
 		}
 	}
 

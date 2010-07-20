@@ -275,7 +275,7 @@ changeVisibility();
 
 	public function penaltyAddMailBodyPolish(array $d, $user, $computers) {
 		echo 'Informujemy, że otrzymał(a/e)ś ';
-		if ($d['penalty']-> typeId == UFbean_SruAdmin_Penalty::TYPE_WARNING) {
+		if ($d['typeId'] == UFbean_SruAdmin_Penalty::TYPE_WARNING) {
 			echo 'OSTRZEŻENIE';
 		} else {
 			echo 'KARĘ';
@@ -293,7 +293,7 @@ changeVisibility();
 			}
 		}
 		echo "\n".'Powód: '.$d['reason']."\n";
-		echo "\n".'Szczegółowe informacje znajdziesz w Systemie Rejestracji Użytkownika: http://sru.ds.pg.gda.pl';
+		echo "\n".'Szczegółowe informacje znajdziesz w Systemie Rejestracji Użytkowników: http://sru.ds.pg.gda.pl';
 		echo ' (Twój login to: '.$user->login.')';
 		echo "\n\n";
 	}
@@ -318,7 +318,7 @@ changeVisibility();
 			}
 		}
 		echo "\n".'Reason: '.$d['reason']."\n";
-		echo "\n".'You can find more information in User Register System: http://sru.ds.pg.gda.pl';
+		echo "\n".'You can find more information in Users’ Registration System: http://sru.ds.pg.gda.pl';
 		echo ' (your login: '.$user->login.')';
 		echo "\n";
 	}
@@ -349,7 +349,7 @@ changeVisibility();
 		echo ' w SKOS PG.'."\n";
 		echo 'Teraz trwa do: '.date(self::TIME_YYMMDD_HHMM, $d['endAt'])."\n";
 		echo 'Powód: '.$d['reason']."\n";
-		echo "\n".'Szczegółowe informacje znajdziesz w Systemie Rejestracji Użytkownika: http://sru.ds.pg.gda.pl';
+		echo "\n".'Szczegółowe informacje znajdziesz w Systemie Rejestracji Użytkowników: http://sru.ds.pg.gda.pl';
 		echo ' (Twój login to: '.$user->login.')';
 		echo "\n\n";
 	}
@@ -364,7 +364,7 @@ changeVisibility();
 		echo ' was modified in SKOS PG network.'."\n";
 		echo 'Now valid till: '.date(self::TIME_YYMMDD_HHMM, $d['endAt'])."\n";
 		echo 'Reason: '.$d['reason']."\n";
-		echo "\n".'You can find more information in User Register System: http://sru.ds.pg.gda.pl';
+		echo "\n".'You can find more information in Users` Registration System: http://sru.ds.pg.gda.pl';
 		echo ' (your login: '.$user->login.')';
 		echo "\n";
 	}
