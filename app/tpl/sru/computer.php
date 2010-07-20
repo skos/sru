@@ -228,9 +228,6 @@ changeVisibility();
 				$temp[1] = '5Ł';
 			$tmp[$dorm['id']] = $temp[1] . ' ' . $dorm['name'];
 		}
-		if (!$d['active']) {
-			echo '<b>Przywrócenie komputera zaktualizuje jego lokalizację.</b>';
-		}
 		echo $form->dormitory('Akademik', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize($tmp),
