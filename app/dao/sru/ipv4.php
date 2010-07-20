@@ -11,7 +11,7 @@ extends UFdao {
 		$query = $this->prepareSelect($mapping);
 		$query->where($mapping->dormitoryId, $dormitory);
 		$query->where($mapping->host, null);
-		$query->where($mapping->lastVisible, time() - 60*60 ,$query->LTE);
+		$query->where('(((SELECT modified_at FROM computers_history h where h.ipv4=i.ip limit 1) IS NULL) OR (SELECT modified_at FROM computers_history h where h.ipv4=i.ip order by modified_at desc limit 1) < (TIMESTAMP \'NOW\' - TIME \'01:00\'))', null ,$query->SQL);
 
 		return $this->doSelectFirst($query);
 	}

@@ -26,7 +26,7 @@ extends UFact {
 					$this->_srv->get('req')->post->{self::PREFIX} = $post;
 				} catch (UFex_Dao_NotFound $e) {
 					$this->rollback();
-					$this->markErrors(self::PREFIX, array('ip'=>'noFree'));
+					$this->markErrors(self::PREFIX, array('ip'=>'noFreeAdmin'));
 					return;
 				}
 			} else {

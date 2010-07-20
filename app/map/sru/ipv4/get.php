@@ -9,13 +9,11 @@ extends UFmap {
 		'ip'		=> 'i.ip',
 		'dormitoryId'	=> 'i.dormitory_id',
 		'host'		=> 'c.host',
-		'lastVisible'	=> '(SELECT modified_at FROM computers_history h where h.ipv4=i.ip order by modified_at desc limit 1)',
 	);
 	protected $columnTypes = array(
 		'ip'		=> self::TEXT,
 		'dormitoryId'	=> self::INT,
 		'host'		=> self::NULL_TEXT,
-		'lastVisible'	=> self::TS,
 	);
 	protected $tables = array(
 		'i' => 'ipv4s',
