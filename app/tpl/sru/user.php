@@ -130,7 +130,7 @@ extends UFtpl_Common {
 		echo $form->lang('Język', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$languages),
-			'after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Wiadomości e-mail i GG będa przychodziły w wybranym języku" /><br/>',
+			'after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Wiadomości e-mail i GG będa przychodziły w wybranym języku | You will receive e-mails and gg messages in the chosen language" /><br/>',
 		));
 	}
 
@@ -184,7 +184,7 @@ extends UFtpl_Common {
 		echo $form->lang('Język', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$languages),
-			'after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Wiadomości e-mail i GG będa przychodziły w wybranym języku" /><br/>',
+			'after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Wiadomości e-mail i GG będa przychodziły w wybranym języku | You will receive e-mails and gg messages in the chosen language" /><br/>',
 		));
 
 		echo $form->_fieldset('Zmiana chronionych danych');
