@@ -172,6 +172,7 @@ extends UFlib_Snmp {
 
 		$watchdog = 20;
 		while ($watchdog > 0) {
+			--$watchdog;
 			$portUser = @snmpget($switchIp, $this->communityR, $this->OIDs['port'].'.'.$needle, $this->timeout);
 			if ($portUser) {
 				$portUser = (int)$portUser;
@@ -203,7 +204,6 @@ extends UFlib_Snmp {
 			} else {
 				return null;
 			}
-			--$watchdog;
 		}
 		return null;
 	}
