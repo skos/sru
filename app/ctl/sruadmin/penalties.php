@@ -147,7 +147,7 @@ extends UFctl_Common {
 				return 'SruAdmin_Penalty';
 			case 'penalties/add':
 				if ($msg->get('penaltyAdd/ok')) {
-					return 'SruAdmin_PenaltyActions';
+					return 'SruAdmin_Penalty';
 				} elseif ($acl->sruAdmin('penalty', 'add')) {
 					if (!$get->is('userId')) {	
 						return 'Sru_Error404';

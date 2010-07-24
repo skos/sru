@@ -55,6 +55,8 @@ extends UFact {
 
 			$id = $bean->save();
 			$bean->getByPK($id);	// uzupelnione dane dociagane z innych tabel
+			$req = $this->_srv->get('req');
+			$req->get->penaltyId = $id;
 
 			if (UFbean_SruAdmin_Penalty::TYPE_COMPUTERS === $bean->typeId) {
 				$computers = UFra::factory('UFbean_Sru_ComputerList');
