@@ -87,6 +87,19 @@ extends UFbox {
 		}
 	}
 
+	public function admins() {
+		try {
+			$bean = UFra::factory('UFbean_Sru_ComputerList');
+			$bean->listAdmins();
+
+			$d['computers'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return '';
+		}
+	}
+
 	public function penaltiesPast() {
 		try {
 			$bean = UFra::factory('UFbean_SruAdmin_PenaltyList');	

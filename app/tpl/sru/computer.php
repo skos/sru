@@ -417,6 +417,12 @@ div.style.display = 'none';
 		}
 	}
 
+	public function configAdmins(array $d) {
+		foreach ($d as $c) {
+			echo $c['ip']."\n";
+		}
+	}
+
 	public function shortList(array $d) {
 		$url = $this->url(0).'/computers/';
 		foreach ($d as $c) {

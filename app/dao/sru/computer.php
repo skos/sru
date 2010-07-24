@@ -216,7 +216,7 @@ extends UFdao {
 		$query->order($mapping->host, $query->ASC);
 
 		return $this->doSelect($query);
-	}			
+	}
 
 	public function listAllActiveByIpClass($class) {
 		$mapping = $this->mapping('list');
@@ -237,6 +237,17 @@ extends UFdao {
 		$query = $this->prepareSelect($mapping);
 		$query->where($mapping->ip, $conf->noEthers, $query->NOT_IN);
 		$query->distinct();
+		$query->order($mapping->ip, $query->ASC);
+
+		return $this->doSelect($query);
+	}
+
+	public function listAdmins() {
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->canAdmin, true);
+		$query->where($mapping->active, true);
 		$query->order($mapping->ip, $query->ASC);
 
 		return $this->doSelect($query);

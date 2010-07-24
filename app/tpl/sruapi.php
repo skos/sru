@@ -25,6 +25,10 @@ extends UFtpl_Common {
 		$d['computers']->write('configEthers');
 	}
 
+	public function admins(array $d) {
+		$d['computers']->write('configAdmins');
+	}
+
 	public function error404() {
 		header('HTTP/1.0 404 Not Found');
 	}
