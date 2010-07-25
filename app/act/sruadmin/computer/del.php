@@ -13,6 +13,7 @@ extends UFact {
 			if (!$this->_srv->get('req')->post->{self::PREFIX}['confirm']) {
 				return;
 			}
+			$this->begin();
 			$bean = UFra::factory('UFbean_Sru_Computer');
 			$bean->getByPK((int)$this->_srv->get('req')->get->computerId);
 
@@ -27,6 +28,19 @@ extends UFact {
 			$bean->modifiedAt = NOW;
 			$bean->modifiedById = $admin->id;
 			$bean->save();
+
+			if ($bean->typeId == 4) {
+				try {
+					$aliases = UFra::factory('UFbean_SruAdmin_ComputerAliasList');
+					$aliases->listByComputerId($bean->id);
+					foreach ($aliases as $alias) {
+						$aliasBean = UFra::factory('UFbean_SruAdmin_ComputerAlias');
+						$aliasBean->getByPK($alias['id']);
+						$aliasBean->del();
+					}
+				} catch (UFex_Dao_NotFound $e) {
+				}
+			}
 
 			$user = UFra::factory('UFbean_Sru_User');
 			$user->getByPK($bean->userId);
@@ -43,6 +57,7 @@ extends UFact {
 
 			$this->postDel(self::PREFIX);
 			$this->markOk(self::PREFIX);
+			$this->commit();
 		} catch (UFex_Dao_NotFound $e) {
 		} catch (UFex $e) {
 			UFra::error($e);

@@ -82,6 +82,10 @@ extends UFtpl_Common {
 		echo 'Edycja komputera "'.$d['host'].'"';
 	}
 
+	public function titleAliasesEdit(array $d) {
+		echo 'Edycja aliasów komputera "'.$d['host'].'"';
+	}
+
 	public function detailsOwn(array $d) {
 		echo '<h1>'.$d['host'].'.ds.pg.gda.pl</h1>';
 		echo '<p><em>MAC:</em> '.$d['mac'].'</p>';
@@ -94,7 +98,7 @@ extends UFtpl_Common {
 		//echo '<p><a href="https://sru.ds.pg.gda.pl/lanstats/?ip='.$ip[2].'.'.$ip[3].'"><img src="https://sru.ds.pg.gda.pl/lanstats/153.19.'.$ip[2].'/'.str_pad($ip[3], 3, '0', STR_PAD_LEFT).'.'.$tag.'.png" alt="Statystyki transferów" /></a></p>';
 	}
 
-	public function details(array $d, $switchPort) {
+	public function details(array $d, $switchPort, $aliases) {
 		$url = $this->url(0);
 		$urlNav = $this->url(0).'/computers/'.$d['id'];
 		echo '<h1>'.$d['host'].'</h1>';
@@ -134,6 +138,14 @@ extends UFtpl_Common {
 			$bans= '0';
 		}
 		echo '<p><em>Kary:</em> '.$bans.'</p>';
+		if (!is_null($aliases)) {
+			$aliasesString = '';
+			foreach ($aliases as $alias) {
+				$aliasesString = $aliasesString.$alias['host'].', ';
+			}
+			$aliasesString = substr($aliasesString, 0 , -2);
+			echo '<p><em>Aliasy:</em> '.$aliasesString.'</p>';
+		}
 		$acls = array();
 		if ($d['canAdmin']) {
 			$acls[] = 'admin';
@@ -159,8 +171,10 @@ extends UFtpl_Common {
 		}
 		echo '<a href="'.$urlNav.'/history">Historia zmian</a> &bull;
 			<a href="'.$urlNav.'/:edit">Edycja</a> &bull; ';
-		if($d['active'])
-		{
+		if($d['active'] && $d['typeId'] == 4) {
+			echo '<a href="'.$urlNav.'/:aliases"> Aliasy</a> &bull; ';
+		}
+		if($d['active']) {
 			echo '<a href="'.$urlNav.'/:del"> Wyrejestruj</a> &bull; ';
 		}
 		echo '<span id="computerMoreSwitch"></span>';
@@ -352,6 +366,24 @@ div.style.display = 'none';
 		echo $form->confirm('Tak, wyrejestruj ten komputer', array('type'=>$form->CHECKBOX, 'name'=>'computerDel[confirm]', 'value'=>'1'));
 	}
 
+	public function formAliasesEdit(array $d, $aliases) {
+		$form = UFra::factory('UFlib_Form', 'computerAliasesEdit', $d, $this->errors);
+		$url = $this->url(0).'/computers/';
+		if (!is_null($aliases)) {
+			echo $form->_fieldset('Usuń aliasy komputera:');
+			foreach ($aliases as $alias) {
+				echo $form->aliasesChk($alias['host'], array('type'=>$form->CHECKBOX, 'name'=>'computerAliasesEdit[aliases]['.$alias['id'].']', 'id'=>'computerAliasesEdit[aliases]['.$alias['id'].']'));
+			}
+			echo $form->_end();
+		}
+		echo $form->_fieldset('Dodaj alias:');
+		if ($this->_srv->get('msg')->get('computerAliasesEdit/errors/host/duplicated')) {
+			echo $this->ERR($this->errors['host/duplicated']);
+		}
+		echo $form->alias('Alias');
+		echo $form->_end();
+	}
+
 	public function listAdmin(array $d) {
 		$url = $this->url(0).'/computers/';
 		foreach ($d as $c) {
@@ -411,9 +443,14 @@ div.style.display = 'none';
 		}
 	}
 
-	public function configDns(array $d) {
+	public function configDns(array $d, $aliases) {
 		foreach ($d as $c) {
 			echo $c['host']."\t\tA\t".$c['ip']."\n";
+		}
+		if (!is_null($aliases)) {
+			foreach ($aliases as $alias) {
+				echo $alias['host']."\t\tA\t".$alias['ip']."\n";
+			}
 		}
 	}
 

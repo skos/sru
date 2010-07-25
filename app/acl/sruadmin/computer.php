@@ -34,6 +34,15 @@ extends UFlib_ClassWithService {
 		return true;
 	}
 
+	public function editAliases() {
+		if (!$this->_loggedIn()) {
+			return false;
+		}
+		$bean = UFra::factory('UFbean_Sru_Computer');
+		$bean->getByPK($this->_srv->get('req')->get->computerId);
+		return $bean->active;
+	}
+
 	public function del() {
 		return $this->_loggedIn();
 	}

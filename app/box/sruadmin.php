@@ -103,6 +103,18 @@ extends UFbox {
 			$switchPort = $hp->findMac($bean->mac);
 			$d['switchPort'] = $switchPort;
 
+			if ($bean->typeId == 4) {
+				try {
+					$aliases = UFra::factory('UFbean_SruAdmin_ComputerAliasList');
+					$aliases->listByComputerId($bean->id);
+					$d['aliases'] = $aliases;
+				} catch (UFex $e) {
+					$d['aliases'] = null;
+				}
+			} else {
+				$d['aliases'] = null;
+			}
+
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
 			return $this->render('computerNotFound');
@@ -176,6 +188,36 @@ extends UFbox {
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
 			return $this->render('computerNotFound');
+		}
+	}
+
+	public function titleComputerAliasesEdit() {
+		try {
+			$bean = $this->_getComputerFromGet();
+			$d['computer'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render('titleComputerNotFound');
+		}
+	}
+
+	public function computerAliasesEdit() {
+		try {
+			$bean = $this->_getComputerFromGet();
+			try {
+				$aliases = UFra::factory('UFbean_SruAdmin_ComputerAliasList');
+				$aliases->listByComputerId($bean->id);
+				$d['aliases'] = $aliases;
+			} catch (UFex $e) {
+				$d['aliases'] = null;
+			}
+
+			$d['computer'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render('computerAliasesNotFound');
 		}
 	}
 

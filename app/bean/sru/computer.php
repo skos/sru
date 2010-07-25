@@ -25,6 +25,12 @@ extends UFbeanSingle {
 			}
 			return 'duplicated';
 		} catch (UFex_Dao_NotFound $e) {
+			try {
+				$alias = UFra::factory('UFbean_SruAdmin_ComputerAlias');
+				$alias->getByHost($val);
+				return 'duplicated';
+			} catch (UFex_Dao_NotFound $e) {
+			}
 		}
 	}
 

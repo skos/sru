@@ -55,6 +55,14 @@ extends UFbox {
 
 			$d['computers'] = $bean;
 
+			try {
+				$aliases = UFra::factory('UFbean_SruAdmin_ComputerAliasList');
+				$aliases->listAll();
+				$d['aliases'] = $aliases;
+			} catch (UFex_Dao_NotFound $e) {
+				$d['aliases'] = null;
+			}
+
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
 			return '';

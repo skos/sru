@@ -68,6 +68,9 @@ extends UFctl {
 									}
 								}
 								break;
+							case ':aliases':
+								$get->view = 'computers/computer/aliases';
+								break;
 							case ':del':
 								$get->view = 'computers/computer/delete';
 								break;	
@@ -98,6 +101,8 @@ extends UFctl {
 			$act = 'Computer_Search';
 		} elseif ($post->is('computerEdit') && $acl->sruAdmin('computer', 'edit')) {
 			$act = 'Computer_Edit';
+		} elseif ($post->is('computerAliasesEdit') && $acl->sruAdmin('computer', 'editAliases')) {
+			$act = 'Computer_AliasesEdit';
 		} elseif ('computers/computer/delete' == $get->view && $post->is('computerDel') ) {
 			$act = 'Computer_Del';
 		}
@@ -140,6 +145,12 @@ extends UFctl {
 					return 'SruAdmin_Main';
 				} else {
 					return 'SruAdmin_ComputerEdit';
+				}
+			case 'computers/computer/aliases':
+				if ($msg->get('computerAliasesEdit/ok')) {
+					return 'SruAdmin_Computer';
+				} else {
+					return 'SruAdmin_ComputerAliasesEdit';
 				}
 			case 'computers/computer/restore':
 				return 'SruAdmin_ComputerRestore';

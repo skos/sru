@@ -75,10 +75,13 @@ extends UFtpl_Common {
 		
 		if ($this->_srv->get('msg')->get('computerDel/ok')) {
 			echo $this->OK('Komputer wyrejestrowano');
-		}			
+		}
+		if ($this->_srv->get('msg')->get('computerAliasesEdit/ok')) {
+			echo $this->OK('Zmodyfikowano aliasy komputera');
+		}
 		$url = $this->url(0).'/computers/'.$d['computer']->id;
 		echo '<div class="computer">';
-		$d['computer']->write('details', $d['switchPort']);
+		$d['computer']->write('details', $d['switchPort'], $d['aliases']);
 		echo '</div>';
 	}
 
@@ -160,6 +163,24 @@ extends UFtpl_Common {
 		echo $form->_submit('Zapisz');
 		echo $form->_end();
 		echo $form->_end(true);
+	}
+
+	public function titleComputerAliasesEdit(array $d) {
+		echo $d['computer']->write('titleAliasesEdit');
+	}
+
+	public function computerAliasesEdit(array $d) {
+		$form = UFra::factory('UFlib_Form');
+
+		echo '<h2>Edycja aliasów</h2>';
+		echo $form->_start($this->url());
+		echo $d['computer']->write('formAliasesEdit', $d['aliases']);
+		echo $form->_submit('Zapisz');
+		echo $form->_end(true);
+	}
+
+	public function computerAliasesNotFound() {
+		echo $this->ERR('Błąd wyświetlania aliasów');
 	}
 
 	public function computerDel(array $d) {
