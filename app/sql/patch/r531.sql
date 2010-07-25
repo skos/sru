@@ -15,7 +15,7 @@ CREATE SEQUENCE computers_aliases_id_seq
 
 CREATE TABLE computers_aliases
 (
-  id bigint DEFAULT nextval('computers_aliases_id_seq'::regclass) NOT NULL
+  id bigint DEFAULT nextval('computers_aliases_id_seq'::regclass) NOT NULL,
   computer_id bigint NOT NULL, -- ktory komputer
   host character varying(50) NOT NULL, -- alias
   CONSTRAINT computers_aliases_pkey PRIMARY KEY (id),
