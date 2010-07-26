@@ -18,6 +18,7 @@ CREATE TABLE computers_aliases
   id bigint DEFAULT nextval('computers_aliases_id_seq'::regclass) NOT NULL,
   computer_id bigint NOT NULL, -- ktory komputer
   host character varying(50) NOT NULL, -- alias
+  is_cname boolean NOT NULL DEFAULT false, -- czy wpis CNAME czy A
   CONSTRAINT computers_aliases_pkey PRIMARY KEY (id),
   CONSTRAINT computers_aliases_fkey FOREIGN KEY (computer_id)
       REFERENCES computers (id) MATCH SIMPLE
@@ -29,6 +30,7 @@ WITH (
 );
 COMMENT ON COLUMN computers_aliases.computer_id IS 'ktory komputer';
 COMMENT ON COLUMN computers_aliases.host IS 'alias';
+COMMENT ON COLUMN computers_aliases.is_cname IS 'czy wpis CNAME czy A';
 
 
 -- Index: fki_computers_aliases_fkey

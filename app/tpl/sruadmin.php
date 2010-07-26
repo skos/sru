@@ -99,6 +99,15 @@ extends UFtpl_Common {
 		echo '</ul>';
 		echo '</div>';
 	}
+	public function serverAliases(array $d) {
+		echo '<div class="computers">';
+		echo '<h2>Aliasy serwerów</h2>';
+
+		echo '<ul>';
+		$d['aliases']->write('listAliases');
+		echo '</ul>';
+		echo '</div>';
+	}
 	public function administrationComputers(array $d) {
 		echo '<div class="computers">';
 		echo '<h2>Komputery administracji</h2>';
@@ -129,7 +138,10 @@ extends UFtpl_Common {
 		echo '<h2>Serwery</h2>';
 		echo $this->ERR('Nie znaleziono komputerów');
 	}
-				
+	public function serverAliasesNotFound() {
+		echo '<h2>Aliasy serwerów</h2>';
+		echo $this->ERR('Nie znaleziono komputerów');
+	}
 
 	public function computersNotFound() {
 		echo $this->ERR('Komputerów nie znaleziono');

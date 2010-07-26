@@ -141,7 +141,7 @@ extends UFtpl_Common {
 		if (!is_null($aliases)) {
 			$aliasesString = '';
 			foreach ($aliases as $alias) {
-				$aliasesString = $aliasesString.$alias['host'].', ';
+				$aliasesString = $aliasesString.$alias['host'].' ('.($alias['isCname'] ? 'CNAME' : 'A').'), ';
 			}
 			$aliasesString = substr($aliasesString, 0 , -2);
 			echo '<p><em>Aliasy:</em> '.$aliasesString.'</p>';
@@ -381,6 +381,7 @@ div.style.display = 'none';
 			echo $this->ERR($this->errors['host/duplicated']);
 		}
 		echo $form->alias('Alias');
+		echo $form->isCname('Wpis CNAME <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Aliasy są domyślnie wpisami A">', array('type'=>$form->CHECKBOX));
 		echo $form->_end();
 	}
 
@@ -449,7 +450,11 @@ div.style.display = 'none';
 		}
 		if (!is_null($aliases)) {
 			foreach ($aliases as $alias) {
-				echo $alias['host']."\t\tA\t".$alias['ip']."\n";
+				if ($alias['isCname']) {
+					echo $alias['host']."\t\tCNAME\t".$alias['parent']."\n";
+				} else {
+					echo $alias['host']."\t\tA\t".$alias['ip']."\n";
+				}
 			}
 		}
 	}

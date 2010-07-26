@@ -1073,6 +1073,18 @@ extends UFbox {
 			return $this->render(__FUNCTION__.'NotFound');
 		}
 	}
+	public function serverAliases() {
+		try {
+			$bean = UFra::factory('UFbean_SruAdmin_ComputerAliasList');
+			$bean->listAll();
+
+			$d['aliases'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}
+	}
 	public function administrationComputers() {
 		try {
 			$bean = UFra::factory('UFbean_Sru_ComputerList');

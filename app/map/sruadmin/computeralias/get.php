@@ -8,11 +8,13 @@ extends UFmap {
 		'id'             => 'id',
 		'computerId'     => 'computer_id',
 		'host'           => 'host',
+		'isCname'	 => 'is_cname',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
 		'computerId'     => self::INT,
 		'host'           => self::TEXT,
+		'isCname'	 => self::BOOL,
 	);
 	protected $tables = array(
 		'' => 'computers_aliases',
