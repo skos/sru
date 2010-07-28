@@ -380,6 +380,9 @@ div.style.display = 'none';
 		if ($this->_srv->get('msg')->get('computerAliasesEdit/errors/host/duplicated')) {
 			echo $this->ERR($this->errors['host/duplicated']);
 		}
+		if ($this->_srv->get('msg')->get('computerAliasesEdit/errors/host/regexp')) {
+			echo $this->ERR($this->errors['host/regexp']);
+		}
 		echo $form->alias('Alias');
 		echo $form->isCname('Wpis CNAME <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Aliasy są domyślnie wpisami A">', array('type'=>$form->CHECKBOX));
 		echo $form->_end();
