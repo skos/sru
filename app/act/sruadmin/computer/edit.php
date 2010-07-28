@@ -73,6 +73,7 @@ extends UFact {
 				$bean->availableTo = $bean->availableMaxTo;
 			}
 			if ($bean->availableTo <= NOW) {
+				$bean->availableTo = NOW;
 				$bean->active = false;
 			}
 			$bean->modifiedById = $this->_srv->get('session')->authAdmin;

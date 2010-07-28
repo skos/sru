@@ -18,9 +18,6 @@ extends UFact {
 			if ($bean->availableTo > $bean->availableMaxTo) {
 				$bean->availableTo = $bean->availableMaxTo;
 			}
-			if ($bean->availableTo < NOW) {
-				$bean->availableTo = NOW;
-			}
 			if (!$bean->active && $bean->availableTo > NOW) {
 				// przywrocenie aktywnosci komputera, jezeli podano
 				// przyszla date waznosci rejestracji
@@ -40,6 +37,7 @@ extends UFact {
 				}
 			}
 			if ($bean->availableTo <= NOW) {
+				$bean->availableTo = NOW;
 				$bean->active = false;
 			}
 			$bean->modifiedById = null;
