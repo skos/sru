@@ -70,7 +70,7 @@ extends UFact {
 						$result = $hp->setPortAlias($bean->ordinalNo, $connectedSwitch->dormitoryAlias.'-hp'.$connectedSwitch->hierarchyNo);
 					}
 				} else if ($post['comment'] != '') {
-					$result = $hp->setPortAlias($bean->ordinalNo, $post['comment']);
+					$result = $hp->setPortAlias($bean->ordinalNo, $hp->removeSpecialChars($post['comment']));
 				} else {
 					$result = $hp->setPortAlias($bean->ordinalNo, '');
 				}
