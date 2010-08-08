@@ -43,7 +43,7 @@ extends UFtpl_Common {
 			}
 		}
 		echo '</p>';
-		echo '<p class="nav"><a href="'.$url.'dorm/'.$d['dormitoryAlias'].'">Wróć do listy</a> <a href="'.$url.'">Pokaż wszystkie</a> ';
+		echo '<p class="nav"><a href="'.$url.'dorm/'.$d['dormitoryAlias'].'">Wróć do listy</a> &bull; <a href="'.$url.'">Pokaż wszystkie</a> &bull; ';
 		echo '<a href="'.$url.$switch->id.'/port/'.$d['id'].'/:edit">Edytuj port</a></p>';
 	}
 
