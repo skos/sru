@@ -139,11 +139,12 @@ extends UFtpl_Common {
 		}
 		echo '<p><em>Kary:</em> '.$bans.'</p>';
 		if (!is_null($aliases)) {
-			$aliasesString = '';
+			$aliasesString = '<table><tr><td>';
 			foreach ($aliases as $alias) {
-				$aliasesString = $aliasesString.$alias['host'].' ('.($alias['isCname'] ? 'CNAME' : 'A').'), ';
+				$aliasesString = $aliasesString.$alias['host'].'&nbsp;('.($alias['isCname'] ? 'CNAME' : 'A').'), ';
 			}
 			$aliasesString = substr($aliasesString, 0 , -2);
+			$aliasesString = $aliasesString.'</td></tr></table>';
 			echo '<p><em>Aliasy:</em> '.$aliasesString.'</p>';
 		}
 		$acls = array();
