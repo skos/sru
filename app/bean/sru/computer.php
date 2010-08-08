@@ -10,6 +10,8 @@ extends UFbeanSingle {
 	const TYPE_ADMINISTRATION = 3;
 	const TYPE_SERVER = 4;
 
+	const EDIT_PREFIX = 'computerEdit';
+
 	protected $notifyAbout = array(
 		'host',
 		'mac',
@@ -44,6 +46,15 @@ extends UFbeanSingle {
 			$bean->getByMac($val);
 			if ($change && $this->data['id'] == $bean->id) {
 				return;
+			}
+			
+			try {
+				// sprawdzamy, czy mamy do czynienia z serwerem
+				$post = $this->_srv->get('req')->post->{self::EDIT_PREFIX};
+				if ($post['typeId'] == self::TYPE_SERVER) {
+					return;
+				}
+			} catch (UFex $e) {
 			}
 			return 'duplicated';
 		} catch (UFex_Db_QueryFailed $e) {
