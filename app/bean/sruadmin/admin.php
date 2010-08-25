@@ -10,21 +10,10 @@ extends UFbeanSingle {
 	/**
 	 * zaszyfrowane haslo
 	 * 
-	 * @param string $login - login
 	 * @param string $password - haslo
 	 * @return string
 	 */
-	static function generatePassword($login, $password) {
-		return md5($login.$password);
-	}
-
-	/**
-	 * zaszyfrowane haslo do PAM i innych
-	 * 
-	 * @param string $password - haslo
-	 * @return string
-	 */
-	static function generatePamPassword($password) {
+	static function generatePassword($password) {
 		return md5($password);
 	}
 
@@ -41,7 +30,7 @@ extends UFbeanSingle {
 		$post = $this->_srv->get('req')->post->{$change?'adminEdit':'adminAdd'};
 		try {
 			if ($post['password2'] !== $val) {
-				return 'mismatch';			
+				return 'mismatch';
 			}
 		} catch (UFex $e) {
 			return 'unknown';
@@ -50,12 +39,7 @@ extends UFbeanSingle {
 
 	protected function normalizePassword($val, $change) {
 		$this->_password = $val;
-		if (array_key_exists('login', $this->data)) {
-			$login = $this->data['login'];
-		} else {
-			$login = md5(microtime());
-		}
-		return self::generatePassword($login, $val);
+		return self::generatePassword($val);
 	}
 
 	protected function normalizeLogin($val, $change) {
@@ -65,7 +49,7 @@ extends UFbeanSingle {
 			$pass = microtime();
 		}
 		if (isset($this->_password)) {
-			$this->data['password'] = self::generatePassword($val, $pass);
+			$this->data['password'] = self::generatePassword($pass);
 			$this->dataChanged['password'] = $this->data['password'];
 		}
 		return $val;

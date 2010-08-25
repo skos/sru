@@ -80,7 +80,7 @@ extends UFdao {
 		$server = $this->_srv->get('req')->server;
 		$login = $server->PHP_AUTH_USER;
 		$password = $server->PHP_AUTH_PW;
-		$password = UFbean_Sru_User::generatePassword($login, $password);
+		$password = UFbean_Sru_User::generatePassword($password);
 
 		return $this->getByLoginPassword($login, $password);
 	}

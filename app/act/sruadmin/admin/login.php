@@ -16,12 +16,8 @@ extends UFact {
 			$login = $post['login'];
 			$password = $post['password'];
 			
-			$password = UFbean_Sru_User::generatePassword($login, $password);
+			$password = UFbean_SruAdmin_Admin::generatePassword($password);
 			$bean->getByLoginPassword($login, $password);
-
-			if (is_null($bean->password2)) {
-				$bean->password2 = UFbean_SruAdmin_Admin::generatePamPassword($password);
-			}
 			
 			$sess = $this->_srv->get('session');
 			$sess->authAdmin = $bean->id;

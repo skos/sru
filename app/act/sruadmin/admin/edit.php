@@ -17,18 +17,14 @@ extends UFact {
 			$login = $bean->login;
 			$bean->fillFromPost(self::PREFIX, array('password', 'login', 'typeId', 'active'));
 				
-			if(isset($post['password']) && $post['password'] != '' )
-			{
+			if(isset($post['password']) && $post['password'] != '' ) {
 				$bean->password = $post['password'];
-				$bean->password2 = $bean->generatePamPassword($post['password']);
 			}
 			
-			if(isset($post['typeId']) && $acl->sruAdmin('admin', 'advancedEdit'))
-			{
+			if(isset($post['typeId']) && $acl->sruAdmin('admin', 'advancedEdit')) {
 				$bean->typeId = $post['typeId'];	
 			}	
-			if(isset($post['active']) && $acl->sruAdmin('admin', 'advancedEdit'))
-			{
+			if(isset($post['active']) && $acl->sruAdmin('admin', 'advancedEdit')) {
 				$bean->active = $post['active'];	
 			}	
 											
