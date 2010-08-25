@@ -61,7 +61,7 @@ extends UFtpl_Common {
 		echo '</ul>';
 		echo '<p class="nav"><a href="'.$url.':add">Dodaj nowego switcha</a>';
 		if (!is_null($dorm)) {
-			echo ' <a href="'.$url.'">Pokaż wszystkie</a>';
+			echo ' &bull; <a href="'.$url.'">Pokaż wszystkie</a>';
 		}
 		echo '</p>';
 	}
