@@ -138,20 +138,7 @@ extends UFbox {
 
 		return $this->render(__FUNCTION__, $d);
 	}
-/*
-	public function computers() {
-		try {
-			$bean = UFra::factory('UFbean_Sru_ComputerList');
-			$bean->listAllActive();
 
-			$d['computers'] = $bean;
-
-			return $this->render(__FUNCTION__, $d);
-		} catch (UFex_Dao_NotFound $e) {
-			return $this->render('computersNotFound');
-		}
-	}
-*/
 	public function titleComputerEdit() {
 		try {
 			$bean = $this->_getComputerFromGet();
@@ -180,6 +167,13 @@ extends UFbox {
 				$d['history'] = $history[0];
 			} catch (UFex $e) {
 				$d['history'] = null;
+			}
+			try {
+				$user = UFra::factory('UFbean_Sru_User');
+				$user->getByPK($bean->userId);
+				$d['user'] = $user;
+			} catch (UFex $e) {
+				$d['user'] = null;
 			}
 
 			$d['computer'] = $bean;

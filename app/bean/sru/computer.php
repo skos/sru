@@ -51,7 +51,7 @@ extends UFbeanSingle {
 			try {
 				// sprawdzamy, czy mamy do czynienia z serwerem
 				$post = $this->_srv->get('req')->post->{self::EDIT_PREFIX};
-				if ($post['typeId'] == self::TYPE_SERVER) {
+				if (isset($post['typeId']) && $post['typeId'] == self::TYPE_SERVER) {
 					return;
 				}
 			} catch (UFex $e) {

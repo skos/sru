@@ -171,7 +171,7 @@ extends UFtpl_Common {
 		} elseif ($this->_srv->get('msg')->get('computerEdit/ok')) {
 			echo $this->OK('Dane zostały zmienione');
 		}
-		echo $d['computer']->write('formEditAdmin', $d['dormitories'], $d['history']);
+		echo $d['computer']->write('formEditAdmin', $d['dormitories'], $d['user'], $d['history']);
 		echo $form->_submit('Zapisz');
 		echo $form->_end();
 		echo $form->_end(true);

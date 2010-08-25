@@ -61,10 +61,6 @@ extends UFact {
 				// przyszla date waznosci rejestracji
 				$bean->active = true;
 				$bean->availableTo = $bean->availableMaxTo;
-				//aktualizacja lokalizacji komputera
-				$user = UFra::factory('UFbean_Sru_User');
-				$user->getByPK($bean->userId);
-				$bean->locationId = $user->locationId;
 			}
 			if ($bean->active && $bean->availableMaxTo < NOW) {
 				$bean->availableMaxTo = NOW;

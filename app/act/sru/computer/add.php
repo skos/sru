@@ -17,6 +17,7 @@ extends UFact {
 			try {
 				$computers->listByUserId($user->id);
 				// znaleziono komputery, wiec uzytkownik nie moze dodac sobie kolejnego
+				$this->markErrors(self::PREFIX, array('comp'=>'second'));
 				return;
 			} catch (UFex_Dao_NotFound $e) {
 			} 

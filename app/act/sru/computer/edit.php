@@ -21,6 +21,14 @@ extends UFact {
 			if (!$bean->active && $bean->availableTo > NOW) {
 				// przywrocenie aktywnosci komputera, jezeli podano
 				// przyszla date waznosci rejestracji
+				$computers = UFra::factory('UFbean_Sru_ComputerList');
+				try {
+					$computers->listByUserId($user->id);
+					// znaleziono komputery, wiec uzytkownik nie moze dodac sobie kolejnego
+					$this->markErrors(self::PREFIX, array('comp'=>'second'));
+					return;
+				} catch (UFex_Dao_NotFound $e) {
+				}
 				$bean->active = true;
 				$bean->availableMaxTo = $bean->availableTo;
 				// aktualizacja lokalizacji komputera
@@ -28,7 +36,7 @@ extends UFact {
 				// przypisanie nowego IP
 				try {
 					$ip = UFra::factory('UFbean_Sru_Ipv4');
-					$ip->getFreeByDormitoryId($bean->dormitoryId);
+					$ip->getFreeByDormitoryId($user->dormitoryId);
 					$bean->ip = $ip->ip;
 				} catch (UFex_Dao_NotFound $e) {
 					$this->rollback();

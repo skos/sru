@@ -26,6 +26,7 @@ extends UFtpl_Common {
 		'host/textMin' => 'Nazwa jest za krótka',
 		'host/textMax' => 'Nazwa jest zbyt długa',
 		'host/regexp' => 'Zawiera niedowzolone znaki',
+		'comp/second' => 'Samodzielnie możesz dodać tylko jeden komputer. Jeżeli chcesz zarejestrować kolejny, zgłoś się do administratora lokalnego.',
 		'mac' => 'Nieprawidłowy format',
 		'mac/duplicated' => 'MAC jest już zajęty',
 		'ip' => 'Nieprawidłowy format',
@@ -208,6 +209,9 @@ changeVisibility();
 		if ($this->_srv->get('msg')->get('computerEdit/errors/ip/noFree')) {
 			echo $this->ERR($this->errors['ip/noFree']);
 		}
+		if ($this->_srv->get('msg')->get('computerEdit/errors/comp/second')) {
+			echo $this->ERR($this->errors['comp/second']);
+		}
 		if ($activate) {
 			$d['availableTo'] = date(self::TIME_YYMMDD, $d['availableMaxTo']);
 		} else {
@@ -221,13 +225,18 @@ changeVisibility();
 		echo '<small>Maksymalnie do '.date(self::TIME_YYMMDD, $d['availableMaxTo']).'</small><br />';
 	}
 
-	public function formEditAdmin(array $d, $dormitories, $history = null) {
+	public function formEditAdmin(array $d, $dormitories, $user = null, $history = null) {
 		if (is_array($history)) {
 			$d = $history + $d;
 		}
 		$d['availableMaxTo'] = date(self::TIME_YYMMDD, $d['availableMaxTo']);
 		$d['availableTo'] = date(self::TIME_YYMMDD, $d['availableTo']);
 		$d['dormitory'] = $d['dormitoryId'];
+		if (!$d['active'] && !is_null($user)) {
+			$d['ip'] = null;
+			$d['dormitory'] = $user->dormitoryId;
+			$d['locationAlias'] = $user->locationAlias;
+		}
 		$form = UFra::factory('UFlib_Form', 'computerEdit', $d, $this->errors);
 
 		echo $form->host('Nazwa');
@@ -301,6 +310,9 @@ if (input) {
 		$form = UFra::factory('UFlib_Form', 'computerAdd', $d, $this->errors);
 		if (!$admin && $this->_srv->get('msg')->get('computerAdd/errors/ip/noFree')) {
 			echo $this->ERR($this->errors['ip/noFree']);
+		}
+		if ($this->_srv->get('msg')->get('computerAdd/errors/comp/second')) {
+			echo $this->ERR($this->errors['comp/second']);
 		}
 		if ($admin) {
 			echo $form->typeId('Typ', array(
