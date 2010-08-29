@@ -94,4 +94,14 @@ img { border-style: none; }
 #main .switchports td.unknown { background-color: white;}
 #main .inoperational { background-color: #ffa766; }
 
+.tooltip {
+	display:none;
+	background:transparent url(http://static.flowplayer.org/tools/img/tooltip/black_big.png);
+	font-size:12px;
+	height:148px;
+	padding:40px 30px 10px 30px;
+	width:310px;
+	color:#fff;	
+}
+
 #foot { text-align: center; font-size: 0.5em; margin-top: 2em; clear: both; }

@@ -89,6 +89,12 @@ extends UFtpl_Common {
 		if (!is_null($status)) {
 			echo $form->copyToSwitch('Zapisz dane na switcha <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Zapis spowoduje nadpisanie aliasu portu na switchu. Będzie to nr pokoju, podłaczony switch (o ile podano) i komentarz." />', array('type'=>$form->CHECKBOX));
 		}
+
+?>
+<script>
+$("#main img[title]").tooltip({ position: "center right"});
+</script>
+<?
 	}
 
 	public function listPorts(array $d, $switch, $portStatuses) {

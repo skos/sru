@@ -221,8 +221,14 @@ changeVisibility();
 
 		echo '<h1>'.$d['host'].'.ds.pg.gda.pl</h1>';
 		echo $form->mac('MAC', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Adres fizyczny karty sieciowej komputera" /> '.$this->showMacHint().'<br/>'));
-		echo $form->availableTo('Rejestracja do', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Data, kiedy komputer przestaje być aktywny" /><br/>'));
+		echo $form->availableTo('Rejestracja do', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Data, kiedy komputer przestanie być aktywny" /><br/>'));
 		echo '<small>Maksymalnie do '.date(self::TIME_YYMMDD, $d['availableMaxTo']).'</small><br />';
+
+?>
+<script>
+$("#main img[title]").tooltip({ position: "center right"});
+</script>
+<?
 	}
 
 	public function formEditAdmin(array $d, $dormitories, $user = null, $history = null) {
@@ -365,6 +371,8 @@ div.style.display = 'none';
 <?
 }
 ?>
+
+$("#main img[title]").tooltip({ position: "center right"});
 </script><?
 	}
 
@@ -399,6 +407,12 @@ div.style.display = 'none';
 		echo $form->alias('Alias');
 		echo $form->isCname('Wpis CNAME <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Aliasy są domyślnie wpisami A">', array('type'=>$form->CHECKBOX));
 		echo $form->_end();
+
+?>
+<script>
+$("#main img[title]").tooltip({ position: "center right"});
+</script>
+<?
 	}
 
 	public function listAdmin(array $d) {

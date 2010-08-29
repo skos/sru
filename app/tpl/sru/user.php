@@ -132,6 +132,12 @@ extends UFtpl_Common {
 			'labels' => $form->_labelize(self::$languages),
 			'after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Wiadomości e-mail i GG będa przychodziły w wybranym języku | You will receive e-mails and gg messages in the chosen language" /><br/>',
 		));
+
+?>
+<script>
+$("#main img[title]").tooltip({ position: "center right"});
+</script>
+<?
 	}
 
 	public function formEdit(array $d, $dormitories, $faculties) {
@@ -184,7 +190,7 @@ extends UFtpl_Common {
 		echo $form->lang('Język', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$languages),
-			'after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Wiadomości e-mail i GG będa przychodziły w wybranym języku | You will receive e-mails and gg messages in the chosen language" /><br/>',
+			'after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Wiadomości e-mail i GG będa przychodziły w wybranym języku<br/><br/> You will receive e-mails and gg messages in the chosen language" /><br/>',
 		));
 
 		echo $form->_fieldset('Zmiana chronionych danych');
@@ -194,6 +200,12 @@ extends UFtpl_Common {
 			echo $form->password('Nowe hasło', array('type'=>$form->PASSWORD ));
 			echo $form->password2('Potwierdź hasło', array('type'=>$form->PASSWORD));
 		echo $form->_end();
+
+?>
+<script>
+$("#main img[title]").tooltip({ position: "center right"});
+</script>
+<?
 	}
 
 	public function formSearch(array $d, array $searched) {

@@ -13,6 +13,7 @@ extends UFtpl_Common {
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <meta name="robots" CONTENT="noindex,nofollow,noarchive"> 
 <link rel="stylesheet" href="<?=UFURL_BASE;?>/i/style.css" type="text/css" media="screen" />
+<script src="http://cdn.jquerytools.org/1.2.4/jquery.tools.min.js"></script>
 <title><?=$d['title'];?></title>
 </head>
 <body>
