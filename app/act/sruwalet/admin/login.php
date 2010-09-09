@@ -1,15 +1,15 @@
 <?
 /**
- * zalogowanie admina
+ * zalogowanie admina Waleta
  */
-class UFact_SruAdmin_Admin_Login
+class UFact_SruWalet_Admin_Login
 extends UFact {
 
 	const PREFIX = 'adminLogin';
 
 	public function go() {
 		try {
-			$bean = UFra::factory('UFbean_SruAdmin_Admin');
+			$bean = UFra::factory('UFbean_SruWalet_Admin');
 			$post = $this->_srv->get('req')->post->{self::PREFIX};
 			$serv = $this->_srv->get('req')->server;
 			
@@ -20,12 +20,12 @@ extends UFact {
 			$bean->getByLoginPassword($login, $password);
 			
 			$sess = $this->_srv->get('session');
-			$sess->authAdmin = $bean->id;
+			$sess->authWaletAdmin = $bean->id;
 					
-			$sess->name  = $bean->name;
-			$sess->typeId = $bean->typeId;
-			$sess->lastLoginIpAdmin = $bean->lastLoginIp;
-			$sess->lastLoginAtAdmin = $bean->lastLoginAt;
+			$sess->nameWalet  = $bean->name;
+			$sess->typeIdWalet = $bean->typeId;
+			$sess->lastLoginIpWalet  = $bean->lastLoginIp;
+			$sess->lastLoginAtWalet  = $bean->lastLoginAt;
 			
 		
 			if($serv->is('HTTP_X_FORWARDED_FOR') && $serv->HTTP_X_FORWARDED_FOR != '' ) {

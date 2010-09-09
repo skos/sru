@@ -21,11 +21,6 @@ extends UFtpl_Common {
 <div id="head">
 <h1><a href="<?=UFURL_BASE;?>/"><abbr title="System Rejestracji Użytkowników">SRU</abbr></a></h1>
 </div><!-- head -->
-<ul id="nav">
-<li><a href="http://skos.ds.pg.gda.pl/skos/wiki/regulamin">Regulamin</a></li>
-<li><a href="<?=UFURL_BASE;?>/sru/">SRU</a></li>
-<li><a href="<?=UFURL_BASE;?>/admin/">Administracja</a></li>
-</ul>
 <?=$d['userBar'];?>
 <div id="main">
 <?=$d['body'];?>

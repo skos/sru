@@ -5,8 +5,7 @@
 class UFctl_SruAdmin_Admins
 extends UFctl {
 
-	protected function parseParameters() 
-	{
+	protected function parseParameters() {
 		$req = $this->_srv->get('req');
 		$get = $req->get;
 		$acl = $this->_srv->get('acl');
@@ -47,6 +46,7 @@ extends UFctl {
 				}
 		}
 	}
+
 	protected function chooseAction($action = null) {
 		$req = $this->_srv->get('req');
 		$get = $req->get;

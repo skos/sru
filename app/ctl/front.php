@@ -29,6 +29,11 @@ extends UFctl {
 					$req->forward();
 					$ctl->go();
 					return false;
+				case 'walet':
+					$ctl = UFra::factory('UFctl_SruWalet_Front');
+					$req->forward();
+					$ctl->go();
+					return false;
 				default:
 					$ctl = UFra::factory('UFctl_Text_Front');
 					$ctl->go();

@@ -130,7 +130,7 @@ extends UFtpl_Common {
 		echo $form->lang('Język', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$languages),
-			'after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Wiadomości e-mail i GG będa przychodziły w wybranym języku<br/><br/>You will receive e-mails and gg messages in the chosen language" /><br/>',
+			'after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Wiadomości e-mail i GG będa przychodziły w wybranym języku | You will receive e-mails and gg messages in the chosen language" /><br/>',
 		));
 
 ?>
@@ -190,7 +190,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 		echo $form->lang('Język', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$languages),
-			'after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Wiadomości e-mail i GG będa przychodziły w wybranym języku<br/><br/>You will receive e-mails and gg messages in the chosen language" /><br/>',
+			'after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Wiadomości e-mail i GG będa przychodziły w wybranym języku<br/><br/> You will receive e-mails and gg messages in the chosen language" /><br/>',
 		));
 
 		echo $form->_fieldset('Zmiana chronionych danych');
@@ -235,55 +235,11 @@ $("#main img[title]").tooltip({ position: "center right"});
 			));
 	}
 
-	public function formSearchWalet(array $d, array $searched) {
-		$d = $searched + $d;
-		$form = UFra::factory('UFlib_Form', 'userSearch', $d, $this->errors);
-
-		echo $form->surname('Nazwisko');
-	}
-
 	public function searchResults(array $d) {
 		$url = $this->url(0);
 		foreach ($d as $c) {
 			echo '<li>'.(!$c['active']?'<del>':'').'<a href="'.$url.'/users/'.$c['id'].'">'.$this->_escape($c['name']).' "'.$this->_escape($c['login']).'" '.$this->_escape($c['surname']).'</a> <span><a href="'.$url.'/dormitories/'.$c['dormitoryAlias'].'/'.$c['locationAlias'].'">'.$c['locationAlias'].'</a> <small>(<a href="'.$url.'/dormitories/'.$c['dormitoryAlias'].'">'.$c['dormitoryAlias'].'</a>)</small></span>'.(!$c['active']?'</del>':'').'</li>';
 		}
-	}
-
-	public function searchResultsWalet(array $d) {
-		$url = $this->url(0);
-
-		echo '<div class="ips">';
-		echo '<table><tr><td style="color: #000;">Mieszkaniec niezameldowany</td><td style="background: #ccf; color: #000;">Mieszkaniec zameldowany</td></tr></table>';
-		echo '</div><br/>';
-
-		echo '<table id="resultsT" style="width: 100%;"><thead><tr>';
-		echo '<th>Imię</th>';
-		echo '<th>Nazwisko</th>';
-		echo '<th>Dom Studencki</th>';
-		echo '<th>Pokój</th>';
-		echo '</tr></thead><tbody>';
-
-		$usersMax = 0;
-		$userCount = 0;
-		$usersFree = 0;
-		foreach ($d as $c) {
-			echo ($c['active'] ? '<tr style="background: #ccf;">' : '<tr>');
-			echo '<td><a href="'.$url.'/users/'.$c['id'].'">'.$this->_escape($c['name']).'</a></td>';
-			echo '<td><a href="'.$url.'/users/'.$c['id'].'">'.$this->_escape($c['surname']).'</a></td>';
-			echo '<td><a href="'.$url.'/dormitories/'.$c['dormitoryAlias'].'">'.strtoupper($c['dormitoryAlias']).'</a></td>';
-			echo '<td>'.$c['locationAlias'].'</td>';
-		}
-		echo '</tbody>';
-		echo '</table>';
-?>
-<script type="text/javascript">
-$(document).ready(function() 
-    { 
-        $("#resultsT").tablesorter(); 
-    } 
-);
-</script>
-<?
 	}
 
 	public function details(array $d) {
@@ -367,36 +323,6 @@ button.appendChild(txt);
 container.appendChild(button);
 changeVisibility();
 </script><?
-	}
-
-	public function detailsWalet(array $d) {
-		$url = $this->url(0);
-		$urlUser = $url.'/users/'.$d['id'];
-		echo '<h1>'.$this->_escape($d['name']).' '.$this->_escape($d['surname']).'</h1>';
-		echo '<p><em>Miejsce:</em> '.$d['locationAlias'].', <a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'">'.strtoupper($d['dormitoryAlias']).'</a></p>';
-		echo '<p><em>Login:</em> '.$d['login'].(!$d['active']?' <strong>(konto nieaktywne)</strong>':'').'</p>';
-		echo '<p><em>E-mail:</em> <a href="mailto:'.$d['email'].'">'.$d['email'].'</a></p>';
-		echo '<p><em>Wydział:</em> '.(!is_null($d['facultyName'])?$d['facultyName']:'N/D').'</p>';
-		echo '<p><em>Rok studiów:</em> '.self::$studyYears[$d['studyYearId']].'</p>';
-		if (is_null($d['modifiedBy'])) {
-			$changed = 'UŻYTKOWNIK';
-		} else {
-			$changed = '<a href="'.$url.'/admins/'.$d['modifiedById'].'">'.$this->_escape($d['modifiedBy']).'</a>';;
-		}
-		echo '<p><em>Zmiana:</em> '.date(self::TIME_YYMMDD_HHMM, $d['modifiedAt']).'<small> ('.$changed.')</small></p>';
-		if (!is_null($d['lastLoginAt']) && $d['lastLoginAt'] != 0 ) {
-		echo '<p><em>Ost. logowanie:</em> '.date(self::TIME_YYMMDD_HHMM, $d['lastLoginAt']);
-			if (!is_null($d['lastLoginIp'])) {
-				echo '<small> ('.$d['lastLoginIp'].')</small>';
-			}
-			echo '</p>';
-		}
-		if (strlen($d['comment'])) {
-			echo '<p><em>Komentarz:</em></p><p class="comment">'.nl2br($this->_escape($d['comment'])).'</p>';
-		}
-		echo '<p class="nav"><a href="'.$urlUser.'">Dane</a> ';
-		echo 	'&bull; <a href="'.$urlUser.'/history">Historia profilu</a>
-		 	&bull; <a href="'.$urlUser.'/:edit">Edycja</a>'; 
 	}
 
 	public function titleDetails(array $d) {

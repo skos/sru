@@ -1,9 +1,9 @@
 <?
 
 /**
- * wylogowanie administratora
+ * wylogowanie administratora Waleta
  */
-class UFact_SruAdmin_Admin_Logout
+class UFact_SruWalet_Admin_Logout
 extends UFact {
 
 	const PREFIX = 'adminLogout';
@@ -11,11 +11,11 @@ extends UFact {
 	public function go() {
 		try {
 			$sess = $this->_srv->get('session');
-			$sess->del('authAdmin');
-			$sess->del('name');
-			$sess->del('typeId');
-			$sess->del('lastLoginIpAdmin');
-			$sess->del('lastLoginAtAdmin');
+			$sess->del('authWaletAdmin');
+			$sess->del('nameWalet');
+			$sess->del('typeIdWalet');
+			$sess->del('lastLoginIpWalet');
+			$sess->del('lastLoginAtWalet');
 			
 			$this->postDel(self::PREFIX);
 			$this->markOk(self::PREFIX);

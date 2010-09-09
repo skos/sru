@@ -1,8 +1,8 @@
 <?
 /**
- * admin
+ * admin Waleta
  */
-class UFdao_SruAdmin_Admin
+class UFdao_SruWalet_Admin
 extends UFdao {
 
 	public function getByLoginPassword($login, $password) {
@@ -16,7 +16,7 @@ extends UFdao {
 			$query->where($mapping->active, true);
 			$query->where($mapping->login, $login);
 			$query->where($mapping->password, $password);
-			$query->where($mapping->typeId, UFacl_SruAdmin_Admin::BOT, UFlib_Db_Query::LTE);
+			$query->where($mapping->typeId, UFacl_SruWalet_Admin::DORM, UFlib_Db_Query::GTE);
 
 			return $this->doSelectFirst($query);
 		}
@@ -31,19 +31,14 @@ extends UFdao {
 		return $this->doSelectFirst($query);
 	}
 
-	public function getFromSession() {
-		return $this->getByPK($this->_srv->get('session')->authAdmin);
-	}
-
 	public function listAll($page=1, $perPage=10, $overFetch=0) {
 		$mapping = $this->mapping('list');
 
 		$query = $this->prepareSelect($mapping);
 		
 		$query->where($mapping->active, true); 
-		$query->where($mapping->typeId, UFacl_SruAdmin_Admin::BOT, UFlib_Db_Query::LT);
+		$query->where($mapping->typeId, UFacl_SruWalet_Admin::DORM, UFlib_Db_Query::GTE);
 		
-		$query->order($mapping->dormitoryId, $query->ASC);	// @todo: kijowe rozwiazanie, ale jak bylo po aliasie, to "10" bylo przed "2"
 		$query->order($mapping->typeId, $query->ASC);
 		$query->order($mapping->name, $query->ASC);
 		
@@ -56,34 +51,15 @@ extends UFdao {
 		$query = $this->prepareSelect($mapping);
 		
 		$query->where($mapping->active, false);
-		$query->where($mapping->typeId, UFacl_SruAdmin_Admin::BOT, UFlib_Db_Query::LT);
+		$query->where($mapping->typeId, UFacl_SruWalet_Admin::DORM, UFlib_Db_Query::GTE);
 		
-		$query->order($mapping->dormitoryId, $query->ASC);	// @todo: kijowe rozwiazanie, ale jak bylo po aliasie, to "10" bylo przed "2"
-		$query->order($mapping->typeId, $query->ASC); //to czemus wadzi hrynek? wydaje mi sie ze najpierw wazniejsi powinny byc chociaz jak wolisz:P
+		$query->order($mapping->typeId, $query->ASC);
 		$query->order($mapping->name, $query->ASC);
 		
 		return $this->doSelect($query);
 	}
 
-	public function listAllBots() {
-		$mapping = $this->mapping('list');
-
-		$query = $this->prepareSelect($mapping);
-		
-		$query->where($mapping->typeId, UFacl_SruAdmin_Admin::BOT); 
-		
-		$query->order($mapping->name, $query->ASC);
-		
-		return $this->doSelect($query);
-	}	
-
-	public function getFromHttp() {
-		$server = $this->_srv->get('req')->server;
-		$login = $server->PHP_AUTH_USER;
-		$password = $server->PHP_AUTH_PW;
-		$password = UFbean_Sru_User::generatePassword($password);
-
-		return $this->getByLoginPassword($login, $password);
+	public function getFromSession() {
+		return $this->getByPK($this->_srv->get('session')->authWaletAdmin);
 	}
-
 }

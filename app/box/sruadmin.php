@@ -519,12 +519,12 @@ extends UFbox {
 
 			$sess = $this->_srv->get('session');
 			try {
-				$d['lastLoginIp'] = $sess->lastLoginIp;
+				$d['lastLoginIp'] = $sess->lastLoginIpAdmin;
 			} catch (UFex_Core_DataNotFound $e) {
 				$d['lastLoginIp'] = null;
 			}
 			try {
-				$d['lastLoginAt'] = $sess->lastLoginAt;
+				$d['lastLoginAt'] = $sess->lastLoginAtAdmin;
 			} catch (UFex_Core_DataNotFound $e) {
 				$d['lastLoginAt'] = null;
 			}

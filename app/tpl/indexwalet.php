@@ -1,8 +1,8 @@
 <?
 /**
- * szablon strony
+ * szablon czesci Waleta
  */
-class UFtpl_Index
+class UFtpl_IndexWalet
 extends UFtpl_Common {
 
 	public function index(array $d) {
@@ -14,19 +14,16 @@ extends UFtpl_Common {
 <meta name="robots" CONTENT="noindex,nofollow,noarchive"> 
 <link rel="stylesheet" href="<?=UFURL_BASE;?>/i/style.css" type="text/css" media="screen" />
 <script src="http://cdn.jquerytools.org/1.2.4/jquery.tools.min.js"></script>
+<script src="<?=UFURL_BASE;?>/i/jquery.tablesorter.min.js"></script>
 <title><?=$d['title'];?></title>
 </head>
 <body>
 <div id="body">
 <div id="head">
-<h1><a href="<?=UFURL_BASE;?>/"><abbr title="System Rejestracji Użytkowników">SRU</abbr></a></h1>
+<h1><a href="<?=UFURL_BASE;?>/">Walet</a></h1>
 </div><!-- head -->
-<ul id="nav">
-<li><a href="http://skos.ds.pg.gda.pl/skos/wiki/regulamin">Regulamin</a></li>
-<li><a href="<?=UFURL_BASE;?>/sru/">SRU</a></li>
-<li><a href="<?=UFURL_BASE;?>/admin/">Administracja</a></li>
-<li><a href="<?=UFURL_BASE;?>/walet/">Walet</a></li>
-</ul>
+<?=$d['menuWalet'];?>
+<?=$d['waletBar'];?>
 <div id="main">
 <?=$d['body'];?>
 </div><!-- main -->
@@ -39,8 +36,8 @@ $stop = microtime(true);
 $start = $this->_srv->get('msg')->get('timeStart');
 $boot = $this->_srv->get('msg')->get('timeBoot');
 echo '<!-- boot: '.number_format(1000*($boot-$start), 1).'ms, total: '.number_format(1000*($stop-$start), 1).'ms -->';
-//echo '<pre>'.print_r(UFra::logs(), true).'</pre>';
 ?>
+<?=$d['logs'];?>
 </body>
 </html><?
 	}
