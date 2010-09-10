@@ -62,6 +62,7 @@ extends UFtpl_Common {
 		echo 'System Rejestracji Użytkowników - Walet';
 	}
 
+
 	/* Mieszkańcy */
 
 	public function titleUserSearch() {
@@ -151,6 +152,7 @@ extends UFtpl_Common {
 		echo '</div>';
 	}
 
+
 	/* Obsadzenie */
 
 	public function titleInhabitants() {
@@ -180,6 +182,15 @@ extends UFtpl_Common {
 		//$d['rooms']->write('dormInhabitants');
 	}
 
+	public function titleDormNotFound() {
+		echo 'Nie znaleziono domu studenckiego';
+	}
+
+	public function dormNotFound(array $d) {
+		echo $this->ERR('Nie znaleziono domu studenckiego');
+	}
+
+
 	/* Statystyki */
 
 	public function titleStatsUsers() {
@@ -208,6 +219,7 @@ extends UFtpl_Common {
 		echo $this->ERR('Błąd wyświetlenia statystyk');
 	}
 
+
 	/* Admini */
 
 	public function titleAdmins() {
@@ -225,7 +237,7 @@ extends UFtpl_Common {
 		echo '<div class="admins">';
 		echo '<h2>Administratorzy OS</h2>';
 
-		$d['admins']->write('listAdmin', $d['dormList']);
+		$d['admins']->write('listAdmin');
 
 		echo '</div>';
 		
@@ -266,6 +278,7 @@ extends UFtpl_Common {
 
 		echo $d['admin']->write('formAdd', $d['dormitories']);
 		echo $form->_submit('Dodaj');
+		echo ' <a href="'.$this->url(1).'">Powrót</a>';
 		echo $form->_end();
 		echo $form->_end(true);
 	}
@@ -279,8 +292,9 @@ extends UFtpl_Common {
 		echo '<h2>Edycja administratora</h2>';
 		echo $form->_start();
 		
-		echo $d['admin']->write('formEdit', $d['dormitories'], $d['advanced']);
+		echo $d['admin']->write('formEdit', $d['dormitories'], $d['dormList'], $d['advanced']);
 		echo $form->_submit('Zapisz');
+		echo ' <a href="'.$this->url(1).'">Powrót</a>';
 		echo $form->_end();
 		echo $form->_end(true);
 	}
@@ -312,7 +326,7 @@ extends UFtpl_Common {
 		}
 		
 		echo '<div class="admin">';
-		$d['admin']->write('details');
+		$d['admin']->write('details', $d['dormList']);
 		
 		echo '<p class="nav">';
 		if($acl->sruWalet('admin', 'edit', $d['admin']->id)) {

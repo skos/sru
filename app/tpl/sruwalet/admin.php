@@ -36,37 +36,57 @@ extends UFtpl_Common {
 		echo '<p>'.$this->_escape($d['name']).'</p>';
 	}
 	
-	public function listAdmin(array $d, $dormList) {
+	public function listAdmin(array $d) {
 		$url = $this->url(0).'/admins/';
 
-		foreach ($d as $c) {			
-			echo '<li><a href="'.$url.$c['id'].'">';
+		echo '<table id="adminsT" style="width: 100%;"><thead><tr>';
+		echo '<th>Administrator</th>';
+		echo '<th>Ostatnie logowanie</th>';
+		echo '</tr></thead><tbody>';
+
+		foreach ($d as $c) {
+			echo '<tr><td><a href="'.$url.$c['id'].'">';
 			switch($c['typeId']) {
 				case 12:
 						echo '<strong>'.$this->_escape($c['name']).'</strong></a>';
-						//if (!is_null($c['dormitoryName'])) {
-						//	echo ' (<a href="'.$this->url(0).'/dormitories/'.$c['dormitoryAlias'].'">'.$c['dormitoryName'].')';
-						//}
 						break;
 				case 11:
 						echo $this->_escape($c['name']).'</a>';
-						//if (!is_null($c['dormitoryName'])) {
-						//	echo ' (<a href="'.$this->url(0).'/dormitories/'.$c['dormitoryAlias'].'">'.$c['dormitoryName'].')';
-						//}
 						break;
 			}
-			echo '</li>';
+			echo '</td><td>'.date(self::TIME_YYMMDD_HHMM, $c['lastLoginAt']).'</td></tr>';
 		}
-		echo '</ul>';
+		echo '</tbody></table>';
+?>
+<script type="text/javascript">
+$(document).ready(function() 
+    { 
+        $("#adminsT").tablesorter(); 
+    } 
+);
+</script>
+<?
 	}
 
 	public function titleDetails(array $d) {
 		echo $this->_escape($d['name']);
 	}
 
-	public function details(array $d) {
+	public function details(array $d, $dormList) {
 		$url = $this->url(0);
 		echo '<h2>'.$this->_escape($d['name']).'<br/><small>('.$this->adminTypes[$d['typeId']].' &bull; ostatnie logowanie: '.date(self::TIME_YYMMDD_HHMM, $d['lastLoginAt']).')</small></h2>';
+
+		echo '<p><em>Domy studenckie:</em>';
+		if (is_null($dormList)) {
+			echo ' brak przypisanych DS</p>';
+		} else {
+			echo '</p><ul>';
+			foreach ($dormList as $dorm) {
+				echo '<li><a href="'.$url.'/dormitories/'.$dorm['dormitoryAlias'].'">'.$dorm['dormitoryName'].'</a></li>';
+			}
+			echo '</ul>';
+		}
+
 		echo '<p><em>E-mail:</em> <a href="mailto:'.$d['email'].'">'.$d['email'].'</a></p>';
 		echo '<p><em>Telefon:</em> '.$d['phone'].'</p>';
 		echo '<p><em>Gadu-Gadu:</em> '.$d['gg'].'</p>';
@@ -92,31 +112,24 @@ extends UFtpl_Common {
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize($this->adminTypes),
 		));
+
+		echo $form->_end();
+
+		echo $form->_fieldset('Domy studenckie');
+		foreach ($dormitories as $dorm) {
+			echo $form->dormPerm($dorm['name'], array('type'=>$form->CHECKBOX, 'name'=>'adminEdit[dorm]['.$dorm['id'].']', 'id'=>'adminEdit[dorm]['.$dorm['id'].']'));
+		}
+		echo $form->_end();
+
+		echo $form->_fieldset();
 		echo $form->email('E-mail');
 		echo $form->phone('Telefon');
 		echo $form->gg('GG');
 		echo $form->jid('Jabber');
 		echo $form->address('Adres');
-
-/*
-		$tmp = array();
-		foreach ($dormitories as $dorm) {
-			$temp = explode("ds", $dorm['alias']);
-			if (!isset($temp[1])) {
-				$temp[1] = $dorm['alias'];
-			} else if($temp[1] == '5l')
-				$temp[1] = '5Ł';
-			$tmp[$dorm['id']] = $temp[1] . ' ' . $dorm['name'];
-		}
-		$tmp['0'] = 'N/D';
-		echo $form->dormitoryId('Akademik', array(
-			'type' => $form->SELECT,
-			'labels' => $form->_labelize($tmp, '', ''),
-		));
-*/
 	}
 
-	public function formEdit(array $d, $dormitories, $advanced=false) {
+	public function formEdit(array $d, $dormitories, $dormList, $advanced=false) {
 		$form = UFra::factory('UFlib_Form', 'adminEdit', $d, $this->errors);
 
 		echo $form->_fieldset();
@@ -134,9 +147,18 @@ extends UFtpl_Common {
 
 		echo $form->_end();
 
-		echo $form->_fieldset('Akademiki');
+		echo $form->_fieldset('Domy studenckie');
 		foreach ($dormitories as $dorm) {
-			echo $form->dormPerm($dorm['name'], array('type'=>$form->CHECKBOX, 'name'=>'adminEdit[dorm]['.$dorm['id'].']', 'id'=>'adminEdit[dorm]['.$dorm['id'].']'));
+			$permission = 0;
+			if (!is_null($dormList)) {
+				foreach ($dormList as $perm) {
+					if ($perm['dormitory'] == $dorm['id']) {
+						$permission = 1;
+						break;
+					}
+				}
+			}
+			echo $form->dormPerm($dorm['name'], array('type'=>$form->CHECKBOX, 'name'=>'adminEdit[dorm]['.$dorm['id'].']', 'id'=>'adminEdit[dorm]['.$dorm['id'].']', 'value'=>$permission));
 		}
 		echo $form->_end();
 		

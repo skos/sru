@@ -273,8 +273,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 			echo '<td><a href="'.$url.'/dormitories/'.$c['dormitoryAlias'].'">'.strtoupper($c['dormitoryAlias']).'</a></td>';
 			echo '<td>'.$c['locationAlias'].'</td>';
 		}
-		echo '</tbody>';
-		echo '</table>';
+		echo '</tbody></table>';
 ?>
 <script type="text/javascript">
 $(document).ready(function() 
