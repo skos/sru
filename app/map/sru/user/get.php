@@ -32,6 +32,8 @@ extends UFmap {
 		'lastLoginAt'    => 'u.last_login_at',
 		'lastLoginIp'    => 'u.last_login_ip',
 		'lang'		 => 'u.lang',
+		'referralStart'	 => 'u.referral_start',
+		'referralEnd'	 => 'u.referral_end',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -60,6 +62,8 @@ extends UFmap {
 		'lastLoginAt'    => self::NULL_TS,
 		'lastLoginIp'    => self::NULL_TEXT,
 		'lang'           => self::TEXT,
+		'referralStart'	 => self::TS,
+		'referralEnd'	 => self::TS,
 	);
 	protected $tables = array(
 		'u' => 'users',

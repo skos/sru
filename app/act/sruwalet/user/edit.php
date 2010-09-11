@@ -17,37 +17,13 @@ extends UFact {
 			$login = $bean->login;
 			$dormitoryId = $bean->dormitoryId;
 
-			$bean->fillFromPost(self::PREFIX, array('password'));
-			$bean->modifiedById = $this->_srv->get('session')->authAdmin;
+			$bean->fillFromPost(self::PREFIX, array('password', 'referralEnd'));
+			$bean->modifiedById = $this->_srv->get('session')->authWaletAdmin;
 			$bean->modifiedAt = NOW;
-			if (isset($post['password']) && $post['password'] != '' ) {
-				$map = UFra::factory('UFmap_Sru_User_Set');
-				$valid = $map->valid('password');
-
-				if (strlen($post['password'])<$valid['textMin']) {
-					throw UFra::factory('UFex_Dao_DataNotValid', 'Password too short', 0, E_WARNING, array('password' => 'textMin'));
-				} elseif (!isset($post['password2']) || $post['password'] != $post['password2']) {
-					throw UFra::factory('UFex_Dao_DataNotValid', 'Data "password" and "password2" do not match', 0, E_WARNING, array('password' => 'mismatch'));
-				}
-				$bean->password = $bean->generatePassword($bean->login, $post['password']);
-			}
-			if (isset($post['facultyId']) && $post['facultyId'] == '0' && isset($post['studyYearId']) && $post['studyYearId'] != '0') {
-				throw UFra::factory('UFex_Dao_DataNotValid', 'Data "studyYearId" differ from "N/A"', 0, E_WARNING, array('studyYearId' => 'noFaculty'));
-			}
-				$bean->facultyId = $post['facultyId'];
-				$bean->studyYearId = $post['studyYearId'];
-
-			$conf = UFra::shared('UFconf_Sru');
-			if ($conf->checkWalet) {
-				// sprawdzenie w bazie osiedla, jezeli admin nie wymusil zignorowania problemu
-				if (!array_key_exists('ignoreWalet', $post) || 0 == $post['ignoreWalet']) {
-					$walet = UFra::factory('UFbean_Sru_User');
-					try {
-						$walet->getFromWalet($bean->name, $bean->surname, $bean->locationAlias, $bean->dormitory);
-					} catch (UFex_Dao_NotFound $e) {
-						throw UFra::factory('UFex_Dao_DataNotValid', 'User not in Walet database', 0, E_WARNING,  array('walet' => 'notFound'));
-					}
-				}
+			if (isset($post['referralEnd']) && $post['referralEnd'] == '') {
+				$bean->referralEnd = 0;
+			} else if (isset($post['referralEnd'])) {
+				$bean->referralEnd = $post['referralEnd'];
 			}
 
 			if ($this->_srv->get('req')->post->{self::PREFIX}['changeComputersLocations']) {
@@ -76,6 +52,7 @@ extends UFact {
 
 			$bean->save();
 
+			$conf = UFra::shared('UFconf_Sru');
 			if ($conf->sendEmail && $bean->notifyByEmail()) {
 				$history = UFra::factory('UFbean_SruAdmin_UserHistoryList');
 				$history->listByUserId($bean->id, 1);
@@ -90,9 +67,6 @@ extends UFact {
 
 			$this->postDel(self::PREFIX);
 			$this->markOk(self::PREFIX);
-			if ($login != $bean->login) {
-				$this->_srv->get('msg')->set(self::PREFIX.'/loginChanged');
-			}
 			$this->commit();
 		} catch (UFex_Dao_DataNotValid $e) {
 			$this->rollback();

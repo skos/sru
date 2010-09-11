@@ -313,7 +313,7 @@ $(document).ready(function()
 		echo '<p><em>Zmiana:</em> '.date(self::TIME_YYMMDD_HHMM, $d['modifiedAt']).'<small> ('.$changed.')</small></p>';
 		echo '<div id="userMore">';
 		if (!is_null($d['lastLoginAt']) && $d['lastLoginAt'] != 0 ) {
-		echo '<p><em>Ost. logowanie:</em> '.date(self::TIME_YYMMDD_HHMM, $d['lastLoginAt']);
+			echo '<p><em>Ost. logowanie:</em> '.date(self::TIME_YYMMDD_HHMM, $d['lastLoginAt']);
 			if (!is_null($d['lastLoginIp'])) {
 				echo '<small> ('.$d['lastLoginIp'].')</small>';
 			}
@@ -383,12 +383,11 @@ changeVisibility();
 			$changed = '<a href="'.$url.'/admins/'.$d['modifiedById'].'">'.$this->_escape($d['modifiedBy']).'</a>';;
 		}
 		echo '<p><em>Zmiana:</em> '.date(self::TIME_YYMMDD_HHMM, $d['modifiedAt']).'<small> ('.$changed.')</small></p>';
-		if (!is_null($d['lastLoginAt']) && $d['lastLoginAt'] != 0 ) {
-		echo '<p><em>Ost. logowanie:</em> '.date(self::TIME_YYMMDD_HHMM, $d['lastLoginAt']);
-			if (!is_null($d['lastLoginIp'])) {
-				echo '<small> ('.$d['lastLoginIp'].')</small>';
-			}
-			echo '</p>';
+		if (!is_null($d['referralStart']) && $d['referralStart'] != 0) {
+			echo '<p><em>Początek skier.:</em> '.date(self::TIME_YYMMDD, $d['referralStart']).'</p>';
+		}
+		if (!is_null($d['referralEnd']) && $d['referralEnd'] != 0) {
+			echo '<p><em>Koniec skier.:</em> '.date(self::TIME_YYMMDD, $d['referralEnd']).'</p>';
 		}
 		if (strlen($d['comment'])) {
 			echo '<p><em>Komentarz:</em></p><p class="comment">'.nl2br($this->_escape($d['comment'])).'</p>';
@@ -475,6 +474,52 @@ changeVisibility();
 			echo $form->password2('Potwierdź hasło', array('type'=>$form->PASSWORD));
 		echo $form->_end();
 		echo $form->active('Konto aktywne', array('type'=>$form->CHECKBOX));
+	}
+
+	public function formEditWalet(array $d, $dormitories) {
+		$d['locationId'] = $d['locationAlias'];
+		$d['dormitory'] = $d['dormitoryId'];
+		$d['changeComputersLocations'] = 1;
+
+		$form = UFra::factory('UFlib_Form', 'userEdit', $d, $this->errors);
+		if ($this->_srv->get('msg')->get('userEdit/errors/ip/noFreeAdmin')) {
+			echo $this->ERR('Nie ma wolnych IP w tym DS-ie');
+		}
+
+		echo $form->name('Imię');
+		echo $form->surname('Nazwisko');
+		echo $form->lang('Język', array(
+			'type' => $form->SELECT,
+			'labels' => $form->_labelize(self::$languages),
+		));
+		$tmp = array();
+		foreach ($dormitories as $dorm) {
+			$temp = explode("ds", $dorm['alias']);
+			if (!isset($temp[1])) {
+				$temp[1] = $dorm['alias'];
+			} else if($temp[1] == '5l')
+				$temp[1] = '5Ł';
+			$tmp[$dorm['id']] = $temp[1] . ' ' . $dorm['name'];
+		}
+		echo $form->dormitory('Akademik', array(
+			'type' => $form->SELECT,
+			'labels' => $form->_labelize($tmp),
+		));
+		echo $form->locationAlias('Pokój');
+		
+		$referralStart = $d['referralStart'];
+		if (!is_null($d['referralStart']) && ($d['referralStart'] == 0 || $d['active'] == false)) {
+			$referralStart = date(self::TIME_YYMMDD, time());
+		} else if (!is_null($d['referralStart'])) {
+			$referralStart = date(self::TIME_YYMMDD, $d['referralStart']);
+		}
+		$referralEnd = '';
+		echo $form->referralStart('Początek skier.', array('value'=>$referralStart));
+		echo $form->referralEnd('Koniec skier.', array('value'=>$referralEnd));
+		echo $form->changeComputersLocations('Zmień miejsce także wszystkim zarejestrowanym komputerom', array('type'=>$form->CHECKBOX));
+		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
+		echo $form->active('Konto aktywne', array('type'=>$form->CHECKBOX));
+		echo $form->_end();
 	}
 
 	public function shortList(array $d) {

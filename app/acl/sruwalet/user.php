@@ -6,7 +6,7 @@ class UFacl_SruWalet_User
 extends UFlib_ClassWithService {
 	
 	protected function _loggedIn() {
-		return $this->_srv->get('session')->is('authAdmin');
+		return $this->_srv->get('session')->is('authWaletAdmin');
 	}
 
 	public function edit() {

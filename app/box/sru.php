@@ -38,7 +38,7 @@ extends UFbox {
 		}
 	}
 
-	public function userAdd($admin=false) {
+	public function userAdd($admin = false, $walet = false) {
 		try{
 			$dorms = UFra::factory('UFbean_Sru_DormitoryList');
 			$dorms->listAll();
@@ -50,6 +50,7 @@ extends UFbox {
 			$d['dormitories'] = $dorms;
 			$d['faculties'] = $faculties;
 			$d['admin'] = $admin;
+			$d['walet'] = $walet;
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {

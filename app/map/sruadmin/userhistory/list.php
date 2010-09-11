@@ -27,6 +27,8 @@ extends UFmap {
 		'modifiedAt'     => 'u.modified_at',
 		'comment'        => 'u.comment',
 		'active'         => 'u.active',
+		'referralStart'	 => 'u.referral_start',
+		'referralEnd'	 => 'u.referral_end',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -50,6 +52,8 @@ extends UFmap {
 		'modifiedAt'     => self::TS,
 		'comment'        => self::TEXT,
 		'active'         => self::BOOL,
+		'referralStart'	 => self::TS,
+		'referralEnd'	 => self::TS,
 	);
 	protected $tables = array(
 		'u' => 'users_history',

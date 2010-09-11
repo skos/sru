@@ -16,6 +16,8 @@ extends UFtpl_Common {
 		'studyYearId' => 'Rok studiów',
 		'comment' => 'Komentarz',
 		'active' => 'Aktywny',
+		'referralStart' => 'Początek skierowania',
+		'referralEnd' => 'Koniec skierowania',
 	);
 
 	static protected $namesEn = array(
@@ -29,6 +31,8 @@ extends UFtpl_Common {
 		'studyYearId' => 'Year of study',
 		'comment' => 'Comment',
 		'active' => 'Active',
+		'referralStart' => 'Referral start',
+		'referralEnd' => 'Refferal end',
 	);
 
 	protected function _diff(array $old, array $new) {
@@ -54,6 +58,8 @@ extends UFtpl_Common {
 				case 'studyYearId': $changes[] = $names[$key].': '. UFtpl_Sru_User::$studyYears[$val].$arr.UFtpl_Sru_User::$studyYears[$new[$key]]; break;
 				case 'comment': $changes[] = $names[$key].': <q>'.$val.'</q>'.$arr.'<q>'.$new[$key].'</q>'; break;
 				case 'active': $changes[] = $names[$key].': '.($val?'tak':'nie').$arr.($new[$key]?'tak':'nie'); break;
+				case 'referralStart': $changes[] = $names[$key].': <q>'.date(self::TIME_YYMMDD, $val).'</q>'.$arr.'<q>'.date(self::TIME_YYMMDD, $new[$key]).'</q>'; break;
+				case 'referralEnd': $changes[] = $names[$key].': <q>'.date(self::TIME_YYMMDD, $val).'</q>'.$arr.'<q>'.date(self::TIME_YYMMDD, $new[$key]).'</q>'; break;
 				default: continue;
 			}
 		}
@@ -67,7 +73,7 @@ extends UFtpl_Common {
 		return '<ul>'.$return.'</ul>';
 	}
 
-	public function table(array $d, $current) {
+	public function table(array $d, $current, $walet = false) {
 		$curr = array(
 			'login' => $current->login,
 			'name' => $current->name,
@@ -88,6 +94,8 @@ extends UFtpl_Common {
 			'modifiedAt' => $current->modifiedAt,
 			'comment' => $current->comment,
 			'active' => $current->active,
+			'referralStart' => $current->referralStart,
+			'referralEnd' => $current->referralEnd,
 		);
 		$url = $this->url(0).'/users/'.$current->id;
 		$urlAdmin = $this->url(0).'/admins/';
@@ -100,7 +108,9 @@ extends UFtpl_Common {
 			}
 			echo date(self::TIME_YYMMDD_HHMM, $curr['modifiedAt']).' &mdash; '.$changed;
 			echo $this->_diff($c, $curr);
-			echo '<p><a href="'.$url.'/:edit/'.$c['id'].'">Cofnij zmiany</a></p>';
+			if (!$walet) {
+				echo '<p><a href="'.$url.'/:edit/'.$c['id'].'">Cofnij zmiany</a></p>';
+			}
 			echo '</li>';
 			$curr = $c;
 		}

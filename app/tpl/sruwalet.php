@@ -129,15 +129,10 @@ extends UFtpl_Common {
 		echo '<h2>Edycja</h2>';
 		echo $form->_start($this->url());
 		echo $form->_fieldset('Edycja użytkownika');
-		if (!$this->_srv->get('msg')->get('userEdit') && $this->_srv->get('req')->get->is('userHistoryId')) {
-			echo $this->ERR('Formularz wypełniony danymi z '.date(self::TIME_YYMMDD_HHMM, $d['user']->modifiedAt));
-		} elseif ($this->_srv->get('msg')->get('userEdit/ok')) {
+		if ($this->_srv->get('msg')->get('userEdit/ok')) {
 			echo $this->OK('Dane zostały zmienione');
 		}
-		if ($this->_srv->get('msg')->get('userEdit/loginChanged')) {
-			echo $this->OK('W związku ze zmianą loginu, użytkownik będzie musiał przejść procedurę zmiany hasła.');
-		}
-		echo $d['user']->write('formEditAdmin', $d['dormitories'], $d['faculties']);
+		echo $d['user']->write('formEditWalet', $d['dormitories']);
 		echo $form->_submit('Zapisz');
 		echo $form->_end();
 		echo $form->_end(true);
@@ -147,7 +142,7 @@ extends UFtpl_Common {
 		echo '<div class="user">';
 		echo '<h2>Historia profilu</h2>';
 		echo '<ol class="history">';
-		$d['history']->write('table', $d['user']);
+		$d['history']->write('table', $d['user'], true);
 		echo '</ol>';
 		echo '</div>';
 	}

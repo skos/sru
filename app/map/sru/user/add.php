@@ -18,6 +18,7 @@ extends UFmap {
 		'modifiedById'   => 'modified_by',
 		'active'         => 'active',
 		'lang'		 => 'lang',
+		'referralStart'	 => 'referral_start',
 	);
 	protected $columnTypes = array(
 		'login'          => self::TEXT,
@@ -34,6 +35,7 @@ extends UFmap {
 		'modifiedById'   => self::NULL_INT,
 		'active'         => self::BOOL,
 		'lang'           => self::TEXT,
+		'referralStart'	 => self::TS,
 	);
 	protected $tables = array(
 		'' => 'users',

@@ -144,23 +144,8 @@ extends UFbox {
 			$dorms = UFra::factory('UFbean_Sru_DormitoryList');
 			$dorms->listAll();
 
-			try {
-				$get = $this->_srv->get('req')->get;
-				$userId = $get->userId;
-				$histId = $get->userHistoryId;
-				// lista, zeby mozna bylo podac tablice dla $bean->fill()
-				$history = UFra::factory('UFbean_SruAdmin_UserHistoryList');
-				$history->listByUserIdPK($userId, $histId);
-				$history = $history[0];
-				$bean->fill($history);
-			} catch (UFex $e) {
-			}
-			$faculties = UFra::factory('UFbean_Sru_FacultyList');
-			$faculties->listAll();
-
 			$d['user'] = $bean;
 			$d['dormitories'] = $dorms;
-			$d['faculties'] = $faculties;
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
