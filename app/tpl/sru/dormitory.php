@@ -17,6 +17,19 @@ extends UFtpl_Common {
 		echo '</ul>';
 	}
 
+	public function listDormsWalet(array $d) {
+		$url = $this->url(0).'/dormitories/';
+		$acl = $this->_srv->get('acl');
+		
+		echo '<ul>';
+		foreach ($d as $c) {
+			if ($acl->sruWalet('dorm', 'view', $c['alias'])) {
+				echo '<li><a href="'.$url.$c['alias'].'">'.$c['name'].'</a></li>';
+			}
+		}
+		echo '</ul>';
+	}
+
 	public function titleDetails(array $d) {
 		echo $d['name'];
 	}
@@ -28,6 +41,7 @@ extends UFtpl_Common {
 
 	public function inhabitants(array $d, $rooms) {
 		$url = $this->url(0).'/dormitories/';
+		$acl = $this->_srv->get('acl');
 
 		$people = array();
 		$freePlaces = array();
@@ -60,7 +74,9 @@ extends UFtpl_Common {
 		$usersFree = 0;
 		$usersOver = 0;
 		foreach ($d as $c) {
-			echo '<tr><td style="border-top: 1px solid;"><a href="'.$url.$c['alias'].'">'.$c['name'].'</a></td>';
+			echo '<tr><td style="border-top: 1px solid;">';
+			echo ($acl->sruWalet('dorm', 'view', $c['alias']) ? '<a href="'.$url.$c['alias'].'">' : '').$c['name'].($acl->sruWalet('dorm', 'view', $c['alias']) ? '</a>' : '');
+			echo '</td>';
 			echo '<td style="text-align: right; border-top: 1px solid;">'.$c['usersMax'].'</td>';
 			echo '<td style="text-align: right; border-top: 1px solid;">'.$people[$c['id']].'</td>';
 			echo '<td style="text-align: right; border-top: 1px solid;">'.$freePlaces[$c['id']].'</td>';

@@ -203,7 +203,11 @@ extends UFctl {
 			case 'dormitories/main':
 				return 'SruWalet_Dormitories';
 			case 'dormitories/dorm':
-				return 'SruWalet_Dorm';
+				if ($acl->sruWalet('dorm', 'view', $get->dormAlias)) {
+					return 'SruWalet_Dorm';
+				} else {
+					return 'Sru_Error403';
+				}
 			case 'stats/users':
 				return 'SruWalet_StatsUsers';
 			case 'stats/dormitories':

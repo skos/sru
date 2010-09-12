@@ -147,20 +147,22 @@ $(document).ready(function()
 
 		echo $form->_end();
 
-		echo $form->_fieldset('Domy studenckie');
-		foreach ($dormitories as $dorm) {
-			$permission = 0;
-			if (!is_null($dormList)) {
-				foreach ($dormList as $perm) {
-					if ($perm['dormitory'] == $dorm['id']) {
-						$permission = 1;
-						break;
+		if($advanced) {
+			echo $form->_fieldset('Domy studenckie');
+			foreach ($dormitories as $dorm) {
+				$permission = 0;
+				if (!is_null($dormList)) {
+					foreach ($dormList as $perm) {
+						if ($perm['dormitory'] == $dorm['id']) {
+							$permission = 1;
+							break;
+						}
 					}
 				}
+				echo $form->dormPerm($dorm['name'], array('type'=>$form->CHECKBOX, 'name'=>'adminEdit[dorm]['.$dorm['id'].']', 'id'=>'adminEdit[dorm]['.$dorm['id'].']', 'value'=>$permission));
 			}
-			echo $form->dormPerm($dorm['name'], array('type'=>$form->CHECKBOX, 'name'=>'adminEdit[dorm]['.$dorm['id'].']', 'id'=>'adminEdit[dorm]['.$dorm['id'].']', 'value'=>$permission));
+			echo $form->_end();
 		}
-		echo $form->_end();
 		
 		echo $form->_fieldset();
 		echo $form->email('E-mail');

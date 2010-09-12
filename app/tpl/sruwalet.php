@@ -165,7 +165,7 @@ extends UFtpl_Common {
 
 	public function dormitories(array $d) {
 		echo '<h2><a href="'.$this->url(0).'/inhabitants">Obsadzenie</a> | Akademiki</h2>';
-		$d['dormitories']->write('listDorms');
+		$d['dormitories']->write('listDormsWalet');
 	}
 
 	public function titleDorm(array $d) {
