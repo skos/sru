@@ -45,7 +45,7 @@ extends UFtpl_Common {
 		echo '</tr></thead><tbody>';
 
 		foreach ($d as $c) {
-			echo '<tr><td><a href="'.$url.$c['id'].'">';
+			echo '<tr><td style="border-top: 1px solid;"><a href="'.$url.$c['id'].'">';
 			switch($c['typeId']) {
 				case 12:
 						echo '<strong>'.$this->_escape($c['name']).'</strong></a>';
@@ -54,7 +54,7 @@ extends UFtpl_Common {
 						echo $this->_escape($c['name']).'</a>';
 						break;
 			}
-			echo '</td><td>'.date(self::TIME_YYMMDD_HHMM, $c['lastLoginAt']).'</td></tr>';
+			echo '</td><td style="border-top: 1px solid;">'.($c['lastLoginAt'] == 0 ? 'nigdy' : date(self::TIME_YYMMDD_HHMM, $c['lastLoginAt'])).'</td></tr>';
 		}
 		echo '</tbody></table>';
 ?>

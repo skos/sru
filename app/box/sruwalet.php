@@ -190,6 +190,15 @@ extends UFbox {
 			$dorms = UFra::factory('UFbean_Sru_DormitoryList');
 			$dorms->listAll();
 			$d['dormitories'] = $dorms;
+
+			try {
+				$rooms = UFra::factory('UFbean_SruAdmin_RoomList');
+				$rooms->listAllOrdered(); 
+
+				$d['rooms'] = $rooms;
+			} catch (UFex_Dao_NotFound $e) {
+				$d['rooms'] = null;
+			}
 		
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
@@ -224,9 +233,7 @@ extends UFbox {
 	public function dorm() {
 		try {
 			$bean = $this->_getDormFromGet();
-
 			$d['dorm'] = $bean;
-			$d['rooms'] = array();
 			
 			try {
 				$rooms = UFra::factory('UFbean_SruAdmin_RoomList');
@@ -234,7 +241,16 @@ extends UFbox {
 				
 				$d['rooms'] = $rooms;
 			} catch (UFex_Dao_NotFound $e) {
+				$d['rooms'] = null;
+			}
 
+			try {
+				$users = UFra::factory('UFbean_Sru_UserList');
+				$users->listActiveByDorm($bean->id);
+				
+				$d['users'] = $users;
+			} catch (UFex_Dao_NotFound $e) {
+				$d['users'] = null;
 			}
 		
 			return $this->render(__FUNCTION__, $d);

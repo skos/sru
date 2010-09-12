@@ -156,7 +156,7 @@ extends UFtpl_Common {
 
 	public function inhabitants(array $d) {
 		echo '<h2>Obsadzenie | <a href="'.$this->url(0).'/dormitories">Akademiki</a></h2>';
-		$d['dormitories']->write('inhabitants');
+		$d['dormitories']->write('inhabitants', $d['rooms']);
 	}
 
 	public function titleDormitories() {
@@ -169,12 +169,12 @@ extends UFtpl_Common {
 	}
 
 	public function titleDorm(array $d) {
-		echo $d['dorm']->write('titleDetails');
+		echo $d['dorm']->name.' - obsadzenie';
 	}
 
 	public function dorm(array $d) {
 		echo '<h2><a href="'.$this->url(0).'/inhabitants">Obsadzenie</a> | Akademiki</h2>';
-		//$d['rooms']->write('dormInhabitants');
+		$d['rooms']->write('dormInhabitants', $d['dorm'], $d['users']);
 	}
 
 	public function titleDormNotFound() {

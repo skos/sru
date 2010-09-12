@@ -23,5 +23,14 @@ extends UFdao {
 		$query->where($mapping->dormitoryAlias, $dormitoryAlias);
 
 		return $this->doSelectFirst($query);
-	}	
+	}
+
+	public function listAllOrdered() {
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		$query->order($mapping->id);
+
+		return $this->doSelect($query);
+	}
 }

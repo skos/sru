@@ -128,6 +128,16 @@ extends UFdao {
 		return $this->doSelect($query);
 	}
 
+	public function listActiveByDorm($id) {
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->dormitoryId, $id);
+		$query->where($mapping->active, true);
+
+		return $this->doSelect($query);
+	}
+
 	public function listAllForMigration() {
 		$mapping = $this->mapping('migration');
 

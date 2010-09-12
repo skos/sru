@@ -6,15 +6,15 @@ class UFmap_SruAdmin_Room_Get
 extends UFmap {
 
 	protected $columns = array(
-		'id'			=> 'l.id',
-		'alias'			=> 'l.alias',
-		'comment'		=> 'l.comment',	
-		'userCount'		=> 'l.users_count',
+		'id'		=> 'l.id',
+		'alias'		=> 'l.alias',
+		'comment'	=> 'l.comment',	
+		'userCount'	=> 'l.users_count',
 		'computerCount' => 'l.computers_count',
 		'dormitoryId'	=> 'l.dormitory_id',
 		'dormitoryAlias'=> 'd.alias',
-		'dormitoryName' => 'd.name',		
-		
+		'dormitoryName' => 'd.name',
+		'usersMax'	=> 'l.users_max',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -24,7 +24,8 @@ extends UFmap {
 		'computerCount' => self::INT,
 		'dormitoryId'    => self::INT,
 		'dormitoryAlias' => self::TEXT,
-		'dormitoryName'  => self::TEXT,		
+		'dormitoryName'  => self::TEXT,
+		'usersMax'	 => self::INT,
 	);
 	protected $tables = array(
 		'l' => 'locations',
