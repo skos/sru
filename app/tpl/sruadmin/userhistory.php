@@ -56,7 +56,7 @@ extends UFtpl_Common {
 					break;
 				case 'locationId': $changes[] = $names[$key].': '.$old['locationAlias'].'<small>&nbsp;('.$old['dormitoryAlias'].')</small>'.$arr.$new['locationAlias'].'<small>&nbsp;('.$new['dormitoryAlias'].')</small>'; break;
 				case 'studyYearId': $changes[] = $names[$key].': '. UFtpl_Sru_User::$studyYears[$val].$arr.UFtpl_Sru_User::$studyYears[$new[$key]]; break;
-				case 'comment': $changes[] = $names[$key].': <q>'.$val.'</q>'.$arr.'<q>'.$new[$key].'</q>'; break;
+				case 'comment': $changes[] = $names[$key].': <q>'.nl2br($val).'</q>'.$arr.'<q>'.nl2br($new[$key]).'</q>'; break;
 				case 'active': $changes[] = $names[$key].': '.($val?'tak':'nie').$arr.($new[$key]?'tak':'nie'); break;
 				case 'referralStart': $changes[] = $names[$key].': <q>'.date(self::TIME_YYMMDD, $val).'</q>'.$arr.'<q>'.date(self::TIME_YYMMDD, $new[$key]).'</q>'; break;
 				case 'referralEnd': $changes[] = $names[$key].': <q>'.date(self::TIME_YYMMDD, $val).'</q>'.$arr.'<q>'.date(self::TIME_YYMMDD, $new[$key]).'</q>'; break;

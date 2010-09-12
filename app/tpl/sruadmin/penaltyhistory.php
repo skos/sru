@@ -19,7 +19,7 @@ extends UFtpl_Common {
 					$changes[] = 'Powód: <q>'.$val.'</q>'.$arr.'<q>'.$new[$key].'</q>';
 					break;
 				case 'comment':
-					$changes[] = 'Komentarz: <q>'.$val.'</q>'.$arr.'<q>'.$new[$key].'</q>';
+					$changes[] = 'Komentarz: <q>'.nl2br($val).'</q>'.$arr.'<q>'.nl2br($new[$key]).'</q>';
 					break;
 				case 'amnestyAfter':
 					$changes[] = 'Minimalna długość (dni): <q>'.(($val - $current->startAt) / 24 / 3600).'</q>'.$arr.'<q>'.(($new[$key] - $current->startAt) / 24 / 3600).'</q>';

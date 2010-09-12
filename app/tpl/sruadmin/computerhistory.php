@@ -61,7 +61,7 @@ extends UFtpl_Common {
 					$changes[] = $names[$key].': '.date(self::TIME_YYMMDD, $val).$arr.date(self::TIME_YYMMDD, $new[$key]);
 					break;
 				case 'comment':
-					$changes[] = $names[$key].': <q>'.$val.'</q>'.$arr.'<q>'.$new[$key].'</q>';
+					$changes[] = $names[$key].': <q>'.nl2br($val).'</q>'.$arr.'<q>'.nl2br($new[$key]).'</q>';
 					break;
 				case 'canAdmin':
 				case 'active':
