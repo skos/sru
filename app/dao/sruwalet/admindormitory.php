@@ -20,6 +20,7 @@ extends UFdao {
 
 		$query = $this->prepareSelect($mapping);
 		$query->where($mapping->admin, $id);
+		$query->order($mapping->dormitory);
 
 		return $this->doSelect($query);
 	}

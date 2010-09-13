@@ -21,17 +21,18 @@ extends UFact {
 				$bean->password = $post['password'];
 			}
 
-			if(isset($post['typeId']) && $acl->sruAdmin('admin', 'advancedEdit')) {
+			if(isset($post['typeId']) && $acl->sruWalet('admin', 'advancedEdit')) {
 				$bean->typeId = $post['typeId'];
 			}
-			if(isset($post['active']) && $acl->sruAdmin('admin', 'advancedEdit')) {
+			if(isset($post['active']) && $acl->sruWalet('admin', 'advancedEdit')) {
 				$bean->active = $post['active'];
 			}
 
 			$bean->save();
 
-			while (!is_null(key($post['dorm']))) {
+			while (!is_null(key($post['dorm'])) && $acl->sruWalet('admin', 'advancedEdit')) {
 				if (current($post['dorm'])) {
+
 					try {
 						$admDorm = UFra::factory('UFbean_SruWalet_AdminDormitory');
 						$admDorm->getByAdminAndDorm($bean->id, key($post['dorm']));

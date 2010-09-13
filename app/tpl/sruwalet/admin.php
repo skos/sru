@@ -99,7 +99,7 @@ $(document).ready(function()
 	}		
 	public function formAdd(array $d, $dormitories) {
 		if (!isset($d['typeId'])) {
-			$d['typeId'] = 3;
+			$d['typeId'] = 11;
 		}
 		$form = UFra::factory('UFlib_Form', 'adminAdd', $d, $this->errors);
 
@@ -116,8 +116,14 @@ $(document).ready(function()
 		echo $form->_end();
 
 		echo $form->_fieldset('Domy studenckie');
+		$post = $this->_srv->get('req')->post;
 		foreach ($dormitories as $dorm) {
-			echo $form->dormPerm($dorm['name'], array('type'=>$form->CHECKBOX, 'name'=>'adminEdit[dorm]['.$dorm['id'].']', 'id'=>'adminEdit[dorm]['.$dorm['id'].']'));
+			$permission = 0;
+			try {
+				$permission = $post->adminAdd['dorm'][$dorm['id']];
+			} catch (UFex_Core_DataNotFound $e) {
+			}
+			echo $form->dormPerm($dorm['name'], array('type'=>$form->CHECKBOX, 'name'=>'adminAdd[dorm]['.$dorm['id'].']', 'id'=>'adminAdd[dorm]['.$dorm['id'].']', 'value'=>$permission));
 		}
 		echo $form->_end();
 
@@ -148,14 +154,19 @@ $(document).ready(function()
 		echo $form->_end();
 
 		if($advanced) {
+			$post = $this->_srv->get('req')->post;
 			echo $form->_fieldset('Domy studenckie');
 			foreach ($dormitories as $dorm) {
 				$permission = 0;
-				if (!is_null($dormList)) {
-					foreach ($dormList as $perm) {
-						if ($perm['dormitory'] == $dorm['id']) {
-							$permission = 1;
-							break;
+				try {
+					$permission = $post->adminEdit['dorm'][$dorm['id']];
+				} catch (UFex_Core_DataNotFound $e) {
+					if (!is_null($dormList)) {
+						foreach ($dormList as $perm) {
+							if ($perm['dormitory'] == $dorm['id']) {
+								$permission = 1;
+								break;
+							}
 						}
 					}
 				}

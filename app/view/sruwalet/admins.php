@@ -9,7 +9,7 @@ extends UFview_SruWalet {
 		$this->append('title', $box->titleAdmins());
 		$this->append('body', $box->admins());
 		
-		if($acl->sruAdmin('admin', 'advancedEdit')) {
+		if($acl->sruWalet('admin', 'advancedEdit')) {
 			$this->append('body', $box->inactiveAdmins());
 		}
 	}
