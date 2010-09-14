@@ -104,13 +104,14 @@ $(document).ready(function()
 		$form = UFra::factory('UFlib_Form', 'adminAdd', $d, $this->errors);
 
 		echo $form->_fieldset();
-		echo $form->login('Login');
-		echo $form->password('Hasło', array('type'=>$form->PASSWORD));
-		echo $form->password2('Powtórz hasło', array('type'=>$form->PASSWORD));
-		echo $form->name('Nazwa'); 
+		echo $form->login('Login', array('class'=>'required'));
+		echo $form->password('Hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
+		echo $form->password2('Powtórz hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
+		echo $form->name('Nazwa', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Imię i nazwisko administratora lub inne oznaczenie." /><br/>', 'class'=>'required')); 
 		echo $form->typeId('Uprawnienia', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize($this->adminTypes),
+			'after'=> ' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Administrator OS ma uprawnienia do wszystkich części Waleta, zaś administrator DS jedynie do wybranych Domów Studenckich." /><br/>',
 		));
 
 		echo $form->_end();
@@ -128,27 +129,34 @@ $(document).ready(function()
 		echo $form->_end();
 
 		echo $form->_fieldset();
-		echo $form->email('E-mail');
+		echo $form->email('E-mail', array('class'=>'required'));
 		echo $form->phone('Telefon');
-		echo $form->gg('GG');
-		echo $form->jid('Jabber');
-		echo $form->address('Adres');
+		echo $form->gg('GG', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Numer w komunikatorze GG." /><br/>'));
+		echo $form->jid('Jabber', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Adres w komunikatorze sieci Jabber." /><br/>'));
+		echo $form->address('Adres', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Lokalizacja lub miejsce przebywania administratora." /><br/>'));
+
+?>
+<script>
+$("#main img[title]").tooltip({ position: "center right"});
+</script>
+<?
 	}
 
 	public function formEdit(array $d, $dormitories, $dormList, $advanced=false) {
 		$form = UFra::factory('UFlib_Form', 'adminEdit', $d, $this->errors);
 
 		echo $form->_fieldset();
-		echo $form->name('Nazwa'); 
-		echo $form->password('Hasło', array('type'=>$form->PASSWORD));
-		echo $form->password2('Powtórz hasło', array('type'=>$form->PASSWORD));
+		echo $form->name('Nazwa', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Imię i nazwisko administratora lub inne oznaczenie." /><br/>', 'class'=>'required'));
+		echo $form->password('Hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
+		echo $form->password2('Powtórz hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
 
 		if($advanced) {
 			echo $form->typeId('Uprawnienia', array(
 				'type' => $form->SELECT,
 				'labels' => $form->_labelize($this->adminTypes),
+				'after'=> ' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Administrator OS ma uprawnienia do wszystkich części Waleta, zaś administrator DS jedynie do wybranych Domów Studenckich." /><br/>',
 			));	
-			echo $form->active('Aktywny', array('type'=>$form->CHECKBOX) );
+			echo $form->active('Aktywny <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Tylko aktywni administratorzy mogą zalogować się do Waleta." />', array('type'=>$form->CHECKBOX) );
 		}
 
 		echo $form->_end();
@@ -176,11 +184,17 @@ $(document).ready(function()
 		}
 		
 		echo $form->_fieldset();
-		echo $form->email('E-mail');
+		echo $form->email('E-mail', array('class'=>'required'));
 		echo $form->phone('Telefon');
-		echo $form->gg('GG');
-		echo $form->jid('Jabber');
-		echo $form->address('Adres');
+		echo $form->gg('GG', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Numer w komunikatorze GG." /><br/>'));
+		echo $form->jid('Jabber', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Adres w komunikatorze sieci Jabber." /><br/>'));
+		echo $form->address('Adres', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Lokalizacja lub miejsce przebywania administratora." /><br/>'));
+
+?>
+<script>
+$("#main img[title]").tooltip({ position: "center right"});
+</script>
+<?
 	}
 
 	public function waletBar(array $d, $ip, $time) {

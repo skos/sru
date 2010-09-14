@@ -94,6 +94,8 @@ img { border-style: none; }
 #main .switchports td.unknown { background-color: white;}
 #main .inoperational { background-color: #ffa766; }
 
+#main .required { border: solid 1px red; }
+
 .tooltip {
 	display:none;
 	background:transparent url(http://static.flowplayer.org/tools/img/tooltip/black_big.png);

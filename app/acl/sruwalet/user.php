@@ -9,8 +9,39 @@ extends UFlib_ClassWithService {
 		return $this->_srv->get('session')->is('authWaletAdmin');
 	}
 
-	public function edit() {
-		return $this->_loggedIn();
+	public function edit($userId) {
+		if (!$this->_loggedIn()) {
+			return false;
+		}
+
+		$sess = $this->_srv->get('session');
+		if ($sess->typeIdWalet == UFacl_SruWalet_Admin::HEAD) {
+			return true;
+		}
+
+		try {
+			$user = UFra::factory('UFbean_Sru_User');
+			$user->getByPK($userId);
+		} catch (UFex_Dao_NotFound $e) {
+			return false;
+		}
+
+		if (!$user->active) {
+			return true;
+		}
+
+		try {
+			$admDorm = UFra::factory('UFbean_SruWalet_AdminDormitoryList');
+			$admDorm->listAllById($sess->authWaletAdmin);
+		} catch (UFex_Dao_NotFound $e) {
+			return false;
+		}
+		foreach ($admDorm as $dorm) {
+			if ($dorm['dormitoryId'] == $user->dormitoryId) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public function add() {

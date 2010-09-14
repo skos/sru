@@ -31,6 +31,9 @@ extends UFctl {
 							case 'surname':
 								$get->searchedSurname = urldecode($tmp[1]);
 								break;
+							case 'registryNo':
+								$get->searchedRegistryNo = urldecode($tmp[1]);
+								break;
 							case 'email':
 								$get->searchedEmail = urldecode($tmp[1]);
 								break;

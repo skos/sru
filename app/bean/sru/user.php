@@ -88,6 +88,18 @@ extends UFbeanSingle {
 		}
 	}
 
+	protected function validateRegistryNo($val, $change) {
+		try {
+			$bean = UFra::factory('UFbean_Sru_User');
+			$bean->getByRegistryNo($val);
+			if ($change && $this->data['id'] == $bean->id) {
+				return;
+			}
+			return 'duplicated';
+		} catch (UFex_Dao_NotFound $e) {
+		}
+	}
+
 	public function notifyByEmail() {
 		// nie mozna tego zrobic w jednej linii, bo php rzuca bledem "Can't use
 		// function return value in write context"

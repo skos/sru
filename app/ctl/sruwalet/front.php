@@ -28,6 +28,9 @@ extends UFctl {
 										case 'surname':
 											$get->searchedSurname = urldecode($tmp[1]);
 											break;
+										case 'registryNo':
+											$get->searchedRegistryNo = urldecode($tmp[1]);
+											break;
 									}
 								}
 								break;
@@ -142,7 +145,7 @@ extends UFctl {
 			$act = 'User_Search';
 		} elseif ('users/user/add' == $get->view && $post->is('userAdd') && $acl->sruWalet('user', 'add')) {
 			$act = 'User_Add';
-		} elseif ($post->is('userEdit') && $acl->sruWalet('user', 'edit')) {
+		} elseif ($post->is('userEdit') && $acl->sruWalet('user', 'edit', $get->userId)) {
 			$act = 'User_Edit';
 		} elseif ('users/user/edit' == $get->view && $post->is('userDel') && $acl->sruWalet('user', 'del')) {
 			$act = 'User_Del';
@@ -189,15 +192,17 @@ extends UFctl {
 			case 'users/user/edit':
 				if ($msg->get('userDel/ok')) {
 					return 'SruWalet_Main';
-				} else {
+				} elseif ($acl->sruWalet('user', 'edit', $get->userId)) {
 					return 'SruWalet_UserEdit';
+				} else {
+					return 'Sru_Error403';
 				}
 			case 'users/user/add':
 				if ($msg->get('userAdd/ok')) {
 					return 'SruWalet_User';
 				} else {
 					return 'SruWalet_UserAdd';
-				} 
+				}
 			case 'inhabitants/main':
 				return 'SruWalet_Inhabitants';
 			case 'dormitories/main':

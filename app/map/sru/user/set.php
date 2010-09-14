@@ -24,6 +24,8 @@ extends UFmap {
 		'lang'		 => 'lang',
 		'referralStart'	 => 'referral_start',
 		'referralEnd'	 => 'referral_end',
+		'registryNo'	 => 'registry_no',
+		'updateNeeded'	 => 'update_needed',
 	);
 	protected $columnTypes = array(
 		'login'          => self::TEXT,
@@ -46,6 +48,8 @@ extends UFmap {
 		'lang'           => self::TEXT,
 		'referralStart'	 => self::TS,
 		'referralEnd'	 => self::TS,
+		'registryNo'	 => self::NULL_INT,
+		'updateNeeded'	 => self::BOOL,
 	);
 	protected $tables = array(
 		'' => 'users',
@@ -62,6 +66,7 @@ extends UFmap {
 		'dormitory' => array('textMin'=>1),
 		'locationAlias' => array('textMin'=>1),
 		'locationId' => array('intMin'=>1),
+		'registryNo' => array('regexp'=>'^(|[0-9]{5,6})$'),
 	);
 	protected $pk = 'id';
 }

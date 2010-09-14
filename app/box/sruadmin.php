@@ -314,6 +314,10 @@ extends UFbox {
 		} catch (UFex_Core_DataNotFound $e) {
 		}
 		try {
+			$tmp['registryNo'] = $get->searchedRegistryNo;
+		} catch (UFex_Core_DataNotFound $e) {
+		}
+		try {
 			$tmp['email'] = $get->searchedEmail;
 		} catch (UFex_Core_DataNotFound $e) {
 		}
@@ -342,6 +346,10 @@ extends UFbox {
 			}
 			try {
 				$tmp['surname'] = $get->searchedSurname;
+			} catch (UFex_Core_DataNotFound $e) {
+			}
+			try {
+				$tmp['registryNo'] = $get->searchedRegistryNo;
 			} catch (UFex_Core_DataNotFound $e) {
 			}
 			try {

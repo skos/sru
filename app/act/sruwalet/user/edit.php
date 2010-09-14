@@ -26,30 +26,6 @@ extends UFact {
 				$bean->referralEnd = $post['referralEnd'];
 			}
 
-			if ($this->_srv->get('req')->post->{self::PREFIX}['changeComputersLocations']) {
-				try {
-					$comps = UFra::factory('UFbean_Sru_ComputerList');
-					$comps->listByUserId($bean->id);
-					foreach ($comps as $comp) {
-						try {
-							$computer = UFra::factory('UFbean_Sru_Computer');
-							$computer->getByHost($comp['host']);
-							$ipAddr = $computer->ip;
-							if ($dormitoryId != $bean->dormitory) {
-								$ip = UFra::factory('UFbean_Sru_Ipv4');
-								$ip->getFreeByDormitoryId(($bean->dormitory));
-								$ipAddr = $ip->ip;
-							}
-							$computer->updateLocationByHost($comp['host'], $bean->locationId, $ipAddr, $this->_srv->get('session')->authAdmin);
-						} catch (UFex_Dao_NotFound $e) {
-							throw UFra::factory('UFex_Dao_DataNotValid', 'No free IP', 0, E_WARNING, array('ip'=>'noFreeAdmin'));
-						}
-					}
-				} catch (UFex_Dao_NotFound $e) {
-					// uzytkownik nie ma komputerow
-				}
-			}
-
 			$bean->save();
 
 			$conf = UFra::shared('UFconf_Sru');

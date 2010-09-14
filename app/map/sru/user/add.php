@@ -15,10 +15,14 @@ extends UFmap {
 		'facultyId'      => 'faculty_id',
 		'studyYearId'    => 'study_year_id',
 		'locationId'     => 'location_id',
+		'comment'        => 'comment',
 		'modifiedById'   => 'modified_by',
 		'active'         => 'active',
 		'lang'		 => 'lang',
 		'referralStart'	 => 'referral_start',
+		'registryNo'	 => 'registry_no',
+		'updateNeeded'	 => 'update_needed',
+
 	);
 	protected $columnTypes = array(
 		'login'          => self::TEXT,
@@ -32,10 +36,13 @@ extends UFmap {
 		'dormitory'      => self::TEXT,	// kolumna tylko do walidacji
 		'locationAlias'  => self::TEXT,	// kolumna tylko do walidacji
 		'locationId'     => self::INT,
+		'comment'        => self::TEXT,
 		'modifiedById'   => self::NULL_INT,
 		'active'         => self::BOOL,
 		'lang'           => self::TEXT,
 		'referralStart'	 => self::TS,
+		'registryNo'	 => self::NULL_INT,
+		'updateNeeded'	 => self::BOOL,
 	);
 	protected $tables = array(
 		'' => 'users',
@@ -52,6 +59,7 @@ extends UFmap {
 		'dormitory' => array('textMin'=>1),
 		'locationAlias' => array('textMin'=>1),
 		'locationId' => array('intMin'=>1),
+		'registryNo' => array('regexp'=>'^(|[0-9]{5,6})$'),
 	);
 	protected $pk = 'id';
 }

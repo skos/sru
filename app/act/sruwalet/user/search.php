@@ -21,6 +21,9 @@ extends UFact {
 			if (isset($post['surname']) && !empty($post['surname'])) {
 				$finds[] = 'surname:'.urlencode(mb_strtolower($post['surname'], 'UTF-8'));
 			}
+			if (isset($post['registryNo']) && !empty($post['registryNo'])) {
+				$finds[] = 'registryNo:'.urlencode(mb_strtolower($post['registryNo'], 'UTF-8'));
+			}
 			if (count($finds)) {
 				UFlib_Http::redirect(UFURL_BASE.'/'.implode('/', $this->_srv->get('req')->segments(0)).'/users/search/'.implode('/', $finds));
 			}

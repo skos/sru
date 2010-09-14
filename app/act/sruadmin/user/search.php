@@ -27,6 +27,9 @@ extends UFact {
 			if (isset($post['surname']) && !empty($post['surname'])) {
 				$finds[] = 'surname:'.urlencode(mb_strtolower($post['surname'], 'UTF-8'));
 			}
+			if (isset($post['registryNo']) && !empty($post['registryNo'])) {
+				$finds[] = 'registryNo:'.urlencode(mb_strtolower($post['registryNo'], 'UTF-8'));
+			}
 			if (isset($post['email']) && !empty($post['email'])) {
 				$finds[] = 'email:'.urlencode(mb_strtolower($post['email'], 'UTF-8'));
 			}

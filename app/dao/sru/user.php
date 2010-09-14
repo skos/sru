@@ -25,6 +25,15 @@ extends UFdao {
 		return $this->doSelectFirst($query);
 	}
 
+	public function getByRegistryNo($registryNo) {
+		$mapping = $this->mapping('get');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->registryNo, $registryNo);
+
+		return $this->doSelectFirst($query);
+	}
+
 	public function getFromSession() {
 		return $this->getByPK($this->_srv->get('session')->auth);
 	}
@@ -54,6 +63,7 @@ extends UFdao {
 						$query->where($var.'Search', $val, UFlib_Db_Query::LIKE);
 						break;
 					case 'dormitory':
+					case 'registryNo':
 					default:
 						$query->where($var, $val);
 				}

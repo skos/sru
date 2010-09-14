@@ -50,6 +50,8 @@ extends UFtpl_Common {
 		'locationAlias/noRoom' => 'Pokój nie istnieje',
 		'password3/invalid' => 'Podałeś nieprawidłowe hasło',
 		'studyYearId/noFaculty' => 'Nieokreślony wydział',
+		'registryNo/regexp' => 'Niepoprawny numer indeksu',
+		'registryNo/duplicated' => 'Nr indeksu przypisany do innego mieszkańca',
 	);
 
 	/*
@@ -79,39 +81,12 @@ extends UFtpl_Common {
 		echo '<p>'.$d['name'].' '.$d['surname'].'</p>';
 	}
 
-	public function formAdd(array $d, $dormitories, $faculties, $admin=false) {
+	public function formAdd(array $d, $dormitories, $faculties) {
 		$form = UFra::factory('UFlib_Form', 'userAdd', $d, $this->errors);
 
-
-		echo $form->_fieldset('Konto');
-		echo $form->login('Login');
-		echo $form->email('E-mail');
-		echo '<p>Hasło zostanie przesłane na powyższy adres.</p>';
-		echo $form->_end();
-
-		echo $form->_fieldset('Dane osobowe');
-		if ($this->_srv->get('msg')->get('userAdd/errors/walet/notFound')) {
-			if ($admin) {
-				echo $this->ERR('Użytkownik nie jest zameldowany w tym pokoju. '.$form->ignoreWalet('Zignoruj', array('type'=>$form->CHECKBOX)));
-			} else {
-				echo $this->ERR('Podana osoba nie jest zameldowana w tym pokoju');
-			}
-		}
-		echo $form->name('Imię');
-		echo $form->surname('Nazwisko');
-		$tmp = array();
-		foreach ($faculties as $fac) {
-			$tmp[$fac['id']] = $fac['name'];
-		}
-		$tmp['0'] = 'N/D';
-		echo $form->facultyId('Wydział', array(
-			'type' => $form->SELECT,
-			'labels' => $form->_labelize($tmp, '', ''),
-		));
-		echo $form->studyYearId('Rok studiów', array(
-			'type' => $form->SELECT,
-			'labels' => $form->_labelize(self::$studyYears, '', ''),
-		));
+		echo $form->name('Imię', array('class'=>'required'));
+		echo $form->surname('Nazwisko', array('class'=>'required'));
+		echo $form->registryNo('Nr indeksu');
 		$tmp = array();
 		foreach ($dormitories as $dorm) {
 			$temp = explode("ds", $dorm['alias']);
@@ -124,15 +99,17 @@ extends UFtpl_Common {
 		echo $form->dormitory('Akademik', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize($tmp, '', ''),
+			'class'=>'required',
 		));
-		echo $form->locationAlias('Pokój');
-		echo $form->gg('Gadu-Gadu', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Jeżeli podasz nr GG, będą na niego przesyłane informacje o zmianie statusu konta i Twoich komputerów" /><br/>'));
+		echo $form->locationAlias('Pokój', array('class'=>'required'));
 		echo $form->lang('Język', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$languages),
 			'after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Wiadomości e-mail i GG będa przychodziły w wybranym języku<br/><br/>You will receive e-mails and gg messages in the chosen language" /><br/>',
 		));
-
+		$referralStart = date(self::TIME_YYMMDD, time());
+		echo $form->referralStart('Początek skier.', array('value'=>$referralStart, 'class'=>'required'));
+		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
 ?>
 <script>
 $("#main img[title]").tooltip({ position: "center right"});
@@ -215,6 +192,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 		echo $form->login('Login');
 		echo $form->name('Imię');
 		echo $form->surname('Nazwisko');
+		echo $form->registryNo('Nr indeksu');
 		echo $form->email('E-mail');
 		echo $form->room('Pokój');
 		$dorms = UFra::factory('UFbean_Sru_DormitoryList');                                         
@@ -239,7 +217,13 @@ $("#main img[title]").tooltip({ position: "center right"});
 		$d = $searched + $d;
 		$form = UFra::factory('UFlib_Form', 'userSearch', $d, $this->errors);
 
-		echo $form->surname('Nazwisko');
+		echo $form->surname('Nazwisko', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Nazwisko szukanego mieszkańca. Można podać łącznie z numerem indeksu." /><br/>'));
+		echo $form->registryNo('Nr indeksu', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Numer indeksu szukanego mieszkańca. Można podać łącznie z nazwiskiem." /><br/>'));
+?>
+<script>
+$("#main img[title]").tooltip({ position: "center right"});
+</script>
+<?
 	}
 
 	public function searchResults(array $d) {
@@ -251,9 +235,10 @@ $("#main img[title]").tooltip({ position: "center right"});
 
 	public function searchResultsWalet(array $d) {
 		$url = $this->url(0);
+		$acl = $this->_srv->get('acl');
 
 		echo '<div class="ips">';
-		echo '<table><tr><td style="color: #000;">Mieszkaniec niezameldowany</td><td style="background: #ccf; color: #000;">Mieszkaniec zameldowany</td></tr></table>';
+		echo '<table><tr><td style="color: #000;">Mieszkaniec niezameldowany</td><td style="background: #cff; color: #000;">Mieszkaniec zameldowany w nadzorowanym DS</td><td style="background: #ccf; color: #000;">Mieszkaniec zameldowany w innym DS</td></tr></table>';
 		echo '</div><br/>';
 
 		echo '<table id="resultsT" style="width: 100%;"><thead><tr>';
@@ -261,17 +246,25 @@ $("#main img[title]").tooltip({ position: "center right"});
 		echo '<th>Nazwisko</th>';
 		echo '<th>Dom Studencki</th>';
 		echo '<th>Pokój</th>';
+		echo '<th>Nr indeksu</th>';
 		echo '</tr></thead><tbody>';
 
 		$usersMax = 0;
 		$userCount = 0;
 		$usersFree = 0;
 		foreach ($d as $c) {
-			echo ($c['active'] ? '<tr style="background: #ccf;">' : '<tr>');
+			if (!$c['active']) {
+				echo '<tr>';
+			} else if ($acl->sruWalet('user', 'edit', $c['id'])) {
+				echo '<tr style="background: #cff;">';
+			} else {
+				echo '<tr style="background: #ccf;">';
+			}
 			echo '<td><a href="'.$url.'/users/'.$c['id'].'">'.$this->_escape($c['name']).'</a></td>';
 			echo '<td><a href="'.$url.'/users/'.$c['id'].'">'.$this->_escape($c['surname']).'</a></td>';
 			echo '<td><a href="'.$url.'/dormitories/'.$c['dormitoryAlias'].'">'.strtoupper($c['dormitoryAlias']).'</a></td>';
 			echo '<td>'.$c['locationAlias'].'</td>';
+			echo '<td>'.$c['registryNo'].'</td>';
 		}
 		echo '</tbody></table>';
 ?>
@@ -290,6 +283,7 @@ $(document).ready(function()
 		$urlUser = $url.'/users/'.$d['id'];
 		echo '<h1>'.$this->_escape($d['name']).' '.$this->_escape($d['surname']).'</h1>';
 		echo '<p><em>Login:</em> '.$d['login'].(!$d['active']?' <strong>(konto nieaktywne)</strong>':'').'</p>';
+		echo '<p><em>Nr indeksu:</em> '.$d['registryNo'].'</p>';
 		echo '<p><em>E-mail:</em> <a href="mailto:'.$d['email'].'">'.$d['email'].'</a></p>';
 		if ($d['gg']) {
 			echo '<p><em>Gadu-Gadu:</em> <a href="gg:'.$d['gg'].'">'.$d['gg'].'</a></p>';
@@ -312,12 +306,21 @@ $(document).ready(function()
 		}
 		echo '<p><em>Zmiana:</em> '.date(self::TIME_YYMMDD_HHMM, $d['modifiedAt']).'<small> ('.$changed.')</small></p>';
 		echo '<div id="userMore">';
+		if (!is_null($d['registryNo'])) {
+			echo '<p><em>Nr indeksu:</em> '.$d['registryNo'].'</p>';
+		}
 		if (!is_null($d['lastLoginAt']) && $d['lastLoginAt'] != 0 ) {
 			echo '<p><em>Ost. logowanie:</em> '.date(self::TIME_YYMMDD_HHMM, $d['lastLoginAt']);
 			if (!is_null($d['lastLoginIp'])) {
 				echo '<small> ('.$d['lastLoginIp'].')</small>';
 			}
 			echo '</p>';
+		}
+		if (!is_null($d['referralStart']) && $d['referralStart'] != 0) {
+			echo '<p><em>Początek skier.:</em> '.date(self::TIME_YYMMDD, $d['referralStart']).'</p>';
+		}
+		if (!is_null($d['referralEnd']) && $d['referralEnd'] != 0) {
+			echo '<p><em>Koniec skier.:</em> '.date(self::TIME_YYMMDD, $d['referralEnd']).'</p>';
 		}
 		echo '<p><em>Język:</em> '.self::$languages[$d['lang']];
 		echo '<p class="displayOnHover"><em>Znajdź na:</em>';
@@ -370,10 +373,13 @@ changeVisibility();
 
 	public function detailsWalet(array $d) {
 		$url = $this->url(0);
+		$acl = $this->_srv->get('acl');
 		$urlUser = $url.'/users/'.$d['id'];
+
 		echo '<h1>'.$this->_escape($d['name']).' '.$this->_escape($d['surname']).'</h1>';
 		echo '<p><em>Miejsce:</em> '.$d['locationAlias'].', <a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'">'.strtoupper($d['dormitoryAlias']).'</a></p>';
 		echo '<p><em>Login:</em> '.$d['login'].(!$d['active']?' <strong>(konto nieaktywne)</strong>':'').'</p>';
+		echo '<p><em>Nr indeksu:</em> '.$d['registryNo'].'</p>';
 		echo '<p><em>E-mail:</em> <a href="mailto:'.$d['email'].'">'.$d['email'].'</a></p>';
 		echo '<p><em>Wydział:</em> '.(!is_null($d['facultyName'])?$d['facultyName']:'N/D').'</p>';
 		echo '<p><em>Rok studiów:</em> '.self::$studyYears[$d['studyYearId']].'</p>';
@@ -393,8 +399,10 @@ changeVisibility();
 			echo '<p><em>Komentarz:</em></p><p class="comment">'.nl2br($this->_escape($d['comment'])).'</p>';
 		}
 		echo '<p class="nav"><a href="'.$urlUser.'">Dane</a> ';
-		echo 	'&bull; <a href="'.$urlUser.'/history">Historia profilu</a>
-		 	&bull; <a href="'.$urlUser.'/:edit">Edycja</a>'; 
+		echo 	'&bull; <a href="'.$urlUser.'/history">Historia profilu</a>';
+		if ($acl->sruWalet('user', 'edit', $d['id'])) {
+			echo ' &bull; <a href="'.$urlUser.'/:edit">Edycja</a>';
+		}
 	}
 
 	public function titleDetails(array $d) {
@@ -479,19 +487,11 @@ changeVisibility();
 	public function formEditWalet(array $d, $dormitories) {
 		$d['locationId'] = $d['locationAlias'];
 		$d['dormitory'] = $d['dormitoryId'];
-		$d['changeComputersLocations'] = 1;
 
 		$form = UFra::factory('UFlib_Form', 'userEdit', $d, $this->errors);
-		if ($this->_srv->get('msg')->get('userEdit/errors/ip/noFreeAdmin')) {
-			echo $this->ERR('Nie ma wolnych IP w tym DS-ie');
-		}
-
-		echo $form->name('Imię');
-		echo $form->surname('Nazwisko');
-		echo $form->lang('Język', array(
-			'type' => $form->SELECT,
-			'labels' => $form->_labelize(self::$languages),
-		));
+		echo $form->name('Imię', array('class'=>'required'));
+		echo $form->surname('Nazwisko', array('class'=>'required'));
+		echo $form->registryNo('Nr indeksu');
 		$tmp = array();
 		foreach ($dormitories as $dorm) {
 			$temp = explode("ds", $dorm['alias']);
@@ -504,8 +504,9 @@ changeVisibility();
 		echo $form->dormitory('Akademik', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize($tmp),
+			'class'=>'required',
 		));
-		echo $form->locationAlias('Pokój');
+		echo $form->locationAlias('Pokój', array('class'=>'required'));
 		
 		$referralStart = $d['referralStart'];
 		if (!is_null($d['referralStart']) && ($d['referralStart'] == 0 || $d['active'] == false)) {
@@ -516,7 +517,10 @@ changeVisibility();
 		$referralEnd = '';
 		echo $form->referralStart('Początek skier.', array('value'=>$referralStart));
 		echo $form->referralEnd('Koniec skier.', array('value'=>$referralEnd));
-		echo $form->changeComputersLocations('Zmień miejsce także wszystkim zarejestrowanym komputerom', array('type'=>$form->CHECKBOX));
+		echo $form->lang('Język', array(
+			'type' => $form->SELECT,
+			'labels' => $form->_labelize(self::$languages),
+		));
 		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
 		echo $form->active('Konto aktywne', array('type'=>$form->CHECKBOX));
 		echo $form->_end();

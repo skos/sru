@@ -18,6 +18,7 @@ extends UFtpl_Common {
 		'active' => 'Aktywny',
 		'referralStart' => 'Początek skierowania',
 		'referralEnd' => 'Koniec skierowania',
+		'registryNo' => 'Nr indeksu',
 	);
 
 	static protected $namesEn = array(
@@ -33,6 +34,7 @@ extends UFtpl_Common {
 		'active' => 'Active',
 		'referralStart' => 'Referral start',
 		'referralEnd' => 'Refferal end',
+		'registryNo' => 'Registry No.',
 	);
 
 	protected function _diff(array $old, array $new) {
@@ -47,6 +49,7 @@ extends UFtpl_Common {
 				case 'login': $changes[] = $names[$key].': '.$val.$arr.$new[$key]; break;
 				case 'name': $changes[] = $names[$key].': '.$this->_escape($val).$arr.$this->_escape($new[$key]); break;
 				case 'surname': $changes[] = $names[$key].': '.$this->_escape($val).$arr.$this->_escape($new[$key]); break;
+				case 'registryNo': $changes[] = $names[$key].': '.$val.$arr.$new[$key]; break;
 				case 'email': $changes[] = $names[$key].': '.$val.$arr.$new[$key]; break;
 				case 'gg': $changes[] = $names[$key].': '.$val.$arr.$new[$key]; break;
 				case 'facultyId':
@@ -58,8 +61,8 @@ extends UFtpl_Common {
 				case 'studyYearId': $changes[] = $names[$key].': '. UFtpl_Sru_User::$studyYears[$val].$arr.UFtpl_Sru_User::$studyYears[$new[$key]]; break;
 				case 'comment': $changes[] = $names[$key].': <q>'.nl2br($val).'</q>'.$arr.'<q>'.nl2br($new[$key]).'</q>'; break;
 				case 'active': $changes[] = $names[$key].': '.($val?'tak':'nie').$arr.($new[$key]?'tak':'nie'); break;
-				case 'referralStart': $changes[] = $names[$key].': <q>'.date(self::TIME_YYMMDD, $val).'</q>'.$arr.'<q>'.date(self::TIME_YYMMDD, $new[$key]).'</q>'; break;
-				case 'referralEnd': $changes[] = $names[$key].': <q>'.date(self::TIME_YYMMDD, $val).'</q>'.$arr.'<q>'.date(self::TIME_YYMMDD, $new[$key]).'</q>'; break;
+				case 'referralStart': $changes[] = $names[$key].': <q>'.($val == 0 ? 'brak' : date(self::TIME_YYMMDD, $val)).'</q>'.$arr.'<q>'.($new[$key] == 0 ? 'brak' : date(self::TIME_YYMMDD, $new[$key])).'</q>'; break;
+				case 'referralEnd': $changes[] = $names[$key].': <q>'.($val == 0 ? 'brak' : date(self::TIME_YYMMDD, $val)).'</q>'.$arr.'<q>'.($new[$key] == 0 ? 'brak' : date(self::TIME_YYMMDD, $new[$key])).'</q>'; break;
 				default: continue;
 			}
 		}
@@ -96,6 +99,7 @@ extends UFtpl_Common {
 			'active' => $current->active,
 			'referralStart' => $current->referralStart,
 			'referralEnd' => $current->referralEnd,
+			'registryNo' => $current->registryNo,
 		);
 		$url = $this->url(0).'/users/'.$current->id;
 		$urlAdmin = $this->url(0).'/admins/';
@@ -139,6 +143,7 @@ extends UFtpl_Common {
 				case 'login':
 				case 'name':
 				case 'surname':
+				case 'registryNo':
 				case 'gg':
 				case 'email':
 					echo $names[$key].': '.$val

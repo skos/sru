@@ -85,6 +85,10 @@ extends UFbox {
 			$tmp['surname'] = $get->searchedSurname;
 		} catch (UFex_Core_DataNotFound $e) {
 		}
+		try {
+			$tmp['registryNo'] = $get->searchedRegistryNo;
+		} catch (UFex_Core_DataNotFound $e) {
+		}
 		$d['searched'] = $tmp;
 
 		return $this->render(__FUNCTION__, $d);
@@ -98,6 +102,10 @@ extends UFbox {
 			$tmp = array();
 			try {
 				$tmp['surname'] = $get->searchedSurname;
+			} catch (UFex_Core_DataNotFound $e) {
+			}
+			try {
+				$tmp['registryNo'] = $get->searchedRegistryNo;
 			} catch (UFex_Core_DataNotFound $e) {
 			}
 			$bean->search($tmp);
@@ -181,6 +189,24 @@ extends UFbox {
 		$d['history'] = $history;
 
 		return $this->render(__FUNCTION__, $d);
+	}
+
+	public function userAdd() {
+		try{
+			$dorms = UFra::factory('UFbean_Sru_DormitoryList');
+			$dorms->listAll();
+			$faculties = UFra::factory('UFbean_Sru_FacultyList');
+			$faculties->listAll();
+			$bean = UFra::factory('UFbean_Sru_User');
+	
+			$d['user'] = $bean;
+			$d['dormitories'] = $dorms;
+			$d['faculties'] = $faculties;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return '';
+		}
 	}
 
 	/* Obsadzenie */

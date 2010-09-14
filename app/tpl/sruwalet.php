@@ -81,12 +81,13 @@ extends UFtpl_Common {
 		echo $form->_end();
 		echo $form->_end(true);
 		echo '</div>';
+		echo '<div><br/>Wszlekie znalezione błędy prosimy zgłaszać na adres <a href="mailto:adnet@ds.pg.gda.pl">adnet@ds.pg.gda.pl</a>.</div>';
 	}
 
 	public function userSearchResults(array $d) {
-		echo '<div class="userSearchResults"><ul>';
+		echo '<div class="userSearchResults">';
 		echo $d['users']->write('searchResultsWalet');
-		echo '</ul></div>';
+		echo '</div>';
 	}
 
 	public function userSearchResultsNotFound() {
@@ -145,6 +146,21 @@ extends UFtpl_Common {
 		$d['history']->write('table', $d['user'], true);
 		echo '</ol>';
 		echo '</div>';
+	}
+
+	public function titleUserAdd() {
+		echo 'Załóż konto';
+	}
+
+	public function userAdd(array $d) {
+		$form = UFra::factory('UFlib_Form');
+
+		echo $form->_start();
+		echo $form->_fieldset('Załóż konto');
+		echo $d['user']->write('formAdd', $d['dormitories'], $d['faculties']);
+		echo $form->_submit('Załóż');
+		echo $form->_end();
+		echo $form->_end(true);
 	}
 
 

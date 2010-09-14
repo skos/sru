@@ -24,6 +24,7 @@ extends UFmap {
 		'dormitoryName'  => 'd.name',
 		'dormitory'      => 'd.alias',
 		'active'         => 'u.active',
+		'registryNo'	 => 'u.registry_no',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -44,6 +45,7 @@ extends UFmap {
 		'dormitoryName'  => self::TEXT,
 		'dormitory'      => self::TEXT,
 		'active'         => self::BOOL,
+		'registryNo'	 => self::NULL_INT,
 	);
 	protected $tables = array(
 		'u' => 'users',
