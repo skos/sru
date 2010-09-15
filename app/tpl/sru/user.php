@@ -106,7 +106,7 @@ extends UFtpl_Common {
 		echo $form->lang('Język', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$languages),
-			'after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Wiadomości e-mail i GG będa przychodziły w wybranym języku<br/><br/>You will receive e-mails and gg messages in the chosen language" /><br/>',
+			'after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Wiadomości e-mail i GG będa przychodziły w wybranym języku.<br/><br/>You will receive e-mails and gg messages in the chosen language." /><br/>',
 		));
 		$referralStart = date(self::TIME_YYMMDD, time());
 		echo $form->referralStart('Początek skier.', array('value'=>$referralStart, 'class'=>'required'));
@@ -164,11 +164,11 @@ $("#main img[title]").tooltip({ position: "center right"});
 			'labels' => $form->_labelize($tmp),
 		));
 		echo $form->locationAlias('Pokój');
-		echo $form->gg('Gadu-Gadu', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Jeżeli podasz nr GG, będą na niego przesyłane informacje o zmianie statusu konta i Twoich komputerów" /><br/>'));
+		echo $form->gg('Gadu-Gadu', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Jeżeli podasz nr GG, będą na niego przesyłane informacje o zmianie statusu konta i Twoich komputerów." /><br/>'));
 		echo $form->lang('Język', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$languages),
-			'after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Wiadomości e-mail i GG będa przychodziły w wybranym języku<br/><br/>You will receive e-mails and gg messages in the chosen language" /><br/>',
+			'after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Wiadomości e-mail i GG będa przychodziły w wybranym języku.<br/><br/>You will receive e-mails and gg messages in the chosen language." /><br/>',
 		));
 
 		echo $form->_fieldset('Zmiana chronionych danych');

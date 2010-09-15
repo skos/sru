@@ -220,8 +220,8 @@ changeVisibility();
 		$form = UFra::factory('UFlib_Form', 'computerEdit', $d, $this->errors);
 
 		echo '<h1>'.$d['host'].'.ds.pg.gda.pl</h1>';
-		echo $form->mac('MAC', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Adres fizyczny karty sieciowej komputera" /> '.$this->showMacHint().'<br/>'));
-		echo $form->availableTo('Rejestracja do', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Data, kiedy komputer przestanie być aktywny" /><br/>'));
+		echo $form->mac('MAC', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Adres fizyczny karty sieciowej komputera." /> '.$this->showMacHint().'<br/>'));
+		echo $form->availableTo('Rejestracja do', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Data, kiedy komputer przestanie być aktywny." /><br/>'));
 		echo '<small>Maksymalnie do '.date(self::TIME_YYMMDD, $d['availableMaxTo']).'</small><br />';
 
 ?>
@@ -351,7 +351,7 @@ if (input) {
 		}
 		echo '</a></span>';
 		echo '<div id="macMore">';
-		echo $form->mac('MAC', array('value'=>$mac, 'after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Adres fizyczny karty sieciowej komputera" /> '.$this->showMacHint().'<br/>'));
+		echo $form->mac('MAC', array('value'=>$mac, 'after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Adres fizyczny karty sieciowej komputera." /> '.$this->showMacHint().'<br/>'));
 		echo '</div>';
 
 ?><script type="text/javascript">
@@ -405,7 +405,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 			echo $this->ERR($this->errors['host/regexp']);
 		}
 		echo $form->alias('Alias');
-		echo $form->isCname('Wpis CNAME <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Aliasy są domyślnie wpisami A">', array('type'=>$form->CHECKBOX));
+		echo $form->isCname('Wpis CNAME <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Aliasy są domyślnie wpisami A.">', array('type'=>$form->CHECKBOX));
 		echo $form->_end();
 
 ?>

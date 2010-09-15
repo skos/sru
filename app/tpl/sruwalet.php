@@ -14,6 +14,7 @@ extends UFtpl_Common {
 
 		echo $form->_start();
 		echo $form->_fieldset('Zaloguj się');
+		echo '<h3>System Ewidencji Mieszkańców<br/>Osiedla Studenckiego PG</h3>';
 		if ($this->_srv->get('msg')->get('adminLogin/errors')) {
 			echo $this->ERR('Nieprawidłowy login lub hasło');
 		}
@@ -21,6 +22,8 @@ extends UFtpl_Common {
 		echo $form->_submit('Zaloguj');
 		echo $form->_end();
 		echo $form->_end(true);
+
+		echo '<div style="position: relative; left: 420px; top: -130px;"><img src="'.UFURL_BASE.'/i/walet.png" alt="Walet"/></div>';
 	}
 
 	public function logout(array $d) {

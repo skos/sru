@@ -19,7 +19,7 @@ extends UFtpl_Common {
 <body>
 <div id="body">
 <div id="head">
-<h1><a href="<?=UFURL_BASE;?>/"><abbr title="System Rejestracji Użytkowników">SRU</abbr></a></h1>
+<h1><a href="<?=UFURL_BASE;?>/"><img src="<?=UFURL_BASE;?>/i/skoslogo.png" alt="logo SKOS"/>&nbsp;<abbr title="System Rejestracji Użytkowników">SRU</abbr></a></h1>
 </div><!-- head -->
 <?=$d['userBar'];?>
 <div id="main">
