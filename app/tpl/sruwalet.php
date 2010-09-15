@@ -77,14 +77,17 @@ extends UFtpl_Common {
 		echo $form->_fieldset('Znajdź mieszkańca');
 		echo $d['user']->write('formSearchWalet', $d['searched']);
 		echo $form->_submit('Znajdź');
-		echo ' <a href="'.$this->url(0).'/users/:add">Dodaj</a>';
 		echo $form->_end();
 		echo $form->_end(true);
 		echo '</div>';
+	}
+
+	public function mainPageInfo() {
 		echo '<div><br/>Wszlekie znalezione błędy prosimy zgłaszać na adres <a href="mailto:adnet@ds.pg.gda.pl">adnet@ds.pg.gda.pl</a>.</div>';
 	}
 
 	public function userSearchResults(array $d) {
+		echo ' <a href="'.$this->url(0).'/users/:add">Dodaj nowego mieszkańca</a>';
 		echo '<div class="userSearchResults">';
 		echo $d['users']->write('searchResultsWalet');
 		echo '</div>';

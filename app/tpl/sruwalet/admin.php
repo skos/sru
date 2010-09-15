@@ -6,7 +6,7 @@ class UFtpl_SruWalet_Admin
 extends UFtpl_Common {
 
 	protected $adminTypes = array(
-		UFacl_SruWalet_Admin::DORM 	=> 'Kierownik DS',
+		UFacl_SruWalet_Admin::DORM 	=> 'Pracownik OS',
 		UFacl_SruWalet_Admin::HEAD 	=> 'Kierownik OS',
 	);
 	
@@ -87,6 +87,7 @@ $(document).ready(function()
 			echo '</ul>';
 		}
 
+		echo '<p><em>Login:</em> '.$d['login'].'</p>';
 		echo '<p><em>E-mail:</em> <a href="mailto:'.$d['email'].'">'.$d['email'].'</a></p>';
 		echo '<p><em>Telefon:</em> '.$d['phone'].'</p>';
 		echo '<p><em>Gadu-Gadu:</em> '.$d['gg'].'</p>';
@@ -107,11 +108,11 @@ $(document).ready(function()
 		echo $form->login('Login', array('class'=>'required'));
 		echo $form->password('Hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
 		echo $form->password2('Powtórz hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
-		echo $form->name('Nazwa', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Imię i nazwisko administratora lub inne oznaczenie." /><br/>', 'class'=>'required')); 
+		echo $form->name('Imię i nazwisko', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Imię i nazwisko administratora lub inne oznaczenie." /><br/>', 'class'=>'required')); 
 		echo $form->typeId('Uprawnienia', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize($this->adminTypes),
-			'after'=> ' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Administrator OS ma uprawnienia do wszystkich części Waleta, zaś administrator DS jedynie do wybranych Domów Studenckich." /><br/>',
+			'after'=> ' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Kierownik OS ma uprawnienia do wszystkich części Waleta, zaś Pracownik OS jedynie do wybranych Domów Studenckich." /><br/>',
 		));
 
 		echo $form->_end();
@@ -146,7 +147,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 		$form = UFra::factory('UFlib_Form', 'adminEdit', $d, $this->errors);
 
 		echo $form->_fieldset();
-		echo $form->name('Nazwa', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Imię i nazwisko administratora lub inne oznaczenie." /><br/>', 'class'=>'required'));
+		echo $form->name('Imię i nazwisko', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Imię i nazwisko administratora lub inne oznaczenie." /><br/>', 'class'=>'required'));
 		echo $form->password('Hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
 		echo $form->password2('Powtórz hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
 
@@ -154,7 +155,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 			echo $form->typeId('Uprawnienia', array(
 				'type' => $form->SELECT,
 				'labels' => $form->_labelize($this->adminTypes),
-				'after'=> ' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Administrator OS ma uprawnienia do wszystkich części Waleta, zaś administrator DS jedynie do wybranych Domów Studenckich." /><br/>',
+				'after'=> ' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Kierownik OS ma uprawnienia do wszystkich części Waleta, zaś Pracownik OS jedynie do wybranych Domów Studenckich." /><br/>',
 			));	
 			echo $form->active('Aktywny <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Tylko aktywni administratorzy mogą zalogować się do Waleta." />', array('type'=>$form->CHECKBOX) );
 		}

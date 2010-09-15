@@ -18,7 +18,7 @@ extends UFtpl_Common {
 			if (!array_key_exists($roomInt, $aliases)) {
 				$aliases[$roomInt] = new Connector();
 			}
-			$aliases[$roomInt]->addRoom($c['alias']);
+			$aliases[$roomInt]->addRoomWithAlias($c['alias']);
 		}
 		ksort($aliases);
 
@@ -109,7 +109,7 @@ extends UFtpl_Common {
 			if ($rooms == null || count($rooms) == 0) {
 			} else {
 				foreach ($rooms as $room) {
-					$dispRoom = $connector.$room->getExt().' <small>('.$room->getLimit().'-os)</small>';
+					$dispRoom = ($connector == 0 ? '' : $connector).$room->getExt().' <small>('.$room->getLimit().'-os)</small>';
 					echo '<tr><td style="border-top: 1px solid;">'.$dispRoom.'</td>';
 					$i = 0;
 					foreach ($room->getUsers() as $user) {
@@ -141,14 +141,25 @@ class Connector
 {
 	private $rooms = array();
 
-	public function addRoom($room, $limit) {
+	public function addRoom($room, $limit = 0) {
 		$roomInt = (int)$room;
-		if ($roomInt == 0 || $limit == 0) {
+		if (substr($room, 0, 1) == 'm') {
+			$this->rooms[] = new Room($room, $limit);
+		} else if ($roomInt == 0 || $limit == 0) {
 			// nie dodajemy do zestawienia
 		} else if (strlen($roomInt) < strlen($room)) {
 			$this->rooms[] = new Room(substr($room, strlen($roomInt)), $limit);
 		} else {
 			$this->rooms[] = new Room(null, $limit);
+		}
+	}
+
+	public function addRoomWithAlias($room) {
+		$roomInt = (int)$room;
+		if ($roomInt == 0) {
+			$this->rooms[] = $room;
+		} else {
+			$this->rooms[] = substr($room, strlen($roomInt)); 
 		}
 	}
 

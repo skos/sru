@@ -51,6 +51,7 @@ extends UFtpl_Common {
 		'password3/invalid' => 'Podałeś nieprawidłowe hasło',
 		'studyYearId/noFaculty' => 'Nieokreślony wydział',
 		'registryNo/regexp' => 'Niepoprawny numer indeksu',
+		'registryNo/101' => 'Niepoprawny numer indeksu',
 		'registryNo/duplicated' => 'Nr indeksu przypisany do innego mieszkańca',
 	);
 

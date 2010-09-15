@@ -52,7 +52,7 @@ extends UFtpl_Common {
 			$overPlaces[$c['id']] = 0;
 		}
 		foreach ($rooms as $room) {
-			if ((int)$room['alias'] == 0) continue;
+			if ((int)$room['alias'] == 0 && substr($room['alias'], 0, 1) != 'm') continue;
 			$people[$room['dormitoryId']] += $room['userCount'];
 			if ($room['userCount'] < $room['usersMax']) {
 				$freePlaces[$room['dormitoryId']] += ($room['usersMax'] - $room['userCount']);
