@@ -19,7 +19,7 @@ extends UFtpl_Common {
 <body>
 <div id="body">
 <div id="head">
-<h1><a href="<?=UFURL_BASE;?>/"><img src="<?=UFURL_BASE;?>/i/skoslogo.png" alt="logo SKOS"/>&nbsp;Admin</a></h1>
+<h1><a href="<?=UFURL_BASE;?>/admin/"><img src="<?=UFURL_BASE;?>/i/skoslogo.png" alt="logo SKOS"/>&nbsp;Admin</a></h1>
 </div><!-- head -->
 <?=$d['menuAdmin'];?>
 <?=$d['adminBar'];?>

@@ -17,13 +17,24 @@ extends UFact {
 			$login = $bean->login;
 			$dormitoryId = $bean->dormitoryId;
 
-			$bean->fillFromPost(self::PREFIX, array('password', 'referralEnd'));
+			$bean->fillFromPost(self::PREFIX, array('password', 'referralStart', 'referralEnd'));
 			$bean->modifiedById = $this->_srv->get('session')->authWaletAdmin;
 			$bean->modifiedAt = NOW;
 			if (isset($post['referralEnd']) && $post['referralEnd'] == '') {
+				if (!$bean->active) {
+					throw UFra::factory('UFex_Dao_DataNotValid', 'Inactive without referral end', 0, E_WARNING, array('referralEnd' => 'inactive'));
+				}
 				$bean->referralEnd = 0;
 			} else if (isset($post['referralEnd'])) {
 				$bean->referralEnd = $post['referralEnd'];
+			}
+			if (isset($post['referralStart']) && $post['referralStart'] == '') {
+				if ($bean->active) {
+					throw UFra::factory('UFex_Dao_DataNotValid', 'Active without referral start', 0, E_WARNING, array('referralStart' => 'active'));
+				}
+				$bean->referralStart = 0;
+			} else if (isset($post['referralStart'])) {
+				$bean->referralStart = $post['referralStart'];
 			}
 
 			$bean->save();

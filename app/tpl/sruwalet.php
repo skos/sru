@@ -103,8 +103,14 @@ extends UFtpl_Common {
 	public function user(array $d) {
 		$url = $this->url(0).'/users/'.$d['user']->id;
 		if ($this->_srv->get('msg')->get('userAdd/ok')) {
+?>
+<script type="text/javascript">
+window.open("<? echo $url; ?>/:print/<? echo $this->_srv->get('req')->get->login; ?>/<? echo $this->_srv->get('req')->get->password; ?>", "Wydruk potwierdzenia zameldowania",'width=800,height=600');
+</script>
+<?
 			echo $this->OK('Konto zostało założone.');
-		}		
+		}
+
 		echo '<div class="user">';
 		$d['user']->write('detailsWalet');
 		echo '</div>';
@@ -167,6 +173,18 @@ extends UFtpl_Common {
 		echo $form->_submit('Załóż');
 		echo $form->_end();
 		echo $form->_end(true);
+	}
+
+	public function titleUserPrint() {
+		echo 'Wydruk potwierdzenia zameldowania';
+	}
+
+	public function userPrint(array $d) {
+		echo '<b>Witamy w Osiedlu Studenckim Politechniki Gdańskiej!</b>';
+		echo '<p>Aby zalogować się na swoje konto w Systemie Rejestracji Użytkownika skorzystaj z następujących danych:<br/>
+			<i>login:</i> '.$d['login'].'<br/>
+			<i>hasło:</i> '.$d['password'].'<br/>
+			Zaraz po zalogowaniu zostaniesz poproszon(a/y) o zmianę hasła.';
 	}
 
 

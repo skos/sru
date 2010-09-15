@@ -26,7 +26,7 @@ extends UFlib_ClassWithService {
 			return false;
 		}
 
-		if (!$user->active) {
+		if (!$user->active || is_null($user->referralStart) || $user->referralStart == 0) {
 			return true;
 		}
 

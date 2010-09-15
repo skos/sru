@@ -192,7 +192,7 @@ extends UFbox {
 	}
 
 	public function userAdd() {
-		try{
+		try {
 			$dorms = UFra::factory('UFbean_Sru_DormitoryList');
 			$dorms->listAll();
 			$faculties = UFra::factory('UFbean_Sru_FacultyList');
@@ -202,6 +202,17 @@ extends UFbox {
 			$d['user'] = $bean;
 			$d['dormitories'] = $dorms;
 			$d['faculties'] = $faculties;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return '';
+		}
+	}
+
+	public function userPrint() {
+		try {
+			$d['login'] = $this->_srv->get('req')->get->login;
+			$d['password'] = $this->_srv->get('req')->get->password;
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {

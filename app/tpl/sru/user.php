@@ -53,6 +53,10 @@ extends UFtpl_Common {
 		'registryNo/regexp' => 'Niepoprawny numer indeksu',
 		'registryNo/101' => 'Niepoprawny numer indeksu',
 		'registryNo/duplicated' => 'Nr indeksu przypisany do innego mieszkańca',
+		'referralStart/active' => 'Zameldowany mieskzaniec musi mieć podaną datę początku skierowania',
+		'referralStart/5' => 'Nieprawidłowa data początku skierowania',
+		'referralEnd/inactive' => 'Niezameldowany mieszkaniec musi mieć podaną datę końca skierowania',
+		'referralEnd/5' => 'Nieprawidłowa data końca skierowania',
 	);
 
 	/*
@@ -254,7 +258,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 		$userCount = 0;
 		$usersFree = 0;
 		foreach ($d as $c) {
-			if (!$c['active']) {
+			if (!$c['active'] || is_null($c['referralStart']) || $c['referralStart'] == 0) {
 				echo '<tr>';
 			} else if ($acl->sruWalet('user', 'edit', $c['id'])) {
 				echo '<tr style="background: #cff;">';
@@ -378,7 +382,7 @@ changeVisibility();
 		$urlUser = $url.'/users/'.$d['id'];
 
 		echo '<h1>'.$this->_escape($d['name']).' '.$this->_escape($d['surname']).'</h1>';
-		echo '<p><em>Miejsce:</em> '.$d['locationAlias'].', <a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'">'.strtoupper($d['dormitoryAlias']).'</a></p>';
+		echo '<p><em>Miejsce:</em> <a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'">'.strtoupper($d['dormitoryAlias']).'</a>, '.$d['locationAlias'].'</p>';
 		echo '<p><em>Login:</em> '.$d['login'].(!$d['active']?' <strong>(konto nieaktywne)</strong>':'').'</p>';
 		echo '<p><em>Nr indeksu:</em> '.$d['registryNo'].'</p>';
 		echo '<p><em>E-mail:</em> <a href="mailto:'.$d['email'].'">'.$d['email'].'</a></p>';
@@ -488,6 +492,7 @@ changeVisibility();
 	public function formEditWalet(array $d, $dormitories) {
 		$d['locationId'] = $d['locationAlias'];
 		$d['dormitory'] = $d['dormitoryId'];
+		$post = $this->_srv->get('req')->post;
 
 		$form = UFra::factory('UFlib_Form', 'userEdit', $d, $this->errors);
 		echo $form->name('Imię', array('class'=>'required'));
@@ -509,22 +514,60 @@ changeVisibility();
 		));
 		echo $form->locationAlias('Pokój', array('class'=>'required'));
 		
-		$referralStart = $d['referralStart'];
-		if (!is_null($d['referralStart']) && ($d['referralStart'] == 0 || $d['active'] == false)) {
-			$referralStart = date(self::TIME_YYMMDD, time());
-		} else if (!is_null($d['referralStart'])) {
-			$referralStart = date(self::TIME_YYMMDD, $d['referralStart']);
+		try {
+			$referralStart = $post->userEdit['referralStart'];
+		} catch (UFex_Core_DataNotFound $e) {
+			$referralStart = $d['referralStart'];
+			if (!is_null($d['referralStart']) && ($d['referralStart'] == 0 || $d['active'] == false)) {
+				$referralStart = date(self::TIME_YYMMDD, time());
+			} else if (!is_null($d['referralStart'])) {
+				$referralStart = date(self::TIME_YYMMDD, $d['referralStart']);
+			}
 		}
-		$referralEnd = '';
+		try {
+			$referralEnd = $post->userEdit['referralEnd'];
+		} catch (UFex_Core_DataNotFound $e) {
+			$referralEnd = '';
+		}
 		echo $form->referralStart('Początek skier.', array('value'=>$referralStart));
-		echo $form->referralEnd('Koniec skier.', array('value'=>$referralEnd));
 		echo $form->lang('Język', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$languages),
 		));
 		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
+		if ($d['active'] && !$this->_srv->get('msg')->get('userEdit/errors/referralEnd')) {
+			echo '<p><a href="#" onclick="return changeUnregisterVisibility();">Wyrejestruj</a></p>';
+			echo '<div id="unregisterMore" style="display: none;">';
+		}
+		echo $form->referralEnd('Koniec skier.', array('value'=>$referralEnd));
 		echo $form->active('Konto aktywne', array('type'=>$form->CHECKBOX));
-		echo $form->_end();
+		if ($d['active'] && !$this->_srv->get('msg')->get('userEdit/errors/referralEnd')) {
+			echo '</div>';
+		}
+
+?><script type="text/javascript">
+var rsOld = document.getElementById('userEdit_referralStart').value;
+function changeUnregisterVisibility() {
+	var um = document.getElementById('unregisterMore');
+	if (um.style.display == 'none') {
+		um.style.display = 'block';
+		var re = document.getElementById('userEdit_referralEnd');
+		re.value = "<? echo date(self::TIME_YYMMDD, time()); ?>";
+		var rs = document.getElementById('userEdit_referralStart');
+		rs.value = "";
+		var ac = document.getElementById('userEdit_active');
+		ac.checked = false;
+	} else {
+		um.style.display = 'none';
+		var re = document.getElementById('userEdit_referralEnd');
+		re.value = "";
+		var rs = document.getElementById('userEdit_referralStart');
+		rs.value = rsOld;
+		var ac = document.getElementById('userEdit_active');
+		ac.checked = true;
+	}
+}
+</script><?
 	}
 
 	public function shortList(array $d) {

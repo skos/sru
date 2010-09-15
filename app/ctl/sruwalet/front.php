@@ -53,6 +53,11 @@ extends UFctl {
 										case ':edit':
 											$get->view = 'users/user/edit';
 											break;
+										case ':print':
+											$get->view = 'users/user/print';
+											$get->login = $req->segment(4);
+											$get->password = $req->segment(5);
+											break;
 										default:
 											$get->view = 'error404';
 											break;
@@ -197,6 +202,8 @@ extends UFctl {
 				} else {
 					return 'Sru_Error403';
 				}
+			case 'users/user/print':
+				return 'SruWalet_UserPrint';
 			case 'users/user/add':
 				if ($msg->get('userAdd/ok')) {
 					return 'SruWalet_User';
