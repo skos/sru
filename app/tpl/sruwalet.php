@@ -108,7 +108,7 @@ extends UFtpl_Common {
 window.open("<? echo $url; ?>/:print/<? echo $this->_srv->get('req')->get->login; ?>/<? echo $this->_srv->get('req')->get->password; ?>", "Wydruk potwierdzenia zameldowania",'width=800,height=600');
 </script>
 <?
-			echo $this->OK('Konto zostało założone.');
+			echo $this->OK('Konto zostało założone.<br/><a href="'.$url.'/:print/'.$this->_srv->get('req')->get->login.'/'.$this->_srv->get('req')->get->password.'" target="_blank">Wydrukuj potwierdzenie założenia konta</a>.');
 		}
 
 		echo '<div class="user">';
