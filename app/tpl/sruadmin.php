@@ -250,14 +250,13 @@ extends UFtpl_Common {
 	public function userSearch(array $d) {
 		$form = UFra::factory('UFlib_Form');
 
-		echo '<h2>Szukaj | <a href="'.$this->url(0).'/migration">Migracja</a> | <a href="'.$this->url(0).'/services">Usługi</a></h2>';
+		echo '<h2>Szukaj | <a href="'.$this->url(0).'/services">Usługi</a></h2>';
 
 		echo '<div class="userSearch">';
 		echo $form->_start($this->url(0).'/users/search');
 		echo $form->_fieldset('Znajdź użytkownika');
 		echo $d['user']->write('formSearch', $d['searched']);
 		echo $form->_submit('Znajdź');
-		echo ' <a href="'.$this->url(0).'/users/:add">Dodaj</a>';
 		echo $form->_end();
 		echo $form->_end(true);
 		echo '</div>';
@@ -952,26 +951,7 @@ extends UFtpl_Common {
 		}
 		echo $this->ERR('Brak adresów IP dla tego DS-u');
 	}
-
-	public function titleMigration() {
-		echo 'Lista niezgodności z bazą Walet (migracja)';
-	}
 	
-	public function migration(array $d) {
-		echo '<h2><a href="'.$this->url(0).'/">Szukaj</a> | Migracja | <a href="'.$this->url(0).'/services">Usługi</a></h2>';
-		$d['migration']->write('migration', $d['users']);
-	}
-	
-	public function migrationNotFound(array $d) {
-		echo '<h2><a href="'.$this->url(0).'/">Szukaj</a> | Migracja | <a href="'.$this->url(0).'/services">Usługi</a></h2>';
-		echo $this->ERR('Błąd wyświetlenia modułu migracji');
-	}
-
-	public function migrationDisabled(array $d) {
-		echo '<h2><a href="'.$this->url(0).'/">Szukaj</a> | Migracja | <a href="'.$this->url(0).'/services">Usługi</a></h2>';
-		echo $this->ERR('Moduł migracji jest nieaktywny');
-	}
-
 	public function titleStatsUsers() {
 		echo 'Statystyki użytkowników';
 	}
@@ -1064,7 +1044,7 @@ extends UFtpl_Common {
 
 	public function servicesEdit(array $d) {
 		$form = UFra::factory('UFlib_Form');
-		echo '<h2><a href="'.$this->url(0).'/">Szukaj</a> | <a href="'.$this->url(0).'/migration">Migracja</a> | Usługi</h2>';
+		echo '<h2><a href="'.$this->url(0).'/">Szukaj</a> | Usługi</h2>';
 		echo '<h3>Zadania &bull; <a href="'.$this->url(0).'/services/list">Aktywne</a></h3>';
 		
 		$form = UFra::factory('UFlib_Form', 'serviceSelect', $d);
@@ -1105,7 +1085,7 @@ extends UFtpl_Common {
 
 	public function servicesList(array $d) {
 		$form = UFra::factory('UFlib_Form');
-		echo '<h2><a href="'.$this->url(0).'/">Szukaj</a> | <a href="'.$this->url(0).'/migration">Migracja</a> | Usługi</h2>';
+		echo '<h2><a href="'.$this->url(0).'/">Szukaj</a> | Usługi</h2>';
 		echo '<h3><a href="'.$this->url(0).'/services">Zadania</a> &bull; Aktywne</h3>';
 		
 		$form = UFra::factory('UFlib_Form', 'serviceSelect', $d);

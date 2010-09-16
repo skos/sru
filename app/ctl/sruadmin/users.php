@@ -46,9 +46,6 @@ extends UFctl {
 						}
 					}
 					break;
-				case ':add':
-					$get->view = 'users/user/add';
-					break;
 				default:
 					$get->view = 'users/user';
 					$id = (int)$req->segment(2);
@@ -101,11 +98,9 @@ extends UFctl {
 		} elseif ($post->is('adminLogin') && $acl->sruAdmin('admin', 'login')) {
 			$act = 'Admin_Login';
 		} elseif ('users/user/computers/add' == $get->view && $post->is('computerAdd')) {
-			$act = 'Computer_Add';			
+			$act = 'Computer_Add';
 		} elseif ($post->is('userSearch')) {
 			$act = 'User_Search';
-		} elseif ('users/user/add' == $get->view && $post->is('userAdd') && $acl->sruAdmin('user', 'add')) {
-			$act = 'User_Add';
 		} elseif ($post->is('userEdit') && $acl->sruAdmin('user', 'edit')) {
 			$act = 'User_Edit';
 		} elseif ('users/user/edit' == $get->view && $post->is('userDel') && $acl->sruAdmin('user', 'del')) {
@@ -149,12 +144,6 @@ extends UFctl {
 				} else {
 					return 'SruAdmin_UserEdit';
 				}
-			case 'users/user/add':
-				if ($msg->get('userAdd/ok')) {
-					return 'SruAdmin_User';
-				} else {
-					return 'SruAdmin_UserAdd';
-				} 		
 			case 'users/user/computers/add':
 				if ($msg->get('computerAdd/ok')) {
 					return 'SruAdmin_User';

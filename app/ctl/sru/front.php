@@ -38,9 +38,6 @@ extends UFctl {
 						$get->view = 'user/computers';
 					}
 					break;
-				case 'create':
-					$get->view = 'user/add';
-					break;
 				case 'penalties':
 					$get->view = 'user/penalties';
 					break;
@@ -71,12 +68,8 @@ extends UFctl {
 			$act = 'User_Login';
 		} elseif ('user/main' == $get->view && $post->is('sendPassword') && $acl->sru('user', 'login')) {
 			$act = 'User_SendPassword';
-		} elseif ('user/main' == $get->view && $get->is('userToken') && $acl->sru('user', 'add')) {
-			$act = 'User_Confirm';
 		} elseif ('user/edit' == $get->view && $post->is('userEdit') && $acl->sru('user', 'edit')) {
 			$act = 'User_Edit';
-		} elseif ('user/add' == $get->view && $post->is('userAdd') && $acl->sru('user', 'add')) {
-			$act = 'User_Add';
 		} elseif ('user/computer/edit' == $get->view && $post->is('computerEdit') && $acl->sru('computer', 'edit')) {
 			$act = 'Computer_Edit';
 		} elseif ('user/computer/activate' == $get->view && $post->is('computerEdit') && $acl->sru('computer', 'edit')) {
@@ -109,14 +102,6 @@ extends UFctl {
 					return 'Sru_Login';
 				} else {
 					return 'Sru_UserMain';
-				}
-			case 'user/add':
-				if ($msg->get('userAdd/ok')) {
-					return 'Sru_UserAdded';
-				} elseif ($acl->sru('user', 'add')) {
-					return 'Sru_UserAdd';
-				} else {
-					return 'Sru_Error404';
 				}
 			case 'user/edit':
 				if ($acl->sru('user', 'edit')) {

@@ -122,8 +122,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 <?
 	}
 
-	public function formEdit(array $d, $dormitories, $faculties) {
-		$d['dormitory'] = $d['dormitoryId'];
+	public function formEdit(array $d, $faculties) {
 		if (is_null($d['facultyId'])) {
 			$d['facultyId'] = '0';
 		}
@@ -134,10 +133,6 @@ $("#main img[title]").tooltip({ position: "center right"});
 
 
 		echo '<h1>'.$d['name'].' '.$d['surname'].'</h1>';
-		if ($this->_srv->get('msg')->get('userEdit/errors/walet/notFound')) {
-			echo $this->ERR('Użytkownik nie jest zameldowany w tym pokoju');
-		}
-
 		if ($this->_srv->get('msg')->get('userEdit/errors/ip/noFree')) {
 			echo $this->ERR('Nie ma wolnych IP w tym DS-ie - skontaktuj się ze swoim administratorem lokalnym w godzinach dyżurów');
 		}
@@ -154,20 +149,6 @@ $("#main img[title]").tooltip({ position: "center right"});
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$studyYears),
 		));
-		$tmp = array();
-		foreach ($dormitories as $dorm) {
-			$temp = explode("ds", $dorm['alias']);
-			if (!isset($temp[1])) {
-				$temp[1] = $dorm['alias'];
-			} else if($temp[1] == '5l')
-				$temp[1] = '5Ł';
-			$tmp[$dorm['id']] = $temp[1] . ' ' . $dorm['name'];
-		}
-		echo $form->dormitory('Akademik', array(
-			'type' => $form->SELECT,
-			'labels' => $form->_labelize($tmp),
-		));
-		echo $form->locationAlias('Pokój');
 		echo $form->gg('Gadu-Gadu', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Jeżeli podasz nr GG, będą na niego przesyłane informacje o zmianie statusu konta i Twoich komputerów." /><br/>'));
 		echo $form->lang('Język', array(
 			'type' => $form->SELECT,
@@ -418,10 +399,8 @@ changeVisibility();
 		echo $this->_escape($d['name']).' '.$this->_escape($d['surname']).' ('.$d['login'].')';
 	}
 
-	public function formEditAdmin(array $d, $dormitories, $faculties) {
+	public function formEditAdmin(array $d, $faculties) {
 		$d['locationId'] = $d['locationAlias'];
-		$d['dormitory'] = $d['dormitoryId'];
-		$d['changeComputersLocations'] = 1;
 		if (is_null($d['facultyId'])) {
 			$d['facultyId'] = '0';
 		}
@@ -429,23 +408,10 @@ changeVisibility();
 			$d['studyYearId'] = '0';
 		}
 		$form = UFra::factory('UFlib_Form', 'userEdit', $d, $this->errors);
-		if ($this->_srv->get('msg')->get('userEdit/errors/walet/notFound')) {
-			$pswd = false;
-			try {
-				$post = $this->_srv->get('req')->post->userEdit;
-				if (!empty($post['password'])) {
-					$pswd = true;
-				}
-			} catch (UFex $e) {
-			}
-			echo $this->ERR('Użytkownik nie jest zameldowany w tym pokoju.<br />'.$form->ignoreWalet('Zignoruj'.($pswd?' <strong>(ponownie wpisz hasło)</strong>':''), array('type'=>$form->CHECKBOX)));
-		}
 		if ($this->_srv->get('msg')->get('userEdit/errors/ip/noFreeAdmin')) {
 			echo $this->ERR('Nie ma wolnych IP w tym DS-ie');
 		}
 		echo $form->login('Login');
-		echo $form->name('Imię');
-		echo $form->surname('Nazwisko');
 		echo $form->email('E-mail');
 		echo $form->gg('Gadu-Gadu');
 		echo $form->lang('Język', array(
@@ -466,27 +432,11 @@ changeVisibility();
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$studyYears),
 		));
-		$tmp = array();
-		foreach ($dormitories as $dorm) {
-			$temp = explode("ds", $dorm['alias']);
-			if (!isset($temp[1])) {
-				$temp[1] = $dorm['alias'];
-			} else if($temp[1] == '5l')
-				$temp[1] = '5Ł';
-			$tmp[$dorm['id']] = $temp[1] . ' ' . $dorm['name'];
-		}
-		echo $form->dormitory('Akademik', array(
-			'type' => $form->SELECT,
-			'labels' => $form->_labelize($tmp),
-		));
-		echo $form->locationAlias('Pokój');
-		echo $form->changeComputersLocations('Zmień miejsce także wszystkim zarejestrowanym komputerom', array('type'=>$form->CHECKBOX));
 		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
 		echo $form->_fieldset('Zmiana hasła');
 			echo $form->password('Nowe hasło', array('type'=>$form->PASSWORD,  ));
 			echo $form->password2('Potwierdź hasło', array('type'=>$form->PASSWORD));
 		echo $form->_end();
-		echo $form->active('Konto aktywne', array('type'=>$form->CHECKBOX));
 	}
 
 	public function formEditWalet(array $d, $dormitories) {

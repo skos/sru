@@ -22,36 +22,8 @@ extends UFtpl_Common {
 		}
 		echo $d['user']->write('formLogin');
 		echo $form->_submit('Zaloguj');
-		echo ' <a href="'.$this->url(0).'/create">Załóż konto</a>';
 		echo $form->_end();
 		echo $form->_end(true);
-	}
-
-	public function titleUserAdd() {
-		echo 'Załóż konto';
-	}
-
-	public function userAdd(array $d) {
-		$form = UFra::factory('UFlib_Form');
-
-		echo $form->_start();
-		echo $form->_fieldset('Załóż konto');
-		echo $d['user']->write('formAdd', $d['dormitories'], $d['faculties'], $d['admin']);
-		echo '<br/><b>Założenie konta oznacza akceptację <a href="http://skos.ds.pg.gda.pl/skos/wiki/regulamin">Regulaminu SKOS PG</a>.</b><br/><br/>';
-		echo $form->_submit('Załóż');
-		echo $form->_end();
-		echo $form->_end(true);
-	}
-
-	public function titleUserAdded() {
-		echo 'Założono konto';
-	}
-
-	public function userAdded(array $d) {
-
-		if ($this->_srv->get('msg')->get('userAdd/ok')) {
-			echo $this->OK('Konto zostało założone. Hasło otrzymasz wkrótce na maila. <b>Przypominamy</b>, że aby móc zalogować się, trzeba aktywować konto u administratora.<br /><br /><a href="'.$this->url(0).'">Kliknij tutaj, aby się zalogować</a>');
-		}
 	}
 
 	public function titleMain() {
@@ -154,7 +126,7 @@ extends UFtpl_Common {
 		if ($this->_srv->get('msg')->get('userEdit/ok')) {
 			echo $this->OK('Dane zostały zmienione');
 		}
-		echo $d['user']->write('formEdit', $d['dormitories'], $d['faculties']);
+		echo $d['user']->write('formEdit', $d['faculties']);
 		echo $form->_submit('Zapisz');
 		echo $form->_end();
 		echo $form->_end(true);

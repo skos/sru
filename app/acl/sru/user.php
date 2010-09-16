@@ -13,10 +13,6 @@ extends UFlib_ClassWithService {
 		return $this->_loggedIn();
 	}
 
-	public function add() {
-		return !$this->_loggedIn();
-	}
-	
 	public function login() {
 		return !$this->_loggedIn();
 	}

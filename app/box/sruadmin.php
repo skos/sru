@@ -1510,27 +1510,6 @@ extends UFbox {
 		}
 	}
 
-	public function migration() {
-		try {
-			$conf = UFra::shared('UFconf_Sru');
-			if (!$conf->checkWalet) {
-				$d['users'] = null;
-				return $this->render(__FUNCTION__.'Disabled', $d);
-			}
-
-			$users = UFra::factory('UFbean_Sru_UserList');
-			$users->listAllForMigration();
-			$d['users'] = $users;
-
-			$bean = UFra::factory('UFbean_SruAdmin_MigrationList');
-			$bean->listAll();
-			$d['migration'] = $bean;		
-			return $this->render(__FUNCTION__, $d);
-		} catch (UFex_Dao_NotFound $e) {
-			return $this->render(__FUNCTION__.'NotFound', $d);
-		}
-	}
-
 	public function statsUsers() {
 		try {
 			$user = UFra::factory('UFbean_Sru_UserList');

@@ -86,25 +86,6 @@ extends UFdao {
 		return $this->doSelect($query);
 	}
 
-	public function getFromWalet($name, $surname, $room, $dormitory) {
-		$name = trim($name);
-		$surname = trim($surname);
-
-		$md5 = md5($surname.' '.$name);
-		$room = strtoupper(str_replace(' ', '', $room));
-		$room = ltrim($room, '0');
-		$dormitory = (int)$dormitory;
-
-		$mapping = $this->mapping('walet');
-
-		$query = $this->prepareSelect($mapping);
-		$query->where($mapping->hash, $md5);
-		$query->where($mapping->dormitory, $dormitory);
-		$query->where($mapping->room, $room);
-
-		return $this->doSelectFirst($query);
-	}
-
 	public function listByEmailActive($email, $active=null) {
 		$mapping = $this->mapping('list');
 

@@ -38,26 +38,6 @@ extends UFbox {
 		}
 	}
 
-	public function userAdd($admin = false, $walet = false) {
-		try{
-			$dorms = UFra::factory('UFbean_Sru_DormitoryList');
-			$dorms->listAll();
-			$faculties = UFra::factory('UFbean_Sru_FacultyList');
-			$faculties->listAll();
-			$bean = UFra::factory('UFbean_Sru_User');
-	
-			$d['user'] = $bean;
-			$d['dormitories'] = $dorms;
-			$d['faculties'] = $faculties;
-			$d['admin'] = $admin;
-			$d['walet'] = $walet;
-
-			return $this->render(__FUNCTION__, $d);
-		} catch (UFex_Dao_NotFound $e) {
-			return '';
-		}		
-	}
-
 	public function userAddMailTitle($user) {
 		$d['user'] = $user;
 		return $this->render(__FUNCTION__, $d);
@@ -75,13 +55,10 @@ extends UFbox {
 			$bean = UFra::factory('UFbean_Sru_User');
 			$bean->getFromSession();
 	
-			$dorms = UFra::factory('UFbean_Sru_DormitoryList');
-			$dorms->listAll();
 			$faculties = UFra::factory('UFbean_Sru_FacultyList');
 			$faculties->listAll();
 	
 			$d['user'] = $bean;
-			$d['dormitories'] = $dorms;
 			$d['faculties'] = $faculties;
 	
 			return $this->render(__FUNCTION__, $d);

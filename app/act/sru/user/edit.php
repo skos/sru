@@ -20,8 +20,7 @@ extends UFact {
 			$bean = UFra::factory('UFbean_Sru_User');
 			$post = $this->_srv->get('req')->post->{self::PREFIX};
 			$bean->getFromSession();
-			$dormitoryId = $bean->dormitoryId;
-			$bean->fillFromPost(self::PREFIX, array('email', 'login','password','name','surname','facultyId','studyYearId'));
+			$bean->fillFromPost(self::PREFIX, array('email', 'login','password','facultyId','studyYearId'));
 
 
 			if (isset($post['password']) && $post['password'] != '' ) {
@@ -51,41 +50,9 @@ extends UFact {
 			$bean->modifiedById = null;
 			$bean->modifiedAt = NOW;
 
-			$conf = UFra::shared('UFconf_Sru');
-			if ($conf->checkWalet) {
-				// sprawdzenie w bazie osiedla
-				$walet = UFra::factory('UFbean_Sru_User');
-				try {
-					$walet->getFromWalet($bean->name, $bean->surname, $bean->locationAlias, $bean->dormitory);
-				} catch (UFex_Dao_NotFound $e) {
-					throw UFra::factory('UFex_Dao_DataNotValid', 'User not in Walet database', 0, E_WARNING,  array('walet' => 'notFound'));
-				}
-			}
-				
 			$bean->save();
-	
-			try {
-				$comps = UFra::factory('UFbean_Sru_ComputerList');
-				$comps->listByUserId($bean->id);
-				foreach ($comps as $comp) {
-					try {
-						$computer = UFra::factory('UFbean_Sru_Computer');
-						$computer->getByHost($comp['host']);
-						$ipAddr = $computer->ip;
-						if ($dormitoryId != $bean->dormitory) {
-							$ip = UFra::factory('UFbean_Sru_Ipv4');
-							$ip->getFreeByDormitoryId(($bean->dormitory));
-							$ipAddr = $ip->ip;
-						}
-						$computer->updateLocationByHost($comp['host'], $bean->locationId, $ipAddr);
-					} catch (UFex_Dao_NotFound $e) {
-						throw UFra::factory('UFex_Dao_DataNotValid', 'No free IP', 0, E_WARNING, array('ip'=>'noFree'));
-					}
-				}
-			} catch (UFex_Dao_NotFound $e) {
-				// uzytkownik nie ma komputerow
-			}
 
+			$conf = UFra::shared('UFconf_Sru');
 			if ($conf->sendEmail) {
 				// wyslanie maila do usera
 				$box = UFra::factory('UFbox_Sru');
