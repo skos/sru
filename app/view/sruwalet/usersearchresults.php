@@ -10,6 +10,7 @@ extends UFview_SruWalet {
 
 		$this->append('title', $box->titleUserSearch());
 		$this->append('body', $box->userSearch());
+		$this->append('body', $box->addUserLink());
 		$this->append('body', $box->userSearchResults());
 	}
 }

@@ -89,15 +89,31 @@ extends UFtpl_Common {
 		echo '<div><br/>Wszlekie znalezione błędy prosimy zgłaszać na adres <a href="mailto:adnet@ds.pg.gda.pl">adnet@ds.pg.gda.pl</a>.</div>';
 	}
 
+	private function generateNewUserLink(array $searched) {
+		$search = '';
+		isset($searched['surname']) ? $search = '/surname:'.$searched['surname'] : '';
+		if (isset($searched['registryNo'])) {
+			if ($search == '') {
+				$search = '/registryNo:'.$searched['registryNo'];
+			} else {
+				$search = $search.'/registryNo:'.$searched['registryNo'];
+			}
+		}
+		return ' <a href="'.$this->url(0).'/users/:add'.$search.'">Dodaj nowego mieszkańca</a>.';
+	}
+
+	public function addUserLink(array $d) {
+		echo $this->generateNewUserLink($d['searched']);
+	}
+
 	public function userSearchResults(array $d) {
-		echo ' <a href="'.$this->url(0).'/users/:add">Dodaj nowego mieszkańca</a>';
 		echo '<div class="userSearchResults">';
 		echo $d['users']->write('searchResultsWalet');
 		echo '</div>';
 	}
 
-	public function userSearchResultsNotFound() {
-		echo $this->ERR('Nie znaleziono');
+	public function userSearchResultsNotFound(array $d) {
+		echo $this->ERR('Nie znaleziono.');
 	}
 
 	public function user(array $d) {
@@ -105,10 +121,10 @@ extends UFtpl_Common {
 		if ($this->_srv->get('msg')->get('userAdd/ok')) {
 ?>
 <script type="text/javascript">
-window.open("<? echo $url; ?>/:print/<? echo $this->_srv->get('req')->get->login; ?>/<? echo $this->_srv->get('req')->get->password; ?>", "Wydruk potwierdzenia zameldowania",'width=800,height=600');
+window.open("<? echo $url; ?>/:print/<? echo $d['user']->login; ?>/<? echo $this->_srv->get('req')->get->password; ?>", "Wydruk potwierdzenia zameldowania",'width=800,height=600');
 </script>
 <?
-			echo $this->OK('Konto zostało założone.<br/><a href="'.$url.'/:print/'.$this->_srv->get('req')->get->login.'/'.$this->_srv->get('req')->get->password.'" target="_blank">Wydrukuj potwierdzenie założenia konta</a>.');
+			echo $this->OK('Konto zostało założone.<br/><a href="'.$url.'/:print/'.$d['user']->login.'/'.$this->_srv->get('req')->get->password.'" target="_blank">Wydrukuj potwierdzenie założenia konta</a>.');
 		}
 
 		echo '<div class="user">';
@@ -137,13 +153,26 @@ window.open("<? echo $url; ?>/:print/<? echo $this->_srv->get('req')->get->login
 	}
 
 	public function userEdit(array $d) {
+		$url = $this->url(0).'/users/'.$d['user']->id;
 		$form = UFra::factory('UFlib_Form');
 
 		echo '<h2>Edycja</h2>';
 		echo $form->_start($this->url());
 		echo $form->_fieldset('Edycja użytkownika');
 		if ($this->_srv->get('msg')->get('userEdit/ok')) {
-			echo $this->OK('Dane zostały zmienione');
+			$msg = '';
+			try {
+				if ($this->_srv->get('req')->get->activated) {
+?>
+<script type="text/javascript">
+window.open("<? echo $url; ?>/:print/<? echo $d['user']->login; ?>", "Wydruk potwierdzenia zameldowania",'width=800,height=600');
+</script>
+<?
+					$msg = '<br/><a href="'.$url.'/:print/'.$d['user']->login.'" target="_blank">Wydrukuj potwierdzenie zameldowania</a>.';
+				}
+			} catch (UFex_Core_DataNotFound $e) {
+			}
+			echo $this->OK('Dane zostały zmienione.'.$msg);
 		}
 		echo $d['user']->write('formEditWalet', $d['dormitories']);
 		echo $form->_submit('Zapisz');
@@ -169,7 +198,7 @@ window.open("<? echo $url; ?>/:print/<? echo $this->_srv->get('req')->get->login
 
 		echo $form->_start();
 		echo $form->_fieldset('Załóż konto');
-		echo $d['user']->write('formAdd', $d['dormitories'], $d['faculties']);
+		echo $d['user']->write('formAdd', $d['dormitories'], $d['faculties'], $d['surname'], $d['registryNo']);
 		echo $form->_submit('Załóż');
 		echo $form->_end();
 		echo $form->_end(true);
@@ -181,10 +210,18 @@ window.open("<? echo $url; ?>/:print/<? echo $this->_srv->get('req')->get->login
 
 	public function userPrint(array $d) {
 		echo '<b>Witamy w Osiedlu Studenckim Politechniki Gdańskiej!</b>';
-		echo '<p>Aby zalogować się na swoje konto w Systemie Rejestracji Użytkownika skorzystaj z następujących danych:<br/>
-			<i>login:</i> '.$d['login'].'<br/>
-			<i>hasło:</i> '.$d['password'].'<br/>
-			Zaraz po zalogowaniu zostaniesz poproszon(a/y) o zmianę hasła.';
+		echo '<p>Aby zalogować się na swoje konto w Systemie Rejestracji Użytkownika (http://sru.ds.pg.gda.pl) skorzystaj z następujących danych:<br/>
+			<i>login:</i> '.$d['login'].'<br/>';
+		if (is_null($d['password'])) {
+			echo 'Użyj tego samego hasła, jakiego używał(a/e)ś poprzednio. Jeśli nie pamiętasz go, skorzystaj z przypomnienia hasła na SRU lub odwiedź administratora w godzinach dyżuru. Nie zapomnij wejściówki! Aby mieć Internet, po zalogowaniu się przywróć swoje komputery.';
+		} else {
+			echo '<i>hasło:</i> '.$d['password'].'<br/>
+				Zaraz po zalogowaniu zostaniesz poproszon(a/y) o zmianę hasła.';
+		}
+	}
+
+	public function userPrintError() {
+		echo 'Błąd generowania wydruku';
 	}
 
 
@@ -195,17 +232,8 @@ window.open("<? echo $url; ?>/:print/<? echo $this->_srv->get('req')->get->login
 	}
 
 	public function inhabitants(array $d) {
-		echo '<h2>Obsadzenie | <a href="'.$this->url(0).'/dormitories">Akademiki</a></h2>';
+		echo '<h2>Obsadzenie</h2>';
 		$d['dormitories']->write('inhabitants', $d['rooms']);
-	}
-
-	public function titleDormitories() {
-		echo 'Lista Domów Studenckich';
-	}
-
-	public function dormitories(array $d) {
-		echo '<h2><a href="'.$this->url(0).'/inhabitants">Obsadzenie</a> | Akademiki</h2>';
-		$d['dormitories']->write('listDormsWalet');
 	}
 
 	public function titleDorm(array $d) {
@@ -213,7 +241,8 @@ window.open("<? echo $url; ?>/:print/<? echo $this->_srv->get('req')->get->login
 	}
 
 	public function dorm(array $d) {
-		echo '<h2><a href="'.$this->url(0).'/inhabitants">Obsadzenie</a> | Akademiki</h2>';
+		echo '<h2><a href="'.$this->url(0).'/inhabitants">Obsadzenie</a></h2>';
+		echo '<h3>'.$d['dorm']->name.'</h3>';
 		$d['rooms']->write('dormInhabitants', $d['dorm'], $d['users']);
 	}
 

@@ -17,19 +17,6 @@ extends UFtpl_Common {
 		echo '</ul>';
 	}
 
-	public function listDormsWalet(array $d) {
-		$url = $this->url(0).'/dormitories/';
-		$acl = $this->_srv->get('acl');
-		
-		echo '<ul>';
-		foreach ($d as $c) {
-			if ($acl->sruWalet('dorm', 'view', $c['alias'])) {
-				echo '<li><a href="'.$url.$c['alias'].'">'.$c['name'].'</a></li>';
-			}
-		}
-		echo '</ul>';
-	}
-
 	public function titleDetails(array $d) {
 		echo $d['name'];
 	}

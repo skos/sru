@@ -16,7 +16,7 @@ extends UFctl {
 		} else {
 			switch ($req->segment(1)) {
 				case 'users':
-					if (1 == $segCount) {
+					if ($segCount == 1) {
 						$get->view = 'users/main';
 					} else {
 						switch ($req->segment(2)) {
@@ -36,6 +36,17 @@ extends UFctl {
 								break;
 							case ':add':
 								$get->view = 'users/user/add';
+								for ($i = 3; $i <= $segCount; ++$i) {
+									$tmp = explode(':', $req->segment($i), 2);
+									switch ($tmp[0]) {
+										case 'surname':
+											$get->inputSurname = urldecode($tmp[1]);
+											break;
+										case 'registryNo':
+											$get->inputRegistryNo = urldecode($tmp[1]);
+											break;
+									}
+								}
 								break;
 							default:
 								$get->view = 'users/user';
@@ -55,8 +66,12 @@ extends UFctl {
 											break;
 										case ':print':
 											$get->view = 'users/user/print';
-											$get->login = $req->segment(4);
-											$get->password = $req->segment(5);
+											if ($segCount > 3) {
+												$get->login = $req->segment(4);
+											}
+											if ($segCount > 4) {
+												$get->password = $req->segment(5);
+											}
 											break;
 										default:
 											$get->view = 'error404';
@@ -72,7 +87,7 @@ extends UFctl {
 					break;
 				case 'dormitories':
 					if (1 == $segCount) {
-						$get->view = 'dormitories/main';
+						$get->view = 'error404';
 					} else {
 						$alias = $req->segment(2);  
 						$get->dormAlias = $alias;
@@ -212,8 +227,6 @@ extends UFctl {
 				}
 			case 'inhabitants/main':
 				return 'SruWalet_Inhabitants';
-			case 'dormitories/main':
-				return 'SruWalet_Dormitories';
 			case 'dormitories/dorm':
 				if ($acl->sruWalet('dorm', 'view', $get->dormAlias)) {
 					return 'SruWalet_Dorm';

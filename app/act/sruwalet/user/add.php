@@ -50,7 +50,6 @@ extends UFact {
 			$id = $bean->save();
 			$req = $this->_srv->get('req');
 			$req->get->userId = $id;
-			$req->get->login = $bean->login;
 			$req->get->password = $password;
 
 			$this->postDel(self::PREFIX);

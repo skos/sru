@@ -13,6 +13,7 @@ extends UFact {
 			$this->begin();
 			$bean = UFra::factory('UFbean_Sru_User');
 			$bean->getByPK((int)$this->_srv->get('req')->get->userId);
+			$active = $bean->active;
 			$post = $this->_srv->get('req')->post->{self::PREFIX};
 			$login = $bean->login;
 			$dormitoryId = $bean->dormitoryId;
@@ -20,6 +21,13 @@ extends UFact {
 			$bean->fillFromPost(self::PREFIX, array('password', 'referralStart', 'referralEnd'));
 			$bean->modifiedById = $this->_srv->get('session')->authWaletAdmin;
 			$bean->modifiedAt = NOW;
+
+			if ($post['dormitory'] != $dormitoryId && $active) {
+				throw UFra::factory('UFex_Dao_DataNotValid', 'Move active user', 0, E_WARNING, array('dormitory' => 'movedActive'));
+			}
+			if (isset($post['referralStart']) && $post['referralStart'] != '' && isset($post['referralEnd']) && $post['referralEnd'] != '') {
+				throw UFra::factory('UFex_Dao_DataNotValid', 'Both referral dates', 0, E_WARNING, array('referralStart' => 'both'));
+			}
 			if (isset($post['referralEnd']) && $post['referralEnd'] == '') {
 				if (!$bean->active) {
 					throw UFra::factory('UFex_Dao_DataNotValid', 'Inactive without referral end', 0, E_WARNING, array('referralEnd' => 'inactive'));
@@ -50,6 +58,11 @@ extends UFact {
 				$title = $box->dataChangedMailTitle($bean);
 				$body = $box->dataChangedMailBody($bean, $history);
 				$sender->send($bean, $title, $body, self::PREFIX);
+			}
+
+			if (!$active && $bean->active) {
+				$req = $this->_srv->get('req');
+				$req->get->activated = true;
 			}
 
 			$this->postDel(self::PREFIX);

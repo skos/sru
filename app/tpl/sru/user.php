@@ -48,6 +48,7 @@ extends UFtpl_Common {
 		'facultyId' => 'Wybierz wydział',
 		'studyYearId' => 'Wybierz rok studiów',
 		'dormitory' => 'Wybierz akademik',
+		'dormitory/movedActive' => 'Przed zmianą DSu należy wymeldować mieszkańca',
 		'locationAlias' => 'Podaj pokój',
 		'locationAlias/noDormitory' => 'Wybierz akademik',
 		'locationAlias/noRoom' => 'Pokój nie istnieje',
@@ -58,6 +59,7 @@ extends UFtpl_Common {
 		'registryNo/duplicated' => 'Nr indeksu przypisany do innego mieszkańca',
 		'referralStart/active' => 'Zameldowany mieskzaniec musi mieć podaną datę początku skierowania',
 		'referralStart/5' => 'Nieprawidłowa data początku skierowania',
+		'referralStart/both' => 'Zameldowany mieszkaniec powinien mieć ustawioną tylko datę początku skierowania, zaś niezameldowany tylko datę końca skierowania.',
 		'referralEnd/inactive' => 'Niezameldowany mieszkaniec musi mieć podaną datę końca skierowania',
 		'referralEnd/5' => 'Nieprawidłowa data końca skierowania',
 	);
@@ -89,12 +91,12 @@ extends UFtpl_Common {
 		echo '<p>'.$d['name'].' '.$d['surname'].'</p>';
 	}
 
-	public function formAdd(array $d, $dormitories, $faculties) {
+	public function formAdd(array $d, $dormitories, $faculties, $surname, $registryNo) {
 		$form = UFra::factory('UFlib_Form', 'userAdd', $d, $this->errors);
 
 		echo $form->name('Imię', array('class'=>'required'));
-		echo $form->surname('Nazwisko', array('class'=>'required'));
-		echo $form->registryNo('Nr indeksu');
+		echo $form->surname('Nazwisko', array('class'=>'required', 'value'=>(is_null($surname) ? '' : $surname)));
+		echo $form->registryNo('Nr indeksu', array('value'=>(is_null($registryNo) ? '' : $registryNo)));
 		$tmp = array();
 		foreach ($dormitories as $dorm) {
 			$temp = explode("ds", $dorm['alias']);
@@ -501,6 +503,7 @@ changeVisibility();
 		echo $form->lang('Język', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$languages),
+			'after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Wiadomości e-mail i GG będa przychodziły w wybranym języku.<br/><br/>You will receive e-mails and gg messages in the chosen language." /><br/>',
 		));
 		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
 		if ($d['active'] && !$this->_srv->get('msg')->get('userEdit/errors/referralEnd')) {
@@ -535,6 +538,9 @@ function changeUnregisterVisibility() {
 		ac.checked = true;
 	}
 }
+</script>
+<script>
+$("#main img[title]").tooltip({ position: "center right"});
 </script><?
 	}
 

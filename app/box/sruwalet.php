@@ -94,6 +94,26 @@ extends UFbox {
 		return $this->render(__FUNCTION__, $d);
 	}
 
+	public function addUserLink() {
+		try {
+			$get = $this->_srv->get('req')->get;
+			$tmp = array();
+			try {
+				$tmp['surname'] = $get->searchedSurname;
+			} catch (UFex_Core_DataNotFound $e) {
+			}
+			try {
+				$tmp['registryNo'] = $get->searchedRegistryNo;
+			} catch (UFex_Core_DataNotFound $e) {
+			}
+			$d['searched'] = $tmp;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render('userSearchResultsNotFound');
+		}
+	}
+
 	public function userSearchResults() {
 		try {
 			$bean = UFra::factory('UFbean_Sru_UserList');
@@ -198,6 +218,19 @@ extends UFbox {
 			$faculties = UFra::factory('UFbean_Sru_FacultyList');
 			$faculties->listAll();
 			$bean = UFra::factory('UFbean_Sru_User');
+
+			$get = $this->_srv->get('req')->get;
+			$tmp = array();
+			try {
+				$d['surname'] = $get->inputSurname;
+			} catch (UFex_Core_DataNotFound $e) {
+				$d['surname'] = null;
+			}
+			try {
+				$d['registryNo'] = $get->inputRegistryNo;
+			} catch (UFex_Core_DataNotFound $e) {
+				$d['registryNo'] = null;
+			}
 	
 			$d['user'] = $bean;
 			$d['dormitories'] = $dorms;
@@ -211,8 +244,16 @@ extends UFbox {
 
 	public function userPrint() {
 		try {
-			$d['login'] = $this->_srv->get('req')->get->login;
-			$d['password'] = $this->_srv->get('req')->get->password;
+			try {
+				$d['login'] = $this->_srv->get('req')->get->login;
+			} catch (UFex_Core_DataNotFound $e) {
+				return $this->render(__FUNCTION__.'Error');
+			}
+			try {
+				$d['password'] = $this->_srv->get('req')->get->password;
+			} catch (UFex_Core_DataNotFound $e) {
+				$d['password'] = null;
+			}
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
@@ -236,18 +277,6 @@ extends UFbox {
 			} catch (UFex_Dao_NotFound $e) {
 				$d['rooms'] = null;
 			}
-		
-			return $this->render(__FUNCTION__, $d);
-		} catch (UFex_Dao_NotFound $e) {
-			return $this->render(__FUNCTION__.'NotFound', $d);
-		}
-	}
-
-	public function dormitories() {
-		try {
-			$dorms = UFra::factory('UFbean_Sru_DormitoryList');
-			$dorms->listAll();
-			$d['dormitories'] = $dorms;
 		
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
