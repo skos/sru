@@ -7,6 +7,7 @@ extends UFact {
 
 	const PREFIX = 'switchPortsEdit';
 	const PREFIX_COPY = 'copyAliasesFromSwitch';
+	const MAX_PORT_NAME = 64;
 
 	public function go() {
 		try {
@@ -57,15 +58,27 @@ extends UFact {
 					$hp = UFra::factory('UFlib_Snmp_Hp', $switch->ip);
 					$result = false;
 					if ($port['locationAlias'] != '') {
-						$result = $hp->setPortAlias($port['ordinalNo'], $port['locationAlias']);
+						if ($port['comment'] != '') {
+							$name = $port['locationAlias'] . ': ' . $hp->removeSpecialChars($port['comment']);
+							$name = substr($name, 0, self::MAX_PORT_NAME);
+							$result = $hp->setPortAlias($bean->ordinalNo, $name);
+						} else {
+							$result = $hp->setPortAlias($bean->ordinalNo, $port['locationAlias']);
+						}
 					} else if ($port['connectedSwitchId'] != '') {
 						$connectedSwitch = UFra::factory('UFbean_SruAdmin_Switch');
 						$connectedSwitch->getByPK($port['connectedSwitchId']);
-						$result = $hp->setPortAlias($bean->ordinalNo, $connectedSwitch->dormitoryAlias.'-hp'.$connectedSwitch->hierarchyNo);
+						if ($port['comment'] != '') {
+							$name = $connectedSwitch->dormitoryAlias.'-hp'.$connectedSwitch->hierarchyNo . ': ' . $hp->removeSpecialChars($port['comment']);
+							$name = substr($name, 0, self::MAX_PORT_NAME);
+							$result = $hp->setPortAlias($bean->ordinalNo, $name);
+						} else {
+							$result = $hp->setPortAlias($bean->ordinalNo, $connectedSwitch->dormitoryAlias.'-hp'.$connectedSwitch->hierarchyNo);
+						}
 					} else if ($port['comment'] != '') {
-						$result = $hp->setPortAlias($port['ordinalNo'], $port['comment']);
+						$result = $hp->setPortAlias($bean->ordinalNo, $hp->removeSpecialChars($port['comment']));
 					} else {
-						$result = $hp->setPortAlias($port['ordinalNo'], '');
+						$result = $hp->setPortAlias($bean->ordinalNo, '');
 					}
 					if (!$result) {
 						throw UFra::factory('UFex_Dao_DataNotValid', 'Writing to switch error', 0, E_WARNING, array('switch' => 'writingError'));
