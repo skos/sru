@@ -18,6 +18,7 @@ extends UFtpl_Common {
 		10 => 'Uzupełniające 1',
 		11 => 'Uzupełniające 2',
 		0 => 'N/D',
+		-1 => '',
 	);
 
 	static public $languages = array(
@@ -33,6 +34,7 @@ extends UFtpl_Common {
 		'password' => 'Hasło musi mieć co najmniej 6 znaków',
 		'password/tooShort' => 'Hasło musi mieć co najmniej 6 znaków',
 		'password/mismatch' => 'Hasła się różnią',
+		'password/needNewOne' => 'Musisz zdefiniować nowe hasło',
 		'name' => 'Podaj imię',
 		'name/regexp' => 'Imię zawiera niedozwolone znaki',
 		'name/textMax' => 'Imię jest za długie',
@@ -40,6 +42,7 @@ extends UFtpl_Common {
 		'surnname/regexp' => 'Nazwisko zawiera niedozwolone znaki',
 		'surname/textMax' => 'Nazwisko jest za długie',
 		'email' => 'Podaj prawidłowy email',
+		'email/notnull' => 'Podaj prawidłowy email',
 		'gg' => 'Podaj prawidłowy numer',
 		'gg/textMin' => 'Numer zbyt krótki',
 		'facultyId' => 'Wybierz wydział',
@@ -124,30 +127,37 @@ $("#main img[title]").tooltip({ position: "center right"});
 
 	public function formEdit(array $d, $faculties) {
 		if (is_null($d['facultyId'])) {
-			$d['facultyId'] = '0';
+			$d['facultyId'] = '-1';
 		}
-		if (is_null($d['studyYearId'])) {
-			$d['studyYearId'] = '0';
+		if (is_null($d['studyYearId']) || is_null($d['email'])) {
+			$d['studyYearId'] = '-1';
 		}
 		$form = UFra::factory('UFlib_Form', 'userEdit', $d, $this->errors);
 
 
 		echo '<h1>'.$d['name'].' '.$d['surname'].'</h1>';
-		if ($this->_srv->get('msg')->get('userEdit/errors/ip/noFree')) {
-			echo $this->ERR('Nie ma wolnych IP w tym DS-ie - skontaktuj się ze swoim administratorem lokalnym w godzinach dyżurów');
+		if ($d['updateNeeded']) {
+			echo $this->ERR('Dane na Twoim koncie wymagają aktualizacji. Prosimy o wypełnienie prawidłowymi danymi wszystkich wymaganych pól (oznaczonych czerwoną obwódką). W celu ułatwienia kontaktu ze SKOS, możesz wypełnić także pola niewymagane.');
+		}
+		if (is_null($d['email'])) {
+			echo $this->ERR('Twoje konto zostało dopiero założone. Wymagana jest zmiana hasła.');
 		}
 		$tmp = array();
 		foreach ($faculties as $fac) {
 			$tmp[$fac['id']] = $fac['name'];
 		}
+		
 		$tmp['0'] = 'N/D';
+		$tmp['-1'] = '';
 		echo $form->facultyId('Wydział', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize($tmp),
+			'class'=>'required',
 		));
 		echo $form->studyYearId('Rok studiów', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$studyYears),
+			'class'=>'required',
 		));
 		echo $form->gg('Gadu-Gadu', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Jeżeli podasz nr GG, będą na niego przesyłane informacje o zmianie statusu konta i Twoich komputerów." /><br/>'));
 		echo $form->lang('Język', array(
@@ -157,11 +167,19 @@ $("#main img[title]").tooltip({ position: "center right"});
 		));
 
 		echo $form->_fieldset('Zmiana chronionych danych');
+		if (is_null($d['email'])) {
+			echo $form->password3('Aktualne hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
+			echo '<p>Do zmiany poniższych danych wymagane jest podanie aktualnego hasła.</p>';
+			echo $form->email('E-mail', array('class'=>'required'));
+			echo $form->password('Nowe hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
+			echo $form->password2('Potwierdź hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
+		} else {
 			echo $form->password3('Aktualne hasło', array('type'=>$form->PASSWORD));
 			echo '<p>Do zmiany poniższych danych wymagane jest podanie aktualnego hasła.</p>';
-			echo $form->email('E-mail');
-			echo $form->password('Nowe hasło', array('type'=>$form->PASSWORD ));
+			echo $form->email('E-mail', array('class'=>'required'));
+			echo $form->password('Nowe hasło', array('type'=>$form->PASSWORD));
 			echo $form->password2('Potwierdź hasło', array('type'=>$form->PASSWORD));
+		}
 		echo $form->_end();
 
 ?>

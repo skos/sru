@@ -20,8 +20,18 @@ extends UFact {
 			$bean = UFra::factory('UFbean_Sru_User');
 			$post = $this->_srv->get('req')->post->{self::PREFIX};
 			$bean->getFromSession();
-			$bean->fillFromPost(self::PREFIX, array('email', 'login','password','facultyId','studyYearId'));
 
+			// jesli nowe konto, niech zaktualizuje hasło!
+			if (is_null($bean->email) || $bean->email == '') {
+				if (!isset($post['password']) || $post['password'] == '' ) {
+					throw UFra::factory('UFex_Dao_DataNotValid', 'Need to set new password', 0, E_WARNING, array('password' => 'needNewOne'));
+				}
+			}
+			if (!isset($post['email']) || $post['email'] == '') {
+				throw UFra::factory('UFex_Dao_DataNotValid', 'Email not null', 0, E_WARNING, array('email' => 'notnull'));
+			}
+
+			$bean->fillFromPost(self::PREFIX, array('email', 'login','password','facultyId','studyYearId'));
 
 			if (isset($post['password']) && $post['password'] != '' ) {
 				$this->checkOldPassword($bean, $post);
@@ -46,6 +56,7 @@ extends UFact {
 			}
 			$bean->facultyId = $post['facultyId'];
 			$bean->studyYearId = $post['studyYearId'];
+			$bean->updateNeeded = false;
 
 			$bean->modifiedById = null;
 			$bean->modifiedAt = NOW;

@@ -18,7 +18,7 @@ extends UFtpl_Common {
 		if ($this->_srv->get('msg')->get('userConfirm/errors/token/invalid')) {
 			echo $this->ERR('Token w linku jest nieprawidłowy.');
 		} elseif ($this->_srv->get('msg')->get('userLogin/errors')) {
-			echo $this->ERR('Nieprawidłowy login lub hasło. Czy aktywowałeś swoje konto u administratora?');
+			echo $this->ERR('Nieprawidłowy login lub hasło. Czy aktywowałeś swoje konto w administracji DS?');
 		}
 		echo $d['user']->write('formLogin');
 		echo $form->_submit('Zaloguj');

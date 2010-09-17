@@ -18,7 +18,7 @@ extends UFact {
 
 			// tworzymy login
 			$user = UFra::factory('UFbean_Sru_User');
-			$login = strtolower(substr($bean->name, 0, 2).substr($bean->surname, 0, 3));
+			$login = strtolower(substr(UFlib_Helper::removeSpecialChars($bean->name), 0, 2).substr(UFlib_Helper::removeSpecialChars($bean->surname), 0, 3));
 			$used = true;
 			try {
 				$user->getByLogin($login);

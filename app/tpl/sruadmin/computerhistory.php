@@ -123,7 +123,7 @@ extends UFtpl_Common {
 		if (is_null($curr['modifiedBy'])) {
 			$changed = 'UŻYTKOWNIK';
 		} else {
-			$changed = '<a href="'.$url.$curr['modifiedById'].'">'.$this->_escape($curr['modifiedBy']).'</a>';
+			$changed = '<a href="'.$urlAdmin.$curr['modifiedById'].'">'.$this->_escape($curr['modifiedBy']).'</a>';
 		}
 		echo date(self::TIME_YYMMDD_HHMM, $curr['modifiedAt']).' &mdash; '.$changed;
 		echo '<ul><li>Utworzono</li></ul>';

@@ -10,6 +10,17 @@ extends UFctl {
 		$get = $req->get;
 		$acl = $this->_srv->get('acl');
 
+		try {
+			$user = UFra::factory('UFbean_Sru_User');
+			$user->getFromSession();
+
+			if ($user->updateNeeded) {
+				$get->view = 'user/edit';
+				return;
+			}
+		} catch (UFex_Core_DataNotFound $e) {
+		}
+
 		$segCount = $req->segmentsCount();
 		if (0 == $segCount) {
 			$get->view = 'user/main';

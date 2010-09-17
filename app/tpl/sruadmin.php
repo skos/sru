@@ -368,7 +368,7 @@ extends UFtpl_Common {
 		if ($this->_srv->get('msg')->get('userEdit/loginChanged')) {
 			echo $this->OK('W związku ze zmianą loginu, użytkownik będzie musiał przejść procedurę zmiany hasła.');
 		}
-		echo $d['user']->write('formEditAdmin', $d['dormitories'], $d['faculties']);
+		echo $d['user']->write('formEditAdmin', $d['faculties']);
 		echo $form->_submit('Zapisz');
 		echo $form->_end();
 		echo $form->_end(true);

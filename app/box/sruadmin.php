@@ -443,8 +443,6 @@ extends UFbox {
 	public function userEdit() {
 		try {
 			$bean = $this->_getUserFromGet();
-			$dorms = UFra::factory('UFbean_Sru_DormitoryList');
-			$dorms->listAll();
 
 			try {
 				$get = $this->_srv->get('req')->get;
@@ -461,7 +459,6 @@ extends UFbox {
 			$faculties->listAll();
 
 			$d['user'] = $bean;
-			$d['dormitories'] = $dorms;
 			$d['faculties'] = $faculties;
 
 			return $this->render(__FUNCTION__, $d);
