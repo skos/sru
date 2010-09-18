@@ -67,10 +67,7 @@ extends UFctl {
 										case ':print':
 											$get->view = 'users/user/print';
 											if ($segCount > 3) {
-												$get->login = $req->segment(4);
-											}
-											if ($segCount > 4) {
-												$get->password = $req->segment(5);
+												$get->password = $req->segment(4);
 											}
 											break;
 										default:

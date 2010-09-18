@@ -32,7 +32,10 @@ extends UFact {
 			}
 
 			$bean->fillFromPost(self::PREFIX, array('email', 'login','password','facultyId','studyYearId'));
-
+			if (isset($post['email']) && $post['email'] != $bean->email) {
+				$this->checkOldPassword($bean, $post);
+				$bean->email = $post['email'];
+			}
 			if (isset($post['password']) && $post['password'] != '' ) {
 				$this->checkOldPassword($bean, $post);
 			
@@ -46,10 +49,6 @@ extends UFact {
 					throw UFra::factory('UFex_Dao_DataNotValid', 'Data "password" too short', 0, E_WARNING, array('password' => 'tooShort'));
 				}
 				$bean->password = $bean->generatePassword($bean->login, $post['password']);
-			}
-			if (isset($post['email']) && $post['email'] != $bean->email) {
-				$this->checkOldPassword($bean, $post);
-				$bean->email = $post['email'];
 			}
 			if (isset($post['facultyId']) && $post['facultyId'] == '0' && isset($post['studyYearId']) && $post['studyYearId'] != '0') {
 				throw UFra::factory('UFex_Dao_DataNotValid', 'Data "studyYearId" differ from "N/A"', 0, E_WARNING, array('studyYearId' => 'noFaculty'));

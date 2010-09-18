@@ -99,12 +99,12 @@ extends UFtpl_Common {
 		echo $form->registryNo('Nr indeksu', array('value'=>(is_null($registryNo) ? '' : $registryNo)));
 		$tmp = array();
 		foreach ($dormitories as $dorm) {
-			$temp = explode("ds", $dorm['alias']);
+			$temp = explode("ds", $dorm['dormitoryAlias']);
 			if (!isset($temp[1])) {
-				$temp[1] = $dorm['alias'];
+				$temp[1] = $dorm['dormitoryAlias'];
 			} else if($temp[1] == '5l')
 				$temp[1] = '5Ł';
-			$tmp[$dorm['id']] = $temp[1] . ' ' . $dorm['name'];
+			$tmp[$dorm['dormitoryId']] = $temp[1] . ' ' . $dorm['dormitoryName'];
 		}
 		echo $form->dormitory('Akademik', array(
 			'type' => $form->SELECT,
@@ -470,12 +470,12 @@ changeVisibility();
 		echo $form->registryNo('Nr indeksu');
 		$tmp = array();
 		foreach ($dormitories as $dorm) {
-			$temp = explode("ds", $dorm['alias']);
+			$temp = explode("ds", $dorm['dormitoryAlias']);
 			if (!isset($temp[1])) {
-				$temp[1] = $dorm['alias'];
+				$temp[1] = $dorm['dormitoryAlias'];
 			} else if($temp[1] == '5l')
 				$temp[1] = '5Ł';
-			$tmp[$dorm['id']] = $temp[1] . ' ' . $dorm['name'];
+			$tmp[$dorm['dormitoryId']] = $temp[1] . ' ' . $dorm['dormitoryName'];
 		}
 		echo $form->dormitory('Akademik', array(
 			'type' => $form->SELECT,

@@ -17,7 +17,6 @@ extends UFtpl_Common {
 </head>
 <body>
 <div id="body">
-<table><tr><td><img src="<?=UFURL_BASE;?>/i/skoslogo.png" alt="logo SKOS"/></td><td><h3>Osiedle Studenckie Politechniki Gdańskiej</h3></td><td><img src="<?=UFURL_BASE;?>/i/herbpg.png" alt="herb PG"/></td></tr></table>
 <div id="main">
 <?=$d['body'];?>
 </div><!-- main -->

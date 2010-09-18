@@ -89,6 +89,9 @@ extends UFbeanSingle {
 	}
 
 	protected function validateRegistryNo($val, $change) {
+		if (is_null($val) || $val == '') {
+			return;
+		}
 		try {
 			$bean = UFra::factory('UFbean_Sru_User');
 			$bean->getByRegistryNo($val);

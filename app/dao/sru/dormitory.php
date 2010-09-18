@@ -13,6 +13,16 @@ extends UFdao {
 
 		return $this->doSelect($query);
 	}
+
+	public function listAllForWalet() {
+		$mapping = $this->mapping('listWalet');
+
+		$query = $this->prepareSelect($mapping);
+		$query->order($mapping->dormitoryId);
+
+		return $this->doSelect($query);
+	}
+
 	public function getByAlias($alias) {
 		$mapping = $this->mapping('get');
 

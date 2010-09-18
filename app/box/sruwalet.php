@@ -169,8 +169,20 @@ extends UFbox {
 	public function userEdit() {
 		try {
 			$bean = $this->_getUserFromGet();
-			$dorms = UFra::factory('UFbean_Sru_DormitoryList');
-			$dorms->listAll();
+
+			$admin = UFra::factory('UFbean_SruWalet_Admin');
+			$admin->getFromSession();
+			if ($admin->typeId != UFacl_SruWalet_Admin::HEAD) {
+				try {
+					$dorms = UFra::factory('UFbean_SruWalet_AdminDormitoryList');
+					$dorms->listAllById($admin->id);
+				} catch (UFex_Dao_NotFound $e) {
+					$dorms = null;
+				}
+			} else {
+				$dorms = UFra::factory('UFbean_Sru_DormitoryList');
+				$dorms->listAllForWalet();
+			}
 
 			$d['user'] = $bean;
 			$d['dormitories'] = $dorms;
@@ -213,16 +225,29 @@ extends UFbox {
 
 	public function userAdd() {
 		try {
-			$dorms = UFra::factory('UFbean_Sru_DormitoryList');
-			$dorms->listAll();
 			$faculties = UFra::factory('UFbean_Sru_FacultyList');
 			$faculties->listAll();
+
+			$admin = UFra::factory('UFbean_SruWalet_Admin');
+			$admin->getFromSession();
+			if ($admin->typeId != UFacl_SruWalet_Admin::HEAD) {
+				try {
+					$dorms = UFra::factory('UFbean_SruWalet_AdminDormitoryList');
+					$dorms->listAllById($admin->id);
+				} catch (UFex_Dao_NotFound $e) {
+					$dorms = null;
+				}
+			} else {
+				$dorms = UFra::factory('UFbean_Sru_DormitoryList');
+				$dorms->listAllForWalet();
+			}
+
 			$bean = UFra::factory('UFbean_Sru_User');
 
 			$get = $this->_srv->get('req')->get;
 			$tmp = array();
 			try {
-				$d['surname'] = $get->inputSurname;
+				$d['surname'] = ucwords(strtolower($get->inputSurname));
 			} catch (UFex_Core_DataNotFound $e) {
 				$d['surname'] = null;
 			}
@@ -245,7 +270,8 @@ extends UFbox {
 	public function userPrint() {
 		try {
 			try {
-				$d['login'] = $this->_srv->get('req')->get->login;
+				$bean = $this->_getUserFromGet();
+				$d['user'] = $bean;
 			} catch (UFex_Core_DataNotFound $e) {
 				return $this->render(__FUNCTION__.'Error');
 			}
@@ -254,6 +280,10 @@ extends UFbox {
 			} catch (UFex_Core_DataNotFound $e) {
 				$d['password'] = null;
 			}
+
+			$conf = UFra::shared('UFconf_Sru');
+			$d['userPrintWaletText'] = $conf->userPrintWaletText;
+			$d['userPrintSkosText'] = $conf->userPrintSkosText;
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
