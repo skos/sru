@@ -210,7 +210,7 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 
 	public function userPrint(array $d) {
 		echo '<h3>Witamy w Osiedlu Studenckim Politechniki Gdańskiej!</h3>';
-		echo '<p>Aby zalogować się na swoje konto w Systemie Rejestracji Użytkownika (http://sru.ds.pg.gda.pl) skorzystaj z następujących danych:<br/><br/>
+		echo '<p>Aby zalogować się na swoje konto w Systemie Rejestracji Użytkowników (http://sru.ds.pg.gda.pl) skorzystaj z następujących danych:<br/><br/>
 			<i>login:</i> '.$d['user']->login.'<br/>';
 		if (is_null($d['password'])) {
 			echo '<br/>Użyj tego samego hasła, jakiego używał(a/e)ś poprzednio. Jeśli nie pamiętasz go, skorzystaj z przypomnienia hasła na SRU lub odwiedź administratora w godzinach dyżuru. Nie zapomnij wejściówki! Aby mieć Internet, po zalogowaniu się przywróć swoje komputery.';
