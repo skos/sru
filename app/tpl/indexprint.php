@@ -20,9 +20,6 @@ extends UFtpl_Common {
 <div id="main">
 <?=$d['body'];?>
 </div><!-- main -->
-<div id="foot">
-&copy;&nbsp;SKOS PG</a>
-</div><!-- foot -->
 </div><!-- body -->
 </body>
 <script type="text/javascript">
