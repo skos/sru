@@ -228,6 +228,17 @@ $("#main img[title]").tooltip({ position: "center right"});
 ?>
 <script>
 $("#main img[title]").tooltip({ position: "center right"});
+
+	$(function() {
+		$( "#userSearch_surname" ).autocomplete({
+			source: function(req, resp) {
+				$.getJSON("<? echo $this->url(0); ?>/users/quicksearch/" + encodeURIComponent(req.term), resp);
+			},
+			minLength: 3
+		});
+	});
+
+
 </script>
 <?
 	}

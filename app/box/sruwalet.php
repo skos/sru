@@ -142,6 +142,26 @@ extends UFbox {
 		}
 	}
 
+	public function quickUserSearchResults() {
+		try {
+			$bean = UFra::factory('UFbean_Sru_UserList');
+
+			$get = $this->_srv->get('req')->get;
+			$tmp = array();
+			try {
+				$tmp['surname'] = $get->searchedSurname.'*';
+			} catch (UFex_Core_DataNotFound $e) {
+			}
+			$bean->search($tmp);
+
+			$d['users'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}
+	}
+
 	public function titleUser() {
 		try {
 			$bean = $this->_getUserFromGet();

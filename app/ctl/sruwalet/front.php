@@ -34,6 +34,12 @@ extends UFctl {
 									}
 								}
 								break;
+							case 'quicksearch':
+								if ($segCount > 2) {
+									$get->searchedSurname = urldecode($req->segment(3));
+								}
+								$get->view = 'users/quicksearch';
+								break;
 							case ':add':
 								$get->view = 'users/user/add';
 								for ($i = 3; $i <= $segCount; ++$i) {
@@ -83,7 +89,7 @@ extends UFctl {
 					$get->view = 'inhabitants/main';
 					break;
 				case 'dormitories':
-					if (1 == $segCount) {
+					if ($segCount == 1) {
 						$get->view = 'error404';
 					} else {
 						$alias = $req->segment(2);  
@@ -200,6 +206,8 @@ extends UFctl {
 				return 'SruWalet_Main';
 			case 'users/search':
 				return 'SruWalet_UserSearchResults';
+			case 'users/quicksearch':
+				return 'SruWalet_UserQuickSearch';
 			case 'users/user':
 				return 'SruWalet_User';
 			case 'users/user/history':

@@ -112,6 +112,14 @@ extends UFtpl_Common {
 		echo '</div>';
 	}
 
+	public function quickUserSearchResults(array $d) {
+		$response = array();
+		foreach ($d['users'] as $user) {
+			$response[] = $user['surname'];
+		}
+		echo json_encode($response);
+	}
+
 	public function userSearchResultsNotFound(array $d) {
 		echo $this->ERR('Nie znaleziono.');
 	}
