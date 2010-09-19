@@ -158,7 +158,7 @@ extends UFbox {
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
-			return $this->render(__FUNCTION__.'NotFound');
+			return $this->render('userSearchResultsNotFound');
 		}
 	}
 
