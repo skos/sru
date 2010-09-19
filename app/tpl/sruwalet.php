@@ -210,6 +210,9 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 
 	public function userPrint(array $d) {
 		echo '<h3>Witamy w Osiedlu Studenckim Politechniki Gdańskiej!</h3>';
+		echo '<div style="font-size: 0.8em;">';
+		echo '<i>imię i nazwisko:</i> '.$d['user']->name.' '.$d['user']->surname.'<br/>';
+		echo '<i>zameldowanie:</i> '.$d['user']->dormitoryName.', pok. '.$d['user']->locationAlias.'<br/>';
 		echo '<p>Aby zalogować się na swoje konto w Systemie Rejestracji Użytkowników (http://sru.ds.pg.gda.pl) skorzystaj z następujących danych:<br/><br/>
 			<i>login:</i> '.$d['user']->login.'<br/>';
 		if (is_null($d['password'])) {
@@ -218,11 +221,11 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 			echo '<i>hasło:</i> '.$d['password'].'<br/><br/>
 				Zaraz po zalogowaniu zostaniesz poproszon(a/y) o zmianę hasła oraz uzupełnienie swoich danych kontaktowych i statystycznych.';
 		}
-		echo '<hr/>';
+		echo '</p><hr/>';
 		echo $d['userPrintWaletText'];
 		echo '<hr/>';
 		echo $d['userPrintSkosText'];
-		echo '<hr/>';
+		echo '<hr/></div>';
 	}
 
 	public function userPrintError() {

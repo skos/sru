@@ -21,7 +21,7 @@ extends UFtpl_Common {
 <?=$d['body'];?>
 </div><!-- main -->
 <div id="foot">
-&copy;&nbsp;SKOS</a>
+&copy;&nbsp;SKOS PG</a>
 </div><!-- foot -->
 </div><!-- body -->
 </body>

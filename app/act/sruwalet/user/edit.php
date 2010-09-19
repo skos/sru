@@ -13,7 +13,10 @@ extends UFact {
 			$this->begin();
 			$bean = UFra::factory('UFbean_Sru_User');
 			$bean->getByPK((int)$this->_srv->get('req')->get->userId);
+
 			$active = $bean->active;
+			$referralStart = $bean->referralStart;
+
 			$post = $this->_srv->get('req')->post->{self::PREFIX};
 			$login = $bean->login;
 			$dormitoryId = $bean->dormitoryId;
@@ -60,7 +63,7 @@ extends UFact {
 				$sender->send($bean, $title, $body, self::PREFIX);
 			}
 
-			if (!$active && $bean->active) {
+			if ((!$active && $bean->active) || ((is_null($referralStart) || $referralStart == '') && !is_null($bean->referralStart) && $bean->referralStart != '')) {
 				$req = $this->_srv->get('req');
 				$req->get->activated = true;
 			}
