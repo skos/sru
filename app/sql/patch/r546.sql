@@ -8,7 +8,6 @@ CREATE SEQUENCE admins_dormitories_id_seq
   MAXVALUE 9223372036854775807
   START 1
   CACHE 1;
-ALTER TABLE admins_dormitories_id_seq OWNER TO postgres;
 
 -- Table: admins_dormitories
 
@@ -16,7 +15,7 @@ ALTER TABLE admins_dormitories_id_seq OWNER TO postgres;
 
 CREATE TABLE admins_dormitories
 (
-  id bigserial NOT NULL,
+  id bigint DEFAULT nextval('admins_dormitories_id_seq'::regclass) NOT NULL,
   "admin" bigint,
   dormitory bigint,
   CONSTRAINT admins_dormitories_pkey PRIMARY KEY (id),
