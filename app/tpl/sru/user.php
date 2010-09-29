@@ -305,7 +305,6 @@ $(document).ready(function()
 		$urlUser = $url.'/users/'.$d['id'];
 		echo '<h1>'.$this->_escape($d['name']).' '.$this->_escape($d['surname']).'</h1>';
 		echo '<p><em>Login:</em> '.$d['login'].(!$d['active']?' <strong>(konto nieaktywne)</strong>':'').'</p>';
-		echo '<p><em>Nr indeksu:</em> '.$d['registryNo'].'</p>';
 		echo '<p><em>E-mail:</em> <a href="mailto:'.$d['email'].'">'.$d['email'].'</a></p>';
 		if ($d['gg']) {
 			echo '<p><em>Gadu-Gadu:</em> <a href="gg:'.$d['gg'].'">'.$d['gg'].'</a></p>';
