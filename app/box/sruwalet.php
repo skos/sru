@@ -267,7 +267,7 @@ extends UFbox {
 			$get = $this->_srv->get('req')->get;
 			$tmp = array();
 			try {
-				$d['surname'] = ucwords(strtolower($get->inputSurname));
+				$d['surname'] = mb_convert_case($get->inputSurname, MB_CASE_TITLE, "UTF-8");
 			} catch (UFex_Core_DataNotFound $e) {
 				$d['surname'] = null;
 			}
