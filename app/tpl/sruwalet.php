@@ -117,7 +117,7 @@ extends UFtpl_Common {
 		foreach ($d['users'] as $user) {
 			$response[] = $user['surname'];
 		}
-		echo json_encode(array_values(array_unique($response, SORT_STRING)));
+		echo json_encode(array_values(array_unique($response)));
 	}
 
 	public function userSearchResultsNotFound(array $d) {

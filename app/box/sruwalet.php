@@ -152,7 +152,7 @@ extends UFbox {
 				$tmp['surname'] = $get->searchedSurname.'*';
 			} catch (UFex_Core_DataNotFound $e) {
 			}
-			$bean->search($tmp);
+			$bean->quickSearch($tmp);
 
 			$d['users'] = $bean;
 
