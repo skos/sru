@@ -212,8 +212,14 @@ changeVisibility();
 		if ($this->_srv->get('msg')->get('computerEdit/errors/comp/second')) {
 			echo $this->ERR($this->errors['comp/second']);
 		}
+		if ($this->_srv->get('msg')->get('computerEdit/errors/host/duplicated')) {
+			echo $this->ERR('Nazwa jest już zajęta. Skorzystaj z <a href="'.$this->url(0).'/computers/:add">formularza dodawania nowego komputera</a>.');
+		}
 		if ($activate) {
-			$d['availableTo'] = date(self::TIME_YYMMDD, $d['availableMaxTo']);
+			$conf = UFra::shared('UFconf_Sru');
+			$date = $conf->computerAvailableMaxTo;
+			$d['availableTo'] = $date;
+			$d['availableMaxTo'] = strtotime($date);
 		} else {
 			$d['availableTo'] = date(self::TIME_YYMMDD, $d['availableTo']);
 		}

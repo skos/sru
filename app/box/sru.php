@@ -136,26 +136,29 @@ extends UFbox {
 		$bean = UFra::factory('UFbean_Sru_Computer');
 		$user = UFra::factory('UFbean_Sru_User');
 		$user->getFromSession();
+		$prohibited = array('.', '@', '_');
 		
 		$used = true;
+		$login = $user->login;
+		$login = str_replace($prohibited, '', $login);
 		try {
-			$bean->getByHost($user->login);
+			$bean->getByHost($login);
 		} catch (UFex_Dao_NotFound $e) {
 			$used = false;
 		}
 		if ($used) {
 			for($i = 1; $i < 100; $i++) {
 				try {
-					$bean->getByHost($user->login.$i);
+					$bean->getByHost($login.$i);
 				} catch (UFex_Dao_NotFound $e) {
 					$used = false;
 					break;
 				}
 			}
 			$bean = UFra::factory('UFbean_Sru_Computer');
-			$bean->host = $user->login.$i;
+			$bean->host = $login.$i;
 		} else {
-			$bean->host = $user->login;
+			$bean->host = $login;
 		}
 
 		$d['computer'] = $bean;

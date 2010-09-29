@@ -14,6 +14,8 @@ extends UFact {
 
 			$bean = UFra::factory('UFbean_Sru_Computer');
 			$bean->getByPK((int)$this->_srv->get('req')->get->computerId);
+			$user = UFra::factory('UFbean_Sru_User');
+			$user->getByPK($bean->userId);
 
 			// w przypadku, gdy pole IP jest puste, pobieramy pierwszy wolny
 			// IP w danym DS
@@ -56,7 +58,7 @@ extends UFact {
 				$this->_srv->get('req')->post->{self::PREFIX} = $post;
 			}
 			$bean->fillFromPost(self::PREFIX); // zgodnie z ticketem #176 filtr wyłączony
-			if (!$bean->active && $bean->availableMaxTo > NOW) {
+			if (!$bean->active && $bean->availableMaxTo > NOW && $user->active) {
 				// przywrocenie aktywnosci komputera, jezeli podano
 				// przyszla date waznosci rejestracji
 				$bean->active = true;

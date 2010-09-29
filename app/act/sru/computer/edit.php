@@ -12,9 +12,15 @@ extends UFact {
 		try {
 			$bean = UFra::factory('UFbean_Sru_Computer');
 			$bean->getByUserIdPK((int)$this->_srv->get('session')->auth, (int)$this->_srv->get('req')->get->computerId);
+			$bean->host = $bean->host; // aby wywołać walidację
 			$user = UFra::factory('UFbean_Sru_User');
 			$user->getByPK($bean->userId);
 			$bean->fillFromPost(self::PREFIX, null, array('mac', 'availableTo'));
+			if (!$bean->active) {
+				$conf = UFra::shared('UFconf_Sru');
+				$date = $conf->computerAvailableMaxTo;
+				$bean->availableMaxTo = strtotime($date);
+			}
 			if ($bean->availableTo > $bean->availableMaxTo) {
 				$bean->availableTo = $bean->availableMaxTo;
 			}
