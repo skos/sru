@@ -76,15 +76,17 @@ $(document).ready(function()
 		$url = $this->url(0);
 		echo '<h2>'.$this->_escape($d['name']).'<br/><small>('.$this->adminTypes[$d['typeId']].' &bull; ostatnie logowanie: '.date(self::TIME_YYMMDD_HHMM, $d['lastLoginAt']).')</small></h2>';
 
-		echo '<p><em>Domy studenckie:</em>';
-		if (is_null($dormList)) {
-			echo ' brak przypisanych DS</p>';
-		} else {
-			echo '</p><ul>';
-			foreach ($dormList as $dorm) {
-				echo '<li><a href="'.$url.'/dormitories/'.$dorm['dormitoryAlias'].'">'.$dorm['dormitoryName'].'</a></li>';
+		if ($d['typeId'] != UFacl_SruWalet_Admin::HEAD) {
+			echo '<p><em>Domy studenckie:</em>';
+			if (is_null($dormList)) {
+				echo ' brak przypisanych DS</p>';
+			} else {
+				echo '</p><ul>';
+				foreach ($dormList as $dorm) {
+					echo '<li><a href="'.$url.'/dormitories/'.$dorm['dormitoryAlias'].'">'.$dorm['dormitoryName'].'</a></li>';
+				}
+				echo '</ul>';
 			}
-			echo '</ul>';
 		}
 
 		echo '<p><em>Login:</em> '.$d['login'].'</p>';
