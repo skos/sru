@@ -108,16 +108,31 @@ $(document).ready(function()
 		echo $form->login('Login', array('class'=>'required'));
 		echo $form->password('Hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
 		echo $form->password2('Powtórz hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
-		echo $form->name('Imię i nazwisko', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Imię i nazwisko administratora lub inne oznaczenie." /><br/>', 'class'=>'required')); 
-		echo $form->typeId('Uprawnienia', array(
+		echo $form->name('Imię i nazwisko', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Imię i nazwisko administratora lub inne oznaczenie." /><br/>', 'class'=>'required'));
+?><script type="text/javascript">
+function changeVisibility() {
+	var div = document.getElementById("dorms");
+	if (document.getElementById('adminAdd_typeId').value == 12) {
+		div.style.display = "none";
+		div.style.visibility = "hidden";
+	} else {
+		div.style.display = "block";
+		div.style.visibility = "visible";
+	}
+}
+</script><? 
+		/*echo $form->typeId('Uprawnienia', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize($this->adminTypes),
 			'after'=> ' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Kierownik OS ma uprawnienia do wszystkich części Waleta, zaś Pracownik OS jedynie do wybranych Domów Studenckich." /><br/>',
-		));
+		));*/
+		echo '<label>Uprawnienia</label>';
+		echo '<select id="adminAdd_typeId" name="adminAdd[typeId]" onChange="changeVisibility()"><option value="11" selected="selected">Pracownik OS</option><option value="12">Kierownik OS</option></select>';
+		echo ' <img alt="http://srut/i/pytajnik.png" src="http://srut/i/pytajnik.png" title="Kierownik OS ma uprawnienia do wszystkich części Waleta, zaś Pracownik OS jedynie do wybranych Domów Studenckich." />';
 
 		echo $form->_end();
 
-		echo $form->_fieldset('Domy studenckie');
+		echo '<div id="dorms">' . $form->_fieldset('Domy studenckie');
 		$post = $this->_srv->get('req')->post;
 		foreach ($dormitories as $dorm) {
 			$permission = 0;
@@ -127,7 +142,7 @@ $(document).ready(function()
 			}
 			echo $form->dormPerm($dorm['name'], array('type'=>$form->CHECKBOX, 'name'=>'adminAdd[dorm]['.$dorm['id'].']', 'id'=>'adminAdd[dorm]['.$dorm['id'].']', 'value'=>$permission));
 		}
-		echo $form->_end();
+		echo $form->_end() . '</div>';
 
 		echo $form->_fieldset();
 		echo $form->email('E-mail', array('class'=>'required'));
@@ -152,19 +167,34 @@ $("#main img[title]").tooltip({ position: "center right"});
 		echo $form->password2('Powtórz hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
 
 		if($advanced) {
-			echo $form->typeId('Uprawnienia', array(
+?><script type="text/javascript">
+function changeVisibility() {
+	var div = document.getElementById("dorms");
+	if (document.getElementById('adminAdd_typeId').value == 12) {
+		div.style.display = "none";
+		div.style.visibility = "hidden";
+	} else {
+		div.style.display = "block";
+		div.style.visibility = "visible";
+	}
+}
+</script><? 
+			echo '<label>Uprawnienia</label>';
+			echo '<select id="adminAdd_typeId" name="adminAdd[typeId]" onChange="changeVisibility()"><option value="11" selected="selected">Pracownik OS</option><option value="12">Kierownik OS</option></select>';
+			echo ' <img alt="http://srut/i/pytajnik.png" src="http://srut/i/pytajnik.png" title="Kierownik OS ma uprawnienia do wszystkich części Waleta, zaś Pracownik OS jedynie do wybranych Domów Studenckich." />';
+			/*echo $form->typeId('Uprawnienia', array(
 				'type' => $form->SELECT,
 				'labels' => $form->_labelize($this->adminTypes),
 				'after'=> ' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Kierownik OS ma uprawnienia do wszystkich części Waleta, zaś Pracownik OS jedynie do wybranych Domów Studenckich." /><br/>',
 			));	
-			echo $form->active('Aktywny <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Tylko aktywni administratorzy mogą zalogować się do Waleta." />', array('type'=>$form->CHECKBOX) );
+			echo $form->active('Aktywny <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Tylko aktywni administratorzy mogą zalogować się do Waleta." />', array('type'=>$form->CHECKBOX) );*/
 		}
 
 		echo $form->_end();
 
 		if($advanced) {
 			$post = $this->_srv->get('req')->post;
-			echo $form->_fieldset('Domy studenckie');
+			echo '<div id="dorms">' . $form->_fieldset('Domy studenckie');
 			foreach ($dormitories as $dorm) {
 				$permission = 0;
 				try {
@@ -181,7 +211,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 				}
 				echo $form->dormPerm($dorm['name'], array('type'=>$form->CHECKBOX, 'name'=>'adminEdit[dorm]['.$dorm['id'].']', 'id'=>'adminEdit[dorm]['.$dorm['id'].']', 'value'=>$permission));
 			}
-			echo $form->_end();
+			echo $form->_end() . "</div>";
 		}
 		
 		echo $form->_fieldset();
