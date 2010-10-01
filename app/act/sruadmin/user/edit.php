@@ -18,8 +18,6 @@ extends UFact {
 			$dormitoryId = $bean->dormitoryId;
 
 			$bean->fillFromPost(self::PREFIX, array('password'));
-			$bean->modifiedById = $this->_srv->get('session')->authAdmin;
-			$bean->modifiedAt = NOW;
 			if (isset($post['password']) && $post['password'] != '' ) {
 				$map = UFra::factory('UFmap_Sru_User_Set');
 				$valid = $map->valid('password');
@@ -34,9 +32,11 @@ extends UFact {
 			if (isset($post['facultyId']) && $post['facultyId'] == '0' && isset($post['studyYearId']) && $post['studyYearId'] != '0') {
 				throw UFra::factory('UFex_Dao_DataNotValid', 'Data "studyYearId" differ from "N/A"', 0, E_WARNING, array('studyYearId' => 'noFaculty'));
 			}
-				$bean->facultyId = $post['facultyId'];
-				$bean->studyYearId = $post['studyYearId'];
+			$bean->facultyId = $post['facultyId'];
+			$bean->studyYearId = $post['studyYearId'];
 
+			$bean->modifiedById = $this->_srv->get('session')->authAdmin;
+			$bean->modifiedAt = NOW;
 			$bean->save();
 
 			$conf = UFra::shared('UFconf_Sru');
