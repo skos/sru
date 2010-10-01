@@ -136,7 +136,7 @@ extends UFbox {
 		$bean = UFra::factory('UFbean_Sru_Computer');
 		$user = UFra::factory('UFbean_Sru_User');
 		$user->getFromSession();
-		$prohibited = array('.', '@', '_');
+		$prohibited = array('.', '@', '_', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0');
 		
 		$used = true;
 		$login = $user->login;

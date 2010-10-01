@@ -300,6 +300,13 @@ $(document).ready(function()
 	}
 
 	public function details(array $d) {
+		if (is_null($d['facultyId'])) {
+			$d['facultyId'] = '-1';
+		}
+		if (is_null($d['studyYearId']) || is_null($d['email'])) {
+			$d['studyYearId'] = '-1';
+		}
+
 		$url = $this->url(0);
 		$urlUser = $url.'/users/'.$d['id'];
 		echo '<h1>'.$this->_escape($d['name']).' '.$this->_escape($d['surname']).'</h1>';
