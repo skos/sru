@@ -144,8 +144,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 		if (is_null($d['email'])) {
 			echo $this->ERR('Twoje konto zostało dopiero założone. Wymagana jest zmiana hasła.');
 		}
-		echo '<p><label>Dom Studencki:</label> '.$d['dormitoryName'].'</p>';
-		echo '<p><label>Pokój:</label> '.$d['locationAlias'].'</p>';
+		echo '<p><label>Zameldowanie:</label> '.$d['dormitoryName'].', pok. '.$d['locationAlias'].'</p>';
 		if (!is_null($d['registryNo']) && $d['registryNo'] != '') {
 			echo '<p><label>Nr indeksu:</label> '.$d['registryNo'].'</p>';
 		}
