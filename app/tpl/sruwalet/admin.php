@@ -47,10 +47,10 @@ extends UFtpl_Common {
 		foreach ($d as $c) {
 			echo '<tr><td style="border-top: 1px solid;"><a href="'.$url.$c['id'].'">';
 			switch($c['typeId']) {
-				case UFacl_SruWalet_Admin::HEAD:
+				case 12:
 						echo '<strong>'.$this->_escape($c['name']).'</strong></a>';
 						break;
-				case UFacl_SruWalet_Admin::DORM:
+				case 11:
 						echo $this->_escape($c['name']).'</a>';
 						break;
 			}
@@ -76,17 +76,15 @@ $(document).ready(function()
 		$url = $this->url(0);
 		echo '<h2>'.$this->_escape($d['name']).'<br/><small>('.$this->adminTypes[$d['typeId']].' &bull; ostatnie logowanie: '.date(self::TIME_YYMMDD_HHMM, $d['lastLoginAt']).')</small></h2>';
 
-		if ($d['typeId'] != UFacl_SruWalet_Admin::HEAD) {
-			echo '<p><em>Domy studenckie:</em>';
-			if (is_null($dormList)) {
-				echo ' brak przypisanych DS</p>';
-			} else {
-				echo '</p><ul>';
-				foreach ($dormList as $dorm) {
-					echo '<li><a href="'.$url.'/dormitories/'.$dorm['dormitoryAlias'].'">'.$dorm['dormitoryName'].'</a></li>';
-				}
-				echo '</ul>';
+		echo '<p><em>Domy studenckie:</em>';
+		if (is_null($dormList)) {
+			echo ' brak przypisanych DS</p>';
+		} else {
+			echo '</p><ul>';
+			foreach ($dormList as $dorm) {
+				echo '<li><a href="'.$url.'/dormitories/'.$dorm['dormitoryAlias'].'">'.$dorm['dormitoryName'].'</a></li>';
 			}
+			echo '</ul>';
 		}
 
 		echo '<p><em>Login:</em> '.$d['login'].'</p>';
@@ -110,27 +108,10 @@ $(document).ready(function()
 		echo $form->login('Login', array('class'=>'required'));
 		echo $form->password('Hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
 		echo $form->password2('Powtórz hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
-		echo $form->name('Imię i nazwisko', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Imię i nazwisko administratora lub inne oznaczenie." /><br/>', 'class'=>'required'));
-?><script type="text/javascript">
-function changeVisibility() {
-	var div = document.getElementById("dorms");
-	if (document.getElementById('adminAdd_typeId').value == 12) {
-		div.style.display = "none";
-		div.style.visibility = "hidden";
-	} else {
-		div.style.display = "block";
-		div.style.visibility = "visible";
-	}
-}
-</script><? 
-		/*echo $form->typeId('Uprawnienia', array(
-			'type' => $form->SELECT,
-			'labels' => $form->_labelize($this->adminTypes),
-			'after'=> ' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Kierownik OS ma uprawnienia do wszystkich części Waleta, zaś Pracownik OS jedynie do wybranych Domów Studenckich." /><br/>',
-		));*/
-		echo '<label>Uprawnienia</label>';
-		echo '<select id="adminAdd_typeId" name="adminAdd[typeId]" onChange="changeVisibility()"><option value="11" selected="selected">Pracownik OS</option><option value="12">Kierownik OS</option></select>';
-		echo ' <img alt="'.UFURL_BASE.'/i/pytajnik.png" src="'.UFURL_BASE.'/i/pytajnik.png" title="Kierownik OS ma uprawnienia do wszystkich części Waleta, zaś Pracownik OS jedynie do wybranych Domów Studenckich." />';
+		echo $form->name('Imię i nazwisko', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Imię i nazwisko administratora lub inne oznaczenie." /><br/>', 'class'=>'required')); 
+		echo '<label>Uprawnienia</label>'; 
+        echo '<select id="adminAdd_typeId" name="adminAdd[typeId]"><option value="11" >Pracownik OS</option><option value="12">Kierownik OS</option></select>';
+        echo ' <img alt="'.UFURL_BASE.'/i/pytajnik.png" src="'.UFURL_BASE.'/i/pytajnik.png" title="Kierownik OS ma uprawnienia do wszystkich części Waleta, zaś Pracownik OS jedynie do wybranych Domów Studenckich." />';
 
 		echo $form->_end();
 
@@ -145,6 +126,23 @@ function changeVisibility() {
 			echo $form->dormPerm($dorm['name'], array('type'=>$form->CHECKBOX, 'name'=>'adminAdd[dorm]['.$dorm['id'].']', 'id'=>'adminAdd[dorm]['.$dorm['id'].']', 'value'=>$permission));
 		}
 		echo $form->_end() . '</div>';
+		
+?><script type="text/javascript">
+(function (){
+	form = document.getElementById('adminAdd_typeId');
+	function changeVisibility() { 
+		var div = document.getElementById("dorms"); 
+		if (form.value == <? echo UFacl_SruWalet_Admin::HEAD; ?>) { 
+			div.style.display = "none"; 
+			div.style.visibility = "hidden"; 
+		} else { 
+			div.style.display = "block"; 
+			div.style.visibility = "visible"; 
+		}
+	}
+	form.onchange = changeVisibility;
+})()
+</script><?
 
 		echo $form->_fieldset();
 		echo $form->email('E-mail', array('class'=>'required'));
@@ -167,39 +165,12 @@ $("#main img[title]").tooltip({ position: "center right"});
 		echo $form->name('Imię i nazwisko', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Imię i nazwisko administratora lub inne oznaczenie." /><br/>', 'class'=>'required'));
 		echo $form->password('Hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
 		echo $form->password2('Powtórz hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
-		//var_dump($d);
-		if($advanced) {
-?><script type="text/javascript">
-function changeVisibility() {
-	var div = document.getElementById("dorms");
-	if (document.getElementById('adminAdd_typeId').value == 12) {
-		div.style.display = "none";
-		div.style.visibility = "hidden";
-	} else {
-		div.style.display = "block";
-		div.style.visibility = "visible";
-	}
-}
 
-function selectType(typeId){
-	if(typeId == 12){
-		//var g = "dupa";
-		document.getElementById('adminAdd_typeId').selectedIndex = 1;
-		//alert(g);
-	}else{
-		document.getElementById('adminAdd_typeId').selectedIndex = 0;
-	}
-}
-</script><? 
-			echo '<label>Uprawnienia</label>';
-			echo '<select id="adminAdd_typeId" name="adminAdd[typeId]" onChange="changeVisibility()"><option value="11" selected="selected">Pracownik OS</option><option value="12">Kierownik OS</option></select>';
-			echo ' <img alt="'.UFURL_BASE.'/i/pytajnik.png" src="'.UFURL_BASE.'/i/pytajnik.png" title="Kierownik OS ma uprawnienia do wszystkich części Waleta, zaś Pracownik OS jedynie do wybranych Domów Studenckich." />';
-			/*echo $form->typeId('Uprawnienia', array(
-				'type' => $form->SELECT,
-				'labels' => $form->_labelize($this->adminTypes),
-				'after'=> ' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Kierownik OS ma uprawnienia do wszystkich części Waleta, zaś Pracownik OS jedynie do wybranych Domów Studenckich." /><br/>',
-			));	
-			echo $form->active('Aktywny <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Tylko aktywni administratorzy mogą zalogować się do Waleta." />', array('type'=>$form->CHECKBOX) );*/
+		if($advanced) {
+			echo '<label>Uprawnienia</label>'; 
+            echo '<select id="adminEdit_typeId" name="adminEdit[typeId]"><option value="11" >Pracownik OS</option><option value="12">Kierownik OS</option></select>';
+            echo ' <img alt="'.UFURL_BASE.'/i/pytajnik.png" src="'.UFURL_BASE.'/i/pytajnik.png" title="Kierownik OS ma uprawnienia do wszystkich części Waleta, zaś Pracownik OS jedynie do wybranych Domów Studenckich." />';
+			echo $form->active('Aktywny <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Tylko aktywni administratorzy mogą zalogować się do Waleta." />', array('type'=>$form->CHECKBOX) );
 		}
 
 		echo $form->_end();
@@ -223,8 +194,32 @@ function selectType(typeId){
 				}
 				echo $form->dormPerm($dorm['name'], array('type'=>$form->CHECKBOX, 'name'=>'adminEdit[dorm]['.$dorm['id'].']', 'id'=>'adminEdit[dorm]['.$dorm['id'].']', 'value'=>$permission));
 			}
-			echo $form->_end() . "</div>";
-			echo '<script type"text/javascript">selectType(' . $d['typeId'] . '); changeVisibility(); </script>';
+			echo $form->_end() . '</div>';
+?><script type="text/javascript">
+(function (){
+	form = document.getElementById('adminEdit_typeId');
+	function changeVisibility() { 
+		var div = document.getElementById("dorms"); 
+		if (form.value == <? echo UFacl_SruWalet_Admin::HEAD; ?>) { 
+			div.style.display = "none"; 
+			div.style.visibility = "hidden"; 
+		} else { 
+			div.style.display = "block"; 
+			div.style.visibility = "visible"; 
+		}
+	}
+	form.onchange = changeVisibility;
+	function selectType(typeId){ 
+		if(typeId == <? echo UFacl_SruWalet_Admin::HEAD; ?>){
+			form.selectedIndex = 1;
+ 	 	}else{
+			form.selectedIndex = 0; 
+		} 
+	}
+	selectType(<? echo $d['typeId']; ?>);
+ 	changeVisibility();
+})()
+</script><?
 		}
 		
 		echo $form->_fieldset();
