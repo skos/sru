@@ -128,7 +128,7 @@ function changeVisibility() {
 		));*/
 		echo '<label>Uprawnienia</label>';
 		echo '<select id="adminAdd_typeId" name="adminAdd[typeId]" onChange="changeVisibility()"><option value="11" selected="selected">Pracownik OS</option><option value="12">Kierownik OS</option></select>';
-		echo ' <img alt="http://srut/i/pytajnik.png" src="http://srut/i/pytajnik.png" title="Kierownik OS ma uprawnienia do wszystkich części Waleta, zaś Pracownik OS jedynie do wybranych Domów Studenckich." />';
+		echo ' <img alt="'.UFURL_BASE.'/i/pytajnik.png" src="'.UFURL_BASE.'/i/pytajnik.png" title="Kierownik OS ma uprawnienia do wszystkich części Waleta, zaś Pracownik OS jedynie do wybranych Domów Studenckich." />';
 
 		echo $form->_end();
 
@@ -165,7 +165,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 		echo $form->name('Imię i nazwisko', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Imię i nazwisko administratora lub inne oznaczenie." /><br/>', 'class'=>'required'));
 		echo $form->password('Hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
 		echo $form->password2('Powtórz hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
-
+		//var_dump($d);
 		if($advanced) {
 ?><script type="text/javascript">
 function changeVisibility() {
@@ -178,10 +178,20 @@ function changeVisibility() {
 		div.style.visibility = "visible";
 	}
 }
+
+function selectType(typeId){
+	if(typeId == 12){
+		//var g = "dupa";
+		document.getElementById('adminAdd_typeId').selectedIndex = 1;
+		//alert(g);
+	}else{
+		document.getElementById('adminAdd_typeId').selectedIndex = 0;
+	}
+}
 </script><? 
 			echo '<label>Uprawnienia</label>';
 			echo '<select id="adminAdd_typeId" name="adminAdd[typeId]" onChange="changeVisibility()"><option value="11" selected="selected">Pracownik OS</option><option value="12">Kierownik OS</option></select>';
-			echo ' <img alt="http://srut/i/pytajnik.png" src="http://srut/i/pytajnik.png" title="Kierownik OS ma uprawnienia do wszystkich części Waleta, zaś Pracownik OS jedynie do wybranych Domów Studenckich." />';
+			echo ' <img alt="'.UFURL_BASE.'/i/pytajnik.png" src="'.UFURL_BASE.'/i/pytajnik.png" title="Kierownik OS ma uprawnienia do wszystkich części Waleta, zaś Pracownik OS jedynie do wybranych Domów Studenckich." />';
 			/*echo $form->typeId('Uprawnienia', array(
 				'type' => $form->SELECT,
 				'labels' => $form->_labelize($this->adminTypes),
@@ -212,6 +222,7 @@ function changeVisibility() {
 				echo $form->dormPerm($dorm['name'], array('type'=>$form->CHECKBOX, 'name'=>'adminEdit[dorm]['.$dorm['id'].']', 'id'=>'adminEdit[dorm]['.$dorm['id'].']', 'value'=>$permission));
 			}
 			echo $form->_end() . "</div>";
+			echo '<script type"text/javascript">selectType(' . $d['typeId'] . '); changeVisibility(); </script>';
 		}
 		
 		echo $form->_fieldset();
