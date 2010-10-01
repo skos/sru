@@ -217,9 +217,10 @@ changeVisibility();
 		}
 		if ($activate) {
 			$conf = UFra::shared('UFconf_Sru');
-			$date = $conf->computerAvailableMaxTo;
+			$date = $conf->computerAvailableTo;
+			$dateMax = $conf->computerAvailableMaxTo;
 			$d['availableTo'] = $date;
-			$d['availableMaxTo'] = strtotime($date);
+			$d['availableMaxTo'] = strtotime($dateMax);
 		} else {
 			$d['availableTo'] = date(self::TIME_YYMMDD, $d['availableTo']);
 		}
