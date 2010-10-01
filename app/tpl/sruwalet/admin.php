@@ -47,10 +47,10 @@ extends UFtpl_Common {
 		foreach ($d as $c) {
 			echo '<tr><td style="border-top: 1px solid;"><a href="'.$url.$c['id'].'">';
 			switch($c['typeId']) {
-				case 12:
+				case UFacl_SruWalet_Admin::HEAD:
 						echo '<strong>'.$this->_escape($c['name']).'</strong></a>';
 						break;
-				case 11:
+				case UFacl_SruWalet_Admin::DORM:
 						echo $this->_escape($c['name']).'</a>';
 						break;
 			}
