@@ -6,7 +6,8 @@ class UFacl_SruWalet_Admin
 extends UFlib_ClassWithService {
 	
 	const 	DORM = 11,
-		HEAD = 12;
+		OFFICE = 12,
+		HEAD = 13;
 	
 	protected function _loggedIn() {
 		return $this->_srv->get('session')->is('authWaletAdmin');

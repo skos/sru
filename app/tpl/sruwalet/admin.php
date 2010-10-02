@@ -7,6 +7,7 @@ extends UFtpl_Common {
 
 	protected $adminTypes = array(
 		UFacl_SruWalet_Admin::DORM 	=> 'Pracownik OS',
+		UFacl_SruWalet_Admin::OFFICE 	=> 'Starszy Pracownik OS',
 		UFacl_SruWalet_Admin::HEAD 	=> 'Kierownik OS',
 	);
 	
@@ -49,6 +50,9 @@ extends UFtpl_Common {
 			switch($c['typeId']) {
 				case UFacl_SruWalet_Admin::HEAD:
 						echo '<strong>'.$this->_escape($c['name']).'</strong></a>';
+						break;
+				case UFacl_SruWalet_Admin::OFFICE:
+						echo '<i>'.$this->_escape($c['name']).'</i></a>';
 						break;
 				case UFacl_SruWalet_Admin::DORM:
 						echo $this->_escape($c['name']).'</a>';
@@ -114,7 +118,7 @@ $(document).ready(function()
 		echo $form->typeId('Uprawnienia', array( 
 			'type' => $form->SELECT, 
 			'labels' => $form->_labelize($this->adminTypes), 
-			'after'=> ' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Kierownik OS ma uprawnienia do wszystkich części Waleta, zaś Pracownik OS jedynie do wybranych Domów Studenckich." /><br/>', 
+			'after'=> ' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Kierownik OS ma uprawnienia do wszystkich części Waleta, zaś Pracownik OS jedynie do wybranych Domów Studenckich. Starszy pracownik OS może także dostęp do obsadzenia każdego DSu." /><br/>', 
 		));
 		echo $form->_end();
 
@@ -168,12 +172,11 @@ $("#main img[title]").tooltip({ position: "center right"});
 		echo $form->name('Imię i nazwisko', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Imię i nazwisko administratora lub inne oznaczenie." /><br/>', 'class'=>'required'));
 		echo $form->password('Hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
 		echo $form->password2('Powtórz hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
-
 		if($advanced) {
 			echo $form->typeId('Uprawnienia', array( 
 				'type' => $form->SELECT, 
 				'labels' => $form->_labelize($this->adminTypes), 
-				'after'=> ' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Kierownik OS ma uprawnienia do wszystkich części Waleta, zaś Pracownik OS jedynie do wybranych Domów Studenckich." /><br/>', 
+				'after'=> ' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Kierownik OS ma uprawnienia do wszystkich części Waleta, zaś Pracownik OS jedynie do wybranych Domów Studenckich. Starszy pracownik OS może także dostęp do obsadzenia każdego DSu." /><br/>', 
 			));
 			echo $form->active('Aktywny <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Tylko aktywni administratorzy mogą zalogować się do Waleta." />', array('type'=>$form->CHECKBOX) );
 		}
@@ -215,11 +218,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 	}
 	form.onchange = changeVisibility;
 	function selectType(typeId){ 
-		if(typeId == <? echo UFacl_SruWalet_Admin::HEAD; ?>){
-			form.selectedIndex = 1;
- 	 	}else{
-			form.selectedIndex = 0; 
-		} 
+		form.selectedIndex = (typeId - 11);
 	}
 	selectType(<? echo $d['typeId']; ?>);
  	changeVisibility();
