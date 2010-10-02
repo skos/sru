@@ -95,8 +95,8 @@ extends UFtpl_Common {
 		$form = UFra::factory('UFlib_Form', 'userAdd', $d, $this->errors);
 
 		echo $form->name('Imię', array('class'=>'required'));
-		echo $form->surname('Nazwisko', array('class'=>'required', 'value'=>(is_null($surname) ? '' : $surname)));
-		echo $form->registryNo('Nr indeksu', array('value'=>(is_null($registryNo) ? '' : $registryNo)));
+		echo $form->surname('Nazwisko', array('class'=>'required', 'value'=>$surname));
+		echo $form->registryNo('Nr indeksu', array('value'=>$registryNo));
 		$tmp = array();
 		foreach ($dormitories as $dorm) {
 			$temp = explode("ds", $dorm['dormitoryAlias']);
