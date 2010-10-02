@@ -47,10 +47,10 @@ extends UFtpl_Common {
 		foreach ($d as $c) {
 			echo '<tr><td style="border-top: 1px solid;"><a href="'.$url.$c['id'].'">';
 			switch($c['typeId']) {
-				case 12:
+				case UFacl_SruWalet_Admin::HEAD:
 						echo '<strong>'.$this->_escape($c['name']).'</strong></a>';
 						break;
-				case 11:
+				case UFacl_SruWalet_Admin::DORM:
 						echo $this->_escape($c['name']).'</a>';
 						break;
 			}
@@ -76,15 +76,17 @@ $(document).ready(function()
 		$url = $this->url(0);
 		echo '<h2>'.$this->_escape($d['name']).'<br/><small>('.$this->adminTypes[$d['typeId']].' &bull; ostatnie logowanie: '.date(self::TIME_YYMMDD_HHMM, $d['lastLoginAt']).')</small></h2>';
 
-		echo '<p><em>Domy studenckie:</em>';
-		if (is_null($dormList)) {
-			echo ' brak przypisanych DS</p>';
-		} else {
-			echo '</p><ul>';
-			foreach ($dormList as $dorm) {
-				echo '<li><a href="'.$url.'/dormitories/'.$dorm['dormitoryAlias'].'">'.$dorm['dormitoryName'].'</a></li>';
+		if ($d['typeId'] != UFacl_SruWalet_Admin::HEAD) { 
+			echo '<p><em>Domy studenckie:</em>';
+			if (is_null($dormList)) {
+				echo ' brak przypisanych DS</p>';
+			} else {
+				echo '</p><ul>';
+				foreach ($dormList as $dorm) {
+					echo '<li><a href="'.$url.'/dormitories/'.$dorm['dormitoryAlias'].'">'.$dorm['dormitoryName'].'</a></li>';
+				}
+				echo '</ul>';
 			}
-			echo '</ul>';
 		}
 
 		echo '<p><em>Login:</em> '.$d['login'].'</p>';
@@ -109,10 +111,11 @@ $(document).ready(function()
 		echo $form->password('Hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
 		echo $form->password2('Powtórz hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
 		echo $form->name('Imię i nazwisko', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Imię i nazwisko administratora lub inne oznaczenie." /><br/>', 'class'=>'required')); 
-		echo '<label>Uprawnienia</label>'; 
-        echo '<select id="adminAdd_typeId" name="adminAdd[typeId]"><option value="11" >Pracownik OS</option><option value="12">Kierownik OS</option></select>';
-        echo ' <img alt="'.UFURL_BASE.'/i/pytajnik.png" src="'.UFURL_BASE.'/i/pytajnik.png" title="Kierownik OS ma uprawnienia do wszystkich części Waleta, zaś Pracownik OS jedynie do wybranych Domów Studenckich." />';
-
+		echo $form->typeId('Uprawnienia', array( 
+			'type' => $form->SELECT, 
+			'labels' => $form->_labelize($this->adminTypes), 
+			'after'=> ' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Kierownik OS ma uprawnienia do wszystkich części Waleta, zaś Pracownik OS jedynie do wybranych Domów Studenckich." /><br/>', 
+		));
 		echo $form->_end();
 
 		echo '<div id="dorms">' . $form->_fieldset('Domy studenckie');
@@ -167,9 +170,11 @@ $("#main img[title]").tooltip({ position: "center right"});
 		echo $form->password2('Powtórz hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
 
 		if($advanced) {
-			echo '<label>Uprawnienia</label>'; 
-            echo '<select id="adminEdit_typeId" name="adminEdit[typeId]"><option value="11" >Pracownik OS</option><option value="12">Kierownik OS</option></select>';
-            echo ' <img alt="'.UFURL_BASE.'/i/pytajnik.png" src="'.UFURL_BASE.'/i/pytajnik.png" title="Kierownik OS ma uprawnienia do wszystkich części Waleta, zaś Pracownik OS jedynie do wybranych Domów Studenckich." />';
+			echo $form->typeId('Uprawnienia', array( 
+				'type' => $form->SELECT, 
+				'labels' => $form->_labelize($this->adminTypes), 
+				'after'=> ' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Kierownik OS ma uprawnienia do wszystkich części Waleta, zaś Pracownik OS jedynie do wybranych Domów Studenckich." /><br/>', 
+			));
 			echo $form->active('Aktywny <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Tylko aktywni administratorzy mogą zalogować się do Waleta." />', array('type'=>$form->CHECKBOX) );
 		}
 
