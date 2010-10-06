@@ -408,7 +408,17 @@ extends UFbox {
 			$bean = UFra::factory('UFbean_SruWalet_AdminList');
 			$bean->listAll();
 			$d['admins'] = $bean;
-
+			
+			$d['dormitories'] = array();
+			foreach($d['admins'] as $c){
+				try{
+					$admDorm = UFra::factory('UFbean_SruWalet_AdminDormitoryList');
+					$admDorm->listAllById($c['id']);
+					$d['dormitories'][$c['id']] = $admDorm;
+				}catch(UFex_Dao_NotFound $e){
+					$d['dormitories'][$c['id']] = 'wszystkie';
+				}
+			}
 			return $this->render(__FUNCTION__, $d);
 		} 
 		catch (UFex_Dao_NotFound $e) {

@@ -37,12 +37,14 @@ extends UFtpl_Common {
 		echo '<p>'.$this->_escape($d['name']).'</p>';
 	}
 	
-	public function listAdmin(array $d) {
+	public function listAdmin(array $d, array $dorms) {
 		$url = $this->url(0).'/admins/';
+		$baseUrl = $this->url(0);
 
 		echo '<table id="adminsT" style="width: 100%;"><thead><tr>';
 		echo '<th>Administrator</th>';
 		echo '<th>Ostatnie logowanie</th>';
+		echo '<th>DS-y pod opieką</th>';
 		echo '</tr></thead><tbody>';
 
 		foreach ($d as $c) {
@@ -58,7 +60,16 @@ extends UFtpl_Common {
 						echo $this->_escape($c['name']).'</a>';
 						break;
 			}
-			echo '</td><td style="border-top: 1px solid;">'.($c['lastLoginAt'] == 0 ? 'nigdy' : date(self::TIME_YYMMDD_HHMM, $c['lastLoginAt'])).'</td></tr>';
+			echo '</td><td style="border-top: 1px solid;">'.($c['lastLoginAt'] == 0 ? 'nigdy' : date(self::TIME_YYMMDD_HHMM, $c['lastLoginAt'])).'</td>';
+			if($dorms[$c['id']] == "wszystkie"){
+				echo '<td style="border-top: 1px solid;">'.$dorms[$c['id']].'</td></tr>';
+			}else{
+				echo '<td style="border-top: 1px solid;">';
+				foreach($dorms[$c['id']] as $dorm){
+					echo '<a href="'.$baseUrl.'/dormitories/'.$dorm['dormitoryAlias'].'">'.$dorm['dormitoryAlias'].'</a> ';
+				}
+				echo '</td></tr>';
+			}
 		}
 		echo '</tbody></table>';
 ?>
