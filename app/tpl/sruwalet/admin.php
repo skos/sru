@@ -66,7 +66,7 @@ extends UFtpl_Common {
 			}else{
 				echo '<td style="border-top: 1px solid;">';
 				foreach($dorms[$c['id']] as $dorm){
-					echo '<a href="'.$baseUrl.'/dormitories/'.$dorm['dormitoryAlias'].'">'.$dorm['dormitoryAlias'].'</a> ';
+					echo '<a href="'.$baseUrl.'/dormitories/'.$dorm['dormitoryAlias'].'">'.strtoupper($dorm['dormitoryAlias']).'</a> ';
 				}
 				echo '</td></tr>';
 			}
