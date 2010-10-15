@@ -416,7 +416,7 @@ extends UFbox {
 					$admDorm->listAllById($c['id']);
 					$d['dormitories'][$c['id']] = $admDorm;
 				}catch(UFex_Dao_NotFound $e){
-					$d['dormitories'][$c['id']] = 'wszystkie';
+					$d['dormitories'][$c['id']] = -1;	//na pewno zaden ds nie bedzie mial id -1
 				}
 			}
 			return $this->render(__FUNCTION__, $d);
