@@ -18,8 +18,14 @@ if
 	NEW.comment!=OLD.comment OR
 	NEW.active!=OLD.active OR
 	NEW.referral_start!=OLD.referral_start OR
+	(OLD.referral_start IS NULL AND NEW.referral_start IS NOT NULL) OR
+	(OLD.referral_start IS NOT NULL AND NEW.referral_start IS NULL) OR
 	NEW.referral_end!=OLD.referral_end OR
-	NEW.registry_no!=OLD.registry_no
+	(OLD.referral_end IS NULL AND NEW.referral_end IS NOT NULL) OR
+	(OLD.referral_end IS NOT NULL AND NEW.referral_end IS NULL) OR
+	NEW.registry_no!=OLD.registry_no OR
+	(OLD.registry_no IS NULL AND NEW.registry_no IS NOT NULL) OR
+	(OLD.registry_no IS NOT NULL AND NEW.registry_no IS NULL)
 then
 	INSERT INTO users_history (
 		user_id,
