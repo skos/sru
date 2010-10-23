@@ -230,13 +230,17 @@ extends UFtpl_Common {
 	public function computerSearchResults(array $d) {
 		if ($this->_srv->get('msg')->get('computerSearch/errors/host/invalidDomain')) {
 			echo $this->ERR('Komputer nie należy do naszej domeny');
-		}
-		else
-		{	
+		} else {
 			echo '<div class="computerSearchResults"><ul>';
 			echo $d['computers']->write('searchResults');
 			echo '</ul></div>';
 		}
+	}
+
+	public function computerSearchResultsUnregistered(array $d) {
+		echo '<div class="computer">';
+		echo $d['computers']->write('searchResultsUnregistered', $d['switchPort']);
+		echo '</div>';
 	}
 
 	public function computerSearchResultsNotFound() {

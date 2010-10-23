@@ -451,6 +451,13 @@ $("#main img[title]").tooltip({ position: "center right"});
 		}
 	}
 
+	public function searchResultsUnregistered(array $d, $switchPort) {
+		$url = $this->url(0);
+		echo '<h1>Komputer niezarejestrowany</h1>';
+		echo '<p><em>Switch i port:</em> <a href="'.$this->url(0).'/switches/'.$switchPort->switchId.'">'.UFtpl_SruAdmin_Switch::displaySwitchName($switchPort->dormitoryAlias, $switchPort->switchNo).'</a>, ';
+		echo '<a href="'.$this->url(0).'/switches/'.$switchPort->switchId.'/port/'.$switchPort->id.'">port '.$switchPort->ordinalNo.'</a></p>';
+	}
+
 	private function showMacHint() {
 		return '<a href="http://skos.ds.pg.gda.pl/wiki/faq/rejestracja"><small>Skąd wziąć MAC?</small></a>';
 	}

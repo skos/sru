@@ -290,6 +290,16 @@ extends UFbox {
 		} catch (UFex_Db_QueryFailed $e) {
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
+			// sprawdźmy, czy chodzi o niezarejestrowanego MACa
+			try {
+				$hp = UFra::factory('UFlib_Snmp_Hp');
+				$switchPort = $hp->findMac($get->searchedMac);
+				if (!is_null($switchPort)) {
+					$d['switchPort'] = $switchPort;
+					return $this->render(__FUNCTION__.'Unregistered', $d);
+				}
+			} catch (UFex_Core_DataNotFound $e) {
+			}
 			return $this->render(__FUNCTION__.'NotFound');
 		}
 	}
