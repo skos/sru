@@ -180,7 +180,11 @@ extends UFlib_Snmp {
 				// sprawdzamy, czy na znalezionym porcie jest jakis switch
 				try {
 					if ($portUser > 48) {
-						$name = $portUser - 50;
+						if ($portUser < 52) {
+							$name = $portUser - 48;
+						} else {
+							$name = $portUser - 50;
+						}
 						if ($name < 0) $name = $name + 2;
 						$trunks = @snmpwalk($switchIp, $this->communityR, $this->OIDs['trunk'], $this->timeout);
 						for ($i = 0; $i < count($trunks); $i++) {
