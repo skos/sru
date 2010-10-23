@@ -47,7 +47,7 @@ extends UFact {
 			} else if (isset($post['referralStart'])) {
 				$bean->referralStart = $post['referralStart'];
 			}
-			if (!$active && $bean->active) {
+			if ((!$active && $bean->active) || $referralStart != $bean->referralStart) {
 				$bean->updateNeeded = true;
 			}
 
