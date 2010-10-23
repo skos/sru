@@ -15,7 +15,7 @@ extends UFtpl_Common {
 		echo $form->_start();
 		echo $form->_fieldset('Zaloguj się');
 
-		if ($this->_srv->get('msg')->get('userConfirm/errors/token/invalid')) {
+		if ($this->_srv->get('msg')->get('userRecover/errors/token/invalid')) {
 			echo $this->ERR('Token w linku jest nieprawidłowy.');
 		} elseif ($this->_srv->get('msg')->get('userLogin/errors')) {
 			echo $this->ERR('Nieprawidłowy login lub hasło. Czy aktywowałeś swoje konto w administracji DS?');
@@ -87,7 +87,7 @@ extends UFtpl_Common {
 
 	public function userMainMenu() {
 		echo '<div class="mainMenu"><h1>System Rejestracji Użytkowników</h1>';
-		if ($this->_srv->get('msg')->get('userConfirm/ok')) {
+		if ($this->_srv->get('msg')->get('userRecover/ok')) {
 			echo $this->OK('Konto zostało aktywowane - teraz <a href="'.$this->url(0).'/computers">dodaj komputer</a>');
 		}
 		echo '<ul>';
@@ -247,7 +247,7 @@ extends UFtpl_Common {
 
 		if ($this->_isOK('sendPassword')) {
 			echo $this->OK('Kliknij link, który został wysłany na maila.');
-		} elseif ($this->_isOK('userConfirmPassword')) {
+		} elseif ($this->_isOK('userRecoverPassword')) {
 			echo $this->OK('Nowe hasło zostało wysłane na maila.');
 		} elseif ($this->_srv->get('msg')->get('sendPassword/errors/email/notUnique')) {
 			echo $this->ERR('Podany email jest przypisany do kilku kont - proszę zgłosić się do administratora lokalnego w celu zmiany hasła.');

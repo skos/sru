@@ -9,6 +9,10 @@ extends UFlib_ClassWithService {
 		return $this->_srv->get('session')->is('auth');
 	}
 
+	public function recover() { 
+		return !$this->_loggedIn();
+	}
+
 	public function edit() {
 		return $this->_loggedIn();
 	}

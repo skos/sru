@@ -79,6 +79,8 @@ extends UFctl {
 			$act = 'User_Login';
 		} elseif ('user/main' == $get->view && $post->is('sendPassword') && $acl->sru('user', 'login')) {
 			$act = 'User_SendPassword';
+		} elseif ('user/main' == $get->view && $get->is('userToken') && $acl->sru('user', 'recover')) { 
+			$act = 'User_Recover';  
 		} elseif ('user/edit' == $get->view && $post->is('userEdit') && $acl->sru('user', 'edit')) {
 			$act = 'User_Edit';
 		} elseif ('user/computer/edit' == $get->view && $post->is('computerEdit') && $acl->sru('computer', 'edit')) {
