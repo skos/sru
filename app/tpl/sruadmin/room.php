@@ -166,7 +166,14 @@ class Connector
 	public function addPerson($room, $user) {
 		$roomInt = (int)$room;
 
-		if ($roomInt == 0) {
+		if (substr($room, 0, 1) == 'm') {
+			foreach ($this->rooms as $c) {
+				if ($c->getExt() == $room) {
+					$c->addPerson($user);
+					break;
+				}
+			}
+		} else if ($roomInt == 0) {
 			// nie dodajemy do zestawienia
 		} else if (strlen($roomInt) < strlen($room)) {
 			foreach ($this->rooms as $c) {
