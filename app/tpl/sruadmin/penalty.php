@@ -162,7 +162,7 @@ extends UFtpl_Common {
 			echo '<p class="displayOnHover"><em>Amnestia:</em> <span><a href="'.$url.'/admins/'.$d['amnestyById'].'">'.$this->_escape($d['amnestyByName']).'</a> <small>('.date(self::TIME_YYMMDD_HHMM, $d['amnestyAt']).')</small></span></p>';							
 		}	
 		
-		echo '<p><em>Ost. komentarz:</em> '.nl2br($this->_escape($d['comment'])).'</p>';
+		echo '<p><em>Ost. komentarz:</em><br/>'.nl2br($this->_escape($d['comment'])).'</p>';
 		echo '<p><em>Typ:</em> '.$this->_escape($this->penaltyTypes[$d['typeId']]).'</p>';
 		echo '</div>';
 ?><script type="text/javascript">

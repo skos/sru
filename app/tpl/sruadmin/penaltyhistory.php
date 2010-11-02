@@ -1,13 +1,13 @@
 <?
 /**
- * szablon beana historii kary
- */
+* szablon beana historii kary
+*/
 class UFtpl_SruAdmin_PenaltyHistory
 extends UFtpl_Common {
-	protected function _diff(array $old, array $new, $current) {
-		$changes = array();
-		$arr = ' &rarr; ';
-		foreach ($old as $key=>$val) {
+protected function _diff(array $old, array $new, $current) {
+	$changes = array();
+	$arr = ' &rarr; ';
+	foreach ($old as $key=>$val) {
 			if (!array_key_exists($key, $new) || $val === $new[$key]) {
 				continue;
 			}
@@ -19,7 +19,7 @@ extends UFtpl_Common {
 					$changes[] = 'Powód: <q>'.$val.'</q>'.$arr.'<q>'.$new[$key].'</q>';
 					break;
 				case 'comment':
-					$changes[] = 'Komentarz: <q>'.nl2br($val).'</q>'.$arr.'<q>'.nl2br($new[$key]).'</q>';
+					$changes[] = 'Komentarz:<br/> <q>'.nl2br($val).'</q> <br/>'.$arr.' <br/><q>'.nl2br($new[$key]).'</q>';
 					break;
 				case 'amnestyAfter':
 					$changes[] = 'Minimalna długość (dni): <q>'.(($val - $current->startAt) / 24 / 3600).'</q>'.$arr.'<q>'.(($new[$key] - $current->startAt) / 24 / 3600).'</q>';
