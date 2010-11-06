@@ -73,6 +73,19 @@ extends UFact {
 			if ($bean->availableTo <= NOW) {
 				$bean->availableTo = NOW;
 				$bean->active = false;
+
+				if ($bean->typeId == 4) {
+					try {
+						$aliases = UFra::factory('UFbean_SruAdmin_ComputerAliasList');
+						$aliases->listByComputerId($bean->id);
+						foreach ($aliases as $alias) {
+							$aliasBean = UFra::factory('UFbean_SruAdmin_ComputerAlias');
+							$aliasBean->getByPK($alias['id']);
+							$aliasBean->del();
+						}
+					} catch (UFex_Dao_NotFound $e) {
+					}
+				}
 			}
 			$bean->modifiedById = $this->_srv->get('session')->authAdmin;
 			$bean->modifiedAt = NOW;
