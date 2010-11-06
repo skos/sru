@@ -97,8 +97,14 @@ $("#main img[title]").tooltip({ position: "center right"});
 <?
 	}
 
-	public function listPorts(array $d, $switch, $portStatuses) {
+	public function listPorts(array $d, $switch, $portStatuses, $trunks) {
 		$url = $this->url(0).'/switches/';
+		$hpLib = UFra::shared('UFlib_Snmp_Hp');
+		if (in_array($switch->modelNo, $hpLib->biggerTrunkNumbers)) {
+			$biggerTrunkNumbers = true;
+		} else {
+			$biggerTrunkNumbers = false;
+		}
 
 		echo '<div class="switchports">';
 		echo '<h3>Lista portów</h3>';
@@ -121,6 +127,12 @@ $("#main img[title]").tooltip({ position: "center right"});
 			echo '<a href="'.$url.$switch->id.'/port/'.$d[$i]['id'].'">';
 			echo $d[$i]['admin'] ?'<strong>' : '';
 			echo $d[$i]['ordinalNo'];
+			if ($trunks[$i] != 0) {
+				if ($biggerTrunkNumbers) {
+					$trunks[$i]--;
+				}
+				echo ' <small>(Trk'.$trunks[$i].')</small>';
+			}
 			echo $d[$i]['admin'] ?'</strong>' : '';
 			echo '</a>';
 			echo ($d[$i]['comment'] == '') ? '' : ' <img src="'.UFURL_BASE.'/i/gwiazdka.png" />';

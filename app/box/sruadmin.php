@@ -788,8 +788,10 @@ extends UFbox {
 			if (!is_null($d['switch']->ip)) {
 				$switch = UFra::factory('UFlib_Snmp_Hp', $d['switch']->ip);
 				$d['portStatuses'] = $switch->getPortStatuses();
+				$d['trunks'] = $switch->getTrunks();
 			} else {
 				$d['portStatuses'] = null;
+				$d['trunks'] = null;
 			}
 
 			return $this->render(__FUNCTION__, $d);

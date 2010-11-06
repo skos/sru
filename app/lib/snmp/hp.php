@@ -31,6 +31,11 @@ extends UFlib_Snmp {
 		'trunk' => '1.3.6.1.4.1.11.2.14.11.5.1.7.1.3.1.1.8',
 	);
 
+	public $biggerTrunkNumbers = array(
+		'J4906A',
+		'J8435A',
+	);
+
 	public function uFlib_Snmp_Hp ($ip = null) {
 		snmp_set_valueretrieval(SNMP_VALUE_PLAIN);
 		$this->ip = $ip;
@@ -139,6 +144,14 @@ extends UFlib_Snmp {
 			$lockouts[$i] = $this->int2mac(str_replace('SNMPv2-SMI::mib-2.17.7.1.3.1.1.4.4095.', '', $lockouts[$i]));
 		}
 		return $lockouts;
+	}
+
+	public function getTrunks() {
+		$trunks = @snmpwalk($this->ip , $this->communityR, $this->OIDs['trunk'], $this->timeout);
+		if ($trunks == false) {
+			return null;
+		}
+		return $trunks;
 	}
 
 	public function setPortAlias($port, $name) {
