@@ -5,6 +5,9 @@
 class UFtpl_SruAdmin_UserHistory
 extends UFtpl_Common {
 
+	const PL = 'pl';
+	const EN = 'en';
+
 	static protected $names = array(
 		'login' => 'Login',
 		'name' => 'Imię',
@@ -129,7 +132,7 @@ extends UFtpl_Common {
 		echo '</li>';
 	}
 
-	public function mail(array $d, $new, $names=null) {
+	public function mail(array $d, $new, $names=null, $lang = self::PL) {
 		foreach ($d as $old) {
 			break;
 		}
@@ -151,14 +154,26 @@ extends UFtpl_Common {
 						."\n";
 					break;
 				case 'locationId':
-					echo $names[$key].': '.$old['locationAlias'].' ('.$old['dormitoryAlias'].')'
-						.($val!==$new[$key] ? $arr.$new['locationAlias'].' ('.$new['dormitoryAlias'].')' : '')
-						."\n";
+					if ($lang == self::EN) {
+						echo $names[$key].': '.$old['locationAlias'].' ('.$old['dormitoryNameEn'].')'
+							.($val!==$new[$key] ? $arr.$new['locationAlias'].' ('.$new['dormitoryNameEn'].')' : '')
+							."\n";
+					} else {
+						echo $names[$key].': '.$old['locationAlias'].' ('.$old['dormitoryName'].')'
+							.($val!==$new[$key] ? $arr.$new['locationAlias'].' ('.$new['dormitoryName'].')' : '')
+							."\n";
+					}
 					break;
 				case 'facultyId':
-					echo $names[$key].': '.$old['facultyName']
-						.($val!==$new[$key] ? $arr.$new['facultyName'] : '')
-						."\n";
+					if ($lang == self::EN) {
+						echo $names[$key].': '.$old['facultyNameEn']
+							.($val!==$new[$key] ? $arr.$new['facultyNameEn'] : '')
+							."\n";
+					} else {
+						echo $names[$key].': '.$old['facultyName']
+							.($val!==$new[$key] ? $arr.$new['facultyName'] : '')
+							."\n";
+					}
 					break;
 				case 'studyYearId':
 					echo $names[$key].': '. UFtpl_Sru_User::$studyYears[$val]
@@ -171,6 +186,6 @@ extends UFtpl_Common {
 	}
 
 	public function mailEn(array $d, $new, $names=null) {
-		$this->mail($d, $new, self::$namesEn);
+		$this->mail($d, $new, self::$namesEn, self::EN);
 	}
 }
