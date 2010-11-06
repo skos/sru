@@ -300,6 +300,20 @@ extends UFbox {
 				}
 			} catch (UFex_Core_DataNotFound $e) {
 			}
+
+			return $this->render(__FUNCTION__.'NotFound');
+		}
+	}
+
+	public function computerSearchByAliasResults() {
+		try {
+			$get = $this->_srv->get('req')->get;
+			$bean = UFra::factory('UFbean_SruAdmin_ComputerAliasList');
+			$bean->search($get->searchedHost);
+			$d['aliases'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex $e) {
 			return $this->render(__FUNCTION__.'NotFound');
 		}
 	}

@@ -11,5 +11,6 @@ extends UFview_SruAdmin {
 		$this->append('title', $box->titleComputerSearch());
 		$this->append('body', $box->computerSearch());
 		$this->append('body', $box->computerSearchResults());
+		$this->append('body', $box->computerSearchByAliasResults());
 	}
 }

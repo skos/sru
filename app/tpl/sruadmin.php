@@ -231,10 +231,18 @@ extends UFtpl_Common {
 		if ($this->_srv->get('msg')->get('computerSearch/errors/host/invalidDomain')) {
 			echo $this->ERR('Komputer nie należy do naszej domeny');
 		} else {
+			echo '<h2>Znalezione komputery:</h2>';
 			echo '<div class="computerSearchResults"><ul>';
 			echo $d['computers']->write('searchResults');
 			echo '</ul></div>';
 		}
+	}
+
+	public function computerSearchByAliasResults(array $d) {
+		echo '<h2>Znalezione komputery szukając po aliasie:</h2>';
+		echo '<ul>';
+		echo $d['aliases']->write('listAliases');
+		echo '</ul></div>';
 	}
 
 	public function computerSearchResultsUnregistered(array $d) {
@@ -245,6 +253,9 @@ extends UFtpl_Common {
 
 	public function computerSearchResultsNotFound() {
 		echo $this->ERR('Nie znaleziono');
+	}
+
+	public function computerSearchByAliasResultsNotFound() {
 	}
 
 	public function titleUserSearch() {
