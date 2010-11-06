@@ -14,7 +14,7 @@ extends UFctl {
 			$user = UFra::factory('UFbean_Sru_User');
 			$user->getFromSession();
 
-			if ($user->updateNeeded) {
+			if ($user->updateNeeded || $user->changePasswordNeeded) {
 				$get->view = 'user/edit';
 				return;
 			}

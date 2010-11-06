@@ -21,8 +21,8 @@ extends UFact {
 			$post = $this->_srv->get('req')->post->{self::PREFIX};
 			$bean->getFromSession();
 
-			// jesli nowe konto, niech zaktualizuje hasło!
-			if (is_null($bean->email) || $bean->email == '') {
+			// jesli nowe konto lub wygenerowane haslo, niech zaktualizuje hasło!
+			if (is_null($bean->email) || $bean->email == '' || $bean->changePasswordNeeded) {
 				if (!isset($post['password']) || $post['password'] == '' ) {
 					throw UFra::factory('UFex_Dao_DataNotValid', 'Need to set new password', 0, E_WARNING, array('password' => 'needNewOne'));
 				}
@@ -56,6 +56,7 @@ extends UFact {
 			$bean->facultyId = $post['facultyId'];
 			$bean->studyYearId = $post['studyYearId'];
 			$bean->updateNeeded = false;
+			$bean->changePasswordNeeded = false;
 
 			$bean->modifiedById = null;
 			$bean->modifiedAt = NOW;

@@ -141,6 +141,9 @@ $("#main img[title]").tooltip({ position: "center right"});
 		if ($d['updateNeeded']) {
 			echo $this->ERR('Dane na Twoim koncie wymagają aktualizacji. Prosimy o wypełnienie prawidłowymi danymi wszystkich wymaganych pól (oznaczonych czerwoną obwódką). W celu ułatwienia kontaktu ze SKOS, możesz wypełnić także pola niewymagane.');
 		}
+		if ($d['changePasswordNeeded']) {
+			echo $this->ERR('Twoje hasło ze względów bezpieczeństwa musi zostać zmienione.');
+		}
 		if (is_null($d['email'])) {
 			echo $this->ERR('Twoje konto zostało dopiero założone. Wymagana jest zmiana hasła.');
 		}
@@ -173,7 +176,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 		));
 
 		echo $form->_fieldset('Zmiana chronionych danych');
-		if (is_null($d['email'])) {
+		if (is_null($d['email']) || $d['changePasswordNeeded']) {
 			echo $form->password3('Aktualne hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
 			echo '<p>Do zmiany poniższych danych wymagane jest podanie aktualnego hasła.</p>';
 			echo $form->email('E-mail', array('class'=>'required'));

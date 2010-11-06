@@ -38,6 +38,7 @@ extends UFmap {
 		'referralEnd'	 => 'u.referral_end',
 		'registryNo'	 => 'u.registry_no',
 		'updateNeeded'	 => 'u.update_needed',
+		'changePasswordNeeded'	 => 'u.change_password_needed',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -72,6 +73,7 @@ extends UFmap {
 		'referralEnd'	 => self::TS,
 		'registryNo'	 => self::NULL_INT,
 		'updateNeeded'	 => self::BOOL,
+		'changePasswordNeeded'	 => self::BOOL,
 	);
 	protected $tables = array(
 		'u' => 'users',

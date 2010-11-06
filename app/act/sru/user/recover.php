@@ -25,7 +25,7 @@ extends UFact {
 					$password = base_convert($password, 16, 35);
 					$password = substr($password, 0, 8);
 					$bean->password = $bean->generatePassword($bean->login, $password);
-					$bean->updateNeeded = true;
+					$bean->changePasswordNeeded = true;
 					$bean->save();
 
 					$box = UFra::factory('UFbox_Sru');
@@ -33,6 +33,7 @@ extends UFact {
 					$title = $box->userRecoverPasswordMailTitle($bean);
 					$body = $box->userRecoverPasswordMailBodyPassword($bean, $password);
 					$sender->send($bean, $title, $body);
+
 					$this->markOk(self::PREFIX.'Password');
 					break;
 			}
