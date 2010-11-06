@@ -108,6 +108,19 @@ extends UFbox {
 		}
 	}
 
+	public function switches() {
+		try {
+			$bean = UFra::factory('UFbean_SruAdmin_SwitchList');
+			$bean->listEnabled();
+
+			$d['switches'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return '';
+		}
+	}
+
 	public function penaltiesPast() {
 		try {
 			$bean = UFra::factory('UFbean_SruAdmin_PenaltyList');	

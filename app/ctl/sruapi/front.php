@@ -62,6 +62,9 @@ extends UFctl {
 				case 'admins':
 					$get->view = 'admins';
 					break;
+				case 'switches':
+					$get->view = 'switches';
+					break;
 				case 'dormitories':
 					if ($segCount>1) {
 						$get->dormAlias = $req->segment(2);
@@ -178,6 +181,8 @@ extends UFctl {
 				return 'SruApi_Ethers';
 			case 'admins':
 				return 'SruApi_Admins';
+			case 'switches':
+				return 'SruApi_Switches';
 			case 'dormitory/computers':
 				if ($acl->sruApi('computer', 'showLocations')) {
 					return 'SruApi_ComputersLocations';

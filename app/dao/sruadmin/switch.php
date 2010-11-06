@@ -31,6 +31,7 @@ extends UFdao {
 
 		$query = $this->prepareSelect($mapping);
 		$query->where($mapping->hierarchyNo, null, UFlib_Db_Query::NOT_EQ);
+		$query->where($mapping->ip, null, UFlib_Db_Query::NOT_EQ);
 		$query->order($mapping->dormitoryId);
 		$query->order($mapping->hierarchyNo);
 

@@ -29,6 +29,10 @@ extends UFtpl_Common {
 		$d['computers']->write('configAdmins');
 	}
 
+	public function switches(array $d) {
+		$d['switches']->write('configSwitches');
+	}
+
 	public function error404() {
 		header('HTTP/1.0 404 Not Found');
 	}

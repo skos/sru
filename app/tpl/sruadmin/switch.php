@@ -278,4 +278,10 @@ $("#main img[title]").tooltip({ position: "center right"});
 		}
 		echo $form->mac('Zablokuj adres MAC');
 	}
+
+	public function configSwitches(array $d) {
+		foreach ($d as $c) {
+			echo $c['ip']."\n";
+		}
+	}
 }
