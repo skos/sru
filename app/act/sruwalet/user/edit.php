@@ -51,6 +51,18 @@ extends UFact {
 				$bean->updateNeeded = true;
 			}
 
+			try {
+				$comps = UFra::factory('UFbean_Sru_ComputerList');
+				$comps->listByUserId($bean->id);
+				foreach ($comps as $comp) {
+					$computer = UFra::factory('UFbean_Sru_Computer');
+					$computer->getByHost($comp['host']);
+					$computer->updateLocationByHost($comp['host'], $bean->locationId, $computer->ip, $this->_srv->get('session')->authWaletAdmin);
+				}
+			} catch (UFex_Dao_NotFound $e) {
+				// uzytkownik nie ma komputerow
+			}
+
 			$bean->save();
 
 			$conf = UFra::shared('UFconf_Sru');
