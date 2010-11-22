@@ -50,7 +50,6 @@ extends UFact {
 				$title = $box->dataChangedMailTitle($bean);
 				$body = $box->dataChangedMailBody($bean, $history);
 				$sender->send($bean, $title, $body, self::PREFIX);
-var_dump($body);
 			}
 
 			$this->postDel(self::PREFIX);

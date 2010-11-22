@@ -723,9 +723,9 @@ $("#main img[title]").tooltip({ position: "center right"});
 		echo 'Surname: '.$d['surname']."\n";
 		echo 'E-mail: '.$d['email']."\n";
 		echo 'Gadu-Gadu: '.$d['gg']."\n";
-		echo 'Faculty: '.$d['facultyName']."\n";
+		echo 'Faculty: '.$d['facultyNameEn']."\n";
 		echo 'Year of study: '.UFtpl_Sru_User::$studyYears[$d['studyYearId']]."\n";
-		echo $d['dormitoryName']."\n";
+		echo $d['dormitoryNameEn']."\n";
 		echo 'Room: '.$d['locationAlias']."\n";
 	}
 
