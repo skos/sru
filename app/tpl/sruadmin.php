@@ -156,6 +156,18 @@ extends UFtpl_Common {
 		echo '</div>';
 	}
 
+	public function computerStats(array $d) {
+		echo '<div class="computer">';
+		echo '<h2>Statystyki transferów</h2>';
+		$d['computer']->write('transferStats', $d['file'], $d['statHour'], $d['statDate']);
+		echo '</div>';
+	}
+
+	public function computerStatsNotFound() {
+		echo '<h2>Statystyki transferów</h2>';
+		echo $this->ERR('Brak danych');
+	}
+
 	public function titleComputerEdit(array $d) {
 		echo $d['computer']->write('titleEdit');
 	}

@@ -38,13 +38,6 @@ extends UFctl {
 						}
 					}
 					break;
-				/*
-				case 'computers':
-					$ctl = UFra::factory('UFctl_SruAdmin_Computers');
-					$req->forward();
-					$ctl->go();
-					return false;
-				*/
 				default:
 					$get->view = 'computers/computer';
 					$id = (int)$req->segment(2);
@@ -57,6 +50,9 @@ extends UFctl {
 						switch ($req->segment(3)) {
 							case 'history':
 								$get->view = 'computers/computer/history';
+								break;
+							case 'stats':
+								$get->view = 'computers/computer/stats';
 								break;
 							case ':edit':
 								$get->view = 'computers/computer/edit';
@@ -126,7 +122,6 @@ extends UFctl {
 		}
 		switch ($get->view) {
 			case 'computers/main':
-	//			return 'SruAdmin_ComputerSearch';
 				return 'SruAdmin_Computers';
 			case 'computers/search':
 				return 'SruAdmin_ComputerSearchResults';
@@ -134,12 +129,21 @@ extends UFctl {
 				return 'SruAdmin_Computer';
 			case 'computers/computer/history':
 				return 'SruAdmin_ComputerHistory';
+			case 'computers/computer/stats':
+				try {
+					$get->statHour = $post->transferStats['statHour'];
+					$get->statDate = $post->transferStats['statDate'];
+				} catch (UFex_Core_DataNotFound $ex) {
+					$get->statHour = date('H:i');
+					$get->statDate = date('Ymd');
+				}
+				return 'SruAdmin_ComputerStats';
 			case 'computers/computer/delete':
 				if ($msg->get('computerDel/ok')) {
 					return 'SruAdmin_Computer';
 				} else {
 					return 'SruAdmin_ComputerDelete';
-				}				
+				}
 			case 'computers/computer/edit':
 				if ($msg->get('computerDel/ok')) {
 					return 'SruAdmin_Main';

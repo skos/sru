@@ -90,13 +90,10 @@ extends UFtpl_Common {
 	public function detailsOwn(array $d) {
 		echo '<h1>'.$d['host'].'.ds.pg.gda.pl</h1>';
 		echo '<p><em>MAC:</em> '.$d['mac'].'</p>';
-		echo '<p><em>IP:</em> <a href="http://stats.ds.pg.gda.pl/?ip='.substr ($d['ip'], 7, 7).'">'.$d['ip'].'</a></p>';
+		echo '<p><em>IP:</em> '.$d['ip'].'</p>';
 		echo '<p><em>Rejestracja do:</em> '.date(self::TIME_YYMMDD, $d['availableTo']).'</p>';
 		echo '<p><em>Miejsce:</em> '.$d['locationAlias'].' ('.$d['dormitoryName'].')</p>';
 		echo '<p><em>Liczba kar:</em> '.$d['bans'].'</p>';
-		$ip = explode('.', $d['ip']);
-		$tag = substr(md5('haha'.$ip[2].$ip[3]), 0, 5);
-		//echo '<p><a href="https://sru.ds.pg.gda.pl/lanstats/?ip='.$ip[2].'.'.$ip[3].'"><img src="https://sru.ds.pg.gda.pl/lanstats/153.19.'.$ip[2].'/'.str_pad($ip[3], 3, '0', STR_PAD_LEFT).'.'.$tag.'.png" alt="Statystyki transferów" /></a></p>';
 	}
 
 	public function details(array $d, $switchPort, $aliases) {
@@ -121,7 +118,7 @@ extends UFtpl_Common {
 			echo $d['mac'];
 		}
 		echo '</p>';
-		echo '<p><em>IP:</em> <a href="http://stats.ds.pg.gda.pl/?ip='.substr ($d['ip'], 7, 7).'">'.$d['ip'].'</a></p>';
+		echo '<p><em>IP:</em> '.$d['ip'].'</p>';
 		if (!$d['active']) {
 			$max = 'BRAK <small>(było '.date(self::TIME_YYMMDD, $d['availableTo']).')</small>';
 		} elseif ($d['availableTo'] != $d['availableMaxTo']) {
@@ -176,6 +173,7 @@ extends UFtpl_Common {
 		if($d['active'] && $d['typeId'] == 4) {
 			echo '<a href="'.$urlNav.'/:aliases"> Aliasy</a> &bull; ';
 		}
+		echo '<a href="'.$urlNav.'/stats"> Statystyki</a> &bull; ';
 		if($d['active']) {
 			echo '<a href="'.$urlNav.'/:del"> Wyrejestruj</a> &bull; ';
 		}
@@ -531,8 +529,29 @@ $("#main img[title]").tooltip({ position: "center right"});
 			'labels' => $form->_labelize($tmp),
 			'labelClass' => 'radio',
 			'class' => 'radio',
-		));		
-	
+		));
+	}
+
+	public function transferStats(array $d, $file, $hour, $date) {
+		$form = UFra::factory('UFlib_Form', 'transferStats');
+		echo $form->_start();
+		echo $form->_fieldset();
+		echo $form->statHour('Godzina (HH:MM)', array('value'=>$hour));
+		echo $form->statDate('Data (YYYYMMDD)', array('value'=>$date));
+		echo $form->_submit('Zobacz');
+		echo $form->_end();
+		echo $form->_end(true);
+
+		echo '<h3>Upload przez ostatnie 3 godziny</h3>';
+		echo '<p><img src="'.UFURL_BASE.'/i/stats-img/'.$file.'.png" alt="Statystyki transferów: 3h" /></p>';
+		echo '<h3>Upload przez ostatnie 24h godziny</h3>';
+		echo '<p><img src="'.UFURL_BASE.'/i/stats-img/'.$file.'.day.png" alt="Statystyki transferów: 24h" /></p>';
+		echo '<h3>Upload przez ostatni tydzień</h3>';
+		echo '<p><img src="'.UFURL_BASE.'/i/stats-img/'.$file.'.week.png" alt="Statystyki transferów: tydzień" /></p>';
+		echo '<h3>Upload przez ostatni miesiąc</h3>';
+		echo '<p><img src="'.UFURL_BASE.'/i/stats-img/'.$file.'.month.png" alt="Statystyki transferów: miesiąc" /></p>';
+		echo '<h3>Upload przez ostatni rok</h3>';
+		echo '<p><img src="'.UFURL_BASE.'/i/stats-img/'.$file.'.year.png" alt="Statystyki transferów: rok" /></p>';
 	}
 
 	public function apiComputersLocations(array $d) {

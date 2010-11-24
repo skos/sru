@@ -130,6 +130,13 @@ extends UFctl {
 				}
 			case 'user/computer':
 				if ($acl->sru('user', 'logout')) {
+					try {
+						$get->statHour = $post->transferStats['statHour'];
+						$get->statDate = $post->transferStats['statDate'];
+					} catch (UFex_Core_DataNotFound $ex) {
+						$get->statHour = date('H:i');
+						$get->statDate = date('Ymd');
+					}
 					return 'Sru_UserComputer';
 				} else {
 					return 'Sru_Error403';

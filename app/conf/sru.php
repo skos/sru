@@ -13,7 +13,7 @@ extends UFconf {
 
 	protected $sendEmail = true;	// wysylac maile dot. kar, edycji danych i danych kompow?
 	protected $emailPrefix = '[SRU]';	// prefix maili wysyłanych ze SRU
-	protected $exclusions = array('ADMINISTRACJA', 'SKOS', 'Samorząd Studentów', 'Studencka Agencja');	// wykluczenia nazw (imion) ze zliczeń etc.
+	protected $exclusions = array();	// wykluczenia nazw (imion) ze zliczeń etc.
 
 	protected $switchFirmware = array( // aktualne wersje firmware'u używanych switchy
 	);
@@ -34,4 +34,6 @@ extends UFconf {
 
 	protected $userPrintWaletText = '';
 	protected $userPrintSkosText = '';
+
+	protected $rrdDataDir = '';
 }
