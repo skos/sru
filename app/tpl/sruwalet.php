@@ -332,7 +332,7 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 		echo '<div class="admins inactive">';
 		echo '<h2>Nieaktywni Administratorzy OS</h2>';
 
-		$d['admins']->write('listAdmin');
+		$d['admins']->write('listAdmin', $d['dormitories']);
 
 		echo '</div>';
 	}

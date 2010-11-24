@@ -63,7 +63,7 @@ extends UFtpl_Common {
 			echo '</td><td style="border-top: 1px solid;">'.($c['lastLoginAt'] == 0 ? 'nigdy' : date(self::TIME_YYMMDD_HHMM, $c['lastLoginAt'])).'</td>';
 			if($c['typeId'] == UFacl_SruWalet_Admin::HEAD){
 				echo '<td style="border-top: 1px solid;">wszystkie</td></tr>';
-			}else if($dorms[$c['id']] == -1){
+			}else if(is_null($dorms[$c['id']])){
 				echo '<td style="border-top: 1px solid;">żaden</td></tr>';
 			}else{
 				echo '<td style="border-top: 1px solid;">';

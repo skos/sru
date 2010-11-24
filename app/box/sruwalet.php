@@ -416,7 +416,7 @@ extends UFbox {
 					$admDorm->listAllById($c['id']);
 					$d['dormitories'][$c['id']] = $admDorm;
 				}catch(UFex_Dao_NotFound $e){
-					$d['dormitories'][$c['id']] = -1;	//na pewno zaden ds nie bedzie mial id -1
+					$d['dormitories'][$c['id']] = null;	//na pewno zaden ds nie bedzie mial id null
 				}
 			}
 			return $this->render(__FUNCTION__, $d);
@@ -431,7 +431,17 @@ extends UFbox {
 			$bean = UFra::factory('UFbean_SruWalet_AdminList');	
 			$bean->listAllInactive();
 			$d['admins'] = $bean;
-
+			
+			$d['dormitories'] = array();
+			foreach($d['admins'] as $c){
+				try{
+					$admDorm = UFra::factory('UFbean_SruWalet_AdminDormitoryList');
+					$admDorm->listAllById($c['id']);
+					$d['dormitories'][$c['id']] = $admDorm;
+				}catch(UFex_Dao_NotFound $e){
+					$d['dormitories'][$c['id']] = null;	//na pewno zaden ds nie bedzie mial id null
+				}
+			}
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
 			return $this->render('inactiveAdminsNotFound');
