@@ -173,7 +173,7 @@ extends UFtpl_Common {
 		if($d['active'] && $d['typeId'] == 4) {
 			echo '<a href="'.$urlNav.'/:aliases"> Aliasy</a> &bull; ';
 		}
-		echo '<a href="'.$urlNav.'/stats"> Statystyki</a> &bull; ';
+		echo '<a href="'.$urlNav.'/stats"> Statystyki transferu</a> &bull; ';
 		if($d['active']) {
 			echo '<a href="'.$urlNav.'/:del"> Wyrejestruj</a> &bull; ';
 		}

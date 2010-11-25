@@ -1,0 +1,1 @@
+create table lanstats (time timestamp NOT NULL default now(), mac macaddr not null, bytes bigint NOT NULL default 0, packets bigint NOT NULL default 0);

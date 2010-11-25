@@ -978,13 +978,28 @@ extends UFtpl_Common {
 		}
 		echo $this->ERR('Brak adresów IP dla tego DS-u');
 	}
+
+	public function titleStatsTransfer() {
+		echo 'Statystyki transferu';
+	}
+	
+	public function statsTransfer(array $d) {
+		echo '<h2>Transfer | <a href="'.$this->url(1).'/users">Użytkownicy</a> | <a href="'.$this->url(1).'/dormitories">Akademiki</a> | <a href="'.$this->url(1).'/penalties">Kary</a></h2>';
+		echo '<h3>Ranking uploaderów</h3>';
+		$d['transfer']->write('transferStats');
+	}
+
+	public function statsTransferNotFound() {
+		echo '<h2>Transfer | <a href="'.$this->url(1).'/users">Użytkownicy</a> | <a href="'.$this->url(1).'/dormitories">Akademiki</a> | <a href="'.$this->url(1).'/penalties">Kary</a></h2>';
+		echo $this->ERR('Błąd wyświetlenia statystyk');
+	}
 	
 	public function titleStatsUsers() {
 		echo 'Statystyki użytkowników';
 	}
 	
 	public function statsUsers(array $d) {
-		echo '<h2>Użytkownicy | <a href="'.$this->url(1).'/dormitories">Akademiki</a> | <a href="'.$this->url(1).'/penalties">Kary</a></h2>';
+		echo '<h2><a href="'.$this->url(1).'">Transfer</a> | Użytkownicy | <a href="'.$this->url(1).'/dormitories">Akademiki</a> | <a href="'.$this->url(1).'/penalties">Kary</a></h2>';
 		$d['users']->write('stats');
 	}
 	
@@ -997,7 +1012,7 @@ extends UFtpl_Common {
 	}
 	
 	public function statsPenalties(array $d) {
-		echo '<h2><a href="'.$this->url(1).'">Użytkownicy</a> | <a href="'.$this->url(1).'/dormitories">Akademiki</a> | Kary</h2>';
+		echo '<h2><a href="'.$this->url(1).'">Transfer</a> | <a href="'.$this->url(1).'/users">Użytkownicy</a> | <a href="'.$this->url(1).'/dormitories">Akademiki</a> | Kary</h2>';
 		$d['penalties']->write('stats');
 	}
 	
@@ -1010,9 +1025,9 @@ extends UFtpl_Common {
 	}
 	
 	public function statsDormitories(array $d) {
-		echo '<h2><a href="'.$this->url(1).'">Użytkownicy</a> | Akademiki | <a href="'.$this->url(1).'/penalties">Kary</a></h2>';
+		echo '<h2><a href="'.$this->url(1).'">Transfer</a> | <a href="'.$this->url(1).'/users">Użytkownicy</a> | Akademiki | <a href="'.$this->url(1).'/penalties">Kary</a></h2>';
 		$d['users']->write('statsDorms');
-	}						
+	}
 	
 	public function statsDormitoriesNotFound(array $d) {
 		echo $this->ERR('Błąd wyświetlenia statystyk');

@@ -1559,6 +1559,18 @@ extends UFbox {
 		}
 	}
 
+	public function statsTransfer() {
+		try {
+			$transfer = UFra::factory('UFbean_SruAdmin_Transfer');
+			$transfer->listTop();
+			$d['transfer'] = $transfer;
+		
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}
+	}
+
 	public function statsUsers() {
 		try {
 			$user = UFra::factory('UFbean_Sru_UserList');
