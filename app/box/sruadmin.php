@@ -1776,4 +1776,16 @@ extends UFbox {
 		$d['history'] = $history;
 		return $this->render(__FUNCTION__, $d);
 	}
+
+	public function hostAliasesChangedMailTitle($host) {
+		$d['host'] = $host;
+		return $this->render(__FUNCTION__, $d);
+	}
+
+	public function hostAliasesChangedMailBody($host, array $deleted, $added) {
+		$d['host'] = $host;
+		$d['deleted'] = $deleted;
+		$d['added'] = $added;
+		return $this->render(__FUNCTION__, $d);
+	}
 }

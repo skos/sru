@@ -642,4 +642,19 @@ $("#main img[title]").tooltip({ position: "center right"});
 			echo 'MAC address: '.$d['mac']."\n";
 		}
 	}
+
+	public function hostAliasesChangedMailBody(array $d, array $deleted, $added) {
+		echo 'Zmodyfikowano aliasy hosta: '.$d['host']."\n\n";
+		if (!is_null($added)) {
+			echo 'Dodano alias: '.$added."\n";
+		}
+		if (count($deleted) > 0) {
+			$deletedString = '';
+			foreach ($deleted as $del) {
+				$deletedString = $deletedString.$del.', ';
+			}
+			$deletedString = substr($deletedString, 0, -2);
+			echo 'Usunięto alias(y): '.$deletedString;
+		}
+	}
 }

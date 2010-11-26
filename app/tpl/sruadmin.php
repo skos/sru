@@ -1263,4 +1263,12 @@ extends UFtpl_Common {
 			echo $d['host']->write('hostAdminChangedMailBodyPolish', $d['action'], $d['history']);
 		}
 	}
+
+	public function hostAliasesChangedMailTitle(array $d) {
+		echo 'Zmodyfikowano aliasy hosta '.$d['host']->host;
+	}
+	
+	public function hostAliasesChangedMailBody(array $d) {
+		echo $d['host']->write('hostAliasesChangedMailBody', $d['deleted'], $d['added']);
+	}
 }
