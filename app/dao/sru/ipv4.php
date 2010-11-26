@@ -34,4 +34,22 @@ extends UFdao {
 
 		return $this->doSelectFirst($query);
 	}
+
+	public function getUsedByDorm($dormId) {
+		$mapping = $this->mapping('count');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where('i.dormitory_id = '.$dormId. ' and i.ip=c.ipv4 and c.active', null, $query->SQL);
+
+		return $this->doSelect($query);
+	}
+
+	public function getSumByDorm($dormId) {
+		$mapping = $this->mapping('count');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where('i.dormitory_id = '.$dormId, null, $query->SQL);
+
+		return $this->doSelect($query);
+	}
 }

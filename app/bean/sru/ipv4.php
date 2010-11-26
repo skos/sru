@@ -4,8 +4,9 @@
  */
 class UFbean_Sru_Ipv4
 extends UFbeanSingle {
-	
-	protected function chooseTemplate() {
-		return null;
+
+	public function getIps() {
+		return $this->data[0]['ip'];
 	}
+
 }

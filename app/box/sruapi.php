@@ -169,4 +169,21 @@ extends UFbox {
 			return '';
 		}
 	}
+
+	public function dormitoryIps() {
+		try {
+			$dorm = UFra::factory('UFbean_Sru_Dormitory');
+			$dorm->getByAlias($this->_srv->get('req')->get->dormAlias);
+			$bean = UFra::factory('UFbean_Sru_Ipv4');
+			$bean->getUsedByDorm($dorm->id);
+			$d['used'] = $bean;
+			$sum = UFra::factory('UFbean_Sru_Ipv4');
+			$sum->getSumByDorm($dorm->id);
+			$d['sum'] = $sum;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return '';
+		}
+	}
 }
