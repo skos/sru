@@ -960,7 +960,8 @@ extends UFtpl_Common {
 	
 	public function ips(array $d) {
 		if (!is_null($d['dorm'])) {
-			echo '<h2><a href="'.$this->url(0).'/dormitories/'.$d['dorm']->alias.'">'.$d['dorm']->name.'</a></h2>';
+			echo '<h2><a href="'.$this->url(0).'/dormitories/'.$d['dorm']->alias.'">'.$d['dorm']->name.'</a>';
+			echo '<br/><small>(zajętość puli: '.$d['used']->getIps().'/'.$d['sum']->getIps().' ~> '.round($d['used']->getIps()/$d['sum']->getIps()).'%)</small></h2>';
 		} else {
 			echo '<h2>Zestawienie numerów IP</h2>';
 		}

@@ -1556,8 +1556,17 @@ extends UFbox {
 				$dorm = $this->_getDormFromGet();
 				$d['dorm'] = $dorm;
 				$bean->listByDormitory($dorm->id);
+
+				$used = UFra::factory('UFbean_Sru_Ipv4');
+				$used->getUsedByDorm($dorm->id);
+				$d['used'] = $used;
+				$sum = UFra::factory('UFbean_Sru_Ipv4');
+				$sum->getSumByDorm($dorm->id);
+				$d['sum'] = $sum;
 			} catch (UFex_Core_DataNotFound $e) {
 				$bean->listAll();
+				$d['used'] = null;
+				$d['sum'] = null;
 			}
 		
 			return $this->render(__FUNCTION__, $d);
