@@ -642,7 +642,7 @@ extends UFtpl_Common {
 		$d['switch']->write('techDetails', $d['info']);
 	}
 	public function switchPorts(array $d) {
-		$d['ports']->write('listPorts', $d['switch'], $d['portStatuses'], $d['trunks']);
+		$d['ports']->write('listPorts', $d['switch'], $d['portStatuses'], $d['trunks'], $d['port']);
 	}
 	public function roomSwitchPorts(array $d) {
 		echo '<h3>Przypisane porty</h3>';

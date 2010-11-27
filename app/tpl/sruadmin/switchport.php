@@ -97,13 +97,17 @@ $("#main img[title]").tooltip({ position: "center right"});
 <?
 	}
 
-	public function listPorts(array $d, $switch, $portStatuses, $trunks) {
+	public function listPorts(array $d, $switch, $portStatuses, $trunks, $port = null) {
 		$url = $this->url(0).'/switches/';
 		$hpLib = UFra::shared('UFlib_Snmp_Hp');
 		if (in_array($switch->modelNo, $hpLib->biggerTrunkNumbers)) {
 			$biggerTrunkNumbers = true;
 		} else {
 			$biggerTrunkNumbers = false;
+		}
+		$selectedPort = 0;
+		if ($port != null) {
+			$selectedPort = $port->ordinalNo;
 		}
 
 		echo '<div class="switchports">';
@@ -123,7 +127,11 @@ $("#main img[title]").tooltip({ position: "center right"});
 			} else {
 				echo "up";
 			}
-			echo '">';
+			if ($i == $selectedPort - 1) {
+				echo '" style="border: 2px solid red;">';
+			} else {
+				echo '">';
+			}
 			echo '<a href="'.$url.$switch->id.'/port/'.$d[$i]['id'].'">';
 			echo $d[$i]['admin'] ?'<strong>' : '';
 			echo $d[$i]['ordinalNo'];
