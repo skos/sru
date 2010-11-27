@@ -67,7 +67,7 @@ extends UFact {
 			if ($bean->active && $bean->availableMaxTo < NOW) {
 				$bean->availableMaxTo = NOW;
 			}
-			if ($bean->availableTo > $bean->availableMaxTo) {
+			if (strtotime(date('Y-m-d', $bean->availableTo)) > $bean->availableMaxTo) {
 				$bean->availableTo = $bean->availableMaxTo;
 			}
 			if ($bean->availableTo <= NOW) {

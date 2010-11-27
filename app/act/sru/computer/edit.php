@@ -21,7 +21,7 @@ extends UFact {
 				$date = $conf->computerAvailableMaxTo;
 				$bean->availableMaxTo = strtotime($date);
 			}
-			if ($bean->availableTo > $bean->availableMaxTo) {
+			if (strtotime(date('Y-m-d', $bean->availableTo)) > $bean->availableMaxTo) {
 				$bean->availableTo = $bean->availableMaxTo;
 			}
 			if (!$bean->active && $bean->availableTo > NOW) {
