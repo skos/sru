@@ -174,9 +174,9 @@ extends UFbox {
 		try {
 			$dorm = UFra::factory('UFbean_Sru_Dormitory');
 			$dorm->getByAlias($this->_srv->get('req')->get->dormAlias);
-			$bean = UFra::factory('UFbean_Sru_Ipv4');
-			$bean->getUsedByDorm($dorm->id);
-			$d['used'] = $bean;
+			$sum = UFra::factory('UFbean_Sru_Ipv4');
+			$sum->getUsedByDorm($dorm->id);
+			$d['used'] = $sum;
 			$sum = UFra::factory('UFbean_Sru_Ipv4');
 			$sum->getSumByDorm($dorm->id);
 			$d['sum'] = $sum;
