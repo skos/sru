@@ -80,11 +80,11 @@ extends UFtpl_Common {
 
 	public function details(array $d, $info, $lockouts) {
 		$url = $this->url(0);
+		$conf = UFra::shared('UFconf_Sru');
 
 		if (is_null($info)) {
 			echo $this->ERR('Nie jest możliwe podłączenie się do switcha');
 		} else {
-			$conf = UFra::shared('UFconf_Sru');
 			if ($info['serialNo'] != $d['serialNo']) {
 				echo $this->ERR('Zapisany w bazie danych numer seryjny switcha jest inny, niż podany przez switcha: '.$info['serialNo']);
 			}
@@ -102,8 +102,11 @@ extends UFtpl_Common {
 		if (!is_null($info)) {
 			echo '<a href="'.$url.'/switches/'.$d['id'].'/:lockoutsedit">Lockout-MAC</a> &bull; ';
 		}
-		echo '<a href="'.$url.'/switches/'.$d['id'].'/tech">Technikalia</a> &bull; 
-			 <span id="switchMoreSwitch"></span></p>';
+		echo '<a href="'.$url.'/switches/'.$d['id'].'/tech">Technikalia</a> &bull';
+		if (!is_null($d['ip'])) {
+			echo ' <a href="'.$conf->swstatsLink.$this->displaySwitchName($d['dormitoryAlias'], $d['hierarchyNo']).'">SWstats</a> &bull';
+		}
+		echo ' <span id="switchMoreSwitch"></span></p>';
 		echo '<div id="switchMore">';
 		echo '<p><em>Nr seryjny:</em> '.$d['serialNo'].'</p>';
 		echo '<p><em>Akademik:</em> <a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'">'.$d['dormitoryName'].'</a></p>';

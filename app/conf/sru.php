@@ -23,6 +23,7 @@ extends UFconf {
 	protected $communityWrite = '';
 	protected $roomRegex = '';
 	protected $switchRegex = '';
+	protected $swstatsLink = '';
 
 	protected $jabberServer = '';
 	protected $jabberPort = 0;
