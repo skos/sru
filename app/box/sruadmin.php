@@ -49,14 +49,14 @@ extends UFbox {
 
 	protected function _getSwitchFromGet() {
 		$bean = UFra::factory('UFbean_SruAdmin_Switch');
-		$bean->getByPK((int)$this->_srv->get('req')->get->switchId);
+		$bean->getBySerialNo($this->_srv->get('req')->get->switchSn);
 
 		return $bean;
 	}
 
-	protected function _getSwitchPortFromGet() {
+	protected function _getSwitchPortFromGet($switchId) {
 		$bean = UFra::factory('UFbean_SruAdmin_SwitchPort');
-		$bean->getByPK((int)$this->_srv->get('req')->get->portId);
+		$bean->getBySwitchIdAndOrdinalNo($switchId, (int)$this->_srv->get('req')->get->portNo);
 
 		return $bean;
 	}
@@ -835,7 +835,7 @@ extends UFbox {
 			}
 
 			try {
-				$port = $this->_getSwitchPortFromGet();
+				$port = $this->_getSwitchPortFromGet($d['switch']->id);
 				$d['port'] = $port;
 			} catch (UFex_Core_DataNotFound $ex) {
 				$d['port'] = null;
@@ -872,10 +872,10 @@ extends UFbox {
 
 	public function switchPortDetails() {
 		try {
-			$bean = $this->_getSwitchPortFromGet();
-			$d['port'] = $bean;
 			$switch = $this->_getSwitchFromGet();
 			$d['switch'] = $switch;
+			$bean = $this->_getSwitchPortFromGet($switch->id);
+			$d['port'] = $bean;
 
 			if (!is_null($d['switch']->ip)) {
 				$switch = UFra::factory('UFlib_Snmp_Hp', $d['switch']->ip);
@@ -892,10 +892,10 @@ extends UFbox {
 
 	public function switchPortMacs() {
 		try {
-			$bean = $this->_getSwitchPortFromGet();
-			$d['port'] = $bean;
 			$switch = $this->_getSwitchFromGet();
 			$d['switch'] = $switch;
+			$bean = $this->_getSwitchPortFromGet($switch->id);
+			$d['port'] = $bean;
 
 			if (!is_null($d['switch']->ip)) {
 				$switch = UFra::factory('UFlib_Snmp_Hp', $d['switch']->ip);
@@ -1008,10 +1008,10 @@ extends UFbox {
 
 	public function switchPortEdit() {
 		try {
-			$bean = $this->_getSwitchPortFromGet();
-			$d['port'] = $bean;
 			$switch = $this->_getSwitchFromGet();
 			$d['switch'] = $switch;
+			$bean = $this->_getSwitchPortFromGet($switch->id);
+			$d['port'] = $bean;
 
 			$enabledSwitches = UFra::factory('UFbean_SruAdmin_SwitchList');
 			$enabledSwitches->listEnabled();

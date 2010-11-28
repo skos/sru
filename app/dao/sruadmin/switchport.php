@@ -35,4 +35,14 @@ extends UFdao {
 
 		return $this->doSelectFirst($query);
 	}
+
+	public function getBySwitchIdAndOrdinalNo($switchId, $ordinalNo) {
+		$mapping = $this->mapping('get');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->switchId, $switchId);
+		$query->where($mapping->ordinalNo, $ordinalNo);
+
+		return $this->doSelectFirst($query);
+	}
 }

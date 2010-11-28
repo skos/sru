@@ -690,7 +690,7 @@ extends UFtpl_Common {
 		echo $form->_start();
 		echo $d['switch']->write('formEdit', $d['dormitories'], $d['swModels']);
 		echo $form->_submit('Zapisz');
-		echo ' <a href="'.$url.'/switches/'.$d['switch']->id.'">Powrót</a>';
+		echo ' <a href="'.$url.'/switches/'.$d['switch']->serialNo.'">Powrót</a>';
 		echo $form->_end();
 		echo $form->_end(true);
 	}
@@ -716,7 +716,7 @@ extends UFtpl_Common {
 		echo $form->_start();
 		echo $d['port']->write('formEditOne', $d['switch'], $d['enabledSwitches'], $d['status']);
 		echo $form->_submit('Zapisz');
-		echo ' <a href="'.$url.'/switches/'.$d['switch']->id.'/port/'.$d['port']->id.'">Powrót</a>';
+		echo ' <a href="'.$url.'/switches/'.$d['switch']->serialNo.'/port/'.$d['port']->ordinalNo.'">Powrót</a>';
 		echo $form->_end();
 		echo $form->_end(true);
 	}
@@ -733,7 +733,7 @@ extends UFtpl_Common {
 		echo $form->_start();
 		echo $d['switch']->write('formEditLockouts', $d['lockouts']);
 		echo $form->_submit('Zapisz');
-		echo ' <a href="'.$url.'/switches/'.$d['switch']->id.'">Powrót</a>';
+		echo ' <a href="'.$url.'/switches/'.$d['switch']->serialNo.'">Powrót</a>';
 		echo $form->_end();
 		echo $form->_end(true);
 	}

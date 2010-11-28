@@ -35,12 +35,12 @@ extends UFctl {
 					break;
 				default:
 					$get->view = 'switches/switch';
-					$id = (int)$req->segment(2);
-					if ($id <= 0) {
+					$id = $req->segment(2);
+					if ($id < 0) {
 						$get->view = 'error404';
 						break;
 					}
-					$get->switchId = $id;
+					$get->switchSn = $id;
 
 					if ($segCount > 2) {
 						switch ($req->segment(3)) {
@@ -68,7 +68,7 @@ extends UFctl {
 												$get->view = 'error404';
 												break;
 											}
-											$get->portId = $id;
+											$get->portNo = $id;
 
 											if ($segCount > 4) {
 													switch ($req->segment(5)) {
@@ -106,13 +106,13 @@ extends UFctl {
 			$act = 'Admin_Login';
 		} elseif ('switches/add' == $get->view && $post->is('switchAdd') && $acl->sruAdmin('switch', 'add')) {
 			$act = 'Switch_Add';
-		} elseif ('switches/edit' == $get->view && $post->is('switchEdit') && $acl->sruAdmin('switch', 'edit', $get->switchId)) {
+		} elseif ('switches/edit' == $get->view && $post->is('switchEdit') && $acl->sruAdmin('switch', 'edit', $get->switchSn)) {
 			$act = 'Switch_Edit';
-		} elseif ('switches/lockoutsedit' == $get->view && $post->is('switchLockoutsEdit') && $acl->sruAdmin('switch', 'edit', $get->switchId)) {
+		} elseif ('switches/lockoutsedit' == $get->view && $post->is('switchLockoutsEdit') && $acl->sruAdmin('switch', 'edit', $get->switchSn)) {
 			$act = 'SwitchLockouts_Edit';
-		} elseif ('switches/portsedit' == $get->view && $post->is('switchPortsEdit') && $acl->sruAdmin('switch', 'edit', $get->switchId)) {
+		} elseif ('switches/portsedit' == $get->view && $post->is('switchPortsEdit') && $acl->sruAdmin('switch', 'edit', $get->switchSn)) {
 			$act = 'SwitchPorts_Edit';
-		} elseif ('port/edit' == $get->view && $post->is('switchPortEdit') && $acl->sruAdmin('switch', 'edit', $get->switchId)) {
+		} elseif ('port/edit' == $get->view && $post->is('switchPortEdit') && $acl->sruAdmin('switch', 'edit', $get->switchSn)) {
 			$act = 'SwitchPort_Edit';
 		}
 
@@ -153,7 +153,7 @@ extends UFctl {
 			case 'switches/edit':
 				if ($msg->get('switchEdit/ok')) { 
 					return 'SruAdmin_Switch';
-				} elseif ($acl->sruAdmin('switch', 'edit', $get->switchId)) {
+				} elseif ($acl->sruAdmin('switch', 'edit', $get->switchSn)) {
 					return 'SruAdmin_SwitchEdit';
 				} else {
 					return 'Sru_Error403';
@@ -161,7 +161,7 @@ extends UFctl {
 			case 'switches/lockoutsedit':
 				if ($msg->get('switchLockoutsEdit/ok')) { 
 					return 'SruAdmin_Switch';
-				} elseif ($acl->sruAdmin('switch', 'edit', $get->switchId)) {
+				} elseif ($acl->sruAdmin('switch', 'edit', $get->switchSn)) {
 					return 'SruAdmin_SwitchLockoutsEdit';
 				} else {
 					return 'Sru_Error403';
@@ -169,7 +169,7 @@ extends UFctl {
 			case 'switches/portsedit':
 				if ($msg->get('switchPortsEdit/ok')) { 
 					return 'SruAdmin_Switch';
-				} elseif ($acl->sruAdmin('switch', 'edit', $get->switchId)) {
+				} elseif ($acl->sruAdmin('switch', 'edit', $get->switchSn)) {
 					return 'SruAdmin_SwitchPortsEdit';
 				} else {
 					return 'Sru_Error403';
@@ -181,7 +181,7 @@ extends UFctl {
 			case 'port/edit':
 				if ($msg->get('switchPortEdit/ok')) { 
 					return 'SruAdmin_SwitchPort';
-				} elseif ($acl->sruAdmin('switch', 'edit', $get->switchId)) {
+				} elseif ($acl->sruAdmin('switch', 'edit', $get->switchSn)) {
 					return 'SruAdmin_SwitchPortEdit';
 				} else {
 					return 'Sru_Error403';

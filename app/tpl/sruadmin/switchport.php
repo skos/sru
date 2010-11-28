@@ -19,7 +19,7 @@ extends UFtpl_Common {
 		if(is_null($d['connectedSwitchId'])) {
 			echo '<p><em>Lokalizacja:</em> <a href="'.$this->url(0).'/dormitories/'.$d['dormitoryAlias'].'/'.$d['locationAlias'].'">'.$d['locationAlias'].'</a></p>';
 		} else {
-			echo '<p><em>Podłączony switch:</em> <a href="'.$url.$d['connectedSwitchId'].'">'.$d['connectedSwitchDorm'].'-hp'.$d['connectedSwitchNo'].'</a></p>';
+			echo '<p><em>Podłączony switch:</em> <a href="'.$url.$d['connectedSwitchSn'].'">'.$d['connectedSwitchDorm'].'-hp'.$d['connectedSwitchNo'].'</a></p>';
 		}
 		if (!is_null($alias) && $alias != '') {
 			echo '<p><em>Alias portu: </em>'.$alias.'</p>';
@@ -28,8 +28,8 @@ extends UFtpl_Common {
 		echo '<p><em>Komentarz:</em> '.$d['comment'].'</p>';
 		echo '<p class="nav"><a href="'.$url.'dorm/'.$d['dormitoryAlias'].'">Wróć do listy</a> &bull; 
 			 <a href="'.$url.'">Pokaż wszystkie</a> &bull; 
-			<a href="'.$url.$switch->id.'/port/'.$d['id'].'/macs">Pokaż adresy MAC</a> &bull; 
-			<a href="'.$url.$switch->id.'/port/'.$d['id'].'/:edit">Edytuj port</a></p>';
+			<a href="'.$url.$switch->serialNo.'/port/'.$d['ordinalNo'].'/macs">Pokaż adresy MAC</a> &bull; 
+			<a href="'.$url.$switch->serialNo.'/port/'.$d['ordinalNo'].'/:edit">Edytuj port</a></p>';
 	}
 
 	public function portMacs(array $d, $switch, $macs) {
@@ -44,7 +44,7 @@ extends UFtpl_Common {
 		}
 		echo '</p>';
 		echo '<p class="nav"><a href="'.$url.'dorm/'.$d['dormitoryAlias'].'">Wróć do listy</a> &bull; <a href="'.$url.'">Pokaż wszystkie</a> &bull; ';
-		echo '<a href="'.$url.$switch->id.'/port/'.$d['id'].'/:edit">Edytuj port</a></p>';
+		echo '<a href="'.$url.$switch->id.'/port/'.$d['ordinalNo'].'/:edit">Edytuj port</a></p>';
 	}
 
 	public function formEditOne(array $d, $switch, $enabledSwitches, $status) {
@@ -132,7 +132,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 			} else {
 				echo '">';
 			}
-			echo '<a href="'.$url.$switch->id.'/port/'.$d[$i]['id'].'">';
+			echo '<a href="'.$url.$switch->serialNo.'/port/'.$d[$i]['ordinalNo'].'">';
 			echo $d[$i]['admin'] ?'<strong>' : '';
 			echo $d[$i]['ordinalNo'];
 			if ($trunks[$i] != 0) {
@@ -146,7 +146,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 			echo ($d[$i]['comment'] == '') ? '' : ' <img src="'.UFURL_BASE.'/i/gwiazdka.png" />';
 			echo '<br/><small>(';
 			echo is_null($d[$i]['connectedSwitchId']) ? ('<a href="'.$this->url(0).'/dormitories/'.$d[$i]['dormitoryAlias'].'/'.$d[$i]['locationAlias'].'">'.
-				$d[$i]['locationAlias'].'</a>') : ('<a href="'.$url.$d[$i]['connectedSwitchId'].'">'.$d[$i]['connectedSwitchDorm'].'-hp'.$d[$i]['connectedSwitchNo'].'</a>');
+				$d[$i]['locationAlias'].'</a>') : ('<a href="'.$url.$d[$i]['connectedSwitchSn'].'">'.$d[$i]['connectedSwitchDorm'].'-hp'.$d[$i]['connectedSwitchNo'].'</a>');
 			echo ')</small>';
 			echo '</td>';
 			if (($i + 1) % 8 == 0) {
@@ -180,7 +180,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 					}
 					echo '</table>';
 				}
-				echo '<h4>Switch <a href="'.$url.$port['switchId'].'">'.UFtpl_SruAdmin_Switch::displaySwitchName($port['dormitoryAlias'], $port['switchNo']).'</a></h4>';
+				echo '<h4>Switch <a href="'.$url.$port['switchSn'].'">'.UFtpl_SruAdmin_Switch::displaySwitchName($port['dormitoryAlias'], $port['switchNo']).'</a></h4>';
 				$switch = $port['switchId'];
 				echo '<table>';
 			}
@@ -198,7 +198,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 				echo "up";
 			}
 			echo '">';
-			echo '<a href="'.$url.$port['switchId'].'/port/'.$port['id'].'">';
+			echo '<a href="'.$url.$port['switchSn'].'/port/'.$port['ordinalNo'].'">';
 			echo $port['admin'] ?'<strong>' : '';
 			echo $port['ordinalNo'];
 			echo $port['admin'] ?'</strong>' : '';

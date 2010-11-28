@@ -11,6 +11,7 @@ extends UFmap {
 		'switchId'		=> 'p.switch',
 		'switchIp'		=> 's.ipv4',
 		'switchNo'		=> 's.hierarchy_no',
+		'switchSn'		=> 's.serial_no',
 		'locationId'		=> 'p.location',
 		'locationAlias'		=> 'l.alias',
 		'dormitoryAlias'	=> 'a.alias',
@@ -19,6 +20,7 @@ extends UFmap {
 		'connectedSwitchDorm'	=> 'd.alias',
 		'connectedSwitchNo'	=> 'c.hierarchy_no',
 		'connectedSwitchIp'	=> 'c.ipv4',
+		'connectedSwitchSn'	=> 'c.serial_no',
 		'admin'			=> 'p.is_admin',
 	);
 	protected $columnTypes = array(
@@ -27,6 +29,7 @@ extends UFmap {
 		'switchId'		=> self::INT,
 		'switchIp'		=> self::NULL_TEXT,
 		'switchNo'		=> self::INT,
+		'switchSn'		=> self::TEXT,
 		'locationId'		=> self::NULL_INT,
 		'locationAlias'		=> self::TEXT,
 		'dormitoryAlias'	=> self::TEXT,
@@ -35,6 +38,7 @@ extends UFmap {
 		'connectedSwitchDorm'	=> self::TEXT,
 		'connectedSwitchNo'	=> self::NULL_INT,
 		'connectedSwitchIp'	=> self::NULL_TEXT,
+		'connectedSwitchSn'	=> self::TEXT,
 		'admin'			=> self::BOOL,
 	);
 	protected $tables = array(

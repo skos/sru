@@ -42,16 +42,16 @@ extends UFtpl_Common {
 			echo '<li>';
 			echo is_null($c['ip']) ? '<del>' : '';
 			echo $c['inoperational'] ? '<span class="inoperational">' : '';
-			echo '<a href="'.$url.$c['id'].'">';
+			echo '<a href="'.$url.$c['serialNo'].'">';
 			echo $this->displaySwitchName($c['dormitoryAlias'], $c['hierarchyNo']);
 			echo ' ('.$this->_escape($c['model']).')';
 			echo '</a>';
 			echo $c['inoperational'] ? '</span>' : '';
 			echo is_null($c['ip']) ? '</del>' : '';
-			echo ' - <small><a href="'.$url.''.$c['id'].'/:edit">Edytuj</a>';
+			echo ' - <small><a href="'.$url.''.$c['serialNo'].'/:edit">Edytuj</a>';
 			if (!is_null($c['ip'])) {
-				echo ' &bull; <a href="'.$url.''.$c['id'].'/:lockoutsedit">Lockout-MAC</a>';
-				echo ' &bull; <a href="'.$url.$c['id'].'/tech">Technikalia</a>';
+				echo ' &bull; <a href="'.$url.''.$c['serialNo'].'/:lockoutsedit">Lockout-MAC</a>';
+				echo ' &bull; <a href="'.$url.$c['serialNo'].'/tech">Technikalia</a>';
 			}
 			echo '</small></li>';
 			
@@ -73,7 +73,7 @@ extends UFtpl_Common {
 	}
 
 	public function headerDetails(array $d) {
-		echo '<h2>Switch <a href="'.$this->url(0).'/switches/'.$d['id'].'">';
+		echo '<h2>Switch <a href="'.$this->url(0).'/switches/'.$d['serialNo'].'">';
 		echo $this->displaySwitchName($d['dormitoryAlias'], $d['hierarchyNo']);
 		echo '</a></h2>';
 	}
@@ -98,11 +98,11 @@ extends UFtpl_Common {
 		echo '<p><em>IP:</em> '.$d['ip'].'</p>';
 		echo '<p class="nav"><a href="'.$url.'/switches/dorm/'.$d['dormitoryAlias'].'">Wróć do listy</a> &bull; 
 			 <a href="'.$url.'/switches/">Pokaż wszystkie</a> &bull; 
-			 <a href="'.$url.'/switches/'.$d['id'].'/:edit">Edytuj</a> &bull; ';
+			 <a href="'.$url.'/switches/'.$d['serialNo'].'/:edit">Edytuj</a> &bull; ';
 		if (!is_null($info)) {
-			echo '<a href="'.$url.'/switches/'.$d['id'].'/:lockoutsedit">Lockout-MAC</a> &bull; ';
+			echo '<a href="'.$url.'/switches/'.$d['serialNo'].'/:lockoutsedit">Lockout-MAC</a> &bull; ';
 		}
-		echo '<a href="'.$url.'/switches/'.$d['id'].'/tech">Technikalia</a> &bull';
+		echo '<a href="'.$url.'/switches/'.$d['serialNo'].'/tech">Technikalia</a> &bull';
 		if (!is_null($d['ip'])) {
 			echo ' <a href="'.$conf->swstatsLink.$this->displaySwitchName($d['dormitoryAlias'], $d['hierarchyNo']).'">SWstats</a> &bull';
 		}
