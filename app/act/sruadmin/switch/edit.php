@@ -11,7 +11,7 @@ extends UFact {
 		try {
 			$this->begin();
 			$bean = UFra::factory('UFbean_SruAdmin_Switch');
-			$bean->getByPK((int)$this->_srv->get('req')->get->switchId);
+			$bean->getBySerialNo($this->_srv->get('req')->get->switchSn);
 			$modelId = $bean->modelId;
 
 			try {

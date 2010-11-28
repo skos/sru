@@ -13,10 +13,10 @@ extends UFact {
 			$this->begin();
 			$post = $this->_srv->get('req')->post->{self::PREFIX};
 
-			$bean = UFra::factory('UFbean_SruAdmin_SwitchPort');
-			$bean->getByPK((int)$this->_srv->get('req')->get->portId);
 			$switch = UFra::factory('UFbean_SruAdmin_Switch');
-			$switch->getByPK($bean->switchId);
+			$switch->getBySerialNo($this->_srv->get('req')->get->switchSn);
+			$bean = UFra::factory('UFbean_SruAdmin_SwitchPort');
+			$bean->getBySwitchIdAndOrdinalNo($switch->id, (int)$this->_srv->get('req')->get->portNo);
 
 			$bean->fillFromPost(self::PREFIX);
 

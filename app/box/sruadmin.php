@@ -788,7 +788,7 @@ extends UFbox {
 			if (!is_null($d['switch']->ip)) {
 				$switch = UFra::factory('UFlib_Snmp_Hp', $d['switch']->ip);
 				$d['info'] = $switch->getStdInfo();
-				$d['lockouts'] = $switch->getLockouts();
+				$d['lockouts'] = null;//$switch->getLockouts();
 			} else {
 				$d['info'] = null;
 				$d['lockouts'] = null;

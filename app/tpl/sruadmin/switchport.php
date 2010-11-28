@@ -44,7 +44,7 @@ extends UFtpl_Common {
 		}
 		echo '</p>';
 		echo '<p class="nav"><a href="'.$url.'dorm/'.$d['dormitoryAlias'].'">Wróć do listy</a> &bull; <a href="'.$url.'">Pokaż wszystkie</a> &bull; ';
-		echo '<a href="'.$url.$switch->id.'/port/'.$d['ordinalNo'].'/:edit">Edytuj port</a></p>';
+		echo '<a href="'.$url.$switch->serialNo.'/port/'.$d['ordinalNo'].'/:edit">Edytuj port</a></p>';
 	}
 
 	public function formEditOne(array $d, $switch, $enabledSwitches, $status) {
@@ -156,7 +156,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 		echo '</table>';
 		echo '<p class="nav"><a href="'.$url.'dorm/'.$switch->dormitoryAlias.'">Wróć do listy</a> &bull; 
 			 <a href="'.$url.'">Pokaż wszystkie</a> &bull; 
-			<a href="'.$url.$switch->id.'/:portsedit">Edytuj porty</a>
+			<a href="'.$url.$switch->serialNo.'/:portsedit">Edytuj porty</a>
 			</p>
 			</div>';
 	}
