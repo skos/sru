@@ -788,7 +788,7 @@ extends UFbox {
 			if (!is_null($d['switch']->ip)) {
 				$switch = UFra::factory('UFlib_Snmp_Hp', $d['switch']->ip);
 				$d['info'] = $switch->getStdInfo();
-				$d['lockouts'] = null;//$switch->getLockouts();
+				$d['lockouts'] = $switch->getLockouts();
 			} else {
 				$d['info'] = null;
 				$d['lockouts'] = null;
@@ -1752,6 +1752,18 @@ extends UFbox {
 		$d['computers'] = $computers;
 		$d['admin'] = $admin;
 		$d['host'] = $this->_srv->get('req')->server->HTTP_HOST;
+		return $this->render(__FUNCTION__, $d);
+	}
+
+	public function switchPortModifiedMailTitle($switchPort) {
+		$d['port'] = $switchPort;
+		return $this->render(__FUNCTION__, $d);
+	}
+	
+	public function switchPortModifiedMailBody($switchPort, $admin, $enabled) {
+		$d['port'] = $switchPort;
+		$d['admin'] = $admin;
+		$d['enabled'] = $enabled;
 		return $this->render(__FUNCTION__, $d);
 	}
 

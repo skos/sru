@@ -90,6 +90,16 @@ extends UFact {
 
 			$bean->save();
 
+			$conf = UFra::shared('UFconf_Sru');
+			if (isset($post['portStatus']) && $post['portStatus'] != $post['portEnabled'] && $conf->sendEmail) {
+				$box = UFra::factory('UFbox_SruAdmin');
+				$admin = UFra::factory('UFbean_SruAdmin_Admin');
+				$admin->getByPK($this->_srv->get('session')->authAdmin);
+				$title = $box->switchPortModifiedMailTitle($bean);
+				$body = $box->switchPortModifiedMailBody($bean, $admin, $post['portEnabled']);
+				$sender->sendMail("admin-".$bean->dormitoryAlias."@ds.pg.gda.pl", $title, $body, self::PREFIX);
+			}
+
  			$this->markOk(self::PREFIX);
  			$this->postDel(self::PREFIX);
  			$this->commit();

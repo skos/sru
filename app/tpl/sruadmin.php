@@ -1233,6 +1233,21 @@ extends UFtpl_Common {
 		echo 'Link: https://'.$d['host'].'/admin/penalties/'.$d['penalty']->id."\n";
 	}
 
+	public function switchPortModifiedMailTitle(array $d) {
+		echo 'Zmodyfikowano port '.$d['port']->ordinalNo.' na switchu '.UFtpl_SruAdmin_Switch::displaySwitchName($d['port']->dormitoryAlias, $d['port']->switchNo);
+	}
+	
+	public function switchPortModifiedMailBody(array $d) {
+		echo 'Zmodyfikowano port '.$d['port']->ordinalNo.' na switchu '.UFtpl_SruAdmin_Switch::displaySwitchName($d['port']->dormitoryAlias, $d['port']->switchNo)."\n";
+		echo 'Status portu: ';
+		if ($d['enabled']) {
+			echo 'włączony'."\n";
+		} else {
+			echo 'wyłączony'."\n";
+		}
+		echo 'Admin modyfikujący: '.$d['admin']->name."\n";
+	}
+
 	public function dataChangedMailTitle(array $d) {
 		if ($d['user']->lang == 'en') {
 			echo $d['user']->write('dataChangedMailTitleEnglish');
