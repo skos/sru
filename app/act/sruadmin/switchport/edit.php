@@ -93,6 +93,7 @@ extends UFact {
 			$conf = UFra::shared('UFconf_Sru');
 			if (isset($post['portStatus']) && $post['portStatus'] != $post['portEnabled'] && $conf->sendEmail) {
 				$box = UFra::factory('UFbox_SruAdmin');
+				$sender = UFra::factory('UFlib_Sender');
 				$admin = UFra::factory('UFbean_SruAdmin_Admin');
 				$admin->getByPK($this->_srv->get('session')->authAdmin);
 				$title = $box->switchPortModifiedMailTitle($bean);
