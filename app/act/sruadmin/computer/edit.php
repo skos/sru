@@ -111,7 +111,6 @@ extends UFact {
 				$title = $box->hostChangedMailTitle($bean, $user);
 				$body = $box->hostChangedMailBody($bean, self::PREFIX, $user, $history, $admin);
 				$sender->send($user, $title, $body, self::PREFIX);
-var_dump($body);
 			}
 
 			$this->postDel(self::PREFIX);
