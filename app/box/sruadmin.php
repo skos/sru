@@ -1800,11 +1800,12 @@ extends UFbox {
 		return $this->render(__FUNCTION__, $d);
 	}
 
-	public function hostChangedMailBody($host, $action, $user, $history = null) {
+	public function hostChangedMailBody($host, $action, $user, $history = null, $admin = null) {
 		$d['host'] = $host;
 		$d['action'] = $action;
 		$d['user'] = $user;
 		$d['history'] = $history;
+		$d['admin'] = $admin;
 		return $this->render(__FUNCTION__, $d);
 	}
 

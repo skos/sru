@@ -1274,9 +1274,9 @@ extends UFtpl_Common {
 	
 	public function hostChangedMailBody(array $d) {
 		if ($d['user']->lang == 'en') {
-			echo $d['host']->write('hostAdminChangedMailBodyEnglish', $d['action'], $d['history']);
+			echo $d['host']->write('hostAdminChangedMailBodyEnglish', $d['action'], $d['history'], $d['admin']);
 		} else {
-			echo $d['host']->write('hostAdminChangedMailBodyPolish', $d['action'], $d['history']);
+			echo $d['host']->write('hostAdminChangedMailBodyPolish', $d['action'], $d['history'], $d['admin']);
 		}
 	}
 

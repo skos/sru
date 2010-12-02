@@ -589,6 +589,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 		echo 'Ważny do: '.date(self::TIME_YYMMDD,$d['availableTo'])."\n";
 		echo 'IP: '.$d['ip']."\n";
 		echo 'Adres MAC: '.$d['mac']."\n";
+		
 	}
 	
 	public function hostChangedMailBodyEnglish(array $d, $action) {
@@ -605,7 +606,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 		echo 'MAC address: '.$d['mac']."\n";
 	}
 
-	public function hostAdminChangedMailBodyPolish(array $d, $action, $history = null) {
+	public function hostAdminChangedMailBodyPolish(array $d, $action, $history = null, $admin = null) {
 		if ($action == UFact_SruAdmin_Computer_Add::PREFIX) {
 			echo 'Informujemy, że do Twojego konta w SKOS PG dodano nowego hosta.'."\n\n";
 		} else if ($action == UFact_SruAdmin_Computer_Edit::PREFIX) {
@@ -622,9 +623,12 @@ $("#main img[title]").tooltip({ position: "center right"});
 			echo 'IP: '.$d['ip']."\n";
 			echo 'Adres MAC: '.$d['mac']."\n";
 		}
+		if (!is_null($admin)) {
+			echo 'Admin modyfikujący: '.$admin->name;
+		}
 	}
 
-	public function hostAdminChangedMailBodyEnglish(array $d, $action, $history = null) {
+	public function hostAdminChangedMailBodyEnglish(array $d, $action, $history = null, $admin = null) {
 		if ($action == UFact_SruAdmin_Computer_Add::PREFIX) {
 			echo 'We inform, that a new host has been added to your SKOS PG account.'."\n\n";
 		} else if ($action == UFact_SruAdmin_Computer_Edit::PREFIX) {
@@ -640,6 +644,9 @@ $("#main img[title]").tooltip({ position: "center right"});
 			echo 'Available to: '.date(self::TIME_YYMMDD,$d['availableTo'])."\n";
 			echo 'IP: '.$d['ip']."\n";
 			echo 'MAC address: '.$d['mac']."\n";
+		}
+		if (!is_null($admin)) {
+			echo 'Admin: '.$admin->name;
 		}
 	}
 

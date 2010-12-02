@@ -103,9 +103,15 @@ extends UFact {
 				// wyslanie maila do usera
 				$box = UFra::factory('UFbox_SruAdmin');
 				$sender = UFra::factory('UFlib_Sender');
+				$admin = null;
+				if ($bean->typeId == UFbean_Sru_Computer::TYPE_SERVER) {
+					$admin = UFra::factory('UFbean_SruAdmin_Admin');
+					$admin->getByPK($this->_srv->get('session')->authAdmin);
+				}
 				$title = $box->hostChangedMailTitle($bean, $user);
-				$body = $box->hostChangedMailBody($bean, self::PREFIX, $user, $history);
+				$body = $box->hostChangedMailBody($bean, self::PREFIX, $user, $history, $admin);
 				$sender->send($user, $title, $body, self::PREFIX);
+var_dump($body);
 			}
 
 			$this->postDel(self::PREFIX);
