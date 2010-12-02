@@ -624,7 +624,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 			echo 'Adres MAC: '.$d['mac']."\n";
 		}
 		if (!is_null($admin)) {
-			echo 'Admin modyfikujący: '.$admin->name;
+			echo 'Admin modyfikujący: '.$admin->name."\n";
 		}
 	}
 
@@ -646,7 +646,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 			echo 'MAC address: '.$d['mac']."\n";
 		}
 		if (!is_null($admin)) {
-			echo 'Admin: '.$admin->name;
+			echo 'Admin: '.$admin->name."\n";
 		}
 	}
 
