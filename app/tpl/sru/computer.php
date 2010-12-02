@@ -661,7 +661,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 				$deletedString = $deletedString.$del.', ';
 			}
 			$deletedString = substr($deletedString, 0, -2);
-			echo 'Usunięto alias(y): '.$deletedString;."\n"
+			echo 'Usunięto alias(y): '.$deletedString."\n";
 		}
 	}
 }
