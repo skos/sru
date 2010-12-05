@@ -96,6 +96,10 @@ img { border-style: none; }
 
 #main .required { border: solid 1px red; }
 
+#main ul .admin { background-color: yellow; }
+#main ul .serv { background-color: green; }
+#main ul .exAdmin { background-color: gray; }
+
 .tooltip {
 	display:none;
 	background:transparent url(http://static.flowplayer.org/tools/img/tooltip/black_big.png);
