@@ -457,6 +457,7 @@ changeVisibility();
 		$chartData = '';
 		$chartDataW = '';
 		$chartLabel = '';
+		$biggestSum = 0;
 		while ($b = current ($banners)) {
 			$urlAdmin = $this->url(0).'/admins/'.$admins[key($banners)];
 			$warningsNum = $warningers[key($banners)];
@@ -465,6 +466,9 @@ changeVisibility();
 				$chartData = $chartData.$b.',';
 				$chartDataW = $chartDataW.$warningsNum.',';
 				$chartLabel = str_replace('"', '\'', key($banners)).'|'.$chartLabel;
+				if ($b + $warningsNum > $biggestSum) {
+					$biggestSum = $b + $warningsNum;
+				}
 				$i++;
 			}
 			next ($banners);
@@ -476,7 +480,7 @@ changeVisibility();
 		$chartDataW = substr($chartDataW, 0, -1);
 		echo '<div style="text-align: center;">';
 		echo '<img src="http://chart.apis.google.com/chart?chs=600x'.($i * 28+5).'&cht=bhs&chco=ff9900,ffebcc&chd=t:';
-		echo $chartData.'|'.$chartDataW.'&chxt=y&chxl=0:|'.$chartLabel.'&chds=0,'.current($banners).'" alt=""/>';
+		echo $chartData.'|'.$chartDataW.'&chxt=y&chxl=0:|'.$chartLabel.'&chds=0,'.$biggestSum.'" alt=""/>';
 		echo '</div>';
 
 		echo '<h3>Liczba nałożonych aktywnych kar przez poszczególnych adminów:</h3>';
