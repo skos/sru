@@ -39,6 +39,7 @@ extends UFmap {
 		'registryNo'	 => 'u.registry_no',
 		'updateNeeded'	 => 'u.update_needed',
 		'changePasswordNeeded'	 => 'u.change_password_needed',
+		'locationComment'=> 'l.comment',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -74,6 +75,7 @@ extends UFmap {
 		'registryNo'	 => self::NULL_INT,
 		'updateNeeded'	 => self::BOOL,
 		'changePasswordNeeded'	 => self::BOOL,
+		'locationComment'=> self::TEXT,
 	);
 	protected $tables = array(
 		'u' => 'users',

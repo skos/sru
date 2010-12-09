@@ -27,6 +27,8 @@ extends UFmap {
 		'registryNo'	 => 'u.registry_no',
 		'referralStart'	 => 'u.referral_start',
 		'banned'         => 'u.banned',
+		'comment'        => 'u.comment',
+		'locationComment'=> 'l.comment',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -50,6 +52,8 @@ extends UFmap {
 		'registryNo'	 => self::NULL_INT,
 		'referralStart'	 => self::TS,
 		'banned'         => self::BOOL,
+		'comment'        => self::TEXT,
+		'locationComment'=> self::TEXT,
 	);
 	protected $tables = array(
 		'u' => 'users',
