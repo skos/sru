@@ -102,9 +102,9 @@ extends UFtpl_Common {
 		if (!is_null($info)) {
 			echo '<a href="'.$url.'/switches/'.$d['serialNo'].'/:lockoutsedit">Lockout-MAC</a> &bull; ';
 		}
-		echo '<a href="'.$url.'/switches/'.$d['serialNo'].'/tech">Technikalia</a> &bull';
+		echo '<a href="'.$url.'/switches/'.$d['serialNo'].'/tech">Technikalia</a> &bull;';
 		if (!is_null($d['ip'])) {
-			echo ' <a href="'.$conf->swstatsLink.$this->displaySwitchName($d['dormitoryAlias'], $d['hierarchyNo']).'">SWstats</a> &bull';
+			echo ' <a href="'.$conf->swstatsLink.$this->displaySwitchName($d['dormitoryAlias'], $d['hierarchyNo']).'">SWstats</a> &bull;';
 		}
 		echo ' <span id="switchMoreSwitch"></span></p>';
 		echo '<div id="switchMore">';
