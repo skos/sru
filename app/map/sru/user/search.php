@@ -26,6 +26,7 @@ extends UFmap {
 		'active'         => 'u.active',
 		'registryNo'	 => 'u.registry_no',
 		'referralStart'	 => 'u.referral_start',
+		'banned'         => 'u.banned',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -48,6 +49,7 @@ extends UFmap {
 		'active'         => self::BOOL,
 		'registryNo'	 => self::NULL_INT,
 		'referralStart'	 => self::TS,
+		'banned'         => self::BOOL,
 	);
 	protected $tables = array(
 		'u' => 'users',
