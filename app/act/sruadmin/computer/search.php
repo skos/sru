@@ -24,13 +24,11 @@ extends UFact {
 			}
 			if (isset($post['host']) && !empty($post['host'])) {
 				$val = urlencode($post['host']);
-				$master_exploder = explode('.', $val);
-				$finds[] = 'host:'.$master_exploder[0];
-				unset($master_exploder[0]);
-				$value = implode('.',$master_exploder);
-				
-				if(!empty($value) && $value != "ds.pg.gda.pl")
-					throw  UFra::factory('UFex_Dao_DataNotValid', 'Data host invalid', 0, E_WARNING, array('host' => 'invalidDomain'));
+				$domain = stripos($val, 'ds.pg.gda.pl');
+				if ($domain !== false) {
+					$val = substr($val, 0, $domain - 1);
+				}
+				$finds[] = 'host:'.$val;
 			}
 			if (isset($post['mac']) && !empty($post['mac'])) {
 				$finds[] = 'mac:'.urlencode($post['mac']);

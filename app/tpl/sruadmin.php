@@ -240,14 +240,10 @@ extends UFtpl_Common {
 	}
 
 	public function computerSearchResults(array $d) {
-		if ($this->_srv->get('msg')->get('computerSearch/errors/host/invalidDomain')) {
-			echo $this->ERR('Komputer nie należy do naszej domeny');
-		} else {
-			echo '<h2>Znalezione komputery:</h2>';
-			echo '<div class="computerSearchResults"><ul>';
-			echo $d['computers']->write('searchResults');
-			echo '</ul></div>';
-		}
+		echo '<h2>Znalezione komputery:</h2>';
+		echo '<div class="computerSearchResults"><ul>';
+		echo $d['computers']->write('searchResults');
+		echo '</ul></div>';
 	}
 
 	public function computerSearchByAliasResults(array $d) {
