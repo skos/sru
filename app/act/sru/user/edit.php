@@ -27,8 +27,14 @@ extends UFact {
 					throw UFra::factory('UFex_Dao_DataNotValid', 'Need to set new password', 0, E_WARNING, array('password' => 'needNewOne'));
 				}
 			}
+			// jesli nie ma maila, to niech poda!
 			if (!isset($post['email']) || $post['email'] == '') {
 				throw UFra::factory('UFex_Dao_DataNotValid', 'Email not null', 0, E_WARNING, array('email' => 'notnull'));
+			}
+			// jesli nowe konto, to dostanie maila powitalnego!
+			$newAccount = false;
+			if (is_null($bean->email) || $bean->email == '') {
+				$newAccount = true;
 			}
 
 			$bean->fillFromPost(self::PREFIX, array('email', 'login','password','facultyId','studyYearId'));
@@ -69,6 +75,11 @@ extends UFact {
 				$box = UFra::factory('UFbox_Sru');
 				$sender = UFra::factory('UFlib_Sender');
 				$bean->getByPK($bean->id);	// pobranie nowych danych, np. aliasu ds-u
+				if($newAccount) {
+					$title = $box->userAddMailTitle($bean);
+					$body = $box->userAddMailBody($bean);
+					$sender->send($bean, $title, $body);
+				}
 				$title = $box->dataChangedMailTitle($bean);
 				$body = $box->dataChangedMailBody($bean);
 				$sender->send($bean, $title, $body);

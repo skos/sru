@@ -66,11 +66,16 @@ extends UFact {
 			$bean->save();
 
 			$conf = UFra::shared('UFconf_Sru');
-			if ($conf->sendEmail && $bean->notifyByEmail()) {
+			if ($conf->sendEmail && $bean->notifyByEmail() && !is_null($bean->email) && $bean->email != '') {
 				$history = UFra::factory('UFbean_SruAdmin_UserHistoryList');
 				$history->listByUserId($bean->id, 1);
 				$bean->getByPK($bean->id);	// pobranie nowych danych, np. aliasu ds-u
 				// wyslanie maila do usera
+				if (!$active && $bean->active) { // jesli aktywowane konto, to wyslijmy mu maila powitalnego
+					$title = $box->userAddMailTitle($bean);
+					$body = $box->userAddMailBody($bean);
+					$sender->send($bean, $title, $body);
+				}
 				$box = UFra::factory('UFbox_SruAdmin');
 				$sender = UFra::factory('UFlib_Sender');
 				$title = $box->dataChangedMailTitle($bean);

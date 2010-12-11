@@ -282,9 +282,9 @@ extends UFtpl_Common {
 
 	public function userAddMailBody(array $d) {
 		if ($d['user']->lang == 'en') {
-			echo $d['user']->write('userAddMailBodyEnglish', $d['password']);
+			echo $d['user']->write('userAddMailBodyEnglish');
 		} else {
-			echo $d['user']->write('userAddMailBodyPolish', $d['password']);
+			echo $d['user']->write('userAddMailBodyPolish');
 		}
 	}
 

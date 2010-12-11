@@ -594,70 +594,38 @@ $("#main img[title]").tooltip({ position: "center right"});
 		echo 'Welcome in SKOS network';
 	}
 
-	public function userAddMailBodyPolish(array $d, $password) {
+	public function userAddMailBodyPolish(array $d) {
 		echo 'Witamy w Sieci Komputerowej Osiedla Studenckiego Politechniki Gdańskiej!'."\n";
 		echo "\n";
-		echo 'Jeżeli otrzymałeś/aś tę wiadomość, a nie chciałeś/aś założyć konta w SKOS PG,'."\n";
+		echo 'Jeżeli otrzymałeś/aś tę wiadomość, a nie masz konta w SKOS PG,'."\n";
 		echo 'prosimy o zignorowanie tej wiadomości.'."\n\n";
-		echo 'Aby dokończyć proces aktywacji konta, zgłoś się do swojego administratora'."\n";
-		echo 'lokalnego z wejściówką do DS-u. Godziny, w których możesz go zastać znajdziesz'."\n";
-		echo 'tutaj: http://skos.ds.pg.gda.pl/'."\n";
-		echo "\n";
-		echo 'W razie jakichkolwiek problemów zachęcamy do skorzystania z FAQ:'."\n";
-		echo 'http://skos.ds.pg.gda.pl/'."\n";
-		echo "\n";
-		echo '- - - - - - - - - - -'."\n";
-		echo "\n";
-		echo 'Dane, na które zostało założone konto:'."\n";
-		echo 'Imię: '.$d['name']."\n";
-		echo 'Nazwisko: '.$d['surname']."\n";
-		echo $d['dormitoryName']."\n";
-		echo 'Pokój: '.$d['locationAlias']."\n";
-		echo 'Login: '.$d['login']."\n";
-		echo 'Twoje hasło to: '.$password."\n";
-		echo "\n";
-		echo 'System Rejestracji Użytkowników: http://sru.ds.pg.gda.pl/'."\n";
-		echo 'PROSIMY O ZMIANĘ HASŁA ZARAZ PO PIERWSZYM ZALOGOWANIU SIĘ!'."\n";
-		echo "\n";
 		echo '- - - - - - - - - - -'."\n";
 		echo "\n";
 		echo 'Nasza sieć obejmuje swoim zasięgiem sieci LAN wszystkich Domów Studenckich'."\n";
 		echo 'Politechniki Gdańskiej, jest częścią Uczelnianej Sieci Komputerowej (USK PG) i'."\n";
 		echo 'dołączona jest bezpośrednio do sieci TASK.'."\n";
 		echo "\n";
-		echo 'Wszelkie informacje na temat funkcjonowania sieci, godzin dyżurów'."\n";
-		echo 'administratorów SKOS PG oraz Regulamin SKOS PG znajdziesz na stronie'."\n";
-		echo 'http://skos.ds.pg.gda.pl/ , zaś bieżące komunikaty na grupie dyskusyjnej ds.siec.komunikaty'."\n";
+		echo '- - - - - - - - - - -'."\n";
+		echo "\n";
+		$conf = UFra::shared('UFconf_Sru');
+		echo $conf->userPrintSkosText;
+		echo "\n";
+		echo '- - - - - - - - - - -'."\n";
+		echo "\n";
+		echo $conf->userPrintWaletText;
+		echo "\n";
 	}
 	
-	public function userAddMailBodyEnglish(array $d, $password) {
+	public function userAddMailBodyEnglish(array $d) {
 		echo 'Welcome in Gdańsk University of Technology Students’ Campus Computer Network (polish acronym - SKOS PG)!' . "\n";
 		echo "\n";
-		echo 'If you received this message but you didn’t want to create an account in SKOS PG, please ignore it.' . "\n";
-		echo 'To finish activation procedure you must go to your local administrator in his duty hours:'."\n";
-		echo 'http://skos.ds.pg.gda.pl/'."\n";
-		echo 'with your dormitory card.'."\n";
-		echo "\n";
-		echo 'If you have problems using Internet in our network, please refer to FAQ:'."\n";
-		echo 'http://skos.ds.pg.gda.pl/'."\n";
-		echo "\n";
+		echo 'If you received this message but you don’t have an account in SKOS PG, please ignore it.' . "\n";
 		echo '- - - - - - - - - - -'."\n";
 		echo "\n";
-		echo 'Account was created for:'."\n";
-		echo 'Name: '.$d['name']."\n";
-		echo 'Surname: '.$d['surname']."\n";
-		echo $d['dormitoryName']."\n";
-		echo 'Room: '.$d['locationAlias']."\n";
-		echo 'Login: '.$d['login']."\n";
-		echo 'Your password: '.$password."\n";
-		echo "\n";
-		echo 'Users’ Registration System (System Rejestracji Użytkowników): http://sru.ds.pg.gda.pl/'."\n";
-		echo 'PLEASE CHANGE YOUR PASSWORD AFTER THE FIRST LOGON!'."\n";
-		echo "\n";
-		echo '- - - - - - - - - - -'."\n";
-		echo "\n";
-		echo 'Any information about our network you can find on our page'."\n";
+		echo 'Any information about our network including FAQ you can find on our page'."\n";
 		echo 'http://skos.ds.pg.gda.pl/'."\n";
+		echo 'Any information about our dormitories you can find on our page'."\n";
+		echo 'http://akademiki.pg.gda.pl/'."\n";
 	}
 
 	public function userRecoverPasswordMailTitlePolish(array $d) {
