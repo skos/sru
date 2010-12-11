@@ -410,7 +410,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 			echo $this->ERR($this->errors['host/regexp']);
 		}
 		echo $form->alias('Alias');
-		echo $form->isCname('Wpis CNAME <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Aliasy są domyślnie wpisami A.">', array('type'=>$form->CHECKBOX));
+		echo $form->isCname('Wpis CNAME <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Aliasy są domyślnie wpisami CNAME.">', array('type'=>$form->CHECKBOX, 'value'=>'1'));
 		echo $form->_end();
 
 ?>
