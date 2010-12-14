@@ -1,1 +1,2 @@
 create table lanstats (time timestamp NOT NULL default now(), ip inet not null, bytes bigint NOT NULL default 0, packets bigint NOT NULL default 0);
+ALTER TABLE lanstats ADD CONSTRAINT lanstats_ipv4_ip_fk FOREIGN KEY (ip) REFERENCES ipv4s (ip) ON UPDATE NO ACTION ON DELETE NO ACTION;

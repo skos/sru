@@ -7,6 +7,7 @@ extends UFmap {
 
 	protected $columns = array(
 		'ip'		=> 'l.ip',
+		'hostId'	=> 'c.id',
 		'host'		=> 'c.host',
 		'isAdmin'	=> 'c.can_admin',
 		'typeId'	=> 'c.type_id',
@@ -16,6 +17,7 @@ extends UFmap {
 	);
 	protected $columnTypes = array(
 		'ip'		=> self::TEXT,
+		'hostId'	=> self::INT,
 		'host'		=> self::TEXT,
 		'bytes_sum'	=> self::INT,
 		'bytes_min'	=> self::INT,
