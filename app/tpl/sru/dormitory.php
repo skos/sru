@@ -86,4 +86,18 @@ $(document).ready(function()
 </script>
 <?
 	}
+
+	public function inhabitantsAlphabetically(array $d, $users) {
+		echo '<table><thead><tr>';
+		echo '<th>Imię</th>';
+		echo '<th>Nazwisko</th>';
+		echo '<th>Pokój</th>';
+		echo '</tr></thead><tbody>';
+		foreach ($users as $user) {
+			echo '<tr><td>'.$user['name'].'</td>';
+			echo '<td>'.$user['surname'].'</td>';
+			echo '<td>'.$user['locationAlias'].'</td></tr>';
+		}
+		echo '</tbody></table>';
+	}
 }

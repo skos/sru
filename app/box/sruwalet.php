@@ -375,6 +375,67 @@ extends UFbox {
 		}
 	}
 
+	public function titleDormExport() {
+		try {
+			$bean = $this->_getDormFromGet();
+
+			$d['dorm'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}
+	}
+
+	public function dormExport() {
+		try {
+			$bean = $this->_getDormFromGet();
+			$d['dorm'] = $bean;
+			
+			try {
+				$rooms = UFra::factory('UFbean_SruAdmin_RoomList');
+				$rooms->listByDormitoryId($bean->id); 
+				
+				$d['rooms'] = $rooms;
+			} catch (UFex_Dao_NotFound $e) {
+				$d['rooms'] = null;
+			}
+
+			try {
+				$users = UFra::factory('UFbean_Sru_UserList');
+				$users->listActiveByDorm($bean->id);
+				
+				$d['users'] = $users;
+			} catch (UFex_Dao_NotFound $e) {
+				$d['users'] = null;
+			}
+		
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}
+	}
+
+	public function dormUsersExport() {
+		try {
+			$bean = $this->_getDormFromGet();
+			$d['dorm'] = $bean;
+
+			try {
+				$users = UFra::factory('UFbean_Sru_UserList');
+				$users->listActiveByDorm($bean->id);
+				
+				$d['users'] = $users;
+			} catch (UFex_Dao_NotFound $e) {
+				$d['users'] = null;
+			}
+		
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}
+	}
+
 	/* Statystyki */
 
 	public function statsUsers() {

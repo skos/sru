@@ -257,7 +257,8 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 	}
 
 	public function dorm(array $d) {
-		echo '<h2><a href="'.$this->url(0).'/inhabitants">Obsadzenie</a></h2>';
+		echo '<h2><a href="'.$this->url(0).'/inhabitants">Obsadzenie</a><br/>';
+		echo '<small>Eksportuj do pliku MS Word(tm): <a href="'.$this->url(3).'/:dormexport">obsadzenie</a> | <a href="'.$this->url(3).'/:usersexport">mieszkańców</a></small></h2>';
 		echo '<h3>'.$d['dorm']->name.'</h3>';
 		$d['rooms']->write('dormInhabitants', $d['dorm'], $d['users']);
 	}
@@ -268,6 +269,20 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 
 	public function dormNotFound(array $d) {
 		echo $this->ERR('Nie znaleziono domu studenckiego');
+	}
+
+	public function titleDormExport(array $d) {
+		echo $d['dorm']->alias.'-obsadzenie';
+	}
+
+	public function dormExport(array $d) {
+		echo '<h2>'.$d['dorm']->name.' - obsadzenie</h2>';
+		$d['rooms']->write('dormInhabitants', $d['dorm'], $d['users']);
+	}
+
+	public function dormUsersExport(array $d) {
+		echo '<h2>'.$d['dorm']->name.' - lista mieszkańców</h2>';
+		$d['dorm']->write('inhabitantsAlphabetically', $d['users']);
 	}
 
 
