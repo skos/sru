@@ -293,7 +293,8 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 	}
 	
 	public function statsUsers(array $d) {
-		echo '<h2>Użytkownicy | <a href="'.$this->url(1).'/dormitories">Akademiki</a></h2>';
+		echo '<h2>Użytkownicy | <a href="'.$this->url(1).'/dormitories">Akademiki</a><br/>';
+		echo '<small><a href="'.$this->url(2).'/:usersexport">Eksportuj do pliku MS Word(tm)</a></small></h2>';
 		$d['users']->write('stats');
 	}
 	
@@ -306,12 +307,31 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 	}
 	
 	public function statsDormitories(array $d) {
-		echo '<h2><a href="'.$this->url(1).'">Użytkownicy</a> | Akademiki</h2>';
+		echo '<h2><a href="'.$this->url(1).'">Użytkownicy</a> | Akademiki<br/>';
+		echo '<small><a href="'.$this->url(1).'/:dormitoriesexport">Eksportuj do pliku MS Word(tm)</a></small></h2>';
 		$d['users']->write('statsDorms');
-	}						
+	}
 	
 	public function statsDormitoriesNotFound(array $d) {
 		echo $this->ERR('Błąd wyświetlenia statystyk');
+	}
+
+	public function titleStatsUsersExport() {
+		echo 'StatystykiUzytkownikow';
+	}
+	
+	public function statsUsersExport(array $d) {
+		echo '<h2>Statystyki użytkowników</h2>';
+		$d['users']->write('stats');
+	}
+
+	public function titleStatsDormitoriesExport() {
+		echo 'StatystykiAkademikow';
+	}
+	
+	public function statsDormitoriesExport(array $d) {
+		echo '<h2>Statystyki Domów Studenckich</h2>';
+		$d['users']->write('statsDorms');
 	}
 
 

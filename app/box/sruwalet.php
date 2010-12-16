@@ -383,7 +383,7 @@ extends UFbox {
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
-			return $this->render(__FUNCTION__.'NotFound');
+			return $this->render('inhabitantsNotFound');
 		}
 	}
 
@@ -412,7 +412,7 @@ extends UFbox {
 		
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
-			return $this->render(__FUNCTION__.'NotFound');
+			return $this->render('inhabitantsNotFound');
 		}
 	}
 
@@ -459,6 +459,30 @@ extends UFbox {
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
 			return $this->render(__FUNCTION__.'NotFound', $d);
+		}
+	}
+
+	public function statsUsersExport() {
+		try {
+			$user = UFra::factory('UFbean_Sru_UserList');
+			$user->listAllActive();
+			$d['users'] = $user;
+		
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render('statsUsersNotFound', $d);
+		}
+	}
+
+	public function statsDormitoriesExport() {
+		try {
+			$user = UFra::factory('UFbean_Sru_UserList');
+			$user->listAllActive();
+			$d['users'] = $user;
+		
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render('statsDormitoriesNotFound', $d);
 		}
 	}
 
