@@ -73,7 +73,7 @@ extends UFtpl_Common {
 		echo $form->_end(true);
 	}
 
-	public function dormInhabitants(array $d, $dorm, $users) {
+	public function dormInhabitants(array $d, $dorm, $users, $export = false) {
 		$url = $this->url(0).'/dormitories/';
 		
 		$dorm = isset($d[0]['dormitoryAlias']) ? $d[0]['dormitoryAlias'] : '';
@@ -92,7 +92,10 @@ extends UFtpl_Common {
 			$roomInt = (int)$user['locationAlias'];
 			$aliases[$roomInt]->addPerson($user['locationAlias'], $user);
 		}
-
+		
+		if (!$export) {
+			echo '<label for="filter">Szukaj:</label> <input type="text" name="filter" value="" id="filter" />';
+		}
 		echo '<div class="ips">';
 		echo '<table><tr><td style="background: #cff; color: #000;">Kobieta</td><td style="background: #ccf; color: #000;">Mężczyzna</td><td style="background: #f22; color: #000;">Dokwaterowany</td></tr></table>';
 		echo '</div><br/>';
@@ -134,6 +137,39 @@ extends UFtpl_Common {
 			next($aliases);
 		}
 		echo '</tbody></table>';
+
+?>
+<script>
+$(document).ready(function() {
+	//default each row to visible
+	$('tbody tr').addClass('visible');
+	
+	$('#filter').keyup(function(event) {
+		//if esc is pressed or nothing is entered
+		if (event.keyCode == 27 || $(this).val() == '') {
+			//if esc is pressed we want to clear the value of search box
+			$(this).val('');
+			
+			//we want each row to be visible because if nothing
+			//is entered then all rows are matched.
+			$('tbody tr').removeClass('visible').show().addClass('visible');
+		} else { //if there is text, lets filter
+			filter('tbody tr', $(this).val());
+		}
+	});
+});
+
+//filter results based on query
+function filter(selector, query) {
+	query = $.trim(query); //trim white space
+	query = query.replace(/ /gi, '|'); //add OR for regex
+  
+	$(selector).each(function() {
+		($(this).text().search(new RegExp(query, "i")) < 0) ? $(this).hide().removeClass('visible') : $(this).show().addClass('visible');
+	});
+}
+</script>
+<?
 	}
 }
 

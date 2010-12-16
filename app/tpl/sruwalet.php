@@ -277,7 +277,7 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 
 	public function dormExport(array $d) {
 		echo '<h2>'.$d['dorm']->name.' - obsadzenie</h2>';
-		$d['rooms']->write('dormInhabitants', $d['dorm'], $d['users']);
+		$d['rooms']->write('dormInhabitants', $d['dorm'], $d['users'], true);
 	}
 
 	public function dormUsersExport(array $d) {
