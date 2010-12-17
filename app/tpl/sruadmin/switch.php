@@ -30,6 +30,7 @@ extends UFtpl_Common {
 	public function listSwitches(array $d, $dorm) {
 		$url = $this->url(0).'/switches/';
 		$urlds = $this->url(0).'/dormitories/';
+		$conf = UFra::shared('UFconf_Sru');
 		$lastDom = '-';
 
 		foreach ($d as $c) {
@@ -52,6 +53,7 @@ extends UFtpl_Common {
 			if (!is_null($c['ip'])) {
 				echo ' &bull; <a href="'.$url.''.$c['serialNo'].'/:lockoutsedit">Lockout-MAC</a>';
 				echo ' &bull; <a href="'.$url.$c['serialNo'].'/tech">Technikalia</a>';
+				echo ' &bull; <a href="'.$conf->swstatsLink.$this->displaySwitchName($c['dormitoryAlias'], $c['hierarchyNo']).'">SWStats</a>';
 			}
 			echo '</small></li>';
 			
@@ -104,7 +106,7 @@ extends UFtpl_Common {
 		}
 		echo '<a href="'.$url.'/switches/'.$d['serialNo'].'/tech">Technikalia</a> &bull;';
 		if (!is_null($d['ip'])) {
-			echo ' <a href="'.$conf->swstatsLink.$this->displaySwitchName($d['dormitoryAlias'], $d['hierarchyNo']).'">SWstats</a> &bull;';
+			echo ' <a href="'.$conf->swstatsLink.$this->displaySwitchName($d['dormitoryAlias'], $d['hierarchyNo']).'">SWStats</a> &bull;';
 		}
 		echo ' <span id="switchMoreSwitch"></span></p>';
 		echo '<div id="switchMore">';
