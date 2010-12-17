@@ -98,7 +98,11 @@ img { border-style: none; }
 
 #main ul .admin { background-color: yellow; }
 #main ul .serv { background-color: green; }
+#main ul .org { background-color: blue; }
+#main ul .adm { background-color: #28d9ff; }
 #main ul .exAdmin { background-color: gray; }
+
+#main .banned { background-color: #fc0; }
 
 .tooltip {
 	display:none;
