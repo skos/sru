@@ -14,6 +14,7 @@ extends UFtpl_Common {
 
 	public function details(array $d, $switch, $alias) {
 		$url = $this->url(0).'/switches/';
+		$conf = UFra::shared('UFconf_Sru');
 
 		echo '<h3>Port '.$d['ordinalNo'].'</h3>';
 		if(is_null($d['connectedSwitchId'])) {
@@ -29,7 +30,8 @@ extends UFtpl_Common {
 		echo '<p class="nav"><a href="'.$url.'dorm/'.$d['dormitoryAlias'].'">Wróć do listy</a> &bull; 
 			 <a href="'.$url.'">Pokaż wszystkie</a> &bull; 
 			<a href="'.$url.$switch->serialNo.'/port/'.$d['ordinalNo'].'/macs">Pokaż adresy MAC</a> &bull; 
-			<a href="'.$url.$switch->serialNo.'/port/'.$d['ordinalNo'].'/:edit">Edytuj port</a></p>';
+			<a href="'.$url.$switch->serialNo.'/port/'.$d['ordinalNo'].'/:edit">Edytuj port</a> &bull;
+			<a href="'.$conf->swstatsLink.UFtpl_SruAdmin_Switch::displaySwitchName($switch->dormitoryAlias, $switch->hierarchyNo).'&amp;port='.$d['ordinalNo'].'">SWStats</a></p>';
 	}
 
 	public function portMacs(array $d, $switch, $macs) {
