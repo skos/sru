@@ -13,28 +13,32 @@ extends UFtpl_Common {
 		$sum = 0;
 		foreach ($d as $uploader) {
 			$suffix = '';
+			$class = '<li>';
 			if ($uploader['isAdmin']) {
-				echo '<li class="admin">';
+				$class = '<li class="admin">';
 				$suffix = ' - admin';
 			} else if ($uploader['typeId'] == UFbean_Sru_Computer::TYPE_ORGANIZATION) {
-				echo '<li class="org">';
+				$class = '<li class="org">';
 				$suffix = ' - organizacja';
 			} else if ($uploader['typeId'] == UFbean_Sru_Computer::TYPE_ADMINISTRATION) {
-				echo '<li class="adm">';
+				$class = '<li class="adm">';
 				$suffix = ' - administracja';
 			} else if ($uploader['typeId'] == UFbean_Sru_Computer::TYPE_SERVER) {
-				echo '<li class="serv">';
+				$class = '<li class="serv">';
 				$suffix = ' - serwer';
 			} else if (in_array($uploader['ip'], $exAdmins)) {
-				echo '<li class="exAdmin">';
+				$class = '<li class="exAdmin">';
 				$suffix = ' - exAdmin';
-			} else {
-				echo '<li>';
 			}
+			// jeśli zbanowany, nadpiszmy kolor
+			if ($uploader['isBanned']) {
+				$class = '<li class="ban">';
+			}
+
 			if (!is_null($uploader['host'])) {
-				echo ($uploader['isBanned'] ? '<span class="ban">' : '<span>').'<a href="'.$this->url(0).'/computers/'.$uploader['hostId'].'/stats">'.$uploader['host'].' <small>('.$uploader['ip'].')</small></a>: '.$uploader['bytes_min'].'/<b>'.$uploader['bytes_sum'].'</b>/'.$uploader['bytes_max'].' kB/s'.$suffix.'</span></li>';
+				echo $class.'<a href="'.$this->url(0).'/computers/'.$uploader['hostId'].'/stats">'.$uploader['host'].' <small>('.$uploader['ip'].')</small></a>: '.$uploader['bytes_min'].'/<b>'.$uploader['bytes_sum'].'</b>/'.$uploader['bytes_max'].' kB/s'.$suffix.'</li>';
 			} else {
-				echo '<a href="'.$this->url(0).'/computers/search/ip:'.$uploader['ip'].'">'.$uploader['ip'].'</a>: '.$uploader['bytes_min'].'/<b>'.$uploader['bytes_sum'].'</b>/'.$uploader['bytes_max'].' kB/s'.$suffix.'</li>';
+				echo $class.'<a href="'.$this->url(0).'/computers/search/ip:'.$uploader['ip'].'">'.$uploader['ip'].'</a>: '.$uploader['bytes_min'].'/<b>'.$uploader['bytes_sum'].'</b>/'.$uploader['bytes_max'].' kB/s'.$suffix.'</li>';
 			}
 			$sumAvg += $uploader['bytes_sum'];
 			$sum++;
