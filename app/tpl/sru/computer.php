@@ -445,7 +445,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 			} else {
 				$owner = '(<a href="'.$url.'/users/'.$c['userId'].'">'.$this->_escape($c['userName']).' '.$this->_escape($c['userSurname']).'</a>)';
 			}
-			echo '<li'.(!$c['active']?' class="old">Do '.date(self::TIME_YYMMDD, $c['availableTo']).' ':'>').(!$c['active']?'<del>':'').'<a href="'.$url.'/computers/'.$c['id'].'">'.$c['host'].' <small>'.$c['ip'].'/'.$c['mac'].'</small></a> <span>'.$owner.'</span>'.(!$c['active']?'</del>':'').'</li>';
+			echo '<li'.(!$c['active']?' class="old">Do '.date(self::TIME_YYMMDD, $c['availableTo']).' ':'>').(!$c['active']?'<del>':'').'<a href="'.$url.'/computers/'.$c['id'].'">'.$c['host'].(strlen($c['comment']) ? ' <img src="'.UFURL_BASE.'/i/gwiazdka.png" alt="" title="'.$c['comment'].'" />':'').' <small>'.$c['ip'].'/'.$c['mac'].'</small></a> <span>'.$owner.'</span>'.(!$c['active']?'</del>':'').'</li>';
 		}
 	}
 

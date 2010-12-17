@@ -11,6 +11,7 @@ extends UFmap {
 		'isCname'	=> 'a.is_cname',
 		'ip'		=> 'c.ipv4',
 		'parent'	=> 'c.host',
+		'parentComment'	=> 'c.comment',
 	);
 	protected $columnTypes = array(
 		'id'		=> self::INT,
@@ -19,6 +20,7 @@ extends UFmap {
 		'isCname'	=> self::BOOL,
 		'ip'		=> self::TEXT,
 		'parent'	=> self::TEXT,
+		'parentComment'	=> self::TEXT,
 	);
 	protected $tables = array(
 		'a' => 'computers_aliases',
