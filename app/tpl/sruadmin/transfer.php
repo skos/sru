@@ -16,6 +16,12 @@ extends UFtpl_Common {
 			if ($uploader['isAdmin']) {
 				echo '<li class="admin">';
 				$suffix = ' - admin';
+			} else if ($uploader['typeId'] == UFbean_Sru_Computer::TYPE_ORGANIZATION) {
+				echo '<li class="org">';
+				$suffix = ' - organizacja';
+			} else if ($uploader['typeId'] == UFbean_Sru_Computer::TYPE_ADMINISTRATION) {
+				echo '<li class="adm">';
+				$suffix = ' - administracja';
 			} else if ($uploader['typeId'] == UFbean_Sru_Computer::TYPE_SERVER) {
 				echo '<li class="serv">';
 				$suffix = ' - serwer';
@@ -26,7 +32,7 @@ extends UFtpl_Common {
 				echo '<li>';
 			}
 			if (!is_null($uploader['host'])) {
-				echo '<a href="'.$this->url(0).'/computers/'.$uploader['hostId'].'/stats">'.$uploader['host'].' <small>('.$uploader['ip'].')</small></a>: '.$uploader['bytes_min'].'/<b>'.$uploader['bytes_sum'].'</b>/'.$uploader['bytes_max'].' kB/s'.$suffix.'</li>';
+				echo ($uploader['isBanned'] ? '<span class="banned">' : '<span>').'<a href="'.$this->url(0).'/computers/'.$uploader['hostId'].'/stats">'.$uploader['host'].' <small>('.$uploader['ip'].')</small></a>: '.$uploader['bytes_min'].'/<b>'.$uploader['bytes_sum'].'</b>/'.$uploader['bytes_max'].' kB/s'.$suffix.'</span></li>';
 			} else {
 				echo '<a href="'.$this->url(0).'/computers/search/ip:'.$uploader['ip'].'">'.$uploader['ip'].'</a>: '.$uploader['bytes_min'].'/<b>'.$uploader['bytes_sum'].'</b>/'.$uploader['bytes_max'].' kB/s'.$suffix.'</li>';
 			}

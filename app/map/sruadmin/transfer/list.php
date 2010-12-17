@@ -11,6 +11,7 @@ extends UFmap {
 		'host'		=> 'c.host',
 		'isAdmin'	=> 'c.can_admin',
 		'typeId'	=> 'c.type_id',
+		'isBanned'	=> 'c.banned',
 		'bytes_sum' 	=> 'sum(l.bytes)/1024/1800',
 		'bytes_min' 	=> 'min(l.bytes)/1024/60',
 		'bytes_max' 	=> 'max(l.bytes)/1024/60',
@@ -24,6 +25,7 @@ extends UFmap {
 		'bytes_max'	=> self::INT,
 		'isAdmin'	=> self::BOOL,
 		'typeId'	=> self::INT,
+		'isBanned'	=> self::BOOL,
 	);
 	protected $tables = array(
 		'l' => 'lanstats',
