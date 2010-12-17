@@ -247,7 +247,7 @@ extends UFtpl_Common {
 	}
 
 	public function computerSearchByAliasResults(array $d) {
-		echo '<h2>Znalezione komputery szukając po aliasie:</h2>';
+		echo '<h2>Znalezione aliasy:</h2>';
 		echo '<ul>';
 		echo $d['aliases']->write('listAliases');
 		echo '</ul></div>';
@@ -260,6 +260,7 @@ extends UFtpl_Common {
 	}
 
 	public function computerSearchResultsNotFound() {
+		echo '<h2>Znalezione komputery:</h2>';
 		echo $this->ERR('Nie znaleziono');
 	}
 
