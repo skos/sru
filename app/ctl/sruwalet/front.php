@@ -97,7 +97,17 @@ extends UFctl {
 						if($segCount == 2) {
 							$get->view = 'dormitories/dorm';
 						} else {
-							$get->view = 'error404';
+							switch ($req->segment(3)) {
+								case ':dormexport':
+									$get->view = 'dormitories/dorm/docdormexport';
+									break;
+								case ':usersexport':
+									$get->view = 'dormitories/dorm/docusersexport';
+									break;
+								default:
+									$get->view = 'error404';
+									break;
+							}
 						}
 					}
 					break;
@@ -109,6 +119,12 @@ extends UFctl {
 						switch ($req->segment(2)) {
 							case 'dormitories':
 								$get->view = 'stats/dormitories';
+								break;
+							case ':dormitoriesexport':
+								$get->view = 'stats/docdormitoriesexport';
+								break;
+							case ':usersexport':
+								$get->view = 'stats/docusersexport';
 								break;
 							default:
 								$get->view = 'error404';
@@ -238,10 +254,26 @@ extends UFctl {
 				} else {
 					return 'Sru_Error403';
 				}
+			case 'dormitories/dorm/docdormexport':
+				if ($acl->sruWalet('dorm', 'view', $get->dormAlias)) {
+					return 'SruWalet_DormDocExport';
+				} else {
+					return 'Sru_Error403';
+				}
+			case 'dormitories/dorm/docusersexport':
+				if ($acl->sruWalet('dorm', 'view', $get->dormAlias)) {
+					return 'SruWalet_DormUsersDocExport';
+				} else {
+					return 'Sru_Error403';
+				}
 			case 'stats/users':
 				return 'SruWalet_StatsUsers';
 			case 'stats/dormitories':
 				return 'SruWalet_StatsDormitories';
+			case 'stats/docusersexport':
+				return 'SruWalet_StatsUsersDocExport';
+			case 'stats/docdormitoriesexport':
+				return 'SruWalet_StatsDormitoriesDocExport';
 			case 'admins/main':
 				return 'SruWalet_Admins';
 			case 'admins/admin':
