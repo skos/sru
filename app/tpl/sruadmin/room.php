@@ -94,7 +94,7 @@ extends UFtpl_Common {
 		}
 		
 		if (!$export) {
-			echo '<label for="filter">Szukaj:</label> <input type="text" name="filter" value="" id="filter" />';
+			echo '<label for="filter">Filtruj:</label> <input type="text" name="filter" value="" id="filter" />';
 		}
 		echo '<div class="ips">';
 		echo '<table><tr><td style="background: #cff; color: #000;">Kobieta</td><td style="background: #ccf; color: #000;">Mężczyzna</td><td style="background: #f22; color: #000;">Dokwaterowany</td></tr></table>';
