@@ -32,7 +32,7 @@ extends UFtpl_Common {
 				echo '<li>';
 			}
 			if (!is_null($uploader['host'])) {
-				echo ($uploader['isBanned'] ? '<span class="banned">' : '<span>').'<a href="'.$this->url(0).'/computers/'.$uploader['hostId'].'/stats">'.$uploader['host'].' <small>('.$uploader['ip'].')</small></a>: '.$uploader['bytes_min'].'/<b>'.$uploader['bytes_sum'].'</b>/'.$uploader['bytes_max'].' kB/s'.$suffix.'</span></li>';
+				echo ($uploader['isBanned'] ? '<span class="ban">' : '<span>').'<a href="'.$this->url(0).'/computers/'.$uploader['hostId'].'/stats">'.$uploader['host'].' <small>('.$uploader['ip'].')</small></a>: '.$uploader['bytes_min'].'/<b>'.$uploader['bytes_sum'].'</b>/'.$uploader['bytes_max'].' kB/s'.$suffix.'</span></li>';
 			} else {
 				echo '<a href="'.$this->url(0).'/computers/search/ip:'.$uploader['ip'].'">'.$uploader['ip'].'</a>: '.$uploader['bytes_min'].'/<b>'.$uploader['bytes_sum'].'</b>/'.$uploader['bytes_max'].' kB/s'.$suffix.'</li>';
 			}
