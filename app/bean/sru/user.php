@@ -17,6 +17,7 @@ extends UFbeanSingle {
 		'facultyId',
 		'studyYearId',
 		'locationId',
+		'active',
 	);
 
 	/**

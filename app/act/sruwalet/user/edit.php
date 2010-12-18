@@ -64,7 +64,6 @@ extends UFact {
 			}
 
 			$bean->save();
-
 			$conf = UFra::shared('UFconf_Sru');
 			if ($conf->sendEmail && $bean->notifyByEmail() && !is_null($bean->email) && $bean->email != '') {
 				$sender = UFra::factory('UFlib_Sender');
@@ -76,6 +75,7 @@ extends UFact {
 					$box = UFra::factory('UFbox_Sru');
 					$title = $box->userAddMailTitle($bean);
 					$body = $box->userAddMailBody($bean);
+var_dump($body);
 					$sender->send($bean, $title, $body);
 				}
 				$box = UFra::factory('UFbox_SruAdmin');

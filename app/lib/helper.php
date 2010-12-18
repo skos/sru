@@ -20,15 +20,4 @@ class UFlib_Helper {
 
 		return strtolower(preg_replace($unPretty, $pretty, trim($string)));
 	}
-
-	public static function br2nl($string) {
-		$string = str_replace('<br/>', '\n', $string);
-		$string = str_replace('<b>', '', $string);
-		$string = str_replace('</b>', '', $string);
-		$string = str_replace('<u>', '', $string);
-		$string = str_replace('</u>', '', $string);
-		$string = str_replace('<i>', '', $string);
-		$string = str_replace('</i>', '', $string);
-		return $string;
-	}
 }

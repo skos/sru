@@ -607,12 +607,18 @@ $("#main img[title]").tooltip({ position: "center right"});
 		echo "\n";
 		echo '- - - - - - - - - - -'."\n";
 		echo "\n";
-		$conf = UFra::shared('UFconf_Sru');
-		echo UFlib_Helper::br2nl($conf->userPrintSkosText);
+		echo 'Informacje dotyczące Sieci w Domach Studenckich znajdziesz na stronie:'."\n";
+		echo 'http://skos.ds.pg.gda.pl.'."\n";
+		echo '**Pamiętaj, by zapoznać się z Regulaminem SKOS!**'."\n\n";
+		echo 'Zachęcamy do korzystania z grup dyskusyjnych - uzyskasz tam wiele informacji'."\n";
+		echo 'o życiu studenckim i naszej sieci: http://news.ds.pg.gda.pl.'."\n";
+		echo 'Więcej dowiesz się z FAQ na http://skos.ds.pg.gda.pl.'."\n\n";
+		echo 'Chcesz zostać administratorem sieci? Wejdź na http://kandydaci.ds.pg.gda.pl.'."\n";
 		echo "\n";
 		echo '- - - - - - - - - - -'."\n";
 		echo "\n";
-		echo UFlib_Helper::br2nl($conf->userPrintWaletText);
+		echo 'Wszystkie informacje dotyczące Domów studenckich znajdziesz na stronie:'."\n";
+		echo 'http://akademiki.pg.gda.pl';
 		echo "\n";
 	}
 	
