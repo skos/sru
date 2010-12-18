@@ -608,11 +608,11 @@ $("#main img[title]").tooltip({ position: "center right"});
 		echo '- - - - - - - - - - -'."\n";
 		echo "\n";
 		$conf = UFra::shared('UFconf_Sru');
-		echo $conf->userPrintSkosText;
+		echo UFlib_Helper::br2nl($conf->userPrintSkosText);
 		echo "\n";
 		echo '- - - - - - - - - - -'."\n";
 		echo "\n";
-		echo $conf->userPrintWaletText;
+		echo UFlib_Helper::br2nl($conf->userPrintWaletText);
 		echo "\n";
 	}
 	
