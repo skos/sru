@@ -180,6 +180,18 @@ extends UFtpl_Common {
 						.($val!==$new[$key] ? $arr.UFtpl_Sru_User::$studyYears[$new[$key]] : '')
 						."\n";
 						break;
+				case 'active':
+					$newA = $new['active'] ? 'tak' : 'nie';
+					if ($lang == self::EN) {
+						echo $names[$key].': '.($old['active'] ? 'yes' : 'no')
+							.($val!==$new[$key] ? ($arr.$new['active'] ? 'yes' : 'no') : '')
+							."\n";
+					} else {
+						echo $names[$key].': '.($old['active'] ? 'tak' : 'nie')
+							.($val!==$new[$key] ? $arr.$newA : '')
+							."\n";
+					}
+					break;
 				default: continue;
 			}
 		}

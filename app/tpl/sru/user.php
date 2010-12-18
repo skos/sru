@@ -618,7 +618,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 		echo '- - - - - - - - - - -'."\n";
 		echo "\n";
 		echo 'Wszystkie informacje dotyczące Domów studenckich znajdziesz na stronie:'."\n";
-		echo 'http://akademiki.pg.gda.pl';
+		echo 'http://akademiki.pg.gda.pl'."\n";
 		echo "\n";
 	}
 	
@@ -711,6 +711,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 			echo 'Login: '.$d['login']."\n";
 			echo 'Imię: '.$d['name']."\n";
 			echo 'Nazwisko: '.$d['surname']."\n";
+			echo 'Konto aktywne: '.($d['active'] ? 'tak' : 'nie')."\n";
 			echo 'E-mail: '.$d['email']."\n";
 			echo 'Gadu-Gadu: '.$d['gg']."\n";
 			echo 'Wydział: '.$d['facultyName']."\n";
@@ -728,6 +729,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 			echo 'Login: '.$d['login']."\n";
 			echo 'Name: '.$d['name']."\n";
 			echo 'Surname: '.$d['surname']."\n";
+			echo 'Account: '.($d['active'] ? 'active' : 'not active')."\n";
 			echo 'E-mail: '.$d['email']."\n";
 			echo 'Gadu-Gadu: '.$d['gg']."\n";
 			echo 'Faculty: '.$d['facultyNameEn']."\n";
