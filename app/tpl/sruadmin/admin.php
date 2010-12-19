@@ -117,7 +117,7 @@ extends UFtpl_Common {
 		echo $form->login('Login');
 		echo $form->password('Hasło', array('type'=>$form->PASSWORD));
 		echo $form->password2('Powtórz hasło', array('type'=>$form->PASSWORD));
-		echo $form->name('Nazwa', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Imię i nazwisko administratora lub inne oznaczenie." /><br/>')); 
+		echo $form->name('Nazwa', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" alt="?" title="Imię i nazwisko administratora lub inne oznaczenie." /><br/>')); 
 		echo $form->typeId('Uprawnienia', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize($this->adminTypes),
@@ -126,7 +126,7 @@ extends UFtpl_Common {
 		echo $form->phone('Telefon');
 		echo $form->gg('GG');
 		echo $form->jid('Jabber');
-		echo $form->address('Adres', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Lokalizacja lub miejsce przebywania administratora." /><br/>'));
+		echo $form->address('Adres', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" alt="?" title="Lokalizacja lub miejsce przebywania administratora." /><br/>'));
 
 		$tmp = array();
 		foreach ($dormitories as $dorm) {
@@ -156,7 +156,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 
 		echo $form->_fieldset();
 		
-		echo $form->name('Nazwa', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Imię i nazwisko administratora lub inne oznaczenie." /><br/>'));
+		echo $form->name('Nazwa', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" alt="?" title="Imię i nazwisko administratora lub inne oznaczenie." /><br/>'));
 		
 		echo $form->password('Hasło', array('type'=>$form->PASSWORD));
 		echo $form->password2('Powtórz hasło', array('type'=>$form->PASSWORD));
@@ -178,7 +178,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 		echo $form->phone('Telefon');
 		echo $form->gg('GG');
 		echo $form->jid('Jabber');
-		echo $form->address('Adres', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Lokalizacja lub miejsce przebywania administratora." /><br/>'));
+		echo $form->address('Adres', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" alt="?" title="Lokalizacja lub miejsce przebywania administratora." /><br/>'));
 
 		$tmp = array();
 		foreach ($dormitories as $dorm) {

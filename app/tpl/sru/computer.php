@@ -178,7 +178,7 @@ extends UFtpl_Common {
 			echo '<a href="'.$urlNav.'/:del"> Wyrejestruj</a> &bull; ';
 		}
 		echo '<span id="computerMoreSwitch"></span>';
-		if (strlen($d['comment'])) echo ' <img src="'.UFURL_BASE.'/i/gwiazdka.png" />';
+		if (strlen($d['comment'])) echo ' <img src="'.UFURL_BASE.'/i/gwiazdka.png" alt="" title="'.$d['comment'].'" />';
 		echo '</p>';
 ?><script type="text/javascript">
 function changeVisibility() {
@@ -225,8 +225,8 @@ changeVisibility();
 		$form = UFra::factory('UFlib_Form', 'computerEdit', $d, $this->errors);
 
 		echo '<h1>'.$d['host'].'.ds.pg.gda.pl</h1>';
-		echo $form->mac('MAC', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Adres fizyczny karty sieciowej komputera." /> '.$this->showMacHint().'<br/>'));
-		echo $form->availableTo('Rejestracja do', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Data, kiedy komputer przestanie być aktywny." /><br/>'));
+		echo $form->mac('MAC', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" alt="?" alt="?" title="Adres fizyczny karty sieciowej komputera." /> '.$this->showMacHint().'<br/>'));
+		echo $form->availableTo('Rejestracja do', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" alt="?" title="Data, kiedy komputer przestanie być aktywny." /><br/>'));
 		echo '<small>Maksymalnie do '.date(self::TIME_YYMMDD, $d['availableMaxTo']).'</small><br />';
 
 ?>
@@ -331,7 +331,7 @@ if (input) {
 				'labels' => $form->_labelize($this->computerTypes),
 			));
 		}
-		echo $form->host('Nazwa', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Nazwa komputera w sieci - nie musi być zgodna z nazwą w systemie Windows/Linux. Możesz podać inną nazwę niż propozycja SRU." /><br/>'));
+		echo $form->host('Nazwa', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" alt="?" title="Nazwa komputera w sieci - nie musi być zgodna z nazwą w systemie Windows/Linux. Możesz podać inną nazwę niż propozycja SRU." /><br/>'));
 		if ($admin) {
 			echo $form->ip('IP');
 ?><script type="text/javascript">
@@ -356,7 +356,7 @@ if (input) {
 		}
 		echo '</a></span>';
 		echo '<div id="macMore">';
-		echo $form->mac('MAC', array('value'=>$mac, 'after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Adres fizyczny karty sieciowej komputera." /> '.$this->showMacHint().'<br/>'));
+		echo $form->mac('MAC', array('value'=>$mac, 'after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" alt="?" title="Adres fizyczny karty sieciowej komputera." /> '.$this->showMacHint().'<br/>'));
 		echo '</div>';
 
 ?><script type="text/javascript">
@@ -410,7 +410,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 			echo $this->ERR($this->errors['host/regexp']);
 		}
 		echo $form->alias('Alias');
-		echo $form->isCname('Wpis CNAME <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Aliasy są domyślnie wpisami CNAME.">', array('type'=>$form->CHECKBOX, 'value'=>'1'));
+		echo $form->isCname('Wpis CNAME <img src="'.UFURL_BASE.'/i/pytajnik.png" alt="?" title="Aliasy są domyślnie wpisami CNAME.">', array('type'=>$form->CHECKBOX, 'value'=>'1'));
 		echo $form->_end();
 
 ?>

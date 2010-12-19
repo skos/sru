@@ -89,7 +89,7 @@ extends UFtpl_Common {
 		echo $form->admin('Port admina', array('type'=>$form->CHECKBOX));
 		echo $form->comment('Komentarz');
 		if (!is_null($status)) {
-			echo $form->copyToSwitch('Zapisz dane na switcha <img src="'.UFURL_BASE.'/i/pytajnik.png" title="Zapis spowoduje nadpisanie aliasu portu na switchu. Będzie to nr pokoju, podłaczony switch (o ile podano) i komentarz." />', array('type'=>$form->CHECKBOX));
+			echo $form->copyToSwitch('Zapisz dane na switcha <img src="'.UFURL_BASE.'/i/pytajnik.png" alt="?" title="Zapis spowoduje nadpisanie aliasu portu na switchu. Będzie to nr pokoju, podłaczony switch (o ile podano) i komentarz." />', array('type'=>$form->CHECKBOX));
 		}
 
 ?>
@@ -145,7 +145,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 			}
 			echo $d[$i]['admin'] ?'</strong>' : '';
 			echo '</a>';
-			echo ($d[$i]['comment'] == '') ? '' : ' <img src="'.UFURL_BASE.'/i/gwiazdka.png" />';
+			echo ($d[$i]['comment'] == '') ? '' : ' <img src="'.UFURL_BASE.'/i/gwiazdka.png" alt="" title="'.$d[$i]['comment'].'" />';
 			echo '<br/><small>(';
 			echo is_null($d[$i]['connectedSwitchId']) ? ('<a href="'.$this->url(0).'/dormitories/'.$d[$i]['dormitoryAlias'].'/'.$d[$i]['locationAlias'].'">'.
 				$d[$i]['locationAlias'].'</a>') : ('<a href="'.$url.$d[$i]['connectedSwitchSn'].'">'.$d[$i]['connectedSwitchDorm'].'-hp'.$d[$i]['connectedSwitchNo'].'</a>');
@@ -205,7 +205,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 			echo $port['ordinalNo'];
 			echo $port['admin'] ?'</strong>' : '';
 			echo '</a>';
-			echo ($port['comment'] == '') ? '' : ' <img src="'.UFURL_BASE.'/i/gwiazdka.png" />';
+			echo ($port['comment'] == '') ? '' : ' <img src="'.UFURL_BASE.'/i/gwiazdka.png" alt="" title="'.$port['comment'].'" />';
 			echo '</td>';
 			if (($j + 1) % 8 == 0) {
 				echo '</tr>';
