@@ -12,6 +12,7 @@ extends UFmap {
 		'ip'		=> 'c.ipv4',
 		'parent'	=> 'c.host',
 		'parentComment'	=> 'c.comment',
+		'parentBanned'	=> 'c.banned',
 	);
 	protected $columnTypes = array(
 		'id'		=> self::INT,
@@ -21,6 +22,7 @@ extends UFmap {
 		'ip'		=> self::TEXT,
 		'parent'	=> self::TEXT,
 		'parentComment'	=> self::TEXT,
+		'parentBanned'	=> self::BOOL,
 	);
 	protected $tables = array(
 		'a' => 'computers_aliases',
