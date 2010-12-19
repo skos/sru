@@ -32,8 +32,14 @@ extends UFtpl_Common {
 		$urlds = $this->url(0).'/dormitories/';
 		$conf = UFra::shared('UFconf_Sru');
 		$lastDom = '-';
+		$switches = array();
 
 		foreach ($d as $c) {
+			if(!array_key_exists($c['model'], $switches)) {
+				$switches[$c['model']] = 1;
+			} else {
+				$switches[$c['model']]++;
+			}
 			if($lastDom != $c['dormitoryId']) {
 				if($lastDom != '-') echo '</ul>';
 				echo '<h3><a href="'.$urlds.$c['dormitoryAlias'].'">'.$c['dormitoryName'].'</a></h3>';
@@ -66,6 +72,14 @@ extends UFtpl_Common {
 			echo ' &bull; <a href="'.$url.'">Pokaż wszystkie</a>';
 		}
 		echo '</p>';
+
+		arsort($switches);
+		echo '<h3>Statystyka</h3>';
+		echo '<table>';
+		foreach ($switches as $model=>$count) {
+			echo '<tr><td style="padding-right: 40px;">'.$model.'</td><td>'.$count.'</td></tr>';
+		}
+		echo '</table>';
 	}
 
 	public function titleDetails(array $d) {
