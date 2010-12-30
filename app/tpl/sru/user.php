@@ -355,7 +355,7 @@ $(document).ready(function()
 		echo '<p><em>Język:</em> '.self::$languages[$d['lang']];
 		echo '<p class="displayOnHover"><em>Znajdź na:</em>';
 		echo ' <a href="http://www.google.pl/search?q='.urlencode($d['name'].' '.$d['surname']).'">google</a>';
-		echo ' <a href="http://nasza-klasa.pl/search?query='.urlencode($d['name'].' '.$d['surname']).'">nasza-klasa</a>';
+		echo ' <a href="http://nk.pl/search?query='.urlencode($d['name'].' '.$d['surname']).'">nasza-klasa</a>';
 		echo ' <a href="http://wyczajka.net/p/'.urlencode($d['name'].'_'.$d['surname']).'">wyczajka</a>';
 		echo ' <a href="http://www.facebook.com/#!/search/?q='.urlencode($d['name'].' '.$d['surname']).'">face-booczek</a>';
 		echo '</p>';

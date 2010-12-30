@@ -1,0 +1,1 @@
+ALTER TABLE penalties ADD CONSTRAINT penalties_template_id_fkey FOREIGN KEY (template_id) REFERENCES penalty_templates (id) ON UPDATE NO ACTION ON DELETE SET NULL;
