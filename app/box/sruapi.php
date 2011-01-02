@@ -186,4 +186,18 @@ extends UFbox {
 			return '';
 		}
 	}
+
+	public function myLanstats() {
+		try {
+			$serv = $this->_srv->get('req')->server;
+			$ip =  $serv->REMOTE_ADDR;
+			$transfer = UFra::factory('UFbean_SruAdmin_Transfer');
+			$transfer->listByIp($ip);
+			$d['transfer'] = $transfer;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return '';
+		}
+	}
 }

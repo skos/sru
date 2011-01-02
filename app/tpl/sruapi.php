@@ -52,4 +52,8 @@ extends UFtpl_Common {
 	public function dormitoryIps(array $d) {
 		$d['sum']->write('apiDormitoryIps', $d['used']);
 	}
+
+	public function myLanstats(array $d) {
+		$d['transfer']->write('myTransferStats');
+	}
 }
