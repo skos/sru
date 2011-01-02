@@ -106,6 +106,14 @@ extends UFctl {
 								break;
 						}
 					}
+				case 'myapi':
+					if ($segCount > 1) {
+						switch ($req->segment(2)) {
+							case 'lanstats':
+								$get->view = 'myapi/lanstats';
+								break;
+						}
+					}
 			}
 		}
 	}
@@ -200,6 +208,8 @@ extends UFctl {
 				} else {
 					return 'SruApi_Error403';
 				}
+			case 'myapi/lanstats':
+				return 'SruApi_MyLanstats';
 			default:
 				return 'SruApi_Error404';
 		}
