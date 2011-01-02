@@ -78,9 +78,9 @@ extends UFbeanSingle {
 		try {
 			$loc = UFra::factory('UFbean_Sru_Location');
 			$loc->getByAliasDormitory((string)$val, $dorm->id);
-			$this->data['locationAlias'] = $val;
-			$this->dataChanged['locationAlias'] = $val;
 			if (!$change || (isset($this->data['locationId']) && $this->data['locationId']!=$loc->id)) {
+				$this->data['locationAlias'] = $val;
+				$this->dataChanged['locationAlias'] = $val;
 				$this->data['locationId'] = $loc->id;
 				$this->dataChanged['locationId'] = $loc->id;
 			}
