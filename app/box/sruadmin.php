@@ -147,7 +147,14 @@ extends UFbox {
 			$d['computer'] = $bean;
 
 			$d['statHour'] = $get->statHour;
+			$hour = explode(':', $d['statHour']);
 			$d['statDate'] = $get->statDate;
+			if ((int)$d['statHour'] == 0 || strlen($d['statHour']) != 5 || strpos($d['statHour'], ':') !== 2 || $hour[0] > 24 || $hour[0] < 0 || $hour[1] > 59 || $hour[1] < 0) {
+				$d['statHour'] = date('H:i');
+			}
+			if ((int)$d['statDate'] <= 0 || strlen($d['statDate']) != 8) {
+				$d['statDate'] = date('Ymd');
+			}
 		} catch (UFex_Dao_NotFound $e) {
 			return '';
 		}
