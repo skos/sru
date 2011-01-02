@@ -601,7 +601,7 @@ extends UFbox {
 	{
 		try 
 		{
-			$bean = UFra::factory('UFbean_SruAdmin_AdminList');	
+			$bean = UFra::factory('UFbean_SruAdmin_AdminList');
 			$bean->listAll();
 			$d['admins'] = $bean;
 

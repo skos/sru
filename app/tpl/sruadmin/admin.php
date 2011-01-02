@@ -10,6 +10,9 @@ extends UFtpl_Common {
 		UFacl_SruAdmin_Admin::CAMPUS 	=> 'Administrator Osiedlowy',
 		UFacl_SruAdmin_Admin::LOCAL		=> 'Administrator Lokalny',
 		UFacl_SruAdmin_Admin::BOT		=> 'BOT',
+		UFacl_SruWalet_Admin::DORM 	=> 'Pracownik OS',
+		UFacl_SruWalet_Admin::OFFICE 	=> 'Starszy Pracownik OS',
+		UFacl_SruWalet_Admin::HEAD 	=> 'Kierownik OS',
 	);
 	
 	protected $errors = array(
@@ -65,10 +68,10 @@ extends UFtpl_Common {
 						break;
 				case 2:
 						echo '<em>'.$this->_escape($c['name']).'</em>';
-						break;						
+						break;
 				case 3:
 						echo $this->_escape($c['name']);
-						break;							
+						break;
 			}
 			echo '</a></li>';
 			

@@ -6,6 +6,10 @@ class UFtpl_SruWalet_Admin
 extends UFtpl_Common {
 
 	protected $adminTypes = array(
+		UFacl_SruAdmin_Admin::CENTRAL 	=> 'Administrator Centralny',
+		UFacl_SruAdmin_Admin::CAMPUS 	=> 'Administrator Osiedlowy',
+		UFacl_SruAdmin_Admin::LOCAL		=> 'Administrator Lokalny',
+		UFacl_SruAdmin_Admin::BOT		=> 'BOT',
 		UFacl_SruWalet_Admin::DORM 	=> 'Pracownik OS',
 		UFacl_SruWalet_Admin::OFFICE 	=> 'Starszy Pracownik OS',
 		UFacl_SruWalet_Admin::HEAD 	=> 'Kierownik OS',

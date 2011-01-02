@@ -30,15 +30,16 @@ extends UFlib_ClassWithService {
 		return false;
 	}	
 	public function edit($id) {
-
 		$sess = $this->_srv->get('session');
 		
-		if($this->_loggedIn() && $id == $sess->authAdmin) //swoje konto kazdy moze edytowac
-		{
+		if($this->_loggedIn() && $id == $sess->authAdmin) { //swoje konto kazdy moze edytowac
 			return true;	
-		}	
-		if($this->_loggedIn() && $sess->is('typeId') && ($sess->typeId == self::CENTRAL || $sess->typeId == self::CAMPUS) )
-		{
+		}
+
+		$bean = UFra::factory('UFbean_SruAdmin_Admin');
+		$bean->getByPK($id);
+		if($this->_loggedIn() && $sess->is('typeId') && ($sess->typeId == self::CENTRAL || $sess->typeId == self::CAMPUS) &&
+			($bean->typeId == self::CENTRAL || $bean->typeId == self::CAMPUS || $bean->typeId == self::LOCAL || $bean->typeId == self::BOT)) {
 			return true;
 		}
 		return false;

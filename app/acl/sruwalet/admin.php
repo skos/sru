@@ -28,13 +28,16 @@ extends UFlib_ClassWithService {
 	}
 
 	public function edit($id) {
-
 		$sess = $this->_srv->get('session');
 		
 		if($this->_loggedIn() && $id == $sess->authWaletAdmin) { //swoje konto kazdy moze edytowac
 			return true;	
 		}
-		if($this->_loggedIn() && $sess->is('typeIdWalet') && $sess->typeIdWalet == self::HEAD) {
+
+		$bean = UFra::factory('UFbean_SruWalet_Admin');
+		$bean->getByPK($id);
+		if($this->_loggedIn() && $sess->is('typeIdWalet') && $sess->typeIdWalet == self::HEAD &&
+			($bean->typeId == self::DORM || $bean->typeId == self::OFFICE || $bean->typeId == self::HEAD)) {
 			return true;
 		}
 		return false;
