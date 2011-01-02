@@ -258,7 +258,8 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 
 	public function dorm(array $d) {
 		echo '<h2><a href="'.$this->url(0).'/inhabitants">Obsadzenie</a><br/>';
-		echo '<small>Eksportuj do pliku MS Word&#153;: <a href="'.$this->url(3).'/:dormexport">obsadzenie</a> | <a href="'.$this->url(3).'/:usersexport">mieszkańców</a></small></h2>';
+		echo '<small>Eksportuj do pliku MS Word&#153;: <a href="'.$this->url(3).'/:dormexport">obsadzenie</a> | <a href="'.$this->url(3).'/:usersexport">mieszkańców</a></small><br/>';
+		echo '<small>Eksportuj do pliku MS Excel&#153;: <a href="'.$this->url(3).'/:dormexcelexport">obsadzenie</a> | <a href="'.$this->url(3).'/:usersexcelexport">mieszkańców</a></small></h2>';
 		echo '<h3>'.$d['dorm']->name.'</h3>';
 		$d['rooms']->write('dormInhabitants', $d['dorm'], $d['users']);
 	}
@@ -278,6 +279,10 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 	public function dormExport(array $d) {
 		echo '<h2>'.$d['dorm']->name.' - obsadzenie</h2>';
 		$d['rooms']->write('dormInhabitants', $d['dorm'], $d['users'], true);
+	}
+
+	public function titleDormUsersExport(array $d) {
+		echo $d['dorm']->alias.'-mieszkancy';
 	}
 
 	public function dormUsersExport(array $d) {

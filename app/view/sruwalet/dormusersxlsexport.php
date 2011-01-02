@@ -2,8 +2,8 @@
 /**
  * widok eksportu
  */
-class UFview_SruWalet_DormUsersDocExport
-extends UFview_SruDocExport {
+class UFview_SruWalet_DormUsersXlsExport
+extends UFview_SruXlsExport {
 
 	public function fillData() {
 		$box = UFra::shared('UFbox_SruWalet');

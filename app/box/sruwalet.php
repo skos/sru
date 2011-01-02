@@ -416,6 +416,18 @@ extends UFbox {
 		}
 	}
 
+	public function titleDormUsersExport() {
+		try {
+			$bean = $this->_getDormFromGet();
+
+			$d['dorm'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render('inhabitantsNotFound');
+		}
+	}
+
 	public function dormUsersExport() {
 		try {
 			$bean = $this->_getDormFromGet();
