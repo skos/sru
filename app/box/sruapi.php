@@ -31,6 +31,10 @@ extends UFbox {
 		return $this->configDhcp(UFbean_Sru_Computer::TYPE_ADMINISTRATION);
 	}
 
+	public function dhcpServ() {
+		return $this->configDhcp(UFbean_Sru_Computer::TYPE_SERVER);
+	}
+
 	public function dnsRev() {
 		try {
 			$bean = UFra::factory('UFbean_Sru_ComputerList');
