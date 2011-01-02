@@ -503,11 +503,11 @@ extends UFtpl_Common {
 		echo '<div class="admin">';		
 		$d['admin']->write('details');
 		
-		if($acl->sruAdmin('admin', 'edit', $d['admin']->id))
-		{
-			echo '<p class="nav"><a href="'.$url.'/:edit">Edycja</a></p>';
+		echo '<p class="nav">';
+		if($acl->sruAdmin('admin', 'edit', $d['admin']->id)) {
+			echo '<a href="'.$url.'/:edit">Edycja</a> &bull; ';
 		}
-		echo '</div>';
+		echo '<a href="'.$this->url(0).'/admins/">Powrót</a></p></div>';
 	}
 
 	public function penaltyTemplateChoose(array $d) {

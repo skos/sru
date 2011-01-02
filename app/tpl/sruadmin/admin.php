@@ -5,14 +5,11 @@
 class UFtpl_SruAdmin_Admin
 extends UFtpl_Common {
 
-	protected $adminTypes = array(
+	public static $adminTypes = array(
 		UFacl_SruAdmin_Admin::CENTRAL 	=> 'Administrator Centralny',
 		UFacl_SruAdmin_Admin::CAMPUS 	=> 'Administrator Osiedlowy',
 		UFacl_SruAdmin_Admin::LOCAL		=> 'Administrator Lokalny',
 		UFacl_SruAdmin_Admin::BOT		=> 'BOT',
-		UFacl_SruWalet_Admin::DORM 	=> 'Pracownik OS',
-		UFacl_SruWalet_Admin::OFFICE 	=> 'Starszy Pracownik OS',
-		UFacl_SruWalet_Admin::HEAD 	=> 'Kierownik OS',
 	);
 	
 	protected $errors = array(
@@ -98,7 +95,12 @@ extends UFtpl_Common {
 	}	
 	public function details(array $d) {
 		$url = $this->url(0);
-		echo '<h2>'.$this->_escape($d['name']).'<br/><small>('.$this->adminTypes[$d['typeId']].' &bull; ostatnie logowanie: '.date(self::TIME_YYMMDD_HHMM, $d['lastLoginAt']).')</small></h2>';
+		if (array_key_exists($d['typeId'], $this::$adminTypes)) {
+			$type = $this::$adminTypes[$d['typeId']];
+		} else {
+			$type = UFtpl_SruWalet_Admin::$adminTypes[$d['typeId']];
+		}
+		echo '<h2>'.$this->_escape($d['name']).'<br/><small>('.$type.' &bull; ostatnie logowanie: '.date(self::TIME_YYMMDD_HHMM, $d['lastLoginAt']).')</small></h2>';
 		echo '<p><em>Login:</em> '.$d['login'].'</p>';
 		echo '<p><em>E-mail:</em> <a href="mailto:'.$d['email'].'">'.$d['email'].'</a></p>';
 		echo '<p><em>Telefon:</em> '.$d['phone'].'</p>';
@@ -123,7 +125,7 @@ extends UFtpl_Common {
 		echo $form->name('Nazwa', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" alt="?" title="Imię i nazwisko administratora lub inne oznaczenie." /><br/>')); 
 		echo $form->typeId('Uprawnienia', array(
 			'type' => $form->SELECT,
-			'labels' => $form->_labelize($this->adminTypes),
+			'labels' => $form->_labelize($this::$adminTypes),
 		));
 		echo $form->email('E-mail');
 		echo $form->phone('Telefon');
@@ -168,7 +170,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 		{
 			echo $form->typeId('Uprawnienia', array(
 				'type' => $form->SELECT,
-				'labels' => $form->_labelize($this->adminTypes),
+				'labels' => $form->_labelize($this::$adminTypes),
 			));	
 			echo $form->active('Aktywny', array('type'=>$form->CHECKBOX) );
 
