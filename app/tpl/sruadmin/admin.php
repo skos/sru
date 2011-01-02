@@ -95,8 +95,8 @@ extends UFtpl_Common {
 	}	
 	public function details(array $d) {
 		$url = $this->url(0);
-		if (array_key_exists($d['typeId'], $this::$adminTypes)) {
-			$type = $this::$adminTypes[$d['typeId']];
+		if (array_key_exists($d['typeId'], UFtpl_SruAdmin_Admin::$adminTypes)) {
+			$type = UFtpl_SruAdmin_Admin::$adminTypes[$d['typeId']];
 		} else {
 			$type = UFtpl_SruWalet_Admin::$adminTypes[$d['typeId']];
 		}
@@ -125,7 +125,7 @@ extends UFtpl_Common {
 		echo $form->name('Nazwa', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" alt="?" title="Imię i nazwisko administratora lub inne oznaczenie." /><br/>')); 
 		echo $form->typeId('Uprawnienia', array(
 			'type' => $form->SELECT,
-			'labels' => $form->_labelize($this::$adminTypes),
+			'labels' => $form->_labelize(UFtpl_SruAdmin_Admin::$adminTypes),
 		));
 		echo $form->email('E-mail');
 		echo $form->phone('Telefon');
@@ -170,7 +170,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 		{
 			echo $form->typeId('Uprawnienia', array(
 				'type' => $form->SELECT,
-				'labels' => $form->_labelize($this::$adminTypes),
+				'labels' => $form->_labelize(UFtpl_SruAdmin_Admin::$adminTypes),
 			));	
 			echo $form->active('Aktywny', array('type'=>$form->CHECKBOX) );
 

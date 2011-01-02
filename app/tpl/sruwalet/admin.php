@@ -104,8 +104,8 @@ $(document).ready(function()
 
 	public function details(array $d, $dormList) {
 		$url = $this->url(0);
-		if (array_key_exists($d['typeId'], $this::$adminTypes)) {
-			$type = $this::$adminTypes[$d['typeId']];
+		if (array_key_exists($d['typeId'], UFtpl_SruWalet_Admin::$adminTypes)) {
+			$type = UFtpl_SruWalet_Admin::$adminTypes[$d['typeId']];
 		} else {
 			$type = UFtpl_SruAdmin_Admin::$adminTypes[$d['typeId']];
 		}
@@ -148,7 +148,7 @@ $(document).ready(function()
 		echo $form->name('Imię i nazwisko', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" alt="?" title="Imię i nazwisko administratora lub inne oznaczenie." /><br/>', 'class'=>'required')); 
 		echo $form->typeId('Uprawnienia', array( 
 			'type' => $form->SELECT, 
-			'labels' => $form->_labelize($this::$adminTypes), 
+			'labels' => $form->_labelize(UFtpl_SruWalet_Admin::$adminTypes), 
 			'after'=> ' <img src="'.UFURL_BASE.'/i/pytajnik.png" alt="?" title="Kierownik OS ma uprawnienia do wszystkich części Waleta, zaś Pracownik OS jedynie do wybranych Domów Studenckich. Starszy pracownik OS może także dostęp do obsadzenia każdego DSu." /><br/>', 
 		));
 		echo $form->_end();
@@ -206,7 +206,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 		if($advanced) {
 			echo $form->typeId('Uprawnienia', array( 
 				'type' => $form->SELECT, 
-				'labels' => $form->_labelize($this::$adminTypes), 
+				'labels' => $form->_labelize(UFtpl_SruWalet_Admin::$adminTypes), 
 				'after'=> ' <img src="'.UFURL_BASE.'/i/pytajnik.png" alt="?" title="Kierownik OS ma uprawnienia do wszystkich części Waleta, zaś Pracownik OS jedynie do wybranych Domów Studenckich. Starszy pracownik OS może także dostęp do obsadzenia każdego DSu." /><br/>', 
 			));
 			echo $form->active('Aktywny <img src="'.UFURL_BASE.'/i/pytajnik.png" alt="?" title="Tylko aktywni administratorzy mogą zalogować się do Waleta." />', array('type'=>$form->CHECKBOX) );
