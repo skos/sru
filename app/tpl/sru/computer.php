@@ -538,7 +538,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 		echo $form->_fieldset();
 		echo $form->statHour('Godzina (HH:MM)', array('value'=>$hour));
 		echo $form->statDate('Data (YYYYMMDD)', array('value'=>$date));
-		echo $form->_submit('Zobacz');
+		echo $form->_submit('Zobacz', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" alt="?" alt="?" title="Podgląd danych z przeszłości, gdzie data jest końcem wyświetlanych okresów. Uwaga, im starsze dane, tym mniej precyzyjne!" />'));
 		echo $form->_end();
 		echo $form->_end(true);
 
