@@ -533,6 +533,19 @@ extends UFbox {
 		}
 	}
 
+	public function sruAdmins() {
+		try {
+			$bean = UFra::factory('UFbean_SruAdmin_AdminList');
+			$bean->listAll();
+			$d['admins'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} 
+		catch (UFex_Dao_NotFound $e) {
+			return $this->render('adminsNotFound');
+		}
+	}
+
 	public function titleAdmin() {
 		try {
 			$bean = $this->_getAdminFromGet();

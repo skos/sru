@@ -41,15 +41,16 @@ extends UFtpl_Common {
 		echo '<p>'.$this->_escape($d['name']).'</p>';
 	}
 	
-	public function listAdmin(array $d) {
+	public function listAdmin(array $d, $waletAdmin = false) {
 		$url = $this->url(0).'/admins/';
-		
+		$acl = $this->_srv->get('acl');
+
 		$lastDom = '-';
-					
-		foreach ($d as $c)
-		{
-			if($lastDom != $c['dormitoryId'])
-			{
+		foreach ($d as $c) {
+			if ($waletAdmin && !$acl->sruWalet('dorm', 'view', $c['dormitoryAlias'])) {
+				continue;
+			}
+			if($lastDom != $c['dormitoryId']) {
 				if($lastDom != '-')
 					echo '</ul>';
 				if (is_null($c['dormitoryName'])) {
@@ -61,8 +62,7 @@ extends UFtpl_Common {
 			}
 			
 			echo '<li><a href="'.$url.$c['id'].'">';
-			switch($c['typeId'])
-			{
+			switch($c['typeId']) {
 				case 1:
 						echo '<strong>'.$this->_escape($c['name']).'</strong>';
 						break;
@@ -92,7 +92,7 @@ extends UFtpl_Common {
 			echo '<li><a href="'.$url.$c['id'].'">'.$this->_escape($c['name']).'</a></li>';
 		}
 		echo '</ul>';
-	}	
+	}
 	public function titleDetails(array $d) {
 		echo $this->_escape($d['name']);
 	}	

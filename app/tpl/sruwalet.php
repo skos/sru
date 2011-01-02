@@ -372,6 +372,16 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 		echo '</div>';
 	}
 
+	public function sruAdmins(array $d) {
+		$url = $this->url(0).'/admins/';
+		
+		echo '<div class="admins inactive">';
+		echo '<h2>Administratorzy SKOS</h2>';
+
+		$d['admins']->write('listAdmin', true);
+
+		echo '</div>';
+	}
 
 	public function titleAdminNotFound() {
 		echo 'Nie znaleziono administratora';

@@ -8,10 +8,10 @@ extends UFview_SruAdmin {
 
 		$this->append('title', $box->titleAdmins());
 		$this->append('body', $box->admins());
+		$this->append('body', $box->waletAdmins());
 		
-		if($acl->sruAdmin('admin', 'advancedEdit'))
-		{
-			$this->append('body', $box->bots());									
+		if($acl->sruAdmin('admin', 'advancedEdit')) {
+			$this->append('body', $box->bots());
 			$this->append('body', $box->inactiveAdmins());
 		}
 	}

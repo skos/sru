@@ -418,32 +418,27 @@ extends UFtpl_Common {
 
 	public function titleAdmins() {
 		echo 'Administratorzy';
-	}	
-	public function admins(array $d)
-	{
+	}
+
+	public function admins(array $d) {
 		$url = $this->url(0).'/admins/';
 		$acl = $this->_srv->get('acl');
 		
 		if ($this->_srv->get('msg')->get('adminAdd/ok')) {
 			echo $this->OK('Konto zostało założone');
-		}		
+		}
 		
 		echo '<div class="admins">';
 		echo '<h2>Administratorzy</h2>';
-
 		$d['admins']->write('listAdmin');
-
 		echo '</div>';
 		
-		
-		if($acl->sruAdmin('admin', 'add'))
-		{
+		if($acl->sruAdmin('admin', 'add')) {
 			echo '<p class="nav"><a href="'.$url.':add">Dodaj nowego administratora</a></p>';
 		}
-				
 	}
-	public function inactiveAdmins(array $d)
-	{
+
+	public function inactiveAdmins(array $d) {
 		$url = $this->url(0).'/admins/';
 		
 		echo '<div class="admins inactive">';
@@ -451,10 +446,10 @@ extends UFtpl_Common {
 
 		$d['admins']->write('listAdmin');
 
-		echo '</div>';			
-	}	
-	public function bots(array $d)
-	{
+		echo '</div>';
+	}
+
+	public function bots(array $d) {
 		$url = $this->url(0).'/admins/';
 		
 		echo '<div class="admins">';
@@ -462,20 +457,31 @@ extends UFtpl_Common {
 
 		$d['admins']->write('listBots');
 
-		echo '</div>';			
-	}	
+		echo '</div>';
+	}
+
+	public function waletAdmins(array $d) {
+		$url = $this->url(0).'/admins/';
+		
+		echo '<div class="admins">';
+		echo '<h2>Pracownicy Osiedla</h2>';
+
+		$d['admins']->write('listAdminSimple');
+
+		echo '</div>';
+	}
+
 	public function titleAdminNotFound() {
 		echo 'Nie znaleziono administratora';
 	}
-			
+
 	public function adminsNotFound() {
 		echo '<h2>Administratorzy</h2>';
 		echo $this->ERR('Nie znaleziono administratorów');
 		
-		if($acl->sruAdmin('admin', 'add'))
-		{
+		if($acl->sruAdmin('admin', 'add')) {
 			echo '<p class="nav"><a href="'.$url.':add">Dodaj nowego administratora</a></p>';
-		}		
+		}
 		
 	}
 	public function botsNotFound() {

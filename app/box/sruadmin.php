@@ -597,63 +597,63 @@ extends UFbox {
 		}
 	}
 	
-	public function admins() 
-	{
-		try 
-		{
+	public function admins() {
+		try {
 			$bean = UFra::factory('UFbean_SruAdmin_AdminList');
 			$bean->listAll();
 			$d['admins'] = $bean;
 
 			return $this->render(__FUNCTION__, $d);
 		} 
-		catch (UFex_Dao_NotFound $e) 
-		{
+		catch (UFex_Dao_NotFound $e) {
 			return $this->render('adminsNotFound');
 		}
 	}
-	public function inactiveAdmins() 
-	{
-		try 
-		{
+	public function inactiveAdmins() {
+		try  {
 			$bean = UFra::factory('UFbean_SruAdmin_AdminList');	
 			$bean->listAllInactive();
 			$d['admins'] = $bean;
 
 			return $this->render(__FUNCTION__, $d);
 		} 
-		catch (UFex_Dao_NotFound $e) 
-		{
+		catch (UFex_Dao_NotFound $e) {
 			return $this->render('inactiveAdminsNotFound');
 		}
 	}
-	public function bots() 
-	{
-		try 
-		{
+	public function bots() {
+		try {
 			$bean = UFra::factory('UFbean_SruAdmin_AdminList');	
 			$bean->listAllBots();
 			$d['admins'] = $bean;
 
 			return $this->render(__FUNCTION__, $d);
 		} 
-		catch (UFex_Dao_NotFound $e) 
-		{
+		catch (UFex_Dao_NotFound $e) {
 			return $this->render('botsNotFound');
 		}
-	}		
-	public function titleAdmin()
-	{
-		try
-		{
+	}
+	public function waletAdmins() {
+		try {
+			$bean = UFra::factory('UFbean_SruWalet_AdminList');	
+			$bean->listAll();
+			$d['admins'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} 
+		catch (UFex_Dao_NotFound $e) {
+			return $this->render('adminsNotFound');
+		}
+	}
+	public function titleAdmin() {
+		try {
 			$bean = $this->_getAdminFromGet();
 
 			$d['admin'] = $bean;
 
 			return $this->render(__FUNCTION__, $d);
 		}
-		catch (UFex_Dao_NotFound $e) 
-		{
+		catch (UFex_Dao_NotFound $e) {
 			return $this->render('titleAdminNotFound');
 		}
 	}
