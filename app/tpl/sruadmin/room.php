@@ -58,6 +58,19 @@ extends UFtpl_Common {
 			echo '<p class="comment">'.nl2br($this->_escape($d['comment'])).'</p>';		
 		}
 		echo '<p class="nav"><a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'/'.$d['alias'].'/:edit">Edytuj</a></p>';
+		
+		if(isset($_COOKIE['SRUDisplayUsers']) && $_COOKIE['SRUDisplayUsers'] == '1' && !isset($_COOKIE['SRUDisplayUsersChanged'])){
+			echo '<p class="nav"><a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'/'.$d['alias'].'" onClick="fullList()">Wyświetl pełną listę użytkowników i hostów</a></p>';
+		}else if($_COOKIE['SRUDisplayUsers'] == '1'){
+			echo '<p class="nav"><a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'/'.$d['alias'].'">Wyświetl skróconą listę użytkowników i hostów</a></p>';
+		}
+?>
+<script type="text/javascript">
+function fullList() {
+	document.cookie = 'SRUDisplayUsersChanged=1; expires=date.getTime()+(24*60*60*3650); path=/';
+}
+</script>
+<?
 	}
 
 	public function formEdit(array $d) {

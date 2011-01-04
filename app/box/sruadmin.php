@@ -1089,7 +1089,10 @@ extends UFbox {
 		try {
 			$room = $this->_getRoomFromGet();
 			$bean = UFra::factory('UFbean_Sru_UserList');
-			$bean->listByRoom($room->id);
+			if(!isset($_COOKIE['SRUDisplayUsers']) || $_COOKIE['SRUDisplayUsers'] == '0' || isset($_COOKIE['SRUDisplayUsersChanged']))
+				$bean->listByRoom($room->id);
+			else if($_COOKIE['SRUDisplayUsers'] == '1')
+				$bean->listByRoomActiveOnly($room->id);
 			$d['users'] = $bean;
 
 			return $this->render(__FUNCTION__, $d);
@@ -1102,7 +1105,13 @@ extends UFbox {
 		try {
 			$room = $this->_getRoomFromGet();
 			$bean = UFra::factory('UFbean_Sru_ComputerList');
-			$bean->listByRoom($room->id);
+			if(!isset($_COOKIE['SRUDisplayUsers']) || $_COOKIE['SRUDisplayUsers'] == '0' || isset($_COOKIE['SRUDisplayUsersChanged'])){
+				$bean->listByRoom($room->id);
+				if(isset($_COOKIE['SRUDisplayUsersChanged']))
+					setcookie('SRUDisplayUsersChanged', '', time() - 3600, '/');
+			}
+			else if($_COOKIE['SRUDisplayUsers'] == '1')
+				$bean->listByRoomActiveOnly($room->id);
 			$d['computers'] = $bean;
 
 			return $this->render(__FUNCTION__, $d);

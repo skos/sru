@@ -205,6 +205,12 @@ $("#main img[title]").tooltip({ position: "center right"});
 $("#main img[title]").tooltip({ position: "center right"});
 </script>
 <?
+		echo $form->_end();
+		echo $form->_fieldset();
+		if(isset($_COOKIE['SRUDisplayUsers']) && $_COOKIE['SRUDisplayUsers'] == "1")
+			echo $form->displayUsers('Widok pokoju: użytkownicy i hosty - tylko aktywne', array('type'=>$form->CHECKBOX, 'value'=>'1'));
+		else
+			echo $form->displayUsers('Widok pokoju: użytkownicy i hosty - tylko aktywne', array('type'=>$form->CHECKBOX, 'value'=>'0'));
 	}
 
 	public function adminBar(array $d, $ip, $time) {

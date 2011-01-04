@@ -112,6 +112,18 @@ extends UFdao {
 
 		return $this->doSelect($query);
 	}
+	
+	public function listByRoomActiveOnly($roomId) {
+	
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->locationId, $roomId);
+		$query->where($mapping->active, true);
+		$query->order($mapping->surname);
+
+		return $this->doSelect($query);
+	}
 
 	public function listByEmailActive($email, $active=null) {
 		$mapping = $this->mapping('list');

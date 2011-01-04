@@ -17,6 +17,11 @@ extends UFact {
 			$login = $bean->login;
 			$bean->fillFromPost(self::PREFIX, array('password', 'login', 'typeId', 'active'));
 				
+			if($post['displayUsers'] == 1)
+				setcookie('SRUDisplayUsers', '1', time() + 60*60*24*3650, '/');
+			else
+				setcookie('SRUDisplayUsers', '0', time() + 60*60*24*3650, '/');
+				
 			if(isset($post['password']) && $post['password'] != '' ) {
 				$bean->password = $post['password'];
 			}
