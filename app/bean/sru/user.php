@@ -3,7 +3,7 @@
  * uzytkownik
  */
 class UFbean_Sru_User
-extends UFbeanSingle {
+extends UFbean_Common {
 
 	protected $_locationId = null;
 	protected $_password = null;

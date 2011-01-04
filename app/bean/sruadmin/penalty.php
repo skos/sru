@@ -3,7 +3,7 @@
  * kara
  */
 class UFbean_SruAdmin_Penalty
-extends UFbeanSingle {
+extends UFbean_Common {
 
 	const TYPE_WARNING = 1;
 	const TYPE_COMPUTER = 2;

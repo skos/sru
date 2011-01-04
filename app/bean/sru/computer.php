@@ -3,7 +3,7 @@
  * komputer
  */
 class UFbean_Sru_Computer
-extends UFbeanSingle {
+extends UFbean_Common {
 
 	const TYPE_STUDENT = 1;
 	const TYPE_ORGANIZATION = 2;
