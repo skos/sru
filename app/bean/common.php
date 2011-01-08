@@ -21,7 +21,7 @@ extends UFbeanSingle {
 	 */
 	public function save($lastVal = true) {
 		if(count(array_diff_key($this->dataChanged, $this->alwaysChanged)) > 0) {
-			UFbeanSingle::save($lastVal);
+			return UFbeanSingle::save($lastVal);
 		}
 	}
 }
