@@ -517,15 +517,52 @@ extends UFtpl_Common {
 		echo '</ul>';
 	}
 
-	public function penaltyTemplateEdit(array $d) {
+	public function penaltyTemplateChange(array $d) {
 		echo '<h2>Edycja typu kary dla '.$d['penalty']->userName.' '.$d['penalty']->userSurname.' ('.$d['penalty']->userLogin.')</h2>';
 		echo '<ul class="penaltyTemplates">';
 		$d['templates']->write('choose');
 		echo '</ul>';
 	}
 
+	public function titlePenaltyTemplateAdd(array $d) {
+		echo 'Dodawanie nowego szablonu';
+	}
+
+	public function penaltyTemplateAdd(array $d) {
+		$url = $this->url(2);
+
+		$form = UFra::factory('UFlib_Form');
+		echo '<h2>Nowy szablon kary</h2>';
+		echo $form->_start();
+		$d['template']->write('formAdd');
+		echo $form->_submit('Dodaj');
+		echo ' <a href="'.$url.'/">Powrót</a>';
+		echo $form->_end();
+		echo $form->_end(true);
+	}
+
+	public function titlePenaltyTemplateEdit(array $d) {
+		echo 'Edycja szablonu '.$d['template']->title;
+	}
+
+	public function penaltyTemplateEdit(array $d) {
+		$url = $this->url(2);
+
+		$form = UFra::factory('UFlib_Form');
+		echo '<h2>Edycja szablonu '.$d['template']->title.'</h2>';
+		echo $form->_start();
+		$d['template']->write('formEdit');
+		echo $form->_submit('Edytuj');
+		echo ' <a href="'.$url.'/">Powrót</a>';
+		echo $form->_end();
+		echo $form->_end(true);
+	}
+
+	public function penaltyTemplatesNotFound() {
+		echo $this->ERR('Nie znaleziono szablonów kar');
+	}
+
 	public function adminNotFound() {
-		
 		echo $this->ERR('Nie znaleziono administratora');
 	}	
 
@@ -537,7 +574,6 @@ extends UFtpl_Common {
 		echo '<h2>Dodawanie nowego administratora</h2>';
 		echo $form->_start();
 		
-
 		echo $d['admin']->write('formAdd', $d['dormitories']);
 		echo $form->_submit('Dodaj');
 		echo $form->_end();
@@ -816,7 +852,7 @@ extends UFtpl_Common {
 			echo $this->OK('Kara została założona');
 		}		
 		
-		echo '<h2><a href="'.$url.'">Ostatnie akcje</a>| Aktywne kary</h2>';
+		echo '<h2><a href="'.$url.'">Ostatnie akcje</a>| Aktywne kary | <a href="'.$url.'templates">Szablony</a></h2>';
 
 		$d['penalties']->write('listPenalty');
 	}	
@@ -941,7 +977,7 @@ extends UFtpl_Common {
 		$url = $this->url(0).'/penalties/';
 		$acl = $this->_srv->get('acl');		
 		
-		echo '<h2>Ostatnie akcje | <a href="'.$url.'active">Aktywne kary</a></h2>';
+		echo '<h2>Ostatnie akcje | <a href="'.$url.'active">Aktywne kary</a> | <a href="'.$url.'templates">Szablony</a></h2>';
 		
 		echo '<h3>Modyfikacje kar</h3><ul>';
 		$d['modifiedPenalties']->write('penaltyLastModified');
@@ -955,6 +991,40 @@ extends UFtpl_Common {
 
 	public function titlePenaltyActions() {
 		echo 'Ostatnie akcje na karach i ostrzeżeniach';
+	}
+
+	public function titlePenaltyTemplates() {
+		echo 'Szablony kar';
+	}
+
+	public function penaltyTemplates(array $d) {
+		$url = $this->url(0).'/penalties/';
+
+		if ($this->_srv->get('msg')->get('penaltyTemplateAdd/ok')) {
+			echo $this->OK('Szablon został dodany');
+		}
+		if ($this->_srv->get('msg')->get('penaltyTemplateEdit/ok')) {
+			echo $this->OK('Zmiany w szablonie zostały wprowadzone');
+		}
+		
+		echo '<h2><a href="'.$url.'">Ostatnie akcje</a> | <a href="'.$url.'active">Aktywne kary</a> | Szablony</h2>';
+		
+		if (!is_null($d['templates'])) {
+			echo '<h3>Aktywne szablony</h3>';
+			echo '<ul class="penaltyTemplates">';
+			$d['templates']->write('listEdit');
+			echo '</ul>';
+		}
+		$acl = $this->_srv->get('acl');
+		if($acl->sruAdmin('penaltyTemplate', 'add')) {
+			echo '<p class="nav"><a href="'.$url.'templates/:add">Dodaj nowy szablon</a></p>';
+		}
+		if (!is_null($d['inactive'])) {
+			echo '<h3>Nieaktywne szablony</h3>';
+			echo '<ul class="penaltyTemplates">';
+			$d['inactive']->write('listEdit');
+			echo '</ul>';
+		}
 	}
 	
 	public function titleIps() {

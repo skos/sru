@@ -1,0 +1,1 @@
+ALTER TABLE penalty_templates ADD COLUMN active boolean NOT NULL DEFAULT true;

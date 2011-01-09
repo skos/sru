@@ -5,7 +5,7 @@
 class UFtpl_SruAdmin_Penalty
 extends UFtpl_Common {
 
-	protected $penaltyTypes = array(
+	public static $penaltyTypes = array(
 		1 => 'Ostrzeżenie',
 		2 => 'Jeden komputer',
 		3 => 'Wszystkie komputery',
@@ -47,7 +47,7 @@ extends UFtpl_Common {
 			}
 			echo '<small>'.date(self::TIME_YYMMDD, $c['startAt']).' &mdash; '.date(self::TIME_YYMMDD_HHMM, $c['endAt']).'</small> ';
 			echo '<a href="'.$url.'/penalties/'.$c['id'].'">';
-			echo ($this->_escape($c['templateTitle']) != null ? 'za: '.$this->_escape($c['templateTitle']) : $this->_escape($this->penaltyTypes[$c['typeId']]).' (nieznany szablon)');
+			echo ($this->_escape($c['templateTitle']) != null ? 'za: '.$this->_escape($c['templateTitle']) : $this->_escape(UFtpl_SruAdmin_Penalty::$penaltyTypes[$c['typeId']]).' (nieznany szablon)');
 			echo'</a>';
 			if ((UFbean_SruAdmin_Penalty::TYPE_WARNING == $c['typeId'] && $c['endAt'] > time())
 				||(UFbean_SruAdmin_Penalty::TYPE_WARNING != $c['typeId'] && $c['active'])) {
@@ -163,7 +163,7 @@ extends UFtpl_Common {
 		}	
 		
 		echo '<p><em>Ost. komentarz:</em><br/>'.nl2br($this->_escape($d['comment'])).'</p>';
-		echo '<p><em>Typ:</em> '.$this->_escape($this->penaltyTypes[$d['typeId']]).'</p>';
+		echo '<p><em>Typ:</em> '.$this->_escape(UFtpl_SruAdmin_Penalty::$penaltyTypes[$d['typeId']]).'</p>';
 		echo '</div>';
 ?><script type="text/javascript">
 function changeVisibility() {
@@ -201,7 +201,7 @@ changeVisibility();
 		echo $form->_start();
 		echo $form->_fieldset('Edycja kary');
 		echo $form->endAt('Od '.date(self::TIME_YYMMDD, $d['startAt']).' do');
-		echo '<p><em>Typ:</em> '.$this->_escape($this->penaltyTypes[$d['typeId']]).'</p>';
+		echo '<p><em>Typ:</em> '.$this->_escape(UFtpl_SruAdmin_Penalty::$penaltyTypes[$d['typeId']]).'</p>';
 
 		if (!is_null($computers)) {
 			$computers->write('computerList');
@@ -563,10 +563,10 @@ changeVisibility();
 		$chartData = '';
 		$chartLabel = '';
 		while ($t = current ($types)) {
-			echo '<tr><td>'.$this->penaltyTypes[key($types)].'</td>';
+			echo '<tr><td>'.UFtpl_SruAdmin_Penalty::$penaltyTypes[key($types)].'</td>';
 			echo '<td>'.$t.'</td></tr>';
 			$chartData = (round($t/count($d)*100)).','.$chartData;
-			$chartLabel = $this->penaltyTypes[key($types)].': '.(round($t/count($d)*100)).'%|'.$chartLabel;
+			$chartLabel = UFtpl_SruAdmin_Penalty::$penaltyTypes[key($types)].': '.(round($t/count($d)*100)).'%|'.$chartLabel;
 			next($types);
 		}
 		echo '</table>';
@@ -583,10 +583,10 @@ changeVisibility();
 		$chartData = '';
 		$chartLabel = '';
 		while ($t = current ($typesActive)) {
-			echo '<tr><td>'.$this->penaltyTypes[key($typesActive)].'</td>';
+			echo '<tr><td>'.UFtpl_SruAdmin_Penalty::$penaltyTypes[key($typesActive)].'</td>';
 			echo '<td>'.$t.'</td></tr>';
 			$chartData = (round($t/$activePenalties*100)).','.$chartData;
-			$chartLabel = $this->penaltyTypes[key($typesActive)].': '.(round($t/$activePenalties*100)).'%|'.$chartLabel;
+			$chartLabel = UFtpl_SruAdmin_Penalty::$penaltyTypes[key($typesActive)].': '.(round($t/$activePenalties*100)).'%|'.$chartLabel;
 			next($typesActive);
 		}
 		echo '</table>';

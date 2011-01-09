@@ -25,14 +25,21 @@ extends UFbox {
 		$bean->getByPK((int)$this->_srv->get('req')->get->penaltyId);
 
 		return $bean;
-	}		
+	}
+
+	protected function _getPenaltyTemplateFromGet() {
+		$bean = UFra::factory('UFbean_SruAdmin_PenaltyTemplate');
+		$bean->getByPK((int)$this->_srv->get('req')->get->penaltyTemplateId);
+
+		return $bean;
+	}
 
 	protected function _getAdminFromGet() {
 		$bean = UFra::factory('UFbean_SruAdmin_Admin');
 		$bean->getByPK((int)$this->_srv->get('req')->get->adminId);
 
 		return $bean;
-	}	
+	}
 	
 	protected function _getDormFromGet() {
 		$bean = UFra::factory('UFbean_Sru_Dormitory');
@@ -1269,7 +1276,7 @@ extends UFbox {
 		try {
 			$bean = UFra::factory('UFbean_SruAdmin_PenaltyTemplateList');
 			$bean->listAll();
-			$d['templates'] = $bean;		
+			$d['templates'] = $bean;
 
 			$user = $this->_getUserFromGet();
 			$d['user'] = $user;
@@ -1280,11 +1287,34 @@ extends UFbox {
 		}		
 	}
 
-	public function penaltyTemplateEdit() {
+	public function penaltyTemplates() {
+		try {
+			try {
+				$bean = UFra::factory('UFbean_SruAdmin_PenaltyTemplateList');
+				$bean->listAll();
+				$d['templates'] = $bean;
+			} catch (UFex_Dao_NotFound $e) {
+				$d['templates'] = null;
+			}
+			try {
+				$inactive = UFra::factory('UFbean_SruAdmin_PenaltyTemplateList');
+				$inactive->listInactive();
+				$d['inactive'] = $inactive;
+			} catch (UFex_Dao_NotFound $e) {
+				$d['inactive'] = null;
+			}
+			
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}
+	}
+
+	public function penaltyTemplateChange() {
 		try {
 			$bean = UFra::factory('UFbean_SruAdmin_PenaltyTemplateList');
 			$bean->listAll();
-			$d['templates'] = $bean;		
+			$d['templates'] = $bean;
 
 			$bean = $this->_getPenaltyFromGet();
 			$d['penalty'] = $bean;
@@ -1292,7 +1322,42 @@ extends UFbox {
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
 			return $this->render(__FUNCTION__.'NotFound');
-		}		
+		}
+	}
+
+	public function penaltyTemplateAdd() {
+		try {
+			$bean = UFra::factory('UFbean_SruAdmin_PenaltyTemplate');
+			$d['template'] = $bean;
+			
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}
+	}
+
+	public function titlePenaltyTemplateEdit() {
+		try {
+			$bean = UFra::factory('UFbean_SruAdmin_PenaltyTemplate');
+			$bean = $this->_getPenaltyTemplateFromGet();
+			$d['template'] = $bean;
+			
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}
+	}
+
+	public function penaltyTemplateEdit() {
+		try {
+			$bean = UFra::factory('UFbean_SruAdmin_PenaltyTemplate');
+			$bean = $this->_getPenaltyTemplateFromGet();
+			$d['template'] = $bean;
+			
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}
 	}
 
 	public function titlePenaltyAdd() {

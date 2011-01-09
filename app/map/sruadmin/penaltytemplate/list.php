@@ -14,6 +14,7 @@ extends UFmap {
 		'typeId'       => 't.penalty_type_id',
 		'duration'     => 't.duration',
 		'amnesty'      => 't.amnesty_after',
+		'active'       => 't.active',
 	);
 	protected $columnTypes = array(
 		'id'           => self::INT,
@@ -24,6 +25,7 @@ extends UFmap {
 		'typeId'       => self::INT,
 		'duration'     => self::INT,
 		'amnesty'      => self::INT,
+		'active'       => self::BOOL,
 	);
 	protected $tables = array(
 		't' => 'penalty_templates',

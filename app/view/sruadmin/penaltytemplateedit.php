@@ -8,7 +8,7 @@ extends UFview_SruAdmin {
 	public function fillData() {
 		$box  = UFra::shared('UFbox_SruAdmin');
 
-		$this->append('title', $box->titlePenalty());
+		$this->append('title', $box->titlePenaltyTemplateEdit());
 		$this->append('body',  $box->penaltyTemplateEdit());
 	}
 }

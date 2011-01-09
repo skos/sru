@@ -74,7 +74,7 @@ extends UFtpl_Common {
 			$usersOver += $overPlaces[$c['id']];
 		}
 		echo '</tbody>';
-		echo '<tr><td style="border-top: 1px solid;"><b>SUMA</b></td><td style="border-top: 1px solid;"><b>'.$usersMax.'</b></td><td style="text-align: right; border-top: 1px solid;"><b>'.$userCount.'</b></td><td style="text-align: right; border-top: 1px solid;"><b>'.$usersFree.'</b></td><td style="text-align: right; border-top: 1px solid;"><b>'.$usersOver.'</b></td></tr>';
+		echo '<tr><td style="border-top: 1px solid;"><b>SUMA</b></td><td style="text-align: right; border-top: 1px solid;"><b>'.$usersMax.'</b></td><td style="text-align: right; border-top: 1px solid;"><b>'.$userCount.'</b></td><td style="text-align: right; border-top: 1px solid;"><b>'.$usersFree.'</b></td><td style="text-align: right; border-top: 1px solid;"><b>'.$usersOver.'</b></td></tr>';
 		echo '</table>';
 ?>
 <script type="text/javascript">
