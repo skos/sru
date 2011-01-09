@@ -13,6 +13,7 @@ extends UFtpl_Common {
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <meta name="robots" CONTENT="noindex,nofollow,noarchive"> 
 <link rel="stylesheet" href="<?=UFURL_BASE;?>/i/style.css" type="text/css" media="screen" />
+<link rel="shortcut icon" href="<?=UFURL_BASE;?>/i/favicon.ico" type="image/x-icon" />
 <link type="text/css" href="<?=UFURL_BASE;?>/i/jquery/css/ui-lightness/jquery-ui-1.8.5.custom.css" rel="Stylesheet" />	
 <script src="http://cdn.jquerytools.org/1.2.4/jquery.tools.min.js"></script>
 <script type="text/javascript" src="<?=UFURL_BASE;?>/i/jquery/js/jquery-ui-1.8.5.custom.min.js"></script>
