@@ -848,10 +848,6 @@ extends UFtpl_Common {
 		$url = $this->url(0).'/penalties/';
 		$acl = $this->_srv->get('acl');
 		
-		if ($this->_srv->get('msg')->get('penaltyAdd/ok')) {
-			echo $this->OK('Kara została założona');
-		}		
-		
 		echo '<h2><a href="'.$url.'">Ostatnie akcje</a>| Aktywne kary | <a href="'.$url.'templates">Szablony</a></h2>';
 
 		$d['penalties']->write('listPenalty');
@@ -892,6 +888,9 @@ extends UFtpl_Common {
 	}
 
 	public function penalty(array $d) {
+		if ($this->_srv->get('msg')->get('penaltyAdd/ok')) {
+			echo $this->OK('Kara została założona');
+		}
 		if ($this->_srv->get('msg')->get('penaltyEdit/ok')) {
 			echo $this->OK('Zmiany zostały wprowadzone');
 		}
