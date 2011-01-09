@@ -15,6 +15,12 @@ extends UFact {
 
 			$post = $this->_srv->get('req')->post->{self::PREFIX};
 			$bean->fillFromPost(self::PREFIX, null);
+
+			if ($bean->duration < $bean->amnesty) {
+				$this->markErrors(self::PREFIX, array('amnesty'=>'longerThanDuration'));
+				return;
+			}
+
 			$bean->save();
 
 			$this->postDel(self::PREFIX);
