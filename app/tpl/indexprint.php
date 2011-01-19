@@ -12,7 +12,7 @@ extends UFtpl_Common {
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <meta name="robots" CONTENT="noindex,nofollow,noarchive"> 
-<link rel="stylesheet" href="<?=UFURL_BASE;?>/i/style.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="<?=UFURL_BASE;?>/i/css/style.css" type="text/css" media="screen" />
 <title><?=$d['title'];?></title>
 </head>
 <body>

@@ -178,7 +178,7 @@ extends UFtpl_Common {
 			echo '<a href="'.$urlNav.'/:del"> Wyrejestruj</a> &bull; ';
 		}
 		echo '<span id="computerMoreSwitch"></span>';
-		if (strlen($d['comment'])) echo ' <img src="'.UFURL_BASE.'/i/gwiazdka.png" alt="" title="'.$d['comment'].'" />';
+		if (strlen($d['comment'])) echo ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$d['comment'].'" />';
 		echo '</p>';
 ?><script type="text/javascript">
 function changeVisibility() {
@@ -225,8 +225,8 @@ changeVisibility();
 		$form = UFra::factory('UFlib_Form', 'computerEdit', $d, $this->errors);
 
 		echo '<h1>'.$d['host'].'.ds.pg.gda.pl</h1>';
-		echo $form->mac('MAC', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" alt="?" alt="?" title="Adres fizyczny karty sieciowej komputera." /> '.$this->showMacHint().'<br/>'));
-		echo $form->availableTo('Rejestracja do', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" alt="?" title="Data, kiedy komputer przestanie być aktywny." /><br/>'));
+		echo $form->mac('MAC', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" alt="?" title="Adres fizyczny karty sieciowej komputera." /> '.$this->showMacHint().'<br/>'));
+		echo $form->availableTo('Rejestracja do', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Data, kiedy komputer przestanie być aktywny." /><br/>'));
 		echo '<small>Maksymalnie do '.date(self::TIME_YYMMDD, $d['availableMaxTo']).'</small><br />';
 
 ?>
@@ -331,7 +331,7 @@ if (input) {
 				'labels' => $form->_labelize($this->computerTypes),
 			));
 		}
-		echo $form->host('Nazwa', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" alt="?" title="Nazwa komputera w sieci - nie musi być zgodna z nazwą w systemie Windows/Linux. Możesz podać inną nazwę niż propozycja SRU." /><br/>'));
+		echo $form->host('Nazwa', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Nazwa komputera w sieci - nie musi być zgodna z nazwą w systemie Windows/Linux. Możesz podać inną nazwę niż propozycja SRU." /><br/>'));
 		if ($admin) {
 			echo $form->ip('IP');
 ?><script type="text/javascript">
@@ -356,7 +356,7 @@ if (input) {
 		}
 		echo '</a></span>';
 		echo '<div id="macMore">';
-		echo $form->mac('MAC', array('value'=>$mac, 'after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" alt="?" title="Adres fizyczny karty sieciowej komputera." /> '.$this->showMacHint().'<br/>'));
+		echo $form->mac('MAC', array('value'=>$mac, 'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Adres fizyczny karty sieciowej komputera." /> '.$this->showMacHint().'<br/>'));
 		echo '</div>';
 
 ?><script type="text/javascript">
@@ -410,7 +410,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 			echo $this->ERR($this->errors['host/regexp']);
 		}
 		echo $form->alias('Alias');
-		echo $form->isCname('Wpis CNAME <img src="'.UFURL_BASE.'/i/pytajnik.png" alt="?" title="Aliasy są domyślnie wpisami CNAME.">', array('type'=>$form->CHECKBOX, 'value'=>'1'));
+		echo $form->isCname('Wpis CNAME <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Aliasy są domyślnie wpisami CNAME.">', array('type'=>$form->CHECKBOX, 'value'=>'1'));
 		echo $form->_end();
 
 ?>
@@ -445,7 +445,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 			} else {
 				$owner = '(<a href="'.$url.'/users/'.$c['userId'].'">'.$this->_escape($c['userName']).' '.$this->_escape($c['userSurname']).'</a>)';
 			}
-			echo '<li'.($c['banned'] ? ' class="ban"' : '').'>'.(!$c['active']? 'Do '.date(self::TIME_YYMMDD, $c['availableTo']).' ':'').(!$c['active']?'<del>':'').'<a href="'.$url.'/computers/'.$c['id'].'">'.$c['host'].(strlen($c['comment']) ? ' <img src="'.UFURL_BASE.'/i/gwiazdka.png" alt="" title="'.$c['comment'].'" />':'').' <small>'.$c['ip'].'/'.$c['mac'].'</small></a> <span>'.$owner.'</span>'.(!$c['active']?'</del>':'').'</li>';
+			echo '<li'.($c['banned'] ? ' class="ban"' : '').'>'.(!$c['active']? 'Do '.date(self::TIME_YYMMDD, $c['availableTo']).' ':'').(!$c['active']?'<del>':'').'<a href="'.$url.'/computers/'.$c['id'].'">'.$c['host'].(strlen($c['comment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['comment'].'" />':'').' <small>'.$c['ip'].'/'.$c['mac'].'</small></a> <span>'.$owner.'</span>'.(!$c['active']?'</del>':'').'</li>';
 		}
 	}
 
@@ -538,20 +538,20 @@ $("#main img[title]").tooltip({ position: "center right"});
 		echo $form->_fieldset();
 		echo $form->statHour('Godzina (HH:MM)', array('value'=>$hour));
 		echo $form->statDate('Data (YYYYMMDD)', array('value'=>$date));
-		echo $form->_submit('Zobacz', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" alt="?" alt="?" title="Podgląd danych z przeszłości, gdzie data jest końcem wyświetlanych okresów. Uwaga, im starsze dane, tym mniej precyzyjne!" />'));
+		echo $form->_submit('Zobacz', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" alt="?" title="Podgląd danych z przeszłości, gdzie data jest końcem wyświetlanych okresów. Uwaga, im starsze dane, tym mniej precyzyjne!" />'));
 		echo $form->_end();
 		echo $form->_end(true);
 
 		echo '<h3>Upload przez ostatnie 3 godziny</h3>';
-		echo '<p><img src="'.UFURL_BASE.'/i/stats-img/'.$file.'.png" alt="Statystyki transferów: 3h" /></p>';
+		echo '<p><img src="'.UFURL_BASE.'/i/img/stats-img/'.$file.'.png" alt="Statystyki transferów: 3h" /></p>';
 		echo '<h3>Upload przez ostatnie 24h godziny</h3>';
-		echo '<p><img src="'.UFURL_BASE.'/i/stats-img/'.$file.'.day.png" alt="Statystyki transferów: 24h" /></p>';
+		echo '<p><img src="'.UFURL_BASE.'/i/img/stats-img/'.$file.'.day.png" alt="Statystyki transferów: 24h" /></p>';
 		echo '<h3>Upload przez ostatni tydzień</h3>';
-		echo '<p><img src="'.UFURL_BASE.'/i/stats-img/'.$file.'.week.png" alt="Statystyki transferów: tydzień" /></p>';
+		echo '<p><img src="'.UFURL_BASE.'/i/img/stats-img/'.$file.'.week.png" alt="Statystyki transferów: tydzień" /></p>';
 		echo '<h3>Upload przez ostatni miesiąc</h3>';
-		echo '<p><img src="'.UFURL_BASE.'/i/stats-img/'.$file.'.month.png" alt="Statystyki transferów: miesiąc" /></p>';
+		echo '<p><img src="'.UFURL_BASE.'/i/img/stats-img/'.$file.'.month.png" alt="Statystyki transferów: miesiąc" /></p>';
 		echo '<h3>Upload przez ostatni rok</h3>';
-		echo '<p><img src="'.UFURL_BASE.'/i/stats-img/'.$file.'.year.png" alt="Statystyki transferów: rok" /></p>';
+		echo '<p><img src="'.UFURL_BASE.'/i/img/stats-img/'.$file.'.year.png" alt="Statystyki transferów: rok" /></p>';
 	}
 
 	public function apiComputersLocations(array $d) {

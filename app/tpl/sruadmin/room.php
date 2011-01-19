@@ -38,7 +38,7 @@ extends UFtpl_Common {
 			} else {
 				foreach ($rooms as $room) {
 					$dispRoom = ($connector == 0 ? $room->getExt() : $connector.$room->getExt());
-					echo '<li><a href="'.$url.$dorm.'/'.$dispRoom.'">'.$dispRoom.(strlen($room->getComment()) ? '<img src="'.UFURL_BASE.'/i/gwiazdka.png" alt="" title="'.$room->getComment().'" />':'').'</a></li>';
+					echo '<li><a href="'.$url.$dorm.'/'.$dispRoom.'">'.$dispRoom.(strlen($room->getComment()) ? '<img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$room->getComment().'" />':'').'</a></li>';
 				}
 			}
 			$lastRoom = $connector;

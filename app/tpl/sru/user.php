@@ -115,7 +115,7 @@ extends UFtpl_Common {
 		echo $form->lang('Język', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$languages),
-			'after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" alt="?" title="Wiadomości e-mail i GG będa przychodziły w wybranym języku.<br/><br/>You will receive e-mails and gg messages in the chosen language." /><br/>',
+			'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Wiadomości e-mail i GG będa przychodziły w wybranym języku.<br/><br/>You will receive e-mails and gg messages in the chosen language." /><br/>',
 		));
 		$referralStart = date(self::TIME_YYMMDD, time());
 		echo $form->referralStart('Początek skier.', array('value'=>$referralStart, 'class'=>'required'));
@@ -168,11 +168,11 @@ $("#main img[title]").tooltip({ position: "center right"});
 			'labels' => $form->_labelize(self::$studyYears),
 			'class'=>'required',
 		));
-		echo $form->gg('Gadu-Gadu', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" alt="?" title="Jeżeli podasz nr GG, będą na niego przesyłane informacje o zmianie statusu konta i Twoich komputerów." /><br/>'));
+		echo $form->gg('Gadu-Gadu', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Jeżeli podasz nr GG, będą na niego przesyłane informacje o zmianie statusu konta i Twoich komputerów." /><br/>'));
 		echo $form->lang('Język', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$languages),
-			'after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" alt="?" title="Wiadomości e-mail i GG będa przychodziły w wybranym języku.<br/><br/>You will receive e-mails and gg messages in the chosen language." /><br/>',
+			'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Wiadomości e-mail i GG będa przychodziły w wybranym języku.<br/><br/>You will receive e-mails and gg messages in the chosen language." /><br/>',
 		));
 
 		echo $form->_fieldset('Zmiana chronionych danych');
@@ -230,8 +230,8 @@ $("#main img[title]").tooltip({ position: "center right"});
 		$d = $searched + $d;
 		$form = UFra::factory('UFlib_Form', 'userSearch', $d, $this->errors);
 
-		echo $form->surname('Nazwisko', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" alt="?" title="Nazwisko szukanego mieszkańca. Można podać łącznie z numerem indeksu." /><br/>'));
-		echo $form->registryNo('Nr indeksu', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" alt="?" title="Numer indeksu szukanego mieszkańca. Można podać łącznie z nazwiskiem." /><br/>'));
+		echo $form->surname('Nazwisko', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Nazwisko szukanego mieszkańca. Można podać łącznie z numerem indeksu." /><br/>'));
+		echo $form->registryNo('Nr indeksu', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Numer indeksu szukanego mieszkańca. Można podać łącznie z nazwiskiem." /><br/>'));
 ?>
 <script>
 $("#main img[title]").tooltip({ position: "center right"});
@@ -253,7 +253,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 	public function searchResults(array $d) {
 		$url = $this->url(0);
 		foreach ($d as $c) {
-			echo '<li'.($c['banned']?' class="ban"':'').'>'.(!$c['active']?'<del>':'').'<a href="'.$url.'/users/'.$c['id'].'">'.$this->_escape($c['name']).' "'.$this->_escape($c['login']).'" '.$this->_escape($c['surname']).'</a>'.(strlen($c['comment']) ? ' <img src="'.UFURL_BASE.'/i/gwiazdka.png" alt="" title="'.$c['comment'].'" />':'').' <span><a href="'.$url.'/dormitories/'.$c['dormitoryAlias'].'/'.$c['locationAlias'].'">'.$c['locationAlias'].'</a> <small>(<a href="'.$url.'/dormitories/'.$c['dormitoryAlias'].'">'.$c['dormitoryAlias'].'</a>)</small></span>'.(!$c['active']?'</del>':'').(strlen($c['locationComment']) ? ' <img src="'.UFURL_BASE.'/i/gwiazdka.png" alt="" title="'.$c['locationComment'].'" />':'').'</li>';
+			echo '<li'.($c['banned']?' class="ban"':'').'>'.(!$c['active']?'<del>':'').'<a href="'.$url.'/users/'.$c['id'].'">'.$this->_escape($c['name']).' "'.$this->_escape($c['login']).'" '.$this->_escape($c['surname']).'</a>'.(strlen($c['comment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['comment'].'" />':'').' <span><a href="'.$url.'/dormitories/'.$c['dormitoryAlias'].'/'.$c['locationAlias'].'">'.$c['locationAlias'].'</a> <small>(<a href="'.$url.'/dormitories/'.$c['dormitoryAlias'].'">'.$c['dormitoryAlias'].'</a>)</small></span>'.(!$c['active']?'</del>':'').(strlen($c['locationComment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['locationComment'].'" />':'').'</li>';
 		}
 	}
 
@@ -318,7 +318,7 @@ $(document).ready(function()
 		if ($d['gg']) {
 			echo '<p><em>Gadu-Gadu:</em> <a href="gg:'.$d['gg'].'">'.$d['gg'].'</a></p>';
 		}
-		echo '<p><em>Miejsce:</em> <a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'/'.$d['locationAlias'].'">'.$d['locationAlias'].'</a> <small>(<a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'">'.$d['dormitoryAlias'].'</a>)</small>'.(strlen($d['locationComment']) ? ' <img src="'.UFURL_BASE.'/i/gwiazdka.png" alt="" title="'.$d['locationComment'].'" />':'').'</p>';
+		echo '<p><em>Miejsce:</em> <a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'/'.$d['locationAlias'].'">'.$d['locationAlias'].'</a> <small>(<a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'">'.$d['dormitoryAlias'].'</a>)</small>'.(strlen($d['locationComment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$d['locationComment'].'" />':'').'</p>';
 		echo '<p><em>Wydział:</em> '.(!is_null($d['facultyName'])?$d['facultyName']:'N/D').'</p>';
 		echo '<p><em>Rok studiów:</em> '.self::$studyYears[$d['studyYearId']].'</p>';
 		if ($d['banned']) {
@@ -376,7 +376,7 @@ $(document).ready(function()
 		 	&bull; <a href="'.$urlUser.'/:edit">Edycja</a>
 		  	&bull; <span id="userMoreSwitch"></span>'; 
 	
-		if (strlen($d['comment'])) echo ' <img src="'.UFURL_BASE.'/i/gwiazdka.png" alt="" title="'.$d['comment'].'" />';
+		if (strlen($d['comment'])) echo ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$d['comment'].'" />';
 		echo '<p>';
 ?><script type="text/javascript">
 function changeVisibility() {
@@ -527,7 +527,7 @@ changeVisibility();
 		echo $form->lang('Język', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$languages),
-			'after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" alt="?" title="Wiadomości e-mail i GG będa przychodziły w wybranym języku.<br/><br/>You will receive e-mails and gg messages in the chosen language." /><br/>',
+			'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Wiadomości e-mail i GG będa przychodziły w wybranym języku.<br/><br/>You will receive e-mails and gg messages in the chosen language." /><br/>',
 		));
 		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
 		if ($d['active'] && !$this->_srv->get('msg')->get('userEdit/errors/referralEnd')) {
@@ -571,7 +571,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 	public function shortList(array $d) {
 		$url = $this->url(0).'/users/';
 		foreach ($d as $c) {
-			echo '<li'.($c['banned']?' class="ban"':'').'>'.(!$c['active']?'<del>':'').'<a href="'.$url.$c['id'].'">'.$this->_escape($c['name']).' '.$this->_escape($c['surname']).'</a>'.(!$c['active']?'</del>':'').(strlen($c['comment']) ? ' <img src="'.UFURL_BASE.'/i/gwiazdka.png" alt="" title="'.$c['comment'].'" />':'').'</li>';
+			echo '<li'.($c['banned']?' class="ban"':'').'>'.(!$c['active']?'<del>':'').'<a href="'.$url.$c['id'].'">'.$this->_escape($c['name']).' '.$this->_escape($c['surname']).'</a>'.(!$c['active']?'</del>':'').(strlen($c['comment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['comment'].'" />':'').'</li>';
 		}
 	}
 
