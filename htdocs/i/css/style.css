@@ -113,7 +113,7 @@ img { border-style: none; }
 }
 
 th.header { 
-    background-image: url(small.gif);     
+    background-image: url(../img/small.gif);     
     cursor: pointer; 
     font-weight: bold; 
     background-repeat: no-repeat; 
@@ -123,12 +123,15 @@ th.header {
     margin-left: -1px; 
 } 
 th.headerSortUp { 
-    background-image: url(small_asc.gif); 
+    background-image: url(../img/small_asc.gif); 
     background-color: #999; 
 }
 th.headerSortDown { 
-    background-image: url(small_desc.gif); 
+    background-image: url(../img/small_desc.gif); 
     background-color: #999; 
+}
+td.listAdminWalet { 
+border-top: 1px solid;
 }
 
 #foot { text-align: center; font-size: 0.5em; margin-top: 2em; clear: both; }
