@@ -33,6 +33,10 @@ extends UFtpl_Common {
 		$d['switches']->write('configSwitches');
 	}
 
+	public function findMac(array $d) {
+		$d['switchPort']->write('apiInfo');
+	}
+
 	public function error404() {
 		header('HTTP/1.0 404 Not Found');
 	}

@@ -334,4 +334,11 @@ $("#main img[title]").tooltip({ position: "center right"});
 		$copyAliases = (isset($this->_srv->get('msg')->info['copyAliasesFromSwitch']) && !is_null($portAliases));
 		echo '</div>';
 	}
+
+	/**
+	 * Wyświetla dane portu w API
+	 */
+	public function apiInfo(array $d) {
+		echo $d['switchIp'].'/'.$d['ordinalNo'];
+	}
 }

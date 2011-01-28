@@ -125,6 +125,22 @@ extends UFbox {
 		}
 	}
 
+	public function findMac() {
+		try {
+			$hp = UFra::factory('UFlib_Snmp_Hp');
+			$switchPort = $hp->findMac($this->_srv->get('req')->get->mac);
+			if (is_null($switchPort)) {
+				return '';
+			}
+
+			$d['switchPort'] = $switchPort;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return '';
+		}
+	}
+
 	public function penaltiesPast() {
 		try {
 			$bean = UFra::factory('UFbean_SruAdmin_PenaltyList');	

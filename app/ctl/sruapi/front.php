@@ -67,6 +67,16 @@ extends UFctl {
 					break;
 				case 'switches':
 					$get->view = 'switches';
+					if ($segCount > 1) {
+						switch ($req->segment(2)) {
+							case 'findmac':
+								if ($segCount > 2) {
+									$get->view = 'switches/findMac';
+									$get->mac = $req->segment(3);
+								}
+								break;
+						}
+					}
 					break;
 				case 'dormitories':
 					if ($segCount>1) {
@@ -199,6 +209,8 @@ extends UFctl {
 				return 'SruApi_Admins';
 			case 'switches':
 				return 'SruApi_Switches';
+			case 'switches/findMac':
+				return 'SruApi_FindMac';
 			case 'dormitory/computers':
 				if ($acl->sruApi('computer', 'showLocations')) {
 					return 'SruApi_ComputersLocations';
