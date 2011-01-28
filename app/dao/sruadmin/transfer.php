@@ -15,9 +15,10 @@ extends UFdao {
 
 	public function listByIp($ip) {
 		$mapping = $this->mapping('get');
+		$conf = UFra::shared('UFconf_Sru');
 
 		$query = $this->prepareSelect($mapping);
-		$query->where('l.time > now() - interval \'15 minutes\' GROUP BY l.ip, c.can_admin, c.type_id, c.host, c.id, c.banned HAVING l.ip = \''.$ip.'\' LIMIT 1', null, $query->SQL);
+		$query->where('l.time > now() - interval \''.($conf->listOwnTime).'\' GROUP BY l.ip, c.can_admin, c.type_id, c.host, c.id, c.banned HAVING l.ip = \''.$ip.'\' LIMIT 1', null, $query->SQL);
 		return $this->doSelect($query);
 	}
 }

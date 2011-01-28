@@ -39,4 +39,5 @@ extends UFconf {
 	protected $userPrintSkosText = '';
 
 	protected $rrdDataDir = '';
+	protected $listOwnTime = '15 minutes'; //liczba minut uwzględniach w liście użytkownika w API
 }

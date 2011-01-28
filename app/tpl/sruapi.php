@@ -54,6 +54,6 @@ extends UFtpl_Common {
 	}
 
 	public function myLanstats(array $d) {
-		$d['transfer']->write('myTransferStats');
+		$d['transfer']->write('myTransferStats', $d['upload']);
 	}
 }

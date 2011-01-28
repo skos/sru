@@ -195,9 +195,25 @@ extends UFbox {
 		try {
 			$serv = $this->_srv->get('req')->server;
 			$ip =  $serv->REMOTE_ADDR;
-			$transfer = UFra::factory('UFbean_SruAdmin_Transfer');
-			$transfer->listByIp($ip);
-			$d['transfer'] = $transfer;
+			// znajdujemy właściciela
+			$computer = UFra::factory('UFbean_Sru_Computer');
+			$computer->getByIp($ip);
+			// znajdujemy wszystkie komputery właściciela
+			$computersList = UFra::factory('UFbean_Sru_ComputerList');
+			$computersList->listByUserId($computer->userId);
+			// znajdujemy upload dla każdego komputera
+			$upload = array();
+			foreach ($computersList as $computer) {
+				try {
+					$transfer = UFra::factory('UFbean_SruAdmin_Transfer');
+					$transfer->listByIp($computer['ip']);
+					$upload[$computer['host']] = $transfer;
+				} catch (UFex_Dao_NotFound $e) {
+					$upload[$computer['host']] = null;
+				}
+			}
+			$d['upload'] = $upload;
+			$d['transfer'] = UFra::factory('UFbean_SruAdmin_Transfer');
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {

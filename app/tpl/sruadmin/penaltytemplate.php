@@ -8,6 +8,7 @@ extends UFtpl_Common {
 	protected $errors = array(
 		'duration' => 'Podaj długość',
 		'amnesty' => 'Podaj minimalną długość',
+		'amnesty/longerThanDuration' => 'Minimalna długość nie może być większa niż długość',
 		'title/textMin' => 'Podaj nazwę',
 		'title/duplicated' => 'Podana nazwa już istnieje',
 		'description/textMin' => 'Podaj opis',

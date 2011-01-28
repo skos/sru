@@ -48,9 +48,15 @@ extends UFtpl_Common {
 		echo 'Format: min/avg/max. Dane pochodzą z ostatnich 30 minut, maksymalnie 20 najbardziej aktywnych IP z transferem powyżej 10kB/s.';
 	}
 
-	public function myTransferStats(array $d) {
-		foreach ($d as $uploader) {
-			echo $uploader['bytes_min'].'/'.$uploader['bytes_sum'].'/'.$uploader['bytes_max'];
+	public function myTransferStats(array $d, array $uploadList) {
+		foreach ($uploadList as $uploader) {
+			$uploader = current($uploadList);
+			if (is_null($uploader)) {
+				echo key($uploadList).':0/0/0'."\n";
+			} else {
+				echo key($uploadList).':'.$uploader->getBytesMin().'/'.$uploader->getBytesSum().'/'.$uploader->getBytesMax()."\n";
+			}
+			next($uploadList);
 		}
 	}
 }
