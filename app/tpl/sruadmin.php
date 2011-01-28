@@ -253,6 +253,13 @@ extends UFtpl_Common {
 		echo '</ul></div>';
 	}
 
+	public function computerSearchHistoryResults(array $d) {
+		echo '<h2>Znalezione komputery używające wcześniej szukanego IP:</h2>';
+		echo '<ul>';
+		echo $d['computers']->write('searchResults');
+		echo '</ul></div>';
+	}
+
 	public function computerSearchResultsUnregistered(array $d) {
 		echo '<div class="computer">';
 		echo $d['computers']->write('searchResultsUnregistered', $d['switchPort']);
@@ -265,6 +272,9 @@ extends UFtpl_Common {
 	}
 
 	public function computerSearchByAliasResultsNotFound() {
+	}
+
+	public function computerSearchHistoryResultsNotFound() {
 	}
 
 	public function titleUserSearch() {

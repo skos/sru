@@ -358,6 +358,22 @@ extends UFbox {
 		}
 	}
 
+	public function computerSearchHistoryResults() {
+		try {
+			$get = $this->_srv->get('req')->get;
+			if (is_null($get->searchedIp)) {
+				return '';
+			}
+			$bean = UFra::factory('UFbean_SruAdmin_ComputerHistoryList');
+			$bean->listByComputerIp($get->searchedIp);
+			$d['computers'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}
+	}
+
 	public function userSearch() {
 		$bean = UFra::factory('UFbean_Sru_User');
 

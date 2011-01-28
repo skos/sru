@@ -27,4 +27,17 @@ extends UFdao {
 
 		return $this->doSelect($query);
 	}
+
+	public function listByComputerIp($ip) {
+		$mapping = $this->mapping('listhistory');
+
+		$query = $this->prepareSelect($mapping);
+		if (substr($ip, 0, 6) != '153.19') {
+			$ip = '153.19.' . $ip;
+		}
+		$query->where($mapping->ip, $ip);
+		$query->order($mapping->modifiedAt,  $query->DESC);
+
+		return $this->doSelect($query);
+	}
 }

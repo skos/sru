@@ -166,4 +166,23 @@ extends UFtpl_Common {
 	public function mailEn(array $d, $new, $names=null) {
 		$this->mail($d, $new, self::$namesEn);
 	}
+
+	public function searchResults(array $d) {
+		$url = $this->url(0);
+		$displayed = array();
+		foreach ($d as $c) {
+			if (in_array($c['host'], $displayed)) {
+				continue;
+			}
+			if ($c['ip'] == $c['currentIp']) {
+				continue;
+			}
+			$owner = '(Należał do: <a href="'.$url.'/users/'.$c['userId'].'">'.$this->_escape($c['userName']).' '.$this->_escape($c['userSurname']).'</a>)';
+			echo '<li'.($c['currentBanned'] ? ' class="ban"' : '').'>'.(!$c['currentActive']?'<del>':'').'<a href="'.$url.'/computers/'.$c['computerId'].'">'.$c['host'].(strlen($c['currentComment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['currentComment'].'" />':'').' <small>'.$c['currentIp'].'/'.$c['mac'].'</small></a> <span>'.$owner.'</span>'.(!$c['currentActive']?'</del>':'').'</li>';
+			$displayed[] = $c['host'];
+		}
+		if (count($displayed) == 0) {
+			echo 'Wszystkie komputery używające wcześniej tego IP zostały wyświetlone na liście wyżej.';
+		}
+	}
 }

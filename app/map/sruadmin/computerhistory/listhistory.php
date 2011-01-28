@@ -2,7 +2,7 @@
 /**
  * wybranie listy zmian danych komputerow
  */
-class UFmap_SruAdmin_ComputerHistory_List
+class UFmap_SruAdmin_ComputerHistory_ListHistory
 extends UFmap {
 
 	protected $columns = array(
@@ -12,20 +12,21 @@ extends UFmap {
 		'mac'            => 'h.mac',
 		'ip'             => 'h.ipv4',
 		'userId'         => 'h.user_id',
+		'userName'       => 'u.name',
+		'userSurname'    => 'u.surname',
 		'locationId'     => 'h.location_id',
-		'locationAlias'  => 'l.alias',
-		'dormitoryId'    => 'l.dormitory_id',
-		'dormitoryAlias' => 'd.alias',
-		'dormitoryName'  => 'd.name',
 		'availableTo'    => 'h.avail_to',
 		'availableMaxTo' => 'h.avail_max_to',
 		'modifiedById'   => 'h.modified_by',
-		'modifiedBy'     => 'a.name',
 		'modifiedAt'     => 'h.modified_at',
 		'comment'        => 'h.comment',
 		'canAdmin'       => 'h.can_admin',
 		'active'         => 'h.active',
 		'typeId'	 => 'h.type_id',
+		'currentBanned'	 => 'c.banned',
+		'currentActive'	 => 'c.active',
+		'currentComment' => 'c.comment',
+		'currentIp'      => 'c.ipv4',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -34,33 +35,32 @@ extends UFmap {
 		'mac'            => self::TEXT,
 		'ip'             => self::TEXT,
 		'userId'         => self::NULL_INT,
+		'userName'       => self::TEXT,
+		'userSurname'    => self::TEXT,
 		'locationId'     => self::INT,
-		'locationAlias'  => self::TEXT,
-		'dormitoryId'    => self::INT,
-		'dormitoryAlias' => self::TEXT,
-		'dormitoryName'  => self::TEXT,
 		'availableTo'    => self::TS,
 		'availableMaxTo' => self::TS,
 		'modifiedById'   => self::NULL_INT,
-		'modifiedBy'     => self::TEXT,
 		'modifiedAt'     => self::TS,
 		'comment'        => self::TEXT,
 		'canAdmin'       => self::BOOL,
 		'active'         => self::BOOL,
 		'typeId'	 => self::INT,
+		'currentBanned'  => self::BOOL,
+		'currentActive'  => self::BOOL,
+		'currentComment' => self::TEXT,
+		'currentIp'      => self::TEXT,
 	);
 	protected $tables = array(
 		'h' => 'computers_history',
 	);
 	protected $joins = array(
-		'a' => 'admins',
-		'l' => 'locations',
-		'd' => 'dormitories',
+		'c' => 'computers',
+		'u' => 'users',
 	);
 	protected $joinOns = array(
-		'a' => 'h.modified_by=a.id',
-		'l' => 'h.location_id=l.id',
-		'd' => 'l.dormitory_id=d.id',
+		'c' => 'h.computer_id=c.id',
+		'u' => 'h.user_id=u.id',
 	);
 	protected $pk = 'h.id';
 }
