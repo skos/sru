@@ -8,6 +8,8 @@ extends UFbeanSingle {
 	private $alwaysChanged = array (
 		'modifiedAt' => '',
 		'modifiedById' => '',
+		'updateNeeded' => '',
+		'changePasswordNeeded' => '',
 	);
 
 	/**
