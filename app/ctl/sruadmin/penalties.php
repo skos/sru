@@ -138,13 +138,13 @@ extends UFctl_Common {
 			$act = 'Admin_Logout';
 		} elseif ($post->is('adminLogin') && $acl->sruAdmin('admin', 'login')) {
 			$act = 'Admin_Login';
-		} elseif ('penalties/penalty/edit' == $get->view && $post->is('penaltyEdit') && $acl->sruAdmin('penaltyTemplate', 'edit')) {
+		} elseif ('penalties/penalty/edit' == $get->view && $post->is('penaltyEdit') && $acl->sruAdmin('penalty', 'edit')) {
 			$act = 'Penalty_Edit';
-		} elseif ('penalties/add' == $get->view && $post->is('penaltyAdd') && $acl->sruAdmin('penaltyTemplate', 'add')) {
+		} elseif ('penalties/add' == $get->view && $post->is('penaltyAdd') && $acl->sruAdmin('penalty', 'add')) {
 			$act = 'Penalty_Add';
-		} elseif ('penalties/template/add' == $get->view && $post->is('penaltyTemplateAdd') && $acl->sruAdmin('penalty', 'add')) {
+		} elseif ('penalties/template/add' == $get->view && $post->is('penaltyTemplateAdd') && $acl->sruAdmin('penaltyTemplate', 'add')) {
 			$act = 'PenaltyTemplate_Add';
-		} elseif ('penalties/template/edit' == $get->view && $post->is('penaltyTemplateEdit') && $acl->sruAdmin('penalty', 'edit')) {
+		} elseif ('penalties/template/edit' == $get->view && $post->is('penaltyTemplateEdit') && $acl->sruAdmin('penaltyTemplate', 'edit')) {
 			$act = 'PenaltyTemplate_Edit';
 		}
 		if (isset($act)) {

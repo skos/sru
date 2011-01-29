@@ -10,10 +10,24 @@ extends UFlib_ClassWithService {
 	}
 
 	public function edit() {
-		return $this->_loggedIn();
+		if (!$this->_loggedIn()) {
+			return false;
+		}
+		$sess = $this->_srv->get('session');		
+		if ($sess->typeId == UFacl_SruAdmin_Admin::CENTRAL || $sess->typeId == UFacl_SruAdmin_Admin::CAMPUS) {
+			return true;
+		}
+		return false;
 	}
 
 	public function add() {
-		return $this->_loggedIn();
+		if (!$this->_loggedIn()) {
+			return false;
+		}
+		$sess = $this->_srv->get('session');		
+		if ($sess->typeId == UFacl_SruAdmin_Admin::CENTRAL || $sess->typeId == UFacl_SruAdmin_Admin::CAMPUS) {
+			return true;
+		}
+		return false;
 	}
 }
