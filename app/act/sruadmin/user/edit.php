@@ -34,6 +34,7 @@ extends UFact {
 			}
 			$bean->facultyId = $post['facultyId'];
 			$bean->studyYearId = $post['studyYearId'];
+			$bean->updateNeeded = false;
 
 			$bean->modifiedById = $this->_srv->get('session')->authAdmin;
 			$bean->modifiedAt = NOW;
