@@ -228,7 +228,7 @@ class Connector
 					break;
 				}
 			}
-		} else {
+		} else if (!empty($this->rooms)) {
 			$this->rooms[0]->addPerson($user);
 		}
 	}
