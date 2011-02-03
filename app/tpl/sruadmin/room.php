@@ -61,7 +61,7 @@ extends UFtpl_Common {
 		
 		if(isset($_COOKIE['SRUDisplayUsers']) && $_COOKIE['SRUDisplayUsers'] == '1' && !isset($_COOKIE['SRUDisplayUsersChanged'])){
 			echo '<p class="nav"><a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'/'.$d['alias'].'" onClick="fullList()">Wyświetl pełną listę użytkowników i hostów</a></p>';
-		}else if($_COOKIE['SRUDisplayUsers'] == '1'){
+		}else if(isset($_COOKIE['SRUDisplayUsers']) && $_COOKIE['SRUDisplayUsers'] == '1'){
 			echo '<p class="nav"><a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'/'.$d['alias'].'">Wyświetl skróconą listę użytkowników i hostów</a></p>';
 		}
 ?>
