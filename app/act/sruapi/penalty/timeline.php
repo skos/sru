@@ -27,7 +27,7 @@ extends UFact {
 			}
 
 			$body = $box->apiPenaltiesTimelineMailBody($added, $modified);
-			$sender->send("admin-osiedlowy@ds.pg.gda.pl", $title, $body, self::PREFIX);
+			$sender->sendMail('admin-osiedlowy@ds.pg.gda.pl', $title, $body, self::PREFIX);
 
 			$this->markOk(self::PREFIX);
 		} catch (UFex $e) {
