@@ -45,4 +45,15 @@ extends UFdao {
 
 		return $this->doSelectFirst($query);
 	}
+
+	public function listPortsWithSwitches() {
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->connectedSwitchIp, NULL, UFlib_Db_Query::NOT_EQ);
+		$query->order($mapping->switchIp, $query->ASC);
+		$query->order($mapping->ordinalNo, $query->ASC);
+
+		return $this->doSelect($query);
+	}
 }

@@ -75,6 +75,9 @@ extends UFctl {
 									$get->mac = $req->segment(3);
 								}
 								break;
+							case 'structure':
+								$get->view = 'switches/structure';
+								break;
 						}
 					}
 					break;
@@ -211,6 +214,8 @@ extends UFctl {
 				return 'SruApi_Switches';
 			case 'switches/findMac':
 				return 'SruApi_FindMac';
+			case 'switches/structure':
+				return 'SruApi_SwitchesStructure';
 			case 'dormitory/computers':
 				if ($acl->sruApi('computer', 'showLocations')) {
 					return 'SruApi_ComputersLocations';

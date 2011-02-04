@@ -30,11 +30,15 @@ extends UFtpl_Common {
 	}
 
 	public function switches(array $d) {
-		$d['switches']->write('configSwitches');
+		$d['switches']->write('apiList');
 	}
 
 	public function findMac(array $d) {
 		$d['switchPort']->write('apiInfo');
+	}
+
+	public function switchesStructure(array $d) {
+		$d['switchPorts']->write('apiStructure');
 	}
 
 	public function error404() {

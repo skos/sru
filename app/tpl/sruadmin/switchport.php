@@ -341,4 +341,61 @@ $("#main img[title]").tooltip({ position: "center right"});
 	public function apiInfo(array $d) {
 		echo $d['switchIp'].'/'.$d['ordinalNo'];
 	}
+
+	/**
+	 * Wyświetla strukturę switchy (switch, port, podłączony switch, port na podłączonym sw.)
+	 */
+	public function apiStructure(array $d) {
+		$ports = array();
+		foreach ($d as $c) {
+			$exist = false;
+			foreach ($ports as $port) {
+				$exist = $port->exist($c['switchIp'], $c['connectedSwitchIp']);
+				if (!is_null($exist) && $exist) {
+					$port->setConnectedPort($c['ordinalNo']);
+					break;
+				}
+			}
+			if (!is_null($exist) && !$exist) {
+				$ports[] = new SwitchStructure($c['switchIp'], $c['ordinalNo'], $c['connectedSwitchIp']);
+			}
+		}
+		foreach ($ports as $port) {
+			$port->display();
+		}
+	}
+}
+
+class SwitchStructure
+{
+	private $ip;
+	private $port;
+	private $connectedIp;
+	private $connectedPort;
+
+	public function __construct($ip, $port, $connectedIp) {
+		$this->ip = $ip;
+		$this->port = $port;
+		$this->connectedIp = $connectedIp;
+	}
+
+	public function setConnectedPort($port) {
+		$this->connectedPort = $port;
+	}
+
+	public function exist($ip, $connectedIp) {
+		if ($this->ip == $connectedIp && $this->connectedIp == $ip) {
+			if (!is_null($this->connectedPort)) {
+				return null;
+			}
+			return true;
+		}
+		return false;
+	}
+
+	public function display() {
+		if (!is_null($this->connectedPort)) {
+			echo $this->ip.'/'.$this->port.':'.$this->connectedIp.'/'.$this->connectedPort."\n";
+		}
+	}
 }
