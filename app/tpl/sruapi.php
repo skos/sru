@@ -64,4 +64,28 @@ extends UFtpl_Common {
 	public function myLanstats(array $d) {
 		$d['transfer']->write('myTransferStats', $d['upload']);
 	}
+
+	public function apiPenaltiesTimelineMailTitle(array $d) {
+		echo date(self::TIME_YYMMDD).': Podsumowanie nałożonych/modyfikowanych kar';
+	}
+	
+	public function apiPenaltiesTimelineMailBody(array $d) {
+		if (is_null($d['added'])) {
+			echo 'Nie nałożono żadnej kary ani ostrzeżenia.'."\n";
+		} else {
+			echo 'Nałożono '.count($d['added']).' kar i ostrzeżeń:'."\n";
+			foreach ($d['added'] as $added) {
+				echo date(self::TIME_YYMMDD_HHMM, $added['createdAt']).': '.$added['userName'].' "'.$added['userLogin'].'" '.$added['userSurname'].' za: '.($added['typeId'] == UFbean_SruAdmin_Penalty::TYPE_WARNING ? '*': '').$added['templateTitle'].' przez: '.$added['creatorName'].' https://'.$d['host'].'/admin/penalties/'.$added['id']."\n";
+			}
+		}
+		echo "\n";
+		if (is_null($d['modified'])) {
+			echo 'Nie zmodyfikowano żadnej kary.'."\n";
+		} else {
+			echo 'Zmodyfikowano '.count($d['modified']).' kar:'."\n";
+			foreach ($d['modified'] as $modified) {
+				echo date(self::TIME_YYMMDD_HHMM, $modified['modifiedAt']).': '.$modified['userName'].' "'.$modified['userLogin'].'" '.$modified['userSurname'].' za: '.$modified['templateTitle'].' przez: '.$modified['modifierName'].' https://'.$d['host'].'/admin/penalties/'.$modified['id']."\n";
+			}
+		}
+	}
 }

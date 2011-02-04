@@ -19,6 +19,9 @@ extends UFctl {
 							case 'past':
 								$get->view = 'penalties/past';
 								break;
+							case 'sendTimeline':
+								$get->view = 'penalties/timeline';
+								break;
 							default:
 								$get->view = 'penalty';
 								$get->penaltyId = (int)$req->segment(2);
@@ -146,6 +149,8 @@ extends UFctl {
 			$act = 'Computer_Deactivate';
 		} elseif ('computer/changeAvailable' == $get->view && $acl->sruApi('computer', 'edit')) {
 			$act = 'Computer_ChangeAvailable';
+		} elseif ('penalties/timeline' == $get->view) {
+			$act = 'Penalty_Timeline';
 		}
 
 		if (isset($act)) {
@@ -188,6 +193,14 @@ extends UFctl {
 				if ($msg->get('penaltyAmnesty/ok')) {
 					return 'SruApi_Status200';
 				} elseif ($msg->get('penaltyAmnesty/error')) {
+					return 'SruApi_Error403';
+				} else {
+					return 'SruApi_Error404';
+				}
+			case 'penalties/timeline':
+				if ($msg->get('penaltyTimeline/ok')) {
+					return 'SruApi_Status200';
+				} elseif ($msg->get('penaltyTimeline/error')) {
 					return 'SruApi_Error403';
 				} else {
 					return 'SruApi_Error404';
