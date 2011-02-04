@@ -543,15 +543,15 @@ $("#main img[title]").tooltip({ position: "center right"});
 		echo $form->_end(true);
 
 		echo '<h3>Upload przez ostatnie 3 godziny</h3>';
-		echo '<p><img src="'.UFURL_BASE.'/i/img/stats-img/'.$file.'.png" alt="Statystyki transferów: 3h" /></p>';
+		echo '<p><img src="'.UFURL_BASE.'/i/stats-img/'.$file.'.png" alt="Statystyki transferów: 3h" /></p>';
 		echo '<h3>Upload przez ostatnie 24h godziny</h3>';
-		echo '<p><img src="'.UFURL_BASE.'/i/img/stats-img/'.$file.'.day.png" alt="Statystyki transferów: 24h" /></p>';
+		echo '<p><img src="'.UFURL_BASE.'/i/stats-img/'.$file.'.day.png" alt="Statystyki transferów: 24h" /></p>';
 		echo '<h3>Upload przez ostatni tydzień</h3>';
-		echo '<p><img src="'.UFURL_BASE.'/i/img/stats-img/'.$file.'.week.png" alt="Statystyki transferów: tydzień" /></p>';
+		echo '<p><img src="'.UFURL_BASE.'/i/stats-img/'.$file.'.week.png" alt="Statystyki transferów: tydzień" /></p>';
 		echo '<h3>Upload przez ostatni miesiąc</h3>';
-		echo '<p><img src="'.UFURL_BASE.'/i/img/stats-img/'.$file.'.month.png" alt="Statystyki transferów: miesiąc" /></p>';
+		echo '<p><img src="'.UFURL_BASE.'/i/stats-img/'.$file.'.month.png" alt="Statystyki transferów: miesiąc" /></p>';
 		echo '<h3>Upload przez ostatni rok</h3>';
-		echo '<p><img src="'.UFURL_BASE.'/i/img/stats-img/'.$file.'.year.png" alt="Statystyki transferów: rok" /></p>';
+		echo '<p><img src="'.UFURL_BASE.'/i/stats-img/'.$file.'.year.png" alt="Statystyki transferów: rok" /></p>';
 	}
 
 	public function apiComputersLocations(array $d) {
