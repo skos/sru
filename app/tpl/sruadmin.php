@@ -42,7 +42,8 @@ extends UFtpl_Common {
 		echo '<ul id="nav">';
 		echo '<li><a href="'.UFURL_BASE.'/admin/">Użytkownicy</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/penalties/">Kary</a></li>';
-		echo '<li><a href="'.UFURL_BASE.'/admin/dormitories/">Akademiki</a></li>';
+		echo '<li><a href="'.UFURL_BASE.'/admin/dormitories/">DSy</a></li>';
+		echo '<li><a href="'.UFURL_BASE.'/admin/switches/">Switche</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/stats/">Statystyki</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/admins/">Administratorzy</a></li>';
 		echo '</ul>';
@@ -708,6 +709,9 @@ extends UFtpl_Common {
 	}
 	public function switchNotFound() {
 		echo $this->ERR('Nie znaleziono switcha');
+	}
+	public function titleSwitchNotFound() {
+		echo 'Nie znaleziono switcha';
 	}
 	public function switchPortsNotFound(array $d)
 	{

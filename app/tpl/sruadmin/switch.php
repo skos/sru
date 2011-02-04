@@ -42,7 +42,7 @@ extends UFtpl_Common {
 			}
 			if($lastDom != $c['dormitoryId']) {
 				if($lastDom != '-') echo '</ul>';
-				echo '<h3><a href="'.$urlds.$c['dormitoryAlias'].'">'.$c['dormitoryName'].'</a></h3>';
+				echo '<h3><a href="'.$urlds.$c['dormitoryAlias'].'">'.$c['dormitoryName'].'</a> &bull; <a href="'.$url.'dorm/'.$c['dormitoryAlias'].'">switche '.strtoupper($c['dormitoryAlias']).'</a></h3>';
 				echo '<ul>';
 			}
 			
