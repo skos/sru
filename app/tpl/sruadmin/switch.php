@@ -233,7 +233,9 @@ function fillData() {
 	}
 	echo 'var size = '.$i.';';
 	?>
-	if (ip == '') return;
+	if (ip == '' || ip.length < 8) return;
+	var dormitory = ip.substring(5,7).replace(".","");
+	document.getElementById("switchAdd_dormitoryId").selectedIndex = dormitory;
 	if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
 		xmlhttp = new XMLHttpRequest();
 	} else {// code for IE6, IE5
