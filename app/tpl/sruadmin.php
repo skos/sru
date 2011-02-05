@@ -674,7 +674,8 @@ extends UFtpl_Common {
 
 	public function titleSwitch(array $d) {
 		echo $d['switch']->write('titleDetails');
-	}	
+	}
+
 	public function switchDetails(array $d) {
 		if ($this->_srv->get('msg')->get('switchEdit/ok')) {
 			echo $this->OK('Dane switcha zostały zmienione');
@@ -688,33 +689,44 @@ extends UFtpl_Common {
 		$d['switch']->write('headerDetails');
 		$d['switch']->write('details', $d['info'], $d['lockouts']);
 	}
+
+	public function switchData(array $d) {
+		echo json_encode($d['info']);
+	}
+
 	public function switchTech(array $d) {
 		$d['switch']->write('techDetails', $d['info']);
 	}
+
 	public function switchPorts(array $d) {
 		$d['ports']->write('listPorts', $d['switch'], $d['portStatuses'], $d['trunks'], $d['port']);
 	}
+
 	public function roomSwitchPorts(array $d) {
 		echo '<h3>Przypisane porty</h3>';
 		$d['ports']->write('listRoomPorts', $d['room'], $d['portStatuses']);
 	}
+
 	public function switchPortDetails(array $d) {
 		if ($this->_srv->get('msg')->get('switchPortEdit/ok')) {
 			echo $this->OK('Dane portu switcha zostały zmienione');
 		}
 		$d['port']->write('details', $d['switch'], $d['alias']);
 	}
+
 	public function switchPortMacs(array $d) {
 		$d['port']->write('portMacs', $d['switch'],$d['macs']);
 	}
+
 	public function switchNotFound() {
 		echo $this->ERR('Nie znaleziono switcha');
 	}
+
 	public function titleSwitchNotFound() {
 		echo 'Nie znaleziono switcha';
 	}
-	public function switchPortsNotFound(array $d)
-	{
+
+	public function switchPortsNotFound(array $d) {
 		echo $this->ERR('Nie znaleziono portów switcha');
 	}
 

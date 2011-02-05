@@ -33,6 +33,18 @@ extends UFctl {
 						}
 					}
 					break;
+				case 'getData':
+					if (2 == $segCount) {
+						$get->view = 'error404';
+					} else {
+						switch ($req->segment(3)) {
+							default:
+								$get->view = 'switches/getData';
+								$ip = $req->segment(3);
+								$get->switchIp = $ip;
+						}
+					}
+					break;
 				default:
 					$get->view = 'switches/switch';
 					$id = $req->segment(2);
@@ -174,6 +186,8 @@ extends UFctl {
 				} else {
 					return 'Sru_Error403';
 				}
+			case 'switches/getData':
+				return 'SruAdmin_SwitchData';
 			case 'port/main':
 				return 'SruAdmin_SwitchPort';
 			case 'port/macs':

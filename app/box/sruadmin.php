@@ -830,6 +830,22 @@ extends UFbox {
 		}
 	}
 
+	public function switchData() {
+		try {
+			$ip = $this->_srv->get('req')->get->switchIp;
+			if (!is_null($ip) || $ip == '') {
+				$switch = UFra::factory('UFlib_Snmp_Hp', $ip);
+				$d['info'] = $switch->getQuickInfo();
+			} else {
+				$d['info'] = null;
+			}
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return '';
+		}
+	}
+
 	public function switchTech() {
 		try {
 			$bean = $this->_getSwitchFromGet();

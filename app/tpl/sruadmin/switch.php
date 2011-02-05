@@ -212,16 +212,50 @@ changeVisibility();
 			'labels' => $form->_labelize($tmp, '', ''),
 		));
 		echo $form->hierarchyNo('Nr w hierarchii', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Nr kolejny switcha w akademiku, np. dla pierwszego dsX-hp0. Brak nr oznacza, że switch jest nieużywany." /><br/>'));
-		echo $form->ip('IP', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="IP switcha. Brak IP oznacza, że switch został wyłączony (czasowo). Jeżeli switch jest nieużywany całkowicie, należy usunąć mu nr w hierarchii." /><br/>'));
+		echo $form->ip('IP', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="IP switcha. Brak IP oznacza, że switch został wyłączony (czasowo). Jeżeli switch jest nieużywany całkowicie, należy usunąć mu nr w hierarchii." /> <button type="button" onclick=fillData()>Pobierz dane</button><br/>'));
 		echo $form->localization('Lokalizacja', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Pomieszczenie w akademiku, gdzie znajduje się switch." /><br/>'));
 		echo $form->inventoryNo('Nr inwentarzowy');
 		echo $form->received('Na stanie od');
 		echo $form->inoperational('Uszkodzony', array('type'=>$form->CHECKBOX));
 		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
-
 ?>
 <script>
 $("#main img[title]").tooltip({ position: "center right"});
+
+function fillData() {
+	var ip = document.getElementById("switchAdd_ip").value;
+	var models = new Array();
+	<?
+	$i = 0;
+	foreach ($models as $model) {
+		$i++;
+		echo 'models['.$i.'] = "'.$model['modelNo'].'";';
+	}
+	echo 'var size = '.$i.';';
+	?>
+	if (ip == '') return;
+	if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+		xmlhttp = new XMLHttpRequest();
+	} else {// code for IE6, IE5
+		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange = function() {
+		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+			var response = eval("(" + xmlhttp.responseText + ")");
+			var model = response.model;
+			for(i = 1; i <= size; i++) {
+				if (models[i] == model) {
+					document.getElementById("switchAdd_modelId").selectedIndex = i;
+					break;
+				}
+			}
+			document.getElementById("switchAdd_serialNo").value = response.serialNo;
+		}
+	}
+	xmlhttp.open("GET","<? echo $this->url(0); ?>/switches/getData/" + encodeURIComponent(ip), true);
+	xmlhttp.send();
+}
+
 </script>
 <?
 	}

@@ -22,6 +22,7 @@ extends UFlib_Snmp {
 		'memAll' => '1.3.6.1.4.1.11.2.14.11.5.1.1.2.1.1.1.5.1',
 		'memUsed' => '1.3.6.1.4.1.11.2.14.11.5.1.1.2.1.1.1.6.1',
 		'serialNo' => 'mib-2.47.1.1.1.1.11.1',
+		'model' => '1.3.6.1.4.1.11.2.36.1.1.2.5.0',
 		'portAliases' => '.1.3.6.1.2.1.31.1.1.1.18',
 		'portActivities' => '.1.3.6.1.2.1.2.2.1.8',
 		'portStatuses' => '.1.3.6.1.2.1.2.2.1.7',
@@ -68,6 +69,17 @@ extends UFlib_Snmp {
 			return null;
 		}
 		$info['ios'] = $ios[0];
+		$info['serialNo'] = trim(@snmpget($this->ip, $this->communityR, $this->OIDs['serialNo'], $this->timeout));
+		return $info;
+	}
+
+	public function getQuickInfo() {
+		$info = array();
+		$model = @snmpget($this->ip , $this->communityR , $this->OIDs['model'], $this->timeout);
+		if ($model == false) {
+			return null;
+		}
+		$info['model'] = $model;
 		$info['serialNo'] = trim(@snmpget($this->ip, $this->communityR, $this->OIDs['serialNo'], $this->timeout));
 		return $info;
 	}
