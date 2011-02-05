@@ -126,7 +126,7 @@ function fullList() {
 			} else {
 				foreach ($rooms as $room) {
 					$dispRoom = ($connector == 0 ? '' : $connector).$room->getExt().' <small>('.$room->getLimit().'-os)</small>';
-					echo '<tr><td style="border-top: 1px solid;">'.$dispRoom.'</td>';
+					echo '<tr><td style="border: 1px solid;">'.$dispRoom.'</td>';
 					$i = 0;
 					foreach ($room->getUsers() as $user) {
 						$i++;
@@ -137,11 +137,11 @@ function fullList() {
 						} else {
 							$bg = '#ccf';
 						}
-						echo '<td style="background: '.$bg.';"><a href="'.$this->url(0).'/users/'.$user['id'].'">'.$user['name'].' '.$user['surname'].'</a></td>';
+						echo '<td style="border: 1px solid black; padding: 0cm; background: '.$bg.';"><a href="'.$this->url(0).'/users/'.$user['id'].'">'.$user['name'].' '.$user['surname'].'</a></td>';
 					}
 					if ($i < $room->getLimit()) {
 						for (; $i < $room->getLimit(); $i++) {
-							echo '<td style="background: #00f; color: #ff0;">WOLNE</td>';
+							echo '<td style="border: 1px solid black; padding: 0cm; background: #00f; color: #ff0;">WOLNE</td>';
 						}
 					}
 					echo '</tr>';

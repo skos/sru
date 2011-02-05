@@ -265,7 +265,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 		echo '<table><tr><td style="color: #000;">Mieszkaniec niezameldowany</td><td style="background: #cff; color: #000;">Mieszkaniec zameldowany w nadzorowanym DS</td><td style="background: #ccf; color: #000;">Mieszkaniec zameldowany w innym DS</td></tr></table>';
 		echo '</div><br/>';
 
-		echo '<table id="resultsT" style="width: 100%;"><thead><tr>';
+		echo '<table id="resultsT" class="bordered"><thead><tr>';
 		echo '<th>Imię</th>';
 		echo '<th>Nazwisko</th>';
 		echo '<th>Dom Studencki</th>';

@@ -48,7 +48,7 @@ extends UFtpl_Common {
 			}
 		}
 		
-		echo '<table id="inhabitantsT"><thead><tr>';
+		echo '<table id="inhabitantsT" class="bordered"><thead><tr>';
 		echo '<th>Dom Studencki</th>';
 		echo '<th>Limit</th>';
 		echo '<th>Mieszkańców</th>';
@@ -61,20 +61,20 @@ extends UFtpl_Common {
 		$usersFree = 0;
 		$usersOver = 0;
 		foreach ($d as $c) {
-			echo '<tr><td style="border-top: 1px solid;">';
+			echo '<tr><td>';
 			echo ($acl->sruWalet('dorm', 'view', $c['alias']) ? '<a href="'.$url.$c['alias'].'">' : '').$c['name'].($acl->sruWalet('dorm', 'view', $c['alias']) ? '</a>' : '');
 			echo '</td>';
-			echo '<td style="text-align: right; border-top: 1px solid;">'.$c['usersMax'].'</td>';
-			echo '<td style="text-align: right; border-top: 1px solid;">'.$people[$c['id']].'</td>';
-			echo '<td style="text-align: right; border-top: 1px solid;">'.$freePlaces[$c['id']].'</td>';
-			echo '<td style="text-align: right; border-top: 1px solid;">'.$overPlaces[$c['id']].'</td></tr>';
+			echo '<td style="text-align: right;">'.$c['usersMax'].'</td>';
+			echo '<td style="text-align: right;">'.$people[$c['id']].'</td>';
+			echo '<td style="text-align: right;">'.$freePlaces[$c['id']].'</td>';
+			echo '<td style="text-align: right;">'.$overPlaces[$c['id']].'</td></tr>';
 			$usersMax += $c['usersMax'];
 			$userCount += $people[$c['id']];
 			$usersFree += $freePlaces[$c['id']];
 			$usersOver += $overPlaces[$c['id']];
 		}
 		echo '</tbody>';
-		echo '<tr><td style="border-top: 1px solid;"><b>SUMA</b></td><td style="text-align: right; border-top: 1px solid;"><b>'.$usersMax.'</b></td><td style="text-align: right; border-top: 1px solid;"><b>'.$userCount.'</b></td><td style="text-align: right; border-top: 1px solid;"><b>'.$usersFree.'</b></td><td style="text-align: right; border-top: 1px solid;"><b>'.$usersOver.'</b></td></tr>';
+		echo '<tr><td><b>SUMA</b></td><td style="text-align: right;"><b>'.$usersMax.'</b></td><td style="text-align: right;"><b>'.$userCount.'</b></td><td style="text-align: right;"><b>'.$usersFree.'</b></td><td style="text-align: right;"><b>'.$usersOver.'</b></td></tr>';
 		echo '</table>';
 ?>
 <script type="text/javascript">
@@ -94,9 +94,9 @@ $(document).ready(function()
 		echo '<th>Pokój</th>';
 		echo '</tr></thead><tbody>';
 		foreach ($users as $user) {
-			echo '<tr><td>'.$user['name'].'</td>';
-			echo '<td>'.$user['surname'].'</td>';
-			echo '<td>'.$user['locationAlias'].'</td></tr>';
+			echo '<tr><td style="border: 1px solid;>'.$user['name'].'</td>';
+			echo '<td style="border: 1px solid;>'.$user['surname'].'</td>';
+			echo '<td style="border: 1px solid;>'.$user['locationAlias'].'</td></tr>';
 		}
 		echo '</tbody></table>';
 	}

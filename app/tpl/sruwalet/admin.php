@@ -41,14 +41,14 @@ extends UFtpl_Common {
 		$url = $this->url(0).'/admins/';
 		$baseUrl = $this->url(0);
 
-		echo '<table id="adminsT" style="width: 100%;"><thead><tr>';
+		echo '<table id="adminsT" class="bordered"><thead><tr>';
 		echo '<th>Administrator</th>';
 		echo '<th>Ostatnie logowanie</th>';
 		echo '<th>DS-y pod opieką</th>';
 		echo '</tr></thead><tbody>';
 
 		foreach ($d as $c) {
-			echo '<tr><td style="border-top: 1px solid;"><a href="'.$url.$c['id'].'">';
+			echo '<tr><td><a href="'.$url.$c['id'].'">';
 			switch($c['typeId']) {
 				case UFacl_SruWalet_Admin::HEAD:
 						echo '<strong>'.$this->_escape($c['name']).'</strong></a>';
@@ -60,13 +60,13 @@ extends UFtpl_Common {
 						echo $this->_escape($c['name']).'</a>';
 						break;
 			}
-			echo '</td><td style="border-top: 1px solid;">'.($c['lastLoginAt'] == 0 ? 'nigdy' : date(self::TIME_YYMMDD_HHMM, $c['lastLoginAt'])).'</td>';
+			echo '</td><td>'.($c['lastLoginAt'] == 0 ? 'nigdy' : date(self::TIME_YYMMDD_HHMM, $c['lastLoginAt'])).'</td>';
 			if($c['typeId'] == UFacl_SruWalet_Admin::HEAD){
-				echo '<td style="border-top: 1px solid;">wszystkie</td></tr>';
+				echo '<td>wszystkie</td></tr>';
 			}else if(is_null($dorms[$c['id']])){
-				echo '<td style="border-top: 1px solid;">żaden</td></tr>';
+				echo '<td>żaden</td></tr>';
 			}else{
-				echo '<td style="border-top: 1px solid;">';
+				echo '<td>';
 				foreach($dorms[$c['id']] as $dorm){
 					echo '<a href="'.$baseUrl.'/dormitories/'.$dorm['dormitoryAlias'].'">'.strtoupper($dorm['dormitoryAlias']).'</a> ';
 				}
