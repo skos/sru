@@ -10,6 +10,11 @@ extends UFlib_ClassWithService {
 	}
 
 	public function edit() {
-		return $this->_loggedIn();
+		if (!$this->_loggedIn()) {
+			return false;
+		}
+		$user = UFra::factory('UFbean_Sru_User');
+		$user->getFromSession();
+		return $user->servicesAvailable;
 	}
 }

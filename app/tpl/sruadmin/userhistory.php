@@ -22,6 +22,7 @@ extends UFtpl_Common {
 		'referralStart' => 'Początek skierowania',
 		'referralEnd' => 'Koniec skierowania',
 		'registryNo' => 'Nr indeksu',
+		'servicesAvailable' => 'Dostępność PUU',
 	);
 
 	static protected $namesEn = array(
@@ -38,6 +39,7 @@ extends UFtpl_Common {
 		'referralStart' => 'Referral start',
 		'referralEnd' => 'Refferal end',
 		'registryNo' => 'Registry No.',
+		'servicesAvailable' => 'PUU availability',
 	);
 
 	protected function _diff(array $old, array $new) {
@@ -66,6 +68,7 @@ extends UFtpl_Common {
 				case 'active': $changes[] = $names[$key].': '.($val?'tak':'nie').$arr.($new[$key]?'tak':'nie'); break;
 				case 'referralStart': $changes[] = $names[$key].': <q>'.($val == 0 ? 'brak' : date(self::TIME_YYMMDD, $val)).'</q>'.$arr.'<q>'.($new[$key] == 0 ? 'brak' : date(self::TIME_YYMMDD, $new[$key])).'</q>'; break;
 				case 'referralEnd': $changes[] = $names[$key].': <q>'.($val == 0 ? 'brak' : date(self::TIME_YYMMDD, $val)).'</q>'.$arr.'<q>'.($new[$key] == 0 ? 'brak' : date(self::TIME_YYMMDD, $new[$key])).'</q>'; break;
+				case 'servicesAvailable': $changes[] = $names[$key].': '.($val?'tak':'nie').$arr.($new[$key]?'tak':'nie'); break;
 				default: continue;
 			}
 		}
@@ -103,6 +106,7 @@ extends UFtpl_Common {
 			'referralStart' => $current->referralStart,
 			'referralEnd' => $current->referralEnd,
 			'registryNo' => $current->registryNo,
+			'servicesAvailable' => $current->servicesAvailable,
 		);
 		$url = $this->url(0).'/users/'.$current->id;
 		$urlAdmin = $this->url(0).'/admins/';

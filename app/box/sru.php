@@ -250,15 +250,14 @@ extends UFbox {
 		try {
 			$user = UFra::factory('UFbean_Sru_User');
 			$user->getFromSession();
+			$d['user'] = $user;
 			
-			try 
-			{
+			try {
 				$bean = UFra::factory('UFbean_Sru_UserServiceList');	
 				$bean->listAllByUserId($user->id);
 				$d['userServices'] = $bean;
 			}
-			catch (UFex_Dao_NotFound $e) 
-			{
+			catch (UFex_Dao_NotFound $e) {
 				$d['userServices'] = null;
 			}
 

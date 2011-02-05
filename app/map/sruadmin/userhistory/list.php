@@ -32,6 +32,7 @@ extends UFmap {
 		'referralStart'	 => 'u.referral_start',
 		'referralEnd'	 => 'u.referral_end',
 		'registryNo'	 => 'u.registry_no',
+		'servicesAvailable'	=> 'u.services_available',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -60,6 +61,7 @@ extends UFmap {
 		'referralStart'	 => self::TS,
 		'referralEnd'	 => self::TS,
 		'registryNo'	 => self::NULL_INT,
+		'servicesAvailable'	=> self::BOOL,
 	);
 	protected $tables = array(
 		'u' => 'users_history',

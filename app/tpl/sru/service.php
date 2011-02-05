@@ -4,7 +4,10 @@
  */
 class UFtpl_Sru_Service
 extends UFtpl_Common {	
-	public function formEdit(array $d, $userServices) {
+	public function formEdit(array $d, $userServices, $user) {
+		if (!$user->servicesAvailable) {
+			echo $this->ERR('Możliwość edycji usług została zablokowana dla Twojego konta. Zwróć się do swojego administratora lokalnego w celu wyjaśnienia.');
+		}
 		$form = UFra::factory('UFlib_Form', 'serviceEdit', $d);
 		echo $form->_fieldset();
 		echo '<table width="100%">';
@@ -37,19 +40,21 @@ extends UFtpl_Common {
 			echo $c['name'];
 
 			echo '</td><td>'.$active.'</td><td>';
-			if ($toActivate === true || $toActivate === false) echo '<a href="#" onclick="return changeConfirmationVisibility('.$c['id'].');">Zmień stan</a>';
+			if (($toActivate === true || $toActivate === false) && $user->servicesAvailable) echo '<a href="#" onclick="return changeConfirmationVisibility('.$c['id'].');">Zmień stan</a>';
 			echo '</td></tr>';
-			echo '<tr><td colspan="3">';
-			echo '<p class="services" id="serviceMore'.$c['id'].'" style="display: none; text-align: center;">';
-			if ($toActivate) {
-				echo 'Klikając poniższy guzik zgłaszasz chęć posiadania usługi:<br/><b>'.$c['name'].'</b>.<br/>Usługa zostanie aktywowana po zatwierdzeniu przez administratora, potwierdzenie otrzymasz na adres e-mail podany w SRU.<br/><br/>';
-				echo $form->_submit('Aktywuj usługę: '.$c['name'], array('name'=>'serviceEdit[activate]['.$c['id'].']'));
+			if ($user->servicesAvailable) {
+				echo '<tr><td colspan="3">';
+				echo '<p class="services" id="serviceMore'.$c['id'].'" style="display: none; text-align: center;">';
+				if ($toActivate) {
+					echo 'Klikając poniższy guzik zgłaszasz chęć posiadania usługi:<br/><b>'.$c['name'].'</b>.<br/>Usługa zostanie aktywowana po zatwierdzeniu przez administratora, potwierdzenie otrzymasz na adres e-mail podany w SRU.<br/><br/>';
+					echo $form->_submit('Aktywuj usługę: '.$c['name'], array('name'=>'serviceEdit[activate]['.$c['id'].']'));
+				}
+				elseif ($toActivate === false) {
+					echo 'Klikając poniższy guzik zgłaszasz chęć usunięcia usługi: <br/><b>'.$c['name'].'</b>.<br/> Usługa zostanie dezaktywowana po zatwierdzeniu przez administratora, potwierdzenie otrzymasz na adres e-mail podany w SRU.<br/><br/>';
+					echo $form->_submit('Dezaktywuj usługę: '.$c['name'], array('name'=>'serviceEdit[deactivate]['.$servId.']'));
+				}
+				echo '<br/><br/></p></td></tr>';
 			}
-			elseif ($toActivate === false) {
-				echo 'Klikając poniższy guzik zgłaszasz chęć usunięcia usługi: <br/><b>'.$c['name'].'</b>.<br/> Usługa zostanie dezaktywowana po zatwierdzeniu przez administratora, potwierdzenie otrzymasz na adres e-mail podany w SRU.<br/><br/>';
-				echo $form->_submit('Dezaktywuj usługę: '.$c['name'], array('name'=>'serviceEdit[deactivate]['.$servId.']'));
-			}
-			echo '<br/><br/></p></td></tr>';
 		}
 		echo '</table>';
 		echo $form->_end();

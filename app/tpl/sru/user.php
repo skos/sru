@@ -353,6 +353,7 @@ $(document).ready(function()
 			echo '<p><em>Koniec skier.:</em> '.date(self::TIME_YYMMDD, $d['referralEnd']).'</p>';
 		}
 		echo '<p><em>Język:</em> '.self::$languages[$d['lang']];
+		echo '<p><em>Dostępność PUU:</em> '.($d['servicesAvailable'] ? 'tak' : 'nie');
 		echo '<p class="displayOnHover"><em>Znajdź na:</em>';
 		echo ' <a href="http://www.google.pl/search?q='.urlencode($d['name'].' '.$d['surname']).'">google</a>';
 		echo ' <a href="http://nk.pl/search?query='.urlencode($d['name'].' '.$d['surname']).'">nasza-klasa</a>';
@@ -476,6 +477,7 @@ changeVisibility();
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$studyYears),
 		));
+		echo $form->servicesAvailable('Dostępność PUU', array('type'=>$form->CHECKBOX));
 		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
 		echo $form->_fieldset('Zmiana hasła');
 			echo $form->password('Nowe hasło', array('type'=>$form->PASSWORD,  ));
