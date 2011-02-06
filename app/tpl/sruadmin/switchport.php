@@ -99,6 +99,10 @@ $("#main img[title]").tooltip({ position: "center right"});
 <?
 	}
 
+	private function showLegend() {
+		echo '<div class="legend"><table class="switchports"><tr><td class="disabled">Wyłączony</td><td class="down">Nieaktywny</td><td class="up">Aktywny</td><td class="unknown">Status nieznany</td></tr></table><br/></div>';
+	}
+
 	public function listPorts(array $d, $switch, $portStatuses, $trunks, $port = null) {
 		$url = $this->url(0).'/switches/';
 		$hpLib = UFra::shared('UFlib_Snmp_Hp');
@@ -114,6 +118,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 
 		echo '<div class="switchports">';
 		echo '<h3>Lista portów</h3>';
+		$this->showLegend();
 		echo '<table>';
 		for ($i = 0; $i < count($d); $i++) {
 			if ($i % 8 == 0) {

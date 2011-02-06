@@ -93,6 +93,7 @@ img { border-style: none; }
 #main .switchports td.up { background-color: #a4ff42;}
 #main .switchports td.unknown { background-color: white;}
 #main .inoperational { background-color: #ffa766; }
+#main .legend { font-size: 0.8em; }
 
 #main .required { border: solid 1px red; }
 
