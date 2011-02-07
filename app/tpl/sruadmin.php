@@ -699,7 +699,7 @@ extends UFtpl_Common {
 	}
 
 	public function switchTech(array $d) {
-		$d['switch']->write('techDetails', $d['info']);
+		$d['switch']->write('techDetails', $d['info'], $d['gbics']);
 	}
 
 	public function switchPorts(array $d) {

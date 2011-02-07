@@ -853,8 +853,10 @@ extends UFbox {
 			if (!is_null($d['switch']->ip)) {
 				$switch = UFra::factory('UFlib_Snmp_Hp', $d['switch']->ip);
 				$d['info'] = $switch->getInfo();
+				$d['gbics'] = $switch->getGbics();
 			} else {
 				$d['info'] = null;
+				$d['gbics'] = null;
 			}
 
 			return $this->render(__FUNCTION__, $d);

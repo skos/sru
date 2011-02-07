@@ -21,7 +21,7 @@ extends UFlib_Snmp {
 		'cpu' => '1.3.6.1.4.1.11.2.14.11.5.1.9.6.1.0',
 		'memAll' => '1.3.6.1.4.1.11.2.14.11.5.1.1.2.1.1.1.5.1',
 		'memUsed' => '1.3.6.1.4.1.11.2.14.11.5.1.1.2.1.1.1.6.1',
-		'serialNo' => 'mib-2.47.1.1.1.1.11.1',
+		'serialNo' => 'SNMPv2-SMI::mib-2.47.1.1.1.1.11.1',
 		'model' => '1.3.6.1.4.1.11.2.36.1.1.2.5.0',
 		'portAliases' => '.1.3.6.1.2.1.31.1.1.1.18',
 		'portActivities' => '.1.3.6.1.2.1.2.2.1.8',
@@ -30,6 +30,8 @@ extends UFlib_Snmp {
 		'lockouts' => 'mib-2.17.7.1.3.1.1.4.4095',
 		'port' => '.1.3.6.1.2.1.17.4.3.1.2',
 		'trunk' => '1.3.6.1.4.1.11.2.14.11.5.1.7.1.3.1.1.8',
+		'gbicModel' => 'SNMPv2-SMI::mib-2.47.1.1.1.1.13',
+		'gbicSerial' => '1.3.6.1.4.1.11.2.14.10.5.1.1.1.1.2',
 	);
 
 	public $biggerTrunkNumbers = array(
@@ -164,6 +166,21 @@ extends UFlib_Snmp {
 			return null;
 		}
 		return $trunks;
+	}
+
+	public function getGbics() {
+		$gbics = array();
+		$serials = @snmpwalk($this->ip , $this->communityR, $this->OIDs['gbicSerial'], $this->timeout);
+		$models = @snmpwalk($this->ip , $this->communityR, $this->OIDs['gbicModel'], $this->timeout);
+		for ($i = 5; $i < 9; $i++) {
+			if (isset($serials[count($serials) - 9 + $i]) && $serials[count($serials) - 9 + $i] != '') {
+				$gbics[$i] = @snmpget($this->ip , $this->communityR, $this->OIDs['gbicSerial'].'.4'.$i, $this->timeout);
+			}
+			if (isset($models[count($models) - 9 + $i]) && $models[count($models) - 9 + $i] != '') {
+				$gbics[($i-4)] = @snmpget($this->ip , $this->communityR, $this->OIDs['gbicModel'].'.6'.($i-4), $this->timeout);
+			}
+		}
+		return $gbics;
 	}
 
 	public function setPortAlias($port, $name) {

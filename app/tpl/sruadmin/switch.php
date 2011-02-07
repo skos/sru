@@ -165,7 +165,7 @@ changeVisibility();
 </script><?
 	}
 
-	public function techDetails(array $d, $info) {
+	public function techDetails(array $d, $info, $gbics) {
 		$url = $this->url(0);
 
 		echo '<h3>Dane techniczne urządzenia</h3>';
@@ -184,6 +184,18 @@ changeVisibility();
 			echo '<td><img src="http://chart.apis.google.com/chart?chs=300x150&cht=gom&chd=t:'.$info['cpu'].'&chco=00FF00,FFFF00,FF8040,FF0000&chxt=x,y&chxl=0:||1:|0%|100%" alt=""/></td>';
 			echo '<td><img src="http://chart.apis.google.com/chart?chs=300x150&cht=gom&chd=t:'.$mem.'&chco=00FF00,FFFF00,FF8040,FF0000&chxt=x,y&chxl=0:||1:|0%|100%" alt=""/></td>';
 			echo '</tr></table>';
+		} else {
+			echo $this->ERR('Nie udało się pobrać informacji.');
+		}
+		echo '<h3>Dane mini-GBICków w urządzeniu</h3>';
+		if (!is_null($gbics)) {
+			echo '<table class="bordered"><tr><th>Port</th><th>Model</th><th>S/N <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="S/N jest wyświetlany prawidłowo tylko dla oryginalnych mini-GBICKów HP"/></th></tr>';
+			for ($i = 1; $i < 5; $i++) {
+				echo '<tr><td>'.($d['modelPorts'] - 4 + $i).'</td><td>'.(isset($gbics[$i]) ? $gbics[$i] : '-').'</td><td>'.(isset($gbics[($i+4)]) ? 'MY3'.$gbics[($i+4)] : '-').'</td>';
+			}
+			echo '</table>';
+		} else {
+			echo $this->ERR('Nie udało się pobrać informacji.');
 		}
 	}
 	
