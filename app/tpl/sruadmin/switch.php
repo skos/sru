@@ -30,6 +30,7 @@ extends UFtpl_Common {
 	public function listSwitches(array $d, $dorm) {
 		$url = $this->url(0).'/switches/';
 		$urlds = $this->url(0).'/dormitories/';
+		$urlIp = $this->url(0).'/ips/';
 		$conf = UFra::shared('UFconf_Sru');
 		$lastDom = '-';
 		$switches = array();
@@ -42,7 +43,9 @@ extends UFtpl_Common {
 			}
 			if($lastDom != $c['dormitoryId']) {
 				if($lastDom != '-') echo '</ul>';
-				echo '<h3><a href="'.$urlds.$c['dormitoryAlias'].'">'.$c['dormitoryName'].'</a> &bull; <a href="'.$url.'dorm/'.$c['dormitoryAlias'].'">switche '.strtoupper($c['dormitoryAlias']).'</a></h3>';
+				if (is_null($dorm)) {
+					echo '<h3><a href="'.$urlds.$c['dormitoryAlias'].'">'.$c['dormitoryName'].'</a> &bull; <a href="'.$urlIp.$c['dormitoryAlias'].'">komputery '.strtoupper($c['dormitoryAlias']).'</a> &bull; <a href="'.$url.'dorm/'.$c['dormitoryAlias'].'">switche '.strtoupper($c['dormitoryAlias']).'</a></h3>';
+				}
 				echo '<ul>';
 			}
 			

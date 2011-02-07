@@ -7,12 +7,12 @@ extends UFtpl_Common {
 	
 	public function listDorms(array $d) {
 		$url = $this->url(0).'/dormitories/';
+		$urlIp = $this->url(0).'/ips/';
+		$urlSw = $this->url(0).'/switches/dorm/';
 		
 		echo '<ul>';
-		
-		foreach ($d as $c)
-		{
-			echo '<li><a href="'.$url.$c['alias'].'">'.$c['name'].'</a></li>';			
+		foreach ($d as $c) {
+			echo '<li>'.$c['name'].': <a href="'.$url.$c['alias'].'">pokoje</a> &bull; <a href="'.$urlIp.$c['alias'].'">komputery</a> &bull; <a href="'.$urlSw.$c['alias'].'">switche</a></li>';
 		}
 		echo '</ul>';
 	}

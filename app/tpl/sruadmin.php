@@ -42,8 +42,7 @@ extends UFtpl_Common {
 		echo '<ul id="nav">';
 		echo '<li><a href="'.UFURL_BASE.'/admin/">Użytkownicy</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/penalties/">Kary</a></li>';
-		echo '<li><a href="'.UFURL_BASE.'/admin/dormitories/">DSy</a></li>';
-		echo '<li><a href="'.UFURL_BASE.'/admin/switches/">Switche</a></li>';
+		echo '<li><a href="'.UFURL_BASE.'/admin/dormitories/">Akademiki</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/stats/">Statystyki</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/admins/">Administratorzy</a></li>';
 		echo '</ul>';
@@ -615,7 +614,7 @@ extends UFtpl_Common {
 		$url = $this->url(0).'/admins/';
 			
 		echo '<div class="dormitories">';
-		echo '<h2>Akademiki | <a href="'.$this->url(0).'/switches">Switche</a></h2>';
+		echo '<h2>Akademiki</h2>';
 
 		$d['dorms']->write('listDorms');
 		echo '</div>';
@@ -655,10 +654,15 @@ extends UFtpl_Common {
 		echo 'Switche';
 	}	
 	public function switches(array $d) {
-		$url = $this->url(0).'/switches/';
-			
-		echo '<div class="switches">';
-		echo '<h2><a href="'.$this->url(0).'/dormitories">Akademiki</a> | Switche</h2>';
+		$url = $this->url(0).'/dormitories/';
+		$urlIp = $this->url(0).'/ips/';
+
+		if (!is_null($d['dorm'])) {
+			echo '<h2>'.$d['dorm']->name;
+			echo '<br/><small>(<a href="'.$url.$d['dorm']->alias.'">pokoje</a> &bull; <a href="'.$url.$d['dorm']->alias.'">komputery</a> &bull; liczba switchy: '.count($d['switches']).')</small></h2>';
+		} else {
+			echo '<h2>Switche</h2>';
+		}
 
 		if ($this->_srv->get('msg')->get('switchAdd/ok')) {
 			echo $this->OK('Switch został dodany');
@@ -1057,9 +1061,12 @@ extends UFtpl_Common {
 	}
 	
 	public function ips(array $d) {
+		$url = $this->url(0).'/dormitories/';
+		$urlSw = $this->url(0).'/switches/dorm/';
+
 		if (!is_null($d['dorm'])) {
-			echo '<h2><a href="'.$this->url(0).'/dormitories/'.$d['dorm']->alias.'">'.$d['dorm']->name.'</a>';
-			echo '<br/><small>(zajętość puli: '.$d['used']->getIpCount().'/'.$d['sum']->getIpCount().' ~> '.round($d['used']->getIpCount()/$d['sum']->getIpCount()).'%)</small></h2>';
+			echo '<h2>'.$d['dorm']->name;
+			echo '<br/><small>(<a href="'.$url.$d['dorm']->alias.'">pokoje</a> &bull; zajętość puli: '.$d['used']->getIpCount().'/'.$d['sum']->getIpCount().' ~> '.round($d['used']->getIpCount()/$d['sum']->getIpCount()).'% &bull; <a href="'.$urlSw.$d['dorm']->alias.'">switche</a>)</small></h2>';
 		} else {
 			echo '<h2>Zestawienie numerów IP</h2>';
 		}
