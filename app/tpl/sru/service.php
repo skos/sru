@@ -4,9 +4,13 @@
  */
 class UFtpl_Sru_Service
 extends UFtpl_Common {	
-	public function formEdit(array $d, $userServices, $user) {
+	public function formEdit(array $d, $userServices, $user, $adminEdit = false) {
 		if (!$user->servicesAvailable) {
-			echo $this->ERR('Możliwość edycji usług została zablokowana dla Twojego konta. Zwróć się do swojego administratora lokalnego w celu wyjaśnienia.');
+			if ($adminEdit) {
+				echo $this->ERR('Zablokowane');
+			} else {
+				echo $this->ERR('Możliwość edycji usług została zablokowana dla Twojego konta. Zwróć się do swojego administratora lokalnego w celu wyjaśnienia.');
+			}
 		}
 		$form = UFra::factory('UFlib_Form', 'serviceEdit', $d);
 		echo $form->_fieldset();

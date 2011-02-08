@@ -362,7 +362,7 @@ extends UFtpl_Common {
 			echo $this->OK('Zmiany zostały zapisane');
 		}
 
-		echo $d['allServices']->write('formEdit', $d['userServices']);
+		echo $d['allServices']->write('formEdit', $d['userServices'], $d['user'], true);
 		echo $form->_end(true);
 	}
 
