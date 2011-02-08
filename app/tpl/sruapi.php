@@ -73,7 +73,7 @@ extends UFtpl_Common {
 		if (is_null($d['added'])) {
 			echo 'Nie nałożono żadnej kary ani ostrzeżenia.'."\n";
 		} else {
-			echo 'Nałożono '.count($d['added']).' kar i ostrzeżeń:'."\n";
+			echo 'Nałożonych kar i ostrzeżeń: '.count($d['added'])."\n";
 			foreach ($d['added'] as $added) {
 				echo date(self::TIME_YYMMDD_HHMM, $added['createdAt']).': '.$added['userName'].' "'.$added['userLogin'].'" '.$added['userSurname'].' za: '.($added['typeId'] == UFbean_SruAdmin_Penalty::TYPE_WARNING ? '*': '').$added['templateTitle'].' przez: '.$added['creatorName'].' https://'.$d['host'].'/admin/penalties/'.$added['id']."\n";
 			}
@@ -82,7 +82,7 @@ extends UFtpl_Common {
 		if (is_null($d['modified'])) {
 			echo 'Nie zmodyfikowano żadnej kary.'."\n";
 		} else {
-			echo 'Zmodyfikowano '.count($d['modified']).' kar:'."\n";
+			echo 'Zmodyfikowanych kar: '.count($d['modified'])."\n";
 			foreach ($d['modified'] as $modified) {
 				echo date(self::TIME_YYMMDD_HHMM, $modified['modifiedAt']).': '.$modified['userName'].' "'.$modified['userLogin'].'" '.$modified['userSurname'].' za: '.$modified['templateTitle'].' przez: '.$modified['modifierName'].' https://'.$d['host'].'/admin/penalties/'.$modified['id']."\n";
 			}
