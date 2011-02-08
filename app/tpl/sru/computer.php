@@ -552,6 +552,11 @@ $("#main img[title]").tooltip({ position: "center right"});
 		echo '<p><img src="'.UFURL_BASE.'/i/stats-img/'.$file.'.month.png" alt="Statystyki transferów: miesiąc" /></p>';
 		echo '<h3>Upload przez ostatni rok</h3>';
 		echo '<p><img src="'.UFURL_BASE.'/i/stats-img/'.$file.'.year.png" alt="Statystyki transferów: rok" /></p>';
+?>
+<script>
+$("#main img[title]").tooltip({ position: "center right"});
+</script>
+<?
 	}
 
 	public function apiComputersLocations(array $d) {
