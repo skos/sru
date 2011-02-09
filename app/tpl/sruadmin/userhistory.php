@@ -23,6 +23,8 @@ extends UFtpl_Common {
 		'referralEnd' => 'Koniec skierowania',
 		'registryNo' => 'Nr indeksu',
 		'servicesAvailable' => 'Dostępność PUU',
+		'updateNeeded' => 'Konieczna aktualizacja profilu',
+		'changePasswordNeeded' => 'Konieczna zmiana hasła',
 	);
 
 	static protected $namesEn = array(
@@ -40,6 +42,8 @@ extends UFtpl_Common {
 		'referralEnd' => 'Refferal end',
 		'registryNo' => 'Registry No.',
 		'servicesAvailable' => 'PUU availability',
+		'updateNeeded' => 'Profile update needed',
+		'changePasswordNeeded' => 'Password change needed',
 	);
 
 	protected function _diff(array $old, array $new) {
@@ -69,6 +73,8 @@ extends UFtpl_Common {
 				case 'referralStart': $changes[] = $names[$key].': <q>'.($val == 0 ? 'brak' : date(self::TIME_YYMMDD, $val)).'</q>'.$arr.'<q>'.($new[$key] == 0 ? 'brak' : date(self::TIME_YYMMDD, $new[$key])).'</q>'; break;
 				case 'referralEnd': $changes[] = $names[$key].': <q>'.($val == 0 ? 'brak' : date(self::TIME_YYMMDD, $val)).'</q>'.$arr.'<q>'.($new[$key] == 0 ? 'brak' : date(self::TIME_YYMMDD, $new[$key])).'</q>'; break;
 				case 'servicesAvailable': $changes[] = $names[$key].': '.($val?'tak':'nie').$arr.($new[$key]?'tak':'nie'); break;
+				case 'updateNeeded': $changes[] = $names[$key].': '.($val?'tak':'nie').$arr.($new[$key]?'tak':'nie'); break;
+				case 'changePasswordNeeded': $changes[] = $names[$key].': '.($val?'tak':'nie').$arr.($new[$key]?'tak':'nie'); break;
 				default: continue;
 			}
 		}
@@ -107,6 +113,8 @@ extends UFtpl_Common {
 			'referralEnd' => $current->referralEnd,
 			'registryNo' => $current->registryNo,
 			'servicesAvailable' => $current->servicesAvailable,
+			'updateNeeded' => $current->updateNeeded,
+			'changePasswordNeeded' => $current->changePasswordNeeded,
 		);
 		$url = $this->url(0).'/users/'.$current->id;
 		$urlAdmin = $this->url(0).'/admins/';
