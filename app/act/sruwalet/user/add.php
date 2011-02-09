@@ -43,6 +43,9 @@ extends UFact {
 			$bean->name = mb_convert_case($bean->name, MB_CASE_TITLE, "UTF-8");
 			$bean->surname = mb_convert_case($bean->surname, MB_CASE_TITLE, "UTF-8");
 
+			$bean->updateNeeded = true;
+			$bean->changePasswordNeeded = true;
+
 			$post = $this->_srv->get('req')->post->{self::PREFIX};
 
 			// wygenerowanie hasla
