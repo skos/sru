@@ -254,8 +254,11 @@ function fillData() {
 	echo 'var size = '.$i.';';
 	?>
 	if (ip == '' || ip.length < 8) return;
-	var dormitory = ip.substring(5,7).replace(".","");
+	var dormitory = ip.substring(ip.indexOf(".") + 1, ip.lastIndexOf("."));
+	dormitory = dormitory.substring(ip.indexOf("."), dormitory.length);
+	var hierarchyNo = ip.substring(ip.lastIndexOf(".")+1, ip.length);
 	document.getElementById("switchAdd_dormitoryId").selectedIndex = dormitory;
+	document.getElementById("switchAdd_hierarchyNo").value = hierarchyNo;
 	if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
 		xmlhttp = new XMLHttpRequest();
 	} else {// code for IE6, IE5
