@@ -853,8 +853,8 @@ extends UFbox {
 			if (!is_null($d['switch']->ip)) {
 				$switch = UFra::factory('UFlib_Snmp_Hp', $d['switch']->ip);
 				$d['info'] = $switch->getInfo();
-				if ($bean->modelSpfPorts > 0) {
-					$d['gbics'] = $switch->getGbics($bean->modelSpfPorts);
+				if ($bean->modelSfpPorts > 0) {
+					$d['gbics'] = $switch->getGbics($bean->modelSfpPorts);
 				} else {
 					$d['gbics'] = null;
 				}

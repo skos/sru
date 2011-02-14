@@ -187,7 +187,7 @@ changeVisibility();
 		} else {
 			echo $this->ERR('Nie udało się pobrać informacji.');
 		}
-		if ($d['modelSpfPorts'] > 0) {
+		if ($d['modelSfpPorts'] > 0) {
 			echo '<h3>Dane mini-GBICków w urządzeniu</h3>';
 			if (!is_null($gbics)) {
 				echo '<table class="bordered"><tr><th>Port</th><th>Model</th><th>S/N <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="W przypadku oryginalnych mini-GBICów HP należy na początku S/N dodać &quot;MY3&quot;"/></th></tr>';

@@ -168,18 +168,18 @@ extends UFlib_Snmp {
 		return $trunks;
 	}
 
-	public function getGbics($spfPorts) {
+	public function getGbics($sfpPorts) {
 		$gbics = array();
 		$serials = @snmpwalk($this->ip , $this->communityR, $this->OIDs['gbicSerial'], $this->timeout);
 		$models = @snmpwalk($this->ip , $this->communityR, $this->OIDs['gbicModel'], $this->timeout);
-		$start = $spfPorts + 1;
-		$diff = $spfPorts * 2 + 1;
-		for ($i = $start; $i < $start + $spfPorts; $i++) {
+		$start = $sfpPorts + 1;
+		$diff = $sfpPorts * 2 + 1;
+		for ($i = $start; $i < $start + $sfpPorts; $i++) {
 			if (isset($serials[count($serials) - $diff + $i]) && $serials[count($serials) - $diff + $i] != '') {
 				$gbics[$i] = @snmpget($this->ip , $this->communityR, $this->OIDs['gbicSerial'].'.4'.$i, $this->timeout);
 			}
 			if (isset($models[count($models) - $diff + $i]) && $models[count($models) - $diff + $i] != '') {
-				$gbics[($i - $spfPorts)] = @snmpget($this->ip , $this->communityR, $this->OIDs['gbicModel'].'.6'.($i - $spfPorts), $this->timeout);
+				$gbics[($i - $sfpPorts)] = @snmpget($this->ip , $this->communityR, $this->OIDs['gbicModel'].'.6'.($i - $sfpPorts), $this->timeout);
 			}
 		}
 		return $gbics;
