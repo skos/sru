@@ -187,15 +187,17 @@ changeVisibility();
 		} else {
 			echo $this->ERR('Nie udało się pobrać informacji.');
 		}
-		echo '<h3>Dane mini-GBICków w urządzeniu</h3>';
-		if (!is_null($gbics)) {
-			echo '<table class="bordered"><tr><th>Port</th><th>Model</th><th>S/N <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="W przypadku oryginalnych mini-GBICów HP należy na początku S/N dodać &quot;MY3&quot;"/></th></tr>';
-			for ($i = 1; $i < 5; $i++) {
-				echo '<tr><td>'.($d['modelPorts'] - 4 + $i).'</td><td>'.(isset($gbics[$i]) ? $gbics[$i] : '-').'</td><td>'.(isset($gbics[($i+4)]) ? $gbics[($i+4)] : '-').'</td>';
+		if ($d['modelSpfPorts'] > 0) {
+			echo '<h3>Dane mini-GBICków w urządzeniu</h3>';
+			if (!is_null($gbics)) {
+				echo '<table class="bordered"><tr><th>Port</th><th>Model</th><th>S/N <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="W przypadku oryginalnych mini-GBICów HP należy na początku S/N dodać &quot;MY3&quot;"/></th></tr>';
+				for ($i = 1; $i < 5; $i++) {
+					echo '<tr><td>'.($d['modelPorts'] - 4 + $i).'</td><td>'.(isset($gbics[$i]) ? $gbics[$i] : '-').'</td><td>'.(isset($gbics[($i+4)]) ? $gbics[($i+4)] : '-').'</td>';
+				}
+				echo '</table>';
+			} else {
+				echo $this->ERR('Nie udało się pobrać informacji.');
 			}
-			echo '</table>';
-		} else {
-			echo $this->ERR('Nie udało się pobrać informacji.');
 		}
 ?>
 <script>
