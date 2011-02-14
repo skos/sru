@@ -148,6 +148,16 @@ extends UFbox {
 
 			$d['switchPorts'] = $bean;
 
+			try {
+				$dorm = UFra::factory('UFbean_Sru_Dormitory');
+				$dorm->getByAlias($this->_srv->get('req')->get->dormAlias);
+				$d['dormitory'] = $dorm;
+			} catch (UFex_Dao_NotFound $e) {
+				$d['dormitory'] = null;
+			} catch (UFex_Core_DataNotFound $e) {
+				$d['dormitory'] = null;
+			}
+
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
 			return '';

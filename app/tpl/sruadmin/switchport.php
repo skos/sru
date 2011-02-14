@@ -350,9 +350,12 @@ $("#main img[title]").tooltip({ position: "center right"});
 	/**
 	 * Wyświetla strukturę switchy (switch, port, podłączony switch, port na podłączonym sw.)
 	 */
-	public function apiStructure(array $d) {
+	public function apiStructure(array $d, $dormitory = null) {
 		$ports = array();
 		foreach ($d as $c) {
+			if (!is_null($dormitory) && $dormitory->alias != $c['dormitoryAlias']) {
+				continue;
+			}
 			$exist = false;
 			foreach ($ports as $port) {
 				$exist = $port->exist($c['switchIp'], $c['connectedSwitchIp']);

@@ -38,7 +38,7 @@ extends UFtpl_Common {
 	}
 
 	public function switchesStructure(array $d) {
-		$d['switchPorts']->write('apiStructure');
+		$d['switchPorts']->write('apiStructure', $d['dormitory']);
 	}
 
 	public function error404() {

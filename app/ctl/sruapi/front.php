@@ -80,6 +80,9 @@ extends UFctl {
 								break;
 							case 'structure':
 								$get->view = 'switches/structure';
+								if ($segCount > 2) {
+									$get->dormAlias = $req->segment(3);
+								}
 								break;
 						}
 					}
