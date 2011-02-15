@@ -11,6 +11,8 @@ extends UFtpl_Common {
 			} else {
 				echo $this->ERR('Możliwość edycji usług została zablokowana dla Twojego konta. Zwróć się do swojego administratora lokalnego w celu wyjaśnienia.');
 			}
+		} else if ($user->banned && !$adminEdit) {
+			echo $this->ERR('Z powodu aktywnej kary nie jest możliwa edycja usług na Twoim koncie.');
 		}
 		$form = UFra::factory('UFlib_Form', 'serviceEdit', $d);
 		echo $form->_fieldset();
@@ -44,9 +46,9 @@ extends UFtpl_Common {
 			echo $c['name'];
 
 			echo '</td><td>'.$active.'</td><td>';
-			if (($toActivate === true || $toActivate === false) && $user->servicesAvailable) echo '<a href="#" onclick="return changeConfirmationVisibility('.$c['id'].');">Zmień stan</a>';
+			if (($toActivate === true || $toActivate === false) && $user->servicesAvailable && (!$user->banned || $adminEdit)) echo '<a href="#" onclick="return changeConfirmationVisibility('.$c['id'].');">Zmień stan</a>';
 			echo '</td></tr>';
-			if ($user->servicesAvailable) {
+			if ($user->servicesAvailable && (!$user->banned || $adminEdit)) {
 				echo '<tr><td colspan="3">';
 				echo '<p class="services" id="serviceMore'.$c['id'].'" style="display: none; text-align: center;">';
 				if ($toActivate) {

@@ -15,6 +15,9 @@ extends UFlib_ClassWithService {
 		}
 		$user = UFra::factory('UFbean_Sru_User');
 		$user->getFromSession();
-		return $user->servicesAvailable;
+		if ($user->servicesAvailable && !$user->banned) {
+			return true;
+		}
+		return false;
 	}
 }
