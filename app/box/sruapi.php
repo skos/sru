@@ -153,7 +153,7 @@ extends UFbox {
 				$dorm->getByAlias($this->_srv->get('req')->get->dormAlias);
 				$d['dormitory'] = $dorm;
 			} catch (UFex_Dao_NotFound $e) {
-				$d['dormitory'] = null;
+				return '';
 			} catch (UFex_Core_DataNotFound $e) {
 				$d['dormitory'] = null;
 			}
