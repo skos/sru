@@ -353,23 +353,24 @@ $("#main img[title]").tooltip({ position: "center right"});
 	public function apiStructure(array $d, $dormitory = null) {
 		$ports = array();
 		foreach ($d as $c) {
-			if (!is_null($dormitory) && $dormitory->alias != $c['dormitoryAlias']) {
-				continue;
-			}
 			$exist = false;
 			foreach ($ports as $port) {
 				$exist = $port->exist($c['switchIp'], $c['connectedSwitchIp']);
 				if (!is_null($exist) && $exist) {
-					$port->setConnectedPort($c['ordinalNo']);
+					$port->setConnectedPort($c['ordinalNo'], $c['dormitoryAlias']);
 					break;
 				}
 			}
 			if (!is_null($exist) && !$exist) {
-				$ports[] = new SwitchStructure($c['switchIp'], $c['ordinalNo'], $c['connectedSwitchIp']);
+				$ports[] = new SwitchStructure($c['switchIp'], $c['ordinalNo'], $c['dormitoryAlias'], $c['connectedSwitchIp']);
 			}
 		}
 		foreach ($ports as $port) {
-			$port->display();
+			$dorm = null;
+			if (!is_null($dormitory)) {
+				$dorm = $dormitory->alias;
+			}
+			$port->display($dorm);
 		}
 	}
 }
@@ -378,17 +379,21 @@ class SwitchStructure
 {
 	private $ip;
 	private $port;
+	private $dorm;
 	private $connectedIp;
 	private $connectedPort;
+	private $connectedDorm;
 
-	public function __construct($ip, $port, $connectedIp) {
+	public function __construct($ip, $port, $dorm, $connectedIp) {
 		$this->ip = $ip;
 		$this->port = $port;
+		$this->dorm = $dorm;
 		$this->connectedIp = $connectedIp;
 	}
 
-	public function setConnectedPort($port) {
+	public function setConnectedPort($port, $dorm) {
 		$this->connectedPort = $port;
+		$this->connectedDorm = $dorm;
 	}
 
 	public function exist($ip, $connectedIp) {
@@ -401,8 +406,11 @@ class SwitchStructure
 		return false;
 	}
 
-	public function display() {
+	public function display($dorm) {
 		if (!is_null($this->connectedPort)) {
+			if (!is_null($dorm) && $dorm != $this->dorm && $dorm != $this->connectedDorm) {
+				return;
+			}
 			echo $this->ip.'/'.$this->port.':'.$this->connectedIp.'/'.$this->connectedPort."\n";
 		}
 	}
