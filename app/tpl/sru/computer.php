@@ -112,8 +112,8 @@ extends UFtpl_Common {
 		echo '<p><em>MAC:</em> ';
 		if ($switchPort != null) {
 			echo '<a href="'.$this->url(0).'/switches/'.$switchPort->switchId.'/port/'.$switchPort->id.'/macs">'.$d['mac'].'</a> ';
-			echo '<small>(<a href="'.$this->url(0).'/switches/'.$switchPort->switchId.'">'.UFtpl_SruAdmin_Switch::displaySwitchName($switchPort->dormitoryAlias, $switchPort->switchNo).'</a>, ';
-			echo '<a href="'.$this->url(0).'/switches/'.$switchPort->switchId.'/port/'.$switchPort->id.'">port '.$switchPort->ordinalNo.'</a>)</small>';
+			echo '<small>(<a href="'.$this->url(0).'/switches/'.$switchPort->switchSn.'">'.UFtpl_SruAdmin_Switch::displaySwitchName($switchPort->dormitoryAlias, $switchPort->switchNo).'</a>, ';
+			echo '<a href="'.$this->url(0).'/switches/'.$switchPort->switchSn.'/port/'.$switchPort->ordinalNo.'">port '.$switchPort->ordinalNo.'</a>)</small>';
 		} else {
 			echo $d['mac'];
 		}
@@ -452,8 +452,8 @@ $("#main img[title]").tooltip({ position: "center right"});
 	public function searchResultsUnregistered(array $d, $switchPort) {
 		$url = $this->url(0);
 		echo '<h1>Komputer niezarejestrowany</h1>';
-		echo '<p><em>Switch i port:</em> <a href="'.$this->url(0).'/switches/'.$switchPort->switchId.'">'.UFtpl_SruAdmin_Switch::displaySwitchName($switchPort->dormitoryAlias, $switchPort->switchNo).'</a>, ';
-		echo '<a href="'.$this->url(0).'/switches/'.$switchPort->switchId.'/port/'.$switchPort->id.'">port '.$switchPort->ordinalNo.'</a></p>';
+		echo '<p><em>Switch i port:</em> <a href="'.$this->url(0).'/switches/'.$switchPort->switchSn.'">'.UFtpl_SruAdmin_Switch::displaySwitchName($switchPort->dormitoryAlias, $switchPort->switchNo).'</a>, ';
+		echo '<a href="'.$this->url(0).'/switches/'.$switchPort->switchSn.'/port/'.$switchPort->ordinalNo.'">port '.$switchPort->ordinalNo.'</a></p>';
 	}
 
 	private function showMacHint() {
