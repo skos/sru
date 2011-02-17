@@ -160,6 +160,13 @@ $("#main img[title]").tooltip({ position: "center right"});
 				echo '</tr>';
 			}
 		}
+		if (count($d) % 8 != 0) {
+			while ($i % 8 != 0) {
+				echo '<td></td>';
+				$i++;
+			}
+			echo '</tr>';
+		}
 		echo '</table>';
 		echo '<p class="nav"><a href="'.$url.'dorm/'.$switch->dormitoryAlias.'">Wróć do listy</a> &bull; 
 			 <a href="'.$url.'">Pokaż wszystkie</a> &bull; 
