@@ -257,14 +257,14 @@ $("#main img[title]").tooltip({ position: "center right"});
 		echo $form->_fieldset();
 		echo '<div class="switchPortsEdit">';
 		if (is_null($portAliases)) {
-			echo $this->ERR('Nie jest możliwe podłączenie się do switcha. <a href="'.$url.'/switches/'.$d['switch']->id.'">Powrót</a>');
+			echo $this->ERR('Nie jest możliwe podłączenie się do switcha. <a href="'.$url.'/switches/'.$d['switch']->serialNo.'">Powrót</a>');
 		} else {
 			echo '<br/><strong>Zapisanie danych spowoduje zapisanie danych także na switch.</strong>';
 			echo '<table style="margin-left:auto; margin-right:auto;"><tr><td>';
 			echo $form->_submit('Zapisz');
 			echo '</td><td>';
 			echo $form->_submit('Skopiuj aliasy ze switcha', array('name'=>'copyAliasesFromSwitch', 'id'=>'copyAliasesFromSwitch'));
-			echo '</td><td><a href="'.$url.'/switches/'.$switch->id.'">Powrót</a></td></tr></table>';
+			echo '</td><td><a href="'.$url.'/switches/'.$switch->serialNo.'">Powrót</a></td></tr></table>';
 		}
 		$copyAliases = (isset($this->_srv->get('msg')->info['copyAliasesFromSwitch']) && !is_null($portAliases));
 
@@ -341,7 +341,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 			echo $form->_submit('Zapisz');
 			echo '</td><td>';
 			echo $form->_submit('Skopiuj aliasy ze switcha', array('name'=>'copyAliasesFromSwitch', 'id'=>'copyAliasesFromSwitch'));
-			echo '</td><td><a href="'.$url.'/switches/'.$switch->id.'">Powrót</a></td></tr></table>';
+			echo '</td><td><a href="'.$url.'/switches/'.$switch->serialNo.'">Powrót</a></td></tr></table>';
 		}
 		$copyAliases = (isset($this->_srv->get('msg')->info['copyAliasesFromSwitch']) && !is_null($portAliases));
 		echo '</div>';
