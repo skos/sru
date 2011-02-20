@@ -1343,6 +1343,9 @@ extends UFtpl_Common {
 	}
 	
 	public function switchPortModifiedMailBody(array $d) {
+		$conf = UFra::shared('UFconf_Sru');
+		$host = $conf->sruUrl;
+
 		echo 'Zmodyfikowano port '.$d['port']->ordinalNo.' na switchu '.UFtpl_SruAdmin_Switch::displaySwitchName($d['port']->dormitoryAlias, $d['port']->switchNo)."\n";
 		echo 'Status portu: ';
 		if ($d['enabled']) {
@@ -1351,6 +1354,7 @@ extends UFtpl_Common {
 			echo 'wyłączony'."\n";
 		}
 		echo 'Admin modyfikujący: '.$d['admin']->name."\n";
+		echo 'Link: '.$host.'/admin/switches/'.$d['port']->switchSn.'/port/'.$d['port']->ordinalNo."\n";
 	}
 
 	public function dataChangedMailTitle(array $d) {
