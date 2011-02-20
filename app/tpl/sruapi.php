@@ -70,12 +70,15 @@ extends UFtpl_Common {
 	}
 	
 	public function apiPenaltiesTimelineMailBody(array $d) {
+		$conf = UFra::shared('UFconf_Sru');
+		$host = $conf->sruUrl;
+
 		if (is_null($d['added'])) {
 			echo 'Nie nałożono żadnej kary ani ostrzeżenia.'."\n";
 		} else {
 			echo 'Nałożonych kar i ostrzeżeń: '.count($d['added'])."\n";
 			foreach ($d['added'] as $added) {
-				echo date(self::TIME_YYMMDD_HHMM, $added['createdAt']).': '.$added['userName'].' "'.$added['userLogin'].'" '.$added['userSurname'].' za: '.($added['typeId'] == UFbean_SruAdmin_Penalty::TYPE_WARNING ? '*': '').$added['templateTitle'].' przez: '.$added['creatorName'].' https://'.$d['host'].'/admin/penalties/'.$added['id']."\n";
+				echo date(self::TIME_YYMMDD_HHMM, $added['createdAt']).': '.$added['userName'].' "'.$added['userLogin'].'" '.$added['userSurname'].' ('.strtoupper($added['userDormAlias']).') za: '.($added['typeId'] == UFbean_SruAdmin_Penalty::TYPE_WARNING ? '*': '').$added['templateTitle'].' przez: '.$added['creatorName'].' '.$host.'/admin/penalties/'.$added['id']."\n";
 			}
 		}
 		echo "\n";
@@ -84,7 +87,7 @@ extends UFtpl_Common {
 		} else {
 			echo 'Zmodyfikowanych kar: '.count($d['modified'])."\n";
 			foreach ($d['modified'] as $modified) {
-				echo date(self::TIME_YYMMDD_HHMM, $modified['modifiedAt']).': '.$modified['userName'].' "'.$modified['userLogin'].'" '.$modified['userSurname'].' za: '.$modified['templateTitle'].' przez: '.$modified['modifierName'].' https://'.$d['host'].'/admin/penalties/'.$modified['id']."\n";
+				echo date(self::TIME_YYMMDD_HHMM, $modified['modifiedAt']).': '.$modified['userName'].' "'.$modified['userLogin'].'" '.$modified['userSurname'].' ('.strtoupper($modified['userDormAlias']).') za: '.$modified['templateTitle'].' przez: '.$modified['modifierName'].' '.$host.'/admin/penalties/'.$modified['id']."\n";
 			}
 		}
 	}

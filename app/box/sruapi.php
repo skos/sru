@@ -263,7 +263,6 @@ extends UFbox {
 	public function apiPenaltiesTimelineMailBody($added, $modified) {
 		$d['added'] = $added;
 		$d['modified'] = $modified;
-		$d['host'] = $this->_srv->get('req')->server->HTTP_HOST;
 		return $this->render(__FUNCTION__, $d);
 	}
 }

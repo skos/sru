@@ -27,6 +27,7 @@ extends UFmap_SruAdmin_Penalty_Get {
 		'userName'     => 'u.name',
 		'userSurname'  => 'u.surname',
 		'userLogin'    => 'u.login',
+		'userDormAlias'=> 'd.alias',
 
 		'creatorName'  => 'a.name',
 
@@ -54,6 +55,7 @@ extends UFmap_SruAdmin_Penalty_Get {
 		'userName'     => self::TEXT,
 		'userSurname'  => self::TEXT,
 		'userLogin'    => self::TEXT,
+		'userDormAlias'=> self::TEXT,
 
 		'creatorName'  => self::TEXT,
 
@@ -67,12 +69,16 @@ extends UFmap_SruAdmin_Penalty_Get {
 		'a' => 'admins',
 		'c' => 'admins',
 		't' => 'penalty_templates',
+		'l' => 'locations',
+		'd' => 'dormitories',
 	);
 	protected $joinOns = array(
 		'u' => 'b.user_id=u.id',
 		'a' => 'b.created_by=a.id',
 		'c' => 'b.modified_by=c.id',
 		't' => 'b.template_id=t.id',
+		'l' => 'u.location_id=l.id',
+		'd' => 'l.dormitory_id=d.id',
 	);
 	protected $pk = 'b.id';
 }

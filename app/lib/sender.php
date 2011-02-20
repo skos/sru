@@ -67,7 +67,8 @@ class UFlib_Sender {
 		$footer = '-- '."\n";
 		$footer .= 'Pozdrawiamy,'."\n";
 		$footer .= 'Administratorzy SKOS PG'."\n";
-		$footer .= 'http://skos.ds.pg.gda.pl/'."\n";
+		$footer .= 'SRU: https://sru.ds.pg.gda.pl/'."\n";
+		$footer .= 'Strona domowa: http://skos.ds.pg.gda.pl/'."\n";
 		$footer .= '[wiadomość została wygenerowana automatycznie]'."\n";
 		return $footer;
 	}
@@ -76,7 +77,8 @@ class UFlib_Sender {
 		$footer = '-- '."\n";
 		$footer .= 'Regards,'."\n";
 		$footer .= 'SKOS PG Administrators'."\n";
-		$footer .= 'http://skos.ds.pg.gda.pl/'."\n";
+		$footer .= 'SRU: https://sru.ds.pg.gda.pl/'."\n";
+		$footer .= 'Home Page: http://skos.ds.pg.gda.pl/'."\n";
 		$footer .= '[this message was generated automatically]'."\n";
 		return $footer;
 	}
@@ -85,7 +87,8 @@ class UFlib_Sender {
 		$footer = '-- '."\n";
 		$footer .= 'Pozdrawiamy,'."\n";
 		$footer .= 'Administratorzy SKOS PG'."\n";
-		$footer .= 'http://skos.ds.pg.gda.pl/'."\n";
+		$footer .= 'SRU: https://sru.ds.pg.gda.pl/'."\n";
+		$footer .= 'Strona domowa: http://skos.ds.pg.gda.pl/'."\n";
 		$footer .= '[wiadomość została wygenerowana automatycznie]'."\n";
 		return $footer;
 	}
@@ -94,7 +97,8 @@ class UFlib_Sender {
 		$footer = '-- '."\n";
 		$footer .= 'Regards,'."\n";
 		$footer .= 'SKOS PG Administrators'."\n";
-		$footer .= 'http://skos.ds.pg.gda.pl/'."\n";
+		$footer .= 'SRU: https://sru.ds.pg.gda.pl/'."\n";
+		$footer .= 'Home Page: http://skos.ds.pg.gda.pl/'."\n";
 		$footer .= '[this message was generated automatically]'."\n";
 		return $footer;
 	}

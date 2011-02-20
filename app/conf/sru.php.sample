@@ -6,6 +6,7 @@ extends UFconf {
 	#protected $computerAvailableTo = '+ 30 days';
 	protected $computerAvailableTo = '2011-07-01';	// data waznosci noworejestrowanych komputerow
 	protected $computerAvailableMaxTo = '2011-07-01';	// data na przycisku dostepnym administratorom
+	protected $sruUrl = 'https://sru.ds.pg.gda.pl';
 
 	protected $noEthers = array(
 		'153.19.208.22',
