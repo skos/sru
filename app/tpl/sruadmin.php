@@ -1066,7 +1066,7 @@ extends UFtpl_Common {
 
 		if (!is_null($d['dorm'])) {
 			echo '<h2>'.$d['dorm']->name;
-			echo '<br/><small>(<a href="'.$url.$d['dorm']->alias.'">pokoje</a> &bull; zajętość puli: '.$d['used']->getIpCount().'/'.$d['sum']->getIpCount().' ~> '.round($d['used']->getIpCount()/$d['sum']->getIpCount()).'% &bull; <a href="'.$urlSw.$d['dorm']->alias.'">switche</a>)</small></h2>';
+			echo '<br/><small>(<a href="'.$url.$d['dorm']->alias.'">pokoje</a> &bull; zajętość puli: '.$d['used']->getIpCount().'/'.$d['sum']->getIpCount().' ~> '.round($d['used']->getIpCount()/$d['sum']->getIpCount()*100).'% &bull; <a href="'.$urlSw.$d['dorm']->alias.'">switche</a>)</small></h2>';
 		} else {
 			echo '<h2>Zestawienie numerów IP</h2>';
 		}
