@@ -139,7 +139,7 @@ extends UFbox {
 		
 		$used = true;
 		$login = $user->login;
-		$login = str_replace($prohibited, '', $login);
+		$login = strtolower(str_replace($prohibited, '', $login));
 		try {
 			$bean->getByHost($login);
 		} catch (UFex_Dao_NotFound $e) {
