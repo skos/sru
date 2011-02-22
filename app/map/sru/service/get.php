@@ -1,6 +1,6 @@
 <?php
 /**
- * wyciagnięcie pojedynczej usługi, ale to raczej do usuniecia, bo niepotrzebne
+ * wyciagnięcie pojedynczej usługi
  */
 class UFmap_Sru_Service_Get
 extends UFmap {

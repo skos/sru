@@ -6,12 +6,12 @@ class UFmap_SruAdmin_ServiceHistory_List
 extends UFmap {
 
 	protected $columns = array(
-		'userId'	 => 'user_id',
-		'adminId'        => 'admin_id',
-		'admin'          => 'admin',
-		'servName'       => 'serv_name',
-		'modifiedAt'     => 'modified_at',
-		'state'          => 'active',
+		'userId'	 => 'h.user_id',
+		'adminId'        => 'h.modified_by',
+		'admin'          => 'a.name',
+		'servName'       => 't.name',
+		'modifiedAt'     => 'h.modified_at',
+		'state'          => 'h.active',
 	);
 	protected $columnTypes = array(
 		'userId'         => self::INT,
@@ -22,6 +22,14 @@ extends UFmap {
 		'state'          => self::INT
 	);
 	protected $tables = array(
-		'' => 'services_history_view',
+		'h' => 'services_history',
+	);
+	protected $joins = array(
+		'a' => 'admins',
+		't' => 'computers',
+	);
+	protected $joinOns = array(
+		'a' => 'h.modified_by = a.id',
+		't' => 'h.serv_type_id = t.id',
 	);
 }
