@@ -35,11 +35,7 @@ extends UFtpl_Common {
 				$class = '<li class="ban">';
 			}
 
-			if (!is_null($uploader['host'])) {
-				echo $class.'<a href="'.$this->url(0).'/computers/'.$uploader['hostId'].'/stats">'.$uploader['host'].' <small>('.$uploader['ip'].')</small></a>: '.$uploader['bytes_min'].'/<b>'.$uploader['bytes_sum'].'</b>/'.$uploader['bytes_max'].' kB/s'.$suffix.'</li>';
-			} else {
-				echo $class.'<a href="'.$this->url(0).'/computers/search/ip:'.$uploader['ip'].'">'.$uploader['ip'].'</a>: '.$uploader['bytes_min'].'/<b>'.$uploader['bytes_sum'].'</b>/'.$uploader['bytes_max'].' kB/s'.$suffix.'</li>';
-			}
+			echo $class.'<a href="'.$this->url(0).'/computers/'.$uploader['hostId'].'/stats">'.$uploader['host'].' <small>('.$uploader['ip'].')</small></a>: '.$uploader['bytes_min'].'/<b>'.$uploader['bytes_sum'].'</b>/'.$uploader['bytes_max'].' kB/s'.$suffix.'</li>';
 			$sumAvg += $uploader['bytes_sum'];
 			$sum++;
 		}
