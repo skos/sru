@@ -28,7 +28,27 @@ extends UFlib_ClassWithService {
 			return true;
 		}
 		return false;
-	}	
+	}
+	
+	public function addChangeActiveDate(){
+		$sess = $this->_srv->get('session');
+		
+		if($this->_loggedIn() && $sess->is('typeId') && ($sess->typeId == self::CENTRAL)){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	public function seeActiveTo($id){
+		$sess = $this->_srv->get('session');
+		
+		if($this->_loggedIn() && ($id == $sess->authAdmin || $sess->is('typeId') && ($sess->typeId == self::CENTRAL || $sess->typeId == self::CAMPUS)))
+			return true;
+		else
+			return false;
+	}
+	
 	public function edit($id) {
 		$sess = $this->_srv->get('session');
 		

@@ -5,6 +5,41 @@
 class UFdao_SruAdmin_Admin
 extends UFdao {
 
+	/**
+	 * @return bool sukces lub porażka
+	 * Funkcja zmienia wartość pola 'active' z true na false w przypadku adminów, którym minął czas rejestracji
+	 */
+	public function deactivateOutdated(){
+		$mapping = $this->mapping('set');
+		$val = array($mapping->active => false);
+		$query = $this->prepareUpdate($mapping, $val);
+		$query->where($mapping->active, true);
+		$query->where($mapping->activeTo, time(), $query->LT);
+		
+		if($this->doUpdate($query)){
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	/**
+	 * 
+	 * @param int $limit określa liczbę rekordów do wyświetlenia
+	 * Funkcja wyciągająca z bazy adminów do dezaktywacji
+	 */
+	public function listOutdated($limit=100) {
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->active, true);
+		$query->where($mapping->activeTo, time(), $query->LT);
+		#$query->order($mapping->login, $query->ASC);
+		$query->limit($limit);
+
+		return $this->doSelect($query);
+	}
+	
 	public function getByLoginPassword($login, $password) {
 		$key = $this->cachePrefix.'/'.__FUNCTION__.'/'.md5($login.'*#$%^@@!'.$password);
 		try {

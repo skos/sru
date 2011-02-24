@@ -692,6 +692,7 @@ extends UFbox {
 			return $this->render(__FUNCTION__.'NotFound');
 		}
 	}
+	
 	public function adminAdd() {
 		$dorms = UFra::factory('UFbean_Sru_DormitoryList');
 		$dorms->listAll();

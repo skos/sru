@@ -67,6 +67,18 @@ extends UFctl {
 					break;
 				case 'admins':
 					$get->view = 'admins';
+						if($segCount > 1) {
+							switch($req->segment(2)) {
+								case 'outdated':
+									$get->view = 'admins/outdated';
+									break;
+								case 'delete':
+									$get->view = 'admins/delete';
+									break;
+								default:
+									break;
+							}
+						}
 					break;
 				case 'switches':
 					$get->view = 'switches';
@@ -154,6 +166,8 @@ extends UFctl {
 			$act = 'Computer_ChangeAvailable';
 		} elseif ('penalties/timeline' == $get->view) {
 			$act = 'Penalty_Timeline';
+		} elseif ('admins/delete' == $get->view && 'DELETE' == $req->server->REQUEST_METHOD && $acl->sruApi('admin', 'delete')) {
+			$act = 'Admin_Deactivate';
 		}
 
 		if (isset($act)) {
@@ -248,6 +262,21 @@ extends UFctl {
 				}
 			case 'myapi/lanstats':
 				return 'SruApi_MyLanstats';
+			case 'admins/delete':
+				if($msg->get('adminsDelete/ok')) {
+					return 'SruApi_Status200';
+				} elseif($msg->get('adminsDelete/error')) {
+					return 'SruApi_Error403';
+				} else {
+					return 'SruApi_Error404';
+				}
+			//czeka na lepsze czasy - okazało się na razie niepotrzebne
+			/*case 'admins/outdated':
+				if( $acl->sruApi('admin', 'show')) {
+					return 'SruApi_AdminsOutdated';
+				} else {
+					return 'SruApi_Error403';
+				}*/
 			default:
 				return 'SruApi_Error404';
 		}

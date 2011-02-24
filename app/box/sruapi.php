@@ -184,6 +184,10 @@ extends UFbox {
 	public function status200() {
 		return '';
 	}
+	
+	public function error500() {
+		return '';
+	}
 
 	public function computersLocations() {
 		try {
@@ -206,6 +210,19 @@ extends UFbox {
 			$bean->listOutdated();
 
 			$d['computers'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return '';
+		}
+	}
+	
+	public function adminsOutdated() {
+		try {
+			$bean = UFra::factory('UFbean_SruAdmin_AdminList');
+			$bean->listOutdated();
+
+			$d['admins'] = $bean;
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {

@@ -107,6 +107,11 @@ extends UFtpl_Common {
 		echo '<p><em>Gadu-Gadu:</em> '.$d['gg'].'</p>';
 		echo '<p><em>Jabber:</em> '.$d['jid'].'</p>';
 		echo '<p><em>Adres:</em> '.$d['address'].'</p>';
+		if($this->_srv->get('acl')->sruAdmin('admin', 'seeActiveTo', $d['id']) && !is_null($d['activeTo'])){
+			echo '<p><em>Data dezaktywacji:</em> '.date(self::TIME_YYMMDD, $d['activeTo']).'</p>';
+			if($d['activeTo'] - time() <= 7*24*3600 && $d['activeTo'] - time() >= 0)
+				echo $this->ERR("Twoje konto niedługo ulegnie dezaktywacji, przedłóż ją w CUI aby temu zapobiec!");
+		}
 	}	
 
 	public function titleAdd(array $d) {
@@ -133,6 +138,11 @@ extends UFtpl_Common {
 		echo $form->jid('Jabber');
 		echo $form->address('Adres', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Lokalizacja lub miejsce przebywania administratora." /><br/>'));
 
+		if($this->_srv->get('acl')->sruAdmin('admin', 'addChangeActiveDate'))
+			echo $form->activeTo('Aktywny do');
+		else
+			echo $form->activeTo('Aktywny do', array('disabled' => true));
+		
 		$tmp = array();
 		foreach ($dormitories as $dorm) {
 			$temp = explode("ds", $dorm['alias']);
@@ -154,9 +164,15 @@ $("#main img[title]").tooltip({ position: "center right"});
 </script>
 <?
 	}
+	
+	/*public function formDelAdmin(array $d) {
+		$form = UFra::factory('UFlib_Form');
+		echo $form->confirm('Tak, dezaktywuj tego admina', array('type'=>$form->CHECKBOX, 'name'=>'adminDel[confirm]', 'value'=>'1'));
+	}*/
 
 	public function formEdit(array $d, $dormitories, $advanced=false) {
 
+		$d['activeTo'] = date(self::TIME_YYMMDD, $d['activeTo']);
 		$form = UFra::factory('UFlib_Form', 'adminEdit', $d, $this->errors);
 
 		echo $form->_fieldset();
@@ -175,6 +191,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 			echo $form->active('Aktywny', array('type'=>$form->CHECKBOX) );
 
 		}
+		
 
 		echo $form->_end();
 		
@@ -184,6 +201,11 @@ $("#main img[title]").tooltip({ position: "center right"});
 		echo $form->gg('GG');
 		echo $form->jid('Jabber');
 		echo $form->address('Adres', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Lokalizacja lub miejsce przebywania administratora." /><br/>'));
+		
+		if($this->_srv->get('acl')->sruAdmin('admin', 'addChangeActiveDate'))
+			echo $form->activeTo('Aktywny do');
+		else
+			echo $form->activeTo('Aktywny do', array('disabled' => true));
 
 		$tmp = array();
 		foreach ($dormitories as $dorm) {
@@ -220,6 +242,12 @@ $("#main img[title]").tooltip({ position: "center right"});
 		}
 		if (!is_null($ip)) {
 			echo '('.$ip.') ';
+		}
+	}
+	
+	public function apiAdminsOutdated(array $d) {
+		foreach ($d as $c) {
+			echo $c['login']."\n";
 		}
 	}
 }

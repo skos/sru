@@ -56,6 +56,10 @@ extends UFtpl_Common {
 	public function computersOutdated(array $d) {
 		$d['computers']->write('apiComputersOutdated');
 	}
+	
+	public function adminsOutdated(array $d) {
+		$d['admins']->write('apiAdminsOutdated');
+	}
 
 	public function dormitoryIps(array $d) {
 		$d['sum']->write('apiDormitoryIps', $d['used']);
