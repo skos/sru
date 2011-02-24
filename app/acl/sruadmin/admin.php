@@ -49,6 +49,15 @@ extends UFlib_ClassWithService {
 			return false;
 	}
 	
+	public function changeUsersAndHostsDisplay($id){
+		$sess = $this->_srv->get('session');
+		
+		if($this->_loggedIn() && ($id == $sess->authAdmin))
+			return true;
+		else
+			return false;
+	}
+	
 	public function edit($id) {
 		$sess = $this->_srv->get('session');
 		

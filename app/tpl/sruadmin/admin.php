@@ -164,11 +164,6 @@ $("#main img[title]").tooltip({ position: "center right"});
 </script>
 <?
 	}
-	
-	/*public function formDelAdmin(array $d) {
-		$form = UFra::factory('UFlib_Form');
-		echo $form->confirm('Tak, dezaktywuj tego admina', array('type'=>$form->CHECKBOX, 'name'=>'adminDel[confirm]', 'value'=>'1'));
-	}*/
 
 	public function formEdit(array $d, $dormitories, $advanced=false) {
 
@@ -229,10 +224,12 @@ $("#main img[title]").tooltip({ position: "center right"});
 <?
 		echo $form->_end();
 		echo $form->_fieldset();
-		if(isset($_COOKIE['SRUDisplayUsers']) && $_COOKIE['SRUDisplayUsers'] == "1")
-			echo $form->displayUsers('Widok pokoju: użytkownicy i hosty - tylko aktywne', array('type'=>$form->CHECKBOX, 'value'=>'1'));
-		else
-			echo $form->displayUsers('Widok pokoju: użytkownicy i hosty - tylko aktywne', array('type'=>$form->CHECKBOX, 'value'=>'0'));
+		if($this->_srv->get('acl')->sruAdmin('admin', 'changeUsersAndHostsDisplay', $d['id'])) {
+			if(isset($_COOKIE['SRUDisplayUsers']) && $_COOKIE['SRUDisplayUsers'] == "1")
+				echo $form->displayUsers('Widok pokoju: użytkownicy i hosty - tylko aktywne', array('type'=>$form->CHECKBOX, 'value'=>'1'));
+			else
+				echo $form->displayUsers('Widok pokoju: użytkownicy i hosty - tylko aktywne', array('type'=>$form->CHECKBOX, 'value'=>'0'));
+		}
 	}
 
 	public function adminBar(array $d, $ip, $time) {
