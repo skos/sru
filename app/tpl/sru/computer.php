@@ -656,7 +656,7 @@ $("#main img[title]").tooltip({ position: "center right"});
 		}
 	}
 
-	public function hostAliasesChangedMailBody(array $d, array $deleted, $added) {
+	public function hostAliasesChangedMailBody(array $d, array $deleted, $added, $admin) {
 		echo 'Zmodyfikowano aliasy hosta: '.$d['host']."\n\n";
 		if (!is_null($added)) {
 			echo 'Dodano alias: '.$added."\n";
@@ -669,5 +669,6 @@ $("#main img[title]").tooltip({ position: "center right"});
 			$deletedString = substr($deletedString, 0, -2);
 			echo 'Usunięto alias(y): '.$deletedString."\n";
 		}
+		echo "\n".'Admin modyfikujący: '.$admin->name."\n";
 	}
 }

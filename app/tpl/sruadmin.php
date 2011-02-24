@@ -1394,6 +1394,6 @@ extends UFtpl_Common {
 	}
 	
 	public function hostAliasesChangedMailBody(array $d) {
-		echo $d['host']->write('hostAliasesChangedMailBody', $d['deleted'], $d['added']);
+		echo $d['host']->write('hostAliasesChangedMailBody', $d['deleted'], $d['added'], $d['admin']);
 	}
 }

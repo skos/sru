@@ -1932,10 +1932,11 @@ extends UFbox {
 		return $this->render(__FUNCTION__, $d);
 	}
 
-	public function hostAliasesChangedMailBody($host, array $deleted, $added) {
+	public function hostAliasesChangedMailBody($host, array $deleted, $added, $admin) {
 		$d['host'] = $host;
 		$d['deleted'] = $deleted;
 		$d['added'] = $added;
+		$d['admin'] = $admin;
 		return $this->render(__FUNCTION__, $d);
 	}
 }

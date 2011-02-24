@@ -75,6 +75,7 @@ extends UFact {
 				$bean->active = false;
 
 				if ($bean->typeId == 4) {
+					// jeśli usuwamy serwer, to musimy mu też usunąć przypisane aliasy
 					try {
 						$aliases = UFra::factory('UFbean_SruAdmin_ComputerAliasList');
 						$aliases->listByComputerId($bean->id);

@@ -51,10 +51,13 @@ extends UFact {
 			$conf = UFra::shared('UFconf_Sru');
 			if ($conf->sendEmail && (count($deleted) > 0 || !is_null($added))) {
 				// wyslanie maila
+				$admin = UFra::factory('UFbean_SruAdmin_Admin');
+				$admin->getByPK($this->_srv->get('session')->authAdmin);
+
 				$box = UFra::factory('UFbox_SruAdmin');
 				$sender = UFra::factory('UFlib_Sender');
 				$title = $box->hostAliasesChangedMailTitle($computer);
-				$body = $box->hostAliasesChangedMailBody($computer, $deleted, $added);
+				$body = $box->hostAliasesChangedMailBody($computer, $deleted, $added, $admin);
 				$sender->send($user, $title, $body, self::PREFIX);
 			}
 
