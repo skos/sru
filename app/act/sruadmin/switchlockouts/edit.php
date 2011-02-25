@@ -11,7 +11,7 @@ extends UFact {
 		try {
 			$post = $this->_srv->get('req')->post->{self::PREFIX};
 			$switch = UFra::factory('UFbean_SruAdmin_Switch');
-			$switch->getByPK((int)$this->_srv->get('req')->get->switchId);
+			$switch->getBySerialNo($this->_srv->get('req')->get->switchSn);
 
 			$pattern = '/^[0-9a-fA-F]{1,2}?([- :]?[0-9a-fA-F]{1,2}){5}$/';
 
