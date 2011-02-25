@@ -11,7 +11,7 @@ extends UFact {
 		try{
 			$toDel = UFra::factory('UFbean_SruAdmin_AdminList');
 			$toDel->deactivateOutdated();
-			$this->markErrors(self::PREFIX);
+			$this->markOk(self::PREFIX);
 		} catch (UFex $e) {
 			$this->markErrors(self::PREFIX);
 			UFra::error($e);
