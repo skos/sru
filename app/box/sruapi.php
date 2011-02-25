@@ -184,10 +184,6 @@ extends UFbox {
 	public function status200() {
 		return '';
 	}
-	
-	public function error500() {
-		return '';
-	}
 
 	public function computersLocations() {
 		try {

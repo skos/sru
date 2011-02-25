@@ -120,6 +120,9 @@ extends UFctl {
 							case 'outdated':
 								$get->view = 'computers/outdated';
 								break;
+							case 'delete':
+								$get->view = 'computers/delete';
+								break;
 							case 'available':
 								// zmiana max czasu rejestracji
 								if ($segCount > 2) {
@@ -164,6 +167,8 @@ extends UFctl {
 			$act = 'Computer_Deactivate';
 		} elseif ('computer/changeAvailable' == $get->view && $acl->sruApi('computer', 'edit')) {
 			$act = 'Computer_ChangeAvailable';
+		} elseif ('computers/delete' == $get->view && 'DELETE' == $req->server->REQUEST_METHOD && $acl->sruApi('computer', 'edit')) {
+			$act = 'Computer_DeactivateNotSeen';
 		} elseif ('penalties/timeline' == $get->view) {
 			$act = 'Penalty_Timeline';
 		} elseif ('admins/delete' == $get->view && 'DELETE' == $req->server->REQUEST_METHOD && $acl->sruApi('admin', 'delete')) {
@@ -257,6 +262,18 @@ extends UFctl {
 			case 'computers/outdated':
 				if ($acl->sruApi('computer', 'show')) {
 					return 'SruApi_ComputersOutdated';
+				} else {
+					return 'SruApi_Error403';
+				}
+			case 'computers/delete':
+				if ($acl->sruApi('computer', 'edit')) {
+					if($msg->get('computersDelete/ok')) {
+						return 'SruApi_Status200';
+					} elseif($msg->get('computersDelete/error')) {
+						return 'SruApi_Error403';
+					} else {
+						return 'SruApi_Error404';
+					}
 				} else {
 					return 'SruApi_Error403';
 				}

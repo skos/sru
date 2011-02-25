@@ -1,1 +1,1 @@
-ALTER TABLE admins ADD active_to timestamp without time zone;
+ALTER TABLE admins ADD active_to timestamp without time zone NOT NULL DEFAULT now();

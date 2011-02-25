@@ -5,4 +5,4 @@ CREATE OR REPLACE FUNCTION computers_seen_update(inet, timestamp) returns boolea
 		UPDATE computers SET last_seen = $2 WHERE ipv4 = $1 and active = true;
 		RETURN true;
 	END;
-' LANGUAGE 'plpgsql';
+' LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER;
