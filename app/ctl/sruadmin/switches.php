@@ -52,7 +52,13 @@ extends UFctl {
 						$get->view = 'error404';
 						break;
 					}
-					$get->switchSn = $id;
+					try {
+						// jeśli zmieniliśmy SN switcha, musimy pobrać nowy
+						$get->switchSn = $get->newSwitchSn;
+						unset($get->newSwitchSn);
+					} catch (UFex_Core_DataNotFound $e) {
+						$get->switchSn = $id;
+					}
 
 					if ($segCount > 2) {
 						switch ($req->segment(3)) {

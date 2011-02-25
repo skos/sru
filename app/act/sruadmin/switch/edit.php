@@ -60,6 +60,7 @@ extends UFact {
 				}
 			}
 
+			$this->_srv->get('req')->get->newSwitchSn = $bean->serialNo; // jeśli się zmienił, to musimy się odwołać po nowym
 			$this->postDel(self::PREFIX);
 			$this->markOk(self::PREFIX);
 			$this->commit();
