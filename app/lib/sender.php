@@ -41,7 +41,7 @@ class UFlib_Sender {
 	}
 
 	public function sendGG($gg, $text, $lang) {
-		include 'XMPPHP/XMPP.php';
+		require_once 'XMPPHP/XMPP.php';
 		$conf = UFra::shared('UFconf_Sru');
 		$conn = new XMPPHP_XMPP($conf->jabberServer, $conf->jabberPort, $conf->jabberUser, $conf->jabberPassword, $conf->jabberResource, $conf->jabberDomain, $printlog=false, $loglevel=XMPPHP_Log::LEVEL_INFO);
 		if ($lang == 'en') {
