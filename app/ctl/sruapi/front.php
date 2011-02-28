@@ -280,12 +280,16 @@ extends UFctl {
 			case 'myapi/lanstats':
 				return 'SruApi_MyLanstats';
 			case 'admins/delete':
-				if($msg->get('adminsDelete/ok')) {
-					return 'SruApi_Status200';
-				} elseif($msg->get('adminsDelete/error')) {
-					return 'SruApi_Error403';
+				if($acl->sruApi('admin', 'delete')){
+					if($msg->get('adminsDelete/ok')) {
+						return 'SruApi_Status200';
+					} elseif($msg->get('adminsDelete/error')) {
+						return 'SruApi_Error403';
+					} else {
+						return 'SruApi_Error404';
+					}
 				} else {
-					return 'SruApi_Error404';
+					return 'SruApi_Error403';
 				}
 			//czeka na lepsze czasy - okazało się na razie niepotrzebne
 			/*case 'admins/outdated':
