@@ -51,9 +51,9 @@ extends UFtpl_Common {
 		echo $d['alias'].' ('.$d['dormitoryAlias'].')';
 	}
 	public function details(array $d) {
-		
 		$url = $this->url(0);
-		echo '<h2>'.$d['alias'].' ('.$d['dormitoryAlias'].')<br/><small>(liczba użytkowników: '.$d['userCount'].' &bull; liczba komputerów: '.$d['computerCount'].')</small></h2>';
+
+		echo '<h2>'.$d['alias'].' (<a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'">'.strtoupper($d['dormitoryAlias']).'</a>)<br/><small>(liczba użytkowników: '.$d['userCount'].' &bull; liczba komputerów: '.$d['computerCount'].')</small></h2>';
 		if ($d['comment']) {
 			echo '<p class="comment">'.nl2br($this->_escape($d['comment'])).'</p>';		
 		}

@@ -523,7 +523,9 @@ extends UFtpl_Common {
 	}
 
 	public function penaltyTemplateChoose(array $d) {
-		echo '<h2>Typ kary dla '.$d['user']->name.' '.$d['user']->surname.' ('.$d['user']->login.')</h2>';
+		$url = $this->url(0).'/users/'.$d['user']->id;
+
+		echo '<h2>Typ kary dla <a href="'.$url.'">'.$d['user']->name.' '.$d['user']->surname.' ('.$d['user']->login.')</a></h2>';
 		echo '<ul class="penaltyTemplates">';
 		$d['templates']->write('choose');
 		echo '</ul>';
@@ -625,14 +627,10 @@ extends UFtpl_Common {
 		echo $d['dorm']->write('titleDetails');
 	}
 	public function dorm(array $d) {
-		
 		echo '<div class="dorm">';		
 		$d['dorm']->write('details');
 		
-
-		
-		if($d['rooms'])
-		{
+		if($d['rooms']) {
 			echo '<div class="rooms">';
 			echo '<h3>Pokoje</h3>';			
 
@@ -816,7 +814,7 @@ extends UFtpl_Common {
 	public function room(array $d) {
 		if ($this->_srv->get('msg')->get('roomEdit/ok')) {
 			echo $this->OK('Komentarz został zmieniony');
-		}		
+		}
 		
 		$d['room']->write('details');
 	}
@@ -895,9 +893,10 @@ extends UFtpl_Common {
 
 	public function penaltyAdd(array $d) {
 		$url = $this->url(0).'/penalties/';
+		$urlUser = $this->url(0).'/users/'.$d['user']->id;
 		$acl = $this->_srv->get('acl');
 		
-		echo '<h2>Kara dla '.$d['user']->name.' '.$d['user']->surname.' ('.$d['user']->login.')</h2>';
+		echo '<h2>Kara dla <a href="'.$urlUser.'">'.$d['user']->name.' '.$d['user']->surname.' ('.$d['user']->login.')</a></h2>';
 		
 		echo '<div class="penalty">';
 	
