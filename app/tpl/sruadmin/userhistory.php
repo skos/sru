@@ -26,6 +26,7 @@ extends UFtpl_Common {
 		'updateNeeded' => 'Konieczna aktualizacja profilu',
 		'changePasswordNeeded' => 'Konieczna zmiana hasła',
 		'passwordChanged' => 'Zmieniono hasło',
+		'lang' => 'Język',
 	);
 
 	static protected $namesEn = array(
@@ -46,6 +47,7 @@ extends UFtpl_Common {
 		'updateNeeded' => 'Profile update needed',
 		'changePasswordNeeded' => 'Password change needed',
 		'passwordChanged' => 'Password changed',
+		'lang' => 'Language',
 	);
 
 	protected function _diff(array $old, array $new) {
@@ -78,6 +80,7 @@ extends UFtpl_Common {
 				case 'updateNeeded': $changes[] = $names[$key].': '.($val?'tak':'nie').$arr.($new[$key]?'tak':'nie'); break;
 				case 'changePasswordNeeded': $changes[] = $names[$key].': '.($val?'tak':'nie').$arr.($new[$key]?'tak':'nie'); break;
 				case 'passwordChanged': $val > 0 ? ($changes[] = $names[$key].': tak') : ''; break;
+				case 'lang': $changes[] = $names[$key].': '.$val.$arr.$new[$key]; break;
 				default: continue;
 			}
 		}
@@ -119,6 +122,7 @@ extends UFtpl_Common {
 			'updateNeeded' => $current->updateNeeded,
 			'changePasswordNeeded' => $current->changePasswordNeeded,
 			'passwordChanged' => '0',
+			'lang' => $current->lang,
 		);
 		$url = $this->url(0).'/users/'.$current->id;
 		$urlAdmin = $this->url(0).'/admins/';
