@@ -30,6 +30,7 @@ extends UFmap {
 		'banned'         => 'c.banned',
 		'canAdmin'       => 'c.can_admin',
 		'lastSeen'	 => 'c.last_seen',
+		'locationComment'=> 'l.comment',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -56,6 +57,7 @@ extends UFmap {
 		'banned'         => self::BOOL,
 		'canAdmin'       => self::BOOL,
 		'lastSeen'	 => self::TS,
+		'locationComment'=> self::TEXT,
 	);
 	protected $tables = array(
 		'c' => 'computers',
