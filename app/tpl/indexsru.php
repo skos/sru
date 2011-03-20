@@ -30,6 +30,9 @@ extends UFtpl_Common {
 &copy;&nbsp;<a href="mailto:adnet@ds.pg.gda.pl">SKOS PG</a>
 </div><!-- foot -->
 </div><!-- body -->
+<script>
+$("#main img[title]").tooltip({ position: "center right"});
+</script>
 <?
 $stop = microtime(true);
 $start = $this->_srv->get('msg')->get('timeStart');

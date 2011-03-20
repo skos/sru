@@ -15,6 +15,7 @@ extends UFtpl_Common {
 <link rel="stylesheet" href="<?=UFURL_BASE;?>/i/css/style.css" type="text/css" media="screen" />
 <link rel="shortcut icon" href="<?=UFURL_BASE;?>/i/img/favicon.ico" type="image/x-icon" />
 <script type="text/javascript" src="<?=UFURL_BASE;?>/i/jquery/jquery.tools.min.js"></script>
+<script type="text/javascript" src="<?=UFURL_BASE;?>/i/js/scripts.js"></script>
 <title><?=$d['title'];?></title>
 </head>
 <body>
@@ -31,6 +32,9 @@ extends UFtpl_Common {
 &copy;&nbsp;<a href="mailto:adnet@ds.pg.gda.pl">SKOS PG</a>
 </div><!-- foot -->
 </div><!-- body -->
+<script>
+$("#main img[title]").tooltip({ position: "center right"});
+</script>
 <?
 $stop = microtime(true);
 $start = $this->_srv->get('msg')->get('timeStart');

@@ -157,12 +157,6 @@ extends UFtpl_Common {
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize($tmp, '', ''),
 		));
-
-?>
-<script>
-$("#main img[title]").tooltip({ position: "center right"});
-</script>
-<?
 	}
 
 	public function formEdit(array $d, $dormitories, $advanced=false) {
@@ -217,11 +211,6 @@ $("#main img[title]").tooltip({ position: "center right"});
 			'labels' => $form->_labelize($tmp),
 		));
 
-?>
-<script>
-$("#main img[title]").tooltip({ position: "center right"});
-</script>
-<?
 		echo $form->_end();
 		echo $form->_fieldset();
 		if($this->_srv->get('acl')->sruAdmin('admin', 'changeUsersAndHostsDisplay', $d['id'])) {

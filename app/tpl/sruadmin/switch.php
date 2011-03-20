@@ -199,11 +199,6 @@ changeVisibility();
 				echo $this->ERR('Nie udało się pobrać informacji.');
 			}
 		}
-?>
-<script>
-$("#main img[title]").tooltip({ position: "center right"});
-</script>
-<?
 	}
 	
 	public function formAdd(array $d, $dormitories, $models) {
@@ -242,8 +237,6 @@ $("#main img[title]").tooltip({ position: "center right"});
 		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
 ?>
 <script>
-$("#main img[title]").tooltip({ position: "center right"});
-
 function fillData() {
 	var ip = document.getElementById("switchAdd_ip").value;
 	var models = new Array();
@@ -335,12 +328,6 @@ function fillData() {
 		echo $form->received('Na stanie od');
 		echo $form->inoperational('Uszkodzony', array('type'=>$form->CHECKBOX));
 		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
-
-?>
-<script>
-$("#main img[title]").tooltip({ position: "center right"});
-</script>
-<?
 	}
 
 	public function formEditLockouts(array $d, $lockouts) {

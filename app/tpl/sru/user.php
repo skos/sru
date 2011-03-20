@@ -120,11 +120,6 @@ extends UFtpl_Common {
 		$referralStart = date(self::TIME_YYMMDD, time());
 		echo $form->referralStart('Początek skier.', array('value'=>$referralStart, 'class'=>'required'));
 		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
-?>
-<script>
-$("#main img[title]").tooltip({ position: "center right"});
-</script>
-<?
 	}
 
 	public function formEdit(array $d, $faculties) {
@@ -190,12 +185,6 @@ $("#main img[title]").tooltip({ position: "center right"});
 			echo $form->password2('Potwierdź hasło', array('type'=>$form->PASSWORD));
 		}
 		echo $form->_end();
-
-?>
-<script>
-$("#main img[title]").tooltip({ position: "center right"});
-</script>
-<?
 	}
 
 	public function formSearch(array $d, array $searched) {
@@ -234,8 +223,6 @@ $("#main img[title]").tooltip({ position: "center right"});
 		echo $form->registryNo('Nr indeksu', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Numer indeksu szukanego mieszkańca. Można podać łącznie z nazwiskiem." /><br/>'));
 ?>
 <script>
-$("#main img[title]").tooltip({ position: "center right"});
-
 	$(function() {
 		$( "#userSearch_surname" ).autocomplete({
 			source: function(req, resp) {
@@ -564,9 +551,6 @@ function changeUnregisterVisibility() {
 		ac.checked = true;
 	}
 }
-</script>
-<script>
-$("#main img[title]").tooltip({ position: "center right"});
 </script><?
 	}
 

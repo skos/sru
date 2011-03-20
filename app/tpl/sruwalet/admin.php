@@ -188,12 +188,6 @@ $(document).ready(function()
 		echo $form->gg('GG', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Numer w komunikatorze GG." /><br/>'));
 		echo $form->jid('Jabber', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Adres w komunikatorze sieci Jabber." /><br/>'));
 		echo $form->address('Adres', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Lokalizacja lub miejsce przebywania administratora." /><br/>'));
-
-?>
-<script>
-$("#main img[title]").tooltip({ position: "center right"});
-</script>
-<?
 	}
 
 	public function formEdit(array $d, $dormitories, $dormList, $advanced=false) {
@@ -263,12 +257,6 @@ $("#main img[title]").tooltip({ position: "center right"});
 		echo $form->gg('GG', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Numer w komunikatorze GG." /><br/>'));
 		echo $form->jid('Jabber', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Adres w komunikatorze sieci Jabber." /><br/>'));
 		echo $form->address('Adres', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Lokalizacja lub miejsce przebywania administratora." /><br/>'));
-
-?>
-<script>
-$("#main img[title]").tooltip({ position: "center right"});
-</script>
-<?
 	}
 
 	public function waletBar(array $d, $ip, $time) {
