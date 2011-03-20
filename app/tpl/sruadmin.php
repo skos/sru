@@ -522,6 +522,16 @@ extends UFtpl_Common {
 		echo '<a href="'.$this->url(0).'/admins/">Powrót</a></p></div>';
 	}
 
+	public function adminDutyHours(array $d) {
+		echo '<h3>Godziny dyżurów</h3>';
+		$d['hours']->write('listDutyHours');
+	}
+
+	public function adminDutyHoursNotFound() {
+		echo '<h3>Godziny dyżurów</h3>';
+		echo $this->ERR('Brak godzin dyżurów');
+	}
+
 	public function penaltyTemplateChoose(array $d) {
 		$url = $this->url(0).'/users/'.$d['user']->id;
 

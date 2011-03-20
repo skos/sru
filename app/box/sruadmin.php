@@ -692,6 +692,21 @@ extends UFbox {
 			return $this->render(__FUNCTION__.'NotFound');
 		}
 	}
+
+	public function adminDutyHours() {
+		try {
+			$bean = $this->_getAdminFromGet();
+			$d['admin'] = $bean;
+
+			$hours = UFra::factory('UFbean_SruAdmin_DutyHoursList');
+			$hours->listByAdminId($bean->id);
+			$d['hours'] = $hours;
+			
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}
+	}
 	
 	public function adminAdd() {
 		$dorms = UFra::factory('UFbean_Sru_DormitoryList');
@@ -705,18 +720,15 @@ extends UFbox {
 
 		return $this->render(__FUNCTION__, $d);
 	}
-	public function titleAdminEdit()
-	{
-		try
-		{
+	public function titleAdminEdit() {
+		try {
+			UFra::factory('UFbean_Sru_DormitoryList');
 			$bean = $this->_getAdminFromGet();
 
 			$d['admin'] = $bean;
 
 			return $this->render(__FUNCTION__, $d);
-		}
-		catch (UFex_Dao_NotFound $e) 
-		{
+		} catch (UFex_Dao_NotFound $e) {
 			return $this->render('titleAdminNotFound');
 		}
 	}
