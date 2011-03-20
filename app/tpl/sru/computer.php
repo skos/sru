@@ -370,6 +370,7 @@ moreLink.onclick = function() {
 div.style.display = 'none';
 <?
 		}
+?></script><?
 	}
 
 	public function formDel(array $d) {
