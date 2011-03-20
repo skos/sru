@@ -990,11 +990,9 @@ extends UFtpl_Common {
 	{
 		$acl = $this->_srv->get('acl');		
 		
-		echo '<h2>Lista kar dla '.$d['user']->name.' '.$d['user']->surname.' ('.$d['user']->login.')</h2><ul>';
+		echo '<h2>Lista kar dla '.$d['user']->name.' '.$d['user']->surname.' ('.$d['user']->login.')</h2>';
 
 		$d['penalties']->write('listUserPenalty');
-
-		echo '</ul>';
 	}	
 	
 	public function titleComputerPenalties(array $d) {
@@ -1005,11 +1003,9 @@ extends UFtpl_Common {
 	{
 		$acl = $this->_srv->get('acl');		
 		
-		echo '<h2>Lista kar dla hosta '.$d['computer']->host.'</h2><ul>';
+		echo '<h2>Lista kar dla hosta '.$d['computer']->host.'</h2>';
 
 		$d['penalties']->write('listComputerPenalty');
-
-		echo '</ul>';
 	}
 
 	public function penaltyActions(array $d)
@@ -1019,13 +1015,12 @@ extends UFtpl_Common {
 		
 		echo '<h2>Ostatnie akcje | <a href="'.$url.'active">Aktywne kary</a> | <a href="'.$url.'templates">Szablony</a></h2>';
 		
-		echo '<h3>Modyfikacje kar</h3><ul>';
+		echo '<h3>Modyfikacje kar</h3>';
 		$d['modifiedPenalties']->write('penaltyLastModified');
-		echo '</ul><h3>Nowe kary</h3><ul>';
+		echo '<h3>Nowe kary</h3>';
 		$d['addedPenalties']->write('penaltyLastAdded');
-		echo '</ul><h3>Nowe ostrzeżenia</h3><ul>';
+		echo '<h3>Nowe ostrzeżenia</h3>';
 		$d['addedWarnings']->write('penaltyLastAdded');
-		echo '</ul>';
 
 	}
 

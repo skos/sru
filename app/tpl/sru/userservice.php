@@ -11,7 +11,8 @@ extends UFtpl_Common {
 	 */
 	public function userServiceLastRequested(array $d){
 		$url = $this->url(0);
-		
+
+		echo '<ul>';
 		foreach($d as $c){
 				echo '<li>';
 				echo date(self::TIME_YYMMDD_HHMM, $c['modifiedAt']);
@@ -26,6 +27,7 @@ extends UFtpl_Common {
 			echo $this->_escape($c['userName']).' "'.$c['login'].'" '.$this->_escape($c['userSurname']).'</a>';
 			echo '</li>';
 		}
+		echo '<ul>';
 	}
 	
 	/*
@@ -34,7 +36,8 @@ extends UFtpl_Common {
 	 */
 	public function userServiceLastModified(array $d){
 		$url = $this->url(0);
-		
+
+		echo '<ul>';
 		foreach($d as $c){
 			echo '<li>';
 			echo date(self::TIME_YYMMDD_HHMM, $c['modifiedAt']) . '<small>';
@@ -49,5 +52,6 @@ extends UFtpl_Common {
 			echo $c['login'].'" '.$this->_escape($c['userSurname']).'</a>.';
 			echo '</li>';
 		}
+		echo '</ul>';
 	}
 }

@@ -37,6 +37,7 @@ extends UFtpl_Common {
 		$url = $this->url(0);
 		echo '<h3>Wszystkich kar i ostrzeżeń: '. count($d) .'</h3>';
 
+		echo '<ul>';
 		foreach ($d as $c) {
 			if (UFbean_SruAdmin_Penalty::TYPE_WARNING == $c['typeId'] && $c['endAt'] > time()) {
 				echo '<li class="warning"><b>';
@@ -55,6 +56,7 @@ extends UFtpl_Common {
 			}
 			echo '</li>';
 		}
+		echo '<ul>';
 	}
 
 	public function formAdd(array $d, $computers, $templates, $user, $computerId = null) {
@@ -79,6 +81,7 @@ extends UFtpl_Common {
 	public function penaltyLastAdded(array $d, $showAddedBy = true) {
 		$url = $this->url(0);
 
+		echo '<ul>';
 		foreach ($d as $c) {
 			if (UFbean_SruAdmin_Penalty::TYPE_WARNING == $c['typeId'] && $c['endAt'] > time()) {
 				echo '<li class="warning">';
@@ -97,11 +100,13 @@ extends UFtpl_Common {
 			echo ($this->_escape($c['templateTitle']) != null ? ' za: '.$this->_escape($c['templateTitle']) : '');
 			echo '</small></li>';
 		}
+		echo '</ul>';
 	}
 
 	public function penaltyLastModified(array $d) {
 		$url = $this->url(0);
 
+		echo '<ul>';
 		foreach ($d as $c) {	
 			if (UFbean_SruAdmin_Penalty::TYPE_WARNING == $c['typeId'] && $c['endAt'] > time()) {
 				echo '<li class="warning">';
@@ -117,6 +122,7 @@ extends UFtpl_Common {
 			echo ($this->_escape($c['templateTitle']) != null ? ', za: '.$this->_escape($c['templateTitle']) : '');
 			echo '</small></li>';
 		}
+		echo '</ul>';
 	}
 
 	public function details(array $d, $computers) {
