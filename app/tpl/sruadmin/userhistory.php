@@ -79,7 +79,7 @@ extends UFtpl_Common {
 				case 'servicesAvailable': $changes[] = $names[$key].': '.($val?'tak':'nie').$arr.($new[$key]?'tak':'nie'); break;
 				case 'updateNeeded': $changes[] = $names[$key].': '.($val?'tak':'nie').$arr.($new[$key]?'tak':'nie'); break;
 				case 'changePasswordNeeded': $changes[] = $names[$key].': '.($val?'tak':'nie').$arr.($new[$key]?'tak':'nie'); break;
-				case 'passwordChanged': $val > 0 ? ($changes[] = $names[$key].': tak') : ''; break;
+				case 'passwordChanged': $val > 0 ? ($changes[] = $names[$key]) : ''; break;
 				case 'lang': $changes[] = $names[$key].': '.$val.$arr.$new[$key]; break;
 				default: continue;
 			}
