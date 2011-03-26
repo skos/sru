@@ -191,6 +191,7 @@ extends UFtpl_Common {
 				echo '<h4>Switch <a href="'.$url.$port['switchSn'].'">'.UFtpl_SruAdmin_Switch::displaySwitchName($port['dormitoryAlias'], $port['switchNo']).'</a></h4>';
 				$switch = $port['switchId'];
 				echo '<table>';
+				$j = 0;
 			}
 			if ($j % 8 == 0) {
 				echo '<tr>';
