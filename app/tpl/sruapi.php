@@ -95,4 +95,12 @@ extends UFtpl_Common {
 			}
 		}
 	}
+
+	public function dutyHours(array $d) {
+		$d['hours']->write('apiAllDutyHours');
+	}
+
+	public function dutyHoursUpcoming(array $d) {
+		$d['hours']->write('apiUpcomingDutyHours', $d['days']);
+	}
 }

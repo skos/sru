@@ -143,6 +143,7 @@ extends UFctl {
 								break;
 						}
 					}
+					break;
 				case 'myapi':
 					if ($segCount > 1) {
 						switch ($req->segment(2)) {
@@ -151,6 +152,18 @@ extends UFctl {
 								break;
 						}
 					}
+					break;
+				case 'dutyhours':
+					$get->view = 'dutyhours/all';
+					if ($segCount > 2) {
+						switch ($req->segment(2)) {
+							case 'days':
+								$get->view = 'dutyhours/upcoming';
+								$get->days = (int)$req->segment(3);
+								break;
+						}
+					}
+					break;
 			}
 		}
 	}
@@ -291,6 +304,10 @@ extends UFctl {
 				} else {
 					return 'SruApi_Error403';
 				}
+			case 'dutyhours/all':
+				return 'SruApi_DutyHoursAll';
+			case 'dutyhours/upcoming':
+				return 'SruApi_DutyHoursUpcoming';
 			//czeka na lepsze czasy - okazało się na razie niepotrzebne
 			/*case 'admins/outdated':
 				if( $acl->sruApi('admin', 'show')) {

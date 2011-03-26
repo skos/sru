@@ -278,4 +278,32 @@ extends UFbox {
 		$d['modified'] = $modified;
 		return $this->render(__FUNCTION__, $d);
 	}
+
+	public function dutyHours() {
+		try {
+			$hours = UFra::factory('UFbean_SruAdmin_DutyHoursList');
+			$hours->listAllForTable();
+			$d['hours'] = $hours;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return '';
+		}
+	}
+
+	public function dutyHoursUpcoming() {
+		try {
+			$hours = UFra::factory('UFbean_SruAdmin_DutyHoursList');
+			$hours->listAllUpcoming();
+			$d['hours'] = $hours;
+
+			$days = $this->_srv->get('req')->get->days;
+			if ($days > 6 || $days < 0) $days = 0;
+			$d['days'] = $days;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return '';
+		}
+	}
 }
