@@ -50,7 +50,7 @@ extends UFtpl_Common {
 				$lastComment++;
 				$comments[$lastComment] = $c['comment'];
 			}
-			echo '<td>'.($c['active'] ? '' : '<del>').$this->formatHour($c['startHour']).'-'.$this->formatHour($c['endHour']).($c['active'] ? '' : '</del>').(strlen($c['comment']) ? ' ('.$lastComment.')' : '').'</td>';
+			echo '<td'.($c['day'] == $currentDay ? ' class="sruDutyHoursCurrentDay"' : '').'>'.($c['active'] ? '' : '<del>').$this->formatHour($c['startHour']).'-'.$this->formatHour($c['endHour']).($c['active'] ? '' : '</del>').(strlen($c['comment']) ? ' ('.$lastComment.')' : '').'</td>';
 			$lastDay = $c['day'];
 		}
 		for ($i = $lastDay; $i < 7; $i++) {
