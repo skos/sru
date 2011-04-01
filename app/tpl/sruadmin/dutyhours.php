@@ -5,20 +5,20 @@
 class UFtpl_SruAdmin_DutyHours
 extends UFtpl_Common {
 
-	protected $dayNames = array(
-		1 => 'poniedziałek',
-		2 => 'wtorek',
-		3 => 'środa',
-		4 => 'czwartek',
-		5 => 'piątek',
-		6 => 'sobota',
-		7 => 'niedziela',
+	protected static $dayNames = array(
+		1 => 'Poniedziałek',
+		2 => 'Wtorek',
+		3 => 'Środa',
+		4 => 'Czwartek',
+		5 => 'Piątek',
+		6 => 'Sobota',
+		7 => 'Niedziela',
 	);
 
 	public function listDutyHours(array $d) {
 		echo '<ul>';
 		foreach ($d as $c) {
-			echo '<li>'.($c['active'] ? '' : '<del>').$this->dayNames[$c['day']].': '.$this->formatHour($c['startHour']).'-'.$this->formatHour($c['endHour']).($c['active'] ? '' : '</del>').(strlen($c['comment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['comment'].'" />':'').'</li>';
+			echo '<li>'.($c['active'] ? '' : '<del>').self::$dayNames[$c['day']].': '.$this->formatHour($c['startHour']).'-'.$this->formatHour($c['endHour']).($c['active'] ? '' : '</del>').(strlen($c['comment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['comment'].'" />':'').'</li>';
 		}
 		echo '</ul>';
 	}
@@ -87,7 +87,7 @@ extends UFtpl_Common {
 				} else if ($c['day'] == $currentDay + 1) {
 					$dayName = 'jutro ';
 				} else {
-					$dayName = $this->dayNames[$c['day']].' ';
+					$dayName = self::$dayNames[$c['day']].' ';
 				}
 				$thisWeek .=  '<tr><td>'.$c['adminName'].'</td><td>'.$c['adminAddress'].'</td><td>'.$dayName.$this->formatHour($c['startHour']).'-'.$this->formatHour($c['endHour']).(strlen($c['comment']) ? ' <span class="sruDutyHoursCommentIndex">('.$lastComment.')</span>' : '').'</td></tr>';
 			}
@@ -99,7 +99,7 @@ extends UFtpl_Common {
 				if ($c['day'] == $currentDay - 7 + 1) { // minus tydzień plus jeden dzień
 					$dayName = 'jutro ';
 				} else {
-					$dayName = $this->dayNames[$c['day']].' ';
+					$dayName = self::$dayNames[$c['day']].' ';
 				}
 				$nextWeek .=  '<tr><td>'.$c['adminName'].'</td><td>'.$c['adminAddress'].'</td><td>'.$dayName.$this->formatHour($c['startHour']).'-'.$this->formatHour($c['endHour']).(strlen($c['comment']) ? ' <span class="sruDutyHoursCommentIndex">('.$lastComment.')</span>' : '').'</td></tr>';
 			}
@@ -128,5 +128,9 @@ extends UFtpl_Common {
 
 	private function formatHour($hour) {
 		return substr($hour, 0, -2).':'.substr($hour, -2);
+	}
+
+	public static function getDayName($id) {
+		return self::$dayNames[$id];
 	}
 }

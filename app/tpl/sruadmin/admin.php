@@ -159,7 +159,7 @@ extends UFtpl_Common {
 		));
 	}
 
-	public function formEdit(array $d, $dormitories, $advanced=false) {
+	public function formEdit(array $d, $dormitories, $dutyHours, $advanced=false) {
 
 		$d['activeTo'] = date(self::TIME_YYMMDD, $d['activeTo']);
 		$form = UFra::factory('UFlib_Form', 'adminEdit', $d, $this->errors);
@@ -184,7 +184,7 @@ extends UFtpl_Common {
 
 		echo $form->_end();
 		
-		echo $form->_fieldset();
+		echo $form->_fieldset('Dane kontaktowe');
 		echo $form->email('E-mail');
 		echo $form->phone('Telefon');
 		echo $form->gg('GG');
@@ -210,15 +210,48 @@ extends UFtpl_Common {
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize($tmp),
 		));
+		echo $form->_end();
+
+		echo $form->_fieldset('Godziny dyżurów');
+		if ($this->_srv->get('msg')->get('adminEdit/errors/startHour')) {
+			echo $this->ERR('Godzina rozpoczęcia dyżuru jest niepoprawna');
+		}
+		if ($this->_srv->get('msg')->get('adminEdit/errors/endHour')) {
+			echo $this->ERR('Godzina zakończenia dyżuru jest niepoprawna');
+		}
+
+		$dHours = array();
+		if ($dutyHours != null) {
+			foreach ($dutyHours as $dh) {
+				$dHours[$dh['day']] = new DutyHour($dh['startHour'], $dh['endHour'], $dh['active'], $dh['comment']);
+			}
+		}
+		for ($i = 1; $i <= 7; $i++) {
+			$dHour = '';
+			$dhComment = '';
+			$dhActive = true;
+			if (isset($dHours[$i])) {
+				$dHour = $dHours[$i]->getHours();
+				$dhComment = $dHours[$i]->getComment();
+				$dhActive = $dHours[$i]->getActive();
+			}
+			echo $form->dutyHours(UFtpl_SruAdmin_DutyHours::getDayName($i), array('name'=>'adminEdit[dutyHours]['.$i.']', 'value'=>$dHour));
+			echo $form->dhComment('Komentarz', array('name'=>'adminEdit[dhComment]['.$i.']', 'value'=>$dhComment));
+			echo $form->dhActive('Odbędzie się', array('type'=>$form->CHECKBOX, 'name'=>'adminEdit[dhActive]['.$i.']', 'value'=>$dhActive));
+		}
 
 		echo $form->_end();
-		echo $form->_fieldset();
+
 		if($this->_srv->get('acl')->sruAdmin('admin', 'changeUsersAndHostsDisplay', $d['id'])) {
+			echo $form->_fieldset('Ustawienia');
+
 			if(isset($_COOKIE['SRUDisplayUsers']) && $_COOKIE['SRUDisplayUsers'] == "1")
 				echo $form->displayUsers('Widok pokoju: użytkownicy i hosty - tylko aktywne', array('type'=>$form->CHECKBOX, 'value'=>'1'));
 			else
 				echo $form->displayUsers('Widok pokoju: użytkownicy i hosty - tylko aktywne', array('type'=>$form->CHECKBOX, 'value'=>'0'));
+			echo $form->_end();
 		}
+		echo $form->_fieldset();
 	}
 
 	public function adminBar(array $d, $ip, $time) {
@@ -235,5 +268,34 @@ extends UFtpl_Common {
 		foreach ($d as $c) {
 			echo $c['login']."\n";
 		}
+	}
+}
+
+class DutyHour
+{
+	private $hours;
+	private $active;
+	private $comment;
+
+	function __construct($startHour, $endHour, $active, $comment) {
+		$this->hours = $this->formatHour($startHour).'-'.$this->formatHour($endHour);
+		$this->active = $active;
+		$this->comment = $comment;
+	}
+
+	public function getHours() {
+		return $this->hours;
+	}
+
+	public function getActive() {
+		return $this->active;
+	}
+
+	public function getComment() {
+		return $this->comment;
+	}
+
+	private function formatHour($hour) {
+		return substr($hour, 0, -2).':'.substr($hour, -2);
 	}
 }

@@ -523,8 +523,15 @@ extends UFtpl_Common {
 	}
 
 	public function adminDutyHours(array $d) {
+		$url = $this->url(0).'/admins/'.$d['admin']->id;
+		$acl = $this->_srv->get('acl');
+
 		echo '<h3>Godziny dyżurów</h3>';
 		$d['hours']->write('listDutyHours');
+		if($acl->sruAdmin('admin', 'edit', $d['admin']->id)) {
+			echo '<a href="'.$url.'/:edit">Edycja</a> &bull; ';
+		}
+		echo '<a href="'.$this->url(0).'/admins/">Powrót</a>';
 	}
 
 	public function adminDutyHoursNotFound() {
@@ -615,8 +622,9 @@ extends UFtpl_Common {
 		echo $form->_start();
 		
 
-		echo $d['admin']->write('formEdit', $d['dormitories'], $d['advanced']);
+		echo $d['admin']->write('formEdit', $d['dormitories'], $d['dutyHours'], $d['advanced']);
 		echo $form->_submit('Zapisz');
+		echo ' <a href="'.$this->url(0).'/admins/'.$d['admin']->id.'">Powrót</a>';
 		echo $form->_end();
 		echo $form->_end(true);
 	}

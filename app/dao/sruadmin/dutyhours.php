@@ -37,4 +37,14 @@ extends UFdao {
 
 		return $this->doSelect($query);
 	}
+
+	public function getByAdminIdAndDay($adminId, $day) {
+		$mapping = $this->mapping('get');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->adminId, $adminId);
+		$query->where($mapping->day, $day);
+
+		return $this->doSelectFirst($query);
+	}
 }

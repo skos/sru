@@ -741,6 +741,14 @@ extends UFbox {
 			
 			$bean = $this->_getAdminFromGet();
 			$acl  = $this->_srv->get('acl');
+
+			try {
+				$hours = UFra::factory('UFbean_SruAdmin_DutyHoursList');
+				$hours->listByAdminId($bean->id);
+				$d['dutyHours'] = $hours;
+			} catch (UFex_Dao_NotFound $e) {
+				$d['dutyHours'] = null;
+			}
 	
 			$d['admin'] = $bean;
 			$d['dormitories'] = $dorms;
