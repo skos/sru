@@ -30,7 +30,7 @@ extends UFtpl_Common {
 		$comments = array();
 		$lastComment = 0;
 
-		echo '<table class="sruDutyHours"><thead><tr><th>Akademik (Dormitory)</th><th>Administrator</th><th>Gdzie (Where)</th><th>Poniedziałek (Monday)</th><th>Wtorek (Tuesday)</th><th>Środa (Wednesday)</th><th>Czwartek (Thursday)</th><th>Piątek (Friday)</th><th>Sobota (Saturday)</th><th>Niedziela (Sunday)</th></tr></thead><tbody>';
+		echo '<table class="sruDutyHours"><thead><tr><th>Akademik<br/>(Dormitory)</th><th>Administrator</th><th>Gdzie<br/>(Where)</th><th>Poniedziałek<br/>(Monday)</th><th>Wtorek<br/>(Tuesday)</th><th>Środa<br/>(Wednesday)</th><th>Czwartek<br/>(Thursday)</th><th>Piątek<br/>Friday)</th><th>Sobota<br/>(Saturday)</th><th>Niedziela<br/>(Sunday)</th></tr></thead><tbody>';
 		foreach ($d as $c) {
 			if ($c['adminName'] != $lastAdmin && $lastAdmin != '') {
 				for ($i = $lastDay; $i < 7; $i++) {
@@ -50,7 +50,7 @@ extends UFtpl_Common {
 				$lastComment++;
 				$comments[$lastComment] = $c['comment'];
 			}
-			echo '<td'.($c['day'] == $currentDay ? ' class="sruDutyHoursCurrentDay"' : '').'>'.($c['active'] ? '' : '<del>').$this->formatHour($c['startHour']).'-'.$this->formatHour($c['endHour']).($c['active'] ? '' : '</del>').(strlen($c['comment']) ? ' ('.$lastComment.')' : '').'</td>';
+			echo '<td'.($c['day'] == $currentDay ? ' class="sruDutyHoursCurrentDay"' : '').'>'.($c['active'] ? '' : '<del>').$this->formatHour($c['startHour']).'-'.$this->formatHour($c['endHour']).($c['active'] ? '' : '</del>').(strlen($c['comment']) ? ' <span class="sruDutyHoursCommentIndex">('.$lastComment.')</span>' : '').'</td>';
 			$lastDay = $c['day'];
 		}
 		for ($i = $lastDay; $i < 7; $i++) {
@@ -80,19 +80,33 @@ extends UFtpl_Common {
 					$lastComment++;
 					$comments[$lastComment] = $c['comment'];
 				}
-				$thisWeek .=  '<tr><td>'.$c['adminName'].'</td><td>'.$c['adminAddress'].'</td><td>'.$this->dayNames[$c['day']].' '.$this->formatHour($c['startHour']).'-'.$this->formatHour($c['endHour']).(strlen($c['comment']) ? ' ('.$lastComment.')' : '').'</td></tr>';
+				if ($c['day'] == $currentDay && $days == 0) {
+					$dayName = '';
+				} else if ($c['day'] == $currentDay) {
+					$dayName = 'dziś ';
+				} else if ($c['day'] == $currentDay + 1) {
+					$dayName = 'jutro ';
+				} else {
+					$dayName = $this->dayNames[$c['day']].' ';
+				}
+				$thisWeek .=  '<tr><td>'.$c['adminName'].'</td><td>'.$c['adminAddress'].'</td><td>'.$dayName.$this->formatHour($c['startHour']).'-'.$this->formatHour($c['endHour']).(strlen($c['comment']) ? ' <span class="sruDutyHoursCommentIndex">('.$lastComment.')</span>' : '').'</td></tr>';
 			}
 			if ($c['day'] <= $lastDay - 7) {
 				if (strlen($c['comment'])) {
 					$lastComment++;
 					$comments[$lastComment] = $c['comment'];
 				}
-				$nextWeek .=  '<tr><td>'.$c['adminName'].'</td><td>'.$c['adminAddress'].'</td><td>'.$this->dayNames[$c['day']].' '.$this->formatHour($c['startHour']).'-'.$this->formatHour($c['endHour']).(strlen($c['comment']) ? ' ('.$lastComment.')' : '').'</td></tr>';
+				if ($c['day'] == $currentDay - 7 + 1) { // minus tydzień plus jeden dzień
+					$dayName = 'jutro ';
+				} else {
+					$dayName = $this->dayNames[$c['day']].' ';
+				}
+				$nextWeek .=  '<tr><td>'.$c['adminName'].'</td><td>'.$c['adminAddress'].'</td><td>'.$dayName.$this->formatHour($c['startHour']).'-'.$this->formatHour($c['endHour']).(strlen($c['comment']) ? ' <span class="sruDutyHoursCommentIndex">('.$lastComment.')</span>' : '').'</td></tr>';
 			}
 		}
 
 		if (strlen($thisWeek) || strlen($nextWeek)) {
-			echo '<table class="sruDutyHours"><thead><tr><th>Administrator</th><th>Gdzie (Where)</th><th>Kiedy (When)</th></thead><tbody>';
+			echo '<table class="sruDutyHours"><thead><tr><th>Administrator</th><th>Gdzie<br/>(Where)</th><th>Kiedy<br/>(When)</th></thead><tbody>';
 			echo $thisWeek;
 			echo $nextWeek;
 			echo '</tbody></table>';

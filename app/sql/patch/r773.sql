@@ -125,5 +125,4 @@ return NEW;
 END;$BODY$
   LANGUAGE plpgsql VOLATILE
   COST 100;
-ALTER FUNCTION user_update() OWNER TO sru;
 COMMENT ON FUNCTION user_update() IS 'archiwizacja danych uzytkownika';

@@ -30,7 +30,6 @@ CREATE TABLE duty_hours
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE duty_hours OWNER TO sru;
 COMMENT ON COLUMN duty_hours.admin_id IS 'Administrator';
 COMMENT ON COLUMN duty_hours.start_hour IS 'Godzina rozpoczecia';
 COMMENT ON COLUMN duty_hours.end_hour IS 'Godzina zakonczenia';
