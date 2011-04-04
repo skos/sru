@@ -108,7 +108,11 @@ extends UFtpl_Common {
 		echo '<p><em>Jabber:</em> '.$d['jid'].'</p>';
 		echo '<p><em>Adres:</em> '.$d['address'].'</p>';
 		if($this->_srv->get('acl')->sruAdmin('admin', 'seeActiveTo', $d['id']) && !is_null($d['activeTo'])){
-			echo '<p><em>Data dezaktywacji:</em> '.date(self::TIME_YYMMDD, $d['activeTo']).'</p>';
+			 if(!is_null($d['activeTo'])){
+				echo '<p><em>Data dezaktywacji:</em> '.date(self::TIME_YYMMDD, $d['activeTo']).'</p>';
+			}else{
+				echo '<p><em>Data dezaktywacji nie została podana</em></p>';
+			}
 			if($d['activeTo'] - time() <= 7*24*3600 && $d['activeTo'] - time() >= 0)
 				echo $this->ERR("Twoje konto niedługo ulegnie dezaktywacji, przedłóż ją w CUI aby temu zapobiec!");
 		}
@@ -161,7 +165,11 @@ extends UFtpl_Common {
 
 	public function formEdit(array $d, $dormitories, $dutyHours, $advanced=false) {
 
-		$d['activeTo'] = date(self::TIME_YYMMDD, $d['activeTo']);
+		if(!is_null($d['activeTo'])){
+			$d['activeTo'] = date(self::TIME_YYMMDD, $d['activeTo']);
+		}else{
+			$d['activeTo'] = '';
+		}
 		$form = UFra::factory('UFlib_Form', 'adminEdit', $d, $this->errors);
 
 		echo $form->_fieldset();
