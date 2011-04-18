@@ -30,7 +30,7 @@ extends UFtpl_Common {
 		$comments = array();
 		$lastComment = 0;
 
-		echo '<table class="sruDutyHours"><thead><tr><th>Akademik<br/>(Dormitory)</th><th>Administrator</th><th>Gdzie<br/>(Where)</th><th>Poniedziałek<br/>(Monday)</th><th>Wtorek<br/>(Tuesday)</th><th>Środa<br/>(Wednesday)</th><th>Czwartek<br/>(Thursday)</th><th>Piątek<br/>Friday)</th><th>Sobota<br/>(Saturday)</th><th>Niedziela<br/>(Sunday)</th></tr></thead><tbody>';
+		echo '<table class="sruDutyHours"><thead><tr><th>Akademik<br/>(Dormitory)</th><th>Administrator</th><th>Gdzie<br/>(Where)</th><th>E-mail</th><th>Poniedziałek<br/>(Monday)</th><th>Wtorek<br/>(Tuesday)</th><th>Środa<br/>(Wednesday)</th><th>Czwartek<br/>(Thursday)</th><th>Piątek<br/>(Friday)</th><th>Sobota<br/>(Saturday)</th><th>Niedziela<br/>(Sunday)</th></tr></thead><tbody>';
 		foreach ($d as $c) {
 			if ($c['adminName'] != $lastAdmin && $lastAdmin != '') {
 				for ($i = $lastDay; $i < 7; $i++) {
@@ -39,7 +39,7 @@ extends UFtpl_Common {
 				echo '</tr>';
 			}
 			if ($c['adminName'] != $lastAdmin) {
-				echo '<tr><td>'.strtoupper($c['adminDormAlias']).'</td><td>'.$c['adminName'].'</td><td>'.$c['adminAddress'].'</td>';
+				echo '<tr><td>'.strtoupper($c['adminDormAlias']).'</td><td>'.$c['adminName'].'</td><td>'.$c['adminAddress'].'</td><td>'.$c['adminEmail'].'</td>';
 				$lastAdmin = $c['adminName'];
 				$lastDay = 0;
 			}
@@ -62,7 +62,7 @@ extends UFtpl_Common {
 			for ($i = 1; $i <= $lastComment; $i++) {
 				echo '('.$i.') '.$comments[$i].'<br/>';
 			}
-			echo '<div>';
+			echo '/<div>';
 		}
 	}
 
@@ -106,7 +106,7 @@ extends UFtpl_Common {
 		}
 
 		if (strlen($thisWeek) || strlen($nextWeek)) {
-			echo '<table class="sruDutyHours"><thead><tr><th>Administrator</th><th>Gdzie<br/>(Where)</th><th>Kiedy<br/>(When)</th></thead><tbody>';
+			echo '<table class="sruDutyHours"><thead><tr><th>Administrator</th><th>Gdzie<br/>(Where)</th><th>Kiedy<br/>(When)</th></tr></thead><tbody>';
 			echo $thisWeek;
 			echo $nextWeek;
 			echo '</tbody></table>';
@@ -115,7 +115,7 @@ extends UFtpl_Common {
 				for ($i = 1; $i <= $lastComment; $i++) {
 					echo '('.$i.') '.$comments[$i].'<br/>';
 				}
-				echo '<div>';
+				echo '</div>';
 			}
 		} else {
 			if ($days > 0 ) {
