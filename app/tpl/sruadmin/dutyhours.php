@@ -62,7 +62,7 @@ extends UFtpl_Common {
 			for ($i = 1; $i <= $lastComment; $i++) {
 				echo '('.$i.') '.$comments[$i].'<br/>';
 			}
-			echo '/<div>';
+			echo '</div>';
 		}
 	}
 
