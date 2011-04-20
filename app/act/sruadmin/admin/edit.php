@@ -20,8 +20,9 @@ extends UFact {
 			if (isset($post['displayUsers'])) {
 				if($post['displayUsers'] == 1) {
 					setcookie('SRUDisplayUsers', '1', time() + 60*60*24*3650, '/');
-				else
+				}else{
 					setcookie('SRUDisplayUsers', '0', time() + 60*60*24*3650, '/');
+				}
 			}
 				
 			if(isset($post['password']) && $post['password'] != '' ) {
