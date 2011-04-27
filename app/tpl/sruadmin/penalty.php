@@ -23,10 +23,14 @@ extends UFtpl_Common {
 		$url = $this->url(0);
 		echo '<h3>Wszystkich kar: '. count($d) .'</h3><ul>';
 
-		foreach ($d as $c) {	
+		foreach ($d as $c) {
 			echo '<li>';
 			echo '<small>'.date(self::TIME_YYMMDD, $c['startAt']).' &mdash; '.date(self::TIME_YYMMDD, $c['endAt']).'</small> ';
-			echo '<a href="'.$url.'/penalties/'.$c['id'].'">'.$this->_escape($c['userName']).' '.$this->_escape($c['userSurname']).' ('.$this->_escape($c['userLogin']).')</a>';
+			if($c['userActive'] == true){
+				echo '<a href="'.$url.'/penalties/'.$c['id'].'">'.$this->_escape($c['userName']).' "'.$c['userLogin'].'" '.$this->_escape($c['userSurname']).' ('.$this->_escape($c['userLogin']).')</a>';
+			}else{
+				echo '<del><a href="'.$url.'/penalties/'.$c['id'].'">'.$this->_escape($c['userName']).' "'.$c['userLogin'].'" '.$this->_escape($c['userSurname']).' ('.$this->_escape($c['userLogin']).')</a></del>';
+			}
 			echo ($this->_escape($c['templateTitle']) != null ? ' <small>za: '.$this->_escape($c['templateTitle']).'</small>' : '');
 			echo '</li>';
 		}
@@ -91,7 +95,12 @@ extends UFtpl_Common {
 				echo '<li>';
 			}
 			echo date(self::TIME_YYMMDD_HHMM, $c['startAt']);
-			echo ' dla: <a href="'.$url.'/penalties/'.$c['id'].'">'.$this->_escape($c['userName']).' "'.$c['userLogin'].'" '.$this->_escape($c['userSurname']).'</a>';
+			if($c['userActive'] == true){
+				echo ' dla: <a href="'.$url.'/penalties/'.$c['id'].'">'.$this->_escape($c['userName']).' "'.$c['userLogin'].'" '.$this->_escape($c['userSurname']).'</a>';
+			}else{
+				echo ' dla: <del><a href="'.$url.'/penalties/'.$c['id'].'">'.$this->_escape($c['userName']).' "'.$c['userLogin'].'" '.$this->_escape($c['userSurname']).'</a></del>';
+			}
+			
 			if ($showAddedBy == true) {
 				echo ' <small>przez: <a href="'.$url.'/admins/'.$c['createdById'].'">'.$this->_escape($c['creatorName']).'</a>';
 			} else {
@@ -116,7 +125,11 @@ extends UFtpl_Common {
 				echo '<li>';
 			}
 			echo date(self::TIME_YYMMDD_HHMM, $c['modifiedAt']);
-			echo ' dla: <a href="'.$url.'/penalties/'.$c['id'].'">'.$this->_escape($c['userName']).' "'.$c['userLogin'].'" '.$this->_escape($c['userSurname']).'</a> ';
+			if($c['userActive'] == true){
+				echo ' dla: <a href="'.$url.'/penalties/'.$c['id'].'">'.$this->_escape($c['userName']).' "'.$c['userLogin'].'" '.$this->_escape($c['userSurname']).'</a>';
+			}else{
+				echo ' dla: <del><a href="'.$url.'/penalties/'.$c['id'].'">'.$this->_escape($c['userName']).' "'.$c['userLogin'].'" '.$this->_escape($c['userSurname']).'</a></del>';
+			}
 			echo ' <small>modyfikowana '.$c['modificationCount'].' raz(y)</small>';
 			echo '<small>, ostatnio przez: <a href="'.$url.'/admins/'.$c['modifiedById'].'">'.$this->_escape($c['modifierName']).'</a>';
 			echo ($this->_escape($c['templateTitle']) != null ? ', za: '.$this->_escape($c['templateTitle']) : '');

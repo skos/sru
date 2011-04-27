@@ -32,6 +32,7 @@ extends UFmap {
 		'userName'     => 'u.name',
 		'userSurname'  => 'u.surname',
 		'userLogin'    => 'u.login',
+		'userActive'   => 'u.active',
 	);
 	protected $columnTypes = array(
 		'id'           => self::INT,
@@ -59,6 +60,7 @@ extends UFmap {
 		'userName'     => self::TEXT,
 		'userSurname'  => self::TEXT,
 		'userLogin'    => self::TEXT,
+		'userActive'   => self::BOOL,
 	);
 	protected $tables = array(
 		'b' => 'penalties',
