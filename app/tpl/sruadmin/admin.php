@@ -86,7 +86,11 @@ extends UFtpl_Common {
 		echo '<ul>';	
 		foreach ($d as $c)
 		{
-			echo '<li><a href="'.$url.$c['id'].'">'.$this->_escape($c['name']).'</a></li>';
+			if($c['active'] == false){
+				echo '<li><del><a href="'.$url.$c['id'].'">'.$this->_escape($c['name']).'</a></del></li>';
+			}else{
+				echo '<li><a href="'.$url.$c['id'].'">'.$this->_escape($c['name']).'</a></li>';
+			}
 		}
 		echo '</ul>';
 	}
