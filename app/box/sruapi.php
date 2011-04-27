@@ -250,6 +250,7 @@ extends UFbox {
 			// znajdujemy właściciela
 			$computer = UFra::factory('UFbean_Sru_Computer');
 			$computer->getByIp($ip);
+			$d['host'] = $computer->host;
 			// znajdujemy wszystkie komputery właściciela
 			$computersList = UFra::factory('UFbean_Sru_ComputerList');
 			$computersList->listByUserId($computer->userId);

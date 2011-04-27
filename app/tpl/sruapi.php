@@ -66,7 +66,7 @@ extends UFtpl_Common {
 	}
 
 	public function myLanstats(array $d) {
-		$d['transfer']->write('myTransferStats', $d['upload']);
+		$d['transfer']->write('myTransferStats', $d['upload'], $d['host']);
 	}
 
 	public function apiPenaltiesTimelineMailTitle(array $d) {
