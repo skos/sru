@@ -510,9 +510,9 @@ extends UFtpl_Common {
 		
 		if ($this->_srv->get('msg')->get('adminEdit/ok')) {
 			echo $this->OK('Dane zostały zmienione');
-		}		
+		}
 		
-		echo '<div class="admin">';		
+		echo '<div class="admin">';
 		$d['admin']->write('details');
 		
 		echo '<p class="nav">';
@@ -537,6 +537,28 @@ extends UFtpl_Common {
 	public function adminDutyHoursNotFound() {
 		echo '<h3>Godziny dyżurów</h3>';
 		echo $this->ERR('Brak godzin dyżurów');
+	}
+
+	public function adminDorms(array $d) {
+		if (is_null($d['dormList'])) {
+			$this->adminDormsNotFound();
+			return;
+		}
+
+		$url = $this->url(0).'/admins/'.$d['admin']->id;
+		$acl = $this->_srv->get('acl');
+
+		echo '<h3>Domy Studenckie</h3>';
+		$d['admin']->write('listDorms', $d['dormList']);
+		if($acl->sruAdmin('admin', 'edit', $d['admin']->id)) {
+			echo '<a href="'.$url.'/:edit">Edycja</a> &bull; ';
+		}
+		echo '<a href="'.$this->url(0).'/admins/">Powrót</a>';
+	}
+
+	public function adminDormsNotFound() {
+		echo '<h3>Domy Studenckie</h3>';
+		echo $this->ERR('Brak przypisanych DSów');
 	}
 
 	public function penaltyTemplateChoose(array $d) {
@@ -622,7 +644,7 @@ extends UFtpl_Common {
 		echo $form->_start();
 		
 
-		echo $d['admin']->write('formEdit', $d['dormitories'], $d['dutyHours'], $d['advanced']);
+		echo $d['admin']->write('formEdit', $d['dormitories'], $d['dutyHours'], $d['dormList'], $d['advanced']);
 		echo $form->_submit('Zapisz');
 		echo ' <a href="'.$this->url(0).'/admins/'.$d['admin']->id.'">Powrót</a>';
 		echo $form->_end();

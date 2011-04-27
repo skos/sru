@@ -286,6 +286,18 @@ extends UFbox {
 			$hours->listAllForTable();
 			$d['hours'] = $hours;
 
+			$dorms = UFra::factory('UFbean_Sru_DormitoryList');
+			$dorms->listAll();
+			$d['dormitories'] = array();
+			foreach($dorms as $c){
+				try {
+					$dormAdm = UFra::factory('UFbean_SruWalet_AdminDormitoryList');
+					$dormAdm->listAllByDormId($c['id']);
+					$d['dormitories'][$c['id']] = $dormAdm;
+				} catch(UFex_Dao_NotFound $e) {
+				}
+			}
+
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
 			return '';
@@ -301,6 +313,19 @@ extends UFbox {
 			$days = $this->_srv->get('req')->get->days;
 			if ($days > 6 || $days < 0) $days = 0;
 			$d['days'] = $days;
+
+			$admins = UFra::factory('UFbean_SruAdmin_AdminList');
+			$admins->listAll();
+			$d['dormitories'] = array();
+			foreach($admins as $c){
+				try {
+					$admDorm = UFra::factory('UFbean_SruWalet_AdminDormitoryList');
+					$admDorm->listAllById($c['id']);
+					$d['dormitories'][$c['id']] = $admDorm;
+				} catch(UFex_Dao_NotFound $e) {
+					$d['dormitories'][$c['id']] = null;	//na pewno zaden ds nie bedzie mial id null
+				}
+			}
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {

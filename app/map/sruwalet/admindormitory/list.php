@@ -8,6 +8,7 @@ extends UFmap {
 	protected $columns = array(
 		'id'             => 'a.id',
 		'admin'          => 'a.admin',
+		'adminName'	 => 'a.name',
 		'dormitory'      => 'a.dormitory',
 		'dormitoryName'  => 'd.name',
 		'dormitoryAlias' => 'd.alias',
@@ -16,6 +17,7 @@ extends UFmap {
 	protected $columnTypes = array(
 		'id'             => self::INT,
 		'admin'          => self::INT,
+		'adminName'      => self::TEXT,
 		'dormitory'      => self::INT,
 		'dormitoryName'  => self::TEXT,
 		'dormitoryAlias' => self::TEXT,

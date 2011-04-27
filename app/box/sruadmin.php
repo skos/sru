@@ -684,7 +684,6 @@ extends UFbox {
 	public function admin() {
 		try {
 			$bean = $this->_getAdminFromGet();
-
 			$d['admin'] = $bean;
 			
 			return $this->render(__FUNCTION__, $d);
@@ -701,6 +700,25 @@ extends UFbox {
 			$hours = UFra::factory('UFbean_SruAdmin_DutyHoursList');
 			$hours->listByAdminId($bean->id);
 			$d['hours'] = $hours;
+			
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}
+	}
+
+	public function adminDorms() {
+		try {
+			$bean = $this->_getAdminFromGet();
+			$d['admin'] = $bean;
+
+			try {
+				$admDorm = UFra::factory('UFbean_SruWalet_AdminDormitoryList');
+				$admDorm->listAllById($bean->id);
+				$d['dormList'] = $admDorm;
+			} catch (UFex_Dao_NotFound $e) {
+				$d['dormList'] = null;
+			}
 			
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
@@ -724,7 +742,6 @@ extends UFbox {
 		try {
 			UFra::factory('UFbean_Sru_DormitoryList');
 			$bean = $this->_getAdminFromGet();
-
 			$d['admin'] = $bean;
 
 			return $this->render(__FUNCTION__, $d);
@@ -748,6 +765,14 @@ extends UFbox {
 				$d['dutyHours'] = $hours;
 			} catch (UFex_Dao_NotFound $e) {
 				$d['dutyHours'] = null;
+			}
+
+			try {
+				$admDorm = UFra::factory('UFbean_SruWalet_AdminDormitoryList');
+				$admDorm->listAllById($bean->id);
+				$d['dormList'] = $admDorm;
+			} catch (UFex_Dao_NotFound $e) {
+				$d['dormList'] = null;
 			}
 	
 			$d['admin'] = $bean;

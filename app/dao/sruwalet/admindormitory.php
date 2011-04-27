@@ -24,4 +24,14 @@ extends UFdao {
 
 		return $this->doSelect($query);
 	}
+
+	public function listAllByDormId($id) {
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->dormitory, $id);
+		$query->order($mapping->adminName);
+
+		return $this->doSelect($query);
+	}
 }

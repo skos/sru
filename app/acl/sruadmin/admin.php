@@ -57,6 +57,16 @@ extends UFlib_ClassWithService {
 		else
 			return false;
 	}
+
+	public function changeAdminDorms() {
+		$sess = $this->_srv->get('session');
+		
+		if($this->_loggedIn() && $sess->is('typeId') && ($sess->typeId == self::CAMPUS || $sess->typeId == self::CENTRAL)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 	
 	public function edit($id) {
 		$sess = $this->_srv->get('session');

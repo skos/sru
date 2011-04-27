@@ -111,16 +111,26 @@ extends UFtpl_Common {
 		echo '<p><em>Gadu-Gadu:</em> '.$d['gg'].'</p>';
 		echo '<p><em>Jabber:</em> '.$d['jid'].'</p>';
 		echo '<p><em>Adres:</em> '.$d['address'].'</p>';
-		if($this->_srv->get('acl')->sruAdmin('admin', 'seeActiveTo', $d['id']) && !is_null($d['activeTo'])){
-			 if(!is_null($d['activeTo'])){
+		if($this->_srv->get('acl')->sruAdmin('admin', 'seeActiveTo', $d['id'])){
+			if(!is_null($d['activeTo'])){
 				echo '<p><em>Data dezaktywacji:</em> '.date(self::TIME_YYMMDD, $d['activeTo']).'</p>';
 			}else{
 				echo '<p><em>Data dezaktywacji nie została podana</em></p>';
 			}
 			if($d['activeTo'] - time() <= 7*24*3600 && $d['activeTo'] - time() >= 0)
-				echo $this->ERR("Twoje konto niedługo ulegnie dezaktywacji, przedłóż ją w CUI aby temu zapobiec!");
+				echo $this->ERR("Twoje konto niedługo ulegnie dezaktywacji, przedłóż je w CUI aby temu zapobiec!");
 		}
-	}	
+	}
+
+	public function listDorms($d, $dormList) {
+		$url = $this->url(0);
+
+		echo '</p><ul>';
+		foreach ($dormList as $dorm) {
+			echo '<li><a href="'.$url.'/dormitories/'.$dorm['dormitoryAlias'].'">'.$dorm['dormitoryName'].'</a></li>';
+		}
+		echo '</ul>';
+	}
 
 	public function titleAdd(array $d) {
 		echo 'Dodanie nowego administratora';
@@ -167,7 +177,7 @@ extends UFtpl_Common {
 		));
 	}
 
-	public function formEdit(array $d, $dormitories, $dutyHours, $advanced=false) {
+	public function formEdit(array $d, $dormitories, $dutyHours, $dormList, $advanced=false) {
 
 		if(!is_null($d['activeTo'])){
 			$d['activeTo'] = date(self::TIME_YYMMDD, $d['activeTo']);
@@ -253,6 +263,28 @@ extends UFtpl_Common {
 		}
 
 		echo $form->_end();
+
+		if($this->_srv->get('acl')->sruAdmin('admin', 'changeAdminDorms')) {
+			$post = $this->_srv->get('req')->post;
+			echo '<div id="dorms">' . $form->_fieldset('Domy studenckie');
+			foreach ($dormitories as $dorm) {
+				$permission = 0;
+				try {
+					$permission = $post->adminEdit['dorm'][$dorm['id']];
+				} catch (UFex_Core_DataNotFound $e) {
+					if (!is_null($dormList)) {
+						foreach ($dormList as $perm) {
+							if ($perm['dormitory'] == $dorm['id']) {
+								$permission = 1;
+								break;
+							}
+						}
+					}
+				}
+				echo $form->dormPerm($dorm['name'], array('type'=>$form->CHECKBOX, 'name'=>'adminEdit[dorm]['.$dorm['id'].']', 'id'=>'adminEdit[dorm]['.$dorm['id'].']', 'value'=>$permission));
+			}
+			echo $form->_end();
+		}
 
 		if($this->_srv->get('acl')->sruAdmin('admin', 'changeUsersAndHostsDisplay', $d['id'])) {
 			echo $form->_fieldset('Ustawienia');
