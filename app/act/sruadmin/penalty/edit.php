@@ -42,6 +42,14 @@ extends UFact {
 				} catch (UFex_Dao_NotFound $e) {
 				}
 			} else if($acl->sruAdmin('penalty', 'editOnePartly', $bean->id)){
+				if ('' === $post['endAt']) {
+					$bean->endAt = $bean->amnestyAfter;
+				} else if (date(UFtpl_Common::TIME_YYMMDD_HHMM, $bean->endAt) !== $post['endAt']) {
+					$bean->fillFromPost(self::PREFIX, null, array('endAt'));
+					if ($bean->endAt < $bean->amnestyAfter) {
+						throw UFra::factory('UFex_Dao_DataNotValid', 'Modification before amnesty date', 0, E_WARNING, array('endAt' => 'tooShort'));
+					}
+				}
 				$tplTitle = $bean->templateTitle;
 			} else {
 				if(!$acl->sruAdmin('penalty', 'editOne', $bean->id)) {
