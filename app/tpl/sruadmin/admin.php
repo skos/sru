@@ -198,7 +198,7 @@ extends UFtpl_Common {
 			echo $form->typeId('Uprawnienia', array(
 				'type' => $form->SELECT,
 				'labels' => $form->_labelize(UFtpl_SruAdmin_Admin::$adminTypes),
-			));	
+			));
 			echo $form->active('Aktywny', array('type'=>$form->CHECKBOX) );
 
 		}
@@ -213,10 +213,11 @@ extends UFtpl_Common {
 		echo $form->jid('Jabber');
 		echo $form->address('Adres', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Lokalizacja lub miejsce przebywania administratora." /><br/>'));
 		
+		$$instrukcjaObslugiPolaAktywnyDo = 'Wypełnia centralny. Data w formacie YYYY-MM-DD<br/>Możliwe warunki to:<br/>1. Brak daty = administrator nigdy nie zostanie zdezaktywowany automatycznie.<br />2. Data > now = administrator zostanie zdezaktywowany gdy przyjdzie na niego czas.<br />3. Data < now = administrator zostnie zdezaktywowany przy najbliższym wywołaniu skryptu.<br />';
 		if($this->_srv->get('acl')->sruAdmin('admin', 'addChangeActiveDate'))
-			echo $form->activeTo('Aktywny do');
+			echo $form->activeTo('Aktywny do', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="' . $$instrukcjaObslugiPolaAktywnyDo . '" /><br/>'));
 		else
-			echo $form->activeTo('Aktywny do', array('disabled' => true));
+			echo $form->activeTo('Aktywny do', array('disabled' => true, 'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="' . $$instrukcjaObslugiPolaAktywnyDo . '" /><br/>'));
 
 		$tmp = array();
 		foreach ($dormitories as $dorm) {
