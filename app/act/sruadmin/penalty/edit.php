@@ -41,6 +41,7 @@ extends UFact {
 				} catch (UFex_Core_DataNotFound $e) {
 				} catch (UFex_Dao_NotFound $e) {
 				}
+			} else if($acl->sruAdmin('penalty', 'editOnePartly', $bean->id)){
 			} else {
 				if(!$acl->sruAdmin('penalty', 'editOne', $bean->id)) {
 					UFra::error('Admin '.$d['admin']->id.' dont have permission to edit this penalty');

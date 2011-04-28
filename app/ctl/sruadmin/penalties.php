@@ -207,7 +207,7 @@ extends UFctl_Common {
 			case 'penalties/penalty/edit':
 				if ($msg->get('penaltyEdit/ok')) { 
 					return 'SruAdmin_Penalty';
-				} elseif ($acl->sruAdmin('penalty', 'editOne', $get->penaltyId)) {
+				} elseif ($acl->sruAdmin('penalty', 'editOne', $get->penaltyId) || $acl->sruAdmin('penalty', 'editOnePartly', $get->penaltyId)) {
 					return 'SruAdmin_PenaltyEdit';
 				} else {
 					return 'Sru_Error403';

@@ -117,4 +117,30 @@ extends UFlib_ClassWithService {
 		}
 		return false;
 	}
+	
+	/**
+	 * sprawdza uprawnienia do edycji komentarza danej kary
+	 * 
+	 * @param int $id - id kary
+	 * @return bool
+	 */
+	public function editOnePartly($id){
+		if(!$this->_loggedIn()){
+			return false;
+		}
+		$sess = $this->_srv->get('session');
+		$bean = UFra::factory('UFbean_SruAdmin_Penalty');
+		try {
+			$bean->getByPK($id);
+		} catch (Exception $e) {
+			return false;
+		}
+		
+		// można edytowac tylko aktywne kary
+		if ($bean->active === false) {
+			return false;
+		}
+
+		return true;
+	}
 }

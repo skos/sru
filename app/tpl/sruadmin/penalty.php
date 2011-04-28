@@ -166,7 +166,7 @@ extends UFtpl_Common {
 		echo '<p class="nav"><a href="'.$urlPenalty.'">Dane</a> &bull; 
 			<a href="'.$url.'/penalties/'.$d['id'].'/history/">Historia kary</a> &bull; ';
 		$acl = $this->_srv->get('acl');
-		if ($acl->sruAdmin('penalty', 'editOne', $d['id'])) {
+		if ($acl->sruAdmin('penalty', 'editOne', $d['id']) || $acl->sruAdmin('penalty', 'editOnePartly', $d['id'])) {
 			echo '<a href="'.$urlPenalty.'/:edit">Edycja</a> &bull; ';
 		}
 		echo '<span id="penaltyMoreSwitch"></span></p>';
@@ -219,7 +219,9 @@ changeVisibility();
 		$form = UFra::factory('UFlib_Form', 'penaltyEdit', $d, $this->errors);
 		echo $form->_start();
 		echo $form->_fieldset('Edycja kary');
-		echo $form->endAt('Od '.date(self::TIME_YYMMDD, $d['startAt']).' do');
+		if($acl->sruAdmin('penalty', 'editOne', $d['id'])){
+			echo $form->endAt('Od '.date(self::TIME_YYMMDD, $d['startAt']).' do');
+		}
 		echo '<p><em>Typ:</em> '.$this->_escape(UFtpl_SruAdmin_Penalty::$penaltyTypes[$d['typeId']]).'</p>';
 
 		if (!is_null($computers)) {
@@ -240,6 +242,8 @@ changeVisibility();
 			echo ' <a href="'.$urlPenalty.'/:edit/changeTemplate">zmień</a></p>';
 			echo $form->after('Min. długość (dni)', array('value'=>$amnestyDays));
 			echo $form->reason('Powód:', array('type'=>$form->TEXTAREA, 'rows'=>5));
+		} else if($acl->sruAdmin('penalty', 'editOnePartly', $d['id'])){
+			echo '</p><p><em>Powód:</em>' . $d['reason'] . '</p>';
 		} else {
 			echo '</p>';
 			echo '<p><em>Min. długość:</em> '.$amnestyDays.' dni</p>';
