@@ -51,7 +51,7 @@ extends UFtpl_Common {
 					echo '</tr>';
 				}
 				if ($c['adminName'] != $lastAdmin) {
-					echo '<tr><td>'.$c['adminName'].'</td><td><a href="mailto:'.$c['adminAddress'].'">'.$c['adminAddress'].'</a></td><td>'.$c['adminEmail'].'</td>';
+					echo '<tr><td>'.$c['adminName'].'</td><td>'.$c['adminAddress'].'</td><td><a href="mailto:'.$c['adminEmail'].'">'.$c['adminEmail'].'</a></td>';
 					$lastAdmin = $c['adminName'];
 					$lastDay = 0;
 				}
