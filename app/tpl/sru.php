@@ -35,7 +35,18 @@ extends UFtpl_Common {
 
 		echo $form->_start($this->url(0).'/');
 		echo $form->_fieldset('Ważne informacje');
-		echo $d['penalties']->write('listPenalty');
+		if (!is_null($d['penalties'])) {
+			echo $d['penalties']->write('listPenalty');
+		} else {
+			echo '<h3>Hurra! Brak aktywnych kar i ostrzeżeń! ;)</h3>';
+		}
+		echo $form->_end();
+		echo $form->_fieldset('Najbliższe dyżury Twoich administratorów');
+		if (!is_null($d['dutyHours'])) {
+			echo $d['dutyHours']->write('upcomingDutyHours', $d['user'], 3);
+		} else {
+			echo $this->ERR('Żaden administrator nie jest przypisany do Twojego DSu. Skontaktuj się z nami mailowo: <a href="mailto:adnet@ds.pg.gda.pl">adnet@ds.pg.gda.pl</a>.');
+		}
 		echo $form->_end();
 		echo $form->_end(true);
 	}
@@ -47,16 +58,6 @@ extends UFtpl_Common {
 
 	public function titlePenalties() {
 		echo 'Archiwum kar i ostrzeżeń';
-	}
-
-	public function penaltiesNotFound() {
-		$form = UFra::factory('UFlib_Form');
-
-		echo $form->_start($this->url(0).'/');
-		echo $form->_fieldset('Ważne informacje');
-		echo "<h3>Hurra! Brak aktywnych kar i ostrzeżeń! ;)</h3>";
-		echo $form->_end();
-		echo $form->_end(true);
 	}
 
 	public function userPenaltiesNotFound() {

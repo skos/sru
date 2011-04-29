@@ -21,21 +21,27 @@ extends UFbox {
 	}
 
 	public function userInfo() {
-		try 
-		{
-			$user = UFra::factory('UFbean_Sru_User');
-			$user->getFromSession();
+		$user = UFra::factory('UFbean_Sru_User');
+		$user->getFromSession();
+		$d['user'] = $user;
 
-			$bean = UFra::factory('UFbean_Sru_PenaltyList');	
+		try {
+			$bean = UFra::factory('UFbean_Sru_PenaltyList');
 			$bean->listByUserId($user->id);
 			$d['penalties'] = $bean;
-
-			return $this->render(__FUNCTION__, $d);
-		} 
-		catch (UFex_Dao_NotFound $e) 
-		{
-			return $this->render('penaltiesNotFound');
+		} catch (UFex_Dao_NotFound $e) {
+			$d['penalties'] = null;
 		}
+
+		try {
+			$hours = UFra::factory('UFbean_SruAdmin_DutyHoursList');
+			$hours->listUpcomingByDormId($user->dormitoryId);
+			$d['dutyHours'] = $hours;
+		} catch (UFex_Dao_NotFound $e) {
+			$d['dutyHours'] = null;
+		}
+
+		return $this->render(__FUNCTION__, $d);
 	}
 
 	public function userAddMailTitle($user) {

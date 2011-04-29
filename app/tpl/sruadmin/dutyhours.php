@@ -105,7 +105,11 @@ extends UFtpl_Common {
 				} else {
 					$dayName = self::$dayNames[$c['day']].' ';
 				}
-				$thisWeek .=  '<tr><td>'.$c['adminName'].'</td><td><a href="mailto:'.$c['adminAddress'].'">'.$c['adminAddress'].'</a></td><td>'.$this->listDorms($c['adminId'], $dormitories).'</td><td>'.$dayName.$this->formatHour($c['startHour']).'-'.$this->formatHour($c['endHour']).(strlen($c['comment']) ? ' <span class="sruDutyHoursCommentIndex">('.$lastComment.')</span>' : '').'</td></tr>';
+				$thisWeek .=  '<tr><td>'.$c['adminName'].'</td><td>'.$c['adminAddress'].'</td>';
+				if (!is_null($dormitories)) {
+					$thisWeek .= '<td>'.$this->listDorms($c['adminId'], $dormitories).'</td>';
+				}
+				$thisWeek .= '<td>'.$dayName.$this->formatHour($c['startHour']).'-'.$this->formatHour($c['endHour']).(strlen($c['comment']) ? ' <span class="sruDutyHoursCommentIndex">('.$lastComment.')</span>' : '').'</td></tr>';
 			}
 			if ($c['day'] <= $lastDay - 7) {
 				if (strlen($c['comment'])) {
@@ -117,12 +121,20 @@ extends UFtpl_Common {
 				} else {
 					$dayName = self::$dayNames[$c['day']].' ';
 				}
-				$nextWeek .=  '<tr><td>'.$c['adminName'].'</td><td><a href="mailto:'.$c['adminAddress'].'">'.$c['adminAddress'].'</a></td><td>'.$this->listDorms($c['adminId'], $dormitories).'</td><td>'.$dayName.$this->formatHour($c['startHour']).'-'.$this->formatHour($c['endHour']).(strlen($c['comment']) ? ' <span class="sruDutyHoursCommentIndex">('.$lastComment.')</span>' : '').'</td></tr>';
+				$nextWeek .=  '<tr><td>'.$c['adminName'].'</td><td>'.$c['adminAddress'].'</td>';
+				if (!is_null($dormitories)) {
+					$nextWeek .= '<td>'.$this->listDorms($c['adminId'], $dormitories).'</td>';
+				}
+				$nextWeek .= '<td>'.$dayName.$this->formatHour($c['startHour']).'-'.$this->formatHour($c['endHour']).(strlen($c['comment']) ? ' <span class="sruDutyHoursCommentIndex">('.$lastComment.')</span>' : '').'</td></tr>';
 			}
 		}
 
 		if (strlen($thisWeek) || strlen($nextWeek)) {
-			echo '<table class="sruDutyHoursUpcoming"><thead><tr><th>Administrator</th><th>Gdzie<br/>(Where)</th><th>Akademiki<br/>(Dorms)</th><th>Kiedy<br/>(When)</th></tr></thead><tbody>';
+			echo '<table class="sruDutyHoursUpcoming"><thead><tr><th>Administrator</th><th>Gdzie<br/>(Where)</th>';
+			if (!is_null($dormitories)) {
+				echo '<th>Akademiki<br/>(Dorms)</th>';
+			}
+			echo '<th>Kiedy<br/>(When)</th></tr></thead><tbody>';
 			echo $thisWeek;
 			echo $nextWeek;
 			echo '</tbody></table>';
@@ -135,11 +147,16 @@ extends UFtpl_Common {
 			}
 		} else {
 			if ($days > 0 ) {
-				echo '<div class="sruDutyHoursComments">Żaden administrator nie ma dyżurów w ciągu nadchodzących '.$days.' dni.</div>';
+				echo '<div class="sruDutyHoursNoHours">Żaden administrator nie ma dyżurów w ciągu nadchodzących '.$days.' dni.</div>';
 			} else {
-				echo '<div class="sruDutyHoursComments">Żaden administrator nie ma dziś dyżurów.</div>';
+				echo '<div class="sruDutyHoursNoHours">Żaden administrator nie ma dziś dyżurów.</div>';
 			}
 		}
+	}
+
+	public function upcomingDutyHours(array $d, $user, $days) {
+		echo '<h3>Adres e-mail do wszystkich administratorów w DSie:<br/><a href="mailto:admin-'.$user->dormitoryAlias.'@ds.pg.gda.pl">admin-'.$user->dormitoryAlias.'@ds.pg.gda.pl</a>.</h3>';
+		$this->apiUpcomingDutyHours($d, $days, null);
 	}
 
 	private function formatHour($hour) {

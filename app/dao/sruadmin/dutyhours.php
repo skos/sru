@@ -47,4 +47,16 @@ extends UFdao {
 
 		return $this->doSelectFirst($query);
 	}
+
+	public function listUpcomingByDormId($dormId) {
+		$mapping = $this->mapping('listDutyHours');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->active, true);
+		$query->where($mapping->dutyDormId, $dormId);
+		$query->order($mapping->day);
+		$query->order($mapping->startHour);
+
+		return $this->doSelect($query);
+	}
 }

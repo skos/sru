@@ -36,7 +36,7 @@ img { border-style: none; }
 #main ol li, #main ul li { margin-top: 0.4em; margin-bottom: 0.4em; }
 #main ol ol { list-style-type: upper-roman; }
 #main p { text-align: justify; margin-top: 1em; margin-bottom: 1em; }
-#main p.msgOk, #main p.msgError { border: 2px solid red; color: red; padding: 1em; text-align: center; margin: 1em; }
+#main p.msgOk, #main p.msgError, #main .sruDutyHoursNoHours { border: 2px solid red; color: red; padding: 1em; text-align: center; margin: 1em; }
 #main p.msgOk input, #main p.msgOk label, #main p.msgError input, #main p.msgError label { display: inline; margin: 0; float: none; clear: none; }
 #main p.msgOk { color: #009a00; border-color: #009a00; }
 #main q { background-color: #eee; }
@@ -103,9 +103,10 @@ img { border-style: none; }
 #main ul .adm { background-color: #28d9ff; }
 #main ul .exAdmin { background-color: gray; }
 
-#main .bordered { border-collapse: collapse; width: 100%; }
-#main .bordered th { border-width: 1px; border-style: solid; border-color: black; }
-#main .bordered td { border-width: 1px; border-style: solid; border-color: black; }
+#main .bordered, .sruDutyHoursUpcoming { border-collapse: collapse; width: 100%; }
+#main .bordered th, .sruDutyHoursUpcoming th { border-width: 1px; border-style: solid; border-color: black; }
+#main .bordered td, .sruDutyHoursUpcoming td { border-width: 1px; border-style: solid; border-color: black; }
+#main .sruDutyHoursUpcoming { width: 100%; text-align: center; }
 
 .tooltip {
 	display:none;
