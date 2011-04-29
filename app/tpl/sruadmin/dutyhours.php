@@ -29,44 +29,47 @@ extends UFtpl_Common {
 		$comments = array();
 		$lastComment = 0;
 
+		$admins = array();
+		$lastAdmin = 0;
+		foreach ($d as $c) {
+			if ($c['adminId'] != $lastAdmin && $lastAdmin != '') {
+				for ($i = $lastDay; $i < 7; $i++) {
+					$admins[$lastAdmin] .= '<td></td>';
+				}
+				$admins[$lastAdmin] .= '</tr>';
+			}
+			if ($c['adminId'] != $lastAdmin) {
+				$admins[$c['adminId']] = '<tr><td>'.$c['adminName'].'</td><td>'.$c['adminAddress'].'</td><td><a href="mailto:'.$c['adminEmail'].'">'.$c['adminEmail'].'</a></td>';
+				$lastAdmin = $c['adminId'];
+				$lastDay = 0;
+			}
+			for ($i = $lastDay; $i < $c['day'] - 1; $i++) {
+				$admins[$c['adminId']] .= '<td></td>';
+			}
+			if (strlen($c['comment'])) {
+				$lastComment++;
+				$comments[$lastComment] = $c['comment'];
+			}
+			$admins[$c['adminId']] .= '<td'.($c['day'] == $currentDay ? ' class="sruDutyHoursCurrentDay"' : '').'>'.($c['active'] ? '' : '<del>').$this->formatHour($c['startHour']).'-'.$this->formatHour($c['endHour']).($c['active'] ? '' : '</del>').(strlen($c['comment']) ? ' <span title="'.$c['comment'].'" class="sruDutyHoursCommentIndex">('.$lastComment.')</span>' : '').'</td>';
+			$lastDay = $c['day'];
+		}
+		for ($i = $lastDay; $i < 7; $i++) {
+			$admins[$lastAdmin] .= '<td></td>';
+		}
+		$admins[$lastAdmin] .= '</tr>';
+		
 		echo '<table class="sruDutyHours"><thead><tr><th>Administrator</th><th>Gdzie<br/>(Where)</th><th>E-mail</th><th>Poniedziałek<br/>(Monday)</th><th>Wtorek<br/>(Tuesday)</th><th>Środa<br/>(Wednesday)</th><th>Czwartek<br/>(Thursday)</th><th>Piątek<br/>(Friday)</th><th>Sobota<br/>(Saturday)</th><th>Niedziela<br/>(Sunday)</th></tr></thead><tbody>';
 		foreach ($dormitories as $dorm) {
-			$lastAdmin = '';
-			$admins = array();
+			$dormAdmins = array();
 			foreach ($dorm as $admin) {
-				$admins[] = $admin['admin'];
+				$dormAdmins[] = $admin['admin'];
 			}
-			if (empty($admins)) {
+			if (empty($dormAdmins)) {
 				continue;
 			}
 			echo '<tr><td colspan="10" class="sruDutyHoursDormitoryName">'.$dorm[0]['dormitoryName'].' (<a href="mailto:admin-'.$dorm[0]['dormitoryAlias'].'@ds.pg.gda.pl">admin-'.$dorm[0]['dormitoryAlias'].'@ds.pg.gda.pl</a>)</td></tr>';
-			foreach ($d as $c) {
-				if (!in_array($c['adminId'], $admins)) {
-					continue;
-				}
-				if ($c['adminName'] != $lastAdmin && $lastAdmin != '') {
-					for ($i = $lastDay; $i < 7; $i++) {
-						echo '<td></td>';
-					}
-					echo '</tr>';
-				}
-				if ($c['adminName'] != $lastAdmin) {
-					echo '<tr><td>'.$c['adminName'].'</td><td>'.$c['adminAddress'].'</td><td><a href="mailto:'.$c['adminEmail'].'">'.$c['adminEmail'].'</a></td>';
-					$lastAdmin = $c['adminName'];
-					$lastDay = 0;
-				}
-				for ($i = $lastDay; $i < $c['day'] - 1; $i++) {
-					echo '<td></td>';
-				}
-				if (strlen($c['comment'])) {
-					$lastComment++;
-					$comments[$lastComment] = $c['comment'];
-				}
-				echo '<td'.($c['day'] == $currentDay ? ' class="sruDutyHoursCurrentDay"' : '').'>'.($c['active'] ? '' : '<del>').$this->formatHour($c['startHour']).'-'.$this->formatHour($c['endHour']).($c['active'] ? '' : '</del>').(strlen($c['comment']) ? ' <span title="'.$c['comment'].'" class="sruDutyHoursCommentIndex">('.$lastComment.')</span>' : '').'</td>';
-				$lastDay = $c['day'];
-			}
-			for ($i = $lastDay; $i < 7; $i++) {
-				echo '<td></td>';
+			foreach ($dormAdmins as $admin) {
+					echo $admins[$admin];
 			}
 		}
 		echo '</tr></tbody></table>';

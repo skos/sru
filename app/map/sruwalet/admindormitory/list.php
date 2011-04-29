@@ -9,6 +9,7 @@ extends UFmap {
 		'id'             => 'a.id',
 		'admin'          => 'a.admin',
 		'adminName'	 => 'a.name',
+		'adminType'	 => 'm.type_id',
 		'dormitory'      => 'a.dormitory',
 		'dormitoryName'  => 'd.name',
 		'dormitoryAlias' => 'd.alias',
@@ -18,6 +19,7 @@ extends UFmap {
 		'id'             => self::INT,
 		'admin'          => self::INT,
 		'adminName'      => self::TEXT,
+		'adminType'	 => self::INT,
 		'dormitory'      => self::INT,
 		'dormitoryName'  => self::TEXT,
 		'dormitoryAlias' => self::TEXT,
@@ -28,9 +30,11 @@ extends UFmap {
 	);
 	protected $joins = array(
 		'd' => 'dormitories',
+		'm' => 'admins',
 	);
 	protected $joinOns = array(
 		'd' => 'a.dormitory = d.id',
+		'm' => 'a.admin = m.id',
 	);
 	protected $pk = 'a.id';
 }

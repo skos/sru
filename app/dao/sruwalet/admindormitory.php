@@ -30,6 +30,7 @@ extends UFdao {
 
 		$query = $this->prepareSelect($mapping);
 		$query->where($mapping->dormitory, $id);
+		$query->where($mapping->adminType, UFacl_SruAdmin_Admin::BOT, UFlib_Db_Query::LTE);
 		$query->order($mapping->adminName);
 
 		return $this->doSelect($query);
