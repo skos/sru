@@ -51,7 +51,7 @@ extends UFtpl_Common {
 					echo '</tr>';
 				}
 				if ($c['adminName'] != $lastAdmin) {
-					echo '<tr><td>'.$c['adminName'].'</td><td>'.$c['adminAddress'].'</td><td>'.$c['adminEmail'].'</td>';
+					echo '<tr><td>'.$c['adminName'].'</td><td><a href="mailto:'.$c['adminAddress'].'">'.$c['adminAddress'].'</a></td><td>'.$c['adminEmail'].'</td>';
 					$lastAdmin = $c['adminName'];
 					$lastDay = 0;
 				}
@@ -62,7 +62,7 @@ extends UFtpl_Common {
 					$lastComment++;
 					$comments[$lastComment] = $c['comment'];
 				}
-				echo '<td'.($c['day'] == $currentDay ? ' class="sruDutyHoursCurrentDay"' : '').'>'.($c['active'] ? '' : '<del>').$this->formatHour($c['startHour']).'-'.$this->formatHour($c['endHour']).($c['active'] ? '' : '</del>').(strlen($c['comment']) ? ' <span class="sruDutyHoursCommentIndex">('.$lastComment.')</span>' : '').'</td>';
+				echo '<td'.($c['day'] == $currentDay ? ' class="sruDutyHoursCurrentDay"' : '').'>'.($c['active'] ? '' : '<del>').$this->formatHour($c['startHour']).'-'.$this->formatHour($c['endHour']).($c['active'] ? '' : '</del>').(strlen($c['comment']) ? ' <span title="'.$c['comment'].'" class="sruDutyHoursCommentIndex">('.$lastComment.')</span>' : '').'</td>';
 				$lastDay = $c['day'];
 			}
 			for ($i = $lastDay; $i < 7; $i++) {
