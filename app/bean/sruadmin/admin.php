@@ -36,6 +36,13 @@ extends UFbeanSingle {
 			return 'unknown';
 		}
 	}
+	
+	protected function validateActiveTo($val, $change) {
+		$post = $this->_srv->get('req')->post->{$change?'adminEdit':'adminAdd'};
+		if (strtotime($val) <= time()){
+			return 'tooOld';
+		}
+	}
 
 	protected function normalizePassword($val, $change) {
 		$this->_password = $val;
