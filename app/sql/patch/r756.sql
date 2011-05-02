@@ -1,4 +1,5 @@
 ALTER TABLE computers ADD COLUMN last_seen timestamp without time zone;
+ALTER TABLE computers ADD COLUMN last_activated timestamp without time zone not null default now();
 
 CREATE OR REPLACE FUNCTION computers_seen_update(macaddr, timestamp) returns boolean AS '
 	BEGIN

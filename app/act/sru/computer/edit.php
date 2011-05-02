@@ -36,6 +36,7 @@ extends UFact {
 				} catch (UFex_Dao_NotFound $e) {
 				}
 				$bean->active = true;
+				$bean->lastActivated = NOW;
 				$bean->availableMaxTo = $bean->availableTo;
 				// aktualizacja lokalizacji komputera
 				$bean->locationId = $user->locationId;

@@ -20,6 +20,7 @@ extends UFmap_Sru_Computer_Add {
 		'typeId'         => 'type_id',
 		'canAdmin'       => 'can_admin',
 		'lastSeen'	 => 'last_seen',
+		'lastActivated'	 => 'last_activated',
 	);
 	protected $columnTypes = array(
 		'host'           => self::TEXT,
@@ -38,6 +39,7 @@ extends UFmap_Sru_Computer_Add {
 		'typeId'         => self::INT,
 		'canAdmin'       => self::BOOL,
 		'lastSeen'	 => self::TS,
+		'lastActivated'	 => self::TS,
 	);
 	protected $tables = array(
 		'' => 'computers',

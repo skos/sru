@@ -357,7 +357,7 @@ extends UFdao {
 	}
 
 	/**
-	 * Dezaktywuje komputery, które nie były widzialne w sieci od $days dni
+	 * Dezaktywuje komputery, które nie były widzialne w sieci (i aktywowane) od $days dni
 	 * @return bool sukces lub porażka
 	 */
 	public function deactivateNotSeen($days, $modifiedBy = null) {
@@ -369,7 +369,8 @@ extends UFdao {
 		);
 		$query = $this->prepareUpdate($mapping, $data);
 		$query->where($mapping->active, true);
-		$query->where($mapping->lastSeen, time() - 14*24*60*60, $query->LT);
+		$query->where($mapping->lastSeen, time() - $days*24*60*60, $query->LT);
+		$query->where($mapping->lastActivated, time() - $days*24*60*60, $query->LT);
 		
 		return $this->doUpdate($query);
 	}
