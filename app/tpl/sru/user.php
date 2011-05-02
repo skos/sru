@@ -582,7 +582,7 @@ function changeUnregisterVisibility() {
 		echo 'Welcome in SKOS network';
 	}
 
-	public function userAddMailBodyPolish(array $d) {
+	public function userAddMailBodyPolish(array $d, $dutyHours) {
 		echo 'Witamy w Sieci Komputerowej Osiedla Studenckiego Politechniki Gdańskiej!'."\n";
 		echo "\n";
 		echo 'Jeżeli otrzymałeś/aś tę wiadomość, a nie masz konta w SKOS PG, prosimy o zignorowanie tej wiadomości.'."\n\n";
@@ -604,9 +604,13 @@ function changeUnregisterVisibility() {
 		echo 'Wszystkie informacje dotyczące Domów studenckich znajdziesz na stronie:'."\n";
 		echo 'http://akademiki.pg.gda.pl'."\n";
 		echo "\n";
+		echo '- - - - - - - - - - -'."\n";
+		echo "\n";
+		$dutyHours->write('upcomingDutyHoursToEmailPolish', $d, 3);
+		echo "\n";
 	}
 	
-	public function userAddMailBodyEnglish(array $d) {
+	public function userAddMailBodyEnglish(array $d, $dutyHours) {
 		echo 'Welcome in Gdańsk University of Technology Students’ Campus Computer Network (polish acronym - SKOS PG)!' . "\n";
 		echo "\n";
 		echo 'If you received this message but you don’t have an account in SKOS PG, please ignore it.' . "\n";
@@ -616,6 +620,11 @@ function changeUnregisterVisibility() {
 		echo 'http://skos.ds.pg.gda.pl/'."\n";
 		echo 'Any information about our dormitories you can find on our page'."\n";
 		echo 'http://akademiki.pg.gda.pl/'."\n";
+		echo "\n";
+		echo '- - - - - - - - - - -'."\n";
+		echo "\n";
+		$dutyHours->write('upcomingDutyHoursToEmailEnglish', $d, 3);
+		echo "\n";
 	}
 
 	public function userRecoverPasswordMailTitlePolish(array $d) {

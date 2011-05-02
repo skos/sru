@@ -82,7 +82,7 @@ extends UFtpl_Common {
 		}
 	}
 
-	public function apiUpcomingDutyHours(array $d, $days, $dormitories) {
+	public function apiUpcomingDutyHours(array $d, $days, $dormitories, $html = true) {
 		$currentDay = date('N');
 		$lastDay = $currentDay + $days;
 		$thisWeek = '';
@@ -105,11 +105,15 @@ extends UFtpl_Common {
 				} else {
 					$dayName = self::$dayNames[$c['day']].' ';
 				}
-				$thisWeek .=  '<tr><td>'.$c['adminName'].'</td><td>'.$c['adminAddress'].'</td>';
-				if (!is_null($dormitories)) {
-					$thisWeek .= '<td>'.$this->listDorms($c['adminId'], $dormitories).'</td>';
+				if ($html) {
+					$thisWeek .=  '<tr><td>'.$c['adminName'].'</td><td>'.$c['adminAddress'].'</td>';
+					if (!is_null($dormitories)) {
+						$thisWeek .= '<td>'.$this->listDorms($c['adminId'], $dormitories).'</td>';
+					}
+					$thisWeek .= '<td>'.$dayName.$this->formatHour($c['startHour']).'-'.$this->formatHour($c['endHour']).(strlen($c['comment']) ? ' <span class="sruDutyHoursCommentIndex">('.$lastComment.')</span>' : '').'</td></tr>';
+				} else {
+					$thisWeek .= $c['adminName'].' ('.$c['adminAddress'].'): '.$dayName.$this->formatHour($c['startHour']).'-'.$this->formatHour($c['endHour']).(strlen($c['comment']) ? ' ('.$lastComment.')' : '')."\n";
 				}
-				$thisWeek .= '<td>'.$dayName.$this->formatHour($c['startHour']).'-'.$this->formatHour($c['endHour']).(strlen($c['comment']) ? ' <span class="sruDutyHoursCommentIndex">('.$lastComment.')</span>' : '').'</td></tr>';
 			}
 			if ($c['day'] <= $lastDay - 7) {
 				if (strlen($c['comment'])) {
@@ -121,35 +125,57 @@ extends UFtpl_Common {
 				} else {
 					$dayName = self::$dayNames[$c['day']].' ';
 				}
-				$nextWeek .=  '<tr><td>'.$c['adminName'].'</td><td>'.$c['adminAddress'].'</td>';
-				if (!is_null($dormitories)) {
-					$nextWeek .= '<td>'.$this->listDorms($c['adminId'], $dormitories).'</td>';
+				if ($html) {
+					$nextWeek .=  '<tr><td>'.$c['adminName'].'</td><td>'.$c['adminAddress'].'</td>';
+					if (!is_null($dormitories)) {
+						$nextWeek .= '<td>'.$this->listDorms($c['adminId'], $dormitories).'</td>';
+					}
+					$nextWeek .= '<td>'.$dayName.$this->formatHour($c['startHour']).'-'.$this->formatHour($c['endHour']).(strlen($c['comment']) ? ' <span class="sruDutyHoursCommentIndex">('.$lastComment.')</span>' : '').'</td></tr>';
+				} else {
+					$nextWeek .= $c['adminName'].' ('.$c['adminAddress'].'): '.$dayName.$this->formatHour($c['startHour']).'-'.$this->formatHour($c['endHour']).(strlen($c['comment']) ? ' ('.$lastComment.')' : '')."\n";
 				}
-				$nextWeek .= '<td>'.$dayName.$this->formatHour($c['startHour']).'-'.$this->formatHour($c['endHour']).(strlen($c['comment']) ? ' <span class="sruDutyHoursCommentIndex">('.$lastComment.')</span>' : '').'</td></tr>';
 			}
 		}
 
-		if (strlen($thisWeek) || strlen($nextWeek)) {
-			echo '<table class="sruDutyHoursUpcoming"><thead><tr><th>Administrator</th><th>Gdzie<br/>(Where)</th>';
-			if (!is_null($dormitories)) {
-				echo '<th>Akademiki<br/>(Dorms)</th>';
-			}
-			echo '<th>Kiedy<br/>(When)</th></tr></thead><tbody>';
-			echo $thisWeek;
-			echo $nextWeek;
-			echo '</tbody></table>';
-			if ($lastComment > 0) {
-				echo '<div class="sruDutyHoursComments">';
-				for ($i = 1; $i <= $lastComment; $i++) {
-					echo '('.$i.') '.$comments[$i].'<br/>';
+		if ($html) {
+			if (strlen($thisWeek) || strlen($nextWeek)) {
+				echo '<table class="sruDutyHoursUpcoming"><thead><tr><th>Administrator</th><th>Gdzie<br/>(Where)</th>';
+				if (!is_null($dormitories)) {
+					echo '<th>Akademiki<br/>(Dorms)</th>';
 				}
-				echo '</div>';
+				echo '<th>Kiedy<br/>(When)</th></tr></thead><tbody>';
+				echo $thisWeek;
+				echo $nextWeek;
+				echo '</tbody></table>';
+				if ($lastComment > 0) {
+					echo '<div class="sruDutyHoursComments">';
+					for ($i = 1; $i <= $lastComment; $i++) {
+						echo '('.$i.') '.$comments[$i].'<br/>';
+					}
+					echo '</div>';
+				}
+			} else {
+				if ($days > 0 ) {
+					echo '<div class="sruDutyHoursNoHours">Żaden administrator nie ma dyżurów w ciągu nadchodzących '.$days.' dni.</div>';
+				} else {
+					echo '<div class="sruDutyHoursNoHours">Żaden administrator nie ma dziś dyżurów.</div>';
+				}
 			}
 		} else {
-			if ($days > 0 ) {
-				echo '<div class="sruDutyHoursNoHours">Żaden administrator nie ma dyżurów w ciągu nadchodzących '.$days.' dni.</div>';
+			if (strlen($thisWeek) || strlen($nextWeek)) {
+				echo $thisWeek;
+				echo $nextWeek;
+				if ($lastComment > 0) {
+					for ($i = 1; $i <= $lastComment; $i++) {
+						echo '('.$i.') '.$comments[$i]."\n";
+					}
+				}
 			} else {
-				echo '<div class="sruDutyHoursNoHours">Żaden administrator nie ma dziś dyżurów.</div>';
+				if ($days > 0 ) {
+					echo 'Żaden administrator nie ma dyżurów w ciągu nadchodzących '.$days.' dni.';
+				} else {
+					echo 'Żaden administrator nie ma dziś dyżurów.';
+				}
 			}
 		}
 	}
@@ -157,6 +183,18 @@ extends UFtpl_Common {
 	public function upcomingDutyHours(array $d, $user, $days) {
 		echo '<h3>Adres e-mail do wszystkich administratorów w DSie:<br/><a href="mailto:admin-'.$user->dormitoryAlias.'@ds.pg.gda.pl">admin-'.$user->dormitoryAlias.'@ds.pg.gda.pl</a>.</h3>';
 		$this->apiUpcomingDutyHours($d, $days, null);
+	}
+
+	public function upcomingDutyHoursToEmailPolish(array $d, $user, $days) {
+		echo 'Adres e-mail do wszystkich administratorów SKOS w DSie: admin-'.(is_array($user) ? $user['dormitoryAlias'] : $user->dormitoryAlias).'@ds.pg.gda.pl'."\n";
+		echo 'Najbliższe dyżury Twoich administratorów:'."\n";
+		$this->apiUpcomingDutyHours($d, $days, null, false);
+	}
+
+	public function upcomingDutyHoursToEmailEnglish(array $d, $user, $days) {
+		echo 'The e-mail address to all administrators in your dormitory: admin-'.(is_array($user) ? $user['dormitoryAlias'] : $user->dormitoryAlias).'@ds.pg.gda.pl'."\n";
+		echo 'The next duty hours of your SKOS administrators:'."\n";
+		$this->apiUpcomingDutyHours($d, $days, null, false);
 	}
 
 	private function formatHour($hour) {

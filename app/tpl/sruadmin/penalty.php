@@ -296,7 +296,7 @@ changeVisibility();
 		}
 	}
 
-	public function penaltyAddMailBodyPolish(array $d, $user, $computers) {
+	public function penaltyAddMailBodyPolish(array $d, $user, $computers, $dutyHours) {
 		echo 'Informujemy, że otrzymał(a/e)ś ';
 		if ($d['typeId'] == UFbean_SruAdmin_Penalty::TYPE_WARNING) {
 			echo 'OSTRZEŻENIE';
@@ -319,9 +319,13 @@ changeVisibility();
 		echo "\n".'Szczegółowe informacje znajdziesz w Systemie Rejestracji Użytkowników: http://sru.ds.pg.gda.pl';
 		echo ' (Twój login to: '.$user->login.')';
 		echo "\n\n";
+		echo '- - - - - - - - - - -'."\n";
+		echo "\n";
+		$dutyHours->write('upcomingDutyHoursToEmailPolish', $user, 3);
+		echo "\n";
 	}
 
-	public function penaltyAddMailBodyEnglish(array $d, $user, $computers) {
+	public function penaltyAddMailBodyEnglish(array $d, $user, $computers, $dutyHours) {
 		echo 'We inform, that you got the ';
 		if ($d['typeId'] == UFbean_SruAdmin_Penalty::TYPE_WARNING) {
 			echo 'WARNING';
@@ -343,6 +347,10 @@ changeVisibility();
 		echo "\n".'Reason: '.$d['reason']."\n";
 		echo "\n".'You can find more information in Users’ Registration System: http://sru.ds.pg.gda.pl';
 		echo ' (your login: '.$user->login.')';
+		echo "\n\n";
+		echo '- - - - - - - - - - -'."\n";
+		echo "\n";
+		$dutyHours->write('upcomingDutyHoursToEmailEnglish', $user, 3);
 		echo "\n";
 	}
 
@@ -362,7 +370,7 @@ changeVisibility();
 		}
 	}
 	
-	public function penaltyEditMailBodyPolish(array $d, $user) {
+	public function penaltyEditMailBodyPolish(array $d, $user, $dutyHours) {
 		echo 'Informujemy, że zmodyfikowano ';
 		if ($d['typeId'] == UFbean_SruAdmin_Penalty::TYPE_WARNING) {
 			echo 'Twoje OSTRZEŻENIE';
@@ -375,9 +383,13 @@ changeVisibility();
 		echo "\n".'Szczegółowe informacje znajdziesz w Systemie Rejestracji Użytkowników: http://sru.ds.pg.gda.pl';
 		echo ' (Twój login to: '.$user->login.')';
 		echo "\n\n";
+		echo '- - - - - - - - - - -'."\n";
+		echo "\n";
+		$dutyHours->write('upcomingDutyHoursToEmailPolish', $user, 3);
+		echo "\n";
 	}
 
-	public function penaltyEditMailBodyEnglish(array $d, $user) {
+	public function penaltyEditMailBodyEnglish(array $d, $user, $dutyHours) {
 		echo 'We inform, that your ';
 		if ($d['typeId'] == UFbean_SruAdmin_Penalty::TYPE_WARNING) {
 			echo 'WARNING';
@@ -389,6 +401,10 @@ changeVisibility();
 		echo 'Reason: '.$d['reason']."\n";
 		echo "\n".'You can find more information in Users` Registration System: http://sru.ds.pg.gda.pl';
 		echo ' (your login: '.$user->login.')';
+		echo "\n\n";
+		echo '- - - - - - - - - - -'."\n";
+		echo "\n";
+		$dutyHours->write('upcomingDutyHoursToEmailEnglish', $user, 3);
 		echo "\n";
 	}
 

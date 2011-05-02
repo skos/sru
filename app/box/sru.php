@@ -52,6 +52,15 @@ extends UFbox {
 	public function userAddMailBody($user) {
 		$d['user'] = $user;
 		$d['host'] = $this->_srv->get('req')->server->HTTP_HOST;
+
+		try {
+			$hours = UFra::factory('UFbean_SruAdmin_DutyHoursList');
+			$hours->listUpcomingByDormId($user->dormitoryId);
+			$d['dutyHours'] = $hours;
+		} catch (UFex_Dao_NotFound $e) {
+			$d['dutyHours'] = null;
+		}
+
 		return $this->render(__FUNCTION__, $d);
 	}
 
@@ -315,6 +324,15 @@ extends UFbox {
 		$d['penalty'] = $penalty;
 		$d['user'] = $user;
 		$d['computers'] = $computers;
+
+		try {
+			$hours = UFra::factory('UFbean_SruAdmin_DutyHoursList');
+			$hours->listUpcomingByDormId($user->dormitoryId);
+			$d['dutyHours'] = $hours;
+		} catch (UFex_Dao_NotFound $e) {
+			$d['dutyHours'] = null;
+		}
+
 		return $this->render(__FUNCTION__, $d);
 	}
 
@@ -327,6 +345,15 @@ extends UFbox {
 	public function penaltyEditMailBody($penalty, $user) {
 		$d['penalty'] = $penalty;
 		$d['user'] = $user;
+
+		try {
+			$hours = UFra::factory('UFbean_SruAdmin_DutyHoursList');
+			$hours->listUpcomingByDormId($user->dormitoryId);
+			$d['dutyHours'] = $hours;
+		} catch (UFex_Dao_NotFound $e) {
+			$d['dutyHours'] = null;
+		}
+
 		return $this->render(__FUNCTION__, $d);
 	}
 

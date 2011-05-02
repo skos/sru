@@ -283,9 +283,9 @@ extends UFtpl_Common {
 
 	public function userAddMailBody(array $d) {
 		if ($d['user']->lang == 'en') {
-			echo $d['user']->write('userAddMailBodyEnglish');
+			echo $d['user']->write('userAddMailBodyEnglish', $d['dutyHours']);
 		} else {
-			echo $d['user']->write('userAddMailBodyPolish');
+			echo $d['user']->write('userAddMailBodyPolish', $d['dutyHours']);
 		}
 	}
 
@@ -323,9 +323,9 @@ extends UFtpl_Common {
 	
 	public function penaltyAddMailBody(array $d) {
 		if ($d['user']->lang == 'en') {
-			echo $d['penalty']->write('penaltyAddMailBodyEnglish', $d['user'], $d['computers']);
+			echo $d['penalty']->write('penaltyAddMailBodyEnglish', $d['user'], $d['computers'], $d['dutyHours']);
 		} else {
-			echo $d['penalty']->write('penaltyAddMailBodyPolish', $d['user'], $d['computers']);
+			echo $d['penalty']->write('penaltyAddMailBodyPolish', $d['user'], $d['computers'], $d['dutyHours']);
 		}
 	}
 
@@ -339,9 +339,9 @@ extends UFtpl_Common {
 	
 	public function penaltyEditMailBody(array $d) {
 		if ($d['user']->lang == 'en') {
-			echo $d['penalty']->write('penaltyEditMailBodyEnglish', $d['user']);
+			echo $d['penalty']->write('penaltyEditMailBodyEnglish', $d['user'], $d['dutyHours']);
 		} else {
-			echo $d['penalty']->write('penaltyEditMailBodyPolish', $d['user']);
+			echo $d['penalty']->write('penaltyEditMailBodyPolish', $d['user'], $d['dutyHours']);
 		}
 	}
 	
