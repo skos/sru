@@ -49,7 +49,7 @@ extends UFtpl_Common {
 		}
 		
 		echo '<table id="inhabitantsT" class="bordered"><thead><tr>';
-		echo '<th>Dom Studencki</th>';
+		echo '<th>Dom studencki</th>';
 		echo '<th>Limit</th>';
 		echo '<th>Mieszkańców</th>';
 		echo '<th>Wolne</th>';

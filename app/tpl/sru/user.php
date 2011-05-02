@@ -257,7 +257,7 @@ extends UFtpl_Common {
 		echo '<table id="resultsT" class="bordered"><thead><tr>';
 		echo '<th>Imię</th>';
 		echo '<th>Nazwisko</th>';
-		echo '<th>Dom Studencki</th>';
+		echo '<th>Dom studencki</th>';
 		echo '<th>Pokój</th>';
 		echo '<th>Nr indeksu</th>';
 		echo '</tr></thead><tbody>';

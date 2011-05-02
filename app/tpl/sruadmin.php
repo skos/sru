@@ -548,7 +548,7 @@ extends UFtpl_Common {
 		$url = $this->url(0).'/admins/'.$d['admin']->id;
 		$acl = $this->_srv->get('acl');
 
-		echo '<h3>Domy Studenckie</h3>';
+		echo '<h3>Domy studenckie</h3>';
 		$d['admin']->write('listDorms', $d['dormList']);
 		if($acl->sruAdmin('admin', 'edit', $d['admin']->id)) {
 			echo '<a href="'.$url.'/:edit">Edycja</a> &bull; ';
@@ -557,7 +557,7 @@ extends UFtpl_Common {
 	}
 
 	public function adminDormsNotFound() {
-		echo '<h3>Domy Studenckie</h3>';
+		echo '<h3>Domy studenckie</h3>';
 		echo $this->ERR('Brak przypisanych DSów');
 	}
 

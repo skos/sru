@@ -154,7 +154,7 @@ extends UFtpl_Common {
 		echo $form->phone('Telefon');
 		echo $form->gg('GG');
 		echo $form->jid('Jabber');
-		echo $form->address('Adres', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Lokalizacja lub miejsce przebywania administratora." /><br/>'));
+		echo $form->address('Adres', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Lokalizacja lub miejsce przebywania administratora. Zawartość tego pola pojawi się w tabeli dyżurów, więc powinna być zgodna z formatem wpisywanych tam danych." /><br/>'));
 
 		if($this->_srv->get('acl')->sruAdmin('admin', 'addChangeActiveDate'))
 			echo $form->activeTo('Aktywny do');
@@ -198,7 +198,7 @@ extends UFtpl_Common {
 			echo $form->typeId('Uprawnienia', array(
 				'type' => $form->SELECT,
 				'labels' => $form->_labelize(UFtpl_SruAdmin_Admin::$adminTypes),
-			));
+			));	
 			echo $form->active('Aktywny', array('type'=>$form->CHECKBOX) );
 
 		}
@@ -211,13 +211,12 @@ extends UFtpl_Common {
 		echo $form->phone('Telefon');
 		echo $form->gg('GG');
 		echo $form->jid('Jabber');
-		echo $form->address('Adres', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Lokalizacja lub miejsce przebywania administratora." /><br/>'));
+		echo $form->address('Adres', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Lokalizacja lub miejsce przebywania administratora. Zawartość tego pola pojawi się w tabeli dyżurów, więc powinna być zgodna z formatem wpisywanych tam danych." /><br/>'));
 		
-		$instrukcjaObslugiPolaAktywnyDo = 'Wypełnia centralny. Data w formacie YYYY-MM-DD<br/>Możliwe warunki to:<br/>1. Brak daty = administrator nigdy nie zostanie zdezaktywowany automatycznie.<br />2. Data > now = administrator zostanie zdezaktywowany gdy przyjdzie na niego czas.<br />3. Data < now = administrator zostnie zdezaktywowany przy najbliższym wywołaniu skryptu.<br />';
 		if($this->_srv->get('acl')->sruAdmin('admin', 'addChangeActiveDate'))
-			echo $form->activeTo('Aktywny do', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="' . $instrukcjaObslugiPolaAktywnyDo . '" /><br/>'));
+			echo $form->activeTo('Aktywny do');
 		else
-			echo $form->activeTo('Aktywny do', array('disabled' => true, 'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="' . $instrukcjaObslugiPolaAktywnyDo . '" /><br/>'));
+			echo $form->activeTo('Aktywny do', array('disabled' => true));
 
 		$tmp = array();
 		foreach ($dormitories as $dorm) {
@@ -267,7 +266,7 @@ extends UFtpl_Common {
 
 		if($this->_srv->get('acl')->sruAdmin('admin', 'changeAdminDorms')) {
 			$post = $this->_srv->get('req')->post;
-			echo '<div id="dorms">' . $form->_fieldset('Domy studenckie');
+			echo '<div id="dorms">' . $form->_fieldset('Domy studenckie pod opieką');
 			foreach ($dormitories as $dorm) {
 				$permission = 0;
 				try {
