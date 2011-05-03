@@ -371,6 +371,7 @@ extends UFdao {
 		);
 		$query = $this->prepareUpdate($mapping, $data);
 		$query->where($mapping->active, true);
+		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_SERVER, $query->NOT_EQ);
 		$query->where($mapping->lastSeen, time() - $days*24*60*60, $query->LT);
 		$query->where($mapping->lastActivated, time() - $days*24*60*60, $query->LT);
 		
