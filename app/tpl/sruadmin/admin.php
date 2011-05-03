@@ -147,7 +147,7 @@ extends UFtpl_Common {
 		echo $form->password('Hasło', array('type'=>$form->PASSWORD));
 		echo $form->password2('Powtórz hasło', array('type'=>$form->PASSWORD));
 		echo $form->name('Nazwa', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Imię i nazwisko administratora lub inne oznaczenie." /><br/>'));
-		$instrukcjaObslugiPolaAktywnyDo = 'Wypełnia centralny. Data w formacie YYYY-MM-DD<br/>Możliwe warunki to:<br/>1. Brak daty = administrator nigdy nie zostanie zdezaktywowany automatycznie.<br />2. Data >= now = administrator zostanie zdezaktywowany gdy przyjdzie na niego czas.<br />3. Data < now = administrator zostnie zdezaktywowany przy najbliższym wywołaniu skryptu.<br />';
+		$instrukcjaObslugiPolaAktywnyDo = 'Wypełnia centralny. Data w formacie YYYY-MM-DD >= now<br/>Możliwe warunki to:<br/>1. Brak daty - administrator nigdy nie zostanie zdezaktywowany automatycznie.<br />2. Data >= now - administrator zostanie zdezaktywowany gdy przyjdzie na niego czas.<br />';
 		if($this->_srv->get('acl')->sruAdmin('admin', 'addChangeActiveDate'))
 			 echo $form->activeTo('Aktywny do', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="' . $instrukcjaObslugiPolaAktywnyDo . '" /><br/>')); 
 		echo $form->typeId('Uprawnienia', array(
@@ -191,7 +191,7 @@ extends UFtpl_Common {
 		
 		echo $form->password('Hasło', array('type'=>$form->PASSWORD));
 		echo $form->password2('Powtórz hasło', array('type'=>$form->PASSWORD));
-		$instrukcjaObslugiPolaAktywnyDo = 'Wypełnia centralny. Data w formacie YYYY-MM-DD<br/>Możliwe warunki to:<br/>1. Brak daty = administrator nigdy nie zostanie zdezaktywowany automatycznie.<br />2. Data >= now = administrator zostanie zdezaktywowany gdy przyjdzie na niego czas.<br />3. Data < now = administrator zostnie zdezaktywowany przy najbliższym wywołaniu skryptu.<br />';
+		$instrukcjaObslugiPolaAktywnyDo = 'Wypełnia centralny. Data w formacie YYYY-MM-DD >= now<br/>Możliwe warunki to:<br/>1. Brak daty - administrator nigdy nie zostanie zdezaktywowany automatycznie.<br />2. Data >= now - administrator zostanie zdezaktywowany gdy przyjdzie na niego czas.<br />';
 		if($this->_srv->get('acl')->sruAdmin('admin', 'addChangeActiveDate'))
 			echo $form->activeTo('Aktywny do', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="' . $instrukcjaObslugiPolaAktywnyDo . '" /><br/>'));
 		else
@@ -215,11 +215,6 @@ extends UFtpl_Common {
 		echo $form->gg('GG');
 		echo $form->jid('Jabber');
 		echo $form->address('Adres', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Lokalizacja lub miejsce przebywania administratora. Zawartość tego pola pojawi się w tabeli dyżurów, więc powinna być zgodna z formatem wpisywanych tam danych." /><br/>'));
-		
-		if($this->_srv->get('acl')->sruAdmin('admin', 'addChangeActiveDate'))
-			echo $form->activeTo('Aktywny do');
-		else
-			echo $form->activeTo('Aktywny do', array('disabled' => true));
 
 		$tmp = array();
 		foreach ($dormitories as $dorm) {
