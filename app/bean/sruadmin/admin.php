@@ -39,7 +39,7 @@ extends UFbeanSingle {
 	
 	protected function validateActiveTo($val, $change) {
 		$post = $this->_srv->get('req')->post->{$change?'adminEdit':'adminAdd'};
-		if (strtotime($val) <= time()){
+		if ($val != "" && strtotime($val) <= time()){
 			return 'tooOld';
 		}
 	}
