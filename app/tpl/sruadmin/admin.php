@@ -118,7 +118,7 @@ extends UFtpl_Common {
 			}else{
 				echo '<p><em>Data dezaktywacji nie została podana</em></p>';
 			}
-			if($d['activeTo'] - time() <= UFra::shared('UFconf_Sru')->adminDeactivateAfter && $d['activeTo'] - time() >= 0)
+			if($d['active'] == true && $d['activeTo'] - time() <= UFra::shared('UFconf_Sru')->adminDeactivateAfter && $d['activeTo'] - time() >= 0)
 				echo $this->ERR("Konto niedługo ulegnie dezaktywacji, należy przedłużyć jego ważność w CUI!");
 		}
 	}
@@ -147,7 +147,7 @@ extends UFtpl_Common {
 		echo $form->password('Hasło', array('type'=>$form->PASSWORD));
 		echo $form->password2('Powtórz hasło', array('type'=>$form->PASSWORD));
 		echo $form->name('Nazwa', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Imię i nazwisko administratora lub inne oznaczenie." /><br/>'));
-		$instrukcjaObslugiPolaAktywnyDo = 'Wypełnia centralny. Data w formacie YYYY-MM-DD >= now<br/>Możliwe warunki to:<br/>1. Brak daty - administrator nigdy nie zostanie zdezaktywowany automatycznie.<br />2. Data >= now - administrator zostanie zdezaktywowany gdy przyjdzie na niego czas.<br />';
+		$instrukcjaObslugiPolaAktywnyDo = 'Wypełnia centralny. Data w formacie YYYY-MM-DD<br/>Możliwe warunki to:<br/>1. Brak daty - administrator nigdy nie zostanie zdezaktywowany automatycznie.<br />2. Data >= now - administrator zostanie zdezaktywowany gdy przyjdzie na niego czas.<br />';
 		if($this->_srv->get('acl')->sruAdmin('admin', 'addChangeActiveDate'))
 			 echo $form->activeTo('Aktywny do', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="' . $instrukcjaObslugiPolaAktywnyDo . '" /><br/>')); 
 		echo $form->typeId('Uprawnienia', array(
@@ -191,7 +191,7 @@ extends UFtpl_Common {
 		
 		echo $form->password('Hasło', array('type'=>$form->PASSWORD));
 		echo $form->password2('Powtórz hasło', array('type'=>$form->PASSWORD));
-		$instrukcjaObslugiPolaAktywnyDo = 'Wypełnia centralny. Data w formacie YYYY-MM-DD >= now<br/>Możliwe warunki to:<br/>1. Brak daty - administrator nigdy nie zostanie zdezaktywowany automatycznie.<br />2. Data >= now - administrator zostanie zdezaktywowany gdy przyjdzie na niego czas.<br />';
+		$instrukcjaObslugiPolaAktywnyDo = 'Wypełnia centralny. Data w formacie YYYY-MM-DD<br/>Możliwe warunki to:<br/>1. Brak daty - administrator nigdy nie zostanie zdezaktywowany automatycznie.<br />2. Data >= now - administrator zostanie zdezaktywowany gdy przyjdzie na niego czas.<br />';
 		if($this->_srv->get('acl')->sruAdmin('admin', 'addChangeActiveDate'))
 			echo $form->activeTo('Aktywny do', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="' . $instrukcjaObslugiPolaAktywnyDo . '" /><br/>'));
 		else
