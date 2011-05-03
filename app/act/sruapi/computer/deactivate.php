@@ -19,6 +19,7 @@ extends UFact {
 			$bean->modifiedAt = NOW;
 			$bean->availableTo = NOW;
 			$bean->active = false;
+			$bean->canAdmin = false;
 			
 			$bean->save();
 
