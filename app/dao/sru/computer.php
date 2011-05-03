@@ -366,8 +366,8 @@ extends UFdao {
 			$mapping->active => false,
 			$mapping->modifiedById => $modifiedBy,
 			$mapping->modifiedAt => NOW,
-			$mapping->availableTo => NOW;
-			$mapping->canAdmin = false;
+			$mapping->availableTo => NOW,
+			$mapping->canAdmin = false,
 		);
 		$query = $this->prepareUpdate($mapping, $data);
 		$query->where($mapping->active, true);
