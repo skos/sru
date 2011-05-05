@@ -154,7 +154,9 @@ extends UFtpl_Common {
 		if (count($acls)) {
 			echo '<p><em>Uprawnienia:</em> '.implode(', ', $acls).'</p>';
 		}
-		echo '<p><em>Widziany:</em> '.($d['lastSeen'] == 0 ? 'nigdy' : date(self::TIME_YYMMDD_HHMM, $d['lastSeen'])).'</p>';
+		if ($d['typeId'] != UFbean_Sru_Computer::TYPE_SERVER) {
+			echo '<p><em>Widziany:</em> '.($d['lastSeen'] == 0 ? 'nigdy' : date(self::TIME_YYMMDD_HHMM, $d['lastSeen'])).'</p>';
+		}
 		if (is_null($d['modifiedBy'])) {
 			$changed = 'UŻYTKOWNIK';
 		} else {
