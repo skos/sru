@@ -550,7 +550,7 @@ extends UFtpl_Common {
 
 		echo '<h3>Domy studenckie</h3>';
 		$d['admin']->write('listDorms', $d['dormList']);
-		if($acl->sruAdmin('admin', 'edit', $d['admin']->id)) {
+		if($acl->sruAdmin('admin', 'changeAdminDorms')) {
 			echo '<a href="'.$url.'/:edit">Edycja</a> &bull; ';
 		}
 		echo '<a href="'.$this->url(0).'/admins/">Powrót</a>';
