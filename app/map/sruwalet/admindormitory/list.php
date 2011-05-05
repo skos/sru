@@ -8,7 +8,7 @@ extends UFmap {
 	protected $columns = array(
 		'id'             => 'a.id',
 		'admin'          => 'a.admin',
-		'adminName'	 => 'a.name',
+		'adminName'	 => 'm.name',
 		'adminType'	 => 'm.type_id',
 		'dormitory'      => 'a.dormitory',
 		'dormitoryName'  => 'd.name',
