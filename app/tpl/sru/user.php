@@ -604,10 +604,12 @@ function changeUnregisterVisibility() {
 		echo 'Wszystkie informacje dotyczące Domów studenckich znajdziesz na stronie:'."\n";
 		echo 'http://akademiki.pg.gda.pl'."\n";
 		echo "\n";
-		echo '- - - - - - - - - - -'."\n";
-		echo "\n";
-		$dutyHours->write('upcomingDutyHoursToEmailPolish', $d, 3);
-		echo "\n";
+		if (!is_null($dutyHours)) {
+			echo '- - - - - - - - - - -'."\n";
+			echo "\n";
+			$dutyHours->write('upcomingDutyHoursToEmailPolish', $d, 3);
+			echo "\n";
+		}
 	}
 	
 	public function userAddMailBodyEnglish(array $d, $dutyHours) {
@@ -621,10 +623,12 @@ function changeUnregisterVisibility() {
 		echo 'Any information about our dormitories you can find on our page'."\n";
 		echo 'http://akademiki.pg.gda.pl/'."\n";
 		echo "\n";
-		echo '- - - - - - - - - - -'."\n";
-		echo "\n";
-		$dutyHours->write('upcomingDutyHoursToEmailEnglish', $d, 3);
-		echo "\n";
+		if (!is_null($dutyHours)) {
+			echo '- - - - - - - - - - -'."\n";
+			echo "\n";
+			$dutyHours->write('upcomingDutyHoursToEmailEnglish', $d, 3);
+			echo "\n";
+		}
 	}
 
 	public function userRecoverPasswordMailTitlePolish(array $d) {

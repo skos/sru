@@ -319,10 +319,12 @@ changeVisibility();
 		echo "\n".'Szczegółowe informacje znajdziesz w Systemie Rejestracji Użytkowników: http://sru.ds.pg.gda.pl';
 		echo ' (Twój login to: '.$user->login.')';
 		echo "\n\n";
-		echo '- - - - - - - - - - -'."\n";
-		echo "\n";
-		$dutyHours->write('upcomingDutyHoursToEmailPolish', $user, 3);
-		echo "\n";
+		if (!is_null($dutyHours)) {
+			echo '- - - - - - - - - - -'."\n";
+			echo "\n";
+			$dutyHours->write('upcomingDutyHoursToEmailPolish', $user, 3);
+			echo "\n";
+		}
 	}
 
 	public function penaltyAddMailBodyEnglish(array $d, $user, $computers, $dutyHours) {
@@ -348,10 +350,12 @@ changeVisibility();
 		echo "\n".'You can find more information in Users’ Registration System: http://sru.ds.pg.gda.pl';
 		echo ' (your login: '.$user->login.')';
 		echo "\n\n";
-		echo '- - - - - - - - - - -'."\n";
-		echo "\n";
-		$dutyHours->write('upcomingDutyHoursToEmailEnglish', $user, 3);
-		echo "\n";
+		if (!is_null($dutyHours)) {
+			echo '- - - - - - - - - - -'."\n";
+			echo "\n";
+			$dutyHours->write('upcomingDutyHoursToEmailEnglish', $user, 3);
+			echo "\n";
+		}
 	}
 
 	public function penaltyEditMailTitlePolish(array $d) {
@@ -383,10 +387,12 @@ changeVisibility();
 		echo "\n".'Szczegółowe informacje znajdziesz w Systemie Rejestracji Użytkowników: http://sru.ds.pg.gda.pl';
 		echo ' (Twój login to: '.$user->login.')';
 		echo "\n\n";
-		echo '- - - - - - - - - - -'."\n";
-		echo "\n";
-		$dutyHours->write('upcomingDutyHoursToEmailPolish', $user, 3);
-		echo "\n";
+		if (!is_null($dutyHours)) {
+			echo '- - - - - - - - - - -'."\n";
+			echo "\n";
+			$dutyHours->write('upcomingDutyHoursToEmailPolish', $user, 3);
+			echo "\n";
+		}
 	}
 
 	public function penaltyEditMailBodyEnglish(array $d, $user, $dutyHours) {
@@ -402,10 +408,12 @@ changeVisibility();
 		echo "\n".'You can find more information in Users` Registration System: http://sru.ds.pg.gda.pl';
 		echo ' (your login: '.$user->login.')';
 		echo "\n\n";
-		echo '- - - - - - - - - - -'."\n";
-		echo "\n";
-		$dutyHours->write('upcomingDutyHoursToEmailEnglish', $user, 3);
-		echo "\n";
+		if (!is_null($dutyHours)) {
+			echo '- - - - - - - - - - -'."\n";
+			echo "\n";
+			$dutyHours->write('upcomingDutyHoursToEmailEnglish', $user, 3);
+			echo "\n";
+		}
 	}
 
 	public function stats(array $d) {
