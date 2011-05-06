@@ -69,7 +69,9 @@ extends UFtpl_Common {
 			}
 			echo '<tr><td colspan="10" class="sruDutyHoursDormitoryName">'.$dorm[0]['dormitoryName'].' (<a href="mailto:admin-'.$dorm[0]['dormitoryAlias'].'@ds.pg.gda.pl">admin-'.$dorm[0]['dormitoryAlias'].'@ds.pg.gda.pl</a>)</td></tr>';
 			foreach ($dormAdmins as $admin) {
+				if (array_key_exists($admin, $admins)) {
 					echo $admins[$admin];
+				}
 			}
 		}
 		echo '</tr></tbody></table>';
