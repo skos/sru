@@ -500,15 +500,38 @@ changeVisibility();
 		echo '<table style="text-align: center; width: 100%;">';
 		echo '<tr><th>Admin</th><th>Liczba kar</th><th>Liczba ostrzeżeń</th></tr>';
 		arsort($banners);
+		$tmp = array_merge_recursive($banners, $warningers);	
+		$tmp2 = array();
+		$max = 0;
+		$maxKey = '';
+		$counter = count($tmp);
+		for($i = 0; $i < $counter; $i++){
+			foreach($tmp as $key => $val){
+				if($val[0] > $max){
+					$max = $val[0];
+					$maxKey = $key;
+				}else if($val[0] == $max && $val[1] > $tmp[$maxKey][1]){
+					$maxKey = $key;
+				}else if ($val[0] == $max && $val[1] == $tmp[$maxKey][1] && strnatcmp($key, $maxKey) < 0){
+					$maxKey = $key;
+				}
+			}
+			$tmp2[$i] = array($maxKey, $tmp[$maxKey][0], $tmp[$maxKey][1]);
+			unset($tmp[$maxKey]);
+			$maxKey = '';
+			$max = 0;
+		}
 		$i = 0;
 		$chartData = '';
 		$chartDataW = '';
 		$chartLabel = '';
 		$biggestSum = 0;
+		$j = 0;
 		while ($b = current ($banners)) {
 			$urlAdmin = $this->url(0).'/admins/'.$admins[key($banners)];
 			$warningsNum = $warningers[key($banners)];
-			echo '<tr><td><a href="'.$urlAdmin.'">'.key($banners).'</td></a><td>'.$b.'</td><td>'.$warningsNum.'</td></tr>';
+			echo '<tr><td><a href="'.$urlAdmin.'">'.$tmp2[$j][0].'</td></a><td>'.$tmp2[$j][1].'</td><td>'.$tmp2[$j][2].'</td></tr>';
+			$j++;
 			if ($i < 10) {
 				$chartData = $chartData.$b.',';
 				$chartDataW = $chartDataW.$warningsNum.',';
