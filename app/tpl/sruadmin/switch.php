@@ -59,10 +59,11 @@ extends UFtpl_Common {
 			echo $c['inoperational'] ? '</span>' : '';
 			echo is_null($c['ip']) ? '</del>' : '';
 			echo ' - <small><a href="'.$url.''.$c['serialNo'].'/:edit">Edytuj</a>';
+			$swstatsLink = str_replace($conf->swstatsSwitchRegex, UFtpl_SruAdmin_Switch::displaySwitchName($c['dormitoryAlias'], $c['hierarchyNo']), $conf->swstatsLinkSwitch);
 			if (!is_null($c['ip'])) {
 				echo ' &bull; <a href="'.$url.''.$c['serialNo'].'/:lockoutsedit">Lockout-MAC</a>';
 				echo ' &bull; <a href="'.$url.$c['serialNo'].'/tech">Technikalia</a>';
-				echo ' &bull; <a href="'.$conf->swstatsLink.$this->displaySwitchName($c['dormitoryAlias'], $c['hierarchyNo']).'">SWStats</a>';
+				echo ' &bull; <a href="'.$swstatsLink.'">SWStats</a>';
 			}
 			echo '</small></li>';
 			
@@ -123,7 +124,8 @@ extends UFtpl_Common {
 		}
 		echo '<a href="'.$url.'/switches/'.$d['serialNo'].'/tech">Technikalia</a> &bull;';
 		if (!is_null($d['ip'])) {
-			echo ' <a href="'.$conf->swstatsLink.$this->displaySwitchName($d['dormitoryAlias'], $d['hierarchyNo']).'">SWStats</a> &bull;';
+			$swstatsLink = str_replace($conf->swstatsSwitchRegex, UFtpl_SruAdmin_Switch::displaySwitchName($d['dormitoryAlias'], $d['hierarchyNo']), $conf->swstatsLinkSwitch);
+			echo ' <a href="'.$swstatsLink.'">SWStats</a> &bull;';
 		}
 		echo ' <span id="switchMoreSwitch"></span></p>';
 		echo '<div id="switchMore">';
