@@ -18,9 +18,11 @@ extends UFact {
 			if (is_null($switch->ip)) {
 				return;
 			}
+			$nothingToDo = true;
 
 			$hp = UFra::factory('UFlib_Snmp_Hp', $switch->ip);
 			if ($post['mac'] != '') {
+				$nothingToDo = false;
 				if (!preg_match($pattern, $post['mac'])) {
 					throw UFra::factory('UFex_Dao_DataNotValid', 'MAC format error', 0, E_WARNING, array('mac' => 'wrongFormat'));
 				}
@@ -40,6 +42,7 @@ extends UFact {
 			}
 
 			if (isset($post['lockouts'])) {
+				$nothingToDo = false;
 				while (key($post['lockouts'])) {
 					if (current($post['lockouts'])) {
 						$result = $hp->setLockoutMac(key($post['lockouts']), false);
@@ -49,6 +52,10 @@ extends UFact {
 					}
 					next($post['lockouts']);
 				}
+			}
+			
+			if ($nothingToDo) {
+				throw UFra::factory('UFex_Dao_DataNotValid', 'Nothing to change', 0, E_WARNING, array('switch' => 'nothingToDo'));
 			}
 
  			$this->markOk(self::PREFIX);

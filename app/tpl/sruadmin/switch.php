@@ -336,6 +336,9 @@ function fillData() {
 		if ($this->_srv->get('msg')->get('switchLockoutsEdit/errors/switch/writingError')) {
 			echo $this->ERR('Nie udało się zapisać danych na switcha');
 		}
+		if ($this->_srv->get('msg')->get('switchLockoutsEdit/errors/switch/nothingToDo')) {
+			echo $this->ERR('Nie podano żadnych ustawień do zmiany');
+		}
 		if (!is_null($lockouts)) {
 			echo '<em>Usuń zablokowane adresy MAC:</em><br/>';
 			foreach ($lockouts as $lockout) {
