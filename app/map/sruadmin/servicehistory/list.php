@@ -26,7 +26,7 @@ extends UFmap {
 	);
 	protected $joins = array(
 		'a' => 'admins',
-		't' => 'computers',
+		't' => 'services_type',
 	);
 	protected $joinOns = array(
 		'a' => 'h.modified_by = a.id',
