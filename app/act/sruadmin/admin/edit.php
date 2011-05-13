@@ -68,7 +68,8 @@ extends UFact {
 			for ($i = 1; $i <= 7; $i++) {
 				$dh = $post['dutyHours'][$i];
 				if (!is_null($dh) && $dh != '') {
-					$hours = str_replace(':', '', $dh);
+					$hours = str_replace(' ', '', trim($dh));
+					$hours = str_replace(':', '', $hours);
 					$hours = explode('-', $hours);
 					$startHour = '';
 					$endHour = '';

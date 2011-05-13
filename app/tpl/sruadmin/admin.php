@@ -185,7 +185,7 @@ extends UFtpl_Common {
 		}
 		$form = UFra::factory('UFlib_Form', 'adminEdit', $d, $this->errors);
 
-		echo $form->_fieldset();
+		echo $form->_fieldset('Dane podstawowe');
 		
 		echo $form->name('Nazwa', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Imię i nazwisko administratora lub inne oznaczenie." /><br/>'));
 		
@@ -255,7 +255,7 @@ extends UFtpl_Common {
 				$dhComment = $dHours[$i]->getComment();
 				$dhActive = $dHours[$i]->getActive();
 			}
-			echo $form->dutyHours(UFtpl_SruAdmin_DutyHours::getDayName($i), array('name'=>'adminEdit[dutyHours]['.$i.']', 'value'=>$dHour));
+			echo $form->dutyHours(UFtpl_SruAdmin_DutyHours::getDayName($i), array('name'=>'adminEdit[dutyHours]['.$i.']', 'value'=>$dHour, 'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Godziny dyżurów danego dnia w formacie: 20:00-21:00" /><br/>'));
 			echo $form->dhComment('Komentarz', array('name'=>'adminEdit[dhComment]['.$i.']', 'value'=>$dhComment));
 			echo $form->dhActive('Odbędzie się', array('type'=>$form->CHECKBOX, 'name'=>'adminEdit[dhActive]['.$i.']', 'value'=>$dhActive));
 			echo '<br />';

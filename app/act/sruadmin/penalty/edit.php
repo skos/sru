@@ -67,10 +67,10 @@ extends UFact {
 				}
 				$tplTitle = $bean->templateTitle;
 			}
-			if ($post['newComment'] == '' || $post['newComment'] == $bean->comment) {
+			if (trim($post['newComment']) == '' || trim($post['newComment']) == $bean->comment) {
 				throw UFra::factory('UFex_Dao_DataNotValid', 'Modification comment cannot be null', 0, E_WARNING, array('newComment' => 'notNull'));
 			}
-			$bean->comment = $post['newComment'];
+			$bean->comment = trim($post['newComment']);
 			$bean->modifiedAt = NOW;
 			$bean->modifiedById = $this->_srv->get('session')->authAdmin; 
 			if ($bean->endAt <= NOW) {
