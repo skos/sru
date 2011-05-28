@@ -3,12 +3,12 @@
  * dodanie uzytkownika
  */
 class UFview_SruAdmin_UserAdd
-extends UFview {
+extends UFview_SruAdmin {
 
 	public function fillData() {
-		$box  = UFra::shared('UFbox_Sru');
+		$box  = UFra::shared('UFbox_SruAdmin');
 
 		$this->append('title', $box->titleUserAdd());
-		$this->append('body', $box->userAdd(true));
+		$this->append('body', $box->userAdd());
 	}
 }

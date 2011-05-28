@@ -8,6 +8,7 @@ extends UFmap {
 	protected $columns = array(
 		'login'          => 'login',
 		'password'       => 'password',
+		'typeId'	 => 'type_id',
 		'name'           => 'name',
 		'surname'        => 'surname',
 		'email'          => 'email',
@@ -27,6 +28,7 @@ extends UFmap {
 	protected $columnTypes = array(
 		'login'          => self::TEXT,
 		'password'       => self::TEXT,
+		'typeId'	 => self::INT,
 		'name'           => self::TEXT,
 		'surname'        => self::TEXT,
 		'email'          => self::TEXT,

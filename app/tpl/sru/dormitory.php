@@ -88,14 +88,13 @@ $(document).ready(function()
 	}
 
 	public function inhabitantsAlphabetically(array $d, $users) {
-		$conf = UFra::shared('UFconf_Sru');
 		echo '<table><thead><tr>';
 		echo '<th>Imię</th>';
 		echo '<th>Nazwisko</th>';
 		echo '<th>Pokój</th>';
 		echo '</tr></thead><tbody>';
 		foreach ($users as $user) {
-			if (in_array($user['name'], $conf->exclusions)) {
+			if ($user['typeId'] > UFtpl_Sru_User::$userTypesLimit) {
 				continue;
 			}
 			echo '<tr><td style="border: 1px solid;">'.$user['name'].'</td>';

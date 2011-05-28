@@ -101,7 +101,7 @@ extends UFctl {
 					return 'SruAdmin_AdminEdit';
 				} else {
 					return 'Sru_Error403';
-				}											
+				}
 			default:
 				return 'Sru_Error404';
 		}

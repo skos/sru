@@ -285,6 +285,7 @@ extends UFtpl_Common {
 
 	public function userSearch(array $d) {
 		$form = UFra::factory('UFlib_Form');
+		$acl = $this->_srv->get('acl');
 
 		echo '<h2>Szukaj | <a href="'.$this->url(0).'/services">Usługi</a></h2>';
 
@@ -293,6 +294,9 @@ extends UFtpl_Common {
 		echo $form->_fieldset('Znajdź użytkownika');
 		echo $d['user']->write('formSearch', $d['searched']);
 		echo $form->_submit('Znajdź');
+		if ($acl->sruAdmin('user', 'add')) {
+			echo ' <a href="'.$this->url(0).'/users/:add">Dodaj</a>';
+		}
 		echo $form->_end();
 		echo $form->_end(true);
 		echo '</div>';
@@ -382,6 +386,22 @@ extends UFtpl_Common {
 	}
 	public function userInactiveComputersNotFound() {
 	}
+
+	public function titleUserAdd() {
+		echo 'Załóż konto';
+	}
+
+	public function userAdd(array $d) {
+		$form = UFra::factory('UFlib_Form');
+
+		echo $form->_start();
+		echo $form->_fieldset('Załóż konto');
+		echo $d['user']->write('formAddAdmin', $d['dormitories']);
+		echo $form->_submit('Załóż');
+		echo $form->_end();
+		echo $form->_end(true);
+	}
+
 	public function titleUserEdit(array $d) {
 		echo $d['user']->write('titleEdit');
 	}

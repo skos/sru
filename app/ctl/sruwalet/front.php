@@ -231,7 +231,11 @@ extends UFctl {
 			case 'users/quicksearch':
 				return 'SruWalet_UserQuickSearch';
 			case 'users/user':
-				return 'SruWalet_User';
+				if ($acl->sruWalet('user', 'view', $get->userId)) {
+					return 'SruWalet_User';
+				} else {
+					return 'Sru_Error403';
+				}
 			case 'users/user/history':
 				return 'SruWalet_UserHistory';
 			case 'users/user/servicehistory':

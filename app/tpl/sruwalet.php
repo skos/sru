@@ -206,7 +206,7 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 
 		echo $form->_start();
 		echo $form->_fieldset('Załóż konto');
-		echo $d['user']->write('formAdd', $d['dormitories'], $d['faculties'], $d['surname'], $d['registryNo']);
+		echo $d['user']->write('formAddWalet', $d['dormitories'], $d['faculties'], $d['surname'], $d['registryNo']);
 		echo $form->_submit('Załóż');
 		echo $form->_end();
 		echo $form->_end(true);

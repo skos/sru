@@ -128,7 +128,7 @@ extends UFbox {
 				$tmp['registryNo'] = $get->searchedRegistryNo;
 			} catch (UFex_Core_DataNotFound $e) {
 			}
-			$bean->search($tmp);
+			$bean->search($tmp, true);
 			if (1 == count($bean)) {
 				$get->userId = $bean[0]['id'];
 				return $this->user();

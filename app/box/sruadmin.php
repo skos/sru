@@ -409,6 +409,10 @@ extends UFbox {
 			$tmp['dormitory'] = $get->searchedDormitory;
 		} catch (UFex_Core_DataNotFound $e) {
 		}
+		try {
+			$tmp['typeId'] = $get->searchedTypeId;
+		} catch (UFex_Core_DataNotFound $e) {
+		}
 		$d['searched'] = $tmp;
 
 		return $this->render(__FUNCTION__, $d);
@@ -446,6 +450,10 @@ extends UFbox {
 			}
 			try {
 				$tmp['dormitory'] = $get->searchedDormitory;
+			} catch (UFex_Core_DataNotFound $e) {
+			}
+			try {
+				$tmp['typeId'] = $get->searchedTypeId;
 			} catch (UFex_Core_DataNotFound $e) {
 			}
 			$bean->search($tmp);
@@ -518,7 +526,23 @@ extends UFbox {
 		} catch (UFex_Dao_NotFound $e) {
 			return $this->render(__FUNCTION__.'NotFound');
 		}
-	}	
+	}
+
+	public function userAdd() {
+		try {
+			$dorms = UFra::factory('UFbean_Sru_DormitoryList');
+			$dorms->listAllForWalet();
+
+			$bean = UFra::factory('UFbean_Sru_User');
+	
+			$d['user'] = $bean;
+			$d['dormitories'] = $dorms;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return '';
+		}
+	}
 
 	public function userEdit() {
 		try {

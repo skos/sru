@@ -37,6 +37,7 @@ extends UFmap {
 		'changePasswordNeeded'	=> 'u.change_password_needed',
 		'passwordChanged'	=> 'u.password_changed',
 		'lang'		 => 'u.lang',
+		'typeId'	=> 'u.type_id',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -70,6 +71,7 @@ extends UFmap {
 		'changePasswordNeeded'	=> self::BOOL,
 		'passwordChanged'	=> self::TS,
 		'lang'           => self::TEXT,
+		'typeId'	=> self::INT,
 	);
 	protected $tables = array(
 		'u' => 'users_history',

@@ -29,6 +29,7 @@ extends UFmap {
 		'banned'         => 'u.banned',
 		'comment'        => 'u.comment',
 		'locationComment'=> 'l.comment',
+		'typeId'	 => 'u.type_id',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -54,6 +55,7 @@ extends UFmap {
 		'banned'         => self::BOOL,
 		'comment'        => self::TEXT,
 		'locationComment'=> self::TEXT,
+		'typeId'	 => self::INT,
 	);
 	protected $tables = array(
 		'u' => 'users',

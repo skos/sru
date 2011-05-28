@@ -9,6 +9,16 @@ extends UFlib_ClassWithService {
 		return $this->_srv->get('session')->is('authAdmin');
 	}
 
+	public function add() {
+		$sess = $this->_srv->get('session');
+		
+		if($this->_loggedIn() && $sess->is('typeId') && ($sess->typeId == UFacl_SruAdmin_Admin::CENTRAL || $sess->typeId == UFacl_SruAdmin_Admin::CAMPUS) )
+		{
+			return true;
+		}
+		return false;
+	}
+
 	public function edit() {
 		return $this->_loggedIn();
 	}

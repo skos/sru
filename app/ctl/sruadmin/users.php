@@ -43,8 +43,14 @@ extends UFctl {
 							case 'dormitory':
 								$get->searchedDormitory = urldecode($tmp[1]);
 								break;
+							case 'typeId':
+								$get->searchedTypeId = urldecode($tmp[1]);
+								break;
 						}
 					}
+					break;
+				case ':add':
+					$get->view = 'users/user/add';
 					break;
 				default:
 					$get->view = 'users/user';
@@ -101,6 +107,8 @@ extends UFctl {
 			$act = 'Computer_Add';
 		} elseif ($post->is('userSearch')) {
 			$act = 'User_Search';
+		} elseif ('users/user/add' == $get->view && $post->is('userAdd') && $acl->sruAdmin('user', 'add')) {
+			$act = 'User_Add';
 		} elseif ($post->is('userEdit') && $acl->sruAdmin('user', 'edit')) {
 			$act = 'User_Edit';
 		} elseif ('users/user/edit' == $get->view && $post->is('userDel') && $acl->sruAdmin('user', 'del')) {
@@ -138,6 +146,14 @@ extends UFctl {
 				return 'SruAdmin_UserHistory';
 			case 'users/user/servicehistory':
 				return 'SruAdmin_ServiceHistory';
+			case 'users/user/add':
+				if ($msg->get('userAdd/ok')) {
+					return 'SruAdmin_User';
+				} elseif ($acl->sruAdmin('user', 'add')) {
+					return 'SruAdmin_UserAdd';
+				} else {
+					return 'Sru_Error403';
+				}
 			case 'users/user/edit':
 				if ($msg->get('userDel/ok')) {
 					return 'SruAdmin_Main';

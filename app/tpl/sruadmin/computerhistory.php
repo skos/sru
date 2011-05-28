@@ -36,7 +36,7 @@ extends UFtpl_Common {
 		'comment' => 'Comment',
 		'canAdmin' => 'Administrator',
 		'active' => 'Active',
-		'typeId' => 'Typ',
+		'typeId' => 'Type',
 	);
 
 	protected function _diff(array $old, array $new) {

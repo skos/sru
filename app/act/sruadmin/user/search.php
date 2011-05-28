@@ -39,6 +39,9 @@ extends UFact {
 			if (isset($post['dormitory']) && !empty($post['dormitory'])) {
 				$finds[] = 'dormitory:'.urlencode(mb_strtolower($post['dormitory'], 'UTF-8'));
 			}
+			if (isset($post['typeId']) && !empty($post['typeId'])) {
+				$finds[] = 'typeId:'.urlencode(mb_strtolower($post['typeId'], 'UTF-8'));
+			}
 			if (count($finds)) {
 				UFlib_Http::redirect(UFURL_BASE.'/'.implode('/', $this->_srv->get('req')->segments(0)).'/users/search/'.implode('/', $finds));
 			}

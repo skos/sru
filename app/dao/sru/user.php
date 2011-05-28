@@ -38,7 +38,7 @@ extends UFdao {
 		return $this->getByPK($this->_srv->get('session')->auth);
 	}
 
-	public function search($params) {
+	public function search($params, $studentsOnly = false) {
 		$key = $this->cachePrefix.'/'.__FUNCTION__.'/'.print_r($params, true);
 		try {
 			return $this->cacheGet($key);
@@ -51,6 +51,9 @@ extends UFdao {
 			$query->order($mapping->surnameSearch, $query->ASC);
 			$query->order($mapping->nameSearch, $query->ASC);
 			$query->order($mapping->active, $query->DESC);
+			if ($studentsOnly) {
+				$query->where($mapping->typeId, UFtpl_Sru_User::$userTypesLimit, $query->LTE); //sami studenci i turyści
+			}
 			foreach ($params as $var=>$val) {
 				switch ($var) {
 					case 'surname':
@@ -63,6 +66,7 @@ extends UFdao {
 						$query->where($var.'Search', $val, UFlib_Db_Query::LIKE);
 						break;
 					case 'dormitory':
+					case 'typeId':
 					case 'registryNo':
 					default:
 						$query->where($var, $val);

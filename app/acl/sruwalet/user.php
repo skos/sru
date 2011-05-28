@@ -14,16 +14,20 @@ extends UFlib_ClassWithService {
 			return false;
 		}
 
-		$sess = $this->_srv->get('session');
-		if ($sess->typeIdWalet == UFacl_SruWalet_Admin::HEAD) {
-			return true;
-		}
-
 		try {
 			$user = UFra::factory('UFbean_Sru_User');
 			$user->getByPK($userId);
 		} catch (UFex_Dao_NotFound $e) {
 			return false;
+		}
+
+		if ($user->typeId > UFtpl_Sru_User::$userTypesLimit) {
+			return false;
+		}
+
+		$sess = $this->_srv->get('session');
+		if ($sess->typeIdWalet == UFacl_SruWalet_Admin::HEAD) {
+			return true;
 		}
 
 		if (!$user->active || is_null($user->referralStart) || $user->referralStart == 0) {
@@ -58,5 +62,19 @@ extends UFlib_ClassWithService {
 	
 	public function logout() {
 		return $this->_loggedIn();
+	}
+
+	public function view($userId) {
+		try {
+			$user = UFra::factory('UFbean_Sru_User');
+			$user->getByPK($userId);
+		} catch (UFex_Dao_NotFound $e) {
+			return false;
+		}
+
+		if ($user->typeId > UFtpl_Sru_User::$userTypesLimit) {
+			return false;
+		}
+		return true;
 	}
 }

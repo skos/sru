@@ -26,6 +26,42 @@ extends UFtpl_Common {
 		'en' => 'English',
 	);
 
+	protected static $userTypesForWalet = array(
+		1 => 'Student studiów dziennych',
+		2 => 'Doktorant',
+		3 => 'Sokrates',
+		4 => 'Student - obcokrajowiec',
+		5 => 'Student studiów wieczorowych/zaocznych',
+		6 => 'Student innej uczelni',
+		7 => 'Nie student',
+		21 => 'Student-turysta',
+		22 => 'Dydaktyka',
+		23 => 'Turysta indywidualny',
+	);
+
+	protected static $userTypesForAdmin = array(
+		51 => 'SKOS',
+		52 => 'Administracja',
+		53 => 'Organizacja',
+		54 => 'Ex-admin',
+	);
+
+	public static $userTypesLimit = 50; // do wyszukiwania
+
+	protected static $userTypesForSearch = array(
+		0 => '',
+	);
+
+	public static function getUserType($typeId) {
+		$userTypes = self::$userTypesForWalet + self::$userTypesForAdmin;
+		return $userTypes[$typeId];
+	}
+
+	public static function getUserTypes() {
+		$userTypes = self::$userTypesForSearch + self::$userTypesForWalet + self::$userTypesForAdmin;
+		return $userTypes;
+	}
+
 	protected $errors = array(
 		'login' => 'Podaj login',
 		'login/regexp' => 'Login zawiera niedozwolone znaki',
@@ -93,12 +129,51 @@ extends UFtpl_Common {
 		echo '<p>'.$d['name'].' '.$d['surname'].'</p>';
 	}
 
-	public function formAdd(array $d, $dormitories, $faculties, $surname, $registryNo) {
+	public function formAddAdmin(array $d, $dormitories) {
+		$form = UFra::factory('UFlib_Form', 'userAdd', $d, $this->errors);
+
+		echo $form->login('Login', array('class'=>'required'));
+		echo $form->email('E-mail', array('class'=>'required'));
+		echo $form->name('Imię', array('class'=>'required'));
+		echo $form->surname('Nazwisko', array('class'=>'required'));
+		echo $form->typeId('Typ', array(
+			'type' => $form->SELECT,
+			'labels' => $form->_labelize(self::$userTypesForAdmin),
+		));
+		$tmp = array();
+		foreach ($dormitories as $dorm) {
+			$temp = explode("ds", $dorm['dormitoryAlias']);
+			if (!isset($temp[1])) {
+				$temp[1] = $dorm['dormitoryAlias'];
+			} else if($temp[1] == '5l')
+				$temp[1] = '5Ł';
+			$tmp[$dorm['dormitoryId']] = $temp[1] . ' ' . $dorm['dormitoryName'];
+		}
+		echo $form->dormitory('Akademik', array(
+			'type' => $form->SELECT,
+			'labels' => $form->_labelize($tmp, '', ''),
+			'class'=>'required',
+		));
+		echo $form->locationAlias('Pokój', array('class'=>'required'));
+		echo $form->lang('Język', array(
+			'type' => $form->SELECT,
+			'labels' => $form->_labelize(self::$languages),
+			'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Wiadomości e-mail i GG będa przychodziły w wybranym języku.<br/><br/>You will receive e-mails and gg messages in the chosen language." /><br/>',
+		));
+		$referralStart = date(self::TIME_YYMMDD, time());
+		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
+	}
+
+	public function formAddWalet(array $d, $dormitories, $faculties, $surname, $registryNo) {
 		$form = UFra::factory('UFlib_Form', 'userAdd', $d, $this->errors);
 
 		echo $form->name('Imię', array('class'=>'required'));
 		echo $form->surname('Nazwisko', array('class'=>'required', 'value'=>$surname));
 		echo $form->registryNo('Nr indeksu', array('value'=>$registryNo));
+		echo $form->typeId('Typ', array(
+			'type' => $form->SELECT,
+			'labels' => $form->_labelize(self::$userTypesForWalet),
+		));
 		$tmp = array();
 		foreach ($dormitories as $dorm) {
 			$temp = explode("ds", $dorm['dormitoryAlias']);
@@ -214,7 +289,11 @@ extends UFtpl_Common {
 		echo $form->dormitory('Akademik', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize($tmp, '', ''),
-			));
+		));
+		echo $form->typeId('Typ', array(
+			'type' => $form->SELECT,
+			'labels' => $form->_labelize(self::getUserTypes()),
+		));
 	}
 
 	public function formSearchWalet(array $d, array $searched) {
@@ -303,6 +382,7 @@ $(document).ready(function()
 		$urlUser = $url.'/users/'.$d['id'];
 		echo '<h1>'.$this->_escape($d['name']).' '.$this->_escape($d['surname']).'</h1>';
 		echo '<p><em>Login:</em> '.$d['login'].(!$d['active']?' <strong>(konto nieaktywne)</strong>':'').'</p>';
+		echo '<p><em>Typ:</em> '.self::getUserType($d['typeId']);
 		echo '<p><em>E-mail:</em> <a href="mailto:'.$d['email'].'">'.$d['email'].'</a></p>';
 		if ($d['gg']) {
 			echo '<p><em>Gadu-Gadu:</em> <a href="gg:'.$d['gg'].'">'.$d['gg'].'</a></p>';
@@ -400,6 +480,7 @@ changeVisibility();
 		echo '<p><em>Miejsce:</em> <a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'">'.strtoupper($d['dormitoryAlias']).'</a>, '.$d['locationAlias'].'</p>';
 		echo '<p><em>Login:</em> '.$d['login'].(!$d['active']?' <strong>(konto nieaktywne)</strong>':'').'</p>';
 		echo '<p><em>Nr indeksu:</em> '.$d['registryNo'].'</p>';
+		echo '<p><em>Typ:</em> '.self::getUserType($d['typeId']);
 		echo '<p><em>E-mail:</em> <a href="mailto:'.$d['email'].'">'.$d['email'].'</a></p>';
 		echo '<p><em>Wydział:</em> '.(!is_null($d['facultyName'])?$d['facultyName']:'N/D').'</p>';
 		echo '<p><em>Rok studiów:</em> '.self::$studyYears[$d['studyYearId']].'</p>';
@@ -434,6 +515,8 @@ changeVisibility();
 	}
 
 	public function formEditAdmin(array $d, $faculties) {
+		$acl = $this->_srv->get('acl');
+
 		$d['locationId'] = $d['locationAlias'];
 		if (is_null($d['facultyId'])) {
 			$d['facultyId'] = '0';
@@ -446,6 +529,12 @@ changeVisibility();
 			echo $this->ERR('Nie ma wolnych IP w tym DS-ie');
 		}
 		echo $form->login('Login');
+		if ($acl->sruAdmin('user', 'add') && array_key_exists($d['typeId'], self::$userTypesForAdmin)) {
+			echo $form->typeId('Typ', array(
+				'type' => $form->SELECT,
+				'labels' => $form->_labelize(self::$userTypesForAdmin),
+			));
+		}
 		echo $form->email('E-mail');
 		echo $form->gg('Gadu-Gadu');
 		echo $form->lang('Język', array(
@@ -492,6 +581,10 @@ changeVisibility();
 				$temp[1] = '5Ł';
 			$tmp[$dorm['dormitoryId']] = $temp[1] . ' ' . $dorm['dormitoryName'];
 		}
+		echo $form->typeId('Typ', array(
+			'type' => $form->SELECT,
+			'labels' => $form->_labelize(self::$userTypesForWalet),
+		));
 		echo $form->dormitory('Akademik', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize($tmp),
@@ -737,12 +830,11 @@ function changeUnregisterVisibility() {
 	}
 
 	public function stats(array $d) {
-		$conf = UFra::shared('UFconf_Sru');
 		$sum = 0;
 		$woman = 0;
 		$faculties = array();
 		foreach ($d as $u) {
-			if (in_array($u['name'], $conf->exclusions)) {
+			if ($u['typeId'] > UFtpl_Sru_User::$userTypesLimit) {
 				continue;
 			}
 			if ($u['facultyName'] == '') {
@@ -961,7 +1053,6 @@ function changeUnregisterVisibility() {
 	}
 
 	function statsDorms(array $d) {
-		$conf = UFra::shared('UFconf_Sru');
 		$dormitories = array();
 		$dormitoriesId = array();
 		$banSum = 0;
@@ -975,7 +1066,7 @@ function changeUnregisterVisibility() {
 			if(!array_key_exists($u['dormitoryAlias'], $dormitories)) {
 				$dormitories[$u['dormitoryAlias']] = new ExtenededPeopleCounter();
 			}
-			if (in_array($u['name'], $conf->exclusions)) {
+			if ($u['typeId'] > UFtpl_Sru_User::$userTypesLimit) {
 				continue;
 			}
 			if (strtolower(substr($u['name'], -1)) == 'a') {
