@@ -152,7 +152,7 @@ function fullList() {
 		echo '</tbody></table>';
 
 ?>
-<script>
+<script type="text/javascript">
 $(document).ready(function() {
 	//default each row to visible
 	$('tbody tr').addClass('visible');

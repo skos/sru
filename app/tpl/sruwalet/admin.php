@@ -277,11 +277,13 @@ $(document).ready(function()
 		} else {
 			echo '<h2>Studenci bez podanego numeru indeksu:</h2>';
 			$lp = 0;
+			echo '<p><label for="filter">Filtruj:</label> <input type="text" name="filter" value="" id="filter" /></p>';
 			echo '<table id="withoutRegistryT" class="bordered"><thead><tr>';
 			echo '<th>L.p.</th>';
 			echo '<th>Imię</th>';
 			echo '<th>Nazwisko</th>';
 			echo '<th>Dom studencki</th>';
+			echo '<th>Akcja</th>';
 			echo '</tr></thead><tbody>';
 			foreach ($users as $dorm) {
 				if (!is_null($dorm)) {
@@ -290,7 +292,8 @@ $(document).ready(function()
 						echo '<td>'.$lp.'</td>';
 						echo '<td><a href="'.$url.'/users/'.$user['id'].'">'.$this->_escape($user['name']).'</a></td>';
 						echo '<td><a href="'.$url.'/users/'.$user['id'].'">'.$this->_escape($user['surname']).'</a></td>';
-						echo '<td><a href="'.$url.'/dormitories/'.$user['dormitoryAlias'].'">'.strtoupper($user['dormitoryAlias']).'</a></td></tr>';
+						echo '<td><a href="'.$url.'/dormitories/'.$user['dormitoryAlias'].'">'.strtoupper($user['dormitoryAlias']).'</a></td>';
+						echo '<td><a href="'.$url.'/users/'.$user['id'].'/:edit">Edytuj</a></td></tr>';
 					}
 				}
 			}
@@ -303,6 +306,35 @@ $(document).ready(function()
         $("#withoutRegistryT").tablesorter();
     }
 );
+
+$(document).ready(function() {
+	//default each row to visible
+	$('tbody tr').addClass('visible');
+
+	$('#filter').keyup(function(event) {
+		//if esc is pressed or nothing is entered
+		if (event.keyCode == 27 || $(this).val() == '') {
+			//if esc is pressed we want to clear the value of search box
+			$(this).val('');
+
+			//we want each row to be visible because if nothing
+			//is entered then all rows are matched.
+			$('tbody tr').removeClass('visible').show().addClass('visible');
+		} else { //if there is text, lets filter
+			filter('tbody tr', $(this).val());
+		}
+	});
+});
+
+//filter results based on query
+function filter(selector, query) {
+	query = $.trim(query); //trim white space
+	query = query.replace(/ /gi, '|'); //add OR for regex
+
+	$(selector).each(function() {
+		($(this).text().search(new RegExp(query, "i")) < 0) ? $(this).hide().removeClass('visible') : $(this).show().addClass('visible');
+	});
+}
 </script>
 <?
 	}	
