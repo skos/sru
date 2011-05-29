@@ -24,6 +24,7 @@ extends UFmap {
 		'modifiedAt'     => 'h.modified_at',
 		'comment'        => 'h.comment',
 		'canAdmin'       => 'h.can_admin',
+		'exAdmin'        => 'h.exadmin',
 		'active'         => 'h.active',
 		'typeId'	 => 'h.type_id',
 	);
@@ -46,6 +47,7 @@ extends UFmap {
 		'modifiedAt'     => self::TS,
 		'comment'        => self::TEXT,
 		'canAdmin'       => self::BOOL,
+		'exAdmin'        => self::BOOL,
 		'active'         => self::BOOL,
 		'typeId'	 => self::INT,
 	);

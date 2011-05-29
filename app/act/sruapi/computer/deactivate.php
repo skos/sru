@@ -20,6 +20,7 @@ extends UFact {
 			$bean->availableTo = NOW;
 			$bean->active = false;
 			$bean->canAdmin = false;
+			$bean->exAdmin = false;
 			
 			$bean->save();
 

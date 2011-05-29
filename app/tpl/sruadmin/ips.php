@@ -21,6 +21,9 @@ extends UFtpl_Common {
 						if ($ip['admin']) {
 							// admin
 							echo '<a href="'.$url.$ip['computerId'].'" title="'.$ip['computerHost'].' ('.$ip['computerDormitoryAlias'].')"><span class="admin">'.substr($ip['ip'], 11).'</span></a>';
+						} else if ($ip['exAdmin']) {
+							// ex-admin
+							echo '<a href="'.$url.$ip['computerId'].'" title="'.$ip['computerHost'].' ('.$ip['computerDormitoryAlias'].')"><span class="exadmin">'.substr($ip['ip'], 11).'</span></a>';
 						} elseif (!isset($ip['dormitoryAlias'])) {
 							// ip nie ma przypisanego ds-u
 							echo '<a href="'.$url.$ip['computerId'].'" title="'.$ip['computerHost'].' ('.$ip['computerDormitoryAlias'].') / '.$ip['ip'].' (bez DS)"><span class="not_signed">'.substr($ip['ip'], 11).'</span></a>';
@@ -49,7 +52,7 @@ extends UFtpl_Common {
 	}
 	
 	protected function showLegend() {
-		echo '<table><tr><td><span class="normal">OK</span></td><td><span class="admin">admin</span></td><td><span class="not_signed">brak przypisania DS</span></td></tr><tr><td><span class="wrong_dorm">brak zgodności DS</span></td><td><span class="banned">kara</span></td><td><span class="banned_wrong_dorm">kara i brak zgodności DS</span></td></tr></table><br/>';
+		echo '<table><tr><td colspan="3"><span class="normal">OK</span></td></tr><tr><td><span class="admin">admin</span></td><td><span class="exadmin">ex-admin</span></td><td><span class="not_signed">brak przypisania DS</span></td></tr><tr><td><span class="wrong_dorm">brak zgodności DS</span></td><td><span class="banned">kara</span></td><td><span class="banned_wrong_dorm">kara i brak zgodności DS</span></td></tr></table><br/>';
 	}
 
 	public function ips(array $d, $dorm) {

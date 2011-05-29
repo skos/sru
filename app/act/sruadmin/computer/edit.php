@@ -58,6 +58,11 @@ extends UFact {
 				$this->_srv->get('req')->post->{self::PREFIX} = $post;
 			}
 			$bean->fillFromPost(self::PREFIX); // zgodnie z ticketem #176 filtr wyłączony
+			if ($bean->canAdmin && $bean->exAdmin) {
+					$this->rollback();
+					$this->markErrors(self::PREFIX, array('exAdmin'=>'notWithAdmin'));
+					return;
+			}
 			if (!$bean->active && $bean->availableMaxTo > NOW && $user->active) {
 				// przywrocenie aktywnosci komputera, jezeli podano
 				// przyszla date waznosci rejestracji

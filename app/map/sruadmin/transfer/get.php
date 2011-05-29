@@ -10,6 +10,7 @@ extends UFmap {
 		'hostId'	=> 'c.id',
 		'host'		=> 'c.host',
 		'isAdmin'	=> 'c.can_admin',
+		'exAdmin'	=> 'c.exadmin',
 		'typeId'	=> 'c.type_id',
 		'isBanned'	=> 'c.banned',
 		'bytes_sum' 	=> 'sum(l.bytes)/1024/900',
@@ -24,6 +25,7 @@ extends UFmap {
 		'bytes_min'	=> self::INT,
 		'bytes_max'	=> self::INT,
 		'isAdmin'	=> self::BOOL,
+		'exAdmin'	=> self::BOOL,
 		'typeId'	=> self::INT,
 		'isBanned'	=> self::BOOL,
 	);

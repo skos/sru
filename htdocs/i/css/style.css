@@ -83,6 +83,7 @@ img { border-style: none; }
 #main .ips td .not_signed { display: block; font-style: normal; background-color: #ffc; color: #003d9a;}
 #main .ips td .wrong_dorm { display: block; background-color: #fcc; font-weight: normal; color: #003d9a;}
 #main .ips td .admin { display: block; background-color: #ccf; font-weight: normal; color: #003d9a;}
+#main .ips td .exadmin { display: block; background-color: #2cf; font-weight: normal; color: #003d9a;}
 #main .ips td .banned { display: block; background-color: #fc0; font-weight: normal; color: #003d9a;}
 #main .ips td .banned_wrong_dorm { display: block; background-color: #666; font-weight: normal; color: #003d9a;}
 

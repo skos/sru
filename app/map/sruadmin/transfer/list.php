@@ -9,6 +9,7 @@ extends UFmap_SruAdmin_Transfer_Get {
 		'hostId'	=> 'c.id',
 		'host'		=> 'c.host',
 		'isAdmin'	=> 'c.can_admin',
+		'exAdmin'	=> 'c.exadmin',
 		'typeId'	=> 'c.type_id',
 		'isBanned'	=> 'c.banned',
 		'bytes_sum' 	=> 'sum(l.bytes)/1024/1800',

@@ -26,7 +26,7 @@ extends UFtpl_Common {
 			} else if ($uploader['typeId'] == UFbean_Sru_Computer::TYPE_SERVER) {
 				$class = '<li class="serv">';
 				$suffix = ' - serwer';
-			} else if (in_array($uploader['ip'], $exAdmins)) {
+			} else if ($uploader['exAdmin']) {
 				$class = '<li class="exAdmin">';
 				$suffix = ' - exAdmin';
 			}

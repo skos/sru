@@ -19,6 +19,9 @@ extends UFact {
 			if ($bean->canAdmin) {
 				$bean->canAdmin = false;
 			}
+			if ($bean->exAdmin) {
+				$bean->exAdmin = false;
+			}
 			$bean->availableTo = NOW;
 			$bean->save();
 

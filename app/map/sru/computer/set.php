@@ -19,6 +19,7 @@ extends UFmap_Sru_Computer_Add {
 		'active'         => 'active',
 		'typeId'         => 'type_id',
 		'canAdmin'       => 'can_admin',
+		'exAdmin'        => 'exadmin',
 		'lastSeen'	 => 'last_seen',
 		'lastActivated'	 => 'last_activated',
 	);
@@ -38,6 +39,7 @@ extends UFmap_Sru_Computer_Add {
 		'active'         => self::BOOL,
 		'typeId'         => self::INT,
 		'canAdmin'       => self::BOOL,
+		'exAdmin'        => self::BOOL,
 		'lastSeen'	 => self::TS,
 		'lastActivated'	 => self::TS,
 	);

@@ -22,6 +22,7 @@ extends UFtpl_Common {
 		'availableMaxTo' => 'Rejestracja max do',
 		'comment' => 'Komentarz',
 		'canAdmin' => 'Administrator',
+		'exAdmin' => 'Ex-administrator',
 		'active' => 'Aktywny',
 		'typeId' => 'Typ',
 	);
@@ -35,6 +36,7 @@ extends UFtpl_Common {
 		'availableMaxTo' => 'Available max to',
 		'comment' => 'Comment',
 		'canAdmin' => 'Administrator',
+		'exAdmin' => 'Ex-administrator',
 		'active' => 'Active',
 		'typeId' => 'Type',
 	);
@@ -64,6 +66,7 @@ extends UFtpl_Common {
 					$changes[] = $names[$key].': <q>'.nl2br($val).'</q>'.$arr.'<q>'.nl2br($new[$key]).'</q>';
 					break;
 				case 'canAdmin':
+				case 'exAdmin':
 				case 'active':
 					$changes[] = $names[$key].': '.($val?'tak':'nie').$arr.($new[$key]?'tak':'nie');
 					break;
@@ -101,6 +104,7 @@ extends UFtpl_Common {
 			'modifiedAt' => $current->modifiedAt,
 			'comment' => $current->comment,
 			'canAdmin' => $current->canAdmin,
+			'exAdmin' => $current->exAdmin,
 			'active' => $current->active,
 			'typeId' => $current->typeId,
 		);

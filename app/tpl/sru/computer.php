@@ -41,6 +41,8 @@ extends UFtpl_Common {
 		'locationAlias' => 'Podaj pokój',
 		'locationAlias/noDormitory' => 'Wybierz akademik',
 		'locationAlias/noRoom' => 'Pokój nie istnieje',
+		'exAdmin/notWithAdmin' => 'Nie można ustawić jednocześnie uprawnień admina i ex-admina',
+
 	);
 	
 /*
@@ -150,6 +152,9 @@ extends UFtpl_Common {
 		$acls = array();
 		if ($d['canAdmin']) {
 			$acls[] = 'admin';
+		}
+		if ($d['exAdmin']) {
+			$acls[] = 'ex-admin';
 		}
 		if (count($acls)) {
 			echo '<p><em>Uprawnienia:</em> '.implode(', ', $acls).'</p>';
@@ -273,6 +278,7 @@ changeVisibility();
 		));
 		echo $form->_fieldset('Uprawnienia');
 		echo $form->canAdmin('Komputer administratora', array('type'=>$form->CHECKBOX));
+		echo $form->exAdmin('Komputer ex-administratora', array('type'=>$form->CHECKBOX));
 		echo $form->_end();
 		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
 
