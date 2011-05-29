@@ -23,7 +23,7 @@ extends UFtpl_Common {
 			} else if ($uploader['typeId'] == UFbean_Sru_Computer::TYPE_ADMINISTRATION) {
 				$class = '<li class="adm">';
 				$suffix = ' - administracja';
-			} else if ($uploader['typeId'] == UFbean_Sru_Computer::TYPE_SERVER) {
+			} else if ($uploader['typeId'] == UFbean_Sru_Computer::TYPE_SERVER || $uploader['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT) {
 				$class = '<li class="serv">';
 				$suffix = ' - serwer';
 			} else if ($uploader['exAdmin']) {

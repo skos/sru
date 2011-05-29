@@ -110,7 +110,7 @@ extends UFbox {
 			$switchPort = $hp->findMac($bean->mac);
 			$d['switchPort'] = $switchPort;
 
-			if ($bean->typeId == 4) {
+			if ($bean->typeId == UFbean_Sru_Computer::TYPE_SERVER || $bean->typeId == UFbean_Sru_Computer::TYPE_SERVER_VIRT) {
 				try {
 					$aliases = UFra::factory('UFbean_SruAdmin_ComputerAliasList');
 					$aliases->listByComputerId($bean->id);

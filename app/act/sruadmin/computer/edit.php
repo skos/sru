@@ -80,7 +80,7 @@ extends UFact {
 				$bean->availableTo = NOW;
 				$bean->active = false;
 
-				if ($bean->typeId == 4) {
+				if ($bean->typeId == UFbean_Sru_Computer::TYPE_SERVER || $bean->typeId == UFbean_Sru_Computer::TYPE_SERVER_VIRT) {
 					// jeśli usuwamy serwer, to musimy mu też usunąć przypisane aliasy
 					try {
 						$aliases = UFra::factory('UFbean_SruAdmin_ComputerAliasList');
@@ -111,7 +111,7 @@ extends UFact {
 				$box = UFra::factory('UFbox_SruAdmin');
 				$sender = UFra::factory('UFlib_Sender');
 				$admin = null;
-				if ($bean->typeId == UFbean_Sru_Computer::TYPE_SERVER) {
+				if ($bean->typeId == UFbean_Sru_Computer::TYPE_SERVER || $bean->typeId == UFbean_Sru_Computer::TYPE_SERVER_VIRT) {
 					$admin = UFra::factory('UFbean_SruAdmin_Admin');
 					$admin->getByPK($this->_srv->get('session')->authAdmin);
 				}

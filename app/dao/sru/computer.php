@@ -191,7 +191,7 @@ extends UFdao {
 		$mapping = $this->mapping('list');
 
 		$query = $this->prepareSelect($mapping);
-		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_SERVER);
+		$query->where($mapping->typeId, UFbean_Sru_Computer::LIMIT_SERVER, $query->GTE);
 		$query->where($mapping->active, true);
 		$query->order($mapping->host, $query->ASC);
 
@@ -283,7 +283,7 @@ extends UFdao {
 		$query = $this->prepareSelect($mapping);
 		$query->where($mapping->dormitoryId, $dormId);
 		$query->where($mapping->active, true);
-		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_STUDENT);
+		$query->where($mapping->typeId, UFbean_Sru_Computer::LIMIT_STUDENT, $query->LTE);
 		$query->order($mapping->mac);
 
 		return $this->doSelect($query);
@@ -372,6 +372,7 @@ extends UFdao {
 		$query = $this->prepareUpdate($mapping, $data);
 		$query->where($mapping->active, true);
 		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_SERVER, $query->NOT_EQ);
+		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_SERVER_VIRT, $query->NOT_EQ);
 		$query->where($mapping->lastSeen, time() - $days*24*60*60, $query->LT);
 		$query->where($mapping->lastActivated, time() - $days*24*60*60, $query->LT);
 		

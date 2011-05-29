@@ -6,18 +6,27 @@ class UFtpl_Sru_Computer
 extends UFtpl_Common {
 
 	protected $computerTypes = array(
-		1 => 'Student',
-		2 => 'Organizacja',
-		3 => 'Administracja',
-		4 => 'Serwer',
+		1 => 'Student - komp/tel',
+		2 => 'Student - AP',
+		3 => 'Student - inne',
+		11 => 'Turysta',
+		21 => 'Organizacja',
+		31 => 'Administracja',
+		41 => 'Serwer fizyczny',
+		42 => 'Serwer wirtualny',
+		
 	);
 
 	protected $computerSearchTypes = array(
-		5 => '',
-		1 => 'Student',
-		2 => 'Organizacja',
-		3 => 'Administracja',
-		4 => 'Serwer',
+		0 => '',
+		1 => 'Student - komp/tel',
+		2 => 'Student - AP',
+		3 => 'Student - inne',
+		11 => 'Turysta',
+		21 => 'Organizacja',
+		31 => 'Administracja',
+		41 => 'Serwer fizyczny',
+		42 => 'Serwer wirtualny',
 	);
 	
 	protected $errors = array(
@@ -159,7 +168,7 @@ extends UFtpl_Common {
 		if (count($acls)) {
 			echo '<p><em>Uprawnienia:</em> '.implode(', ', $acls).'</p>';
 		}
-		if ($d['typeId'] != UFbean_Sru_Computer::TYPE_SERVER) {
+		if ($d['typeId'] != UFbean_Sru_Computer::TYPE_SERVER && $d['typeId'] != UFbean_Sru_Computer::TYPE_SERVER_VIRT) {
 			echo '<p><em>Widziany:</em> '.($d['lastSeen'] == 0 ? 'nigdy' : date(self::TIME_YYMMDD_HHMM, $d['lastSeen'])).'</p>';
 		}
 		if (is_null($d['modifiedBy'])) {
@@ -419,7 +428,7 @@ div.style.display = 'none';
 	public function listAdmin(array $d) {
 		$url = $this->url(0).'/computers/';
 		foreach ($d as $c) {
-			echo '<li><a href="'.$url.$c['id'].'">'.$c['host'].' <small>'.$c['ip'].'/'.$c['mac'].'</small></a> <span>'.date(self::TIME_YYMMDD, $c['availableTo']).'</span>'.(strlen($c['comment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['comment'].'" />':'').'</li>';
+			echo '<li><a href="'.$url.$c['id'].'">'.$c['host'].' <small>'.$c['ip'].'/'.$c['mac'].'</small></a> <span>('.$this->computerTypes[$c['typeId']].') '.date(self::TIME_YYMMDD, $c['availableTo']).'</span>'.(strlen($c['comment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['comment'].'" />':'').'</li>';
 		}
 	}
 

@@ -20,7 +20,11 @@ extends UFbox {
 	}
 
 	public function dhcpStuds() {
-		return $this->configDhcp(UFbean_Sru_Computer::TYPE_STUDENT);
+		return $this->configDhcp(array(UFbean_Sru_Computer::TYPE_STUDENT, UFbean_Sru_Computer::TYPE_STUDENT_AP, UFbean_Sru_Computer::TYPE_STUDENT_OTHER));
+	}
+
+	public function dhcpTourists() {
+		return $this->configDhcp(UFbean_Sru_Computer::TYPE_TOURIST);
 	}
 
 	public function dhcpOrg() {
@@ -32,7 +36,7 @@ extends UFbox {
 	}
 
 	public function dhcpServ() {
-		return $this->configDhcp(UFbean_Sru_Computer::TYPE_SERVER);
+		return $this->configDhcp(array(UFbean_Sru_Computer::TYPE_SERVER, UFbean_Sru_Computer::TYPE_SERVER_VIRT));
 	}
 
 	public function dnsRev() {
@@ -53,8 +57,12 @@ extends UFbox {
 			$bean = UFra::factory('UFbean_Sru_ComputerList');
 			$bean->listAllActiveByType(array(
 				UFbean_Sru_Computer::TYPE_STUDENT,
+				UFbean_Sru_Computer::TYPE_STUDENT_AP,
+				UFbean_Sru_Computer::TYPE_STUDENT_OTHER,
+				UFbean_Sru_Computer::TYPE_TOURIST,
 				UFbean_Sru_Computer::TYPE_ORGANIZATION,
-				UFbean_Sru_Computer::TYPE_SERVER
+				UFbean_Sru_Computer::TYPE_SERVER,
+				UFbean_Sru_Computer::TYPE_SERVER_VIRT
 			));
 
 			$d['computers'] = $bean;

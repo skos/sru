@@ -6,9 +6,15 @@ class UFbean_Sru_Computer
 extends UFbean_Common {
 
 	const TYPE_STUDENT = 1;
-	const TYPE_ORGANIZATION = 2;
-	const TYPE_ADMINISTRATION = 3;
-	const TYPE_SERVER = 4;
+	const TYPE_STUDENT_AP = 2;
+	const TYPE_STUDENT_OTHER = 3;
+	const LIMIT_STUDENT = 10; //do zapytań bazodanowych
+	const TYPE_TOURIST = 11;
+	const TYPE_ORGANIZATION = 21;
+	const TYPE_ADMINISTRATION = 31;
+	const LIMIT_SERVER = 41;
+	const TYPE_SERVER = 41;
+	const TYPE_SERVER_VIRT = 42;
 
 	const EDIT_PREFIX = 'computerEdit';
 	const ADD_PREFIX = 'computerAdd';
@@ -50,17 +56,17 @@ extends UFbean_Common {
 			}
 			
 			try {
-				// sprawdzamy, czy mamy do czynienia z serwerem
+				// sprawdzamy, czy mamy do czynienia z serwerem wirtualnym
 				$post = $this->_srv->get('req')->post->{self::EDIT_PREFIX};
-				if (isset($post['typeId']) && $post['typeId'] == self::TYPE_SERVER) {
+				if (isset($post['typeId']) && $post['typeId'] == self::TYPE_SERVER_VIRT) {
 					return;
 				}
 			} catch (UFex $e) {
 			}
 			try {
-				// sprawdzamy, czy mamy do czynienia z serwerem
+				// sprawdzamy, czy mamy do czynienia z serwerem wirtualnym
 				$post = $this->_srv->get('req')->post->{self::ADD_PREFIX};
-				if (isset($post['typeId']) && $post['typeId'] == self::TYPE_SERVER) {
+				if (isset($post['typeId']) && $post['typeId'] == self::TYPE_SERVER_VIRT) {
 					return;
 				}
 			} catch (UFex $e) {
