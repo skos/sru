@@ -42,6 +42,10 @@ extends UFconf {
 	protected $userPrintWaletText = '';
 	protected $userPrintSkosText = '';
 
+	protected $mustBeRegistryNo = array( // typy userów, które powinny mieć nr indeksu
+		'1',
+	);
+
 	protected $rrdDataDir = '';
 	protected $listOwnTime = '15 minutes'; //liczba minut uwzględniach w liście użytkownika w API
 }

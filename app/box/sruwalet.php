@@ -162,6 +162,50 @@ extends UFbox {
 		}
 	}
 
+	public function toDoList() {
+		try {
+			$admin = UFra::factory('UFbean_SruWalet_Admin');
+			$admin->getFromSession();
+			$d['admin'] = $admin;
+
+			if ($admin->typeId != UFacl_SruWalet_Admin::HEAD) {
+				try {
+					$dorms = UFra::factory('UFbean_SruWalet_AdminDormitoryList');
+					$dorms->listAllById($admin->id);
+				} catch (UFex_Dao_NotFound $e) {
+					$dorms = null;
+				}
+			} else {
+				$dorms = UFra::factory('UFbean_Sru_DormitoryList');
+				$dorms->listAllForWalet();
+			}
+
+			$d['users'] = null;
+			if (!is_null($dorms)) {
+				foreach ($dorms as $dorm) {
+					try {
+						$users = UFra::factory('UFbean_Sru_UserList');
+						$users->listActiveWithoutRegistryByDorm($dorm['dormitoryId']);
+
+						$d['users'][$dorm['dormitoryId']] = $users;
+					} catch (UFex_Dao_NotFound $e) {
+						$d['users'][$dorm['dormitoryId']] = null;
+					}
+				}
+			}
+			$userCount = 0;
+			foreach ($users as $dorm) {
+				$userCount += count($dorm);
+			}
+			if ($userCount == 0) {
+				$d['users'] = null;
+			}
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}
+	}
+
 	public function titleUser() {
 		try {
 			$bean = $this->_getUserFromGet();

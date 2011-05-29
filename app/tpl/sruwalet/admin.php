@@ -268,4 +268,42 @@ $(document).ready(function()
 			echo '('.$ip.') ';
 		}
 	}
+
+	public function toDoList(array $d, $users) {
+		$url = $this->url(0);
+		
+		if (is_null($users)) {
+			echo $this->OK('Brak zadań!');
+		} else {
+			echo '<h2>Studenci bez podanego numeru indeksu:</h2>';
+			$lp = 0;
+			echo '<table id="withoutRegistryT" class="bordered"><thead><tr>';
+			echo '<th>L.p.</th>';
+			echo '<th>Imię</th>';
+			echo '<th>Nazwisko</th>';
+			echo '<th>Dom studencki</th>';
+			echo '</tr></thead><tbody>';
+			foreach ($users as $dorm) {
+				if (!is_null($dorm)) {
+					foreach ($dorm as $user) {
+						$lp++;
+						echo '<td>'.$lp.'</td>';
+						echo '<td><a href="'.$url.'/users/'.$user['id'].'">'.$this->_escape($user['name']).'</a></td>';
+						echo '<td><a href="'.$url.'/users/'.$user['id'].'">'.$this->_escape($user['surname']).'</a></td>';
+						echo '<td><a href="'.$url.'/dormitories/'.$user['dormitoryAlias'].'">'.strtoupper($user['dormitoryAlias']).'</a></td></tr>';
+					}
+				}
+			}
+			echo '</body></table>';
+		}
+?>
+<script type="text/javascript">
+$(document).ready(function()
+    {
+        $("#withoutRegistryT").tablesorter();
+    }
+);
+</script>
+<?
+	}	
 }

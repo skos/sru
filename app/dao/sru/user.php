@@ -174,12 +174,17 @@ extends UFdao {
 		return $this->doSelect($query);
 	}
 
-	public function listAllForMigration() {
-		$mapping = $this->mapping('migration');
+	public function listActiveWithoutRegistryByDorm($id) {
+		$mapping = $this->mapping('list');
+		$conf = UFra::factory('UFconf_Sru');
 
 		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->dormitoryId, $id);
 		$query->where($mapping->active, true);
-		$query->order($mapping->dormitoryId);
+		$query->where($mapping->registryNo, null);
+		$query->where($mapping->typeId, $conf->mustBeRegistryNo, $query->IN);
+		$query->order($mapping->surname);
+		$query->order($mapping->name);
 
 		return $this->doSelect($query);
 	}

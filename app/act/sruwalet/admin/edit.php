@@ -30,7 +30,7 @@ extends UFact {
 
 			$bean->save();
 
-			while (!is_null(key($post['dorm'])) && $acl->sruWalet('admin', 'changeAdminDorms')) {
+			while (!is_null(key($post['dorm'])) && $acl->sruWalet('admin', 'advancedEdit')) {
 				if (current($post['dorm'])) {
 
 					try {
