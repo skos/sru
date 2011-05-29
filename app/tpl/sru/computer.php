@@ -189,7 +189,7 @@ extends UFtpl_Common {
 		}
 		echo '<a href="'.$urlNav.'/history">Historia zmian</a> &bull;
 			<a href="'.$urlNav.'/:edit">Edycja</a> &bull; ';
-		if($d['active'] && $d['typeId'] == 4) {
+		if($d['active'] && ($d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER || $d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT)) {
 			echo '<a href="'.$urlNav.'/:aliases"> Aliasy</a> &bull; ';
 		}
 		echo '<a href="'.$urlNav.'/stats"> Statystyki transferu</a> &bull; ';
