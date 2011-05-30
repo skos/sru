@@ -581,9 +581,11 @@ changeVisibility();
 				$temp[1] = '5Ł';
 			$tmp[$dorm['dormitoryId']] = $temp[1] . ' ' . $dorm['dormitoryName'];
 		}
-		echo $form->typeId('Typ', array(
-			'type' => $form->SELECT,
+		echo $form->typeId('', array(
+			'type' => $form->RADIO,
 			'labels' => $form->_labelize(self::$userTypesForWalet),
+			'labelClass' => 'radio',
+			'class' => 'radio',
 		));
 		echo $form->dormitory('Akademik', array(
 			'type' => $form->SELECT,

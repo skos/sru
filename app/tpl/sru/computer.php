@@ -428,7 +428,7 @@ div.style.display = 'none';
 	public function listAdmin(array $d) {
 		$url = $this->url(0).'/computers/';
 		foreach ($d as $c) {
-			echo '<li><a href="'.$url.$c['id'].'">'.$c['host'].' <small>'.$c['ip'].'/'.$c['mac'].'</small></a> <span>('.$this->computerTypes[$c['typeId']].') '.date(self::TIME_YYMMDD, $c['availableTo']).'</span>'.(strlen($c['comment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['comment'].'" />':'').'</li>';
+			echo '<li><a href="'.$url.$c['id'].'">'.$c['host'].' <small>'.$c['ip'].'/'.$c['mac'].'</small></a> <span><small>('.$this->computerTypes[$c['typeId']].')</small> '.date(self::TIME_YYMMDD, $c['availableTo']).'</span>'.(strlen($c['comment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['comment'].'" />':'').'</li>';
 		}
 	}
 

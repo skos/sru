@@ -275,7 +275,7 @@ $(document).ready(function()
 		if (is_null($users)) {
 			echo $this->OK('Brak zadań!');
 		} else {
-			echo '<h2>Studenci bez podanego numeru indeksu:</h2>';
+			echo '<h3>Studenci bez podanego numeru indeksu:</h3>';
 			$lp = 0;
 			echo '<p><label for="filter">Filtruj:</label> <input type="text" name="filter" value="" id="filter" /></p>';
 			echo '<table id="withoutRegistryT" class="bordered"><thead><tr>';
