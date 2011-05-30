@@ -80,7 +80,13 @@ extends UFtpl_Common {
 <script type="text/javascript">
 $(document).ready(function() 
     { 
-        $("#inhabitantsT").tablesorter(); 
+        $("#inhabitantsT").tablesorter({
+			headers: {
+				0: {
+					sorter: "dslong"
+				}
+			}
+		});
     } 
 );
 </script>

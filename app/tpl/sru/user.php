@@ -363,7 +363,13 @@ extends UFtpl_Common {
 <script type="text/javascript">
 $(document).ready(function() 
     { 
-        $("#resultsT").tablesorter(); 
+        $("#resultsT").tablesorter({
+			headers: {
+				2: {
+					sorter: "ds"
+				}
+			}
+		});
     } 
 );
 </script>

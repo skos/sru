@@ -303,7 +303,16 @@ $(document).ready(function()
 <script type="text/javascript">
 $(document).ready(function()
     {
-        $("#withoutRegistryT").tablesorter();
+        $("#withoutRegistryT").tablesorter({
+			headers: {
+				3: {
+					sorter: "ds"
+				},
+				4: {
+					sorter: false
+				}
+			}
+		});
     }
 );
 

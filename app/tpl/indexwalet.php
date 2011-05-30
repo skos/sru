@@ -11,13 +11,13 @@ extends UFtpl_Common {
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pl" lang="pl">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-<meta name="robots" CONTENT="noindex,nofollow,noarchive"> 
+<meta name="robots" CONTENT="noindex,nofollow,noarchive" />
 <link rel="stylesheet" href="<?=UFURL_BASE;?>/i/css/style.css" type="text/css" media="screen" />
 <link rel="shortcut icon" href="<?=UFURL_BASE;?>/i/img/favicon.ico" type="image/x-icon" />
 <link type="text/css" href="<?=UFURL_BASE;?>/i/jquery/css/ui-lightness/jquery-ui-1.8.5.custom.css" rel="Stylesheet" />	
 <script type="text/javascript" src="<?=UFURL_BASE;?>/i/jquery/jquery.tools.min.js"></script>
 <script type="text/javascript" src="<?=UFURL_BASE;?>/i/jquery/jquery-ui-1.8.5.custom.min.js"></script>
-<script src="<?=UFURL_BASE;?>/i/jquery/jquery.tablesorter.min.js"></script>
+<script type="text/javascript" src="<?=UFURL_BASE;?>/i/jquery/jquery.tablesorter.min.js"></script>
 <title><?=$d['title'];?></title>
 </head>
 <body>
@@ -34,8 +34,28 @@ extends UFtpl_Common {
 &copy;&nbsp;<a href="mailto:adnet@ds.pg.gda.pl">SKOS PG</a>
 </div><!-- foot -->
 </div><!-- body -->
-<script>
+<script type="text/javascript">
 $("#main img[title]").tooltip({ position: "center right"});
+$.tablesorter.addParser({
+	id: 'ds',
+	is: function(s) {
+		return false;
+	},
+	format: function(s) {
+		return s.substr(2);
+	},
+	type: 'numeric'
+});
+$.tablesorter.addParser({
+	id: 'dslong',
+	is: function(s) {
+		return false;
+	},
+	format: function(s) {
+		return s.substr(17);
+	},
+	type: 'numeric'
+});
 </script>
 <?
 $stop = microtime(true);
