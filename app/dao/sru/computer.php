@@ -283,7 +283,7 @@ extends UFdao {
 		$query = $this->prepareSelect($mapping);
 		$query->where($mapping->dormitoryId, $dormId);
 		$query->where($mapping->active, true);
-		$query->where($mapping->typeId, UFbean_Sru_Computer::LIMIT_STUDENT, $query->LTE);
+		$query->where($mapping->typeId, UFbean_Sru_Computer::LIMIT_STUDENT_AND_TOURIST, $query->LTE);
 		$query->order($mapping->mac);
 
 		return $this->doSelect($query);

@@ -10,6 +10,7 @@ extends UFbean_Common {
 	const TYPE_STUDENT_OTHER = 3;
 	const LIMIT_STUDENT = 10; //do zapytań bazodanowych
 	const TYPE_TOURIST = 11;
+	const LIMIT_STUDENT_AND_TOURIST = 20; //do zapytań bazodanowych
 	const TYPE_ORGANIZATION = 21;
 	const TYPE_ADMINISTRATION = 31;
 	const LIMIT_SERVER = 41;

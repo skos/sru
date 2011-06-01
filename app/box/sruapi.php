@@ -20,13 +20,9 @@ extends UFbox {
 	}
 
 	public function dhcpStuds() {
-		return $this->configDhcp(array(UFbean_Sru_Computer::TYPE_STUDENT, UFbean_Sru_Computer::TYPE_STUDENT_AP, UFbean_Sru_Computer::TYPE_STUDENT_OTHER));
+		return $this->configDhcp(array(UFbean_Sru_Computer::TYPE_STUDENT, UFbean_Sru_Computer::TYPE_STUDENT_AP, UFbean_Sru_Computer::TYPE_STUDENT_OTHER, UFbean_Sru_Computer::TYPE_TOURIST));
 	}
-
-	public function dhcpTourists() {
-		return $this->configDhcp(UFbean_Sru_Computer::TYPE_TOURIST);
-	}
-
+	
 	public function dhcpOrg() {
 		return $this->configDhcp(UFbean_Sru_Computer::TYPE_ORGANIZATION);
 	}
