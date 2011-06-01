@@ -661,12 +661,7 @@ div.style.display = 'none';
 			echo 'Dodano alias: '.$added."\n";
 		}
 		if (count($deleted) > 0) {
-			$deletedString = '';
-			foreach ($deleted as $del) {
-				$deletedString = $deletedString.$del.', ';
-			}
-			$deletedString = substr($deletedString, 0, -2);
-			echo 'Usunięto alias(y): '.$deletedString."\n";
+			echo 'Usunięto alias(y): '.implode(', ', $deleted)."\n";
 		}
 		echo "\n".'Admin modyfikujący: '.$admin->name."\n";
 	}

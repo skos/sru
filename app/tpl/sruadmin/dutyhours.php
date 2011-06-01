@@ -188,7 +188,7 @@ extends UFtpl_Common {
 	}
 
 	public function upcomingDutyHoursToEmailPolish(array $d, $user, $days) {
-		echo 'Adres e-mail do wszystkich administratorów SKOS w DSie: admin-'.(is_array($user) ? $user['dormitoryAlias'] : $user->dormitoryAlias).'@ds.pg.gda.pl'."\n";
+		echo 'Adres e-mail do wszystkich administratorów SKOS opiekujących się Twoim DSem: admin-'.(is_array($user) ? $user['dormitoryAlias'] : $user->dormitoryAlias).'@ds.pg.gda.pl'."\n";
 		echo 'Najbliższe dyżury Twoich administratorów:'."\n";
 		$this->apiUpcomingDutyHours($d, $days, null, false);
 	}
