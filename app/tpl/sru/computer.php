@@ -102,11 +102,13 @@ extends UFtpl_Common {
 
 	public function detailsOwn(array $d) {
 		echo '<h1>'.$d['host'].'.ds.pg.gda.pl</h1>';
+		echo '<p><em>Typ:</em> '.self::$computerTypes[$d['typeId']].'</p>';
 		echo '<p><em>MAC:</em> '.$d['mac'].'</p>';
 		echo '<p><em>IP:</em> '.$d['ip'].'</p>';
 		echo '<p><em>Rejestracja do:</em> '.date(self::TIME_YYMMDD, $d['availableTo']).'</p>';
 		echo '<p><em>Miejsce:</em> '.$d['locationAlias'].' ('.$d['dormitoryName'].')</p>';
 		echo '<p><em>Liczba kar:</em> '.$d['bans'].'</p>';
+		echo '<p><em>Widziany:</em> '.($d['lastSeen'] == 0 ? 'nigdy' : date(self::TIME_YYMMDD_HHMM, $d['lastSeen'])).'</p>';
 	}
 
 	public function details(array $d, $switchPort, $aliases, $virtuals) {
@@ -135,6 +137,7 @@ extends UFtpl_Common {
 		}
 		echo '</p>';
 		echo '<p><em>IP:</em> '.$d['ip'].'</p>';
+		echo '<p><em>Typ:</em> '.self::$computerTypes[$d['typeId']].'</p>';
 		if (!$d['active']) {
 			$max = 'BRAK <small>(było '.date(self::TIME_YYMMDD, $d['availableTo']).')</small>';
 		} elseif ($d['availableTo'] != $d['availableMaxTo']) {
