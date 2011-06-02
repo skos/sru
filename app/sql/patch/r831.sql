@@ -65,6 +65,10 @@ UPDATE computers SET type_id = 21 where type_id = 2;
 UPDATE computers SET type_id = 31 where type_id = 3;
 UPDATE computers SET type_id = 41 where type_id = 4;
 
+UPDATE computers_history SET type_id = 21 where type_id = 2;
+UPDATE computers_history SET type_id = 31 where type_id = 3;
+UPDATE computers_history SET type_id = 41 where type_id = 4;
+
 DROP INDEX computers_mac_key;
 CREATE UNIQUE INDEX computers_mac_key
   ON computers

@@ -3,16 +3,7 @@
  * szablon beana historii komputera
  */
 class UFtpl_SruAdmin_ComputerHistory
-extends UFtpl_Common {
-	
-	protected $computerTypes = array(
-		0 => 'Niezdefiniowany staroć',
-		1 => 'Student',
-		2 => 'Organizacja',
-		3 => 'Administracja',
-		4 => 'Serwer',
-	);
-	
+extends UFtpl_Common {	
 	static protected $names = array(
 		'host' => 'Host',
 		'mac' => 'Adres MAC',
@@ -71,7 +62,7 @@ extends UFtpl_Common {
 					$changes[] = $names[$key].': '.($val?'tak':'nie').$arr.($new[$key]?'tak':'nie');
 					break;
 				case 'typeId':
-					$changes[] = $names[$key].': '.$this->computerTypes[$old['typeId']].$arr.$this->computerTypes[$new['typeId']];
+					$changes[] = $names[$key].': '.UFtpl_Sru_Computer::$computerTypes[$old['typeId']].$arr.UFtpl_Sru_Computer::$computerTypes[$new['typeId']];
 					break;
 				default: continue;
 			}

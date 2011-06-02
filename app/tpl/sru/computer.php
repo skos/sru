@@ -5,7 +5,7 @@
 class UFtpl_Sru_Computer
 extends UFtpl_Common {
 
-	protected $computerTypes = array(
+	static public $computerTypes = array(
 		1 => 'Student - komp/tel',
 		2 => 'Student - AP',
 		3 => 'Student - inne',
@@ -14,7 +14,6 @@ extends UFtpl_Common {
 		31 => 'Administracja',
 		41 => 'Serwer fizyczny',
 		42 => 'Serwer wirtualny',
-		
 	);
 
 	protected $computerSearchTypes = array(
@@ -120,7 +119,7 @@ extends UFtpl_Common {
 			$user = '<a href="'.$url.'/users/'.$d['userId'].'">'.$this->_escape($d['userName']).' '.$this->_escape($d['userSurname']).'</a>'.(strlen($d['userComment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$d['userComment'].'" />':'');
 		}
 		if ($d['typeId'] != 1) {
-			echo '<p><em>Typ komputera:</em> '.$this->computerTypes[$d['typeId']].'</p>';
+			echo '<p><em>Typ komputera:</em> '.self::$computerTypes[$d['typeId']].'</p>';
 		}
 		if (!is_null($d['carerName'])) {
 			echo '<p><em>Opiekun:</em> <a href="'.$url.'/admins/'.$d['carerId'].'">'.$d['carerName'].'</a></p>';
@@ -159,7 +158,7 @@ extends UFtpl_Common {
 		if (!is_null($virtuals)) {
 			$virtualsString = '<table><tr><td>';
 			foreach ($virtuals as $virt) {
-				$virtualsString = $virtualsString.$virt['host'].', ';
+				$virtualsString = $virtualsString.'<a href="'.$url.'/computers/'.$virt['id'].'">'.$virt['host'].'</a>, ';
 			}
 			$virtualsString = substr($virtualsString, 0 , -2);
 			$virtualsString = $virtualsString.'</td></tr></table>';
@@ -299,7 +298,7 @@ changeVisibility();
 		echo $form->locationAlias('Pokój');
 		echo $form->typeId('Typ', array(
 			'type' => $form->SELECT,
-			'labels' => $form->_labelize($this->computerTypes),
+			'labels' => $form->_labelize(self::$computerTypes),
 		));
 		if (!is_null($waletAdmins)) {
 			$tmp = array();
@@ -364,6 +363,8 @@ if (input) {
 	input.parentNode.insertBefore(space, input.nextSibling);
 }
 
+initialCarerId = document.getElementById("computerEdit_carerId").value;
+initialMasterHostId = document.getElementById("computerEdit_masterHostId").value;
 (function (){
 	form = document.getElementById('computerEdit_typeId');
 	function changeVisibility() {
@@ -371,6 +372,7 @@ if (input) {
 		var carer = document.getElementById("carers");
 		var carerId = document.getElementById("computerEdit_carerId");
 		if (form.value == <? echo UFbean_Sru_Computer::TYPE_ADMINISTRATION; ?>) {
+			carerId.value = initialCarerId;
 			carer.style.display = "block";
 			carer.style.visibility = "visible";
 		} else {
@@ -382,6 +384,7 @@ if (input) {
 		var masterHost = document.getElementById("servers");
 		var masterHostId = document.getElementById("computerEdit_masterHostId");
 		if (form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER_VIRT; ?>) {
+			masterHostId.value = initialMasterHostId;
 			masterHost.style.display = "block";
 			masterHost.style.visibility = "visible";
 		} else {
@@ -415,7 +418,7 @@ if (input) {
 		if ($admin) {
 			echo $form->typeId('Typ', array(
 				'type' => $form->SELECT,
-				'labels' => $form->_labelize($this->computerTypes),
+				'labels' => $form->_labelize(self::$computerTypes),
 			));
 			if (!is_null($waletAdmins)) {
 				$tmp = array();
@@ -558,7 +561,7 @@ div.style.display = 'none';
 	public function listAdmin(array $d) {
 		$url = $this->url(0).'/computers/';
 		foreach ($d as $c) {
-			echo '<li><a href="'.$url.$c['id'].'">'.$c['host'].' <small>'.$c['ip'].'/'.$c['mac'].'</small></a> <span><small>('.$this->computerTypes[$c['typeId']].')</small> '.date(self::TIME_YYMMDD, $c['availableTo']).'</span>'.(strlen($c['comment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['comment'].'" />':'').'</li>';
+			echo '<li><a href="'.$url.$c['id'].'">'.$c['host'].' <small>'.$c['ip'].'/'.$c['mac'].'</small></a> <span><small>('.self::$computerTypes[$c['typeId']].')</small> '.date(self::TIME_YYMMDD, $c['availableTo']).'</span>'.(strlen($c['comment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['comment'].'" />':'').'</li>';
 		}
 	}
 
