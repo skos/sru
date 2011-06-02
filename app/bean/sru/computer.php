@@ -133,4 +133,38 @@ extends UFbean_Common {
 	public function updateLocationByHost($host, $location, $ip, $modifiedBy=null) {
 		return $this->dao->updateLocationByHost($host, $location, $ip, $modifiedBy);
 	}
+
+	protected function validateCarerId($val, $change) {
+			try {
+				$post = $this->_srv->get('req')->post->{self::EDIT_PREFIX};
+				if ($post['typeId'] == UFbean_Sru_Computer::TYPE_ADMINISTRATION && (is_null($val) || (int)$val == 0)) {
+					return 'null';
+				}
+			} catch (UFex $e) {
+			}
+			try {
+				$post = $this->_srv->get('req')->post->{self::ADD_PREFIX};
+				if ($post['typeId'] == UFbean_Sru_Computer::TYPE_ADMINISTRATION && (is_null($val) || (int)$val == 0)) {
+					return 'null';
+				}
+			} catch (UFex $e) {
+			}
+	}
+
+	protected function validateMasterHostId($val, $change) {
+			try {
+				$post = $this->_srv->get('req')->post->{self::EDIT_PREFIX};
+				if ($post['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT && (is_null($val) || (int)$val == 0)) {
+					return 'null';
+				}
+			} catch (UFex $e) {
+			}
+			try {
+				$post = $this->_srv->get('req')->post->{self::ADD_PREFIX};
+				if ($post['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT && (is_null($val) || (int)$val == 0)) {
+					return 'null';
+				}
+			} catch (UFex $e) {
+			}
+	}
 }

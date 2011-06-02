@@ -177,7 +177,6 @@ extends UFtpl_Common {
 	}
 
 	public function formEdit(array $d, $dormitories, $dutyHours, $dormList, $advanced=false) {
-
 		if(!is_null($d['activeTo'])){
 			$d['activeTo'] = date(self::TIME_YYMMDD, $d['activeTo']);
 		}else{
@@ -263,7 +262,7 @@ extends UFtpl_Common {
 
 		echo $form->_end();
 
-		if($this->_srv->get('acl')->sruAdmin('admin', 'changeAdminDorms')) {
+		if($this->_srv->get('acl')->sruAdmin('admin', 'changeAdminDorms', $d['id'])) {
 			$post = $this->_srv->get('req')->post;
 			echo '<div id="dorms">' . $form->_fieldset('Domy studenckie pod opieką');
 			foreach ($dormitories as $dorm) {

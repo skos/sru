@@ -102,7 +102,7 @@ $(document).ready(function()
 		echo $this->_escape($d['name']);
 	}
 
-	public function details(array $d, $dormList) {
+	public function details(array $d) {
 		$url = $this->url(0);
 		if (array_key_exists($d['typeId'], UFtpl_SruWalet_Admin::$adminTypes)) {
 			$type = UFtpl_SruWalet_Admin::$adminTypes[$d['typeId']];
@@ -110,27 +110,27 @@ $(document).ready(function()
 			$type = UFtpl_SruAdmin_Admin::$adminTypes[$d['typeId']];
 		}
 		echo '<h2>'.$this->_escape($d['name']).'<br/><small>('.$type.' &bull; ostatnie logowanie: '.date(self::TIME_YYMMDD_HHMM, $d['lastLoginAt']).')</small></h2>';
-
-		if ($d['typeId'] != UFacl_SruWalet_Admin::HEAD) { 
-			echo '<p><em>Domy studenckie:</em>';
-			if (is_null($dormList)) {
-				echo ' brak przypisanych DS</p>';
-			} else {
-				echo '</p><ul>';
-				foreach ($dormList as $dorm) {
-					echo '<li><a href="'.$url.'/dormitories/'.$dorm['dormitoryAlias'].'">'.$dorm['dormitoryName'].'</a></li>';
-				}
-				echo '</ul>';
-			}
-		}
-
 		echo '<p><em>Login:</em> '.$d['login'].'</p>';
 		echo '<p><em>E-mail:</em> <a href="mailto:'.$d['email'].'">'.$d['email'].'</a></p>';
 		echo '<p><em>Telefon:</em> '.$d['phone'].'</p>';
 		echo '<p><em>Gadu-Gadu:</em> '.$d['gg'].'</p>';
 		echo '<p><em>Jabber:</em> '.$d['jid'].'</p>';
 		echo '<p><em>Adres:</em> '.$d['address'].'</p>';
-	}	
+	}
+
+	public function listDorms(array $d, $dormList) {
+		$url = $this->url(0);
+		
+		if (is_null($dormList)) {
+			echo ' brak przypisanych DS</p>';
+		} else {
+			echo '</p><ul>';
+			foreach ($dormList as $dorm) {
+				echo '<li><a href="'.$url.'/dormitories/'.$dorm['dormitoryAlias'].'">'.$dorm['dormitoryName'].'</a></li>';
+			}
+			echo '</ul>';
+		}
+	}
 
 	public function titleAdd(array $d) {
 		echo 'Dodanie nowego administratora';

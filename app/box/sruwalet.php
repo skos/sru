@@ -617,6 +617,22 @@ extends UFbox {
 		try {
 			$bean = $this->_getAdminFromGet();
 			$d['admin'] = $bean;
+			
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}
+	}
+
+	public function adminDorms() {
+		try {
+			$bean = $this->_getAdminFromGet();
+			$d['admin'] = $bean;
+
+			// kierownik osiedla nie ma przypisanych DSów
+			if ($bean->typeId == UFacl_SruWalet_Admin::HEAD) {
+				return '';
+			}
 
 			try {
 				$admDorm = UFra::factory('UFbean_SruWalet_AdminDormitoryList');
@@ -625,7 +641,27 @@ extends UFbox {
 			} catch (UFex_Dao_NotFound $e) {
 				$d['dormList'] = null;
 			}
-			
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}
+	}
+
+	public function adminHosts() {
+		try {
+			$bean = $this->_getAdminFromGet();
+			$d['admin'] = $bean;
+
+			// tylko admini Waleta opiekują się hostami
+			if ($bean->typeId != UFacl_SruWalet_Admin::DORM && $bean->typeId != UFacl_SruWalet_Admin::OFFICE && $bean->typeId != UFacl_SruWalet_Admin::HEAD) {
+				return '';
+			}
+
+			$hosts = UFra::factory('UFbean_Sru_ComputerList');
+			$hosts->listCaredByAdminId($bean->id);
+			$d['hosts'] = $hosts;
+
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
 			return $this->render(__FUNCTION__.'NotFound');

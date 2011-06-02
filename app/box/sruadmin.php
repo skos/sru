@@ -122,6 +122,18 @@ extends UFbox {
 				$d['aliases'] = null;
 			}
 
+			if ($bean->typeId == UFbean_Sru_Computer::TYPE_SERVER) {
+				try {
+					$virtuals = UFra::factory('UFbean_Sru_ComputerList');
+					$virtuals->listVirtualsByComputerId($bean->id);
+					$d['virtuals'] = $virtuals;
+				} catch (UFex $e) {
+					$d['virtuals'] = null;
+				}
+			} else {
+				$d['virtuals'] = null;
+			}
+
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
 			return $this->render('computerNotFound');
@@ -214,6 +226,20 @@ extends UFbox {
 				$d['user'] = $user;
 			} catch (UFex $e) {
 				$d['user'] = null;
+			}
+			try {
+				$servers = UFra::factory('UFbean_Sru_ComputerList');
+				$servers->listAllPhysicalServers();
+				$d['servers'] = $servers;
+			} catch (UFex $e) {
+				$d['servers'] = null;
+			}
+			try {
+				$waletAdmins = UFra::factory('UFbean_SruWalet_AdminList');
+				$waletAdmins->listAll();
+				$d['waletAdmins'] = $waletAdmins;
+			} catch (UFex $e) {
+				$d['waletAdmins'] = null;
 			}
 
 			$d['computer'] = $bean;
@@ -721,6 +747,11 @@ extends UFbox {
 			$bean = $this->_getAdminFromGet();
 			$d['admin'] = $bean;
 
+			// godziny dyżurów mają tylko admini SKOS, nawet boty ich nie mają!
+			if ($bean->typeId != UFacl_SruAdmin_Admin::CENTRAL && $bean->typeId != UFacl_SruAdmin_Admin::CAMPUS && $bean->typeId != UFacl_SruAdmin_Admin::LOCAL) {
+				return '';
+			}
+
 			$hours = UFra::factory('UFbean_SruAdmin_DutyHoursList');
 			$hours->listByAdminId($bean->id);
 			$d['hours'] = $hours;
@@ -744,6 +775,26 @@ extends UFbox {
 				$d['dormList'] = null;
 			}
 			
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}
+	}
+
+	public function adminHosts() {
+		try {
+			$bean = $this->_getAdminFromGet();
+			$d['admin'] = $bean;
+
+			// tylko admini Waleta opiekują się hostami
+			if ($bean->typeId != UFacl_SruWalet_Admin::DORM && $bean->typeId != UFacl_SruWalet_Admin::OFFICE && $bean->typeId != UFacl_SruWalet_Admin::HEAD) {
+				return '';
+			}
+
+			$hosts = UFra::factory('UFbean_Sru_ComputerList');
+			$hosts->listCaredByAdminId($bean->id);
+			$d['hosts'] = $hosts;
+
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
 			return $this->render(__FUNCTION__.'NotFound');
@@ -1248,6 +1299,21 @@ extends UFbox {
 	}
 	public function computerAdd() {
 		$bean = UFra::factory('UFbean_Sru_Computer');
+
+		try {
+			$servers = UFra::factory('UFbean_Sru_ComputerList');
+			$servers->listAllPhysicalServers();
+			$d['servers'] = $servers;
+		} catch (UFex $e) {
+			$d['servers'] = null;
+		}
+		try {
+			$waletAdmins = UFra::factory('UFbean_SruWalet_AdminList');
+			$waletAdmins->listAll();
+			$d['waletAdmins'] = $waletAdmins;
+		} catch (UFex $e) {
+			$d['waletAdmins'] = null;
+		}
 
 		$d['computer'] = $bean;
 

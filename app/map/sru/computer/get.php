@@ -30,9 +30,13 @@ extends UFmap {
 		'banned'         => 'c.banned',
 		'canAdmin'       => 'c.can_admin',
 		'exAdmin'        => 'c.exadmin',
-		'lastSeen'	 => 'c.last_seen',
-		'lastActivated'	 => 'last_activated',
+		'lastSeen'		 => 'c.last_seen',
+		'lastActivated'	 => 'c.last_activated',
 		'locationComment'=> 'l.comment',
+		'carerId'		 => 'c.carer_id',
+		'carerName'		 => 'w.name',
+		'masterHostId'	 => 'c.master_host_id',
+		'masterHostName' => 's.host',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -59,9 +63,13 @@ extends UFmap {
 		'banned'         => self::BOOL,
 		'canAdmin'       => self::BOOL,
 		'exAdmin'        => self::BOOL,
-		'lastSeen'	 => self::TS,
+		'lastSeen'		 => self::TS,
 		'lastActivated'	 => self::TS,
 		'locationComment'=> self::TEXT,
+		'carerId'		 => self::INT,
+		'carerName'		 => self::TEXT,
+		'masterHostId'	 => self::INT,
+		'masterHostName' => self::TEXT,
 	);
 	protected $tables = array(
 		'c' => 'computers',
@@ -71,12 +79,16 @@ extends UFmap {
 		'a' => 'admins',
 		'l' => 'locations',
 		'd' => 'dormitories',
+		'w' => 'admins',
+		's' => 'computers',
 	);
 	protected $joinOns = array(
 		'u' => 'c.user_id=u.id',
 		'a' => 'c.modified_by=a.id',
 		'l' => 'c.location_id=l.id',
 		'd' => 'l.dormitory_id=d.id',
+		'w' => 'c.carer_id=w.id',
+		's' => 'c.master_host_id=s.id',
 	);
 	protected $valids = array(
 		'host' => array('textMin'=>1, 'textMax'=>50, 'regexp'=>'^[a-z][-a-z0-9]*$'),

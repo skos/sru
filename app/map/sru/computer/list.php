@@ -31,6 +31,8 @@ extends UFmap {
 		'banned'         => 'c.banned',
 		'canAdmin'       => 'c.can_admin',
 		'exAdmin'        => 'c.exadmin',
+		'carerId'		 => 'c.carer_id',
+		'masterHostId'	 => 'c.master_host_id',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -58,6 +60,8 @@ extends UFmap {
 		'banned'         => self::BOOL,
 		'canAdmin'       => self::BOOL,
 		'exAdmin'        => self::BOOL,
+		'carerId'		 => self::INT,
+		'masterHostId'	 => self::INT,
 	);
 	protected $tables = array(
 		'c' => 'computers',

@@ -197,6 +197,18 @@ extends UFdao {
 
 		return $this->doSelect($query);
 	}
+
+		public function listAllPhysicalServers() {
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_SERVER);
+		$query->where($mapping->active, true);
+		$query->order($mapping->host, $query->ASC);
+
+		return $this->doSelect($query);
+	}
+
 	public function listAllOrganization() {
 		$mapping = $this->mapping('list');
 
@@ -207,6 +219,7 @@ extends UFdao {
 
 		return $this->doSelect($query);
 	}
+	
 	public function listAllAdministration() {
 		$mapping = $this->mapping('list');
 
@@ -377,5 +390,36 @@ extends UFdao {
 		$query->where($mapping->lastActivated, time() - $days*24*60*60, $query->LT);
 		
 		return $this->doUpdate($query);
+	}
+
+	/**
+	 * Wyświetla serwery wirtualne dla danego serwera
+	 * @param <type> $id
+	 * @param <type> $page
+	 * @param <type> $perPage
+	 * @param <type> $overFetch
+	 * @return <type>
+	 */
+	public function listVirtualsByComputerId($id) {
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_SERVER_VIRT);
+		$query->where($mapping->masterHostId, $id);
+		$query->where($mapping->active, true);
+		$query->order($mapping->host, $query->ASC);
+
+		return $this->doSelect($query);
+	}
+
+	public function listCaredByAdminId($id) {
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->carerId, $id);
+		$query->where($mapping->active, true);
+		$query->order($mapping->host, $query->ASC);
+
+		return $this->doSelect($query);
 	}
 }

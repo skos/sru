@@ -71,3 +71,8 @@ CREATE UNIQUE INDEX computers_mac_key
   USING btree
   (mac, active)
   WHERE active = true AND type_id <> 42;
+
+ALTER TABLE computers ADD COLUMN carer_id bigint;
+ALTER TABLE computers ADD COLUMN master_host_id bigint;
+ALTER TABLE computers ADD CONSTRAINT computers_carer_id FOREIGN KEY (carer_id) REFERENCES admins (id) ON UPDATE CASCADE ON DELETE SET NULL;
+ALTER TABLE computers ADD CONSTRAINT computers_master_host_id_fkey FOREIGN KEY (master_host_id) REFERENCES computers (id) ON UPDATE CASCADE ON DELETE SET NULL;

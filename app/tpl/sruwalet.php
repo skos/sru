@@ -463,13 +463,54 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 		}
 		
 		echo '<div class="admin">';
-		$d['admin']->write('details', $d['dormList']);
+		$d['admin']->write('details');
 		
 		echo '<p class="nav">';
 		if($acl->sruWalet('admin', 'edit', $d['admin']->id)) {
 			echo '<a href="'.$url.'/:edit">Edycja</a> &bull; ';
 		}
 		echo '<a href="'.$this->url(0).'/admins/">Powrót</a></p></div>';
+	}
+
+	public function adminDorms(array $d) {
+		if (is_null($d['dormList'])) {
+			$this->adminDormsNotFound();
+			return;
+		}
+
+		$url = $this->url(0).'/admins/'.$d['admin']->id;
+		$acl = $this->_srv->get('acl');
+
+		echo '<h3>Domy studenckie</h3>';
+		$d['admin']->write('listDorms', $d['dormList']);
+		if($acl->sruWalet('admin', 'edit', $d['admin']->id)) {
+			echo '<a href="'.$url.'/:edit">Edycja</a> &bull; ';
+		}
+		echo '<a href="'.$this->url(0).'/admins/">Powrót</a>';
+	}
+
+	public function adminDormsNotFound() {
+		echo '<h3>Domy studenckie</h3>';
+		echo $this->ERR('Brak przypisanych DSów');
+	}
+
+	public function adminHosts(array $d) {
+		$url = $this->url(0).'/admins/'.$d['admin']->id;
+		$acl = $this->_srv->get('acl');
+
+		echo '<div class="computers">';
+		echo '<h3>Komputery pod opieką</h3>';
+		echo '<ul>';
+		$d['hosts']->write('listWalet');
+		echo '</ul>';
+		echo '</div>';
+
+		echo '<a href="'.$this->url(0).'/admins/">Powrót</a>';
+	}
+
+	public function adminHostsNotFound() {
+		echo '<h3>Komputery pod opieką</h3>';
+		echo $this->ERR('Brak komputerów pod opieką');
 	}
 
 	public function adminUsersModified(array $d) {

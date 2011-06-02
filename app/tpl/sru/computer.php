@@ -51,7 +51,8 @@ extends UFtpl_Common {
 		'locationAlias/noDormitory' => 'Wybierz akademik',
 		'locationAlias/noRoom' => 'Pokój nie istnieje',
 		'exAdmin/notWithAdmin' => 'Nie można ustawić jednocześnie uprawnień admina i ex-admina',
-
+		'masterHostId/null' => 'Maszyna wirtualna musi mieć ustawiony serwer fizyczny',
+		'carerId/null' => 'Komputer administracji musi posiadać opiekuna',
 	);
 	
 /*
@@ -109,7 +110,7 @@ extends UFtpl_Common {
 		echo '<p><em>Liczba kar:</em> '.$d['bans'].'</p>';
 	}
 
-	public function details(array $d, $switchPort, $aliases) {
+	public function details(array $d, $switchPort, $aliases, $virtuals) {
 		$url = $this->url(0);
 		$urlNav = $this->url(0).'/computers/'.$d['id'];
 		echo '<h1>'.$d['host'].'</h1>';
@@ -120,6 +121,9 @@ extends UFtpl_Common {
 		}
 		if ($d['typeId'] != 1) {
 			echo '<p><em>Typ komputera:</em> '.$this->computerTypes[$d['typeId']].'</p>';
+		}
+		if (!is_null($d['carerName'])) {
+			echo '<p><em>Opiekun:</em> <a href="'.$url.'/admins/'.$d['carerId'].'">'.$d['carerName'].'</a></p>';
 		}
 		echo '<p><em>Właściciel:</em> '.$user.'</p>';
 		echo '<p><em>MAC:</em> ';
@@ -149,6 +153,18 @@ extends UFtpl_Common {
 			$bans= '0';
 		}
 		echo '<p><em>Kary:</em> '.$bans.'</p>';
+		if (!is_null($d['masterHostName'])) {
+			echo '<p><em>Serwer fizyczny:</em> <a href="'.$url.'/computers/'.$d['masterHostId'].'">'.$d['masterHostName'].'</a></p>';
+		}
+		if (!is_null($virtuals)) {
+			$virtualsString = '<table><tr><td>';
+			foreach ($virtuals as $virt) {
+				$virtualsString = $virtualsString.$virt['host'].', ';
+			}
+			$virtualsString = substr($virtualsString, 0 , -2);
+			$virtualsString = $virtualsString.'</td></tr></table>';
+			echo '<p><em>Maszyny wirtualne:</em> '.$virtualsString.'</p>';
+		}
 		if (!is_null($aliases)) {
 			$aliasesString = '<table><tr><td>';
 			foreach ($aliases as $alias) {
@@ -249,7 +265,7 @@ changeVisibility();
 		echo '<small>Maksymalnie do '.date(self::TIME_YYMMDD, $d['availableMaxTo']).'</small><br />';
 	}
 
-	public function formEditAdmin(array $d, $dormitories, $user = null, $history = null) {
+	public function formEditAdmin(array $d, $dormitories, $user = null, $history = null, $servers = null, $waletAdmins = null) {
 		if (is_array($history)) {
 			$d = $history + $d;
 		}
@@ -285,6 +301,32 @@ changeVisibility();
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize($this->computerTypes),
 		));
+		if (!is_null($waletAdmins)) {
+			$tmp = array();
+			foreach ($waletAdmins as $w) {
+				$tmp[''] = '';
+				$tmp[$w['id']] = $w['name'];
+			}
+			echo '<div id="carers">';
+			echo $form->carerId('Opiekun', array(
+				'type' => $form->SELECT,
+				'labels' => $form->_labelize($tmp),
+			));
+			echo '</div>';
+		}
+		if (!is_null($servers)) {
+			$tmp = array();
+			foreach ($servers as $serv) {
+				$tmp[''] = '';
+				$tmp[$serv['id']] = $serv['host'];
+			}
+			echo '<div id="servers">';
+			echo $form->masterHostId('Serwer fizyczny', array(
+				'type' => $form->SELECT,
+				'labels' => $form->_labelize($tmp),
+			));
+			echo '</div>';
+		}
 		echo $form->_fieldset('Uprawnienia');
 		echo $form->canAdmin('Komputer administratora', array('type'=>$form->CHECKBOX));
 		echo $form->exAdmin('Komputer ex-administratora', array('type'=>$form->CHECKBOX));
@@ -321,11 +363,42 @@ if (input) {
 	space = document.createTextNode(' ');
 	input.parentNode.insertBefore(space, input.nextSibling);
 }
+
+(function (){
+	form = document.getElementById('computerEdit_typeId');
+	function changeVisibility() {
+		<? if (!is_null($waletAdmins)) { ?>
+		var carer = document.getElementById("carers");
+		var carerId = document.getElementById("computerEdit_carerId");
+		if (form.value == <? echo UFbean_Sru_Computer::TYPE_ADMINISTRATION; ?>) {
+			carer.style.display = "block";
+			carer.style.visibility = "visible";
+		} else {
+			carer.style.display = "none";
+			carer.style.visibility = "hidden";
+			carerId.value = '';
+		}
+		<? } if (!is_null($servers)) { ?>
+		var masterHost = document.getElementById("servers");
+		var masterHostId = document.getElementById("computerEdit_masterHostId");
+		if (form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER_VIRT; ?>) {
+			masterHost.style.display = "block";
+			masterHost.style.visibility = "visible";
+		} else {
+			masterHost.style.display = "none";
+			masterHost.style.visibility = "hidden";
+			masterHostId.value = '';
+		}
+		<? } ?>
+	}
+	form.onchange = changeVisibility;
+	changeVisibility();
+})()
 </script>
 		<?
 	}
 
-	public function formAdd(array $d, $admin = false, $macAddress = null) {
+	public function formAdd(array $d, $admin = false, $macAddress = null, $servers = null, $waletAdmins = null) {
 		$post = $this->_srv->get('req')->post;
 		$mac = $macAddress;
 		try {
@@ -344,6 +417,32 @@ if (input) {
 				'type' => $form->SELECT,
 				'labels' => $form->_labelize($this->computerTypes),
 			));
+			if (!is_null($waletAdmins)) {
+				$tmp = array();
+				foreach ($waletAdmins as $w) {
+					$tmp[''] = '';
+					$tmp[$w['id']] = $w['name'];
+				}
+				echo '<div id="carers">';
+				echo $form->carerId('Opiekun', array(
+					'type' => $form->SELECT,
+					'labels' => $form->_labelize($tmp),
+				));
+				echo '</div>';
+			}
+			if (!is_null($servers)) {
+				$tmp = array();
+				foreach ($servers as $serv) {
+					$tmp[''] = '';
+					$tmp[$serv['id']] = $serv['host'];
+				}
+				echo '<div id="servers">';
+				echo $form->masterHostId('Serwer fizyczny', array(
+					'type' => $form->SELECT,
+					'labels' => $form->_labelize($tmp),
+				));
+				echo '</div>';
+			}
 		}
 		echo $form->host('Nazwa', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Nazwa komputera w sieci - nie musi być zgodna z nazwą w systemie Windows/Linux. Możesz podać inną nazwę niż propozycja SRU." /><br/>'));
 		if ($admin) {
@@ -362,6 +461,37 @@ if (input) {
 	space = document.createTextNode(' ');
 	input.parentNode.insertBefore(space, input.nextSibling);
 }
+
+(function (){
+	form = document.getElementById('computerAdd_typeId');
+	function changeVisibility() {
+		<? if (!is_null($waletAdmins)) { ?>
+		var carer = document.getElementById("carers");
+		var carerId = document.getElementById("computerAdd_carerId");
+		if (form.value == <? echo UFbean_Sru_Computer::TYPE_ADMINISTRATION; ?>) {
+			carer.style.display = "block";
+			carer.style.visibility = "visible";
+		} else {
+			carer.style.display = "none";
+			carer.style.visibility = "hidden";
+			carerId.value = '';
+		}
+		<? } if (!is_null($servers)) { ?>
+		var masterHost = document.getElementById("servers");
+		var masterHostId = document.getElementById("computerAdd_masterHostId");
+		if (form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER_VIRT; ?>) {
+			masterHost.style.display = "block";
+			masterHost.style.visibility = "visible";
+		} else {
+			masterHost.style.display = "none";
+			masterHost.style.visibility = "hidden";
+			masterHostId.value = '';
+		}
+		<? } ?>
+	}
+	form.onchange = changeVisibility;
+	changeVisibility();
+})()
 </script><?
 		}
 		echo '<span id="macContainer"><a href="#" id="macMoreSwitch">';
@@ -429,6 +559,12 @@ div.style.display = 'none';
 		$url = $this->url(0).'/computers/';
 		foreach ($d as $c) {
 			echo '<li><a href="'.$url.$c['id'].'">'.$c['host'].' <small>'.$c['ip'].'/'.$c['mac'].'</small></a> <span><small>('.$this->computerTypes[$c['typeId']].')</small> '.date(self::TIME_YYMMDD, $c['availableTo']).'</span>'.(strlen($c['comment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['comment'].'" />':'').'</li>';
+		}
+	}
+
+	public function listWalet(array $d) {
+		foreach ($d as $c) {
+			echo '<li>'.$c['host'].' <small>'.$c['ip'].'/'.$c['mac'].'</small></a>, <span>lokalizacja: '.$c['locationAlias'].' ('.strtoupper($c['dormitoryAlias']).')</span></li>';
 		}
 	}
 

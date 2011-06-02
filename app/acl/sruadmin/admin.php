@@ -5,10 +5,10 @@
 class UFacl_SruAdmin_Admin
 extends UFlib_ClassWithService {
 	
-	const 	CENTRAL		= 1,
-			CAMPUS		= 2,
-			LOCAL		= 3,
-			BOT			= 4;	
+	const CENTRAL = 1;
+	const CAMPUS = 2;
+	const LOCAL = 3;
+	const BOT = 4;
 	
 	protected function _loggedIn() {
 		return $this->_srv->get('session')->is('authAdmin');
@@ -58,10 +58,13 @@ extends UFlib_ClassWithService {
 			return false;
 	}
 
-	public function changeAdminDorms() {
+	public function changeAdminDorms($id) {
 		$sess = $this->_srv->get('session');
+
+		$bean = UFra::factory('UFbean_SruAdmin_Admin');
+		$bean->getByPK($id);
 		
-		if($this->_loggedIn() && $sess->is('typeId') && ($sess->typeId == self::CAMPUS || $sess->typeId == self::CENTRAL)) {
+		if($this->_loggedIn() && $sess->is('typeId') && ($sess->typeId == self::CAMPUS || $sess->typeId == self::CENTRAL) && $bean->typeId == self::CENTRAL || $bean->typeId == self::CAMPUS || $bean->typeId == self::LOCAL) {
 			return true;
 		} else {
 			return false;

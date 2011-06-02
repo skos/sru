@@ -83,7 +83,7 @@ extends UFtpl_Common {
 		}
 		$url = $this->url(0).'/computers/'.$d['computer']->id;
 		echo '<div class="computer">';
-		$d['computer']->write('details', $d['switchPort'], $d['aliases']);
+		$d['computer']->write('details', $d['switchPort'], $d['aliases'], $d['virtuals']);
 		echo '</div>';
 	}
 
@@ -185,7 +185,7 @@ extends UFtpl_Common {
 		} elseif ($this->_srv->get('msg')->get('computerEdit/ok')) {
 			echo $this->OK('Dane zostały zmienione');
 		}
-		echo $d['computer']->write('formEditAdmin', $d['dormitories'], $d['user'], $d['history']);
+		echo $d['computer']->write('formEditAdmin', $d['dormitories'], $d['user'], $d['history'], $d['servers'], $d['waletAdmins']);
 		echo $form->_submit('Zapisz');
 		echo $form->_end();
 		echo $form->_end(true);
@@ -570,7 +570,7 @@ extends UFtpl_Common {
 
 		echo '<h3>Domy studenckie</h3>';
 		$d['admin']->write('listDorms', $d['dormList']);
-		if($acl->sruAdmin('admin', 'changeAdminDorms')) {
+		if($acl->sruAdmin('admin', 'changeAdminDorms', $d['admin']->id)) {
 			echo '<a href="'.$url.'/:edit">Edycja</a> &bull; ';
 		}
 		echo '<a href="'.$this->url(0).'/admins/">Powrót</a>';
@@ -579,6 +579,25 @@ extends UFtpl_Common {
 	public function adminDormsNotFound() {
 		echo '<h3>Domy studenckie</h3>';
 		echo $this->ERR('Brak przypisanych DSów');
+	}
+
+	public function adminHosts(array $d) {
+		$url = $this->url(0).'/admins/'.$d['admin']->id;
+		$acl = $this->_srv->get('acl');
+
+		echo '<div class="computers">';
+		echo '<h3>Komputery pod opieką</h3>';
+		echo '<ul>';
+		$d['hosts']->write('listAdmin');
+		echo '</ul>';
+		echo '</div>';
+		
+		echo '<a href="'.$this->url(0).'/admins/">Powrót</a>';
+	}
+
+	public function adminHostsNotFound() {
+		echo '<h3>Komputery pod opieką</h3>';
+		echo $this->ERR('Brak komputerów pod opieką');
 	}
 
 	public function penaltyTemplateChoose(array $d) {
@@ -922,7 +941,7 @@ extends UFtpl_Common {
 
 		echo $form->_start();
 		echo $form->_fieldset('Dodaj komputer');
-		echo $d['computer']->write('formAdd', true);
+		echo $d['computer']->write('formAdd', true, null, $d['servers'], $d['waletAdmins']);
 		echo $form->_submit('Dodaj');
 		echo $form->_end();
 		echo $form->_end(true);

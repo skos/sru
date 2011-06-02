@@ -17,6 +17,8 @@ extends UFmap {
 		'modifiedAt'     => 'modified_at',
 		'comment'        => 'comment',
 		'typeId'         => 'type_id',
+		'carerId'		 => 'carer_id',
+		'masterHostId'	 => 'master_host_id',
 	);
 	protected $columnTypes = array(
 		'host'           => self::TEXT,
@@ -31,6 +33,8 @@ extends UFmap {
 		'modifiedAt'     => self::TS,
 		'comment'        => self::TEXT,
 		'typeId'         => self::INT,
+		'carerId'		 => self::NULL_INT,
+		'masterHostId'	 => self::NULL_INT,
 	);
 	protected $tables = array(
 		'' => 'computers',

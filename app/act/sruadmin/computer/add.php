@@ -53,7 +53,13 @@ extends UFact {
 				}
 			}
 
-			$bean->fillFromPost(self::PREFIX, null, array('mac', 'host', 'typeId'));
+			$bean->fillFromPost(self::PREFIX, null, array('mac', 'host', 'typeId', 'carerId', 'masterHostId'));
+			if ($bean->masterHostId == 0) {
+				$bean->masterHostId = null;
+			}
+			if ($bean->carerId == 0) {
+				$bean->carerId = null;
+			}
 			$bean->locationId = $user->locationId;
 			$bean->modifiedById = $this->_srv->get('session')->authAdmin;
 			$bean->modifiedAt = NOW;
