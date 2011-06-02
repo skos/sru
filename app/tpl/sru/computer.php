@@ -117,7 +117,7 @@ extends UFtpl_Common {
 		if (is_null($d['userId'])) {
 			$user = 'BRAK';
 		} else {
-			$user = '<a href="'.$url.'/users/'.$d['userId'].'">'.$this->_escape($d['userName']).' '.$this->_escape($d['userSurname']).'</a>';
+			$user = '<a href="'.$url.'/users/'.$d['userId'].'">'.$this->_escape($d['userName']).' '.$this->_escape($d['userSurname']).'</a>'.(strlen($d['userComment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$d['userComment'].'" />':'');
 		}
 		if ($d['typeId'] != 1) {
 			echo '<p><em>Typ komputera:</em> '.$this->computerTypes[$d['typeId']].'</p>';
