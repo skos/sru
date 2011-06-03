@@ -569,8 +569,9 @@ div.style.display = 'none';
 	}
 
 	public function listWalet(array $d) {
+		$url = $this->url(0).'/dormitories/';
 		foreach ($d as $c) {
-			echo '<li>'.$c['host'].' <small>'.$c['ip'].'/'.$c['mac'].'</small></a>, <span>lokalizacja: '.$c['locationAlias'].' ('.strtoupper($c['dormitoryAlias']).')</span></li>';
+			echo '<li>'.$c['host'].' <small>'.$c['ip'].'/'.$c['mac'].'</small></a>, <span>lokalizacja: '.$c['locationAlias'].' (<a href="'.$url.$c['dormitoryAlias'].'">'.strtoupper($c['dormitoryAlias']).'</a>)</span></li>';
 		}
 	}
 
