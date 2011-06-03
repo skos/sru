@@ -67,6 +67,16 @@ extends UFdao {
 						break;
 					case 'dormitory':
 					case 'typeId':
+						if ($val == UFbean_Sru_User::DB_STUDENT_MAX) {
+							$query->where($var, UFbean_Sru_User::DB_STUDENT_MAX, UFlib_Db_Query::LTE);
+							$query->where($var, UFbean_Sru_User::DB_STUDENT_MIN, UFlib_Db_Query::GTE);
+							break;
+						}
+						if ($val == UFbean_Sru_User::DB_TOURIST_MAX) {
+							$query->where($var, UFbean_Sru_User::DB_TOURIST_MAX, UFlib_Db_Query::LTE);
+							$query->where($var, UFbean_Sru_User::DB_TOURIST_MIN, UFlib_Db_Query::GTE);
+							break;
+						}
 					case 'registryNo':
 					default:
 						$query->where($var, $val);

@@ -13,6 +13,11 @@ extends UFbean_Common {
 	const TYPE_ORGANIZATION = 53;
 	const TYPE_EXADMIN = 54;
 
+	const DB_STUDENT_MIN = 1;
+	const DB_STUDENT_MAX = 10;
+	const DB_TOURIST_MIN = 11;
+	const DB_TOURIST_MAX = 20;
+
 	protected $_locationId = null;
 	protected $_password = null;
 
