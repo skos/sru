@@ -5,6 +5,14 @@
 class UFbean_Sru_User
 extends UFbean_Common {
 
+	const TYPE_TOURIST_STUDENT = 21;
+	const TYPE_TOURIST_DIDACTICS = 22;
+	const TYPE_TOURIST_INDIVIDUAL = 23;
+	const TYPE_SKOS = 51;
+	const TYPE_ADMINISTRATION = 52;
+	const TYPE_ORGANIZATION = 53;
+	const TYPE_EXADMIN = 54;
+
 	protected $_locationId = null;
 	protected $_password = null;
 

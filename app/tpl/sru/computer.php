@@ -29,12 +29,12 @@ extends UFtpl_Common {
 	);
 
 	static public $userToComputerType = array(
-		21 => 11,
-		22 => 11,
-		23 => 11,
-		51 => 41,
-		52 => 31,
-		53 => 21,
+		UFbean_Sru_User::TYPE_TOURIST_STUDENT => UFbean_Sru_Computer::TYPE_TOURIST,
+		UFbean_Sru_User::TYPE_TOURIST_DIDACTICS => UFbean_Sru_Computer::TYPE_TOURIST,
+		UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL => UFbean_Sru_Computer::TYPE_TOURIST,
+		UFbean_Sru_User::TYPE_SKOS => UFbean_Sru_Computer::TYPE_SERVER,
+		UFbean_Sru_User::TYPE_ADMINISTRATION => UFbean_Sru_Computer::TYPE_ADMINISTRATION,
+		UFbean_Sru_User::TYPE_ORGANIZATION => UFbean_Sru_Computer::TYPE_ORGANIZATION,
 	);
 	
 	protected $errors = array(
