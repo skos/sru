@@ -330,8 +330,8 @@ changeVisibility();
 			echo '</div>';
 		}
 		echo $form->_fieldset('Uprawnienia');
-		echo $form->canAdmin('Komputer administratora', array('type'=>$form->CHECKBOX));
-		echo $form->exAdmin('Komputer ex-administratora', array('type'=>$form->CHECKBOX));
+		echo $form->canAdmin('Komputer administratora <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Oznacza komputer na liście uploaderów oraz umozliwia dostęp do części webaplikacji SKOS."/>', array('type'=>$form->CHECKBOX));
+		echo $form->exAdmin('Komputer ex-administratora <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Oznacza komputer na liście uploaderów."/>', array('type'=>$form->CHECKBOX));
 		echo $form->_end();
 		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
 

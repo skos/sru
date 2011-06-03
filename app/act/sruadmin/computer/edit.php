@@ -79,6 +79,12 @@ extends UFact {
 			if ($bean->availableTo <= NOW) {
 				$bean->availableTo = NOW;
 				$bean->active = false;
+				if ($bean->canAdmin) {
+					$bean->canAdmin = false;
+				}
+				if ($bean->exAdmin) {
+					$bean->exAdmin = false;
+				}
 
 				if ($bean->typeId == UFbean_Sru_Computer::TYPE_SERVER || $bean->typeId == UFbean_Sru_Computer::TYPE_SERVER_VIRT) {
 					// jeśli usuwamy serwer, to musimy mu też usunąć przypisane aliasy

@@ -55,7 +55,7 @@ extends UFbean_Common {
 			if ($change && $this->data['id'] == $bean->id) {
 				return;
 			}
-			
+
 			try {
 				// sprawdzamy, czy mamy do czynienia z serwerem wirtualnym
 				$post = $this->_srv->get('req')->post->{self::EDIT_PREFIX};
@@ -72,6 +72,13 @@ extends UFbean_Common {
 				}
 			} catch (UFex $e) {
 			}
+
+			// jeśli ten już zarejestrowany to wirtualny...
+			if ($bean->typeId == self::TYPE_SERVER_VIRT) {
+				return;
+			}
+			
+
 			return 'duplicated';
 		} catch (UFex_Db_QueryFailed $e) {
 			return 'regexp';

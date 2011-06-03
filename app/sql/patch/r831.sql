@@ -74,7 +74,7 @@ CREATE UNIQUE INDEX computers_mac_key
   ON computers
   USING btree
   (mac, active)
-  WHERE active = true AND type_id <> 42;
+  WHERE active = true AND type_id <> 41 AND type_id <> 42;
 
 ALTER TABLE computers ADD COLUMN carer_id bigint;
 ALTER TABLE computers ADD COLUMN master_host_id bigint;
