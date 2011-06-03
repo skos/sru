@@ -1316,6 +1316,8 @@ extends UFbox {
 		}
 
 		$d['computer'] = $bean;
+		$user = $this->_getUserFromGet();
+		$d['user'] = $user;
 
 		return $this->render(__FUNCTION__, $d);
 	}

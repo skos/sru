@@ -31,7 +31,7 @@ extends UFact {
 			}
 
 			$bean = UFra::factory('UFbean_Sru_Computer');
-			$bean->typeId = UFbean_Sru_Computer::TYPE_STUDENT;
+			$bean->typeId = (array_key_exists($user->typeId, UFtpl_Sru_Computer::$userToComputerType) ? UFtpl_Sru_Computer::$userToComputerType[$user->typeId] : UFbean_Sru_Computer::TYPE_STUDENT);
 			$post = $this->_srv->get('req')->post->{self::PREFIX};
 
 			$foundOld = false;

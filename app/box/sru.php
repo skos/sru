@@ -177,6 +177,7 @@ extends UFbox {
 
 		$d['computer'] = $bean;
 		$d['macAddress'] = $this->getMacAddress();
+		$d['user'] = $user;
 
 		return $this->render(__FUNCTION__, $d);
 	}

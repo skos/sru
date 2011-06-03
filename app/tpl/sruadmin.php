@@ -941,7 +941,7 @@ extends UFtpl_Common {
 
 		echo $form->_start();
 		echo $form->_fieldset('Dodaj komputer');
-		echo $d['computer']->write('formAdd', true, null, $d['servers'], $d['waletAdmins']);
+		echo $d['computer']->write('formAdd', $d['user'], true, null, $d['servers'], $d['waletAdmins']);
 		echo $form->_submit('Dodaj');
 		echo $form->_end();
 		echo $form->_end(true);

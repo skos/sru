@@ -27,6 +27,15 @@ extends UFtpl_Common {
 		41 => 'Serwer fizyczny',
 		42 => 'Serwer wirtualny',
 	);
+
+	static public $userToComputerType = array(
+		21 => 11,
+		22 => 11,
+		23 => 11,
+		51 => 41,
+		52 => 31,
+		53 => 21,
+	);
 	
 	protected $errors = array(
 		'host' => 'Nieprawidłowa nazwa',
@@ -404,7 +413,7 @@ initialMasterHostId = document.getElementById("computerEdit_masterHostId").value
 		<?
 	}
 
-	public function formAdd(array $d, $admin = false, $macAddress = null, $servers = null, $waletAdmins = null) {
+	public function formAdd(array $d, $user, $admin = false, $macAddress = null, $servers = null, $waletAdmins = null) {
 		$post = $this->_srv->get('req')->post;
 		$mac = $macAddress;
 		try {
@@ -422,6 +431,7 @@ initialMasterHostId = document.getElementById("computerEdit_masterHostId").value
 			echo $form->typeId('Typ', array(
 				'type' => $form->SELECT,
 				'labels' => $form->_labelize(self::$computerTypes),
+				'value' => (array_key_exists($user->typeId, self::$userToComputerType) ? self::$userToComputerType[$user->typeId] : UFbean_Sru_Computer::TYPE_STUDENT),
 			));
 			if (!is_null($waletAdmins)) {
 				$tmp = array();

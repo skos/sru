@@ -210,7 +210,7 @@ extends UFtpl_Common {
 
 		echo $form->_start($this->url(0).'/computers/:add');
 		echo $form->_fieldset('Dodaj komputer');
-		echo $d['computer']->write('formAdd', false, $d['macAddress']);
+		echo $d['computer']->write('formAdd', $d['user'], false, $d['macAddress'], null, null);
 		echo $form->_submit('Dodaj');
 		echo $form->_end();
 		echo $form->_end(true);
