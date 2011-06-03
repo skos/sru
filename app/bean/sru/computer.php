@@ -57,27 +57,21 @@ extends UFbean_Common {
 			}
 
 			try {
-				// sprawdzamy, czy mamy do czynienia z serwerem wirtualnym
+				// sprawdzamy, czy mamy do czynienia z serwerem
 				$post = $this->_srv->get('req')->post->{self::EDIT_PREFIX};
-				if (isset($post['typeId']) && $post['typeId'] == self::TYPE_SERVER_VIRT) {
+				if (isset($post['typeId']) && ($post['typeId'] == self::TYPE_SERVER || $post['typeId'] == self::TYPE_SERVER_VIRT)) {
 					return;
 				}
 			} catch (UFex $e) {
 			}
 			try {
-				// sprawdzamy, czy mamy do czynienia z serwerem wirtualnym
+				// sprawdzamy, czy mamy do czynienia z serwerem
 				$post = $this->_srv->get('req')->post->{self::ADD_PREFIX};
-				if (isset($post['typeId']) && $post['typeId'] == self::TYPE_SERVER_VIRT) {
+				if (isset($post['typeId']) && ($post['typeId'] == self::TYPE_SERVER || $post['typeId'] == self::TYPE_SERVER_VIRT)) {
 					return;
 				}
 			} catch (UFex $e) {
-			}
-
-			// jeśli ten już zarejestrowany to wirtualny...
-			if ($bean->typeId == self::TYPE_SERVER_VIRT) {
-				return;
-			}
-			
+			}			
 
 			return 'duplicated';
 		} catch (UFex_Db_QueryFailed $e) {
