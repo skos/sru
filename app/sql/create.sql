@@ -4286,18 +4286,6 @@ GRANT ALL ON SCHEMA public TO postgres;
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
---
--- TOC entry 2234 (class 0 OID 0)
--- Dependencies: 1643
--- Name: lanstats; Type: ACL; Schema: public; Owner: -
---
-
-REVOKE ALL ON TABLE lanstats FROM PUBLIC;
-REVOKE ALL ON TABLE lanstats FROM sru;
-GRANT ALL ON TABLE lanstats TO sru;
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE lanstats TO lanstats;
-
-
 -- Completed on 2011-02-05 18:43:15 CET
 
 --
