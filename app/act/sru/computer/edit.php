@@ -40,6 +40,8 @@ extends UFact {
 				$bean->availableMaxTo = $bean->availableTo;
 				// aktualizacja lokalizacji komputera
 				$bean->locationId = $user->locationId;
+				// aktualziacja typu kompa wg typu usera
+				$bean->typeId = (array_key_exists($user->typeId, UFtpl_Sru_Computer::$userToComputerType) ? UFtpl_Sru_Computer::$userToComputerType[$user->typeId] : UFbean_Sru_Computer::TYPE_STUDENT);
 				// przypisanie nowego IP
 				try {
 					$ip = UFra::factory('UFbean_Sru_Ipv4');

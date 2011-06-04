@@ -135,6 +135,10 @@ extends UFbean_Common {
 		return $this->dao->updateLocationByHost($host, $location, $ip, $modifiedBy);
 	}
 
+	public function updateTypeByHost($host, $typeId, $modifiedBy=null) {
+		return $this->dao->updateTypeByHost($host, $typeId, $modifiedBy);
+	}
+
 	protected function validateCarerId($val, $change) {
 			try {
 				$post = $this->_srv->get('req')->post->{self::EDIT_PREFIX};

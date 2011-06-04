@@ -37,6 +37,21 @@ extends UFact {
 
 			$bean->modifiedById = $this->_srv->get('session')->authAdmin;
 			$bean->modifiedAt = NOW;
+
+			try {
+				$comps = UFra::factory('UFbean_Sru_ComputerList');
+				$comps->listByUserId($bean->id);
+				foreach ($comps as $comp) {
+					$computer = UFra::factory('UFbean_Sru_Computer');
+					$computer->getByHost($comp['host']);
+					// aktualizacja typów komputerów
+					$typeId = (array_key_exists($bean->typeId, UFtpl_Sru_Computer::$userToComputerType) ? UFtpl_Sru_Computer::$userToComputerType[$bean->typeId] : UFbean_Sru_Computer::TYPE_STUDENT);
+					$computer->updateTypeByHost($comp['host'], $typeId, $this->_srv->get('session')->authAdmin);
+				}
+			} catch (UFex_Dao_NotFound $e) {
+				// uzytkownik nie ma komputerow
+			}
+
 			$bean->save();
 
 			$conf = UFra::shared('UFconf_Sru');

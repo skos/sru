@@ -448,8 +448,10 @@ $(document).ready(function()
 		}
 		echo '</div>';
 		echo '<p class="nav"><a href="'.$urlUser.'">Dane</a> ';
-		echo ' &bull; <a href="'.$urlUser.'/computers/:add">Dodaj komputer</a> ';
 		$acl = $this->_srv->get('acl');
+		if ($acl->sruAdmin('computer', 'addForUser', $d['id'])) {
+			echo ' &bull; <a href="'.$urlUser.'/computers/:add">Dodaj komputer</a> ';
+		}
 		if ($acl->sruAdmin('penalty', 'addForUser', $d['id'])) {
 			echo '&bull; <a href="'. $url.'/penalties/:add/user:'.$d['id'].'">Ukarz</a> ';
 		}

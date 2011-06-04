@@ -350,6 +350,32 @@ extends UFdao {
 		$return = $this->doUpdate($query);
 		return $return;
 	}
+
+	/**
+	 * Aktualizuje typ komputera
+	 * @param <type> $host
+	 * @param <type> $typeId
+	 * @param <type> $modifiedBy
+	 * @return <type>
+	 */
+	public function updateTypeByHost($host, $typeId, $modifiedBy=null) {
+		$mapping = $this->mapping('set');
+
+		$query = UFra::factory('UFlib_Db_Query');
+		$query->tables($mapping->tables());
+		$query->joins($mapping->joins(), $mapping->joinOns());
+		$data = array(
+			$mapping->typeId => $typeId,
+			$mapping->modifiedById => $modifiedBy,
+			$mapping->modifiedAt => NOW,
+		);
+		$query->values($mapping->columns(), $data,  $mapping->columnTypes());
+		$query->where($mapping->host, $host);
+		$query->where($mapping->active, true);
+
+		$return = $this->doUpdate($query);
+		return $return;
+	}
 	
 	/**
 	 * Funkcja konstruująca zapytanie wyciągające 10 ostatnio zmodyfikowanych/dodanych komputerów.
