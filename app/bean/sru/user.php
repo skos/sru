@@ -15,8 +15,8 @@ extends UFbean_Common {
 
 	const DB_STUDENT_MIN = 1;
 	const DB_STUDENT_MAX = 10;
-	const DB_TOURIST_MIN = 11;
-	const DB_TOURIST_MAX = 20;
+	const DB_TOURIST_MIN = 21;
+	const DB_TOURIST_MAX = 30;
 
 	protected $_locationId = null;
 	protected $_password = null;
