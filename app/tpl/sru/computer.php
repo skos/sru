@@ -129,9 +129,7 @@ extends UFtpl_Common {
 		} else {
 			$user = '<a href="'.$url.'/users/'.$d['userId'].'">'.$this->_escape($d['userName']).' '.$this->_escape($d['userSurname']).'</a>'.(strlen($d['userComment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$d['userComment'].'" />':'');
 		}
-		if ($d['typeId'] != 1) {
-			echo '<p><em>Typ komputera:</em> '.self::$computerTypes[$d['typeId']].'</p>';
-		}
+		echo '<p><em>Typ komputera:</em> '.self::$computerTypes[$d['typeId']].'</p>';
 		if (!is_null($d['carerName'])) {
 			echo '<p><em>Opiekun:</em> <a href="'.$url.'/admins/'.$d['carerId'].'">'.$d['carerName'].'</a></p>';
 		}
@@ -146,7 +144,6 @@ extends UFtpl_Common {
 		}
 		echo '</p>';
 		echo '<p><em>IP:</em> '.$d['ip'].'</p>';
-		echo '<p><em>Typ:</em> '.self::$computerTypes[$d['typeId']].'</p>';
 		if (!$d['active']) {
 			$max = 'BRAK <small>(było '.date(self::TIME_YYMMDD, $d['availableTo']).')</small>';
 		} elseif ($d['availableTo'] != $d['availableMaxTo']) {
