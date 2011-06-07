@@ -5,7 +5,7 @@
 class UFtpl_Sru_Computer
 extends UFtpl_Common {
 
-	static public $computerTypes = array(
+	protected static $computerTypes = array(
 		1 => 'Student - komp/tel',
 		2 => 'Student - AP',
 		3 => 'Student - inne',
@@ -15,6 +15,15 @@ extends UFtpl_Common {
 		41 => 'Serwer fizyczny',
 		42 => 'Serwer wirtualny',
 	);
+
+	protected static $computerTypesForHistory = array(
+		0 => 'nieznany',
+	);
+
+	public static function getComputerType($typeId) {
+		$computerTypes = self::$computerTypes + self::$computerTypesForHistory;
+		return $computerTypes[$typeId];
+	}
 
 	protected $computerSearchTypes = array(
 		0 => '',

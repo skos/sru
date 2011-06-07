@@ -62,7 +62,7 @@ extends UFtpl_Common {
 					$changes[] = $names[$key].': '.($val?'tak':'nie').$arr.($new[$key]?'tak':'nie');
 					break;
 				case 'typeId':
-					$changes[] = $names[$key].': '.UFtpl_Sru_Computer::$computerTypes[$old['typeId']].$arr.UFtpl_Sru_Computer::$computerTypes[$new['typeId']];
+					$changes[] = $names[$key].': '.UFtpl_Sru_Computer::getComputerType($old['typeId']).$arr.UFtpl_Sru_Computer::getComputerType($new['typeId']);
 					break;
 				default: continue;
 			}
