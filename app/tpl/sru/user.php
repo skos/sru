@@ -52,13 +52,17 @@ extends UFtpl_Common {
 		0 => '',
 	);
 
+	protected static $userTypesForHistory = array(
+		0 => 'nieznany',
+	);
+
 	protected static $userSummaryTypes = array(
 		UFbean_Sru_User::DB_STUDENT_MAX => 'STUDENCI',
 		UFbean_Sru_User::DB_TOURIST_MAX => 'TURYŚCI',
 	);
 
 	public static function getUserType($typeId) {
-		$userTypes = self::$userTypesForWalet + self::$userTypesForAdmin;
+		$userTypes = self::$userTypesForWalet + self::$userTypesForAdmin + self::$userTypesForHistory;
 		return $userTypes[$typeId];
 	}
 
