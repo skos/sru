@@ -5,9 +5,6 @@
 class UFtpl_SruAdmin_Transfer
 extends UFtpl_Common {
 	public function transferStats(array $d) {
-		$conf = UFra::shared('UFconf_Sru');
-		$exAdmins = $conf->exAdmins;
-
 		echo '<ul>';
 		$sumAvg = 0;
 		$sum = 0;
