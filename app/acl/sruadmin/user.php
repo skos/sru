@@ -23,6 +23,25 @@ extends UFlib_ClassWithService {
 		return $this->_loggedIn();
 	}
 
+	public function fullEdit($userId) {
+		if (!$this->_loggedIn()) {
+			return false;
+		}
+
+		try {
+			$user = UFra::factory('UFbean_Sru_User');
+			$user->getByPK($userId);
+		} catch (UFex_Dao_NotFound $e) {
+			return false;
+		}
+
+		if ($user->typeId > UFtpl_Sru_User::$userTypesLimit) {
+			return true;
+		}
+
+		return false;
+	}
+
 	public function del() {
 		return $this->_loggedIn();
 	}

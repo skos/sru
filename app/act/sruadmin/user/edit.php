@@ -10,6 +10,8 @@ extends UFact {
 
 	public function go() {
 		try {
+			$acl = $this->_srv->get('acl');
+
 			$this->begin();
 			$bean = UFra::factory('UFbean_Sru_User');
 			$bean->getByPK((int)$this->_srv->get('req')->get->userId);
@@ -32,6 +34,11 @@ extends UFact {
 			if (isset($post['facultyId']) && $post['facultyId'] == '0' && isset($post['studyYearId']) && $post['studyYearId'] != '0') {
 				throw UFra::factory('UFex_Dao_DataNotValid', 'Data "studyYearId" differ from "N/A"', 0, E_WARNING, array('studyYearId' => 'noFaculty'));
 			}
+			if ($dormitoryId != $post['dormitory'] && !$acl->sruAdmin('user', 'fullEdit', $bean->id)) {
+				UFra::error('This user`s location cannot be edited by admin');
+				return;
+			}
+			$bean->dormitory = $post['dormitory'];
 			$bean->facultyId = $post['facultyId'];
 			$bean->studyYearId = $post['studyYearId'];
 

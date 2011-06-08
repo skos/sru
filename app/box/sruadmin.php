@@ -588,8 +588,12 @@ extends UFbox {
 			$faculties = UFra::factory('UFbean_Sru_FacultyList');
 			$faculties->listAll();
 
+			$dorms = UFra::factory('UFbean_Sru_DormitoryList');
+			$dorms->listAllForWalet();
+
 			$d['user'] = $bean;
 			$d['faculties'] = $faculties;
+			$d['dormitories'] = $dorms;
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {

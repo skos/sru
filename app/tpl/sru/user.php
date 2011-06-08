@@ -532,10 +532,11 @@ changeVisibility();
 		echo $this->_escape($d['name']).' '.$this->_escape($d['surname']).' ('.$d['login'].')';
 	}
 
-	public function formEditAdmin(array $d, $faculties) {
+	public function formEditAdmin(array $d, $faculties, $dormitories) {
 		$acl = $this->_srv->get('acl');
 
 		$d['locationId'] = $d['locationAlias'];
+		$d['dormitory'] = $d['dormitoryId'];
 		if (is_null($d['facultyId'])) {
 			$d['facultyId'] = '0';
 		}
@@ -573,6 +574,22 @@ changeVisibility();
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$studyYears),
 		));
+		if ($acl->sruAdmin('user', 'fullEdit', $d['id'])) {
+			$tmp = array();
+			foreach ($dormitories as $dorm) {
+				$temp = explode("ds", $dorm['dormitoryAlias']);
+				if (!isset($temp[1])) {
+					$temp[1] = $dorm['dormitoryAlias'];
+				} else if($temp[1] == '5l')
+					$temp[1] = '5Ł';
+				$tmp[$dorm['dormitoryId']] = $temp[1] . ' ' . $dorm['dormitoryName'];
+			}
+			echo $form->dormitory('Akademik', array(
+				'type' => $form->SELECT,
+				'labels' => $form->_labelize($tmp),
+			));
+			echo $form->locationAlias('Pokój');
+		}
 		echo $form->servicesAvailable('Dostępność PUU', array('type'=>$form->CHECKBOX));
 		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
 		echo $form->_fieldset('Zmiana hasła');
