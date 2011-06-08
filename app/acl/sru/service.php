@@ -15,7 +15,7 @@ extends UFlib_ClassWithService {
 		}
 		$user = UFra::factory('UFbean_Sru_User');
 		$user->getFromSession();
-		if ($user->servicesAvailable && !$user->banned && ($user->typeId < UFbean_Sru_User::DB_STUDENT_MAX || $user->typeId == UFbean_Sru_User::TYPE_EXADMIN)) {
+		if ($user->servicesAvailable && !$user->banned && ($user->typeId < UFbean_Sru_User::DB_STUDENT_MAX || $user->typeId == UFbean_Sru_User::TYPE_ORGANIZATION || $user->typeId == UFbean_Sru_User::TYPE_EXADMIN)) {
 			return true;
 		}
 		return false;
@@ -27,7 +27,7 @@ extends UFlib_ClassWithService {
 		}
 		$user = UFra::factory('UFbean_Sru_User');
 		$user->getFromSession();
-		if ($user->typeId < UFbean_Sru_User::DB_STUDENT_MAX || $user->typeId == UFbean_Sru_User::TYPE_EXADMIN) {
+		if ($user->typeId < UFbean_Sru_User::DB_STUDENT_MAX || $user->typeId == UFbean_Sru_User::TYPE_ORGANIZATION || $user->typeId == UFbean_Sru_User::TYPE_EXADMIN) {
 			return true;
 		}
 		return false;
