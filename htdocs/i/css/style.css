@@ -111,12 +111,12 @@ img { border-style: none; }
 
 .tooltip {
 	display:none;
-	background:transparent url(http://static.flowplayer.org/tools/img/tooltip/black_big.png);
+	background:transparent url(../img/chmurka.png);
 	font-size:12px;
-	height:148px;
-	padding:40px 30px 10px 30px;
+	height:120px;
+	padding:20px 20px 10px 20px;
 	width:310px;
-	color:#fff;	
+	color:black;
 }
 
 th.header { 
