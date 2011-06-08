@@ -334,6 +334,9 @@ changeVisibility();
 		if (!is_null($servers)) {
 			$tmp = array();
 			foreach ($servers as $serv) {
+				if ($serv['id'] == $d['id']) {
+					continue;
+				}
 				$tmp[''] = '';
 				$tmp[$serv['id']] = $serv['host'];
 			}
