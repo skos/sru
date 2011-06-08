@@ -224,7 +224,7 @@ extends UFtpl_Common {
 		$form = UFra::factory('UFlib_Form');	
 		echo '<div class="computerSearch">';
 		echo $form->_start($this->url(0).'/computers/search');
-		echo $form->_fieldset('Znajdź komputer');
+		echo $form->_fieldset('<img src="'.UFURL_BASE.'/i/img/lupa.png" /> Znajdź komputer');
 		echo $d['computer']->write('formSearch', $d['searched']);
 		echo $form->_submit('Znajdź');
 		echo ' <a href="'.UFURL_BASE.'/admin/computers/">Serwery, administracja, organizacje</a>';
@@ -291,7 +291,7 @@ extends UFtpl_Common {
 
 		echo '<div class="userSearch">';
 		echo $form->_start($this->url(0).'/users/search');
-		echo $form->_fieldset('Znajdź użytkownika');
+		echo $form->_fieldset('<img src="'.UFURL_BASE.'/i/img/lupa.png" /> Znajdź użytkownika');
 		echo $d['user']->write('formSearch', $d['searched']);
 		echo $form->_submit('Znajdź');
 		if ($acl->sruAdmin('user', 'add')) {
@@ -310,6 +310,13 @@ extends UFtpl_Common {
 
 	public function userSearchResultsNotFound() {
 		echo $this->ERR('Nie znaleziono');
+	}
+
+	public function toDoList(array $d) {
+		$form = UFra::factory('UFlib_Form');
+		echo $form->_fieldset('<img src="'.UFURL_BASE.'/i/img/todo.png" /> Lista zadań');
+		echo $d['admin']->write('toDoList', $d['computers']);
+		echo $form->_end();
 	}
 
 	public function user(array $d) {

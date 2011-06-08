@@ -60,8 +60,8 @@ extends UFmap {
 		'banned'         => self::BOOL,
 		'canAdmin'       => self::BOOL,
 		'exAdmin'        => self::BOOL,
-		'carerId'		 => self::INT,
-		'masterHostId'	 => self::INT,
+		'carerId'		 => self::NULL_INT,
+		'masterHostId'	 => self::NULL_INT,
 	);
 	protected $tables = array(
 		'c' => 'computers',

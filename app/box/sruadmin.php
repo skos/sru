@@ -496,6 +496,51 @@ extends UFbox {
 		}
 	}
 
+	public function toDoList() {
+		try {
+			$admin = UFra::factory('UFbean_SruAdmin_Admin');
+			$admin->getFromSession();
+			$d['admin'] = $admin;
+
+			if ($admin->typeId != UFacl_SruAdmin_Admin::CAMPUS && UFacl_SruAdmin_Admin::CENTRAL) {
+				try {
+					$admDorm = UFra::factory('UFbean_SruWalet_AdminDormitoryList');
+					$admDorm->listAllById($admin->id);
+					$d['dormList'] = $admDorm;
+				} catch (UFex_Dao_NotFound $e) {
+					$d['dormList'] = null;
+				}
+			} else {
+				$dorms = UFra::factory('UFbean_Sru_DormitoryList');
+				$dorms->listAllForWalet();
+			}
+
+			$d['computers'] = null;
+			if (!is_null($dorms)) {
+				foreach ($dorms as $dorm) {
+					try {
+						$computers = UFra::factory('UFbean_Sru_ComputerList');
+						$computers->listActiveWithoutCarerByDorm($dorm['dormitoryId']);
+						$d['computers'][$dorm['dormitoryId']] = $computers;
+					} catch (UFex_Dao_NotFound $e) {
+						$d['computers'][$dorm['dormitoryId']] = null;
+					}
+				}
+			}
+			$computerCount = 0;
+			foreach ($d['computers'] as $dorm) {
+				$computerCount += count($dorm);
+			}
+			if ($computerCount == 0) {
+				$d['computers'] = null;
+			}
+			
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}
+	}
+
 	public function titleUser() {
 		try {
 			$bean = $this->_getUserFromGet();

@@ -32,7 +32,6 @@ extends UFact {
 
 			while (!is_null(key($post['dorm'])) && $acl->sruWalet('admin', 'advancedEdit')) {
 				if (current($post['dorm'])) {
-
 					try {
 						$admDorm = UFra::factory('UFbean_SruWalet_AdminDormitory');
 						$admDorm->getByAdminAndDorm($bean->id, key($post['dorm']));
@@ -50,6 +49,20 @@ extends UFact {
 					}
 				}
 				next($post['dorm']);
+			}
+
+			if (!$bean->active) {
+				try {
+					$hosts = UFra::factory('UFbean_Sru_ComputerList');
+					$hosts->listCaredByAdminId($bean->id);
+					foreach ($hosts as $host) {
+						$computer = UFra::factory('UFbean_Sru_Computer');
+						$computer->getByPK($host['id']);
+						// ustawienie braku opiekuna
+						$computer->updateCarerByHost($host['host'], null, $this->_srv->get('session')->authWaletAdmin);
+					}
+				} catch (UFex $e) {
+				}
 			}
 
 			$this->postDel(self::PREFIX);

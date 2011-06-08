@@ -194,7 +194,7 @@ extends UFbox {
 				}
 			}
 			$userCount = 0;
-			foreach ($users as $dorm) {
+			foreach ($d['users'] as $dorm) {
 				$userCount += count($dorm);
 			}
 			if ($userCount == 0) {

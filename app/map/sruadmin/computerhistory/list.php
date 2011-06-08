@@ -26,7 +26,11 @@ extends UFmap {
 		'canAdmin'       => 'h.can_admin',
 		'exAdmin'        => 'h.exadmin',
 		'active'         => 'h.active',
-		'typeId'	 => 'h.type_id',
+		'typeId'		 => 'h.type_id',
+		'carerId'		 => 'h.carer_id',
+		'carerName'		 => 'b.name',
+		'masterHostId'	 => 'h.master_host_id',
+		'masterHostName' => 'c.host',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -49,20 +53,28 @@ extends UFmap {
 		'canAdmin'       => self::BOOL,
 		'exAdmin'        => self::BOOL,
 		'active'         => self::BOOL,
-		'typeId'	 => self::INT,
+		'typeId'		 => self::INT,
+		'carerId'		 => self::NULL_INT,
+		'carerName'		 => self::TEXT,
+		'masterHostId'	 => self::NULL_INT,
+		'masterHostName' => self::TEXT,
 	);
 	protected $tables = array(
 		'h' => 'computers_history',
 	);
 	protected $joins = array(
 		'a' => 'admins',
+		'b' => 'admins',
 		'l' => 'locations',
 		'd' => 'dormitories',
+		'c' => 'computers',
 	);
 	protected $joinOns = array(
 		'a' => 'h.modified_by=a.id',
+		'b' => 'h.carer_id=b.id',
 		'l' => 'h.location_id=l.id',
 		'd' => 'l.dormitory_id=d.id',
+		'c' => 'h.master_host_id=c.id',
 	);
 	protected $pk = 'h.id';
 }

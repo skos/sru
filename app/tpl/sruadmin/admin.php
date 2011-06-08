@@ -305,6 +305,25 @@ extends UFtpl_Common {
 			echo '('.$ip.') ';
 		}
 	}
+
+	public function toDoList(array $d, $users) {
+		$url = $this->url(0);
+
+		if (is_null($users)) {
+			echo $this->OK('Brak zadań!');
+		} else {
+			echo '<h3>Komputery administracji bez przypisanego opiekuna:</h3>';
+			echo '<ul>';
+			foreach ($users as $dorm) {
+				if (!is_null($dorm)) {
+					foreach ($dorm as $comp) {
+						echo '<li'.($comp['banned']?' class="ban"' : '').'>'.'<a href="'.$url.'/computers/'.$comp['id'].'">'.$comp['host'].' <small>'.$comp['ip'].'/'.$comp['mac'].'</small></a> <span>'.date(self::TIME_YYMMDD, $comp['availableTo']).'</span>'.(strlen($comp['comment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$comp['comment'].'" />':'').'</li>';
+					}
+				}
+			}
+			echo '</ul>';
+		}
+	}
 	
 	public function apiAdminsOutdated(array $d) {
 		foreach ($d as $c) {

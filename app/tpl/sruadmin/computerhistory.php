@@ -16,6 +16,8 @@ extends UFtpl_Common {
 		'exAdmin' => 'Ex-administrator',
 		'active' => 'Aktywny',
 		'typeId' => 'Typ',
+		'carerId' => 'Opiekun',
+		'masterHostId' => 'Serwer fizyczny',
 	);
 
 	static protected $namesEn = array(
@@ -30,6 +32,8 @@ extends UFtpl_Common {
 		'exAdmin' => 'Ex-administrator',
 		'active' => 'Active',
 		'typeId' => 'Type',
+		'carerId' => 'Carer',
+		'masterHostId' => 'Physical server',
 	);
 
 	protected function _diff(array $old, array $new) {
@@ -63,6 +67,14 @@ extends UFtpl_Common {
 					break;
 				case 'typeId':
 					$changes[] = $names[$key].': '.UFtpl_Sru_Computer::getComputerType($old['typeId']).$arr.UFtpl_Sru_Computer::getComputerType($new['typeId']);
+					break;
+				case 'carerId':
+					$url = $this->url(0).'/admins/';
+					$changes[] = $names[$key].': <a href="'.$url.$val.'">'.$old['carerName'].'</a>'.$arr.'<a href="'.$url.$new[$key].'">'.$new['carerName'].'</a>';
+					break;
+				case 'masterHostId':
+					$url = $this->url(0).'/computers/';
+					$changes[] = $names[$key].': <a href="'.$url.$val.'">'.$old['masterHostName'].'</a>'.$arr.'<a href="'.$url.$new[$key].'">'.$new['masterHostName'].'</a>';
 					break;
 				default: continue;
 			}
@@ -98,6 +110,10 @@ extends UFtpl_Common {
 			'exAdmin' => $current->exAdmin,
 			'active' => $current->active,
 			'typeId' => $current->typeId,
+			'carerId' => ($current->carerId == 0) ? null : $current->carerId,
+			'carerName' => $current->carerName,
+			'masterHostId' => ($current->masterHostId == 0) ? null : $current->masterHostId,
+			'masterHostName' => $current->masterHostName,
 		);
 		$url = $this->url(0).'/computers/'.$current->id;
 		$urlAdmin = $this->url(0).'/admins/';
