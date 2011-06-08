@@ -674,7 +674,7 @@ div.style.display = 'none';
 	public function shortList(array $d) {
 		$url = $this->url(0).'/computers/';
 		foreach ($d as $c) {
-			echo '<li'.($c['banned']?' class="ban"' : '').'>'.(!$c['active']?'<del>':'').'<a href="'.$url.$c['id'].'">'.$c['host'].' <small>'.$c['ip'].'/'.$c['mac'].'</small></a> <span>'.date(self::TIME_YYMMDD, $c['availableTo']).'</span>'.(!$c['active']?'</del>':'').(strlen($c['comment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['comment'].'" />':'').'</li>';
+			echo '<li'.($c['banned']?' class="ban"' : '').'>'.(!$c['active']?'<del>':'').'<a href="'.$url.$c['id'].'">'.$c['host'].' <small>'.$c['ip'].'/'.$c['mac'].'</small></a> <span><small>('.self::$computerTypes[$c['typeId']].')</small> '.date(self::TIME_YYMMDD, $c['availableTo']).'</span>'.(!$c['active']?'</del>':'').(strlen($c['comment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['comment'].'" />':'').'</li>';
 		}
 	}
 
