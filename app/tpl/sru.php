@@ -87,6 +87,8 @@ extends UFtpl_Common {
 	}
 
 	public function userMainMenu() {
+		$acl = $this->_srv->get('acl');
+		
 		echo '<div class="mainMenu"><h1>System Rejestracji Użytkowników</h1>';
 		if ($this->_srv->get('msg')->get('userRecover/ok')) {
 			echo $this->OK('Konto zostało aktywowane - teraz <a href="'.$this->url(0).'/computers">dodaj komputer</a>');
@@ -95,7 +97,9 @@ extends UFtpl_Common {
 		echo '<li><a href="'.$this->url(0).'/profile">Profil</a></li>';
 		echo '<li><a href="'.$this->url(0).'/computers">Komputery</a></li>';
 		echo '<li><a href="'.$this->url(0).'/penalties">Kary</a></li>';
-		echo '<li><a href="'.$this->url(0).'/services">Usługi</a></li>';
+		if ($acl->sru('service', 'view')) {
+			echo '<li><a href="'.$this->url(0).'/services">Usługi</a></li>';
+		}
 		echo '</ul></div>';
 	}
 

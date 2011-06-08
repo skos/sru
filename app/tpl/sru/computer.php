@@ -94,16 +94,20 @@ extends UFtpl_Common {
 	
 	public function listOwn(array $d) {
 		$url = $this->url(1).'/';
+		echo '<ul>';
 		foreach ($d as $c) {
 			echo '<li><a href="'.$url.$c['id'].'">'.$c['host'].' <small>'.$c['ip'].'/'.$c['mac'].'</small></a> <span>'.date(self::TIME_YYMMDD, $c['availableTo']).'</span></li>';
 		}
+		echo '</ul>';
 	}
 
 	public function listToActivate(array $d) {
 		$url = $this->url(1).'/';
+		echo '<ul>';
 		foreach ($d as $c) {
 			echo '<li><a href="'.$url.$c['id'].'/:activate">'.$c['host'].' <small>'.$c['mac'].'</small></a></li>';
 		}
+		echo '</ul>';
 	}
 
 	public function titleDetails(array $d) {
