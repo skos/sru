@@ -286,7 +286,7 @@ changeVisibility();
 		echo '<small>Maksymalnie do '.date(self::TIME_YYMMDD, $d['availableMaxTo']).'</small><br />';
 	}
 
-	public function formEditAdmin(array $d, $dormitories, $user = null, $history = null, $servers = null, $waletAdmins = null) {
+	public function formEditAdmin(array $d, $dormitories, $user = null, $history = null, $servers = null, $waletAdmins = null, $virtuals = null) {
 		if (is_array($history)) {
 			$d = $history + $d;
 		}
@@ -321,6 +321,8 @@ changeVisibility();
 		echo $form->typeId('Typ', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$computerTypes),
+			'disabled' => ((is_null($virtuals)) ? false : true),
+			'after' => ((is_null($virtuals)) ? '<br/>' : ' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Nie można zmienić typu serwerowi, do którego przypisane są serwery wirtualne."/><br/>'),
 		));
 		if (!is_null($waletAdmins)) {
 			$tmp = array();

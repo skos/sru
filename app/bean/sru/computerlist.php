@@ -28,4 +28,8 @@ extends UFbeanList {
 	public function updateTypeByUserId($userId, $typeId, $modifiedBy=null) {
 		return $this->dao->updateTypeByUserId($userId, $typeId, $modifiedBy);
 	}
+
+	public function updateActiveByMasterId($masterId, $active, $modifiedBy=null) {
+		return $this->dao->updateActiveByMasterId($masterId, $active, $modifiedBy);
+	}
 }

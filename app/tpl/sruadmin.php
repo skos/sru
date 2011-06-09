@@ -185,7 +185,7 @@ extends UFtpl_Common {
 		} elseif ($this->_srv->get('msg')->get('computerEdit/ok')) {
 			echo $this->OK('Dane zostały zmienione');
 		}
-		echo $d['computer']->write('formEditAdmin', $d['dormitories'], $d['user'], $d['history'], $d['servers'], $d['waletAdmins']);
+		echo $d['computer']->write('formEditAdmin', $d['dormitories'], $d['user'], $d['history'], $d['servers'], $d['waletAdmins'], $d['virtuals']);
 		echo $form->_submit('Zapisz');
 		echo $form->_end();
 		echo $form->_end(true);

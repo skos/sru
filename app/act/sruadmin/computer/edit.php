@@ -86,6 +86,15 @@ extends UFact {
 					$bean->exAdmin = false;
 				}
 
+				// jeśli to serwer, to zaktualizujmy stan wirtualek
+				if ($bean->typeId == UFbean_Sru_Computer::TYPE_SERVER) {
+					try {
+						$comps = UFra::factory('UFbean_Sru_ComputerList');
+						$comps->updateActiveByMasterId($bean->id, false, $this->_srv->get('session')->authWaletAdmin);
+					} catch (UFex_Dao_NotFound $e) {
+						// uzytkownik nie ma komputerow
+					}
+				}
 				if ($bean->typeId == UFbean_Sru_Computer::TYPE_SERVER || $bean->typeId == UFbean_Sru_Computer::TYPE_SERVER_VIRT) {
 					// jeśli usuwamy serwer, to musimy mu też usunąć przypisane aliasy
 					try {

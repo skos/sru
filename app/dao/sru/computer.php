@@ -397,6 +397,25 @@ extends UFdao {
 		$return = $this->doUpdate($query);
 		return $return;
 	}
+
+	public function updateActiveByMasterId($masterId, $active, $modifiedBy=null) {
+		$mapping = $this->mapping('set');
+
+		$query = UFra::factory('UFlib_Db_Query');
+		$query->tables($mapping->tables());
+		$query->joins($mapping->joins(), $mapping->joinOns());
+		$data = array(
+			$mapping->active => $active,
+			$mapping->modifiedById => $modifiedBy,
+			$mapping->modifiedAt => NOW,
+		);
+		$query->values($mapping->columns(), $data,  $mapping->columnTypes());
+		$query->where($mapping->masterHostId, $masterId);
+		$query->where($mapping->active, !$active);
+
+		$return = $this->doUpdate($query);
+		return $return;
+	}
 	
 	/**
 	 * Funkcja konstruująca zapytanie wyciągające 10 ostatnio zmodyfikowanych/dodanych komputerów.

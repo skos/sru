@@ -241,6 +241,17 @@ extends UFbox {
 			} catch (UFex $e) {
 				$d['waletAdmins'] = null;
 			}
+			if ($bean->typeId == UFbean_Sru_Computer::TYPE_SERVER) {
+				try {
+					$virtuals = UFra::factory('UFbean_Sru_ComputerList');
+					$virtuals->listVirtualsByComputerId($bean->id);
+					$d['virtuals'] = $virtuals;
+				} catch (UFex $e) {
+					$d['virtuals'] = null;
+				}
+			} else {
+				$d['virtuals'] = null;
+			}
 
 			$d['computer'] = $bean;
 			$d['dormitories'] = $dorms;
