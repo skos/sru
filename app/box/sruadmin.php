@@ -504,11 +504,10 @@ extends UFbox {
 
 			if ($admin->typeId != UFacl_SruAdmin_Admin::CAMPUS && UFacl_SruAdmin_Admin::CENTRAL) {
 				try {
-					$admDorm = UFra::factory('UFbean_SruWalet_AdminDormitoryList');
-					$admDorm->listAllById($admin->id);
-					$d['dormList'] = $admDorm;
+					$dorms = UFra::factory('UFbean_SruWalet_AdminDormitoryList');
+					$dorms->listAllById($admin->id);
 				} catch (UFex_Dao_NotFound $e) {
-					$d['dormList'] = null;
+					$dorms = null;
 				}
 			} else {
 				$dorms = UFra::factory('UFbean_Sru_DormitoryList');
