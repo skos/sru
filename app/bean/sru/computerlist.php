@@ -20,4 +20,12 @@ extends UFbeanList {
 	public function updateCarerByCarerId($oldCarerId, $newCarerId, $modifiedBy=null) {
 		return $this->dao->updateCarerByCarerId($oldCarerId, $newCarerId, $modifiedBy);
 	}
+
+	public function updateLocationByUserId($userId, $location, $ip, $modifiedBy=null) {
+		return $this->dao->updateLocationByUserId($userId, $location, $ip, $modifiedBy);
+	}
+
+	public function updateTypeByUserId($userId, $typeId, $modifiedBy=null) {
+		return $this->dao->updateTypeByUserId($userId, $typeId, $modifiedBy);
+	}
 }

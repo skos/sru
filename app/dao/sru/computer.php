@@ -331,7 +331,7 @@ extends UFdao {
 		return $this->doSelect($query);
 	}
 
-	public function updateLocationByHost($host, $location,  $ip, $modifiedBy=null) {
+	public function updateLocationByUserId($userId, $location, $modifiedBy=null) {
 		$mapping = $this->mapping('set');
 
 		$query = UFra::factory('UFlib_Db_Query');
@@ -339,12 +339,11 @@ extends UFdao {
 		$query->joins($mapping->joins(), $mapping->joinOns());
 		$data = array(
 			$mapping->locationId => $location,
-			$mapping->ip => $ip,
 			$mapping->modifiedById => $modifiedBy,
 			$mapping->modifiedAt => NOW,
 		);
 		$query->values($mapping->columns(), $data,  $mapping->columnTypes());
-		$query->where($mapping->host, $host);
+		$query->where($mapping->userId, $userId);
 		$query->where($mapping->active, true);
 
 		$return = $this->doUpdate($query);
@@ -353,12 +352,12 @@ extends UFdao {
 
 	/**
 	 * Aktualizuje typ komputera
-	 * @param <type> $host
+	 * @param <type> $userId
 	 * @param <type> $typeId
 	 * @param <type> $modifiedBy
 	 * @return <type>
 	 */
-	public function updateTypeByHost($host, $typeId, $modifiedBy=null) {
+	public function updateTypeByUserId($userId, $typeId, $modifiedBy=null) {
 		$mapping = $this->mapping('set');
 
 		$query = UFra::factory('UFlib_Db_Query');
@@ -370,7 +369,7 @@ extends UFdao {
 			$mapping->modifiedAt => NOW,
 		);
 		$query->values($mapping->columns(), $data,  $mapping->columnTypes());
-		$query->where($mapping->host, $host);
+		$query->where($mapping->userId, $userId);
 		$query->where($mapping->active, true);
 
 		$return = $this->doUpdate($query);

@@ -51,23 +51,18 @@ extends UFact {
 				$bean->updateNeeded = true;
 			}
 
+			$bean->save();
+
 			try {
 				$comps = UFra::factory('UFbean_Sru_ComputerList');
-				$comps->listByUserId($bean->id);
-				foreach ($comps as $comp) {
-					$computer = UFra::factory('UFbean_Sru_Computer');
-					$computer->getByHost($comp['host']);
-					// aktualizacja lokalizacji komputerów
-					$computer->updateLocationByHost($comp['host'], $bean->locationId, $computer->ip, $this->_srv->get('session')->authWaletAdmin);
-					// aktualizacja typów komputerów
-					$typeId = (array_key_exists($bean->typeId, UFtpl_Sru_Computer::$userToComputerType) ? UFtpl_Sru_Computer::$userToComputerType[$bean->typeId] : UFbean_Sru_Computer::TYPE_STUDENT);
-					$computer->updateTypeByHost($comp['host'], $typeId, $this->_srv->get('session')->authWaletAdmin);
-				}
+				$comps->updateLocationByUserId($bean->id, $bean->locationId, $this->_srv->get('session')->authWaletAdmin);
+				$typeId = (array_key_exists($bean->typeId, UFtpl_Sru_Computer::$userToComputerType) ? UFtpl_Sru_Computer::$userToComputerType[$bean->typeId] : UFbean_Sru_Computer::TYPE_STUDENT);
+				$comps->updateTypeByUserId($bean->id, $typeId, $this->_srv->get('session')->authWaletAdmin);
 			} catch (UFex_Dao_NotFound $e) {
 				// uzytkownik nie ma komputerow
 			}
 
-			$bean->save();
+
 			$conf = UFra::shared('UFconf_Sru');
 			if ($conf->sendEmail && $bean->notifyByEmail() && !is_null($bean->email) && $bean->email != '') {
 				$sender = UFra::factory('UFlib_Sender');
