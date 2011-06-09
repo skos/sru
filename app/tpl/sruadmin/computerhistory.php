@@ -70,11 +70,11 @@ extends UFtpl_Common {
 					break;
 				case 'carerId':
 					$url = $this->url(0).'/admins/';
-					$changes[] = $names[$key].': <a href="'.$url.$val.'">'.$old['carerName'].'</a>'.$arr.'<a href="'.$url.$new[$key].'">'.$new['carerName'].'</a>';
+					$changes[] = $names[$key].': '.(is_null($val) ? 'nikt' : '<a href="'.$url.$val.'">'.$old['carerName']).'</a>'.$arr.(is_null($new[$key]) ? 'nikt' : '<a href="'.$url.$new[$key].'">'.$new['carerName'].'</a>');
 					break;
 				case 'masterHostId':
 					$url = $this->url(0).'/computers/';
-					$changes[] = $names[$key].': <a href="'.$url.$val.'">'.$old['masterHostName'].'</a>'.$arr.'<a href="'.$url.$new[$key].'">'.$new['masterHostName'].'</a>';
+					$changes[] = $names[$key].': '.(is_null($val) ? 'brak' : '<a href="'.$url.$val.'">'.$old['masterHostName']).'</a>'.$arr.(is_null($new[$key]) ? 'brak' : '<a href="'.$url.$new[$key].'">'.$new['masterHostName'].'</a>');
 					break;
 				default: continue;
 			}
