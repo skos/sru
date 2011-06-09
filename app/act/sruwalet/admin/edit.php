@@ -54,13 +54,7 @@ extends UFact {
 			if (!$bean->active) {
 				try {
 					$hosts = UFra::factory('UFbean_Sru_ComputerList');
-					$hosts->listCaredByAdminId($bean->id);
-					foreach ($hosts as $host) {
-						$computer = UFra::factory('UFbean_Sru_Computer');
-						$computer->getByPK($host['id']);
-						// ustawienie braku opiekuna
-						$computer->updateCarerByHost($host['host'], null, $this->_srv->get('session')->authWaletAdmin);
-					}
+					$hosts->updateCarerByCarerId($bean->id, null, $this->_srv->get('session')->authWaletAdmin);
 				} catch (UFex $e) {
 				}
 			}

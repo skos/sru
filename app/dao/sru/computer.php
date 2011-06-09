@@ -380,19 +380,19 @@ extends UFdao {
 	/*
 	 * Aktualizuje opiekuna hosta
 	 */
-	public function updateCarerByHost($host, $carerId, $modifiedBy=null) {
+	public function updateCarerByCarerId($oldCarerId, $newCarerId, $modifiedBy=null) {
 		$mapping = $this->mapping('set');
 
 		$query = UFra::factory('UFlib_Db_Query');
 		$query->tables($mapping->tables());
 		$query->joins($mapping->joins(), $mapping->joinOns());
 		$data = array(
-			$mapping->carerId => $carerId,
+			$mapping->carerId => $newCarerId,
 			$mapping->modifiedById => $modifiedBy,
 			$mapping->modifiedAt => NOW,
 		);
 		$query->values($mapping->columns(), $data,  $mapping->columnTypes());
-		$query->where($mapping->host, $host);
+		$query->where($mapping->carerId, $oldCarerId);
 		$query->where($mapping->active, true);
 
 		$return = $this->doUpdate($query);

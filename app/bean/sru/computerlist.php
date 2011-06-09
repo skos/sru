@@ -16,4 +16,8 @@ extends UFbeanList {
 	public function deactivateNotSeen($days, $modifiedBy) { 
 		return $this->dao->deactivateNotSeen($days, $modifiedBy); 
 	}
+
+	public function updateCarerByCarerId($oldCarerId, $newCarerId, $modifiedBy=null) {
+		return $this->dao->updateCarerByCarerId($oldCarerId, $newCarerId, $modifiedBy);
+	}
 }
