@@ -77,7 +77,7 @@ extends UFtpl_Common {
 
 		echo '<div class="userSearch">';
 		echo $form->_start($this->url(0).'/users/search');
-		echo $form->_fieldset('<img src="'.UFURL_BASE.'/i/img/lupa.png" /> Znajdź mieszkańca');
+		echo $form->_fieldset('<img src="'.UFURL_BASE.'/i/img/lupa.png" alt="" /> Znajdź mieszkańca');
 		echo $d['user']->write('formSearchWalet', $d['searched']);
 		echo $form->_submit('Znajdź');
 		echo $form->_end();
@@ -87,7 +87,7 @@ extends UFtpl_Common {
 
 	public function toDoList(array $d) {
 		$form = UFra::factory('UFlib_Form');
-		echo $form->_fieldset('<img src="'.UFURL_BASE.'/i/img/todo.png" /> Lista zadań');
+		echo $form->_fieldset('<img src="'.UFURL_BASE.'/i/img/todo.png" alt="" /> Lista zadań');
 		echo $d['admin']->write('toDoList', $d['users']);
 		echo $form->_end();
 	}

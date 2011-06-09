@@ -194,7 +194,7 @@ $(document).ready(function()
 		$form = UFra::factory('UFlib_Form', 'adminEdit', $d, $this->errors);
 
 		echo $form->_fieldset();
-		echo $form->name('Imię i nazwisko', array('after'=>' <img src="'.UFURL_BASE.'/i/pytajnik.png" alt="?" title="Imię i nazwisko administratora lub inne oznaczenie." /><br/>', 'class'=>'required'));
+		echo $form->name('Imię i nazwisko', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Imię i nazwisko administratora lub inne oznaczenie." /><br/>', 'class'=>'required'));
 		echo $form->password('Hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
 		echo $form->password2('Powtórz hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
 		if($advanced) {
