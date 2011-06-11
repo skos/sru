@@ -90,7 +90,7 @@ extends UFact {
 				if ($bean->typeId == UFbean_Sru_Computer::TYPE_SERVER) {
 					try {
 						$comps = UFra::factory('UFbean_Sru_ComputerList');
-						$comps->updateActiveByMasterId($bean->id, false, $this->_srv->get('session')->authWaletAdmin);
+						$comps->updateActiveByMasterId($bean->id, false, $this->_srv->get('session')->authAdmin);
 					} catch (UFex_Dao_NotFound $e) {
 						// uzytkownik nie ma komputerow
 					}
