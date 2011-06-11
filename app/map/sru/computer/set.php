@@ -52,7 +52,7 @@ extends UFmap_Sru_Computer_Add {
 	);
 	protected $valids = array(
 		'host' => array('textMin'=>1, 'textMax'=>50, 'regexp'=>'^[a-z][-a-z0-9]*$'),
-		'mac' => array('regexp'=>'^[0-9a-fA-F]{1,2}?([- :]?[0-9a-fA-F]{1,2}){5}$'),
+		'mac' => array('regexp'=>'^[0-9a-fA-F]{2}?([- :]?[0-9a-fA-F]{2}){5}$'),
 		'ip' => array('regexp'=>'^[0-9.]{7,15}$'),
 		'locationId' => array('intMin'=>1),
 		'locationAlias' => array('textMin'=>1),

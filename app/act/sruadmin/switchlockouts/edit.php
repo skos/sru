@@ -13,7 +13,7 @@ extends UFact {
 			$switch = UFra::factory('UFbean_SruAdmin_Switch');
 			$switch->getBySerialNo($this->_srv->get('req')->get->switchSn);
 
-			$pattern = '/^[0-9a-fA-F]{1,2}?([- :]?[0-9a-fA-F]{1,2}){5}$/';
+			$pattern = '/^[0-9a-fA-F]{2}?([- :]?[0-9a-fA-F]{2}){5}$/';
 
 			if (is_null($switch->ip)) {
 				return;
@@ -42,9 +42,9 @@ extends UFact {
 			}
 
 			if (isset($post['lockouts'])) {
-				$nothingToDo = false;
 				while (key($post['lockouts'])) {
 					if (current($post['lockouts'])) {
+						$nothingToDo = false;
 						$result = $hp->setLockoutMac(key($post['lockouts']), false);
 						if (!$result) {
 							throw UFra::factory('UFex_Dao_DataNotValid', 'Writing to switch error', 0, E_WARNING, array('switch' => 'writingError'));
