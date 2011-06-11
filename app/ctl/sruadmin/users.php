@@ -113,7 +113,7 @@ extends UFctl {
 			$act = 'User_Edit';
 		} elseif ('users/user/edit' == $get->view && $post->is('userDel') && $acl->sruAdmin('user', 'del')) {
 			$act = 'User_Del';
-		} elseif ('users/user' == $get->view && $post->is('serviceEdit') && $acl->sruAdmin('service', 'edit')) {
+		} elseif ('users/user' == $get->view && $post->is('serviceEdit') && $acl->sruAdmin('service', 'edit', $get->userId)) {
 			$act = 'Service_Edit';
 		}
 

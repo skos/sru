@@ -1827,21 +1827,25 @@ extends UFbox {
 			}
 		}
 
-		try 
-		{
+		try {
 			$bean = UFra::factory('UFbean_SruAdmin_UserServiceList');
 			$bean->listActive($serviceType);
 			$d['active'] = $bean;
-		}
-		catch (UFex_Dao_NotFound $e) {}
+		} catch (UFex_Dao_NotFound $e) {}
 		
 		return $this->render(__FUNCTION__, $d);
 	}
 
 	public function userServicesEdit() {
+		$acl = $this->_srv->get('acl');
+
 		try {
 			$user = $this->_getUserFromGet();
 			$d['user'] = $user;
+
+			if (!$acl->sruAdmin('service', 'edit', $user->id)) {
+				return '';
+			}
 			
 			try {
 				$bean = UFra::factory('UFbean_Sru_UserServiceList');	
@@ -1857,9 +1861,7 @@ extends UFbox {
 			$d['allServices'] = $bean;
 			
 			return $this->render(__FUNCTION__, $d);
-		} 
-		catch (UFex_Dao_NotFound $e) 
-		{
+		} catch (UFex_Dao_NotFound $e) {
 			return $this->render('userServicesNotFound');
 		}
 	}

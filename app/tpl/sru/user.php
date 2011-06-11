@@ -387,6 +387,8 @@ $(document).ready(function()
 	}
 
 	public function details(array $d) {
+		$acl = $this->_srv->get('acl');
+		
 		if (is_null($d['facultyId'])) {
 			$d['facultyId'] = '-1';
 		}
@@ -438,7 +440,9 @@ $(document).ready(function()
 			echo '<p><em>Koniec skier.:</em> '.date(self::TIME_YYMMDD, $d['referralEnd']).'</p>';
 		}
 		echo '<p><em>Język:</em> '.self::$languages[$d['lang']];
-		echo '<p><em>Dostępność PUU:</em> '.($d['servicesAvailable'] ? 'tak' : 'nie');
+		if ($acl->sruAdmin('service', 'edit', $d['id'])) {
+			echo '<p><em>Dostępność PUU:</em> '.($d['servicesAvailable'] ? 'tak' : 'nie');
+		}
 		echo '<p class="displayOnHover"><em>Znajdź na:</em>';
 		echo ' <a href="http://www.google.pl/search?q='.urlencode($d['name'].' '.$d['surname']).'">google</a>';
 		echo ' <a href="http://nk.pl/search?query='.urlencode($d['name'].' '.$d['surname']).'">nasza-klasa</a>';
@@ -452,7 +456,6 @@ $(document).ready(function()
 		}
 		echo '</div>';
 		echo '<p class="nav"><a href="'.$urlUser.'">Dane</a> ';
-		$acl = $this->_srv->get('acl');
 		if ($acl->sruAdmin('computer', 'addForUser', $d['id'])) {
 			echo ' &bull; <a href="'.$urlUser.'/computers/:add">Dodaj komputer</a> ';
 		}
@@ -590,7 +593,9 @@ changeVisibility();
 			));
 			echo $form->locationAlias('Pokój');
 		}
-		echo $form->servicesAvailable('Dostępność PUU', array('type'=>$form->CHECKBOX));
+		if ($acl->sruAdmin('service', 'edit', $d['id'])) {
+			echo $form->servicesAvailable('Dostępność PUU', array('type'=>$form->CHECKBOX));
+		}
 		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
 		echo $form->_fieldset('Zmiana hasła');
 			echo $form->password('Nowe hasło', array('type'=>$form->PASSWORD,  ));
