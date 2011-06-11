@@ -538,8 +538,10 @@ extends UFbox {
 				}
 			}
 			$computerCount = 0;
-			foreach ($d['computers'] as $dorm) {
-				$computerCount += count($dorm);
+			if (!is_null($d['computers'])) {
+				foreach ($d['computers'] as $dorm) {
+					$computerCount += count($dorm);
+				}
 			}
 			if ($computerCount == 0) {
 				$d['computers'] = null;

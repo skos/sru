@@ -116,7 +116,7 @@ extends UFdao {
 		$server = $this->_srv->get('req')->server;
 		$login = $server->PHP_AUTH_USER;
 		$password = $server->PHP_AUTH_PW;
-		$password = UFbean_SruAdmin_Admin::generatePassword($login, $password);
+		$password = UFbean_SruAdmin_Admin::generatePassword($password);
 
 		return $this->getByLoginPassword($login, $password);
 	}
