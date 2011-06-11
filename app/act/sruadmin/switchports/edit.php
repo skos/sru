@@ -55,7 +55,7 @@ extends UFact {
 				$bean->connectedSwitchId = $port['connectedSwitchId'];
 
 				if (!is_null($switch->ip)) {
-					$hp = UFra::factory('UFlib_Snmp_Hp', $switch->ip);
+					$hp = UFra::factory('UFlib_Snmp_Hp', $switch->ip, $switch);
 					$result = false;
 					if ($port['locationAlias'] != '') {
 						if ($port['comment'] != '') {

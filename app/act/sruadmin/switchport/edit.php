@@ -49,7 +49,7 @@ extends UFact {
 			}
 
 			if ($post['copyToSwitch'] && !is_null($switch->ip)) {
-				$hp = UFra::factory('UFlib_Snmp_Hp', $switch->ip);
+				$hp = UFra::factory('UFlib_Snmp_Hp', $switch->ip, $switch);
 				$result = false;
 				if ($post['locationAlias'] != '') {
 					if ($post['comment'] != '') {

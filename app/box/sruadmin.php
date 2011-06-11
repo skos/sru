@@ -1115,7 +1115,7 @@ extends UFbox {
 			$d['port'] = $bean;
 
 			if (!is_null($d['switch']->ip)) {
-				$switch = UFra::factory('UFlib_Snmp_Hp', $d['switch']->ip);
+				$switch = UFra::factory('UFlib_Snmp_Hp', $d['switch']->ip, $d['switch']);
 				$d['alias'] = $switch->getPortAlias($bean->ordinalNo);
 			} else {
 				$d['alias'] = null;
@@ -1255,7 +1255,7 @@ extends UFbox {
 			$d['enabledSwitches'] = $enabledSwitches;
 
 			if (!is_null($d['switch']->ip)) {
-				$switch = UFra::factory('UFlib_Snmp_Hp', $d['switch']->ip);
+				$switch = UFra::factory('UFlib_Snmp_Hp', $d['switch']->ip, $d['switch']);
 				$d['status'] = $switch->getPortStatus($bean->ordinalNo);
 			} else {
 				$d['status'] = null;

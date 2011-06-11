@@ -6,6 +6,7 @@ class UFlib_Snmp_Hp
 extends UFlib_Snmp {
 
 	protected $ip = '';
+	protected $switch = null;
 	protected $communityR = '';
 	protected $communityW = '';
 	protected $timeout = 300000;
@@ -39,9 +40,14 @@ extends UFlib_Snmp {
 		'J8435A',
 	);
 
-	public function uFlib_Snmp_Hp ($ip = null) {
+	public $movedPortsNumbers = array(
+		'J9452A',
+	);
+
+	public function uFlib_Snmp_Hp ($ip = null, $switch = null) {
 		snmp_set_valueretrieval(SNMP_VALUE_PLAIN);
 		$this->ip = $ip;
+		$this->switch = $switch;
 		// ustawienie community
 		$conf = UFra::shared('UFconf_Sru');
 		$this->communityR = $conf->communityRead;
@@ -95,7 +101,7 @@ extends UFlib_Snmp {
 	}
 
 	public function getPortAlias($port) {
-		$alias = @snmpget($this->ip , $this->communityR, $this->OIDs['portAliases'].'.'.$port, $this->timeout);
+		$alias = @snmpget($this->ip , $this->communityR, $this->OIDs['portAliases'].'.'.$this->translateSwitchPort($port), $this->timeout);
 		if ($alias == false) {
 			return null;
 		}
@@ -124,11 +130,11 @@ extends UFlib_Snmp {
 	}
 
 	public function getPortStatus($port) {
-		$status = @snmpget($this->ip, $this->communityR, $this->OIDs['portStatuses'].'.'.$port, $this->timeout);
+		$status = @snmpget($this->ip, $this->communityR, $this->OIDs['portStatuses'].'.'.$this->translateSwitchPort($port), $this->timeout);
 		if ($status == false) {
 			return null;
 		}
-		$activity = @snmpget($this->ip, $this->communityR, $this->OIDs['portActivities'].'.'.$port, $this->timeout);
+		$activity = @snmpget($this->ip, $this->communityR, $this->OIDs['portActivities'].'.'.$this->translateSwitchPort($port), $this->timeout);
 		if ($status == 2) {
 			$result = self::DISABLED;
 		} else if ($activity == 2) {
@@ -145,7 +151,7 @@ extends UFlib_Snmp {
 		} else {
 			$statusInt = 1;
 		}
-		return @snmpset($this->ip, $this->communityW, $this->OIDs['portStatuses'].'.'.$port, 'i', $statusInt, $this->timeout);
+		return @snmpset($this->ip, $this->communityW, $this->OIDs['portStatuses'].'.'.$this->translateSwitchPort($port), 'i', $statusInt, $this->timeout);
 	}
 
 	public function getLockouts() {
@@ -186,7 +192,7 @@ extends UFlib_Snmp {
 	}
 
 	public function setPortAlias($port, $name) {
-		return @snmpset($this->ip, $this->communityW, $this->OIDs['portAliases'].'.'.$port, 's', $name, $this->timeout);
+		return @snmpset($this->ip, $this->communityW, $this->OIDs['portAliases'].'.'.$this->translateSwitchPort($port), 's', $name, $this->timeout);
 	}
 
 	public function getMacsFromPort($port) {
@@ -254,5 +260,21 @@ extends UFlib_Snmp {
 			}
 		}
 		return null;
+	}
+
+	private function translateSwitchPort($port) {
+		if (is_null($this->switch)) {
+			return $port;
+		}
+		if (in_array($this->switch->modelNo, $this->movedPortsNumbers)) {
+			if ($port <= 48) {
+				return $port+24;
+			} else if ($port > 48 && $port <= 50) {
+				return $port+48;
+			} else {
+				return $port+70;
+			}
+		}
+		return $port;
 	}
 }
