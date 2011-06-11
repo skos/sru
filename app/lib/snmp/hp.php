@@ -38,6 +38,7 @@ extends UFlib_Snmp {
 	public $biggerTrunkNumbers = array(
 		'J4906A',
 		'J8435A',
+		'J9452A',
 	);
 
 	public $movedPortsNumbers = array(
@@ -197,7 +198,7 @@ extends UFlib_Snmp {
 
 	public function getMacsFromPort($port) {
 		snmp_set_valueretrieval(SNMP_VALUE_LIBRARY);
-		$macs = @snmpwalk($this->ip , $this->communityR, $this->OIDs['macs'].'.'.$port, $this->timeout);
+		$macs = @snmpwalk($this->ip , $this->communityR, $this->OIDs['macs'].'.'.$this->translateSwitchPort($port), $this->timeout);
 		snmp_set_valueretrieval(SNMP_VALUE_PLAIN);
 		if ($macs == false) {
 			return null;
@@ -225,8 +226,10 @@ extends UFlib_Snmp {
 			--$watchdog;
 			$portUser = @snmpget($switchIp, $this->communityR, $this->OIDs['port'].'.'.$needle, $this->timeout);
 			if ($portUser) {
-				$portUser = (int)$portUser;
-
+				$switch = UFra::factory('UFbean_SruAdmin_Switch');
+				$switch->getByIp($switchIp);
+				$this->switch = $switch;
+				$portUser = $this->recoverSwitchPort((int)$portUser);
 				// sprawdzamy, czy na znalezionym porcie jest jakis switch
 				try {
 					if ($portUser > 48) {
@@ -273,6 +276,22 @@ extends UFlib_Snmp {
 				return $port+48;
 			} else {
 				return $port+70;
+			}
+		}
+		return $port;
+	}
+
+	private function recoverSwitchPort($port) {
+		if (is_null($this->switch)) {
+			return $port;
+		}
+		if (in_array($this->switch->modelNo, $this->movedPortsNumbers)) {
+			if ($port <= 48) {
+				return $port-24;
+			} else if ($port > 48 && $port <= 50) {
+				return $port-48;
+			} else {
+				return $port-70;
 			}
 		}
 		return $port;
