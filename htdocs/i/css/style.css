@@ -43,7 +43,7 @@ img { border-style: none; }
 #main blockquote { border-left: 3px solid #eee; margin-left: 1em; padding-left: 1em; }
 #main fieldset { margin-top: 1em; border-style: none; background-color: #eee; padding: 0.5em; }
 #main fieldset fieldset { padding: 0.5em 0; }
-#main fieldset.radio legend { margin-left: 27%; }
+#main fieldset.radio legend { margin-left: 27%; padding-left: 2em; }
 #main legend { margin-left: 1em; background-color: #eee; padding: 0.1em 1em; font-family: "Georgia", serif; font-weight: bold; }
 #main label { display: block; width: 29.5%; float: left; clear: both; text-align: right; margin-right: 0.5%; }
 #main input.radio, #main input.checkbox { margin-left: 29.5%; margin-top: 0.5em; float: left; clear: both; }

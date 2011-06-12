@@ -26,7 +26,7 @@ extends UFtpl_Common {
 		'en' => 'English',
 	);
 
-	protected static $userTypesForWalet = array(
+	protected static $userTypesForWaletAcademic = array(
 		1 => 'Student studiów dziennych',
 		2 => 'Doktorant',
 		3 => 'Sokrates',
@@ -34,6 +34,9 @@ extends UFtpl_Common {
 		5 => 'Student studiów wieczorowych/zaocznych',
 		6 => 'Student innej uczelni',
 		7 => 'Nie student',
+	);
+
+	protected static $userTypesForWaletSummer = array(
 		21 => 'Student-turysta',
 		22 => 'Dydaktyka',
 		23 => 'Turysta indywidualny',
@@ -62,12 +65,12 @@ extends UFtpl_Common {
 	);
 
 	public static function getUserType($typeId) {
-		$userTypes = self::$userTypesForWalet + self::$userTypesForAdmin + self::$userTypesForHistory;
+		$userTypes = self::$userTypesForWaletAcademic + self::$userTypesForWaletSummer + self::$userTypesForAdmin + self::$userTypesForHistory;
 		return $userTypes[$typeId];
 	}
 
 	public static function getUserTypes() {
-		$userTypes = self::$userTypesForSearch + self::$userTypesForAdmin + self::$userSummaryTypes + self::$userTypesForWalet;
+		$userTypes = self::$userTypesForSearch + self::$userTypesForAdmin + self::$userSummaryTypes + self::$userTypesForWaletAcademic + self::$userTypesForWaletSummer;
 		return $userTypes;
 	}
 
@@ -179,10 +182,19 @@ extends UFtpl_Common {
 		echo $form->name('Imię', array('class'=>'required'));
 		echo $form->surname('Nazwisko', array('class'=>'required', 'value'=>$surname));
 		echo $form->registryNo('Nr indeksu', array('value'=>$registryNo));
-		echo $form->typeId('Typ', array(
-			'type' => $form->SELECT,
-			'labels' => $form->_labelize(self::$userTypesForWalet),
+		echo $form->typeId('Typ - rok akademicki', array(
+			'type' => $form->RADIO,
+			'labels' => $form->_labelize(self::$userTypesForWaletAcademic),
+			'labelClass' => 'radio',
+			'class' => 'radio',
 		));
+		echo $form->typeId('Typ - wakacje', array(
+			'type' => $form->RADIO,
+			'labels' => $form->_labelize(self::$userTypesForWaletSummer),
+			'labelClass' => 'radio',
+			'class' => 'radio',
+		));
+		echo '<legend>Zamieszkanie</legend>';
 		$tmp = array();
 		foreach ($dormitories as $dorm) {
 			$temp = explode("ds", $dorm['dormitoryAlias']);
@@ -621,12 +633,19 @@ changeVisibility();
 				$temp[1] = '5Ł';
 			$tmp[$dorm['dormitoryId']] = $temp[1] . ' ' . $dorm['dormitoryName'];
 		}
-		echo $form->typeId('', array(
+		echo $form->typeId('Typ - rok akademicki', array(
 			'type' => $form->RADIO,
-			'labels' => $form->_labelize(self::$userTypesForWalet),
+			'labels' => $form->_labelize(self::$userTypesForWaletAcademic),
 			'labelClass' => 'radio',
 			'class' => 'radio',
 		));
+		echo $form->typeId('Typ - wakacje', array(
+			'type' => $form->RADIO,
+			'labels' => $form->_labelize(self::$userTypesForWaletSummer),
+			'labelClass' => 'radio',
+			'class' => 'radio',
+		));
+		echo '<legend>Zamieszkanie</legend>';
 		echo $form->dormitory('Akademik', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize($tmp),
