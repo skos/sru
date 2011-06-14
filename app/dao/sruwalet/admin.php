@@ -39,7 +39,6 @@ extends UFdao {
 		$query->where($mapping->active, true); 
 		$query->where($mapping->typeId, UFacl_SruWalet_Admin::DORM, UFlib_Db_Query::GTE);
 		
-		$query->order($mapping->typeId, $query->ASC);
 		$query->order($mapping->name, $query->ASC);
 		
 		return $this->doSelect($query);
