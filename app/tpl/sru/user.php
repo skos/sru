@@ -182,13 +182,13 @@ extends UFtpl_Common {
 		echo $form->name('Imię', array('class'=>'required'));
 		echo $form->surname('Nazwisko', array('class'=>'required', 'value'=>$surname));
 		echo $form->registryNo('Nr indeksu', array('value'=>$registryNo));
-		echo $form->typeId('Typ - rok akademicki', array(
+		echo $form->typeId('Status - rok akademicki', array(
 			'type' => $form->RADIO,
 			'labels' => $form->_labelize(self::$userTypesForWaletAcademic),
 			'labelClass' => 'radio',
 			'class' => 'radio',
 		));
-		echo $form->typeId('Typ - wakacje', array(
+		echo $form->typeId('Status - wakacje', array(
 			'type' => $form->RADIO,
 			'labels' => $form->_labelize(self::$userTypesForWaletSummer),
 			'labelClass' => 'radio',
@@ -633,13 +633,13 @@ changeVisibility();
 				$temp[1] = '5Ł';
 			$tmp[$dorm['dormitoryId']] = $temp[1] . ' ' . $dorm['dormitoryName'];
 		}
-		echo $form->typeId('Typ - rok akademicki', array(
+		echo $form->typeId('Status - rok akademicki', array(
 			'type' => $form->RADIO,
 			'labels' => $form->_labelize(self::$userTypesForWaletAcademic),
 			'labelClass' => 'radio',
 			'class' => 'radio',
 		));
-		echo $form->typeId('Typ - wakacje', array(
+		echo $form->typeId('Status - wakacje', array(
 			'type' => $form->RADIO,
 			'labels' => $form->_labelize(self::$userTypesForWaletSummer),
 			'labelClass' => 'radio',
