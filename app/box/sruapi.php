@@ -116,6 +116,19 @@ extends UFbox {
 		}
 	}
 
+	public function tourists() {
+		try {
+			$bean = UFra::factory('UFbean_Sru_ComputerList');
+			$bean->listTourists();
+
+			$d['computers'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return '';
+		}
+	}
+
 	public function switches() {
 		try {
 			$bean = UFra::factory('UFbean_SruAdmin_SwitchList');

@@ -29,6 +29,10 @@ extends UFtpl_Common {
 		$d['computers']->write('configAdmins');
 	}
 
+	public function tourists(array $d) {
+		$d['computers']->write('configAdmins');
+	}
+
 	public function switches(array $d) {
 		$d['switches']->write('apiList');
 	}

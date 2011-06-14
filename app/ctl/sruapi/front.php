@@ -80,6 +80,9 @@ extends UFctl {
 							}
 						}
 					break;
+				case 'tourists':
+					$get->view = 'tourists';
+					break;
 				case 'switches':
 					$get->view = 'switches';
 					if ($segCount > 1) {
@@ -258,6 +261,8 @@ extends UFctl {
 				return 'SruApi_Ethers';
 			case 'admins':
 				return 'SruApi_Admins';
+			case 'tourists':
+				return 'SruApi_Tourists';
 			case 'switches':
 				return 'SruApi_Switches';
 			case 'switches/findMac':

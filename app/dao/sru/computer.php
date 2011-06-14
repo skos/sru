@@ -266,6 +266,17 @@ extends UFdao {
 		return $this->doSelect($query);
 	}
 
+	public function listTourists() {
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->userTypeId, UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL);
+		$query->where($mapping->active, true);
+		$query->order($mapping->ip, $query->ASC);
+
+		return $this->doSelect($query);
+	}
+
 	public function listByRoom($roomId) {
 	
 		$mapping = $this->mapping('list');
