@@ -68,9 +68,6 @@ extends UFtpl_Common {
 		if ($this->_srv->get('msg')->get('switchPortEdit/errors/switch/writingError')) {
 			echo $this->ERR('Nie udało się zapisać danych na switcha');
 		}
-		if ($this->_srv->get('msg')->get('switchPortEdit/errors/switch/noWriting')) {
-			echo $this->ERR('Usiłujesz zmienić status portu nie zapisując go na switcha');
-		}
 
 		$tmp = array();
 		foreach ($enabledSwitches as $sw) {
