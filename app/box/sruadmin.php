@@ -496,7 +496,7 @@ extends UFbox {
 			$bean->search($tmp);
 			if (1 == count($bean)) {
 				$get->userId = $bean[0]['id'];
-				return $this->user().$this->userComputers().$this->userInactiveComputers();
+				return $this->user().$this->userComputers().$this->roomSwitchPorts().$this->userInactiveComputers();
 			}
 
 			$d['users'] = $bean;
@@ -1083,7 +1083,14 @@ extends UFbox {
 
 	public function roomSwitchPorts() {
 		try {
-			$bean = $this->_getRoomFromGet();
+			try {
+				$bean = $this->_getRoomFromGet();
+			} catch (UFex_Core_DataNotFound $e) {
+				// możliwe, że zostaliśmy skierowani tu przez usera...
+				$user = $this->_getUserFromGet();
+				$bean = UFra::factory('UFbean_SruAdmin_Room');
+				$bean->getByPK($user->locationId);
+			}
 			$d['room'] = $bean;
 
 			$ports = UFra::factory('UFbean_SruAdmin_SwitchPortList');
