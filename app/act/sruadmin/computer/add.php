@@ -60,6 +60,9 @@ extends UFact {
 			if ($bean->carerId == 0) {
 				$bean->carerId = null;
 			}
+			if ($bean->typeId == UFbean_Sru_Computer::TYPE_STUDENT_AP || $bean->typeId == UFbean_Sru_Computer::TYPE_STUDENT_OTHER) {
+				$bean->autoDeactivation = false;
+			}
 			$bean->locationId = $user->locationId;
 			$bean->modifiedById = $this->_srv->get('session')->authAdmin;
 			$bean->modifiedAt = NOW;

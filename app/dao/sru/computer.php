@@ -73,18 +73,7 @@ extends UFdao {
 
 		return $this->doSelect($query);
 	}	
-/* 
-	public function listByUserIdAll($id) {
-		$mapping = $this->mapping('list');
 
-		$query = $this->prepareSelect($mapping);
-		$query->where($mapping->userId, $id);
-		$query->order($mapping->active, $query->DESC);
-		$query->order($mapping->host, $query->ASC);
-
-		return $this->doSelect($query);
-	}
-*/
 	public function getInactiveByMacUserId($mac, $user) {
 		$key = $this->cachePrefix.'/'.__FUNCTION__.'/'.$mac.'/'.$user;
 		try {
@@ -363,10 +352,6 @@ extends UFdao {
 
 	/**
 	 * Aktualizuje typ komputera
-	 * @param <type> $userId
-	 * @param <type> $typeId
-	 * @param <type> $modifiedBy
-	 * @return <type>
 	 */
 	public function updateTypeByUserId($userId, $typeId, $modifiedBy=null) {
 		$mapping = $this->mapping('set');
@@ -463,6 +448,7 @@ extends UFdao {
 		$query->where($mapping->active, true);
 		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_SERVER, $query->NOT_EQ);
 		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_SERVER_VIRT, $query->NOT_EQ);
+		$query->where($mapping->autoDeactivation, true);
 		$query->where($mapping->lastSeen, time() - $days*24*60*60, $query->LT);
 		$query->where($mapping->lastActivated, time() - $days*24*60*60, $query->LT);
 		
@@ -471,11 +457,6 @@ extends UFdao {
 
 	/**
 	 * Wyświetla serwery wirtualne dla danego serwera
-	 * @param <type> $id
-	 * @param <type> $page
-	 * @param <type> $perPage
-	 * @param <type> $overFetch
-	 * @return <type>
 	 */
 	public function listVirtualsByComputerId($id) {
 		$mapping = $this->mapping('list');

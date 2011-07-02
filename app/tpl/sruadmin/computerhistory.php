@@ -18,6 +18,7 @@ extends UFtpl_Common {
 		'typeId' => 'Typ',
 		'carerId' => 'Opiekun',
 		'masterHostId' => 'Serwer fizyczny',
+		'autoDeactivation' => 'Autodezaktywacja',
 	);
 
 	static protected $namesEn = array(
@@ -34,6 +35,7 @@ extends UFtpl_Common {
 		'typeId' => 'Type',
 		'carerId' => 'Carer',
 		'masterHostId' => 'Physical server',
+		'autoDeactivation' => 'Autodeactivation',
 	);
 
 	protected function _diff(array $old, array $new) {
@@ -76,6 +78,9 @@ extends UFtpl_Common {
 					$url = $this->url(0).'/computers/';
 					$changes[] = $names[$key].': '.(is_null($val) ? 'brak' : '<a href="'.$url.$val.'">'.$old['masterHostName']).'</a>'.$arr.(is_null($new[$key]) ? 'brak' : '<a href="'.$url.$new[$key].'">'.$new['masterHostName'].'</a>');
 					break;
+				case 'autoDeactivation':
+					$changes[] = $names[$key].': '.($val?'tak':'nie').$arr.($new[$key]?'tak':'nie');
+					break;
 				default: continue;
 			}
 		}
@@ -114,6 +119,7 @@ extends UFtpl_Common {
 			'carerName' => $current->carerName,
 			'masterHostId' => ($current->masterHostId == 0) ? null : $current->masterHostId,
 			'masterHostName' => $current->masterHostName,
+			'autoDeactivation' => $current->autoDeactivation,
 		);
 		$url = $this->url(0).'/computers/'.$current->id;
 		$urlAdmin = $this->url(0).'/admins/';

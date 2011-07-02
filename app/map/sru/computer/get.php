@@ -38,6 +38,7 @@ extends UFmap {
 		'carerName'		 => 'w.name',
 		'masterHostId'	 => 'c.master_host_id',
 		'masterHostName' => 's.host',
+		'autoDeactivation' => 'c.auto_deactivation',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -72,6 +73,7 @@ extends UFmap {
 		'carerName'		 => self::TEXT,
 		'masterHostId'	 => self::INT,
 		'masterHostName' => self::TEXT,
+		'autoDeactivation' => self::BOOL,
 	);
 	protected $tables = array(
 		'c' => 'computers',

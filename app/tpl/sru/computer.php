@@ -205,6 +205,7 @@ extends UFtpl_Common {
 		}
 		if ($d['typeId'] != UFbean_Sru_Computer::TYPE_SERVER && $d['typeId'] != UFbean_Sru_Computer::TYPE_SERVER_VIRT) {
 			echo '<p><em>Widziany:</em> '.($d['lastSeen'] == 0 ? 'nigdy' : date(self::TIME_YYMMDD_HHMM, $d['lastSeen'])).'</p>';
+			echo '<p><em>Autodezakt.:</em> '.($d['autoDeactivation'] ? 'tak' : 'nie').'</p>';
 		}
 		if (is_null($d['modifiedBy'])) {
 			$changed = 'UŻYTKOWNIK';
@@ -355,9 +356,12 @@ changeVisibility();
 		echo $form->canAdmin('Komputer administratora <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Oznacza komputer na liście uploaderów oraz umozliwia dostęp do części webaplikacji SKOS."/>', array('type'=>$form->CHECKBOX));
 		echo $form->exAdmin('Komputer ex-administratora <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Oznacza komputer na liście uploaderów."/>', array('type'=>$form->CHECKBOX));
 		echo $form->_end();
-		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
-
+		echo $form->_fieldset('Inne');
 		$conf = UFra::shared('UFconf_Sru');
+		echo $form->autoDeactivation('Autodezaktywacja <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Komputery, które nie były widziane dłużej niż '.$conf->computersMaxNotSeen.' dni, zostaną dezaktywowane. Hosty typu serwerowego nigdy nie są dezaktywowane z powodu braku widzialności."/>', array('type'=>$form->CHECKBOX));
+		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
+		echo $form->_end();
+
 		$date = $conf->computerAvailableMaxTo;
 		?>
 <script type="text/javascript">
