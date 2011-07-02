@@ -57,4 +57,29 @@ extends UFdao {
 
 		return $this->doSelect($query);
 	}
+
+	public function listByPenaltyId($penaltyId) {
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->penaltyId, $penaltyId);
+
+		return $this->doSelect($query);
+	}
+
+	public function updatePenaltyIdByPortId($portId, $penaltyId = null) {
+		$mapping = $this->mapping('set');
+
+		$query = UFra::factory('UFlib_Db_Query');
+		$query->tables($mapping->tables());
+		$query->joins($mapping->joins(), $mapping->joinOns());
+		$data = array(
+			$mapping->penaltyId => $penaltyId,
+		);
+		$query->values($mapping->columns(), $data, $mapping->columnTypes());
+		$query->where($mapping->ida, $portId);
+
+		$return = $this->doUpdate($query);
+		return $return;
+	}
 }

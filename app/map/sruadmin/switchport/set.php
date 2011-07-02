@@ -7,6 +7,7 @@ extends UFmap {
 
 	protected $columns = array(
 		'id'				=> 'id',
+		'ida'				=> 'id',
 		'ordinalNo'			=> 'ordinal_no',
 		'switchId'			=> 'switch',
 		'locationId'		=> 'location',
@@ -17,6 +18,7 @@ extends UFmap {
 	);
 	protected $columnTypes = array(
 		'id'				=> self::INT,
+		'ida'				=> self::INT,
 		'ordinalNo'			=> self::INT,
 		'switchId'			=> self::INT,
 		'locationId'		=> self::NULL_INT,

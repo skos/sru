@@ -25,6 +25,20 @@ extends UFact {
 			
 			$bean->save();
 
+			try {
+				$swPorts = UFra::factory('UFbean_SruAdmin_SwitchPortList');
+				$swPorts->listByPenaltyId($bean->id);
+				foreach ($swPorts as $port) {
+					$switch = UFra::factory('UFbean_SruAdmin_Switch');
+					$switch->getByPK($port['switchId']);
+					$hp = UFra::factory('UFlib_Snmp_Hp', $switch->ip, $switch);
+					$result = $hp->setPortStatus($port['ordinalNo'], UFlib_Snmp_Hp::ENABLED);
+				}
+				$swPorts->updatePenaltyIdByPortId($port['id'], null);
+			} catch (UFex_Dao_NotFound $e) {
+				// brak portów z przypisaną karą
+			}
+
 			$this->markOk(self::PREFIX);
 		} catch (UFex $e) {
 			$this->markErrors(self::PREFIX);
