@@ -54,10 +54,13 @@ extends UFact {
 					$this->markErrors(self::PREFIX, array('exAdmin'=>'notWithAdmin'));
 					return;
 			}
-			if ($post['activateHost'] && !$bean->active && (is_null($bean->availableTo) || $bean->availableTo > NOW) && $user->active) {
+			if ($post['activateHost'] && !$bean->active && $user->active) {
 				// przywrocenie aktywnosci komputera jeśli daty są ok
 				$bean->active = true;
 				$bean->lastActivated = NOW;
+				if ($bean->availableTo <= NOW) {
+					$bean->availableTo = null;
+				}
 			}
 			$bean->modifiedById = $this->_srv->get('session')->authAdmin;
 			$bean->modifiedAt = NOW;
