@@ -270,7 +270,7 @@ extends UFdao {
 		$mapping = $this->mapping('list');
 
 		$query = $this->prepareSelect($mapping);
-		$query->where($mapping->userTypeId, UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL);
+		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_TOURIST);
 		$query->where($mapping->active, true);
 		$query->order($mapping->ip, $query->ASC);
 

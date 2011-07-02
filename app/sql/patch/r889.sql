@@ -1,0 +1,2 @@
+--konieczne jest wstawienie ID administratora/bota odpowiedzialnego za aktualizację typów
+update computers set type_id = 1, modified_by = , modified_at = now() where type_id = 11 and ((select type_id from users where computers.user_id = id) = 21 or (select type_id from users where computers.user_id = id) = 22);
