@@ -1099,8 +1099,10 @@ extends UFbox {
 			
 			$statuses = array();
 			foreach ($ports as $port) {
-				$switch = UFra::factory('UFlib_Snmp_Hp', $port['switchIp']);
-				$status = $switch->getPortStatus($port['ordinalNo']);
+				$switch = UFra::factory('UFbean_SruAdmin_Switch');
+				$switch->getByPK($port['switchId']);
+				$hp = UFra::factory('UFlib_Snmp_Hp', $port['switchIp'], $switch);
+				$status = $hp->getPortStatus($port['ordinalNo']);
 				if (is_null($status)) {
 					return $this->render('switchNotFound');
 				}
