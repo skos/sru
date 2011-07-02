@@ -18,7 +18,6 @@ extends UFmap {
 		'dormitoryAlias' => 'd.alias',
 		'dormitoryName'  => 'd.name',
 		'availableTo'    => 'h.avail_to',
-		'availableMaxTo' => 'h.avail_max_to',
 		'modifiedById'   => 'h.modified_by',
 		'modifiedBy'     => 'a.name',
 		'modifiedAt'     => 'h.modified_at',
@@ -31,7 +30,7 @@ extends UFmap {
 		'carerName'		 => 'b.name',
 		'masterHostId'	 => 'h.master_host_id',
 		'masterHostName' => 'c.host',
-		'autoDeactivation' => 'c.auto_deactivation',
+		'autoDeactivation' => 'h.auto_deactivation',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -45,8 +44,7 @@ extends UFmap {
 		'dormitoryId'    => self::INT,
 		'dormitoryAlias' => self::TEXT,
 		'dormitoryName'  => self::TEXT,
-		'availableTo'    => self::TS,
-		'availableMaxTo' => self::TS,
+		'availableTo'    => self::NULL_TS,
 		'modifiedById'   => self::NULL_INT,
 		'modifiedBy'     => self::TEXT,
 		'modifiedAt'     => self::TS,

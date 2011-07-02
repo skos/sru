@@ -12,7 +12,6 @@ extends UFmap {
 		'userId'         => 'user_id',
 		'locationId'     => 'location_id',
 		'availableTo'    => 'avail_to',
-		'availableMaxTo' => 'avail_max_to',
 		'modifiedById'   => 'modified_by',
 		'modifiedAt'     => 'modified_at',
 		'comment'        => 'comment',
@@ -28,8 +27,7 @@ extends UFmap {
 		'userId'         => self::NULL_INT,
 		'locationId'     => self::INT,
 		'locationAlias'  => self::TEXT,	// kolumna tylko do walidacji
-		'availableTo'    => self::TS,
-		'availableMaxTo' => self::TS,
+		'availableTo'    => self::NULL_TS,
 		'modifiedById'   => self::NULL_INT,
 		'modifiedAt'     => self::TS,
 		'comment'        => self::TEXT,

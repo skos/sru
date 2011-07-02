@@ -12,7 +12,6 @@ extends UFmap_Sru_Computer_Add {
 		'userId'         => 'user_id',
 		'locationId'     => 'location_id',
 		'availableTo'    => 'avail_to',
-		'availableMaxTo' => 'avail_max_to',
 		'modifiedById'   => 'modified_by',
 		'modifiedAt'     => 'modified_at',
 		'comment'        => 'comment',
@@ -34,8 +33,7 @@ extends UFmap_Sru_Computer_Add {
 		'locationId'     => self::INT,
 		'locationAlias'  => self::TEXT,	// kolumna tylko do walidacji
 		'dormitory'      => self::TEXT,	// kolumna tylko do walidacji
-		'availableTo'    => self::TS,
-		'availableMaxTo' => self::TS,
+		'availableTo'    => self::NULL_TS,
 		'modifiedById'   => self::NULL_INT,
 		'modifiedAt'     => self::TS,
 		'comment'        => self::TEXT,

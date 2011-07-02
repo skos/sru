@@ -15,18 +15,9 @@ extends UFact {
 			$bean->host = $bean->host; // aby wywołać walidację
 			$user = UFra::factory('UFbean_Sru_User');
 			$user->getByPK($bean->userId);
-			$bean->fillFromPost(self::PREFIX, null, array('mac', 'availableTo'));
+			$bean->fillFromPost(self::PREFIX, null, array('mac'));
 			if (!$bean->active) {
-				$conf = UFra::shared('UFconf_Sru');
-				$date = $conf->computerAvailableMaxTo;
-				$bean->availableMaxTo = strtotime($date);
-			}
-			if (strtotime(date('Y-m-d', $bean->availableTo)) > $bean->availableMaxTo) {
-				$bean->availableTo = $bean->availableMaxTo;
-			}
-			if (!$bean->active && $bean->availableTo > NOW) {
-				// przywrocenie aktywnosci komputera, jezeli podano
-				// przyszla date waznosci rejestracji
+				// przywrocenie aktywnosci komputera
 				$computers = UFra::factory('UFbean_Sru_ComputerList');
 				try {
 					$computers->listByUserId($user->id);
@@ -36,8 +27,9 @@ extends UFact {
 				} catch (UFex_Dao_NotFound $e) {
 				}
 				$bean->active = true;
+				$conf = UFra::shared('UFconf_Sru');
+				$bean->availableTo = $conf->computerAvailableTo;
 				$bean->lastActivated = NOW;
-				$bean->availableMaxTo = $bean->availableTo;
 				// aktualizacja lokalizacji komputera
 				$bean->locationId = $user->locationId;
 				// aktualziacja typu kompa wg typu usera
@@ -52,10 +44,6 @@ extends UFact {
 					$this->markErrors(self::PREFIX, array('ip'=>'noFree'));
 					return;
 				}
-			}
-			if ($bean->availableTo <= NOW) {
-				$bean->availableTo = NOW;
-				$bean->active = false;
 			}
 			$bean->modifiedById = null;
 			$bean->modifiedAt = NOW;

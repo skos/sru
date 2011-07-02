@@ -9,10 +9,6 @@ extends UFbeanList {
 		$this->data = $this->dao->search($params);
 	}
 
-	public function updateAvailableMaxTo($date, $modifiedBy=null) {
-		return $this->dao->updateAvailableMaxTo($date, $modifiedBy);
-	}
-
 	public function deactivateNotSeen($days, $modifiedBy) { 
 		return $this->dao->deactivateNotSeen($days, $modifiedBy); 
 	}

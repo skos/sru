@@ -1,6 +1,6 @@
 <?
 /**
- * szablon beana komputera
+ * szablon tpl komputera
  */
 class UFtpl_Sru_Computer
 extends UFtpl_Common {
@@ -59,8 +59,6 @@ extends UFtpl_Common {
 		'ip/notFound' => 'Niedozwolony adres IP',
 		'ip/duplicated' => 'IP zajęte',
 		'availableTo' => 'Nieprawidłowy format',
-		'availableTo/tooNew' => 'Data nie może być większa od maksymalnej daty',
-		'availableMaxTo' => 'Nieprawidłowy format',
 		'dormitory' => 'Wybierz akademik',
 		'locationAlias' => 'Podaj pokój',
 		'locationAlias/noDormitory' => 'Wybierz akademik',
@@ -92,11 +90,9 @@ extends UFtpl_Common {
 	
 	public function listOwn(array $d) {
 		$url = $this->url(1).'/';
-		echo '<ul>';
 		foreach ($d as $c) {
-			echo '<li><a href="'.$url.$c['id'].'">'.$c['host'].' <small>'.$c['ip'].'/'.$c['mac'].'</small></a> <span>'.date(self::TIME_YYMMDD, $c['availableTo']).'</span></li>';
+			echo '<li><a href="'.$url.$c['id'].'">'.$c['host'].' <small>'.$c['ip'].'/'.$c['mac'].'</small></a> <span>'.(is_null($c['availableTo']) ? '' : date(self::TIME_YYMMDD, $c['availableTo'])).'</span></li>';
 		}
-		echo '</ul>';
 	}
 
 	public function listToActivate(array $d) {
@@ -125,7 +121,7 @@ extends UFtpl_Common {
 		echo '<p><em>Typ:</em> '.self::$computerTypes[$d['typeId']].'</p>';
 		echo '<p><em>MAC:</em> '.$d['mac'].'</p>';
 		echo '<p><em>IP:</em> '.$d['ip'].'</p>';
-		echo '<p><em>Rejestracja do:</em> '.date(self::TIME_YYMMDD, $d['availableTo']).'</p>';
+		echo '<p><em>Rejestracja do:</em> '.(is_null($d['availableTo']) ? 'brak limitu' : date(self::TIME_YYMMDD, $d['availableTo'])).'</p>';
 		echo '<p><em>Miejsce:</em> '.$d['locationAlias'].' ('.$d['dormitoryName'].')</p>';
 		echo '<p><em>Liczba kar:</em> '.$d['bans'].'</p>';
 		echo '<p><em>Widziany:</em> '.($d['lastSeen'] == 0 ? 'nigdy' : date(self::TIME_YYMMDD_HHMM, $d['lastSeen'])).'</p>';
@@ -156,13 +152,13 @@ extends UFtpl_Common {
 		echo '</p>';
 		echo '<p><em>IP:</em> '.$d['ip'].'</p>';
 		if (!$d['active']) {
-			$max = 'BRAK <small>(było '.date(self::TIME_YYMMDD, $d['availableTo']).')</small>';
-		} elseif ($d['availableTo'] != $d['availableMaxTo']) {
-			$max = date(self::TIME_YYMMDD, $d['availableTo']).'<small> (max '.date(self::TIME_YYMMDD, $d['availableMaxTo']).')</small>';
+			$max = '<strong>BRAK</strong>';
 		} else {
 			$max = date(self::TIME_YYMMDD, $d['availableTo']);
 		}
-		echo '<p><em>Rejestracja do:</em> '.$max.'</p>';
+		if (!$d['active'] || !is_null($d['availableTo'])) {
+			echo '<p><em>Rejestracja do:</em> '.$max.'</p>';
+		}
 		echo '<p><em>Miejsce:</em> <a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'/'.$d['locationAlias'].'">'.$d['locationAlias'].'</a> <small>(<a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'">'.$d['dormitoryAlias'].'</a>)</small>'.(strlen($d['locationComment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$d['locationComment'].'" />':'').'</p>';
 		if ($d['banned']) {
 			$bans = '<a href="'.$url.'/computers/'.$d['id'].'/penalties">'.$d['bans'].' <strong>(aktywne)</strong></a>';
@@ -268,29 +264,17 @@ changeVisibility();
 		if ($this->_srv->get('msg')->get('computerEdit/errors/host/duplicated')) {
 			echo $this->ERR('Nazwa jest już zajęta. Skorzystaj z <a href="'.$this->url(0).'/computers/:add">formularza dodawania nowego komputera</a>.');
 		}
-		if ($activate) {
-			$conf = UFra::shared('UFconf_Sru');
-			$date = $conf->computerAvailableTo;
-			$dateMax = $conf->computerAvailableMaxTo;
-			$d['availableTo'] = $date;
-			$d['availableMaxTo'] = strtotime($dateMax);
-		} else {
-			$d['availableTo'] = date(self::TIME_YYMMDD, $d['availableTo']);
-		}
 		$form = UFra::factory('UFlib_Form', 'computerEdit', $d, $this->errors);
 
 		echo '<h1>'.$d['host'].'.ds.pg.gda.pl</h1>';
 		echo $form->mac('MAC', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" alt="?" title="Adres fizyczny karty sieciowej komputera." /> '.$this->showMacHint().'<br/>'));
-		echo $form->availableTo('Rejestracja do', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Data, kiedy komputer przestanie być aktywny." /><br/>'));
-		echo '<small>Maksymalnie do '.date(self::TIME_YYMMDD, $d['availableMaxTo']).'</small><br />';
 	}
 
 	public function formEditAdmin(array $d, $dormitories, $user = null, $history = null, $servers = null, $waletAdmins = null, $virtuals = null) {
 		if (is_array($history)) {
 			$d = $history + $d;
 		}
-		$d['availableMaxTo'] = date(self::TIME_YYMMDD, $d['availableMaxTo']);
-		$d['availableTo'] = date(self::TIME_YYMMDD, $d['availableTo']);
+		$d['availableTo'] = is_null($d['availableTo']) ? '' : date(self::TIME_YYMMDD, $d['availableTo']);
 		$d['dormitory'] = $d['dormitoryId'];
 		if (!$d['active'] && !is_null($user)) {
 			$d['ip'] = null;
@@ -303,7 +287,6 @@ changeVisibility();
 		echo $form->mac('MAC');
 		echo $form->ip('IP');
 		echo $form->availableTo('Rejestracja do');
-		echo $form->availableMaxTo('Rejestracja max do', array('id'=>'availableMaxTo'));
 		foreach ($dormitories as $dorm) {
 			$temp = explode("ds", $dorm['alias']);
 			if (!isset($temp[1])) {
@@ -360,24 +343,12 @@ changeVisibility();
 		$conf = UFra::shared('UFconf_Sru');
 		echo $form->autoDeactivation('Autodezaktywacja <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Komputery, które nie były widziane dłużej niż '.$conf->computersMaxNotSeen.' dni, zostaną dezaktywowane. Hosty typu serwerowego nigdy nie są dezaktywowane z powodu braku widzialności."/>', array('type'=>$form->CHECKBOX));
 		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
+		if (!$d['active'] && !is_null($user)) {
+			echo $form->activateHost('Aktywuj', array('type'=>$form->CHECKBOX));
+		}
 		echo $form->_end();
-
-		$date = $conf->computerAvailableMaxTo;
 		?>
 <script type="text/javascript">
-input = document.getElementById('availableMaxTo');
-if (input) {
-	button = document.createElement('input');
-	button.setAttribute('value', '<?=$date;?>');
-	button.setAttribute('type', 'button');
-	button.onclick = function() {
-		input = document.getElementById('availableMaxTo');
-		input.value = this.value;
-	}
-	input.parentNode.insertBefore(button, input.nextSibling);
-	space = document.createTextNode(' ');
-	input.parentNode.insertBefore(space, input.nextSibling);
-}
 input = document.getElementById('computerEdit_ip');
 if (input) {
 	button = document.createElement('input');
@@ -591,7 +562,7 @@ div.style.display = 'none';
 	public function listAdmin(array $d) {
 		$url = $this->url(0).'/computers/';
 		foreach ($d as $c) {
-			echo '<li><a href="'.$url.$c['id'].'">'.$c['host'].' <small>'.$c['ip'].'/'.$c['mac'].'</small></a> <span><small>('.self::$computerTypes[$c['typeId']].')</small> '.date(self::TIME_YYMMDD, $c['availableTo']).'</span>'.(strlen($c['comment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['comment'].'" />':'').'</li>';
+			echo '<li><a href="'.$url.$c['id'].'">'.$c['host'].' <small>'.$c['ip'].'/'.$c['mac'].'</small></a> <span><small>('.self::$computerTypes[$c['typeId']].')</small> '.(is_null($c['availableTo']) ? '' : date(self::TIME_YYMMDD, $c['availableTo'])).'</span>'.(strlen($c['comment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['comment'].'" />':'').'</li>';
 		}
 	}
 
@@ -685,7 +656,7 @@ div.style.display = 'none';
 	public function shortList(array $d) {
 		$url = $this->url(0).'/computers/';
 		foreach ($d as $c) {
-			echo '<li'.($c['banned']?' class="ban"' : '').'>'.(!$c['active']?'<del>':'').'<a href="'.$url.$c['id'].'">'.$c['host'].' <small>'.$c['ip'].'/'.$c['mac'].'</small></a> <span><small>('.self::$computerTypes[$c['typeId']].')</small> '.date(self::TIME_YYMMDD, $c['availableTo']).'</span>'.(!$c['active']?'</del>':'').(strlen($c['comment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['comment'].'" />':'').'</li>';
+			echo '<li'.($c['banned']?' class="ban"' : '').'>'.(!$c['active']?'<del>':'').'<a href="'.$url.$c['id'].'">'.$c['host'].' <small>'.$c['ip'].'/'.$c['mac'].'</small></a> <span><small>('.self::$computerTypes[$c['typeId']].')</small> '.(is_null($c['availableTo']) ? '' : date(self::TIME_YYMMDD, $c['availableTo'])).'</span>'.(!$c['active']?'</del>':'').(strlen($c['comment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['comment'].'" />':'').'</li>';
 		}
 	}
 
@@ -761,7 +732,7 @@ div.style.display = 'none';
 			echo 'Potwierdzamy dezaktywację Twojego hosta w SKOS PG.'."\n\n";
 		}
 		echo 'Nazwa hosta: '.$d['host']."\n";
-		echo 'Ważny do: '.date(self::TIME_YYMMDD,$d['availableTo'])."\n";
+		echo 'Ważny do: '.(is_null($d['availableTo']) ? 'brak limitu' : date(self::TIME_YYMMDD,$d['availableTo']))."\n";
 		echo 'IP: '.$d['ip']."\n";
 		echo 'Adres MAC: '.$d['mac']."\n";
 		
@@ -776,7 +747,7 @@ div.style.display = 'none';
 			echo 'We confirm, that your host in SKOS PG has been deactivated.'."\n\n";
 		}
 		echo 'Host name: '.$d['host']."\n";
-		echo 'Available to: '.date(self::TIME_YYMMDD,$d['availableTo'])."\n";
+		echo 'Available to: '.(is_null($d['availableTo']) ? 'no limit' : date(self::TIME_YYMMDD,$d['availableTo']))."\n";
 		echo 'IP: '.$d['ip']."\n";
 		echo 'MAC address: '.$d['mac']."\n";
 	}
@@ -794,7 +765,7 @@ div.style.display = 'none';
 			$history->write('mail', $d);
 		} else {
 			echo 'Nazwa hosta: '.$d['host']."\n";
-			echo 'Ważny do: '.date(self::TIME_YYMMDD,$d['availableTo'])."\n";
+			echo 'Ważny do: '.(is_null($d['availableTo']) ? 'brak limitu' : date(self::TIME_YYMMDD,$d['availableTo']))."\n";
 			echo 'IP: '.$d['ip']."\n";
 			echo 'Adres MAC: '.$d['mac']."\n";
 		}
@@ -816,7 +787,7 @@ div.style.display = 'none';
 			$history->write('mailEn', $d);
 		} else {
 			echo 'Host name: '.$d['host']."\n";
-			echo 'Available to: '.date(self::TIME_YYMMDD,$d['availableTo'])."\n";
+			echo 'Available to: '.(is_null($d['availableTo']) ? 'no limit' : date(self::TIME_YYMMDD,$d['availableTo']))."\n";
 			echo 'IP: '.$d['ip']."\n";
 			echo 'MAC address: '.$d['mac']."\n";
 		}

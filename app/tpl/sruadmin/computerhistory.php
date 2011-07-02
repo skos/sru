@@ -10,7 +10,6 @@ extends UFtpl_Common {
 		'ip' => 'IP',
 		'locationId' => 'Miejsce',
 		'availableTo' => 'Rejestracja do',
-		'availableMaxTo' => 'Rejestracja max do',
 		'comment' => 'Komentarz',
 		'canAdmin' => 'Administrator',
 		'exAdmin' => 'Ex-administrator',
@@ -27,7 +26,6 @@ extends UFtpl_Common {
 		'ip' => 'IP',
 		'locationId' => 'Room',
 		'availableTo' => 'Available to',
-		'availableMaxTo' => 'Available max to',
 		'comment' => 'Comment',
 		'canAdmin' => 'Administrator',
 		'exAdmin' => 'Ex-administrator',
@@ -56,8 +54,7 @@ extends UFtpl_Common {
 					$changes[] = $names[$key].': '.$old['locationAlias'].'<small>&nbsp;('.$old['dormitoryAlias'].')</small>'.$arr.$new['locationAlias'].'<small>&nbsp;('.$new['dormitoryAlias'].')</small>';
 					break;
 				case 'availableTo':
-				case 'availableMaxTo':
-					$changes[] = $names[$key].': '.date(self::TIME_YYMMDD, $val).$arr.date(self::TIME_YYMMDD, $new[$key]);
+					$changes[] = $names[$key].': '.(is_null($val) ? 'brak limitu' : date(self::TIME_YYMMDD, $val)).$arr.(is_null($new[$key]) ? 'brak limitu' : date(self::TIME_YYMMDD, $new[$key]));
 					break;
 				case 'comment':
 					$changes[] = $names[$key].': <q>'.nl2br($val).'</q>'.$arr.'<q>'.nl2br($new[$key]).'</q>';
@@ -106,7 +103,6 @@ extends UFtpl_Common {
 			'dormitoryAlias' => $current->dormitoryAlias,
 			'dormitoryName' => $current->dormitoryName,
 			'availableTo' => $current->availableTo,
-			'availableMaxTo' => $current->availableMaxTo,
 			'modifiedById' => $current->modifiedById,
 			'modifiedBy' => $current->modifiedBy,
 			'modifiedAt' => $current->modifiedAt,

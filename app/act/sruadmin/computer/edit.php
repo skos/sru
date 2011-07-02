@@ -48,66 +48,16 @@ extends UFact {
 				}
 			}
 
-			if ($post['availableMaxTo'] == '') {
-				$post['availableMaxTo'] = 'NOW';
-				$this->_srv->get('req')->post->{self::PREFIX} = $post;
-			}
-			if ($post['availableTo'] == '') {
-				//jeśli pusta data rejestracji, ustaw na maksymalną
-				$post['availableTo'] = $post['availableMaxTo'];
-				$this->_srv->get('req')->post->{self::PREFIX} = $post;
-			}
 			$bean->fillFromPost(self::PREFIX); // zgodnie z ticketem #176 filtr wyłączony
 			if ($bean->canAdmin && $bean->exAdmin) {
 					$this->rollback();
 					$this->markErrors(self::PREFIX, array('exAdmin'=>'notWithAdmin'));
 					return;
 			}
-			if (!$bean->active && $bean->availableMaxTo > NOW && $user->active) {
-				// przywrocenie aktywnosci komputera, jezeli podano
-				// przyszla date waznosci rejestracji
+			if ($post['activateHost'] && !$bean->active && (is_null($bean->availableTo) || $bean->availableTo > NOW) && $user->active) {
+				// przywrocenie aktywnosci komputera jeśli daty są ok
 				$bean->active = true;
 				$bean->lastActivated = NOW;
-				$bean->availableTo = $bean->availableMaxTo;
-			}
-			if ($bean->active && $bean->availableMaxTo < NOW) {
-				$bean->availableMaxTo = NOW;
-			}
-			if (strtotime(date('Y-m-d', $bean->availableTo)) > $bean->availableMaxTo) {
-				$bean->availableTo = $bean->availableMaxTo;
-			}
-			if ($bean->availableTo <= NOW) {
-				$bean->availableTo = NOW;
-				$bean->active = false;
-				if ($bean->canAdmin) {
-					$bean->canAdmin = false;
-				}
-				if ($bean->exAdmin) {
-					$bean->exAdmin = false;
-				}
-
-				// jeśli to serwer, to zaktualizujmy stan wirtualek
-				if ($bean->typeId == UFbean_Sru_Computer::TYPE_SERVER) {
-					try {
-						$comps = UFra::factory('UFbean_Sru_ComputerList');
-						$comps->updateActiveByMasterId($bean->id, false, $this->_srv->get('session')->authAdmin);
-					} catch (UFex_Dao_NotFound $e) {
-						// uzytkownik nie ma komputerow
-					}
-				}
-				if ($bean->typeId == UFbean_Sru_Computer::TYPE_SERVER || $bean->typeId == UFbean_Sru_Computer::TYPE_SERVER_VIRT) {
-					// jeśli usuwamy serwer, to musimy mu też usunąć przypisane aliasy
-					try {
-						$aliases = UFra::factory('UFbean_SruAdmin_ComputerAliasList');
-						$aliases->listByComputerId($bean->id);
-						foreach ($aliases as $alias) {
-							$aliasBean = UFra::factory('UFbean_SruAdmin_ComputerAlias');
-							$aliasBean->getByPK($alias['id']);
-							$aliasBean->del();
-						}
-					} catch (UFex_Dao_NotFound $e) {
-					}
-				}
 			}
 			$bean->modifiedById = $this->_srv->get('session')->authAdmin;
 			$bean->modifiedAt = NOW;
