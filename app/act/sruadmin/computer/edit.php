@@ -54,14 +54,14 @@ extends UFact {
 					$this->markErrors(self::PREFIX, array('exAdmin'=>'notWithAdmin'));
 					return;
 			}
-			if ($post['activateHost'] && !$bean->active && $user->active) {
+			if (array_key_exists('activateHost', $post) && $post['activateHost'] && !$bean->active && $user->active) {
 				// przywrocenie aktywnosci komputera jeśli daty są ok
 				$bean->active = true;
 				$bean->lastActivated = NOW;
-				if ($bean->availableTo <= NOW) {
-					$conf = UFra::shared('UFconf_Sru');
-					$bean->availableTo = $conf->computerAvailableTo;
-				}
+			}
+			if($bean->availableTo <= NOW && $bean->active) {
+				$conf = UFra::shared('UFconf_Sru');
+				$bean->availableTo = $conf->computerAvailableTo;
 			}
 			$bean->modifiedById = $this->_srv->get('session')->authAdmin;
 			$bean->modifiedAt = NOW;
