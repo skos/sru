@@ -29,6 +29,7 @@ extends UFmap_SruAdmin_Penalty_Get {
 		'userLogin'    => 'u.login',
 		'userActive'   => 'u.active',
 		'userDormAlias'=> 'd.alias',
+		'userLocationId' => 'l.id',
 
 		'creatorName'  => 'a.name',
 
@@ -58,6 +59,7 @@ extends UFmap_SruAdmin_Penalty_Get {
 		'userLogin'    => self::TEXT,
 		'userActive'   => self::BOOL,
 		'userDormAlias'=> self::TEXT,
+		'userLocationId' => self::INT,
 
 		'creatorName'  => self::TEXT,
 

@@ -26,6 +26,9 @@ extends UFact {
 			if ($bean->connectedSwitchId != '' && $bean->admin == true) {
 				throw UFra::factory('UFex_Dao_DataNotValid', 'Connected switch and admin set in one time', 0, E_WARNING, array('connectedSwitchId' => 'switchAndAdmin'));
 			}
+			if ($post['penaltyId'] != '' && $post['portEnabled']) {
+				throw UFra::factory('UFex_Dao_DataNotValid', 'Penalty set to enabled port', 0, E_WARNING, array('portEnabled' => 'enabledAndPenalty'));
+			}
 			if ($post['locationAlias'] != '') {
 				try {
 					$dorm = UFra::factory('UFbean_Sru_Dormitory');
@@ -49,11 +52,13 @@ extends UFact {
 				$result = false;
 				if ($post['locationAlias'] != '') {
 					if ($post['comment'] != '') {
-						$name = $post['locationAlias'] . ': ' . $hp->removeSpecialChars($post['comment']);
+						$name = $post['locationAlias'] . ': ' . (is_null($bean->penaltyId) ? '' : '#'.$bean->penaltyId.' ') .$hp->removeSpecialChars($post['comment']);
 						$name = substr($name, 0, self::MAX_PORT_NAME);
 						$result = $hp->setPortAlias($bean->ordinalNo, $name);
 					} else {
-						$result = $hp->setPortAlias($bean->ordinalNo, $post['locationAlias']);
+						$name = $post['locationAlias'].(is_null($bean->penaltyId) ? '' : ': #'.$bean->penaltyId.' ');
+						$name = substr($name, 0, self::MAX_PORT_NAME);
+						$result = $hp->setPortAlias($bean->ordinalNo, $name);
 					}
 				} else if ($post['connectedSwitchId'] != '') {
 					$connectedSwitch = UFra::factory('UFbean_SruAdmin_Switch');

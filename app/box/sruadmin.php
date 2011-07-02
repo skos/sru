@@ -1264,8 +1264,16 @@ extends UFbox {
 			if (!is_null($d['switch']->ip)) {
 				$switch = UFra::factory('UFlib_Snmp_Hp', $d['switch']->ip, $d['switch']);
 				$d['status'] = $switch->getPortStatus($bean->ordinalNo);
+				try {
+					$penalties = UFra::factory('UFbean_SruAdmin_PenaltyList');
+					$penalties->listActiveByLocationId($bean->locationId);
+					$d['penalties'] = $penalties;
+				} catch (UFex_Dao_NotFound $e) {
+					$d['penalties'] = null;
+				}
 			} else {
 				$d['status'] = null;
+				$d['penalties'] = null;
 			}
 
 			return $this->render(__FUNCTION__, $d);

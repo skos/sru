@@ -10,6 +10,7 @@ extends UFtpl_Common {
 		'locationAlias/noRoom' => 'Pokój nie istnieje w akademiku przypisanym do switcha',
 		'locationAlias/roomAndSwitch' => 'Nie można jednocześnie podać lokalizacji i podłączonego switcha',
 		'connectedSwitchId/switchAndAdmin' => 'Switch nie może być podłączony do portu admina',
+		'portEnabled/enabledAndPenalty' => 'Nie można ustawić kary dla włączonego portu',
 	);
 
 	public function details(array $d, $switch, $alias) {
@@ -26,6 +27,9 @@ extends UFtpl_Common {
 		}
 		if (!is_null($alias) && $alias != '') {
 			echo '<p><em>Alias portu: </em>'.$alias.'</p>';
+		}
+		if (!is_null($d['penaltyId'])) {
+			echo '<p><em>Przypisana kara: </em><a href="'.$this->url(0).'/penalties/'.$d['penaltyId'].'">'.$d['userName'].' "'.$d['userLogin'].'" '.$d['userSurname'].': '.$d['templateTitle'].' ('.$d['id'].')</a></p>';
 		}
 		echo '<p><em>Port admina:</em> '.($d['admin'] ? 'tak' : 'nie').'</p>';
 		echo '<p><em>Komentarz:</em> '.$d['comment'].'</p>';
@@ -51,7 +55,7 @@ extends UFtpl_Common {
 		echo '<a href="'.$url.$switch->serialNo.'/port/'.$d['ordinalNo'].'/:edit">Edytuj port</a></p>';
 	}
 
-	public function formEditOne(array $d, $switch, $enabledSwitches, $status) {
+	public function formEditOne(array $d, $switch, $enabledSwitches, $status, $penalties) {
 		$post = $this->_srv->get('req')->post;
 		
 		try {
@@ -81,6 +85,16 @@ extends UFtpl_Common {
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize($tmp, '', ''),
 		));
+		if (!is_null($penalties)) {
+			$tmp = array();
+			foreach ($penalties as $penalty) {
+				$tmp[$penalty['id']] = $penalty['userName'].' "'.$penalty['userLogin'].'" '.$penalty['userSurname'].': '.$penalty['templateTitle'].' ('.$penalty['id'].')';
+			}
+			echo $form->penaltyId('Kara', array(
+				'type' => $form->SELECT,
+				'labels' => $form->_labelize($tmp, '', ''),
+			));
+		}
 		if (!is_null($status)) {
 			echo $form->portStatus('', array('type'=>$form->HIDDEN, 'value'=>($status == UFlib_Snmp_Hp::DISABLED ? 0 : 1)));
 			echo $form->portEnabled('Port włączony', array('type'=>$form->CHECKBOX, 'value'=>$portEnabled));
@@ -143,6 +157,7 @@ extends UFtpl_Common {
 			}
 			echo $d[$i]['admin'] ?'</strong>' : '';
 			echo '</a>';
+			echo ($d[$i]['penaltyId'] == '') ? '' : ' <a href="'.$this->url(0).'/penalties/'.$d[$i]['penaltyId'].'"><img src="'.UFURL_BASE.'/i/img/czaszka.png" alt="" title="'.$d[$i]['userName'].' &quot;'.$d[$i]['userLogin'].'&quot; '.$d[$i]['userSurname'].': '.$d[$i]['templateTitle'].' ('.$d[$i]['id'].')" /></a>';
 			echo ($d[$i]['comment'] == '') ? '' : ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$d[$i]['comment'].'" />';
 			echo '<br/><small>(';
 			echo is_null($d[$i]['connectedSwitchId']) ? ('<a href="'.$this->url(0).'/dormitories/'.$d[$i]['dormitoryAlias'].'/'.$d[$i]['locationAlias'].'">'.

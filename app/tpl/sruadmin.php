@@ -869,7 +869,7 @@ extends UFtpl_Common {
 		$url = $this->url(0);
 		$form = UFra::factory('UFlib_Form');
 		echo $form->_start();
-		echo $d['port']->write('formEditOne', $d['switch'], $d['enabledSwitches'], $d['status']);
+		echo $d['port']->write('formEditOne', $d['switch'], $d['enabledSwitches'], $d['status'], $d['penalties']);
 		echo $form->_submit('Zapisz');
 		echo ' <a href="'.$url.'/switches/'.$d['switch']->serialNo.'/port/'.$d['port']->ordinalNo.'">Powrót</a>';
 		echo $form->_end();
