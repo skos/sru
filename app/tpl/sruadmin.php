@@ -1066,7 +1066,7 @@ extends UFtpl_Common {
 	{
 		$acl = $this->_srv->get('acl');		
 		
-		echo '<h2>Lista kar dla '.$d['user']->name.' '.$d['user']->surname.' ('.$d['user']->login.')</h2>';
+		echo '<h2>Lista kar dla <a href="'.$this->url(1).'/'.$d['user']->id.'">'.$d['user']->name.' '.$d['user']->surname.' ('.$d['user']->login.')</a></h2>';
 
 		$d['penalties']->write('listUserPenalty');
 	}	
@@ -1079,7 +1079,7 @@ extends UFtpl_Common {
 	{
 		$acl = $this->_srv->get('acl');		
 		
-		echo '<h2>Lista kar dla hosta '.$d['computer']->host.'</h2>';
+		echo '<h2>Lista kar dla hosta <a href="'.$this->url(1).'/'.$d['computer']->id.'">'.$d['computer']->host.'</a></h2>';
 
 		$d['penalties']->write('listComputerPenalty');
 	}
