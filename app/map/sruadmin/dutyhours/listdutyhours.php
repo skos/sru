@@ -17,6 +17,7 @@ extends UFmap_SruAdmin_DutyHours_List {
 		'adminAddress'	=> 'a.address',
 		'adminEmail'	=> 'a.email',
 		'adminDormId'	=> 'a.dormitory_id',
+		'adminActive'	=> 'a.active',
 		'adminDormAlias'=> 'o.alias',
 		'dutyDormId'	=> 'm.dormitory',
 	);
@@ -32,6 +33,7 @@ extends UFmap_SruAdmin_DutyHours_List {
 		'adminAddress'	=> self::TEXT,
 		'adminEmail'	=> self::TEXT,
 		'adminDormId'	=> self::TEXT,
+		'adminActive'	=> self::BOOL,
 		'adminDormAlias'=> self::TEXT,
 		'dutyDormId'	=> self::INT,
 	);

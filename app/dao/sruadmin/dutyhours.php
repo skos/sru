@@ -10,6 +10,7 @@ extends UFdao {
 
 		$query = $this->prepareSelect($mapping);
 		$query->where($mapping->active, true);
+		$query->where($mapping->adminActive, true);
 		$query->order($mapping->day);
 		$query->order($mapping->startHour);
 
@@ -20,6 +21,7 @@ extends UFdao {
 		$mapping = $this->mapping('listDetails');
 
 		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->adminActive, true);
 		$query->order($mapping->adminDormId);
 		$query->order($mapping->adminName);
 		$query->order($mapping->day);
@@ -54,6 +56,7 @@ extends UFdao {
 		$query = $this->prepareSelect($mapping);
 		$query->where($mapping->active, true);
 		$query->where($mapping->dutyDormId, $dormId);
+		$query->where($mapping->adminActive, true);
 		$query->order($mapping->day);
 		$query->order($mapping->startHour);
 

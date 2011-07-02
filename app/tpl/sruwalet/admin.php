@@ -110,7 +110,7 @@ $(document).ready(function()
 			$type = UFtpl_SruAdmin_Admin::$adminTypes[$d['typeId']];
 		}
 		echo '<h2>'.$this->_escape($d['name']).'<br/><small>('.$type.' &bull; ostatnie logowanie: '.date(self::TIME_YYMMDD_HHMM, $d['lastLoginAt']).')</small></h2>';
-		echo '<p><em>Login:</em> '.$d['login'].'</p>';
+		echo '<p><em>Login:</em> '.$d['login'].(!$d['active']?' <strong>(konto nieaktywne)</strong>':'').'</p>';
 		echo '<p><em>E-mail:</em> <a href="mailto:'.$d['email'].'">'.$d['email'].'</a></p>';
 		echo '<p><em>Telefon:</em> '.$d['phone'].'</p>';
 		echo '<p><em>Gadu-Gadu:</em> '.$d['gg'].'</p>';
