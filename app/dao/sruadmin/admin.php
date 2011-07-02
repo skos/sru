@@ -104,9 +104,7 @@ extends UFdao {
 		$mapping = $this->mapping('list');
 
 		$query = $this->prepareSelect($mapping);
-		
 		$query->where($mapping->typeId, UFacl_SruAdmin_Admin::BOT); 
-		
 		$query->order($mapping->name, $query->ASC);
 		
 		return $this->doSelect($query);
