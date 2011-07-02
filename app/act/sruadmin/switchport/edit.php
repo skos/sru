@@ -44,10 +44,6 @@ extends UFact {
 				$bean->locationId = NULL;
 			}
 
-			if (!$post['copyToSwitch'] && isset($post['portStatus']) && $post['portStatus'] != $post['portEnabled']) {
-				throw UFra::factory('UFex_Dao_DataNotValid', 'Changing port status without writing to switch', 0, E_WARNING, array('switch' => 'noWriting'));
-			}
-
 			if ($post['copyToSwitch'] && !is_null($switch->ip)) {
 				$hp = UFra::factory('UFlib_Snmp_Hp', $switch->ip, $switch);
 				$result = false;
@@ -77,6 +73,10 @@ extends UFact {
 				if (!$result) {
 					throw UFra::factory('UFex_Dao_DataNotValid', 'Writing to switch error', 0, E_WARNING, array('switch' => 'writingError'));
 				}
+			}
+
+			if (!is_null($switch->ip)) {
+				$hp = UFra::factory('UFlib_Snmp_Hp', $switch->ip, $switch);
 				if ($post['portEnabled']) {
 					$status = UFlib_Snmp_Hp::ENABLED;
 				} else {
