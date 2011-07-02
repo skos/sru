@@ -59,7 +59,8 @@ extends UFact {
 				$bean->active = true;
 				$bean->lastActivated = NOW;
 				if ($bean->availableTo <= NOW) {
-					$bean->availableTo = null;
+					$conf = UFra::shared('UFconf_Sru');
+					$bean->availableTo = $conf->computerAvailableTo;
 				}
 			}
 			$bean->modifiedById = $this->_srv->get('session')->authAdmin;
