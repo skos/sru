@@ -26,7 +26,8 @@ extends UFact {
 			$sess->typeIdWalet = $bean->typeId;
 			$sess->lastLoginIpWalet  = $bean->lastLoginIp;
 			$sess->lastLoginAtWalet  = $bean->lastLoginAt;
-			
+			$sess->lastInvLoginIpWalet  = $bean->lastInvLoginIp;
+			$sess->lastInvLoginAtWalet  = $bean->lastInvLoginAt;
 		
 			if($serv->is('HTTP_X_FORWARDED_FOR') && $serv->HTTP_X_FORWARDED_FOR != '' ) {
 				$bean->lastLoginIp = $serv->HTTP_X_FORWARDED_FOR;
@@ -42,6 +43,20 @@ extends UFact {
 			$this->markErrors(self::PREFIX, $e->getData());
 		} catch (UFex_Dao_NotFound $e) {
 			$this->markErrors(self::PREFIX, array('login'=>'notAuthorized'));
+			try {
+				$bean = UFra::factory('UFbean_SruWalet_Admin');
+				$login = $post['login'];
+				$bean->getByLogin($login);
+				if($serv->is('HTTP_X_FORWARDED_FOR') && $serv->HTTP_X_FORWARDED_FOR != '' ) {
+					$bean->lastInvLoginIp = $serv->HTTP_X_FORWARDED_FOR;
+				} else {
+					$bean->lastInvLoginIp =  $serv->REMOTE_ADDR;
+				}
+				$bean->lastInvLoginAt = NOW;
+				$bean->save();
+			} catch (UFex_Dao_NotFound $e) {
+				// nie ma komu zapisac info o blednym logowaniu
+			}
 		} catch (UFex $e) {
 			UFra::error($e);
 		}

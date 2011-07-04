@@ -55,7 +55,7 @@ extends UFtpl_Common {
 		echo $form->_fieldset();
 		if($d['admin']->active == true && $d['admin']->activeTo - time() <= UFra::shared('UFconf_Sru')->adminDeactivateAfter && $d['admin']->activeTo - time() >= 0)
 			echo '<span title="Zbliża się czas dezaktywacji konta" style="color: red;">(!) </span>';
-		echo $d['admin']->write(__FUNCTION__, $d['lastLoginIp'], $d['lastLoginAt']);
+		echo $d['admin']->write(__FUNCTION__, $d['lastLoginIp'], $d['lastLoginAt'], $d['lastInvLoginIp'], $d['lastInvLoginAt']);
 		echo $form->_submit('Wyloguj', array('name'=>'adminLogout'));
 		echo $form->_end();
 		echo $form->_end(true);

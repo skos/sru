@@ -109,7 +109,9 @@ $(document).ready(function()
 		} else {
 			$type = UFtpl_SruAdmin_Admin::$adminTypes[$d['typeId']];
 		}
-		echo '<h2>'.$this->_escape($d['name']).'<br/><small>('.$type.' &bull; ostatnie logowanie: '.(is_null($d['lastLoginAt']) ? 'nigdy' : date(self::TIME_YYMMDD_HHMM, $d['lastLoginAt'])).')</small></h2>';
+		echo '<h2>'.$this->_escape($d['name']).'<br/><small>('.$type.
+				' &bull; ostatnie logowanie: '.((is_null($d['lastLoginAt']) || $d['lastLoginAt'] == 0) ? 'nigdy' : date(self::TIME_YYMMDD_HHMM, $d['lastLoginAt'])).
+				' &bull; ostatnie nieudane logowanie: '.((is_null($d['lastInvLoginAt']) || $d['lastInvLoginAt'] == 0) ? 'nigdy' : date(self::TIME_YYMMDD_HHMM, $d['lastInvLoginAt'])).')</small></h2>';
 		echo '<p><em>Login:</em> '.$d['login'].(!$d['active']?' <strong>(konto nieaktywne)</strong>':'').'</p>';
 		echo '<p><em>E-mail:</em> <a href="mailto:'.$d['email'].'">'.$d['email'].'</a></p>';
 		echo '<p><em>Telefon:</em> '.$d['phone'].'</p>';
@@ -259,14 +261,21 @@ $(document).ready(function()
 		echo $form->address('Adres', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Lokalizacja lub miejsce przebywania administratora." /><br/>'));
 	}
 
-	public function waletBar(array $d, $ip, $time) {
+	public function waletBar(array $d, $ip, $time, $invIp, $invTime) {
 		echo '<a href="'.$this->url(0).'/admins/'.$d['id'].'">'.$this->_escape($d['name']).'</a> ';
 		if (!is_null($time) && $time != 0 ) {
-			echo 'Ostatnie&nbsp;logowanie: '.date(self::TIME_YYMMDD_HHMM, $time).' ' ;
+			echo '<br/>Ostatnie&nbsp;udane&nbsp;logowanie: '.date(self::TIME_YYMMDD_HHMM, $time).' ' ;
+			if (!is_null($ip)) {
+				echo '('.$ip.') ';
+			}
 		}
-		if (!is_null($ip)) {
-			echo '('.$ip.') ';
+		if (!is_null($invTime) && $invTime != 0 ) {
+			echo '<br/>Ostatnie&nbsp;nieudane&nbsp;logowanie: '.date(self::TIME_YYMMDD_HHMM, $invTime).' ' ;
+			if (!is_null($invIp)) {
+				echo '('.$invIp.') ';
+			}
 		}
+		echo '<br/>';
 	}
 
 	public function toDoList(array $d, $users) {

@@ -55,7 +55,7 @@ extends UFtpl_Common {
 
 		echo $form->_start($this->url(0).'/', array('class'=>'adminBar'));
 		echo $form->_fieldset();
-		echo $d['admin']->write(__FUNCTION__, $d['lastLoginIp'], $d['lastLoginAt']);
+		echo $d['admin']->write(__FUNCTION__, $d['lastLoginIp'], $d['lastLoginAt'], $d['lastInvLoginIp'], $d['lastInvLoginAt']);
 		echo $form->_submit('Wyloguj', array('name'=>'adminLogout'));
 		echo $form->_end();
 		echo $form->_end(true);

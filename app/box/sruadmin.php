@@ -724,6 +724,16 @@ extends UFbox {
 			} catch (UFex_Core_DataNotFound $e) {
 				$d['lastLoginAt'] = null;
 			}
+			try {
+				$d['lastInvLoginIp'] = $sess->lastInvLoginIpAdmin;
+			} catch (UFex_Core_DataNotFound $e) {
+				$d['lastInvLoginIp'] = null;
+			}
+			try {
+				$d['lastInvLoginAt'] = $sess->lastInvLoginAtAdmin;
+			} catch (UFex_Core_DataNotFound $e) {
+				$d['lastInvLoginAt'] = null;
+			}
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {

@@ -16,6 +16,8 @@ extends UFact {
 			$sess->del('typeId');
 			$sess->del('lastLoginIpAdmin');
 			$sess->del('lastLoginAtAdmin');
+			$sess->del('lastInvLoginIpAdmin');
+			$sess->del('lastInvLoginAtAdmin');
 			
 			$this->postDel(self::PREFIX);
 			$this->markOk(self::PREFIX);
