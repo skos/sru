@@ -445,6 +445,13 @@ $(document).ready(function()
 			}
 			echo '</p>';
 		}
+		if (!is_null($d['lastInvLoginAt']) && $d['lastInvLoginAt'] != 0 ) {
+			echo '<p><em>Ost. nieud. log.:</em> '.date(self::TIME_YYMMDD_HHMM, $d['lastInvLoginAt']);
+			if (!is_null($d['lastInvLoginIp'])) {
+				echo '<small> ('.$d['lastInvLoginIp'].')</small>';
+			}
+			echo '</p>';
+		}
 		if (!is_null($d['referralStart']) && $d['referralStart'] != 0) {
 			echo '<p><em>Początek skier.:</em> '.date(self::TIME_YYMMDD, $d['referralStart']).'</p>';
 		}
@@ -717,14 +724,22 @@ function changeUnregisterVisibility() {
 		}
 	}
 
-	public function userBar(array $d, $ip, $time) {
+	public function userBar(array $d, $ip, $time, $invIp, $invTime) {
 		echo 'Witaj, '.$this->_escape($d['name']) .' &quot;'. $this->_escape($d['login']) .'&quot; '. $this->_escape($d['surname']) . '!<br/>';
 		
 		if (!is_null($time) && $time != 0 ) {
-			echo '<small>Ostatnie&nbsp;logowanie: '.date(self::TIME_YYMMDD_HHMM, $time).'</small>' ;
+			echo '<small>Ostatnie&nbsp;udane&nbsp;logowanie: '.date(self::TIME_YYMMDD_HHMM, $time).'</small>' ;
+			if (!is_null($ip)) {
+				echo '<small>, z IP: '.$ip.'</small>' ;
+			}
+			echo '<br/>';
 		}
-		if (!is_null($ip)) {
-			echo '<small>, z IP: '.$ip.'</small><br/>' ;
+		if (!is_null($invTime) && $invTime != 0 ) {
+			echo '<small>Ostatnie&nbsp;nieudane&nbsp;logowanie: '.date(self::TIME_YYMMDD_HHMM, $invTime).'</small>' ;
+			if (!is_null($invIp)) {
+				echo '<small>, z IP: '.$invIp.'</small>' ;
+			}
+			echo '<br/>';
 		}
 	}
 

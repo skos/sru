@@ -248,7 +248,7 @@ extends UFtpl_Common {
 
 		echo $form->_start($this->url(0).'/', array('class'=>'userBar'));
 		echo $form->_fieldset();
-		echo $d['user']->write(__FUNCTION__, $d['lastLoginIp'], $d['lastLoginAt']);
+		echo $d['user']->write(__FUNCTION__, $d['lastLoginIp'], $d['lastLoginAt'], $d['lastInvLoginIp'], $d['lastInvLoginAt']);
 		echo '<table><tr><td style="width: 100%;"><a href="'. $this->url(0) .'/">Strona główna</a></td><td>';
 		echo $form->_submit('Wyloguj', array('name'=>'userLogout'));
 		echo '</td></tr></table>';

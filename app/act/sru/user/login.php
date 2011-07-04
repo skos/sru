@@ -23,6 +23,8 @@ extends UFact {
 			$sess->auth = $bean->id;
 			$sess->lastLoginIp  = $bean->lastLoginIp;
 			$sess->lastLoginAt  = $bean->lastLoginAt;
+			$sess->lastInvLoginIp  = $bean->lastInvLoginIp;
+			$sess->lastInvLoginAt  = $bean->lastInvLoginAt;
 			
 			if($serv->is('HTTP_X_FORWARDED_FOR') && $serv->HTTP_X_FORWARDED_FOR != '' ) {
 				$bean->lastLoginIp = $serv->HTTP_X_FORWARDED_FOR;
@@ -38,6 +40,20 @@ extends UFact {
 			$this->markErrors(self::PREFIX, $e->getData());
 		} catch (UFex_Dao_NotFound $e) {
 			$this->markErrors(self::PREFIX, array('login'=>'notAuthorized'));
+			try {
+				$bean = UFra::factory('UFbean_Sru_User');
+				$login = $post['login'];
+				$bean->getByLogin($login);
+				if($serv->is('HTTP_X_FORWARDED_FOR') && $serv->HTTP_X_FORWARDED_FOR != '' ) {
+					$bean->lastInvLoginIp = $serv->HTTP_X_FORWARDED_FOR;
+				} else {
+					$bean->lastInvLoginIp =  $serv->REMOTE_ADDR;
+				}
+				$bean->lastInvLoginAt = NOW;
+				$bean->save();
+			} catch (UFex_Dao_NotFound $e) {
+				// nie ma komu zapisac info o blednym logowaniu
+			}
 		} catch (UFex $e) {
 			UFra::error($e);
 		}
