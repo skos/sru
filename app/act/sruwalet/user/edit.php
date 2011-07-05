@@ -21,7 +21,7 @@ extends UFact {
 			$login = $bean->login;
 			$dormitoryId = $bean->dormitoryId;
 
-			$bean->fillFromPost(self::PREFIX, array('password', 'referralStart', 'referralEnd'));
+			$bean->fillFromPost(self::PREFIX, array('password', 'referralStart', 'referralEnd', 'dormitory'));
 			$bean->modifiedById = $this->_srv->get('session')->authWaletAdmin;
 			$bean->modifiedAt = NOW;
 
