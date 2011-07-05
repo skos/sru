@@ -277,7 +277,6 @@ changeVisibility();
 		$d['availableTo'] = is_null($d['availableTo']) ? '' : date(self::TIME_YYMMDD, $d['availableTo']);
 		$d['dormitory'] = $d['dormitoryId'];
 		if (!$d['active'] && !is_null($user)) {
-			$d['ip'] = null;
 			$d['dormitory'] = $user->dormitoryId;
 			$d['locationAlias'] = $user->locationAlias;
 		}
@@ -285,6 +284,9 @@ changeVisibility();
 
 		echo $form->host('Nazwa');
 		echo $form->mac('MAC');
+		if (!$d['active'] && !is_null($user)) {
+			echo $form->activateHost('Aktywuj', array('type'=>$form->CHECKBOX));
+		}
 		echo $form->ip('IP');
 		echo $form->availableTo('Rejestracja do');
 		foreach ($dormitories as $dorm) {
@@ -343,9 +345,6 @@ changeVisibility();
 		$conf = UFra::shared('UFconf_Sru');
 		echo $form->autoDeactivation('Autodezaktywacja <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Komputery, które nie były widziane dłużej niż '.$conf->computersMaxNotSeen.' dni, zostaną dezaktywowane. Hosty typu serwerowego nigdy nie są dezaktywowane z powodu braku widzialności."/>', array('type'=>$form->CHECKBOX));
 		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
-		if (!$d['active'] && !is_null($user)) {
-			echo $form->activateHost('Aktywuj', array('type'=>$form->CHECKBOX));
-		}
 		echo $form->_end();
 		?>
 <script type="text/javascript">
@@ -397,6 +396,26 @@ initialMasterHostId = document.getElementById("computerEdit_masterHostId").value
 	form.onchange = changeVisibility;
 	changeVisibility();
 })()
+<?
+if (!$d['active'] && !is_null($user)) {
+?>
+var activateChkB = document.getElementById('computerEdit_activateHost');
+var vailableTo = document.getElementById('computerEdit_availableTo');
+var vailableToVal = vailableTo.value;
+var ip = document.getElementById('computerEdit_ip');
+var ipVal = ip.value;
+activateChkB.onclick = function() {
+	if (activateChkB.checked) {
+		vailableTo.value = '';
+		ip.value = '';
+	} else {
+		vailableTo.value = vailableToVal;
+		ip.value = ipVal;
+	}
+}
+<?
+}
+?>
 </script>
 		<?
 	}

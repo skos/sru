@@ -67,9 +67,9 @@ extends UFmap {
 		'lastSeen'		 => self::TS,
 		'lastActivated'	 => self::TS,
 		'locationComment'=> self::TEXT,
-		'carerId'		 => self::INT,
+		'carerId'		 => self::NULL_INT,
 		'carerName'		 => self::TEXT,
-		'masterHostId'	 => self::INT,
+		'masterHostId'	 => self::NULL_INT,
 		'masterHostName' => self::TEXT,
 		'autoDeactivation' => self::BOOL,
 	);
