@@ -30,6 +30,6 @@ extends UFbeanList {
 	}
 	
 	public function restoreWithUser($userId, $dormitoryChanged){
-		return $this->dao->checkIp($userId, $dormitoryChanged);	
+		return $this->dao->restore($userId, $dormitoryChanged);	
 	}
 }

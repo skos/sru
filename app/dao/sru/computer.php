@@ -461,7 +461,13 @@ extends UFdao {
 		return $this->doUpdate($query);
 	}
 
-	public function checkIp($userId, $dormitoryChanged){
+	/**
+	 * Przywraca komputery użytkownika userId i ustawia im nowe IP w razie potrzeby
+	 * @param int $userId nr id użytkownika
+	 * @param bool $dormitoryChanged
+	 * @return bool sukces
+	 */
+	public function restore($userId, $dormitoryChanged){
 		$comps = $this->getByUserId($userId);
 
 		for ($i = 0; $i < count($comps); $i++){
@@ -476,8 +482,16 @@ extends UFdao {
 				$this->restoreWithOldIp($comps[$i]);
 			}
 		}
+		
+		return true;
 	}
 	
+	/**
+	 * Aktywuje komputer z nowym adresem IP o ile to możliwe
+	 * @param array $comp tablica zawierająca dane hosta
+	 * @param int $modifiedBy id wprowadzającego zmiany
+	 * @return bool sukces lub porażka
+	 */
 	public function setNewIp($comp, $modifiedBy = null){
 		$user = UFra::factory('UFbean_Sru_User');
 		$user->getByPK($comp['userId']);
@@ -506,12 +520,18 @@ extends UFdao {
 		try{
 			return $result = $this->doUpdate($query);
 		}catch(Exception $e){
-			return ;
+			return false;
 		}
 		
-		return ;
+		return false;
 	}
 	
+	/**
+	 * Aktywuje komputer z jego starym adresem IP, o ile to możliwe
+	 * @param array $comp tablica zawierająca dane hosta
+	 * @param int $modifiedBy id wprowadzającego zmiany
+	 * @return bool sukces lub porażka
+	 */
 	public function restoreWithOldIp($comp, $modifiedBy = null){
 		$user = UFra::factory('UFbean_Sru_User');
 		$user->getByPK($comp['userId']);
@@ -532,11 +552,10 @@ extends UFdao {
 		try{
 			return $result = $this->doUpdate($query);
 		}catch(Exception $e){
-			echo $e;
-			return ;
+			return false;
 		}
 		
-		return ;
+		return false;
 	}
 
 	/**

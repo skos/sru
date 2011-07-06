@@ -63,7 +63,6 @@ extends UFact {
 							$comps->restoreWithUser($bean->id, false);
 						}
 					}catch(Exception $e){
-						//echo $e;
 						//po prostu ma nic nie wyświetlić, gdy coś się nie uda, można dorobić obsługę Exceptiona w tym miejscu
 					}
 				}
@@ -81,7 +80,7 @@ extends UFact {
 				$history = UFra::factory('UFbean_SruAdmin_UserHistoryList');
 				$history->listByUserId($bean->id, 1);
 				$bean->getByPK($bean->id);	// pobranie nowych danych, np. aliasu ds-u
-				// wyslanie maila do usera i aktywacja kompów
+				// wyslanie maila do usera
 				if (!$active && $bean->active) { // jesli aktywowane konto, to wyslijmy mu maila powitalnego
 					$box = UFra::factory('UFbox_Sru');
 					$title = $box->userAddMailTitle($bean);
