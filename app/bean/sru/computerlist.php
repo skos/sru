@@ -28,4 +28,8 @@ extends UFbeanList {
 	public function updateActiveByMasterId($masterId, $active, $modifiedBy=null) {
 		return $this->dao->updateActiveByMasterId($masterId, $active, $modifiedBy);
 	}
+	
+	public function restoreWithUser($userId, $dormitoryChanged){
+		return $this->dao->checkIp($userId, $dormitoryChanged);	
+	}
 }

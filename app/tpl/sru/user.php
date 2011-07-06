@@ -105,7 +105,7 @@ extends UFtpl_Common {
 		'registryNo/regexp' => 'Niepoprawny numer indeksu',
 		'registryNo/101' => 'Niepoprawny numer indeksu',
 		'registryNo/duplicated' => 'Nr indeksu przypisany do innego mieszkańca',
-		'referralStart/active' => 'Zameldowany mieskzaniec musi mieć podaną datę początku skierowania',
+		'referralStart/active' => 'Zameldowany mieszkaniec musi mieć podaną datę początku skierowania',
 		'referralStart/5' => 'Nieprawidłowa data początku skierowania',
 		'referralStart/both' => 'Zameldowany mieszkaniec powinien mieć ustawioną tylko datę początku skierowania, zaś niezameldowany tylko datę końca skierowania.',
 		'referralEnd/inactive' => 'Niezameldowany mieszkaniec musi mieć podaną datę końca skierowania',

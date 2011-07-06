@@ -52,6 +52,17 @@ extends UFdao {
 
 		return $this->doSelectFirst($query);
 	}
+	
+	public function getActiveByIpDormitory ($ip, $dormitory){
+		$mapping = $this->mapping('get');
+		
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->ip, $ip);
+		$query->where($mapping->dormitoryId, $dormitory);
+		$query->where($mapping->active, true);
+		
+		return $this->doSelectFirst($query);
+	}
 
 	public function listByUserId($id) {
 		$mapping = $this->mapping('list');
@@ -63,6 +74,7 @@ extends UFdao {
 
 		return $this->doSelect($query);
 	}
+	
 	public function listByUserIdInactive($id) {
 		$mapping = $this->mapping('list');
 
@@ -125,6 +137,18 @@ extends UFdao {
 			$this->cacheSet($key, $return);
 			return $return;
 		}
+	}
+	
+	public function getByUserId($user, $mode = 'asc') {
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->userId, $user);
+		if($mode == 'desc'){
+			$query->order($mapping->id, $query->DESC);
+		}
+
+		return $this->doSelect($query);
 	}
 
 	public function listAllActiveByType($type=null) {
@@ -437,6 +461,84 @@ extends UFdao {
 		return $this->doUpdate($query);
 	}
 
+	public function checkIp($userId, $dormitoryChanged){
+		$comps = $this->getByUserId($userId);
+
+		for ($i = 0; $i < count($comps); $i++){
+			try{
+				if(!$dormitoryChanged){
+					$this->getActiveByIpDormitory($comps[$i]['ip'], $comps[$i]['dormitoryId']);
+					$this->setNewIp($comps[$i]);
+				}else{
+					$this->setNewIp($comps[$i]);
+				}
+			}catch(Exception $e){
+				$this->restoreWithOldIp($comps[$i]);
+			}
+		}
+	}
+	
+	public function setNewIp($comp, $modifiedBy = null){
+		$user = UFra::factory('UFbean_Sru_User');
+		$user->getByPK($comp['userId']);
+		$ip = UFra::factory('UFbean_Sru_Ipv4');
+		try{
+			$ip->getFreeByDormitoryId($user->dormitoryId);
+		}catch (Exception $e){
+			return ;
+		}
+		$mapping = $this->mapping('set');
+		
+		$data = array(
+			$mapping->modifiedById => $modifiedBy,
+			$mapping->modifiedAt => NOW,
+			$mapping->ip => $ip->ip,
+			$mapping->active => true,
+			$mapping->availableTo => null,
+		);
+
+		$query = $this->prepareUpdate($mapping, $data);
+		$query->where($mapping->host, $comp['host']);
+		$query->where($mapping->userId, $comp['userId']);
+		$query->where($mapping->active, false);
+		$query->where($mapping->modifiedAt, time() - UFra::shared('UFconf_Sru')->timeForComputersRestoration, $query->GT);
+		
+		try{
+			return $result = $this->doUpdate($query);
+		}catch(Exception $e){
+			return ;
+		}
+		
+		return ;
+	}
+	
+	public function restoreWithOldIp($comp, $modifiedBy = null){
+		$user = UFra::factory('UFbean_Sru_User');
+		$user->getByPK($comp['userId']);
+		$mapping = $this->mapping('set');
+		
+		$data = array(
+			$mapping->modifiedById => $modifiedBy,
+			$mapping->modifiedAt => NOW,
+			$mapping->active => true,
+			$mapping->availableTo => null,
+		);
+		$query = $this->prepareUpdate($mapping, $data);
+		$query->where($mapping->host, $comp['host']);
+		$query->where($mapping->userId, $comp['userId']);
+		$query->where($mapping->active, false);
+		$query->where($mapping->modifiedAt, time() - UFra::shared('UFconf_Sru')->timeForComputersRestoration, $query->GT);
+		
+		try{
+			return $result = $this->doUpdate($query);
+		}catch(Exception $e){
+			echo $e;
+			return ;
+		}
+		
+		return ;
+	}
+
 	/**
 	 * Wyświetla serwery wirtualne dla danego serwera
 	 */
@@ -475,4 +577,6 @@ extends UFdao {
 
 		return $this->doSelect($query);
 	}
+	
+	
 }
