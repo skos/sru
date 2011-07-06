@@ -9,6 +9,8 @@ extends UFact {
 
 	public function go() {
 		try {
+			$conf = UFra::shared('UFconf_Sru');
+			
 			$bean = UFra::factory('UFbean_SruAdmin_Penalty');
 			$bean->getByPK($this->_srv->get('req')->get->penaltyId);
 			if (!$bean->active) {
@@ -33,6 +35,9 @@ extends UFact {
 					$switch->getByPK($port['switchId']);
 					$hp = UFra::factory('UFlib_Snmp_Hp', $switch->ip, $switch);
 					$result = $hp->setPortStatus($port['ordinalNo'], UFlib_Snmp_Hp::ENABLED);
+					$name = $hp->getPortAlias($port['ordinalNo']);
+					$name = str_replace($conf->penaltyPrefix, '', $name);
+					$result = $result && $hp->setPortAlias($port['ordinalNo'], $name);
 				}
 				$swPorts->updatePenaltyIdByPortId($port['id'], null);
 			} catch (UFex_Dao_NotFound $e) {

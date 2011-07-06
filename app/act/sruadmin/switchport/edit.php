@@ -12,6 +12,7 @@ extends UFact {
 		try {
 			$this->begin();
 			$post = $this->_srv->get('req')->post->{self::PREFIX};
+			$conf = UFra::shared('UFconf_Sru');
 
 			$switch = UFra::factory('UFbean_SruAdmin_Switch');
 			$switch->getBySerialNo($this->_srv->get('req')->get->switchSn);
@@ -51,15 +52,15 @@ extends UFact {
 				$hp = UFra::factory('UFlib_Snmp_Hp', $switch->ip, $switch);
 				$result = false;
 				if ($post['locationAlias'] != '') {
-					if ($post['comment'] != '') {
-						$name = $post['locationAlias'] . ': ' .$hp->removeSpecialChars($post['comment']);
-						$name = substr($name, 0, self::MAX_PORT_NAME);
-						$result = $hp->setPortAlias($bean->ordinalNo, $name);
-					} else {
-						$name = $post['locationAlias'];
-						$name = substr($name, 0, self::MAX_PORT_NAME);
-						$result = $hp->setPortAlias($bean->ordinalNo, $name);
+					$name = $post['locationAlias'];
+					if (key_exists('penaltyId', $post) && $post['penaltyId'] != '') {
+						$name = $conf->penaltyPrefix . $name;
 					}
+					if ($post['comment'] != '') {
+						$name.= ': ' .$hp->removeSpecialChars($post['comment']);
+					}
+					$name = substr($name, 0, self::MAX_PORT_NAME);
+					$result = $hp->setPortAlias($bean->ordinalNo, $name);
 				} else if ($post['connectedSwitchId'] != '') {
 					$connectedSwitch = UFra::factory('UFbean_SruAdmin_Switch');
 					$connectedSwitch->getByPK($post['connectedSwitchId']);
@@ -95,7 +96,6 @@ extends UFact {
 
 			$bean->save();
 
-			$conf = UFra::shared('UFconf_Sru');
 			if (isset($post['portStatus']) && $post['portStatus'] != $post['portEnabled'] && $conf->sendEmail) {
 				$box = UFra::factory('UFbox_SruAdmin');
 				$sender = UFra::factory('UFlib_Sender');

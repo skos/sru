@@ -29,7 +29,7 @@ extends UFtpl_Common {
 			echo '<p><em>Alias portu: </em>'.$alias.'</p>';
 		}
 		if (!is_null($d['penaltyId'])) {
-			echo '<p><em>Przypisana kara: </em><a href="'.$this->url(0).'/penalties/'.$d['penaltyId'].'">'.$d['userName'].' "'.$d['userLogin'].'" '.$d['userSurname'].': '.$d['templateTitle'].' ('.$d['id'].')</a></p>';
+			echo '<p><em>Przypisana kara: </em><a href="'.$this->url(0).'/penalties/'.$d['penaltyId'].'">'.$d['userName'].' "'.$d['userLogin'].'" '.$d['userSurname'].': '.$d['templateTitle'].' ('.$d['penaltyId'].')</a></p>';
 		}
 		echo '<p><em>Port admina:</em> '.($d['admin'] ? 'tak' : 'nie').'</p>';
 		echo '<p><em>Komentarz:</em> '.$d['comment'].'</p>';
@@ -157,7 +157,7 @@ extends UFtpl_Common {
 			}
 			echo $d[$i]['admin'] ?'</strong>' : '';
 			echo '</a>';
-			echo ($d[$i]['penaltyId'] == '') ? '' : ' <a href="'.$this->url(0).'/penalties/'.$d[$i]['penaltyId'].'"><img src="'.UFURL_BASE.'/i/img/czaszka.png" alt="" title="'.$d[$i]['userName'].' &quot;'.$d[$i]['userLogin'].'&quot; '.$d[$i]['userSurname'].': '.$d[$i]['templateTitle'].' ('.$d[$i]['id'].')" /></a>';
+			echo ($d[$i]['penaltyId'] == '') ? '' : ' <a href="'.$this->url(0).'/penalties/'.$d[$i]['penaltyId'].'"><img src="'.UFURL_BASE.'/i/img/czaszka.png" alt="" title="'.$d[$i]['userName'].' &quot;'.$d[$i]['userLogin'].'&quot; '.$d[$i]['userSurname'].': '.$d[$i]['templateTitle'].' ('.$d[$i]['penaltyId'].')" /></a>';
 			echo ($d[$i]['comment'] == '') ? '' : ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$d[$i]['comment'].'" />';
 			echo '<br/><small>(';
 			echo is_null($d[$i]['connectedSwitchId']) ? ('<a href="'.$this->url(0).'/dormitories/'.$d[$i]['dormitoryAlias'].'/'.$d[$i]['locationAlias'].'">'.

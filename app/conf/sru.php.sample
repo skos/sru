@@ -28,6 +28,7 @@ extends UFconf {
 	protected $swstatsPortRegex = '';
 	protected $swstatsLinkSwitch = '';
 	protected $swstatsLinkPort = '';
+	protected $penaltyPrefix = '';	// prefix do komentarza portu, na który nałożono karę
 
 	protected $jabberServer = '';
 	protected $jabberPort = 0;
