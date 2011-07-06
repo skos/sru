@@ -343,7 +343,9 @@ changeVisibility();
 		echo $form->_end();
 		echo $form->_fieldset('Inne');
 		$conf = UFra::shared('UFconf_Sru');
+		echo '<div id="autoDeactivation">';
 		echo $form->autoDeactivation('Autodezaktywacja <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Komputery, które nie były widziane dłużej niż '.$conf->computersMaxNotSeen.' dni, zostaną dezaktywowane. Hosty typu serwerowego nigdy nie są dezaktywowane z powodu braku widzialności."/>', array('type'=>$form->CHECKBOX));
+		echo '</div>';
 		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
 		echo $form->_end();
 		?>
@@ -364,6 +366,8 @@ if (input) {
 
 initialCarerId = document.getElementById("computerEdit_carerId").value;
 initialMasterHostId = document.getElementById("computerEdit_masterHostId").value;
+initialTypeId = document.getElementById("computerEdit_typeId").value;
+initialAutoDeactivation = document.getElementById("computerEdit_autoDeactivation").checked;
 (function (){
 	form = document.getElementById('computerEdit_typeId');
 	function changeVisibility() {
@@ -392,6 +396,30 @@ initialMasterHostId = document.getElementById("computerEdit_masterHostId").value
 			masterHostId.value = '';
 		}
 		<? } ?>
+		var autoDeactivationDiv = document.getElementById("autoDeactivation");
+		var autoDeactivation = document.getElementById("computerEdit_autoDeactivation");
+		var typeId = document.getElementById("computerEdit_typeId").value;
+		if (form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER; ?> || form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER_VIRT; ?>) {
+			autoDeactivationDiv.style.display = "none";
+			autoDeactivationDiv.style.visibility = "hidden";
+			autoDeactivation.checked = false;
+		} else if (form.value == <? echo UFbean_Sru_Computer::TYPE_STUDENT_AP; ?> || form.value == <? echo UFbean_Sru_Computer::TYPE_STUDENT_OTHER; ?>) {
+			autoDeactivationDiv.style.display = "block";
+			autoDeactivationDiv.style.visibility = "visible";
+			if (typeId != initialTypeId) {
+				autoDeactivation.checked = false;
+			} else {
+				autoDeactivation.checked = initialAutoDeactivation;
+			}
+		} else {
+			autoDeactivationDiv.style.display = "block";
+			autoDeactivationDiv.style.visibility = "visible";
+			if (typeId != initialTypeId) {
+				autoDeactivation.checked = true;
+			} else {
+				autoDeactivation.checked = initialAutoDeactivation;
+			}
+		}
 	}
 	form.onchange = changeVisibility;
 	changeVisibility();
