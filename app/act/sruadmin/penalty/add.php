@@ -10,6 +10,8 @@ extends UFact {
 	public function go() {
 		try {
 			$this->begin();
+			$conf = UFra::shared('UFconf_Sru');
+			$post = $this->_srv->get('req')->post->{self::PREFIX};
 			$user = UFra::factory('UFbean_Sru_User');
 			$user->getByPK($this->_srv->get('req')->get->userId);
 
@@ -82,7 +84,28 @@ extends UFact {
 				$penalty->save(false);
 			}
 
-			$conf = UFra::shared('UFconf_Sru');
+			// zablokujmy port, jeśli podany
+			if (key_exists('portId', $post) && $post['portId'] != '') {
+				try {
+					$port = UFra::factory('UFbean_SruAdmin_SwitchPort');
+					$port->getByPK($post['portId']);
+					$port->penaltyId = $id;
+					$port->save();
+					$switch = UFra::factory('UFbean_SruAdmin_Switch');
+					$switch->getByPK($port->switchId);
+					$hp = UFra::factory('UFlib_Snmp_Hp', $switch->ip, $switch);
+					$result = $hp->setPortStatus($port->ordinalNo, UFlib_Snmp_Hp::DISABLED);
+					$name = $hp->getPortAlias($port->ordinalNo);
+					$name = $conf->penaltyPrefix . $name;
+					$name = substr($name, 0, UFact_SruAdmin_SwitchPort_Edit::MAX_PORT_NAME);
+					$result = $result && $hp->setPortAlias($port->ordinalNo, $name);
+				} catch (UFex_Dao_NotFound $e) {
+					$this->rollback();
+					$this->markErrors(self::PREFIX, array('portId'=>'writeError'));
+					return;
+				}
+			}
+
 			if ($conf->sendEmail) {
 				// wyslanie maila do usera
 				$box = UFra::factory('UFbox_Sru');

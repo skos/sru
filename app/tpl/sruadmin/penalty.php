@@ -17,6 +17,7 @@ extends UFtpl_Common {
 		'after' => 'Podaj minimalną długość',
 		'newComment/notNull' => 'Podaj komentarz modyfikacji',
 		'endAt/tooShort' => 'Nie możesz skrócić kary poniżej minimalnego czasu',
+		'portId/writeError' => 'Błąd zapisu na switcha',
 	);	
 
 	public function listPenalty(array $d) {
@@ -63,7 +64,7 @@ extends UFtpl_Common {
 		echo '<ul>';
 	}
 
-	public function formAdd(array $d, $computers, $templates, $user, $computerId = null) {
+	public function formAdd(array $d, $computers, $templates, $user, $computerId = null, $ports = null) {
 		if (!isset($d['computerId']) && is_int($computerId)) {
 			$d['computerId'] = $computerId;
 		}
@@ -78,8 +79,17 @@ extends UFtpl_Common {
 		echo $form->duration('Długość (dni)');
 		echo $form->after('Min. długość (dni)');
 		echo $form->reason('Opis dla użytkownika',  array('type'=>$form->TEXTAREA, 'rows'=>5));
-
 		echo $form->comment('Opis dla administratorów', array('type'=>$form->TEXTAREA, 'rows'=>10));
+		if (!is_null($ports)) {
+			$tmp = array();
+			foreach ($ports as $port) {
+				$tmp[$port['id']] = UFtpl_SruAdmin_Switch::displaySwitchName($port['dormitoryAlias'], $port['switchNo']) . ', port '.$port['ordinalNo'];
+			}
+			echo $form->portId('Zablokuj port', array(
+				'type' => $form->SELECT,
+				'labels' => $form->_labelize($tmp, '', ''),
+			));
+		}
 	}
 
 	public function penaltyLastAdded(array $d, $showAddedBy = true) {

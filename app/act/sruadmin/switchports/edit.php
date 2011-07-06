@@ -7,7 +7,6 @@ extends UFact {
 
 	const PREFIX = 'switchPortsEdit';
 	const PREFIX_COPY = 'copyAliasesFromSwitch';
-	const MAX_PORT_NAME = 64;
 
 	public function go() {
 		try {
@@ -60,7 +59,7 @@ extends UFact {
 					if ($port['locationAlias'] != '') {
 						if ($port['comment'] != '') {
 							$name = $port['locationAlias'] . ': ' . $hp->removeSpecialChars($port['comment']);
-							$name = substr($name, 0, self::MAX_PORT_NAME);
+							$name = substr($name, 0, UFact_SruAdmin_SwitchPort_Edit::MAX_PORT_NAME);
 							$result = $hp->setPortAlias($bean->ordinalNo, $name);
 						} else {
 							$result = $hp->setPortAlias($bean->ordinalNo, $port['locationAlias']);
@@ -70,7 +69,7 @@ extends UFact {
 						$connectedSwitch->getByPK($port['connectedSwitchId']);
 						if ($port['comment'] != '') {
 							$name = $connectedSwitch->dormitoryAlias.'-hp'.$connectedSwitch->hierarchyNo . ': ' . $hp->removeSpecialChars($port['comment']);
-							$name = substr($name, 0, self::MAX_PORT_NAME);
+							$name = substr($name, 0, UFact_SruAdmin_SwitchPort_Edit::MAX_PORT_NAME);
 							$result = $hp->setPortAlias($bean->ordinalNo, $name);
 						} else {
 							$result = $hp->setPortAlias($bean->ordinalNo, $connectedSwitch->dormitoryAlias.'-hp'.$connectedSwitch->hierarchyNo);

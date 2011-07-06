@@ -226,6 +226,7 @@ extends UFtpl_Common {
 			echo $port['ordinalNo'];
 			echo $port['admin'] ?'</strong>' : '';
 			echo '</a>';
+			echo ($d[$i]['penaltyId'] == '') ? '' : ' <a href="'.$this->url(0).'/penalties/'.$d[$i]['penaltyId'].'"><img src="'.UFURL_BASE.'/i/img/czaszka.png" alt="" title="'.$d[$i]['userName'].' &quot;'.$d[$i]['userLogin'].'&quot; '.$d[$i]['userSurname'].': '.$d[$i]['templateTitle'].' ('.$d[$i]['penaltyId'].')" /></a>';
 			echo ($port['comment'] == '') ? '' : ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$port['comment'].'" />';
 			echo '</td>';
 			if (($j + 1) % 8 == 0) {

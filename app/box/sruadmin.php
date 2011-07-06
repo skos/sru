@@ -1528,7 +1528,16 @@ extends UFbox {
 			
 			$templates = UFra::factory('UFbean_SruAdmin_PenaltyTemplateList');
 			$templates->listAll();
-			$d['templates'] = $templates;		
+			$d['templates'] = $templates;
+
+			try {
+				$ports = UFra::factory('UFbean_SruAdmin_SwitchPortList');
+				$ports->listByLocationId($user->locationId);
+				$d['ports'] = $ports;
+			} catch (UFex_Dao_NotFound $e) {
+				$d['ports'] = null;
+			}
+
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
 			return $this->render('userNotFound');
