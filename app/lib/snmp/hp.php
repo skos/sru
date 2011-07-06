@@ -212,7 +212,7 @@ extends UFlib_Snmp {
 		} else {
 			$op = '2';
 		}
-		return @snmpset($this->ip, $this->communityW, $this->OIDs['lockouts'].'.'.$this->mac2int($mac).'.0', 'i', $op, $this->timeout);
+		return @snmpset($this->ip, $this->communityW, $this->OIDs['lockouts'].'.'.$this->mac2int($mac).'.0', 'i', $op); // brak timeoutu w zwiazku z #429
 	}
 
 	public function findMac($searchMac) {
