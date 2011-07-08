@@ -85,7 +85,6 @@ extends UFact {
 					$box = UFra::factory('UFbox_Sru');
 					$title = $box->userAddMailTitle($bean);
 					$body = $box->userAddMailBody($bean);
-					var_dump($body);
 					$sender->send($bean, $title, $body);
 				}
 				$box = UFra::factory('UFbox_SruAdmin');
