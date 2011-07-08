@@ -91,7 +91,7 @@ class XMPPHP_XMPP extends XMPPHP_XMLStream {
 	/**
 	 * @var boolean
 	 */
-	public $track_presence = true;
+	public $track_presence = false;
 	
 	/**
 	 * @var object
@@ -120,7 +120,7 @@ class XMPPHP_XMPP extends XMPPHP_XMLStream {
 		$this->basejid = $this->user . '@' . $this->host;
 
 		$this->roster = new Roster();
-		$this->track_presence = true;
+		$this->track_presence = false;
 
 		$this->stream_start = '<stream:stream to="' . $server . '" xmlns:stream="http://etherx.jabber.org/streams" xmlns="jabber:client" version="1.0">';
 		$this->stream_end   = '</stream:stream>';

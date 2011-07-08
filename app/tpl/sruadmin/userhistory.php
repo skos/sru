@@ -210,7 +210,7 @@ extends UFtpl_Common {
 					$newA = $new['active'] ? 'tak' : 'nie';
 					if ($lang == self::EN) {
 						echo $names[$key].': '.($old['active'] ? 'yes' : 'no')
-							.($val!==$new[$key] ? ($arr.$new['active'] ? 'yes' : 'no') : '')
+							.($val!==$new[$key] ? $arr.($new['active'] ? 'yes' : 'no') : '')
 							."\n";
 					} else {
 						echo $names[$key].': '.($old['active'] ? 'tak' : 'nie')
