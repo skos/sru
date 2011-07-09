@@ -312,7 +312,11 @@ extends UFtpl_Common {
 					$connectedSwitchId = $post->switchPortsEdit[$c['id']]['connectedSwitchId'];
 				}
 				if ($copyAliases && !$copied) {
-					$comment = $portAliases[$c['ordinalNo'] - 1];
+					if (isset($post->switchPortsEdit[$c['id']]['locationAlias'])) {
+						$comment = trim(str_replace($post->switchPortsEdit[$c['id']]['locationAlias'].':', '', $portAliases[$c['ordinalNo'] - 1]));
+					} else {
+						$comment = $portAliases[$c['ordinalNo'] - 1];
+					}
 				} else if (isset($post->switchPortsEdit[$c['id']]['comment'])) {
 					$comment = $post->switchPortsEdit[$c['id']]['comment'];
 				}
