@@ -1532,7 +1532,7 @@ extends UFbox {
 
 			try {
 				$ports = UFra::factory('UFbean_SruAdmin_SwitchPortList');
-				$ports->listByLocationId($user->locationId);
+				$ports->listByLocationId($user->locationId, false);
 				$d['ports'] = $ports;
 			} catch (UFex_Dao_NotFound $e) {
 				$d['ports'] = null;

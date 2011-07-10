@@ -15,12 +15,15 @@ extends UFdao {
 		return $this->doSelect($query);
 	}
 
-	public function listByLocationId($id) {
+	public function listByLocationId($id, $withPenalty = true) {
 		$mapping = $this->mapping('list');
 
 		$query = $this->prepareSelect($mapping);
 		$query->where($mapping->locationId, $id);
 		$query->where($mapping->switchIp, NULL, UFlib_Db_Query::NOT_EQ);
+		if (!$withPenalty) {
+			$query->where($mapping->penaltyId, NULL);
+		}
 		$query->order($mapping->switchNo, $query->ASC);
 		$query->order($mapping->ordinalNo, $query->ASC);
 

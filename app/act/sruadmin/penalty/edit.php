@@ -95,8 +95,8 @@ extends UFact {
 						$name = $hp->getPortAlias($port['ordinalNo']);
 						$name = str_replace($conf->penaltyPrefix, '', $name);
 						$result = $result && $hp->setPortAlias($port['ordinalNo'], $name);
+						$swPorts->updatePenaltyIdByPortId($port['id'], null);
 					}
-					$swPorts->updatePenaltyIdByPortId($port['id'], null);
 				} catch (UFex_Dao_NotFound $e) {
 					// brak portów z przypisaną karą
 				}

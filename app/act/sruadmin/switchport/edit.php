@@ -54,7 +54,7 @@ extends UFact {
 				if ($post['locationAlias'] != '') {
 					$name = $post['locationAlias'];
 					if (key_exists('penaltyId', $post) && $post['penaltyId'] != '') {
-						$name = $conf->penaltyPrefix . $name;
+						$name = $name.$conf->penaltyPrefix;
 					}
 					if ($post['comment'] != '') {
 						$name.= ': ' .$hp->removeSpecialChars($post['comment']);
