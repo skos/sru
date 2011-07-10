@@ -48,7 +48,7 @@ extends UFact {
 				}
 			}
 
-			$bean->fillFromPost(self::PREFIX); // zgodnie z ticketem #176 filtr wyłączony
+			$bean->fillFromPost(self::PREFIX, array('availableTo')); // zgodnie z ticketem #176 filtr wyłączony
 			if ($bean->canAdmin && $bean->exAdmin) {
 					$this->rollback();
 					$this->markErrors(self::PREFIX, array('exAdmin'=>'notWithAdmin'));
@@ -59,9 +59,11 @@ extends UFact {
 				$bean->active = true;
 				$bean->lastActivated = NOW;
 			}
-			if($bean->availableTo <= NOW && $bean->active) {
+			if(strtotime($post['availableTo']) <= NOW && $bean->active) {
 				$conf = UFra::shared('UFconf_Sru');
 				$bean->availableTo = $conf->computerAvailableTo;
+			} else {
+				$bean->availableTo = strtotime($post['availableTo']);
 			}
 			$bean->modifiedById = $this->_srv->get('session')->authAdmin;
 			$bean->modifiedAt = NOW;
