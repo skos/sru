@@ -53,11 +53,13 @@ extends UFact {
 				$result = false;
 				if ($post['locationAlias'] != '') {
 					$name = $post['locationAlias'];
+					$ban = false;
 					if (key_exists('penaltyId', $post) && $post['penaltyId'] != '') {
-						$name = $name.$conf->penaltyPrefix;
+						$name .= ': ' .$conf->penaltyPrefix;
+						$ban = true;
 					}
 					if ($post['comment'] != '') {
-						$name.= ': ' .$hp->removeSpecialChars($post['comment']);
+						$name .= ($ban ? '' : ': ').$hp->removeSpecialChars($post['comment']);
 					}
 					$name = substr($name, 0, self::MAX_PORT_NAME);
 					$result = $hp->setPortAlias($bean->ordinalNo, $name);

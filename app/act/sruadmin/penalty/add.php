@@ -95,8 +95,10 @@ extends UFact {
 					$switch->getByPK($port->switchId);
 					$hp = UFra::factory('UFlib_Snmp_Hp', $switch->ip, $switch);
 					$result = $hp->setPortStatus($port->ordinalNo, UFlib_Snmp_Hp::DISABLED);
-					$name = $hp->getPortAlias($port->ordinalNo);
-					$name = $name.$conf->penaltyPrefix;
+					$name = $port->locationAlias . ': ' . $conf->penaltyPrefix;
+					if (!is_null($port->comment) && $port->comment != '') {
+						$name .= $hp->removeSpecialChars($port->comment);
+					}
 					$name = substr($name, 0, UFact_SruAdmin_SwitchPort_Edit::MAX_PORT_NAME);
 					$result = $result && $hp->setPortAlias($port->ordinalNo, $name);
 				} catch (UFex_Dao_NotFound $e) {
