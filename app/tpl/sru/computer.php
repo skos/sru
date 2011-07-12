@@ -81,8 +81,13 @@ extends UFtpl_Common {
 			echo date(self::TIME_YYMMDD_HHMM, $c['modifiedAt']);
 			echo '<small> zmodyfikował/dodał komputer: </small><a href="'.$url.'/computers/'.$c['id'].'">';
 			echo $this->_escape($c['host']).'</a><small> należący do użytkownika ';
-			echo '<a href="'.$url.'/users/'.$c['userId'].'">'.$this->_escape($c['userName']).' "';
-			echo $c['login'].'" '.$this->_escape($c['userSurname']).'</a> ';
+			if($c['userActive'] == true){
+				echo '<a href="'.$url.'/users/'.$c['userId'].'">'.$this->_escape($c['userName']).' "';
+				echo $c['login'].'" '.$this->_escape($c['userSurname']).'</a>';
+			}else{
+				echo '<del><a href="'.$url.'/users/'.$c['userId'].'">'.$this->_escape($c['userName']).' "';
+				echo $c['login'].'" '.$this->_escape($c['userSurname']).'</a></del>';
+			}
 			echo '</small></li>';
 		}
 		echo '</ul>';

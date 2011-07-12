@@ -23,8 +23,14 @@ extends UFtpl_Common {
 				echo 'dezaktywację';
 			}
 			echo ' usługi: </small><a href="'.$url.'/services/">'.$this->_escape($c['servName']) . '</a> ';
-			echo ' <small> użytkownika: </small><a href="'.$url.'/users/'.$c['userId'].'">';
-			echo $this->_escape($c['userName']).' "'.$c['login'].'" '.$this->_escape($c['userSurname']).'</a>';
+			echo ' <small> użytkownika: </small>';
+			if($c['userActive'] == true){
+				echo '<a href="'.$url.'/users/'.$c['userId'].'">';
+				echo $this->_escape($c['userName']).' "'.$c['login'].'" '.$this->_escape($c['userSurname']).'</a>';
+			}else{
+				echo '<del><a href="'.$url.'/users/'.$c['userId'].'">';
+				echo $this->_escape($c['userName']).' "'.$c['login'].'" '.$this->_escape($c['userSurname']).'</a></del>';
+			}
 			echo '</li>';
 		}
 		echo '<ul>';
@@ -48,8 +54,14 @@ extends UFtpl_Common {
 				echo ' dezaktywował';
 			}
 			echo ' usługę: </small><a href="'.$url.'/services/">'.$this->_escape($c['servName']) . '</a> ';
-			echo ' <small> użytkownika: </small><a href="'.$url.'/users/'.$c['userId'].'">'.$this->_escape($c['userName']).' "';
-			echo $c['login'].'" '.$this->_escape($c['userSurname']).'</a>.';
+			echo ' <small> użytkownika: </small>';
+			if($c['userActive'] == true){
+				echo '<a href="'.$url.'/users/'.$c['userId'].'">'.$this->_escape($c['userName']).' "';
+				echo $c['login'].'" '.$this->_escape($c['userSurname']).'</a>';
+			}else{
+				echo '<del><a href="'.$url.'/users/'.$c['userId'].'">'.$this->_escape($c['userName']).' "';
+				echo $c['login'].'" '.$this->_escape($c['userSurname']).'</a></del>';
+			}
 			echo '</li>';
 		}
 		echo '</ul>';

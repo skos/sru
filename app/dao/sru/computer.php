@@ -467,19 +467,19 @@ extends UFdao {
 	 * @param bool $dormitoryChanged
 	 * @return bool sukces
 	 */
-	public function restore($userId, $dormitoryChanged){
+	public function restore($userId, $dormitoryChanged, $modifiedBy = null){
 		$comps = $this->getByUserId($userId);
 
 		for ($i = 0; $i < count($comps); $i++){
 			try{
 				if(!$dormitoryChanged){
 					$this->getActiveByIpDormitory($comps[$i]['ip'], $comps[$i]['dormitoryId']);
-					$this->setNewIp($comps[$i]);
+					$this->setNewIp($comps[$i], $modifiedBy);
 				}else{
-					$this->setNewIp($comps[$i]);
+					$this->setNewIp($comps[$i], $modifiedBy);
 				}
 			}catch(Exception $e){
-				$this->restoreWithOldIp($comps[$i]);
+				$this->restoreWithOldIp($comps[$i], $modifiedBy);
 			}
 		}
 		

@@ -17,7 +17,7 @@ extends UFbeanList {
 		return $this->dao->updateCarerByCarerId($oldCarerId, $newCarerId, $modifiedBy);
 	}
 
-	public function updateLocationByUserId($userId, $location, $ip, $modifiedBy=null) {
+	public function updateLocationByUserId($userId, $location, $modifiedBy=null) {
 		return $this->dao->updateLocationByUserId($userId, $location, $ip, $modifiedBy);
 	}
 
@@ -29,7 +29,7 @@ extends UFbeanList {
 		return $this->dao->updateActiveByMasterId($masterId, $active, $modifiedBy);
 	}
 	
-	public function restoreWithUser($userId, $dormitoryChanged){
-		return $this->dao->restore($userId, $dormitoryChanged);	
+	public function restoreWithUser($userId, $dormitoryChanged, $modifiedBy = null){
+		return $this->dao->restore($userId, $dormitoryChanged, $modifiedBy);	
 	}
 }
