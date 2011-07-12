@@ -124,7 +124,7 @@ extends UFtpl_Common {
 			echo '<li>';
 			echo date(self::TIME_YYMMDD_HHMM, $c['modifiedAt']);
 			echo ' <small>zmodyfikował/dodał użytkownika: </small>';
-			if($c['userActive'] == true){
+			if($c['active'] == true){
 				echo '<a href="'.$url.'/users/'.$c['id'].'">' . $this->_escape($c['name']);
 				echo ' "'.$c['login'].'" '.$this->_escape($c['surname']).'</a>';
 			}else{

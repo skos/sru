@@ -18,7 +18,8 @@ extends UFmap {
 		'servName'		=> 't.name',
 		'userName'		=> 'u.name',
 		'userSurname'	=> 'u.surname',
-		'login'			=> 'u.login'
+		'login'			=> 'u.login',
+		'userActive'	=> 'u.active',
 	);
 	protected $columnTypes = array(
 		'id'			=> self::INT,
@@ -33,7 +34,8 @@ extends UFmap {
 		'servName'		=> self::TEXT,
 		'userName'		=> self::TEXT,
 		'userSurname' 	=> self::TEXT,
-		'login'			=> self::TEXT
+		'login'			=> self::TEXT,
+		'userActive'	=> self::BOOL,
 	);
 	protected $tables = array(
 		'h' => 'services_history'
