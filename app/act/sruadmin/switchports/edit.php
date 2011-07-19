@@ -20,6 +20,7 @@ extends UFact {
 
 			$this->begin();
 			$post = $this->_srv->get('req')->post->{self::PREFIX};
+			$conf = UFra::shared('UFconf_Sru');
 
 			while ($port = current($post)) {
 				$bean = UFra::factory('UFbean_SruAdmin_SwitchPort');
@@ -58,7 +59,15 @@ extends UFact {
 					$result = false;
 					if ($port['locationAlias'] != '') {
 						if ($port['comment'] != '') {
-							$name = $port['locationAlias'] . ': ' . $hp->removeSpecialChars($port['comment']);
+							$name = $port['locationAlias'];
+							$ban = false;
+							if ($bean->penaltyId != '') {
+								$name .= ': ' .$conf->penaltyPrefix;
+								$ban = true;
+							}
+							if ($port['comment'] != '') {
+								$name .= ($ban ? '' : ': ').$hp->removeSpecialChars($port['comment']);
+							}
 							$name = substr($name, 0, UFact_SruAdmin_SwitchPort_Edit::MAX_PORT_NAME);
 							$result = $hp->setPortAlias($bean->ordinalNo, $name);
 						} else {

@@ -313,12 +313,12 @@ extends UFtpl_Common {
 				}
 				if ($copyAliases && !$copied) {
 					if (isset($post->switchPortsEdit[$c['id']]['locationAlias'])) {
-						$comment = trim(str_replace($post->switchPortsEdit[$c['id']]['locationAlias'].':', '', $portAliases[$c['ordinalNo'] - 1]));
+						$comment = trim(str_replace($conf->penaltyPrefix, '', str_replace($post->switchPortsEdit[$c['id']]['locationAlias'].':', '', $portAliases[$c['ordinalNo'] - 1])));
 					} else {
 						$comment = $portAliases[$c['ordinalNo'] - 1];
 					}
 				} else if (isset($post->switchPortsEdit[$c['id']]['comment'])) {
-					$comment = $post->switchPortsEdit[$c['id']]['comment'];
+					$comment = trim(str_replace($conf->penaltyPrefix, '', $post->switchPortsEdit[$c['id']]['comment']));
 				}
 			} catch (UFex_Core_DataNotFound $e) {
 			}
