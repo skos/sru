@@ -211,11 +211,13 @@ extends UFtpl_Common {
 					if ($lang == self::EN) {
 						echo $names[$key].': '.($old['active'] ? 'yes' : 'no')
 							.($val!==$new[$key] ? $arr.($new['active'] ? 'yes' : 'no') : '')
-							."\n";
+							."\n"
+							.'Only dormitory administration can change activity of your account! In case of problems, please contact your dormitory office.'."\n";
 					} else {
 						echo $names[$key].': '.($old['active'] ? 'tak' : 'nie')
 							.($val!==$new[$key] ? $arr.$newA : '')
-							."\n";
+							."\n"
+							.'Tylko administracja DSu może zmienić aktywność konta! W razie problemów prosimy o kontakt z kierownictwem DSu.'."\n";
 					}
 					break;
 				default: continue;
