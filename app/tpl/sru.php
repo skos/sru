@@ -179,10 +179,15 @@ extends UFtpl_Common {
 	}
 
 	public function userComputer(array $d) {
+		$acl = $this->_srv->get('acl');
+
 		echo '<div class="computer">';
 		$d['computer']->write('detailsOwn');
-		echo '<p class="nav"><a href="'.$this->url(1).'">Powrót do listy</a> <small><a href="'.$this->url(2).'/:edit">Edytuj</a></small></p>';
-		echo '</div>';
+		echo '<p class="nav"><a href="'.$this->url(1).'">Powrót do listy</a>';
+		if ($acl->sru('computer', 'edit')) {
+			echo ' <small><a href="'.$this->url(2).'/:edit">Edytuj</a></small>';
+		}
+		echo '</p></div>';
 	}
 
 	public function userComputerNotFound() {
