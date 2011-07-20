@@ -6,7 +6,8 @@ class UFmap_SruAdmin_ServiceHistory_List
 extends UFmap {
 
 	protected $columns = array(
-		'userId'	 => 'h.user_id',
+		'id'             => 'h.id',
+		'userId'		 => 'h.user_id',
 		'adminId'        => 'h.modified_by',
 		'admin'          => 'a.name',
 		'servName'       => 't.name',
@@ -14,6 +15,7 @@ extends UFmap {
 		'state'          => 'h.active',
 	);
 	protected $columnTypes = array(
+		'id'             => self::INT,
 		'userId'         => self::INT,
 		'adminId'        => self::NULL_INT,
 		'admin'          => self::TEXT,
@@ -32,4 +34,5 @@ extends UFmap {
 		'a' => 'h.modified_by = a.id',
 		't' => 'h.serv_type_id = t.id',
 	);
+	protected $pk = 'h.id';
 }

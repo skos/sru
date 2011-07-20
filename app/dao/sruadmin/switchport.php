@@ -79,9 +79,10 @@ extends UFdao {
 		$data = array(
 			$mapping->penaltyId => $penaltyId,
 		);
+		$query->pk($mapping->pk(), $mapping->pkType());
 		$query->values($mapping->columns(), $data, $mapping->columnTypes());
-		$query->where($mapping->ida, $portId);
-
+		$query->where($mapping->pkName(), $portId);
+		
 		$return = $this->doUpdate($query);
 		return $return;
 	}

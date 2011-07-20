@@ -10,6 +10,7 @@ extends UFdao {
 
 		$query = $this->prepareSelect($mapping);
 		$query->where($mapping->userId, $id);
+		$query->order($mapping->pkName(), $query->DESC);
 
 		return $this->doSelect($query);
 	}
