@@ -331,7 +331,7 @@ extends UFtpl_Common {
 		echo $form->surname('Nazwisko', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Nazwisko szukanego mieszkańca. Można podać łącznie z numerem indeksu." /><br/>'));
 		echo $form->registryNo('Nr indeksu', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Numer indeksu szukanego mieszkańca. Można podać łącznie z nazwiskiem." /><br/>'));
 ?>
-<script>
+<script type="text/javascript">
 	$(function() {
 		$( "#userSearch_surname" ).autocomplete({
 			source: function(req, resp) {
@@ -1030,6 +1030,109 @@ function changeUnregisterVisibility() {
 		echo $chartDataWoman.'|'.$chartDataMan.'&chxt=y,r&chxl=0:|'.$chartLabel.'1:|'.$chartLabelR.'" alt=""/>';
 		echo '</div>';
 
+		echo '<h3>Rozkład płci uwzględniając typ konta:</h3>';
+		echo '<table style="text-align: center; width: 100%;">';
+		echo '<tr><th>Typ konta</th><th>Użytkowników</th><th>Kobiet</th><th>Mężczyzn</th></tr>';
+		$types = array();
+		foreach ($d as $u) {
+			if(!array_key_exists($u['typeId'], $types)) {
+				$types[$u['typeId']] = new PeopleCounter();
+			}
+			if (strtolower(substr($u['name'], -1)) == 'a') {
+				$types[$u['typeId']]->addUser(true);
+			} else {
+				$types[$u['typeId']]->addUser();
+			}
+		}
+		ksort($types);
+		$chartDataWoman = '';
+		$chartDataMan = '';
+		$chartLabel = '';
+		$chartLabelR = '';
+		$chartDataType = '';
+		$chartLabelType = '';
+		while ($type = current ($types)) {
+			echo '<tr><td>'.self::getUserType(key($types)).'</td>';
+			echo '<td>'.$type->getUsers().'</td>';
+			echo '<td>'.$type->getWomen().'</td>';
+			echo '<td>'.($type->getUsers() - $type->getWomen()).'</td></tr>';
+			$chartDataWoman = $chartDataWoman.(round($type->getWomen()/$type->getUsers()*100)).',';
+			$chartDataMan = $chartDataMan.(round(($type->getUsers()-$type->getWomen())/$type->getUsers()*100)).',';
+			$chartLabel = self::getUserType(key($types)).'|'.$chartLabel;
+			$chartLabelR = (round($type->getWomen()/$type->getUsers()*100)).'% / '.(round(($type->getUsers()-$type->getWomen())/$type->getUsers()*100)).'%|'.$chartLabelR;
+			$chartDataType = (round($type->getUsers()/$sum*100)).','.$chartDataType;
+			$chartLabelType = self::getUserType(key($types)).': '.round($type->getUsers()/$sum*100).'%|'.$chartLabelType;
+			next($types);
+		}
+		echo '</table>';
+		$chartDataWoman = substr($chartDataWoman, 0, -1);
+		$chartDataMan = substr($chartDataMan, 0, -1);
+		$chartDataType = substr($chartDataType, 0, -1);
+
+		echo '<div style="text-align: center;">';
+		echo '<img src="http://chart.apis.google.com/chart?chs=700x150&chd=t:'.$chartDataType;
+		echo '&cht=p3&chl='.$chartLabelType.' alt=""/>';
+		echo '<div style="text-align: center;">';
+		echo '<img src="http://chart.apis.google.com/chart?chs=600x350&cht=bhs&chco=ff9900,ffebcc&chd=t:';
+		echo $chartDataWoman.'|'.$chartDataMan.'&chxt=y,r&chxl=0:|'.$chartLabel.'1:|'.$chartLabelR.'" alt=""/>';
+		echo '</div>';
+
+		echo '<h3>Rozkład kar uwzględniając typ konta:</h3>';
+		echo '<table style="text-align: center; width: 100%;">';
+		echo '<tr><th>Typ konta</th><th>Kar</th><th>Obecnie ukaranych</th></tr>';
+		$bannedTypes = array();
+		$bannedTypesActive = array();
+		$bannedSum = 0;
+		$bannedActiveSum = 0;
+		$bannedTypesSum = 0;
+		foreach ($d as $u) {
+			if ($u['banned']) {
+				if(!array_key_exists($u['typeId'], $bannedTypesActive)) {
+					$bannedTypesActive[$u['typeId']] = 1;
+					$bannedActiveSum++;
+				} else {
+					$bannedTypesActive[$u['typeId']]++;
+					$bannedActiveSum++;
+				}
+			}
+			if ($u['bans'] > 0) {
+				if(!array_key_exists($u['typeId'], $bannedTypes)) {
+					$bannedTypes[$u['typeId']] = $u['bans'];
+					$bannedTypesSum++;
+					$bannedSum += $u['bans'];
+				} else {
+					$bannedTypes[$u['typeId']] += $u['bans'];
+					$bannedSum += $u['bans'];
+				}
+			}
+		}
+		arsort($bannedTypes);
+		$chartDataType = '';
+		$chartActiveDataType = '';
+		$chartLabelType = '';
+		$chartActiveLabelType = '';
+		while ($type = current ($bannedTypes)) {
+			echo '<tr><td>'.self::getUserType(key($bannedTypes)).'</td>';
+			echo '<td>'.$type.'</td>';
+			echo '<td>'.(key_exists(key($bannedTypes), $bannedTypesActive) ? $bannedTypesActive[key($bannedTypes)] : '0').'</td></tr>';
+			$activeBanned = (key_exists(key($bannedTypes), $bannedTypesActive) ? $bannedTypesActive[key($bannedTypes)] : 0);
+			$chartDataType = $type.','.$chartDataType;
+			$chartActiveDataType = $activeBanned.','.$chartActiveDataType;
+			$chartLabelType = self::getUserType(key($bannedTypes)).': '.round($type/$bannedSum*100).'%|'.$chartLabelType;
+			$chartActiveLabelType = self::getUserType(key($bannedTypes)).': '.round($activeBanned/$bannedActiveSum*100).'%|'.$chartActiveLabelType;
+			next($bannedTypes);
+		}
+		echo '<tr><td>ŚREDNIO (kar/typ)</td><td>'.round($bannedSum/$bannedTypesSum,2).'</td><td>'.round($bannedActiveSum/$bannedTypesSum,2).'</td></tr>';
+		echo '</table>';
+
+		$chartDataType = substr($chartDataType, 0, -1);
+		$chartActiveDataType = substr($chartActiveDataType, 0, -1);
+		$chartLabelType = substr($chartLabelType, 0, -1);
+		echo '<div style="text-align: center;">';
+		echo '<img src="http://chart.apis.google.com/chart?chs=700x200&chd=t:'.$chartActiveDataType.'|'.$chartDataType;
+		echo '&cht=pc&chl='.$chartActiveLabelType.$chartLabelType.'" alt=""/>';
+		echo '</div>';
+
 		echo '<h3>Rozkład płci uwzględniając kary:</h3>';
 		echo '<table style="text-align: center; width: 100%;">';
 		echo '<tr><th>Kary</th><th>Użytkowników</th><th>Kobiet</th><th>Mężczyzn</th></tr>';
@@ -1158,6 +1261,7 @@ function changeUnregisterVisibility() {
 			}
 			$dormitories[$u['dormitoryAlias']]->addToGroupFaculty($u['facultyName'], $u['name']);
 			$dormitories[$u['dormitoryAlias']]->addToGroupYear($u['studyYearId'], $u['name']);
+			$dormitories[$u['dormitoryAlias']]->addToGroupType($u['typeId'], $u['name']);
 			$dormitories[$u['dormitoryAlias']]->addBans($u['bans']);
 			$dormitories[$u['dormitoryAlias']]->addActiveBans($u['activeBans']);
 			$banSum = $banSum + $u['bans'];
@@ -1252,6 +1356,34 @@ function changeUnregisterVisibility() {
 			$chartDataYear = substr($chartDataYear, 0, -1);
 			echo '<div style="text-align: center;">';
 			echo '<img src="http://chart.apis.google.com/chart?chs=800x150&chd=t:'.$chartDataYear;
+			echo '&cht=p3&chl='.$chartLabel.' alt=""/>';
+			echo '</div>';
+
+			next($dormitories);
+		}
+
+		echo '<h3>Rozkład płci uwzględniając akademik i typ konta:</h3>';
+		reset($dormitories);
+		while ($dorm = current($dormitories)) {
+			echo '<h4>'.$this->displayDormUrl(substr(key($dormitories),1)).'</h4>';
+			echo '<table style="text-align: center; width: 100%;">';
+			echo '<tr><th>Typ konta</th><th>Użytkowników</th><th>Kobiet</th><th>Mężczyzn</th></tr>';
+			$chartDataType = '';
+			$chartLabel = '';
+			$types = $dorm->getGroupType();
+			while ($type = current($types)) {
+				echo '<tr><td>'.self::getUserType(key($types)).'</td>';
+				echo '<td>'.$type->getUsers().'</td>';
+				echo '<td>'.$type->getWomen().'</td>';
+				echo '<td>'.($type->getUsers() - $type->getWomen()).'</td></tr>';
+				$chartDataType = (round($type->getUsers()/$dorm->getUsers()*100)).','.$chartDataType;
+				$chartLabel = self::getUserType(key($types)).': '.round($type->getUsers()/$dorm->getUsers()*100).'%|'.$chartLabel;
+				next($types);
+			}
+			echo '</table>';
+			$chartDataType = substr($chartDataType, 0, -1);
+			echo '<div style="text-align: center;">';
+			echo '<img src="http://chart.apis.google.com/chart?chs=800x150&chd=t:'.$chartDataType;
 			echo '&cht=p3&chl='.$chartLabel.' alt=""/>';
 			echo '</div>';
 
@@ -1361,6 +1493,7 @@ extends PeopleCounter
 {
 	private $groupFaculty = array();
 	private $groupYear = array();
+	private $groupType = array();
 	private $bans = 0;
 	private $activeBans = 0;
 
@@ -1405,6 +1538,17 @@ extends PeopleCounter
 		}
 	}
 
+	public function addToGroupType($key, $value) {
+		if(!array_key_exists($key, $this->groupType)) {
+			$this->groupType[$key] = new PeopleCounter();
+		}
+		if (strtolower(substr($value, -1)) == 'a') {
+			$this->groupType[$key]->addUser(true);
+		} else {
+			$this->groupType[$key]->addUser();
+		}
+	}
+
 	public function getGroupFaculty() {
 		ksort($this->groupFaculty);
 		return $this->groupFaculty;
@@ -1414,5 +1558,9 @@ extends PeopleCounter
 		ksort($this->groupYear);
 		return $this->groupYear;
 	}
-	
+
+	public function getGroupType() {
+		ksort($this->groupType);
+		return $this->groupType;
+	}
 }

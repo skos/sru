@@ -79,10 +79,13 @@ extends UFtpl_Common {
 
 		arsort($switches);
 		echo '<h3>Statystyka</h3>';
-		echo '<table>';
+		echo '<table style="border-spacing: 0px;">';
+		$sum = 0;
 		foreach ($switches as $model=>$count) {
 			echo '<tr><td style="padding-right: 40px;">'.$model.'</td><td>'.$count.'</td></tr>';
+			$sum += $count;
 		}
+		echo '<tr><td style="border-top: 1px solid;">SUMA:</td><td style="border-top: 1px solid;">'.$sum.'&nbsp;</td></tr>';
 		echo '</table>';
 	}
 
