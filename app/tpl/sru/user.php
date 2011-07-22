@@ -988,6 +988,9 @@ function changeUnregisterVisibility() {
 		echo '<tr><th>Rok studiów</th><th>Użytkowników</th><th>Kobiet</th><th>Mężczyzn</th></tr>';
 		$years = array();
 		foreach ($d as $u) {
+			if ($u['typeId'] > UFtpl_Sru_User::$userTypesLimit) {
+				continue;
+			}
 			if(!array_key_exists(' '.$u['studyYearId'], $years)) {
 				$years[' '.$u['studyYearId']] = new PeopleCounter();
 			}
@@ -1035,6 +1038,9 @@ function changeUnregisterVisibility() {
 		echo '<tr><th>Typ konta</th><th>Użytkowników</th><th>Kobiet</th><th>Mężczyzn</th></tr>';
 		$types = array();
 		foreach ($d as $u) {
+			if ($u['typeId'] > UFtpl_Sru_User::$userTypesLimit) {
+				continue;
+			}
 			if(!array_key_exists($u['typeId'], $types)) {
 				$types[$u['typeId']] = new PeopleCounter();
 			}
@@ -1044,13 +1050,14 @@ function changeUnregisterVisibility() {
 				$types[$u['typeId']]->addUser();
 			}
 		}
-		ksort($types);
+		arsort($types);
 		$chartDataWoman = '';
 		$chartDataMan = '';
 		$chartLabel = '';
 		$chartLabelR = '';
 		$chartDataType = '';
 		$chartLabelType = '';
+		$typeSum = 0;
 		while ($type = current ($types)) {
 			echo '<tr><td>'.self::getUserType(key($types)).'</td>';
 			echo '<td>'.$type->getUsers().'</td>';
@@ -1062,18 +1069,19 @@ function changeUnregisterVisibility() {
 			$chartLabelR = (round($type->getWomen()/$type->getUsers()*100)).'% / '.(round(($type->getUsers()-$type->getWomen())/$type->getUsers()*100)).'%|'.$chartLabelR;
 			$chartDataType = (round($type->getUsers()/$sum*100)).','.$chartDataType;
 			$chartLabelType = self::getUserType(key($types)).': '.round($type->getUsers()/$sum*100).'%|'.$chartLabelType;
+			$typeSum++;
 			next($types);
 		}
 		echo '</table>';
 		$chartDataWoman = substr($chartDataWoman, 0, -1);
 		$chartDataMan = substr($chartDataMan, 0, -1);
 		$chartDataType = substr($chartDataType, 0, -1);
-
+		
 		echo '<div style="text-align: center;">';
 		echo '<img src="http://chart.apis.google.com/chart?chs=700x150&chd=t:'.$chartDataType;
 		echo '&cht=p3&chl='.$chartLabelType.' alt=""/>';
 		echo '<div style="text-align: center;">';
-		echo '<img src="http://chart.apis.google.com/chart?chs=600x350&cht=bhs&chco=ff9900,ffebcc&chd=t:';
+		echo '<img src="http://chart.apis.google.com/chart?chs=600x'.($typeSum*30).'&cht=bhs&chco=ff9900,ffebcc&chd=t:';
 		echo $chartDataWoman.'|'.$chartDataMan.'&chxt=y,r&chxl=0:|'.$chartLabel.'1:|'.$chartLabelR.'" alt=""/>';
 		echo '</div>';
 
