@@ -660,6 +660,26 @@ extends UFbox {
 		}
 	}
 
+	public function adminDutyHours() {
+		try {
+			$bean = $this->_getAdminFromGet();
+			$d['admin'] = $bean;
+
+			// godziny dyżurów mają tylko admini SKOS, nawet boty ich nie mają!
+			if ($bean->typeId != UFacl_SruAdmin_Admin::CENTRAL && $bean->typeId != UFacl_SruAdmin_Admin::CAMPUS && $bean->typeId != UFacl_SruAdmin_Admin::LOCAL) {
+				return '';
+			}
+
+			$hours = UFra::factory('UFbean_SruAdmin_DutyHoursList');
+			$hours->listByAdminId($bean->id);
+			$d['hours'] = $hours;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}
+	}
+
 	public function adminHosts() {
 		try {
 			$bean = $this->_getAdminFromGet();

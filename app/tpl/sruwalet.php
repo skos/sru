@@ -494,6 +494,23 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 		echo $this->ERR('Brak przypisanych DSów');
 	}
 
+	public function adminDutyHours(array $d) {
+		$url = $this->url(0).'/admins/'.$d['admin']->id;
+		$acl = $this->_srv->get('acl');
+
+		echo '<h3>Godziny dyżurów</h3>';
+		$d['hours']->write('listDutyHours');
+		if($acl->sruAdmin('admin', 'edit', $d['admin']->id)) {
+			echo '<a href="'.$url.'/:edit">Edycja</a> &bull; ';
+		}
+		echo '<a href="'.$this->url(0).'/admins/">Powrót</a>';
+	}
+
+	public function adminDutyHoursNotFound() {
+		echo '<h3>Godziny dyżurów</h3>';
+		echo $this->ERR('Brak godzin dyżurów');
+	}
+
 	public function adminHosts(array $d) {
 		$url = $this->url(0).'/admins/'.$d['admin']->id;
 		$acl = $this->_srv->get('acl');
