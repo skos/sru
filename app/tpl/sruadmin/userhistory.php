@@ -167,12 +167,41 @@ extends UFtpl_Common {
 		}
 		$changes = array();
 		$arr = ' => ';
+
+		if ($old['active'] !== $new['active'] && !$new['active']) {
+			if ($lang == self::EN) {
+				echo "\n".'Your account has been DEACTIVATED by your dormitory administration. In case of problems, please contact your dormitory office.'."\n\n";
+			} else {
+				echo "\n".'Twoje konto zostało DEZAKTYWOWANE przed administrację Twojego DSu. W razie problemów prosimy o kontakt z administracją DSu.'."\n\n";
+			}
+		}
+
 		foreach ($old as $key=>$val) {
 			switch ($key) {
 				case 'login':
+					echo $names[$key].': '.$val
+						.($val!==$new[$key] ? $arr.$new[$key] : '')
+						."\n";
+					break;
 				case 'name':
 				case 'surname':
 				case 'registryNo':
+					echo $names[$key].'*: '.$val
+						.($val!==$new[$key] ? $arr.$new[$key] : '')
+						."\n";
+					break;
+				case 'active':
+					$newA = $new['active'] ? 'tak' : 'nie';
+					if ($lang == self::EN) {
+						echo $names[$key].'*: '.($old['active'] ? 'yes' : 'no')
+							.($val!==$new[$key] ? $arr.($new['active'] ? 'yes' : 'no') : '')
+							."\n";
+					} else {
+						echo $names[$key].'*: '.($old['active'] ? 'tak' : 'nie')
+							.($val!==$new[$key] ? $arr.$newA : '')
+							."\n";
+					}
+					break;
 				case 'gg':
 				case 'email':
 					echo $names[$key].': '.$val
@@ -181,11 +210,11 @@ extends UFtpl_Common {
 					break;
 				case 'locationId':
 					if ($lang == self::EN) {
-						echo $names[$key].': '.$old['locationAlias'].' ('.$old['dormitoryNameEn'].')'
+						echo $names[$key].'*: '.$old['locationAlias'].' ('.$old['dormitoryNameEn'].')'
 							.($val!==$new[$key] ? $arr.$new['locationAlias'].' ('.$new['dormitoryNameEn'].')' : '')
 							."\n";
 					} else {
-						echo $names[$key].': '.$old['locationAlias'].' ('.$old['dormitoryName'].')'
+						echo $names[$key].'*: '.$old['locationAlias'].' ('.$old['dormitoryName'].')'
 							.($val!==$new[$key] ? $arr.$new['locationAlias'].' ('.$new['dormitoryName'].')' : '')
 							."\n";
 					}
@@ -206,22 +235,13 @@ extends UFtpl_Common {
 						.($val!==$new[$key] ? $arr.UFtpl_Sru_User::$studyYears[$new[$key]] : '')
 						."\n";
 						break;
-				case 'active':
-					$newA = $new['active'] ? 'tak' : 'nie';
-					if ($lang == self::EN) {
-						echo $names[$key].': '.($old['active'] ? 'yes' : 'no')
-							.($val!==$new[$key] ? $arr.($new['active'] ? 'yes' : 'no') : '')
-							."\n"
-							.'Only dormitory administration can change activity of your account! In case of problems, please contact your dormitory office.'."\n";
-					} else {
-						echo $names[$key].': '.($old['active'] ? 'tak' : 'nie')
-							.($val!==$new[$key] ? $arr.$newA : '')
-							."\n"
-							.'Tylko administracja DSu może zmienić aktywność konta! W razie problemów prosimy o kontakt z kierownictwem DSu.'."\n";
-					}
-					break;
 				default: continue;
 			}
+		}
+		if ($lang == self::EN) {
+			echo '*) Only dormitory administration can change these data. In case of problems, please contact your dormitory office.'."\n";
+		} else {
+			echo '*) Te dane konta mogą zostać zmienione wyłącznie przez administrację DSu. W razie problemów prosimy o kontakt z administracją DSu.'."\n";
 		}
 	}
 
