@@ -233,7 +233,7 @@ extends UFlib_Snmp {
 				// sprawdzamy, czy na znalezionym porcie jest jakis switch
 				try {
 					if ($portUser > 48) {
-						if ($portUser < 52) {
+						if ($portUser <= 50) {
 							$name = $portUser - 48;
 						} else if ($portUser < 200) {
 							$name = $portUser - 50;
