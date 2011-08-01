@@ -64,7 +64,7 @@ class UFlib_Sender {
 
 	// nagłówki
 	private function getMailFooterPolish() {
-		$footer = '-- '."\n";
+		$footer = "\n".'-- '."\n";
 		$footer .= 'Pozdrawiamy,'."\n";
 		$footer .= 'Administratorzy SKOS PG'."\n";
 		$footer .= 'SRU: https://sru.ds.pg.gda.pl/'."\n";
@@ -74,7 +74,7 @@ class UFlib_Sender {
 	}
 
 	private function getMailFooterEnglish() {
-		$footer = '-- '."\n";
+		$footer = "\n".'-- '."\n";
 		$footer .= 'Regards,'."\n";
 		$footer .= 'SKOS PG Administrators'."\n";
 		$footer .= 'SRU: https://sru.ds.pg.gda.pl/'."\n";
@@ -84,7 +84,7 @@ class UFlib_Sender {
 	}
 
 	private function getGgFooterPolish() {
-		$footer = '-- '."\n";
+		$footer = "\n".'-- '."\n";
 		$footer .= 'Pozdrawiamy,'."\n";
 		$footer .= 'Administratorzy SKOS PG'."\n";
 		$footer .= 'SRU: https://sru.ds.pg.gda.pl/'."\n";
@@ -94,7 +94,7 @@ class UFlib_Sender {
 	}
 
 	private function getGgFooterEnglish() {
-		$footer = '-- '."\n";
+		$footer = "\n".'-- '."\n";
 		$footer .= 'Regards,'."\n";
 		$footer .= 'SKOS PG Administrators'."\n";
 		$footer .= 'SRU: https://sru.ds.pg.gda.pl/'."\n";

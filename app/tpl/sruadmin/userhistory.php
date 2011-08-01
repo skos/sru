@@ -239,9 +239,9 @@ extends UFtpl_Common {
 			}
 		}
 		if ($lang == self::EN) {
-			echo '*) Only dormitory administration can change these data. In case of problems, please contact your dormitory office.'."\n";
+			echo "\n".'*) Only dormitory administration can change these data. In case of problems, please contact your dormitory office.'."\n";
 		} else {
-			echo '*) Te dane konta mogą zostać zmienione wyłącznie przez administrację DSu. W razie problemów prosimy o kontakt z administracją DSu.'."\n";
+			echo "\n".'*) Te dane konta mogą zostać zmienione wyłącznie przez administrację DSu. W razie problemów prosimy o kontakt z administracją DSu.'."\n";
 		}
 	}
 
