@@ -68,7 +68,7 @@ extends UFtpl_Common {
 		'carerId/null' => 'Komputer administracji musi posiadać opiekuna',
 	);
 	
-/*
+	/**
 	 * Szablon wyświetlania ostatnio modyfikowanych użytkowników
 	 * 
 	 */
@@ -76,17 +76,21 @@ extends UFtpl_Common {
 		$url = $this->url(0);
 
 		echo '<ul>';
-		foreach($d as $c){
-			echo '<li>';
-			echo date(self::TIME_YYMMDD_HHMM, $c['modifiedAt']);
+		foreach($d as $c){;
+			if ($c['banned'] == true) {
+				echo '<li class="ban">';
+			} else {
+				echo '<li>';
+			}
+			echo date(self::TIME_YYMMDD_HHMM, $c['modifiedat']);
 			echo '<small> zmodyfikował/dodał komputer: </small><a href="'.$url.'/computers/'.$c['id'].'">';
 			echo $this->_escape($c['host']).'</a><small> należący do użytkownika ';
-			if($c['userActive'] == true){
-				echo '<a href="'.$url.'/users/'.$c['userId'].'">'.$this->_escape($c['userName']).' "';
-				echo $c['login'].'" '.$this->_escape($c['userSurname']).'</a>';
+			if($c['active'] == true){
+				echo '<a href="'.$url.'/users/'.$c['userid'].'">'.$this->_escape($c['name']).' "';
+				echo $c['login'].'" '.$this->_escape($c['surname']).'</a>';
 			}else{
-				echo '<del><a href="'.$url.'/users/'.$c['userId'].'">'.$this->_escape($c['userName']).' "';
-				echo $c['login'].'" '.$this->_escape($c['userSurname']).'</a></del>';
+				echo '<del><a href="'.$url.'/users/'.$c['userid'].'">'.$this->_escape($c['name']).' "';
+				echo $c['login'].'" '.$this->_escape($c['surname']).'</a></del>';
 			}
 			echo '</small></li>';
 		}

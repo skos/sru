@@ -67,9 +67,10 @@ extends UFact {
 						//po prostu ma nic nie wyświetlić, gdy coś się nie uda, można dorobić obsługę Exceptiona w tym miejscu
 					}
 				}
-				$comps->updateLocationByUserId($bean->id, $bean->locationId, $waletAdmin);
 				$typeId = (array_key_exists($bean->typeId, UFtpl_Sru_Computer::$userToComputerType) ? UFtpl_Sru_Computer::$userToComputerType[$bean->typeId] : UFbean_Sru_Computer::TYPE_STUDENT);
-				$comps->updateTypeByUserId($bean->id, $waletAdmin);
+				$comps->updateLocationAndTypeByUserId($bean->id, $bean->locationId, $typeId, $waletAdmin);
+				//$comps->updateLocationByUserId($bean->id, $bean->locationId, $waletAdmin);
+				//$comps->updateTypeByUserId($bean->id, $typeId, $waletAdmin);
 			} catch (UFex_Dao_NotFound $e) {
 				// uzytkownik nie ma komputerow
 			}

@@ -126,23 +126,28 @@ extends UFtpl_Common {
 		$url = $this->url(0);
 
 		echo '<ul>';
-		foreach ($d as $c) {	
-			if (UFbean_SruAdmin_Penalty::TYPE_WARNING == $c['typeId'] && $c['endAt'] > time()) {
+		foreach ($d as $c) {
+			//var_dump($c);
+			//echo '<br /><br />';
+			if (UFbean_SruAdmin_Penalty::TYPE_WARNING == $c['typeid'] && $c['endat'] > time()) {
 				echo '<li class="warning">';
-			} else if (UFbean_SruAdmin_Penalty::TYPE_WARNING != $c['typeId'] && $c['active']) {
+			} else if (UFbean_SruAdmin_Penalty::TYPE_WARNING != $c['typeid'] && $c['active']) {
 				echo '<li class="ban">';
 			} else {
 				echo '<li>';
 			}
-			echo date(self::TIME_YYMMDD_HHMM, $c['modifiedAt']);
-			if($c['userActive'] == true){
-				echo ' dla: <a href="'.$url.'/penalties/'.$c['id'].'">'.$this->_escape($c['userName']).' "'.$c['userLogin'].'" '.$this->_escape($c['userSurname']).'</a>';
+			echo date(self::TIME_YYMMDD_HHMM, $c['modifiedat']);
+			$link = '<a href="'.$url.'/penalties/'.$c['id'].'">'.$this->_escape($c['name']).' "'.$c['login'].'" '.$this->_escape($c['surname']).'</a>';
+			if($c['active'] == true){
+				echo ' dla: ' . $link;
 			}else{
-				echo ' dla: <del><a href="'.$url.'/penalties/'.$c['id'].'">'.$this->_escape($c['userName']).' "'.$c['userLogin'].'" '.$this->_escape($c['userSurname']).'</a></del>';
+				echo ' dla: <del>' . $link . '</del>';
 			}
-			echo ' <small>modyfikowana '.$c['modificationCount'].' raz(y)</small>';
-			echo '<small>, ostatnio przez: <a href="'.$url.'/admins/'.$c['modifiedById'].'">'.$this->_escape($c['modifierName']).'</a>';
-			echo ($this->_escape($c['templateTitle']) != null ? ', za: '.$this->_escape($c['templateTitle']) : '');
+			echo ' <small>modyfikowana '.$c['modificationcount'].' raz(y)</small>';
+			if (strcmp($url . "/penalties/", $this->url(1) . '/') == 0){
+				echo '<small>, ostatnio przez: <a href="'.$url.'/admins/'.$c['modifiedby'].'">'.$this->_escape($c['modifiername']).'</a>';
+			}
+			echo ($this->_escape($c['template']) != null ? ', za: '.$this->_escape($c['template']) : '');
 			echo '</small></li>';
 		}
 		echo '</ul>';

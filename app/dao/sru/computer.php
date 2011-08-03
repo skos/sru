@@ -336,14 +336,23 @@ extends UFdao {
 
 		return $this->doSelect($query);
 	}
-
-	public function updateLocationByUserId($userId, $location, $modifiedBy=null) {
+	
+	/**
+	 * 
+	 * Aktualizuje typ i lokalizację komputera
+	 * @param int $userId id użytkownika, do którego należy komputer
+	 * @param int $location id pokoju, do którego przenoszony jest komputer
+	 * @param int $typeId id typu, jak przypisywany jest komputerowi
+	 * @param int $modifiedBy id osoby dokonującej zmian
+	 */
+	public function updateLocationAndTypeByUserId($userId, $location, $typeId, $modifiedBy = null){
 		$mapping = $this->mapping('set');
 
 		$query = UFra::factory('UFlib_Db_Query');
 		$query->tables($mapping->tables());
 		$query->joins($mapping->joins(), $mapping->joinOns());
 		$data = array(
+			$mapping->typeId => $typeId,
 			$mapping->locationId => $location,
 			$mapping->modifiedById => $modifiedBy,
 			$mapping->modifiedAt => NOW,
@@ -357,28 +366,6 @@ extends UFdao {
 	}
 
 	/**
-	 * Aktualizuje typ komputera
-	 */
-	public function updateTypeByUserId($userId, $typeId, $modifiedBy=null) {
-		$mapping = $this->mapping('set');
-
-		$query = UFra::factory('UFlib_Db_Query');
-		$query->tables($mapping->tables());
-		$query->joins($mapping->joins(), $mapping->joinOns());
-		$data = array(
-			$mapping->typeId => $typeId,
-			$mapping->modifiedById => $modifiedBy,
-			$mapping->modifiedAt => NOW,
-		);
-		$query->values($mapping->columns(), $data,  $mapping->columnTypes());
-		$query->where($mapping->userId, $userId);
-		$query->where($mapping->active, true);
-
-		$return = $this->doUpdate($query);
-		return $return;
-	}
-
-	/*
 	 * Aktualizuje opiekuna hosta
 	 */
 	public function updateCarerByCarerId($oldCarerId, $newCarerId, $modifiedBy=null) {
@@ -424,16 +411,19 @@ extends UFdao {
 	 *
 	 */
 	public function listLastModified($id = null, $page=1, $perPage=10, $overFetch=0) {
-		$mapping = $this->mapping('list');
-
+		$mapping = $this->mapping('fullHistory');
 		$query = $this->prepareSelect($mapping);
-		$query->where($mapping->modifiedAt, 0, $query->GTE);
-		if (isset($id)) {
-			$query->where($mapping->modifiedById, $id);
-		}
-		$query->order($mapping->modifiedAt,  $query->DESC);
-		$query->limit(10);
-
+		
+		$query->raw("SELECT computer_id AS id, hoste AS host, EXTRACT (EPOCH FROM max(modifieda)) AS modifiedat, 
+							userid, name, surname, login, banned, active FROM
+							(SELECT user_id as userid, id AS computer_id, host as hoste, modified_at AS modifieda
+							 FROM computers WHERE modified_by=" . $id . 
+							"UNION SELECT user_id as userid, computer_id as computer_id, host as hoste, 
+								modified_at AS modifieda FROM computers_history WHERE modified_by=" . $id .")
+							AS foo LEFT JOIN users ON id = userid
+							GROUP BY hoste, computer_id, userid, name, surname, login, banned, active 
+							ORDER BY modifiedAt DESC LIMIT 10;");
+		
 		return $this->doSelect($query);
 	}
 

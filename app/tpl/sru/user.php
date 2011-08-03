@@ -121,8 +121,12 @@ extends UFtpl_Common {
 		
 		echo '<ul>';
 		foreach($d as $c){
-			echo '<li>';
-			echo date(self::TIME_YYMMDD_HHMM, $c['modifiedAt']);
+			if ($c['banned'] == true) {
+				echo '<li class="ban">';
+			} else {
+				echo '<li>';
+			}
+			echo date(self::TIME_YYMMDD_HHMM, $c['modifiedat']);
 			echo ' <small>zmodyfikował/dodał użytkownika: </small>';
 			if($c['active'] == true){
 				echo '<a href="'.$url.'/users/'.$c['id'].'">' . $this->_escape($c['name']);

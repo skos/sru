@@ -204,15 +204,19 @@ extends UFdao {
 	 *
 	 */
 	public function listLastModified($id = null, $page=1, $perPage=10, $overFetch=0) {
-		$mapping = $this->mapping('get');
-
+		$mapping = $this->mapping('fullHistory');
 		$query = $this->prepareSelect($mapping);
-		$query->where($mapping->modifiedAt, 0, $query->GTE);
-		if (isset($id)) {
-			$query->where($mapping->modifiedById, $id);
-		}
-		$query->order($mapping->modifiedAt,  $query->DESC);
-		$query->limit(10);
+		
+		$query->raw("SELECT EXTRACT (EPOCH FROM max(modifieda)) AS modifiedat, 
+					id, name, surname, login, banned, active FROM
+					(SELECT id , name, surname, login, banned, active, modified_at AS modifieda
+					FROM users WHERE modified_by=" . $id . 
+					"UNION SELECT user_id AS id, name, surname, login, 
+						(SELECT banned FROM users WHERE id = user_id) AS banned, active, modified_at AS modifieda 
+					FROM users_history WHERE modified_by=" . $id . ")
+					AS foo
+					GROUP BY id, name, surname, login, banned, active 
+					ORDER BY modifiedat DESC LIMIT 10;");
 
 		return $this->doSelect($query);
 	}

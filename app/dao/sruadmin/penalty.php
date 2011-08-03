@@ -65,26 +65,39 @@ extends UFdao {
 		return $this->doSelect($query);
 	}
 
-	public function listLastModified($type = null, $id = null, $limit = 10, $timeLimit = null, $page=1, $perPage=10, $overFetch=0) {
+	public function listLastModified($type = null, $id = null) {
 		$mapping = $this->mapping('listDetails');
-
-		$query = $this->prepareSelect($mapping);
-		$query->where($mapping->modifiedAt, 0, $query->GTE);
+		
+		$modBy = "WHERE modified_by is not null";
+		
 		if (isset($id)) {
-			$query->where($mapping->modifiedById, $id);
+			$modBy = "WHERE modified_by=" . $id;
 		}
-		if (isset($type)) {
-			$query->where($mapping->typeId, 1, $query->NOT_EQ);
-		}
-		if (isset($timeLimit)) {
-			$query->where($mapping->modifiedAt, time() - $timeLimit, $query->GTE);
-			$query->order($mapping->modifiedAt,  $query->ASC);
-		} else {
-			$query->order($mapping->modifiedAt,  $query->DESC);
-		}
-		if (isset($limit)) {
-			$query->limit(10);
-		}
+		
+		$query = $this->prepareSelect($mapping);
+		
+		$query->raw("SELECT * FROM (
+					SELECT DISTINCT ON (foo.id) foo.id, EXTRACT (EPOCH FROM max(modifieda)) AS modifiedat, typeid, 
+					userid, u.name, surname, u.login, banned, u.active, endat, template, modifiedby, a.name AS modifiername,
+					(SELECT count(*) FROM penalties_history h WHERE h.penalty_id = foo.id) AS modificationcount
+					FROM
+					(SELECT id, user_id AS userid, modified_at AS modifieda, type_id AS typeid, end_at AS endat, 
+						(SELECT title FROM penalty_templates t WHERE template_id = t.id) AS template,
+						modified_by AS modifiedby
+					FROM penalties " . $modBy . " 
+					UNION SELECT penalty_id AS id, (SELECT user_id FROM penalties WHERE penalty_id = id) AS userid, 
+					modified_at AS modifieda, (SELECT type_id FROM penalties WHERE penalty_id = id) AS typeid, 
+					end_at AS endat, 
+					(SELECT title FROM penalties p, penalty_templates t WHERE penalty_id = p.id 
+						AND p.template_id = t.id) AS template, modified_by AS modifiedby
+					FROM penalties_history " . $modBy . ")
+					AS foo LEFT JOIN users u ON u.id = userid
+					LEFT JOIN admins a ON modifiedby = a.id
+					WHERE modified_at is not null
+					GROUP BY foo.id, userid, u.name, surname, u.login, banned, u.active, typeid, endat, template, 
+						modifiedby, a.name
+					ORDER BY foo.id, modifiedat DESC LIMIT 10
+					) AS foo2 ORDER BY modifiedat;");
 
 		return $this->doSelect($query);
 	}
