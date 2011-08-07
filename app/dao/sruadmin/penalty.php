@@ -96,8 +96,8 @@ extends UFdao {
 					WHERE modified_at is not null
 					GROUP BY foo.id, userid, u.name, surname, u.login, banned, u.active, typeid, endat, template, 
 						modifiedby, a.name
-					ORDER BY foo.id, modifiedat DESC LIMIT 10
-					) AS foo2 ORDER BY modifiedat;");
+					ORDER BY foo.id, modifiedat DESC 
+					) AS foo2 ORDER BY modifiedat DESC LIMIT 10;");
 
 		return $this->doSelect($query);
 	}

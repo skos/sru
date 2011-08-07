@@ -212,7 +212,9 @@ extends UFdao {
 					(SELECT id , name, surname, login, banned, active, modified_at AS modifieda
 					FROM users WHERE modified_by=" . $id . 
 					"UNION SELECT user_id AS id, name, surname, login, 
-						(SELECT banned FROM users WHERE id = user_id) AS banned, active, modified_at AS modifieda 
+						(SELECT banned FROM users WHERE id = user_id) AS banned, 
+						(SELECT active FROM users WHERE id = user_id) as active, 
+						modified_at AS modifieda 
 					FROM users_history WHERE modified_by=" . $id . ")
 					AS foo
 					GROUP BY id, name, surname, login, banned, active 

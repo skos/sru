@@ -127,8 +127,6 @@ extends UFtpl_Common {
 
 		echo '<ul>';
 		foreach ($d as $c) {
-			//var_dump($c);
-			//echo '<br /><br />';
 			if (UFbean_SruAdmin_Penalty::TYPE_WARNING == $c['typeid'] && $c['endat'] > time()) {
 				echo '<li class="warning">';
 			} else if (UFbean_SruAdmin_Penalty::TYPE_WARNING != $c['typeid'] && $c['active']) {
