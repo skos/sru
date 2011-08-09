@@ -237,6 +237,9 @@ extends UFtpl_Common {
 		if (is_null($d['studyYearId']) || is_null($d['email'])) {
 			$d['studyYearId'] = '-1';
 		}
+		if (is_null($d['gg']) || $d['gg'] == '') {
+			$d['gg'] = '0';
+		}
 		$form = UFra::factory('UFlib_Form', 'userEdit', $d, $this->errors);
 
 		echo '<h1>'.$d['name'].' '.$d['surname'].'</h1>';
@@ -574,6 +577,9 @@ changeVisibility();
 		}
 		if (is_null($d['studyYearId'])) {
 			$d['studyYearId'] = '0';
+		}
+		if (is_null($d['gg']) || $d['gg'] == '') {
+			$d['gg'] = '0';
 		}
 		$form = UFra::factory('UFlib_Form', 'userEdit', $d, $this->errors);
 		if ($this->_srv->get('msg')->get('userEdit/errors/ip/noFreeAdmin')) {

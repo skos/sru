@@ -52,6 +52,11 @@ extends UFbean_Common {
 		return trim($val);
 	}
 
+	protected function normalizeGg($val, $change) {
+		if ($val == 0) return '';
+		return trim($val);
+	}
+
 	protected function validateLogin($val, $change) {
 		try {
 			$bean = UFra::factory('UFbean_Sru_User');
