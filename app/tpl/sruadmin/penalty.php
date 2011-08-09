@@ -129,7 +129,7 @@ extends UFtpl_Common {
 		foreach ($d as $c) {
 			if (UFbean_SruAdmin_Penalty::TYPE_WARNING == $c['typeid'] && $c['endat'] > time()) {
 				echo '<li class="warning">';
-			} else if (UFbean_SruAdmin_Penalty::TYPE_WARNING != $c['typeid'] && $c['active']) {
+			} else if ($c['banned']) {
 				echo '<li class="ban">';
 			} else {
 				echo '<li>';
