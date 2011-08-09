@@ -39,8 +39,18 @@ extends UFbeanSingle {
 	
 	protected function validateActiveTo($val, $change) {
 		$post = $this->_srv->get('req')->post->{$change?'adminEdit':'adminAdd'};
-		if ($val != "" && strtotime($val) <= time()){
+		if ($val != "" && strtotime($val) <= time() && $this->data['active']){
 			return 'tooOld';
+		}
+	}
+
+	protected function validateActive($val, $change) {
+		$post = $this->_srv->get('req')->post->{$change?'adminEdit':'adminAdd'};
+		try {
+			if ($val && (array_key_exists('activeTo', $post) && strtotime($post['activeTo'] <= time()) || (strtotime($this->data['activeTo']) <= time()))) {
+				return 'tooOld';
+			}
+		} catch (UFex $e) {
 		}
 	}
 

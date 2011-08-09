@@ -26,6 +26,7 @@ extends UFtpl_Common {
 		'dormitoryId' => 'Wybierz akademik',
 		'typeId' => 'Wybierz uprawnienia',
 		'activeTo/tooOld' => 'Data starsza niż aktualna',
+		'active/tooOld' => 'Przeszła data aktywności',
 	);	
 	
 	public function formLogin(array $d) {
@@ -137,7 +138,9 @@ extends UFtpl_Common {
 
 	public function titleAdd(array $d) {
 		echo 'Dodanie nowego administratora';
-	}		
+	}
+
+	private $instrukcjaObslugiPolaAktywnyDo = 'Wypełnia administrator centralny. Data w formacie YYYY-MM-DD<br/>Możliwe warunki to:<br/>1. Brak daty - administrator nigdy nie zostanie zdezaktywowany automatycznie.<br />2. Data >= now() - administrator zostanie zdezaktywowany, gdy przyjdzie na niego czas.<br />';
 	public function formAdd(array $d, $dormitories) {
 		if (!isset($d['typeId'])) {
 			$d['typeId'] = 3;
@@ -149,9 +152,9 @@ extends UFtpl_Common {
 		echo $form->password('Hasło', array('type'=>$form->PASSWORD));
 		echo $form->password2('Powtórz hasło', array('type'=>$form->PASSWORD));
 		echo $form->name('Nazwa', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Imię i nazwisko administratora lub inne oznaczenie." /><br/>'));
-		$instrukcjaObslugiPolaAktywnyDo = 'Wypełnia centralny. Data w formacie YYYY-MM-DD<br/>Możliwe warunki to:<br/>1. Brak daty - administrator nigdy nie zostanie zdezaktywowany automatycznie.<br />2. Data >= now - administrator zostanie zdezaktywowany gdy przyjdzie na niego czas.<br />';
+		
 		if($this->_srv->get('acl')->sruAdmin('admin', 'addChangeActiveDate'))
-			 echo $form->activeTo('Aktywny do', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="' . $instrukcjaObslugiPolaAktywnyDo . '" /><br/>')); 
+			 echo $form->activeTo('Aktywny do', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="' . $this->instrukcjaObslugiPolaAktywnyDo . '" /><br/>'));
 		echo $form->typeId('Uprawnienia', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(UFtpl_SruAdmin_Admin::$adminTypes),
@@ -192,11 +195,10 @@ extends UFtpl_Common {
 		
 		echo $form->password('Hasło', array('type'=>$form->PASSWORD));
 		echo $form->password2('Powtórz hasło', array('type'=>$form->PASSWORD));
-		$instrukcjaObslugiPolaAktywnyDo = 'Wypełnia centralny. Data w formacie YYYY-MM-DD<br/>Możliwe warunki to:<br/>1. Brak daty - administrator nigdy nie zostanie zdezaktywowany automatycznie.<br />2. Data >= now - administrator zostanie zdezaktywowany gdy przyjdzie na niego czas.<br />';
 		if($this->_srv->get('acl')->sruAdmin('admin', 'addChangeActiveDate'))
-			echo $form->activeTo('Aktywny do', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="' . $instrukcjaObslugiPolaAktywnyDo . '" /><br/>'));
+			echo $form->activeTo('Aktywny do', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="' . $this->instrukcjaObslugiPolaAktywnyDo . '" /><br/>'));
 		else
-			echo $form->activeTo('Aktywny do', array('disabled' => true, 'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="' . $instrukcjaObslugiPolaAktywnyDo . '" /><br/>'));
+			echo $form->activeTo('Aktywny do', array('disabled' => true, 'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="' . $this->instrukcjaObslugiPolaAktywnyDo . '" /><br/>'));
 		if($advanced)
 		{
 			echo $form->typeId('Uprawnienia', array(
