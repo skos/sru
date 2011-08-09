@@ -15,7 +15,6 @@ extends UFact {
 
 			$bean->modifiedById = $this->_srv->get('session')->authAdmin;
 			$bean->gg = '';
-			$bean->studyYearId = 0;
 
 			$bean->updateNeeded = true;
 			$bean->changePasswordNeeded = true;

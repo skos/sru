@@ -1,0 +1,1 @@
+INSERT INTO faculties VALUES (0, 'N/D', 'N/D', 0, 0, 'N/A');

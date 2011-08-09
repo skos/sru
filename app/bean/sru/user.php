@@ -64,22 +64,6 @@ extends UFbean_Common {
 		}
 	}
 
-	protected function normalizeFacultyId($val, $change) {
-		if ('0' === $val) {
-			return null;
-		} else {
-			return (int)$val;
-		}
-	}
-
-	protected function normalizeStudyYearId($val, $change) {
-		if ('-' === $val) {
-			return null;
-		} else {
-			return (int)$val;
-		}
-	}
-
 	protected function validateLocationAlias($val, $change) {
 		$post = $this->_srv->get('req')->post->{$change?'userEdit':'userAdd'};
 		try {

@@ -239,7 +239,6 @@ extends UFtpl_Common {
 		}
 		$form = UFra::factory('UFlib_Form', 'userEdit', $d, $this->errors);
 
-
 		echo '<h1>'.$d['name'].' '.$d['surname'].'</h1>';
 		if ($d['updateNeeded']) {
 			echo $this->ERR('Dane na Twoim koncie wymagają aktualizacji. Prosimy o wypełnienie prawidłowymi danymi wszystkich wymaganych pól (oznaczonych czerwoną obwódką). W celu ułatwienia kontaktu ze SKOS, możesz wypełnić także pola niewymagane.');
@@ -257,6 +256,7 @@ extends UFtpl_Common {
 		}
 		$tmp = array();
 		foreach ($faculties as $fac) {
+			if ($fac['id'] == 0) continue; // N/D powinno być na końcu
 			$tmp[$fac['id']] = $fac['name'];
 		}
 		
@@ -428,8 +428,8 @@ $(document).ready(function()
 			echo '<p><em>Gadu-Gadu:</em> <a href="gg:'.$d['gg'].'">'.$d['gg'].'</a></p>';
 		}
 		echo '<p><em>Miejsce:</em> <a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'/'.$d['locationAlias'].'">'.$d['locationAlias'].'</a> <small>(<a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'">'.$d['dormitoryAlias'].'</a>)</small>'.(strlen($d['locationComment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$d['locationComment'].'" />':'').'</p>';
-		echo '<p><em>Wydział:</em> '.(!is_null($d['facultyName'])?$d['facultyName']:'N/D').'</p>';
-		echo '<p><em>Rok studiów:</em> '.self::$studyYears[$d['studyYearId']].'</p>';
+		echo '<p><em>Wydział:</em> '.(!is_null($d['facultyName'])?$d['facultyName']:'').'</p>';
+		echo '<p><em>Rok studiów:</em> '.(!is_null($d['studyYearId'])?self::$studyYears[$d['studyYearId']]:'').'</p>';
 		if ($d['banned']) {
 			$bans = '<a href="'.$urlUser.'/penalties">'.$d['bans'].' <strong>(aktywne)</strong></a>';
 		} elseif ($d['bans']>0) {
@@ -532,8 +532,8 @@ changeVisibility();
 		echo '<p><em>Nr indeksu:</em> '.$d['registryNo'].'</p>';
 		echo '<p><em>Typ:</em> '.self::getUserType($d['typeId']);
 		echo '<p><em>E-mail:</em> <a href="mailto:'.$d['email'].'">'.$d['email'].'</a></p>';
-		echo '<p><em>Wydział:</em> '.(!is_null($d['facultyName'])?$d['facultyName']:'N/D').'</p>';
-		echo '<p><em>Rok studiów:</em> '.self::$studyYears[$d['studyYearId']].'</p>';
+		echo '<p><em>Wydział:</em> '.(!is_null($d['facultyName'])?$d['facultyName']:'').'</p>';
+		echo '<p><em>Rok studiów:</em> '.(!is_null($d['studyYearId'])?self::$studyYears[$d['studyYearId']]:'').'</p>';
 		if (is_null($d['modifiedBy'])) {
 			$changed = 'UŻYTKOWNIK';
 		} else {
@@ -595,6 +595,7 @@ changeVisibility();
 		
 		$tmp = array();
 		foreach ($faculties as $fac) {
+			if ($fac['id'] == 0) continue; // N/D powinno być na końcu
 			$tmp[$fac['id']] = $fac['name'];
 		}
 		$tmp['0'] = 'N/D';

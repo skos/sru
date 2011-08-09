@@ -14,7 +14,6 @@ extends UFact {
 			$bean->fillFromPost(self::PREFIX, array('password'));
 			$bean->modifiedById = $this->_srv->get('session')->authWaletAdmin;
 			$bean->gg = '';
-			$bean->studyYearId = 0;
 
 			// tworzymy login
 			$user = UFra::factory('UFbean_Sru_User');
