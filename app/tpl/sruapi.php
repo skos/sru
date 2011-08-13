@@ -95,7 +95,7 @@ extends UFtpl_Common {
 		} else {
 			echo 'Zmodyfikowanych kar: '.count($d['modified'])."\n";
 			foreach ($d['modified'] as $modified) {
-				echo date(self::TIME_YYMMDD_HHMM, $modified['modifiedAt']).': '.$modified['userName'].' "'.$modified['userLogin'].'" '.$modified['userSurname'].' ('.strtoupper($modified['userDormAlias']).') za: '.$modified['templateTitle'].' przez: '.$modified['modifierName'].' '.$host.'/admin/penalties/'.$modified['id']."\n";
+				echo date(self::TIME_YYMMDD_HHMM, $modified['modifiedat']).': '.$modified['name'].' "'.$modified['login'].'" '.$modified['surname'].' ('.strtoupper($modified['userdormalias']).') za: '.$modified['template'].' przez: '.$modified['modifiername'].' '.$host.'/admin/penalties/'.$modified['id']."\n";
 			}
 		}
 	}

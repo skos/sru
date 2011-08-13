@@ -19,7 +19,7 @@ extends UFmap_SruAdmin_Penalty_Get {
 		'active'   		=> 'active',
 		'banned'   		=> 'banned',
 		'modifiername'	=> 'modifiername',
-
+		'userdormalias' => 'userdormalias',
 		'modificationcount' => 'modificationcount',
 	);
 	protected $columnTypes = array(
@@ -36,7 +36,7 @@ extends UFmap_SruAdmin_Penalty_Get {
 		'active'   	   	=> self::BOOL,
 		'banned'       	=> self::BOOL,
 		'modifiername'	=> self::TEXT,
-
+		'userdormalias' => self::TEXT,
 		'modificationcount' => self::INT,
 	);
 }

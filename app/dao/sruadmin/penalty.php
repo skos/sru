@@ -79,7 +79,8 @@ extends UFdao {
 		$query->raw("SELECT * FROM (
 					SELECT DISTINCT ON (foo.id) foo.id, EXTRACT (EPOCH FROM max(modifieda)) AS modifiedat, typeid, 
 					userid, u.name, surname, u.login, banned, u.active, endat, template, modifiedby, a.name AS modifiername,
-					(SELECT count(*) FROM penalties_history h WHERE h.penalty_id = foo.id) AS modificationcount
+					(SELECT count(*) FROM penalties_history h WHERE h.penalty_id = foo.id) AS modificationcount,
+					d.alias AS userdormalias
 					FROM
 					(SELECT id, user_id AS userid, modified_at AS modifieda, type_id AS typeid, end_at AS endat, 
 						(SELECT title FROM penalty_templates t WHERE template_id = t.id) AS template,
@@ -93,9 +94,11 @@ extends UFdao {
 					FROM penalties_history " . $modBy . ")
 					AS foo LEFT JOIN users u ON u.id = userid
 					LEFT JOIN admins a ON modifiedby = a.id
+					LEFT JOIN locations l ON l.id = u.location_id
+					LEFT JOIN dormitories d ON d.id = l.dormitory_id
 					WHERE modified_at is not null
 					GROUP BY foo.id, userid, u.name, surname, u.login, banned, u.active, typeid, endat, template, 
-						modifiedby, a.name
+						modifiedby, a.name, d.alias
 					ORDER BY foo.id, modifiedat DESC 
 					) AS foo2 ORDER BY modifiedat DESC LIMIT 10;");
 
