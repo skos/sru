@@ -65,17 +65,26 @@ extends UFdao {
 		return $this->doSelect($query);
 	}
 
-	public function listLastModified($type = null, $id = null) {
+	public function listLastModified($type = null, $id = null, $limit = 10, $timeLimit = null) {
 		$mapping = $this->mapping('listDetails');
 		
 		$modBy = "WHERE modified_by is not null";
+		$timeCondition = "";
+		$order = "";
 		
 		if (isset($id)) {
 			$modBy = "WHERE modified_by=" . $id;
 		}
 		
-		$query = $this->prepareSelect($mapping);
+		if(isset($timeLimit)){
+			$timeCondition = "AND EXTRACT (EPOCH FROM modified_at) >= " . (time() - $timeLimit);
+			$order = "ORDER BY modifiedat ASC";
+		}else{
+			$order = "ORDER BY modifiedat DEST LIMIT " . $limit;
+		}
 		
+		$query = $this->prepareSelect($mapping);
+
 		$query->raw("SELECT * FROM (
 					SELECT DISTINCT ON (foo.id) foo.id, EXTRACT (EPOCH FROM max(modifieda)) AS modifiedat, typeid, 
 					userid, u.name, surname, u.login, banned, u.active, endat, template, modifiedby, a.name AS modifiername,
@@ -96,11 +105,11 @@ extends UFdao {
 					LEFT JOIN admins a ON modifiedby = a.id
 					LEFT JOIN locations l ON l.id = u.location_id
 					LEFT JOIN dormitories d ON d.id = l.dormitory_id
-					WHERE modified_at is not null
-					GROUP BY foo.id, userid, u.name, surname, u.login, banned, u.active, typeid, endat, template, 
+					WHERE modified_at is not null " . $timeCondition
+					. " GROUP BY foo.id, userid, u.name, surname, u.login, banned, u.active, typeid, endat, template, 
 						modifiedby, a.name, d.alias
 					ORDER BY foo.id, modifiedat DESC 
-					) AS foo2 ORDER BY modifiedat DESC LIMIT 10;");
+					) AS foo2 " . $order . ";");
 
 		return $this->doSelect($query);
 	}
