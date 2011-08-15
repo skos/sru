@@ -80,7 +80,7 @@ extends UFdao {
 			$timeCondition = "AND EXTRACT (EPOCH FROM modified_at) >= " . (time() - $timeLimit);
 			$order = "ORDER BY modifiedat ASC";
 		}else{
-			$order = "ORDER BY modifiedat DEST LIMIT " . $limit;
+			$order = "ORDER BY modifiedat DESC LIMIT " . $limit;
 		}
 		
 		$query = $this->prepareSelect($mapping);
