@@ -77,7 +77,7 @@ extends UFdao {
 		}
 		
 		if(isset($timeLimit)){
-			$timeCondition = "AND EXTRACT (EPOCH FROM modified_at) >= " . (time() - $timeLimit);
+			$timeCondition = "AND EXTRACT (EPOCH FROM modifieda) >= " . (time() - $timeLimit);
 			$order = "ORDER BY modifiedat ASC";
 		}else{
 			$order = "ORDER BY modifiedat DESC LIMIT " . $limit;
