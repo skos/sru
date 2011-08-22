@@ -19,6 +19,7 @@ extends UFtpl_Common {
 		11 => 'Uzupełniające 2',
 		0 => 'N/D',
 		-1 => '',
+		'' => '',
 	);
 
 	static public $languages = array(

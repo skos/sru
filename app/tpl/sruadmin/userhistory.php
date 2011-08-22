@@ -68,8 +68,8 @@ extends UFtpl_Common {
 				case 'email': $changes[] = $names[$key].': '.$val.$arr.$new[$key]; break;
 				case 'gg': $changes[] = $names[$key].': '.$val.$arr.$new[$key]; break;
 				case 'facultyId':
-					$oldF = is_null($old['facultyName'])?'N/D':$old['facultyName'];
-					$newF = is_null($new['facultyName'])?'N/D':$new['facultyName'];
+					$oldF = is_null($old['facultyName'])?'':$old['facultyName'];
+					$newF = $new['facultyName'];
 					$changes[] = $names[$key].': '.$oldF.$arr.$newF;
 					break;
 				case 'locationId': $changes[] = $names[$key].': '.$old['locationAlias'].'<small>&nbsp;('.$old['dormitoryAlias'].')</small>'.$arr.$new['locationAlias'].'<small>&nbsp;('.$new['dormitoryAlias'].')</small>'; break;
