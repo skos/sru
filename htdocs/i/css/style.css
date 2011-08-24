@@ -72,11 +72,12 @@ img { border-style: none; }
 #main .nav { display: block; }
 #main .ban { background: #ffa766; }
 #main .warning { background: #fff4ac; }
-#main .ips { font-size: 0.8em; }
-#main .ips table { width: 100%; border-collapse: collapse; margin-top: 2em; }
+#main .ips, #main .legend { font-size: 0.8em; }
+#main .ips table, #main .legend table { width: 100%; border-collapse: collapse; margin-top: 2em; }
 #main .ips caption { font-size: 1.5em; }
 #main .ips caption a { font-size: 0.5em; }
-#main .ips td { color: #aaa; text-align: center; width: 6%; border: 1px solid #eee; }
+#main .ips td, #main .legend td { text-align: center; width: 6%; border: 1px solid #eee; }
+#main .ips td { color: #aaa; }
 #main .ips td a { display: block; }
 #main .ips td a:hover { background-color: #eee; }
 #main .ips td .normal { display: block; font-style: normal; color: #003d9a;}
@@ -87,6 +88,14 @@ img { border-style: none; }
 #main .ips td .banned { display: block; background-color: #fc0; font-weight: normal; color: #003d9a;}
 #main .ips td .banned_wrong_dorm { display: block; background-color: #666; font-weight: normal; color: #003d9a;}
 
+#main .unregistered {  }
+#main .registeredOwn { background: #cff; }
+#main .registeredOther { background: #ccf; }
+#main .man { background: #ccf; }
+#main .woman { background: #cff; }
+#main .additional { background: #f22; }
+#main .free { background: #00f; color: #ff0; }
+
 #main .switchports table { width: 100%; border-collapse: collapse;  }
 #main .switchports td { text-align: center; width: 12%; border: 1px solid #eee; }
 #main .switchports td.disabled { background-color: #ffa37f;}
@@ -95,8 +104,10 @@ img { border-style: none; }
 #main .switchports td.unknown { background-color: white;}
 #main .inoperational { background-color: #ffa766; }
 #main .legend { font-size: 0.8em; }
+#main .switchports td.selectedPort { border: 2px solid red; }
 
 #main .required { border: solid 1px red; }
+#main .waletImg { position: relative; left: 420px; top: -130px; }
 
 #main ul .admin { background-color: yellow; }
 #main ul .serv { background-color: green; }

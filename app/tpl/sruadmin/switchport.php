@@ -142,7 +142,7 @@ extends UFtpl_Common {
 				echo "up";
 			}
 			if ($i == $selectedPort - 1) {
-				echo '" style="border: 2px solid red;">';
+				echo ' selectedPort">';
 			} else {
 				echo '">';
 			}

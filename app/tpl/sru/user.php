@@ -364,8 +364,8 @@ extends UFtpl_Common {
 		$url = $this->url(0);
 		$acl = $this->_srv->get('acl');
 
-		echo '<div class="ips">';
-		echo '<table><tr><td style="color: #000;">Mieszkaniec niezameldowany</td><td style="background: #cff; color: #000;">Mieszkaniec zameldowany w nadzorowanym DS</td><td style="background: #ccf; color: #000;">Mieszkaniec zameldowany w innym DS</td></tr></table>';
+		echo '<div class="legend">';
+		echo '<table><tr><td class="unregistered">Mieszkaniec niezameldowany</td><td class="registeredOwn">Mieszkaniec zameldowany w nadzorowanym DS</td><td class="registeredOther">Mieszkaniec zameldowany w innym DS</td></tr></table>';
 		echo '</div><br/>';
 
 		echo '<table id="resultsT" class="bordered"><thead><tr>';
@@ -383,9 +383,9 @@ extends UFtpl_Common {
 			if (!$c['active'] || is_null($c['referralStart']) || $c['referralStart'] == 0) {
 				echo '<tr>';
 			} else if ($acl->sruWalet('user', 'edit', $c['id'])) {
-				echo '<tr style="background: #cff;">';
+				echo '<tr class="registeredOwn">';
 			} else {
-				echo '<tr style="background: #ccf;">';
+				echo '<tr class="registeredOther">';
 			}
 			echo '<td><a href="'.$url.'/users/'.$c['id'].'">'.$this->_escape($c['name']).'</a></td>';
 			echo '<td><a href="'.$url.'/users/'.$c['id'].'">'.$this->_escape($c['surname']).'</a></td>';

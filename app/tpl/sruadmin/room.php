@@ -109,11 +109,11 @@ function fullList() {
 		if (!$export) {
 			echo '<label for="filter">Filtruj:</label> <input type="text" name="filter" value="" id="filter" />';
 		}
-		echo '<div class="ips">';
-		echo '<table><tr><td style="background: #cff; color: #000;">Kobieta</td><td style="background: #ccf; color: #000;">Mężczyzna</td><td style="background: #f22; color: #000;">Dokwaterowany</td></tr></table>';
+		echo '<div class="legend">';
+		echo '<table><tr><td class="woman">Kobieta</td><td class="man">Mężczyzna</td><td class="additional">Dokwaterowany</td></tr></table>';
 		echo '</div><br/>';
 
-		echo '<table style="width: 100%;"><thead><tr>';
+		echo '<table class="bordered"><thead><tr>';
 		echo '<th>Pokój</th>';
 		echo '<th>Mieszkańcy</th>';
 		echo '</tr></thead><tbody>';
@@ -126,22 +126,22 @@ function fullList() {
 			} else {
 				foreach ($rooms as $room) {
 					$dispRoom = ($connector == 0 ? '' : $connector).$room->getExt().' <small>('.$room->getLimit().'-os)</small>';
-					echo '<tr><td style="border: 1px solid;">'.$dispRoom.'</td>';
+					echo '<tr><td>'.$dispRoom.'</td>';
 					$i = 0;
 					foreach ($room->getUsers() as $user) {
 						$i++;
 						if ($i > $room->getLimit()) {
-							$bg = '#f22';
+							$class = 'additional';
 						} else if (substr($user['name'], -1) == 'a') {
-							$bg = '#cff';
+							$class = 'woman';
 						} else {
-							$bg = '#ccf';
+							$class = 'man';
 						}
-						echo '<td style="border: 1px solid black; padding: 0cm; background: '.$bg.';"><a href="'.$this->url(0).'/users/'.$user['id'].'">'.$user['name'].' '.$user['surname'].'</a></td>';
+						echo '<td class="'.$class.'"><a href="'.$this->url(0).'/users/'.$user['id'].'">'.$user['name'].' '.$user['surname'].'</a></td>';
 					}
 					if ($i < $room->getLimit()) {
 						for (; $i < $room->getLimit(); $i++) {
-							echo '<td style="border: 1px solid black; padding: 0cm; background: #00f; color: #ff0;">WOLNE</td>';
+							echo '<td class="free">WOLNE</td>';
 						}
 					}
 					echo '</tr>';

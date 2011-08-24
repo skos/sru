@@ -23,7 +23,7 @@ extends UFtpl_Common {
 		echo $form->_end();
 		echo $form->_end(true);
 
-		echo '<div style="position: relative; left: 420px; top: -130px;"><img src="'.UFURL_BASE.'/i/img/walet.png" alt="Walet"/></div>';
+		echo '<div class="waletImg"><img src="'.UFURL_BASE.'/i/img/walet.png" alt="Walet"/></div>';
 	}
 
 	public function logout(array $d) {
