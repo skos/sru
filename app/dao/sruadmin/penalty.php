@@ -128,6 +128,7 @@ extends UFdao {
 
 		$query = $this->prepareSelect($mapping);
 		$query->where($mapping->active, true);
+		$query->where($mapping->userActive, true);
 		$query->where($mapping->userLocationId, $locationId);
 		$query->order($mapping->endAt,  $query->ASC);
 
