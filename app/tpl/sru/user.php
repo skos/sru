@@ -252,26 +252,27 @@ extends UFtpl_Common {
 		if (is_null($d['email'])) {
 			echo $this->ERR('Twoje konto zostało dopiero założone. Wymagana jest zmiana hasła.');
 		}
-		echo '<p><label>Typ konta:</label> '.self::getUserType($d['typeId']).'</p>';
-		echo '<p><label>Zameldowanie:</label> '.$d['dormitoryName'].', pok. '.$d['locationAlias'].'</p>';
+		echo '<p><label>Typ konta:</label><span class="userData"> '.self::getUserType($d['typeId']).'</span></p>';
+		echo '<p><label>Zameldowanie:</label><span class="userData"> '.$d['dormitoryName'].', pok. '.$d['locationAlias'].'</span></p>';
 		if (!is_null($d['registryNo']) && $d['registryNo'] != '') {
-			echo '<p><label>Nr indeksu:</label> '.$d['registryNo'].'</p>';
+			echo '<p><label>Nr indeksu:</label><span class="userData"> '.$d['registryNo'].'</span></p>';
 		}
 		$tmp = array();
 		foreach ($faculties as $fac) {
 			if ($fac['id'] == 0) continue; // N/D powinno być na końcu
 			$tmp[$fac['id']] = $fac['name'];
 		}
-		
+
+		$d['typeId'] == UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL ? $hidden = true : $hidden = false;
 		$tmp['0'] = 'N/D';
 		$tmp['-1'] = '';
 		echo $form->facultyId('Wydział', array(
-			'type' => $form->SELECT,
+			'type' => $hidden ? $form->HIDDEN : $form->SELECT,
 			'labels' => $form->_labelize($tmp),
 			'class'=>'required',
 		));
 		echo $form->studyYearId('Rok studiów', array(
-			'type' => $form->SELECT,
+			'type' => $hidden ? $form->HIDDEN : $form->SELECT,
 			'labels' => $form->_labelize(self::$studyYears),
 			'class'=>'required',
 		));
@@ -282,16 +283,15 @@ extends UFtpl_Common {
 			'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Wiadomości e-mail i GG będa przychodziły w wybranym języku.<br/><br/>You will receive e-mails and gg messages in the chosen language." /><br/>',
 		));
 
-		echo $form->_fieldset('Zmiana chronionych danych');
+		echo '<br/>';
+		echo $form->_fieldset('Zmiana chronionych danych - konieczne podanie aktualnego hasła');
 		if (is_null($d['email']) || $d['changePasswordNeeded']) {
 			echo $form->password3('Aktualne hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
-			echo '<p>Do zmiany poniższych danych wymagane jest podanie aktualnego hasła.</p>';
 			echo $form->email('E-mail', array('class'=>'required'));
 			echo $form->password('Nowe hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
 			echo $form->password2('Potwierdź hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
 		} else {
 			echo $form->password3('Aktualne hasło', array('type'=>$form->PASSWORD));
-			echo '<p>Do zmiany poniższych danych wymagane jest podanie aktualnego hasła.</p>';
 			echo $form->email('E-mail', array('class'=>'required'));
 			echo $form->password('Nowe hasło', array('type'=>$form->PASSWORD));
 			echo $form->password2('Potwierdź hasło', array('type'=>$form->PASSWORD));
@@ -559,6 +559,21 @@ changeVisibility();
 		}
 	}
 
+	public function detailsUser(array $d) {
+		echo '<p><em>Imię i nazwisko:</em><span class="userData"> '.$this->_escape($d['name']).' '.$this->_escape($d['surname']).'</span></p>';
+		echo '<p><em>Typ konta:</em><span class="userData"> '.self::getUserType($d['typeId']).'</span>';
+		echo '<p><em>E-mail:</em><span class="userData"> <a href="mailto:'.$d['email'].'">'.$d['email'].'</a></span></p>';
+		if ($d['gg']) {
+			echo '<p><em>Gadu-Gadu:</em><span class="userData"> <a href="gg:'.$d['gg'].'">'.$d['gg'].'</a></span></p>';
+		}
+		echo '<p><em>Zameldowanie:</em><span class="userData"> '.$d['dormitoryName'].', pok. '.$d['locationAlias'].'</span></p>';
+		if ($d['typeId'] != UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL) {
+			echo '<p><em>Wydział:</em><span class="userData"> '.(!is_null($d['facultyName'])?$d['facultyName']:'').'</span></p>';
+			echo '<p><em>Rok studiów:</em><span class="userData"> '.(!is_null($d['studyYearId'])?self::$studyYears[$d['studyYearId']]:'').'</span></p>';
+		}
+		echo '<p"><a class="userAction" href="'.$this->url(0).'/profile">Edytuj</a>';
+	}
+
 	public function titleDetails(array $d) {
 		echo $this->_escape($d['name']).' '.$this->_escape($d['surname']).' ('.$d['login'].')';
 	}
@@ -572,12 +587,6 @@ changeVisibility();
 
 		$d['locationId'] = $d['locationAlias'];
 		$d['dormitory'] = $d['dormitoryId'];
-		if (is_null($d['facultyId'])) {
-			$d['facultyId'] = '0';
-		}
-		if (is_null($d['studyYearId'])) {
-			$d['studyYearId'] = '0';
-		}
 		if (is_null($d['gg']) || $d['gg'] == '') {
 			$d['gg'] = '0';
 		}
@@ -598,21 +607,25 @@ changeVisibility();
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$languages),
 		));
-		
-		$tmp = array();
-		foreach ($faculties as $fac) {
-			if ($fac['id'] == 0) continue; // N/D powinno być na końcu
-			$tmp[$fac['id']] = $fac['name'];
+
+		if (!is_null($d['studyYearId'])) {
+			$tmp = array();
+			foreach ($faculties as $fac) {
+				if ($fac['id'] == 0) continue; // N/D powinno być na końcu
+				$tmp[$fac['id']] = $fac['name'];
+			}
+			$tmp['0'] = 'N/D';
+			echo $form->facultyId('Wydział', array(
+				'type' => $form->SELECT,
+				'labels' => $form->_labelize($tmp),
+			));
 		}
-		$tmp['0'] = 'N/D';
-		echo $form->facultyId('Wydział', array(
-			'type' => $form->SELECT,
-			'labels' => $form->_labelize($tmp),
-		));
-		echo $form->studyYearId('Rok studiów', array(
-			'type' => $form->SELECT,
-			'labels' => $form->_labelize(self::$studyYears),
-		));
+		if (!is_null($d['studyYearId'])) {
+			echo $form->studyYearId('Rok studiów', array(
+				'type' => $form->SELECT,
+				'labels' => $form->_labelize(self::$studyYears),
+			));
+		}
 		if ($acl->sruAdmin('user', 'fullEdit', $d['id'])) {
 			$tmp = array();
 			foreach ($dormitories as $dorm) {
@@ -769,6 +782,14 @@ function changeUnregisterVisibility() {
 	}
 
 	public function userAddMailBodyPolish(array $d, $dutyHours) {
+		$conf = UFra::shared('UFconf_Sru');
+		if ($d['typeId'] == UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL) {
+			$waletText = $conf->touristMailWaletText;
+			$skosText = $conf->touristMailSkosText;
+		} else {
+			$waletText = $conf->userMailWaletText;
+			$skosText = $conf->userMailSkosText;
+		}
 		echo 'Witamy w Sieci Komputerowej Osiedla Studenckiego Politechniki Gdańskiej!'."\n";
 		echo "\n";
 		echo 'Jeżeli otrzymałeś/aś tę wiadomość, a nie masz konta w SKOS PG, prosimy o zignorowanie tej wiadomości.'."\n\n";
@@ -778,17 +799,11 @@ function changeUnregisterVisibility() {
 		echo "\n";
 		echo '- - - - - - - - - - -'."\n";
 		echo "\n";
-		echo 'Informacje dotyczące Sieci w Domach Studenckich znajdziesz na stronie:'."\n";
-		echo 'http://skos.ds.pg.gda.pl.'."\n";
-		echo '**Pamiętaj, by zapoznać się z Regulaminem SKOS!**'."\n\n";
-		echo 'Zachęcamy do korzystania z grup dyskusyjnych - uzyskasz tam wiele informacji o życiu studenckim i naszej sieci: http://news.ds.pg.gda.pl.'."\n";
-		echo 'Więcej dowiesz się z FAQ na http://skos.ds.pg.gda.pl.'."\n\n";
-		echo 'Chcesz zostać administratorem sieci? Wejdź na http://kandydaci.ds.pg.gda.pl.'."\n";
+		echo $skosText;
 		echo "\n";
 		echo '- - - - - - - - - - -'."\n";
 		echo "\n";
-		echo 'Wszystkie informacje dotyczące Domów studenckich znajdziesz na stronie:'."\n";
-		echo 'http://akademiki.pg.gda.pl'."\n";
+		echo $waletText;
 		echo "\n";
 		if (!is_null($dutyHours)) {
 			echo '- - - - - - - - - - -'."\n";
@@ -805,7 +820,7 @@ function changeUnregisterVisibility() {
 		echo '- - - - - - - - - - -'."\n";
 		echo "\n";
 		echo 'Any information about our network including FAQ you can find on our page'."\n";
-		echo 'http://skos.ds.pg.gda.pl/'."\n";
+		echo 'http://faq.ds.pg.gda.pl/'."\n";
 		echo 'Any information about our dormitories you can find on our page'."\n";
 		echo 'http://akademiki.pg.gda.pl/'."\n";
 		echo "\n";

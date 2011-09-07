@@ -39,8 +39,18 @@ extends UFconf {
 	protected $ggGate = '';
 
 	protected $userPrintWaletText = '';
+	protected $touristPrintWaletText = '';
 	protected $userPrintSkosText = '';
+	protected $touristPrintSkosText = '';
+	protected $userMailWaletText = "";
+	protected $touristMailWaletText = "";
+	protected $userMailSkosText = "";
+	protected $touristMailSkosText = "";
+	protected $userImportantLinks = array( // ważne linki na stronę główną usera
+		'http://faq.ds.pg.gda.pl' => 'FAQ',
+	);
 
+	protected $puuAvailable = true;
 	protected $mustBeRegistryNo = array( // typy userów, które powinny mieć nr indeksu
 		'1',
 	);

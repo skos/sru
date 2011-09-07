@@ -9,7 +9,13 @@ extends UFview_SruUser {
 		$box  = UFra::shared('UFbox_Sru');
 
 		$this->append('title', $box->titleMain());
-		$this->append('body', $box->userMainMenu());
+		
+		$this->append('body', $box->contact());
+		$this->append('body', $box->importantLinks());
+		$this->append('body', $box->banners());
+		$this->append('body', $box->penaltyInfo());
 		$this->append('body', $box->userInfo());
+		$this->append('body', $box->hostsInfo());
+		$this->append('body', $box->servicesInfo());
 	}
 }

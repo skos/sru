@@ -23,7 +23,7 @@ extends UFtpl_Common {
 <h1><a href="<?=UFURL_BASE;?>/"><img src="<?=UFURL_BASE;?>/i/img/skoslogo.png" alt="logo SKOS"/>&nbsp;<abbr title="System Rejestracji Użytkowników">SRU</abbr></a></h1>
 </div><!-- head -->
 <ul id="nav">
-<li><a href="http://skos.ds.pg.gda.pl/skos/wiki/regulamin">Regulamin</a></li>
+<li><a href="http://regulamin.ds.pg.gda.pl/">Regulamin</a></li>
 <li><a href="<?=UFURL_BASE;?>/sru/">Użytkownik</a></li>
 <li><a href="<?=UFURL_BASE;?>/admin/">SKOS</a></li>
 <li><a href="<?=UFURL_BASE;?>/walet/">Walet</a></li>

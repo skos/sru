@@ -51,10 +51,10 @@ extends UFtpl_Common {
 	public function adminBar(array $d) {
 		$form = UFra::factory('UFlib_Form');
 
-		echo $form->_start($this->url(0).'/', array('class'=>'adminBar'));
+		echo $form->_start($this->url(0).'/', array('class'=>'userBar'));
 		echo $form->_fieldset();
 		if($d['admin']->active == true && $d['admin']->activeTo - time() <= UFra::shared('UFconf_Sru')->adminDeactivateAfter && $d['admin']->activeTo - time() >= 0)
-			echo '<span title="Zbliża się czas dezaktywacji konta" style="color: red;">(!) </span>';
+			echo '<img src="'.UFURL_BASE.'/i/img/wykrzyknik.png" alt="Wykrzyknik" title="Zbliża się czas dezaktywacji konta" />&nbsp;';
 		echo $d['admin']->write(__FUNCTION__, $d['lastLoginIp'], $d['lastLoginAt'], $d['lastInvLoginIp'], $d['lastInvLoginAt']);
 		echo $form->_submit('Wyloguj', array('name'=>'adminLogout'));
 		echo $form->_end();
@@ -468,7 +468,7 @@ extends UFtpl_Common {
 		}
 		
 		echo '<div class="admins">';
-		echo '<h2>Administratorzy</h2>';
+		echo '<h2>Administratorzy ('.count($d['admins']).') | <a href="http://dyzury.ds.pg.gda.pl">Dyżury</a></h2>';
 		$d['admins']->write('listAdmin');
 		echo '</div>';
 		
@@ -481,7 +481,7 @@ extends UFtpl_Common {
 		$url = $this->url(0).'/admins/';
 		
 		echo '<div class="admins inactive">';
-		echo '<h2>Nieaktywni Administratorzy</h2>';
+		echo '<h2>Nieaktywni Administratorzy ('.count($d['admins']).')</h2>';
 
 		$d['admins']->write('listAdmin');
 
@@ -492,7 +492,7 @@ extends UFtpl_Common {
 		$url = $this->url(0).'/admins/';
 		
 		echo '<div class="admins">';
-		echo '<h2>Boty</h2>';
+		echo '<h2>Boty ('.count($d['admins']).')</h2>';
 
 		$d['admins']->write('listBots');
 
@@ -503,7 +503,7 @@ extends UFtpl_Common {
 		$url = $this->url(0).'/admins/';
 		
 		echo '<div class="admins">';
-		echo '<h2>Pracownicy Osiedla</h2>';
+		echo '<h2>Pracownicy Osiedla ('.count($d['admins']).')</h2>';
 
 		$d['admins']->write('listAdminSimple');
 
@@ -688,12 +688,7 @@ extends UFtpl_Common {
 		$form = UFra::factory('UFlib_Form');
 		echo '<h2>Edycja administratora</h2>';
 		echo $form->_start();
-		
-
 		echo $d['admin']->write('formEdit', $d['dormitories'], $d['dutyHours'], $d['dormList'], $d['advanced']);
-		echo $form->_submit('Zapisz');
-		echo ' <a href="'.$this->url(0).'/admins/'.$d['admin']->id.'">Powrót</a>';
-		echo $form->_end();
 		echo $form->_end(true);
 	}
 	public function titleDormitories() {

@@ -53,7 +53,7 @@ extends UFtpl_Common {
 	public function waletBar(array $d) {
 		$form = UFra::factory('UFlib_Form');
 
-		echo $form->_start($this->url(0).'/', array('class'=>'adminBar'));
+		echo $form->_start($this->url(0).'/', array('class'=>'userBar'));
 		echo $form->_fieldset();
 		echo $d['admin']->write(__FUNCTION__, $d['lastLoginIp'], $d['lastLoginAt'], $d['lastInvLoginIp'], $d['lastInvLoginAt']);
 		echo $form->_submit('Wyloguj', array('name'=>'adminLogout'));
@@ -231,10 +231,10 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 		echo '<p>Aby zalogować się na swoje konto w Systemie Rejestracji Użytkowników (http://sru.ds.pg.gda.pl) skorzystaj z następujących danych:<br/><br/>
 			<i>login:</i> '.$d['user']->login.'<br/>';
 		if (is_null($d['password'])) {
-			echo '<br/>Użyj tego samego hasła, jakiego używał(a/e)ś poprzednio. Jeśli nie pamiętasz go, skorzystaj z przypomnienia hasła na SRU lub odwiedź administratora w godzinach dyżuru. Nie zapomnij wejściówki! Aby mieć Internet, po zalogowaniu się przywróć swoje komputery.';
+			echo '<br/>Użyj tego samego hasła, jakiego używał(a/e)ś poprzednio. Jeśli nie pamiętasz go, skorzystaj z przypomnienia hasła na SRU lub odwiedź administratora w godzinach dyżuru. Nie zapomnij wejściówki! Aby mieć Internet, po zalogowaniu się przywróć swoje komputery i odczekaj ok godzinę.';
 		} else {
 			echo '<i>hasło:</i> '.$d['password'].'<br/><br/>
-				Zaraz po zalogowaniu zostaniesz poproszon(a/y) o zmianę hasła oraz uzupełnienie swoich danych kontaktowych i statystycznych.';
+				Zaraz po zalogowaniu zostaniesz poproszon(a/y) o zmianę hasła oraz uzupełnienie swoich danych kontaktowych i statystycznych. Następnie dodaj komputer i w przeciągu godziny ciesz się Internetem!';
 		}
 		echo '</p><hr/>';
 		echo $d['userPrintWaletText'];
@@ -362,7 +362,7 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 		}
 		
 		echo '<div class="admins">';
-		echo '<h2>Administratorzy OS</h2>';
+		echo '<h2>Administratorzy OS ('.count($d['admins']).')</h2>';
 
 		$d['admins']->write('listAdmin', $d['dormitories']);
 
@@ -377,7 +377,7 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 		$url = $this->url(0).'/admins/';
 		
 		echo '<div class="admins inactive">';
-		echo '<h2>Nieaktywni Administratorzy OS</h2>';
+		echo '<h2>Nieaktywni Administratorzy OS ('.count($d['admins']).')</h2>';
 
 		$d['admins']->write('listAdmin', $d['dormitories']);
 
@@ -388,7 +388,7 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 		$url = $this->url(0).'/admins/';
 		
 		echo '<div class="admins inactive">';
-		echo '<h2>Administratorzy SKOS</h2>';
+		echo '<h2>Administratorzy SKOS ('.count($d['admins']).') | <a href="http://dyzury.ds.pg.gda.pl">Dyżury</a></h2>';
 
 		$d['admins']->write('listAdmin', true);
 

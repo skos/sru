@@ -264,15 +264,15 @@ $(document).ready(function()
 	public function waletBar(array $d, $ip, $time, $invIp, $invTime) {
 		echo '<a href="'.$this->url(0).'/admins/'.$d['id'].'">'.$this->_escape($d['name']).'</a> ';
 		if (!is_null($time) && $time != 0 ) {
-			echo '<br/>Ostatnie&nbsp;udane&nbsp;logowanie: '.date(self::TIME_YYMMDD_HHMM, $time).' ' ;
+			echo '<br/><small>Ostatnie&nbsp;udane&nbsp;logowanie: '.date(self::TIME_YYMMDD_HHMM, $time).'</small> ' ;
 			if (!is_null($ip)) {
-				echo '('.$ip.') ';
+				echo '<small>('.$ip.')</small> ';
 			}
 		}
 		if (!is_null($invTime) && $invTime != 0 ) {
-			echo '<br/>Ostatnie&nbsp;nieudane&nbsp;logowanie: '.date(self::TIME_YYMMDD_HHMM, $invTime).' ' ;
+			echo '<br/><small>Ostatnie&nbsp;nieudane&nbsp;logowanie: '.date(self::TIME_YYMMDD_HHMM, $invTime).'</small> ' ;
 			if (!is_null($invIp)) {
-				echo '('.$invIp.') ';
+				echo '<small>('.$invIp.')</small> ';
 			}
 		}
 		echo '<br/>';

@@ -13,6 +13,11 @@ extends UFlib_ClassWithService {
 		if (!$this->_loggedIn()) {
 			return false;
 		}
+		$conf = UFra::shared('UFconf_Sru');
+		$enabled = $conf->puuAvailable;
+		if (!$enabled) {
+			return false;
+		}
 		$user = UFra::factory('UFbean_Sru_User');
 		$user->getByPK($userId);
 		if ($user->typeId < UFbean_Sru_User::DB_STUDENT_MAX || $user->typeId == UFbean_Sru_User::TYPE_TOURIST_STUDENT || $user->typeId == UFbean_Sru_User::TYPE_TOURIST_DIDACTICS || $user->typeId == UFbean_Sru_User::TYPE_ORGANIZATION || $user->typeId == UFbean_Sru_User::TYPE_EXADMIN) {

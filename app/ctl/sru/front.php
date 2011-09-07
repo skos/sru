@@ -55,6 +55,12 @@ extends UFctl {
 				case 'services':
 					$get->view = 'user/services';
 					break;
+				case 'unregistered':
+					$get->view = 'user/unregistered';
+					break;
+				case 'banned':
+					$get->view = 'user/banned';
+					break;
 				default:
 					if (UFlib_Valid::regexp($req->segment(1),'^[0-9a-f]{32}$')) {
 						$get->userToken = $req->segment(1);
@@ -85,7 +91,7 @@ extends UFctl {
 			$act = 'User_Edit';
 		} elseif ('user/computer/edit' == $get->view && $post->is('computerEdit') && $acl->sru('computer', 'edit')) {
 			$act = 'Computer_Edit';
-		} elseif ('user/computer/activate' == $get->view && $post->is('computerEdit') && $acl->sru('computer', 'edit')) {
+		} elseif ('user/computer/activate' == $get->view && $post->is('computerEdit') && $acl->sru('computer', 'add')) {
 			$act = 'Computer_Edit';
 		} elseif ('user/computer/add' == $get->view && $post->is('computerAdd') && $acl->sru('computer', 'add')) {
 			$act = 'Computer_Add';
@@ -162,7 +168,7 @@ extends UFctl {
 			case 'user/computer/activate':
 				if ($msg->get('computerEdit/ok')) {
 					return 'Sru_UserComputers';
-				} else if ($acl->sru('computer', 'edit')) {
+				} else if ($acl->sru('computer', 'add')) {
 					return 'Sru_UserComputerActivate';
 				} else {
 					return 'Sru_Error403';
@@ -185,6 +191,10 @@ extends UFctl {
 				} else {
 					return 'Sru_Error403';
 				}
+			case 'user/unregistered':
+				return 'Sru_UserUnregistered';
+			case 'user/banned':
+				return 'Sru_UserBanned';
 			default:
 				return 'Sru_Error404';
 		}

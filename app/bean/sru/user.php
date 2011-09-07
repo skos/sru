@@ -31,6 +31,7 @@ extends UFbean_Common {
 		'studyYearId',
 		'locationId',
 		'active',
+		'registryNo',
 	);
 
 	/**

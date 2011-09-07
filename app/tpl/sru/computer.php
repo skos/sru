@@ -98,14 +98,16 @@ extends UFtpl_Common {
 	}
 	
 	public function listOwn(array $d) {
-		$url = $this->url(1).'/';
+		$url = $this->url(0).'/computers/';
 		foreach ($d as $c) {
-			echo '<li><a href="'.$url.$c['id'].'">'.$c['host'].' <small>'.$c['ip'].'/'.$c['mac'].'</small></a> <span>'.(is_null($c['availableTo']) ? '' : date(self::TIME_YYMMDD, $c['availableTo'])).'</span></li>';
+			echo '<li><span class="userData">'.$c['host'].'</span><small>&nbsp;&nbsp;IP: '.$c['ip'].'&nbsp;&nbsp;MAC: '.$c['mac'].'</small>
+				<span>'.(is_null($c['availableTo']) ? '' : date(self::TIME_YYMMDD, $c['availableTo'])).'</span>
+				<a class="userAction" href="'.$url.$c['id'].'">Szczegóły</a> &bull; <a class="userAction" href="'.$url.$c['id'].'/:edit">Edytuj</a></li>';
 		}
 	}
 
 	public function listToActivate(array $d) {
-		$url = $this->url(1).'/';
+		$url = $this->url(0).'/computers/';
 		echo '<ul>';
 		foreach ($d as $c) {
 			echo '<li><a href="'.$url.$c['id'].'/:activate">'.$c['host'].' <small>'.$c['mac'].'</small></a></li>';
@@ -504,7 +506,7 @@ activateChkB.onclick = function() {
 				echo '</div>';
 			}
 		}
-		echo $form->host('Nazwa', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Nazwa komputera w sieci - nie musi być zgodna z nazwą w systemie Windows/Linux. Możesz podać inną nazwę niż propozycja SRU." /><br/>'));
+		echo $form->host('Nazwa', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Nazwa komputera w sieci - nie musi być zgodna z nazwą w systemie Windows/Linux. Możesz podać inną nazwę niż propozycja SRU - jest ona prawie dowolna, ale może zawierać tylko litery, cyfry oraz myślnik." /><br/>'));
 		if ($admin) {
 			echo $form->ip('IP');
 ?><script type="text/javascript">
@@ -659,7 +661,7 @@ div.style.display = 'none';
 	}
 
 	private function showMacHint() {
-		return '<a href="http://skos.ds.pg.gda.pl/wiki/faq/rejestracja"><small>Skąd wziąć MAC?</small></a>';
+		return '<a href="http://faq.ds.pg.gda.pl/"><small>Skąd wziąć MAC?</small></a>';
 	}
 
 	public function configDhcp(array $d) {

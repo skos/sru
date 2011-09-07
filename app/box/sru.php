@@ -25,6 +25,37 @@ extends UFbox {
 		$user->getFromSession();
 		$d['user'] = $user;
 
+		return $this->render(__FUNCTION__, $d);
+	}
+
+	public function hostsInfo() {
+		$user = UFra::factory('UFbean_Sru_User');
+		$user->getFromSession();
+		try {
+			$bean = UFra::factory('UFbean_Sru_ComputerList');
+			$bean->listByUserId($user->id);
+		} catch (UFex_Dao_NotFound $e) {
+			$bean = null;
+			try {
+				// jeżeli nie ma aktywnych, spróbujmy poszukać niekatywnych
+				$inactive = UFra::factory('UFbean_Sru_ComputerList');
+				$inactive->listByUserIdInactive($user->id);
+
+				$d['inactive'] = $inactive;
+			} catch (UFex_Dao_NotFound $e) {
+				$d['inactive'] = null;
+			}
+		}
+
+		$d['computers'] = $bean;
+		return $this->render(__FUNCTION__, $d);
+	}
+
+	public function penaltyInfo() {
+		$user = UFra::factory('UFbean_Sru_User');
+		$user->getFromSession();
+		$d['user'] = $user;
+
 		try {
 			$bean = UFra::factory('UFbean_Sru_PenaltyList');
 			$bean->listByUserId($user->id);
@@ -33,6 +64,35 @@ extends UFbox {
 			$d['penalties'] = null;
 		}
 
+		return $this->render(__FUNCTION__, $d);
+	}
+
+	public function servicesInfo() {
+		$user = UFra::factory('UFbean_Sru_User');
+		$user->getFromSession();
+		$d['user'] = $user;
+
+		try {
+			$bean = UFra::factory('UFbean_Sru_UserServiceList');
+			$bean->listAllByUserId($user->id);
+			$d['userServices'] = $bean;
+		}
+		catch (UFex_Dao_NotFound $e) {
+			$d['userServices'] = null;
+		}
+
+		$bean = UFra::factory('UFbean_Sru_ServiceList');
+		$bean->listAllServices();
+		$d['allServices'] = $bean;
+
+		return $this->render(__FUNCTION__, $d);
+	}
+
+	public function contact() {
+		$user = UFra::factory('UFbean_Sru_User');
+		$user->getFromSession();
+		$d['user'] = $user;
+
 		try {
 			$hours = UFra::factory('UFbean_SruAdmin_DutyHoursList');
 			$hours->listUpcomingByDormId($user->dormitoryId);
@@ -40,6 +100,18 @@ extends UFbox {
 		} catch (UFex_Dao_NotFound $e) {
 			$d['dutyHours'] = null;
 		}
+
+		return $this->render(__FUNCTION__, $d);
+	}
+
+	public function banners() {
+		$dirContent = scandir(UFURL_BASE.'i/banners-img');
+		foreach ($dirContent as $key=>&$value) {
+			if ($value == '.' || $value == '..') {
+				unset($dirContent[$key]);
+			}
+		}
+		$d['content'] = $dirContent;
 
 		return $this->render(__FUNCTION__, $d);
 	}

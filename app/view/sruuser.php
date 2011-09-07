@@ -10,6 +10,10 @@ extends UFview {
 	}
 
 	protected function fillDefaultData() {
+		if (!isset($this->data['userMainManu'])) {
+			$box = UFra::shared('UFbox_Sru');
+			$this->append('userMainMenu', $box->userMainMenu());
+		}
 		if (!isset($this->data['userBar'])) { 
 			$box = UFra::shared('UFbox_Sru');
 			$this->append('userBar', $box->userBar());

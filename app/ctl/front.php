@@ -11,7 +11,7 @@ extends UFctl {
 		
 		$segCount = $req->segmentsCount();
 		if (0 == $segCount) {
-			$get->view = 'index';
+			UFlib_Http::redirect(UFURL_BASE.'/sru/');
 		} else {
 			switch ($req->segment(1)) {
 				case 'admin':

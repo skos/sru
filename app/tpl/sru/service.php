@@ -4,37 +4,46 @@
  */
 class UFtpl_Sru_Service
 extends UFtpl_Common {	
-	public function formEdit(array $d, $userServices, $user, $adminEdit = false) {
-		if (!$user->servicesAvailable) {
-			if ($adminEdit) {
-				echo $this->ERR('Zablokowane');
-			} else {
-				echo $this->ERR('Możliwość edycji usług została zablokowana dla Twojego konta. Zwróć się do swojego administratora lokalnego w celu wyjaśnienia.');
+	public function formEdit(array $d, $userServices, $user, $adminEdit = false, $toEdit = true) {
+		if ($toEdit) {
+			if (!$user->servicesAvailable) {
+				if ($adminEdit) {
+					echo $this->ERR('Zablokowane');
+				} else {
+					echo $this->ERR('Możliwość edycji usług została zablokowana dla Twojego konta. Zwróć się do swojego administratora lokalnego w celu wyjaśnienia.');
+				}
+			} else if ($user->banned && !$adminEdit) {
+				echo $this->ERR('Z powodu aktywnej kary nie jest możliwa edycja usług na Twoim koncie.');
 			}
-		} else if ($user->banned && !$adminEdit) {
-			echo $this->ERR('Z powodu aktywnej kary nie jest możliwa edycja usług na Twoim koncie.');
 		}
+		$editableForm = $user->servicesAvailable && (!$user->banned || $adminEdit) && $toEdit;
+
 		$form = UFra::factory('UFlib_Form', 'serviceEdit', $d);
 		echo $form->_fieldset();
-		echo '<table width="100%">';
+		if ($toEdit) {
+			$width = '70%';
+		} else {
+			$width = '100%';
+		}
+		echo '<table width="'.$width.'" class="centralized">';
 		echo '<tr><th>Nazwa usługi</th><th>Stan usługi</th><th></th></tr>';
 
 		foreach ($d as $c) {
-			$active = 'BRAK USŁUGI';
+			$active = '<span class="serviceNone">BRAK USŁUGI</span>';
 			$toActivate = true;
 			if ($userServices != null) {
 				foreach ($userServices as $s) {
 					if ($s['servType'] == $c['id']) {
 						if ($s['state'] === true) {
-							$active = 'AKTYWNA';
+							$active = '<span class="serviceActive">AKTYWNA</span>';
 							$toActivate = false;
 						}
 						else if ($s['state'] === false) {
-							$active = 'OCZEKUJE NA AKTYWACJĘ';
+							$active = '<span class="serviceWaitAdd">OCZEKUJE NA AKTYWACJĘ<span>';
 							$toActivate = null;
 						}
 						else {
-							$active = 'OCZEKUJE NA DEZAKTYWACJĘ';
+							$active = '<span class="serviceWaitRemove">OCZEKUJE NA DEZAKTYWACJĘ</span>';
 							$toActivate = null;
 						}
 						
@@ -46,9 +55,9 @@ extends UFtpl_Common {
 			echo $c['name'];
 
 			echo '</td><td>'.$active.'</td><td>';
-			if (($toActivate === true || $toActivate === false) && $user->servicesAvailable && (!$user->banned || $adminEdit)) echo '<a href="#" onclick="return changeConfirmationVisibility('.$c['id'].');">Zmień stan</a>';
+			if (($toActivate === true || $toActivate === false) && $editableForm) echo '<a href="#" onclick="return changeConfirmationVisibility('.$c['id'].');">Zmień stan</a>';
 			echo '</td></tr>';
-			if ($user->servicesAvailable && (!$user->banned || $adminEdit)) {
+			if ($editableForm) {
 				echo '<tr><td colspan="3">';
 				echo '<p class="services" id="serviceMore'.$c['id'].'" style="display: none; text-align: center;">';
 				if ($toActivate) {

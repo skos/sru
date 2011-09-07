@@ -167,9 +167,11 @@ extends UFtpl_Common {
 						."\n";
 					break;
 				case 'availableTo':
-					echo $names[$key].': '.date(self::TIME_YYMMDD, $val)
-						.($val!==$new[$key] ? $arr.date(self::TIME_YYMMDD, $new[$key]) : '')
-						."\n";
+					echo $names[$key].': '.(is_null($val) ? 'brak limitu' : date(self::TIME_YYMMDD, $val));
+					if ($val!==$new[$key]) {
+						echo $arr.(is_null($new[$key]) ? 'brak limitu' : date(self::TIME_YYMMDD, $new[$key]));
+					}
+					echo "\n";
 					break;
 				default: continue;
 			}

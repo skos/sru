@@ -41,8 +41,12 @@ extends UFact {
 			if (isset($post['dormitory'])) {
 				$bean->dormitory = $post['dormitory'];
 			}
-			$bean->facultyId = $post['facultyId'];
-			$bean->studyYearId = $post['studyYearId'];
+			if (!is_null($bean->facultyId)) {
+				$bean->facultyId = $post['facultyId'];
+			}
+			if (!is_null($bean->studyYearId)) {
+				$bean->studyYearId = $post['studyYearId'];
+			}
 
 			$bean->modifiedById = $this->_srv->get('session')->authAdmin;
 			$bean->modifiedAt = NOW;

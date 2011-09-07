@@ -10,6 +10,11 @@ extends UFtpl_Common {
 	}
 
 	public function login(array $d) {
+		echo '<div class="rightColumn">';
+		echo '<div class="rightColumnInfo"><h2>Informacja</h2><p>Na swoje konto możesz zalogować się dopiero po zameldowaniu Cię przez administrację DSu.</p></div>';
+		echo '</div>';
+		echo '<div class="leftColumn">';
+		echo '<div id="login">';
 		$form = UFra::factory('UFlib_Form');
 
 		echo $form->_start();
@@ -24,31 +29,125 @@ extends UFtpl_Common {
 		echo $form->_submit('Zaloguj');
 		echo $form->_end();
 		echo $form->_end(true);
+		echo '<span id="recoverPasswordSwitch"></span>';
+		echo '</div>';
+		// left column will continue...
 	}
 
 	public function titleMain() {
 		echo 'System Rejestracji Użytkowników';
 	}
 
+	public function penaltyInfo(array $d) {
+		echo '<div class="leftColumn">';
+		if (!is_null($d['penalties'])) {
+			$form = UFra::factory('UFlib_Form');
+			echo $form->_start($this->url(0).'/');
+			echo $form->_fieldset('Aktywne kary i ostrzeżenia');
+			echo $d['penalties']->write('listPenalty');
+			echo $form->_end();
+			echo $form->_end(true);
+		}
+		// leftColumn will continue...
+	}
+
 	public function userInfo(array $d) {
+		// leftColumn continues...
 		$form = UFra::factory('UFlib_Form');
 
 		echo $form->_start($this->url(0).'/');
-		echo $form->_fieldset('Ważne informacje');
-		if (!is_null($d['penalties'])) {
-			echo $d['penalties']->write('listPenalty');
-		} else {
-			echo '<h3>Hurra! Brak aktywnych kar i ostrzeżeń! ;)</h3>';
-		}
+		echo $form->_fieldset('Twoje dane');
+		echo $d['user']->write('detailsUser');
 		echo $form->_end();
-		echo $form->_fieldset('Najbliższe dyżury Twoich administratorów');
-		if (!is_null($d['dutyHours'])) {
-			echo $d['dutyHours']->write('upcomingDutyHours', $d['user'], 3);
+		echo $form->_end(true);
+		// leftColumn will continue...
+	}
+
+	public function hostsInfo(array $d) {
+		// leftColumn continues...
+		$form = UFra::factory('UFlib_Form');
+
+		echo $form->_start($this->url(0).'/');
+		echo $form->_fieldset('Twoje komputery');
+		if (is_null($d['computers'])) {
+			if ($d['inactive'] != null) {
+				echo $this->ERR('Nie posiadasz komputerów.');
+				echo '<p>Przywróć komputer:</p>';
+				$d['inactive']->write('listToActivate');
+				echo '<p><a href="'.$this->url(0).'/computers/:add">lub dodaj nowy komputer</a>.</p>';
+			} else {
+				echo $this->ERR('Nie posiadasz komputerów. <a href="'.$this->url(0).'/computers/:add">Dodaj komputer</a>.');
+			}
 		} else {
-			echo $this->ERR('Żaden administrator nie jest przypisany do Twojego DSu. Skontaktuj się z nami mailowo: <a href="mailto:adnet@ds.pg.gda.pl">adnet@ds.pg.gda.pl</a>.');
+			echo '<ul>';
+			echo $d['computers']->write('listOwn');
+			echo '</ul>';
 		}
 		echo $form->_end();
 		echo $form->_end(true);
+		// leftColumn will continue...
+	}
+
+	public function servicesInfo(array $d) {
+		// leftColumn continues...
+		$acl = $this->_srv->get('acl');
+		if ($acl->sru('service', 'view')) {
+			$form = UFra::factory('UFlib_Form');
+
+			echo $form->_start($this->url(0).'/');
+			echo $form->_fieldset('Twoje usługi');
+			echo $d['allServices']->write('formEdit', $d['userServices'], $d['user'], false, false);
+			echo '<p><a class="userAction" href="'.$this->url(0).'/services">Edytuj</a>';
+			echo $form->_end();
+			echo $form->_end(true);
+		}
+		echo '</div>';
+	}
+
+	public function contact(array $d) {
+		echo '<div class="rightColumn">';
+		$form = UFra::factory('UFlib_Form');
+
+		echo $form->_fieldset('Kontakt');
+		echo '<h3>Adres e-mail do wszystkich administratorów w DSie:<br/><a href="mailto:admin-'.$d['user']->dormitoryAlias.'@ds.pg.gda.pl">admin-'.$d['user']->dormitoryAlias.'@ds.pg.gda.pl</a>.</h3>';
+		echo $form->_end();
+
+		echo $form->_fieldset('Najbliższe dyżury');
+		if (!is_null($d['dutyHours'])) {
+			echo $d['dutyHours']->write('apiUpcomingDutyHours', 3, null);
+		}
+		echo '<p><a class="userAction" href="http://dyzury.ds.pg.gda.pl/">Pełna lista dyżurów</a>';
+		echo $form->_end();
+		echo $form->_end(true);
+		// rightColumn will continue...
+	}
+
+	public function importantLinks(array $d) {
+		// rightColumn continues...
+		$conf = UFra::shared('UFconf_Sru');
+		$links = $conf->userImportantLinks;
+		if (!empty($links)) {
+			$form = UFra::factory('UFlib_Form');
+			echo $form->_fieldset('Ważne linki');
+			echo '<ul>';
+			foreach ($links as $url => $desc) {
+				echo '<li><a href="'.$url.'">'.$desc.'</a>';
+			}
+			echo '</ul>';
+			echo $form->_end();
+			echo $form->_end(true);
+		}
+		// rightColumn will continue...
+	}
+
+	public function banners(array $d) {
+		// rightColumn continues...
+		if (!empty($d['content'])) {
+			foreach ($d['content'] as $file) {
+				echo '<p><img src="'.UFURL_BASE.'/i/banners-img/'.$file.'" alt="" /></p>';
+			}
+		}
+		echo '</div>';
 	}
 
 	public function userPenalties(array $d) {
@@ -66,7 +165,7 @@ extends UFtpl_Common {
 
 	public function userServicesEdit(array $d) {
 		$form = UFra::factory('UFlib_Form');
-		echo '<h2>Dostępne usługi</h2>';
+		echo '<h1>Dostępne usługi</h1>';
 		echo $form->_start();
 
 		if ($this->_srv->get('msg')->get('serviceEdit/ok')) {
@@ -89,11 +188,8 @@ extends UFtpl_Common {
 	public function userMainMenu() {
 		$acl = $this->_srv->get('acl');
 		
-		echo '<div class="mainMenu"><h1>System Rejestracji Użytkowników</h1>';
-		if ($this->_srv->get('msg')->get('userRecover/ok')) {
-			echo $this->OK('Konto zostało aktywowane - teraz <a href="'.$this->url(0).'/computers">dodaj komputer</a>');
-		}
-		echo '<ul>';
+		echo '<div id="nav"><ul>';
+		echo '<li><a href="'.$this->url(0).'">Główna</a></li>';
 		echo '<li><a href="'.$this->url(0).'/profile">Profil</a></li>';
 		echo '<li><a href="'.$this->url(0).'/computers">Komputery</a></li>';
 		echo '<li><a href="'.$this->url(0).'/penalties">Kary</a></li>';
@@ -129,7 +225,7 @@ extends UFtpl_Common {
 		echo $form->_start();
 		echo $form->_fieldset('Twoje dane');
 		if ($this->_srv->get('msg')->get('userEdit/ok')) {
-			echo $this->OK('Dane zostały zmienione');
+			echo $this->OK('Dane zostały zmienione. Pamiętaj, aby zaktualizować dane, gdy ponownie ulegną zmianie.');
 		}
 		echo $d['user']->write('formEdit', $d['faculties']);
 		echo $form->_submit('Zapisz');
@@ -144,11 +240,11 @@ extends UFtpl_Common {
 	public function userComputers(array $d) {
 		echo '<h1>Twoje komputery</h1><ul>';
 		if ($this->_srv->get('msg')->get('computerEdit/ok')) {
-			echo $this->OK('Dane zostały zmienione');
+			echo $this->OK('Dane zostały zmienione.');
 		} else if ($this->_srv->get('msg')->get('computerAdd/ok')) {
-			echo $this->OK('Komputer został dodany');
+			echo $this->OK('Komputer został dodany. Poczekaj cierpliwie, aż sieć zacznie działać. Może to potrwać nawet godzinę.');
 		} elseif ($this->_srv->get('msg')->get('computerDel/ok')) {
-			echo $this->OK('Komputer został wyrejestrowany');
+			echo $this->OK('Komputer został wyrejestrowany.');
 		}
 		$d['computers']->write('listOwn');
 		echo '</ul>';
@@ -183,9 +279,9 @@ extends UFtpl_Common {
 
 		echo '<div class="computer">';
 		$d['computer']->write('detailsOwn');
-		echo '<p class="nav"><a href="'.$this->url(1).'">Powrót do listy</a>';
+		echo '<p><a class="userAction" href="'.$this->url(1).'">Powrót do listy</a>';
 		if ($acl->sru('computer', 'edit')) {
-			echo ' <small><a href="'.$this->url(2).'/:edit">Edytuj</a></small>';
+			echo ' &bull; <a class="userAction" href="'.$this->url(2).'/:edit">Edytuj</a>';
 		}
 		echo '</p></div>';
 	}
@@ -254,19 +350,13 @@ extends UFtpl_Common {
 		echo $form->_start($this->url(0).'/', array('class'=>'userBar'));
 		echo $form->_fieldset();
 		echo $d['user']->write(__FUNCTION__, $d['lastLoginIp'], $d['lastLoginAt'], $d['lastInvLoginIp'], $d['lastInvLoginAt']);
-		echo '<table><tr><td style="width: 100%;"><a href="'. $this->url(0) .'/">Strona główna</a></td><td>';
 		echo $form->_submit('Wyloguj', array('name'=>'userLogout'));
-		echo '</td></tr></table>';
 		echo $form->_end();
 		echo $form->_end(true);
 	}
 
 	public function recoverPassword(array $d) {
-		$form = UFra::factory('UFlib_Form', 'sendPassword');
-
-		echo $form->_start($this->url(0));
-		echo $form->_fieldset('Nie pamiętam hasła');
-
+		// left column continues...
 		if ($this->_isOK('sendPassword')) {
 			echo $this->OK('Kliknij link, który został wysłany na maila.');
 		} elseif ($this->_isOK('userRecoverPassword')) {
@@ -276,10 +366,66 @@ extends UFtpl_Common {
 		} elseif ($this->_isErr('sendPassword')) {
 			echo $this->ERR('Nie znaleziono aktywnego konta z podanym mailem.');
 		}
+		echo '<div id="recoverPassword">';
+		$form = UFra::factory('UFlib_Form', 'sendPassword');
+
+		echo $form->_start($this->url(0));
+		echo $form->_fieldset('Przypomnij login i hasło');
 		echo $form->email('E-mail');
 		echo $form->_submit('Zmień');
 		echo $form->_end();
 		echo $form->_end(true);
+		echo '</div></div>';
+
+?><script type="text/javascript">
+function changeVisibility() {
+	var rpDiv = document.getElementById('recoverPassword');
+	var lDiv = document.getElementById('login');
+	if (rpDiv.sruHidden != true) {
+		rpDiv.style.display = 'none';
+		rpDiv.sruHidden = true;
+		lDiv.style.display = 'block';
+	} else {
+		rpDiv.style.display = 'block';
+		rpDiv.sruHidden = false;
+		lDiv.style.display = 'none';
+	}
+}
+var container = document.getElementById('recoverPasswordSwitch');
+var button = document.createElement('a');
+button.onclick = function() {
+	changeVisibility();
+}
+var txt = document.createTextNode('Zapomniałem loginu lub hasła!');
+button.appendChild(txt);
+container.appendChild(button);
+changeVisibility();
+</script><?
+	}
+
+	public function titleUserUnregistered() {
+		echo 'Komputer niezarejestrowany w SKOS PG';
+	}
+
+	public function userUnregistered() {
+		echo '<h1>Twój komputer jest niezarejestrowany w SKOS PG</h1>
+<p>Aby zarejestrować się, musisz zameldować się w administracji swojego akademika.</p>
+<p>Jeżeli posiadasz konto w  SRU, a lista Twoich komputerów jest pusta, należy dodać komputer. Po zarejestrowaniu komputera należy poczekać nawet godzinę.</p>
+<h1>Your computer is not registered in the SKOS PG</h1>
+<p>You should visit your dorm administration.</p>
+<p>If you have an account in SRU, but the list of your computers is empty, you should add your computer. After that you need to wait for 1 hour.</p>
+<p>*SKOS PG - it is a polish acronym for the campus network</p>';
+	}
+
+	public function titleUserBanned() {
+		echo 'Komputer ukarany odcięciem od Internetu';
+	}
+
+	public function userBanned() {
+		echo '<h1>Twój komputer został ukarany odcięciem od Internetu</h1>
+<p>Zaloguj się, aby sprawdzić powód kary. Możesz się także skontaktować z administratorami w <a href="http://dyzury.ds.pg.gda.pl/">godzianch dyżurów</a>.</p>
+<h1>Your computer has been punished by cutting off Internet</h1>
+<p>Log in to check the reason of your penalty. You can also contact us during <a href="http://dyzury.ds.pg.gda.pl/">our duty hours</a>.</p>';
 	}
 
 	public function userAddMailTitle(array $d) {

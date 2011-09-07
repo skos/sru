@@ -358,8 +358,13 @@ extends UFbox {
 			}
 
 			$conf = UFra::shared('UFconf_Sru');
-			$d['userPrintWaletText'] = $conf->userPrintWaletText;
-			$d['userPrintSkosText'] = $conf->userPrintSkosText;
+			if ($bean->typeId == UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL) {
+				$d['userPrintWaletText'] = $conf->touristPrintWaletText;
+				$d['userPrintSkosText'] = $conf->touristPrintSkosText;
+			} else {
+				$d['userPrintWaletText'] = $conf->userPrintWaletText;
+				$d['userPrintSkosText'] = $conf->userPrintSkosText;
+			}
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
