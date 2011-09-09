@@ -148,7 +148,7 @@ extends UFtpl_Common {
 			foreach ($d['content'] as $file) {
 				echo '<p>'. (array_key_exists($file, $links) ? '<a href="'.$links[$file].'">' : '').
 					'<img src="'.UFURL_BASE.'/i/banners-img/'.$file.'" alt="" />'.
-					(array_key_exists($file, $links) ? '<a href="">' : '').'</p>';
+					(array_key_exists($file, $links) ? '</a>' : '').'</p>';
 			}
 		}
 		echo '</div>';
