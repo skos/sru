@@ -364,7 +364,7 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 		echo '<div class="admins">';
 		echo '<h2>Administratorzy OS ('.count($d['admins']).')</h2>';
 
-		$d['admins']->write('listAdmin', $d['dormitories']);
+		$d['admins']->write('listAdmin', $d['dormitories'], 1);
 
 		echo '</div>';
 		
@@ -379,7 +379,7 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 		echo '<div class="admins inactive">';
 		echo '<h2>Nieaktywni Administratorzy OS ('.count($d['admins']).')</h2>';
 
-		$d['admins']->write('listAdmin', $d['dormitories']);
+		$d['admins']->write('listAdmin', $d['dormitories'], 2);
 
 		echo '</div>';
 	}

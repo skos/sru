@@ -37,11 +37,11 @@ extends UFtpl_Common {
 		echo '<p>'.$this->_escape($d['name']).'</p>';
 	}
 	
-	public function listAdmin(array $d, array $dorms) {
+	public function listAdmin(array $d, array $dorms, $tblId = 0) {
 		$url = $this->url(0).'/admins/';
 		$baseUrl = $this->url(0);
 
-		echo '<table id="adminsT" class="bordered"><thead><tr>';
+		echo '<table id="adminsT'.$tblId.'" class="bordered"><thead><tr>';
 		echo '<th>Administrator</th>';
 		echo '<th>Ostatnie logowanie</th>';
 		echo '<th>DS-y pod opieką</th>';
@@ -78,7 +78,7 @@ extends UFtpl_Common {
 <script type="text/javascript">
 $(document).ready(function() 
     { 
-        $("#adminsT").tablesorter(); 
+        $("#adminsT<?=$tblId?>").tablesorter();
     } 
 );
 </script>
