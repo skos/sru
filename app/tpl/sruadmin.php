@@ -475,6 +475,51 @@ extends UFtpl_Common {
 		if($acl->sruAdmin('admin', 'add')) {
 			echo '<p class="nav"><a href="'.$url.':add">Dodaj nowego administratora</a></p>';
 		}
+		echo '<h2>Pokaż aktywnych na dany dzień</h2>';
+		$this->activeOnDateAdminsForm(null);
+	}
+
+	public function adminsActive(array $d) {
+		$url = $this->url(0).'/admins/';
+		
+		echo '<div class="admins">';
+		$d['admins']->write('activeOnDateAdmins', $d['activeOnDate']);
+		$this->activeOnDateAdminsForm($d['activeOnDate']);
+		echo '</div>';
+
+		echo '<p class="nav"><a href="'.$url.'">Powrót</a></p>';
+	}
+
+	public function adminsActiveDateError(array $d) {
+		$url = $this->url(0).'/admins/';
+
+		echo '<div class="admins">';
+		echo $this->ERR('Błędna data');
+		$this->activeOnDateAdminsForm(null);
+		echo '</div>';
+
+		echo '<p class="nav"><a href="'.$url.'">Powrót</a></p>';
+	}
+
+	public function adminsActiveNotFound(array $d) {
+		$url = $this->url(0).'/admins/';
+
+		echo '<div class="admins">';
+		echo $this->ERR('Nie znaleziono administratorów');
+		$this->activeOnDateAdminsForm(null);
+		echo '</div>';
+
+		echo '<p class="nav"><a href="'.$url.'">Powrót</a></p>';
+	}
+
+	private function activeOnDateAdminsForm($date) {
+		$form = UFra::factory('UFlib_Form', 'activeOnForm');
+		echo $form->_start($this->url(0).'/admins/active');
+		echo $form->_fieldset();
+		echo $form->activeOn('Data (YYYY-MM-DD)', array('value'=>$date));
+		echo $form->_submit('Zobacz', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" alt="?" title="Pokazuje adminów aktywnych w danym dniu oraz adminów, którym nie udało się ustalić statusu na dany dzień." />'));
+		echo $form->_end();
+		echo $form->_end(true);
 	}
 
 	public function inactiveAdmins(array $d) {

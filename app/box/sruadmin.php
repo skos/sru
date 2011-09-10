@@ -789,6 +789,29 @@ extends UFbox {
 			return $this->render('adminsNotFound');
 		}
 	}
+
+	public function adminsActive() {
+		try {
+			$get = $this->_srv->get('req')->get;
+			$date = explode('-', $get->activeOn);
+			if (count($date) != 3) {
+				return $this->render(__FUNCTION__.'DateError');
+			}
+			if (!checkdate($date[1], $date[2], $date[0])) {
+				return $this->render(__FUNCTION__.'DateError');
+			}
+			$d['activeOnDate'] = $get->activeOn;
+			$bean = UFra::factory('UFbean_SruAdmin_AdminList');
+			$bean->listActiveOnDate($d['activeOnDate']);
+			$d['admins'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		}
+		catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}
+	}
+
 	public function titleAdmin() {
 		try {
 			$bean = $this->_getAdminFromGet();

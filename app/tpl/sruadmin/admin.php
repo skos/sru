@@ -351,6 +351,33 @@ extends UFtpl_Common {
 			echo $c['login']."\n";
 		}
 	}
+
+	public function activeOnDateAdmins(array $d, $date) {
+		$url = $this->url(0).'/admins/';
+		$admins = array();
+		$inactive = array();
+
+		foreach ($d as $c) {
+			if(!array_key_exists($c['id'], $admins) && !array_key_exists($c['id'], $inactive)) {
+				if ($c['active']) {
+					$admins[$c['id']] = $c['name'];
+				} else {
+					$inactive[$c['id']] = 0;
+				}
+			}
+		}
+
+		asort($admins);
+		echo '<h2>Administratorzy aktywni w dniu: '.$date.' ('.count($admins).')</h2>';
+		echo '<ul>';
+		while (!is_null(key($admins))) {
+			if (current($admins)) {
+				echo '<li><a href="'.$url.key($admins).'">'.current($admins).'</a></li>';
+				next($admins);
+			}
+		}
+		echo '</ul>';
+	}
 }
 
 class DutyHour

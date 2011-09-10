@@ -24,6 +24,9 @@ extends UFctl {
 				case ':add':
 					$get->view = 'admins/add';
 					break;
+				case 'active':
+					$get->view = 'admins/active';
+					break;
 				default:
 					$get->view = 'admins/admin';
 					$id = (int)$req->segment(2);
@@ -107,6 +110,13 @@ extends UFctl {
 				} else {
 					return 'Sru_Error403';
 				}
+			case 'admins/active':
+				try {
+					$get->activeOn = $post->activeOnForm['activeOn'];
+				} catch (UFex_Core_DataNotFound $ex) {
+					$get->activeOn = 0;
+				}
+				return 'SruAdmin_AdminsActive';
 			default:
 				return 'Sru_Error404';
 		}

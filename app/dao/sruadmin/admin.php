@@ -119,4 +119,16 @@ extends UFdao {
 		return $this->getByLoginPassword($login, $password);
 	}
 
+	public function listActiveOnDate($date) {
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		$query->raw("SELECT id, active, name FROM
+			(SELECT admin_id AS id, modified_at AS mod, active AS active, name as name FROM admins_history WHERE type_id < ".UFacl_SruAdmin_Admin::BOT."
+			UNION SELECT id AS id, modified_at AS mod, active AS active, name as name from admins  WHERE type_id < ".UFacl_SruAdmin_Admin::BOT.") AS foo
+			WHERE (mod <= '".$date."' or mod IS NULL) GROUP BY id, active, name ORDER BY max (mod) DESC;");
+
+		return $this->doSelect($query);
+	}
+
 }
