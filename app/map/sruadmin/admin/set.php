@@ -19,9 +19,11 @@ extends UFmap {
 		'jid'            => 'jid',
 		'email'          => 'email',
 		'address'        => 'address',
-		'active'	 => 'active',
+		'active'		 => 'active',
 		'dormitoryId'    => 'dormitory_id',
-		'activeTo'		=> 'active_to',
+		'activeTo'		 => 'active_to',
+		'modifiedById'   => 'modified_by',
+		'modifiedAt'     => 'modified_at',
 	);
 	protected $columnTypes = array(
 		'password'       => self::TEXT,
@@ -36,9 +38,11 @@ extends UFmap {
 		'jid'            => self::TEXT,
 		'email'          => self::TEXT,
 		'address'        => self::TEXT,
-		'active'	 => self::BOOL,
+		'active'		 => self::BOOL,
 		'dormitoryId'    => self::NULL_INT,
-		'activeTo'		=> self::NULL_TS,
+		'activeTo'		 => self::NULL_TS,
+		'modifiedById'   => self::NULL_INT,
+		'modifiedAt'     => self::TS,
 	);	
 	protected $tables = array(
 		'' => 'admins',

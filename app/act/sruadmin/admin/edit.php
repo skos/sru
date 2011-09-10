@@ -35,6 +35,8 @@ extends UFact {
 			if(isset($post['active']) && $acl->sruAdmin('admin', 'advancedEdit')) {
 				$bean->active = $post['active'];	
 			}
+			$bean->modifiedById = $this->_srv->get('session')->authAdmin;
+			$bean->modifiedAt = NOW;
 			$bean->save();
 
 			if (array_key_exists('dorm', $post)) {

@@ -543,10 +543,15 @@ extends UFtpl_Common {
 		$d['admin']->write('details');
 		
 		echo '<p class="nav">';
+		echo '<a href="'.$url.'/history">Historia profilu</a> &bull; ';
 		if($acl->sruAdmin('admin', 'edit', $d['admin']->id)) {
 			echo '<a href="'.$url.'/:edit">Edycja</a> &bull; ';
 		}
 		echo '<a href="'.$this->url(0).'/admins/">Powrót</a></p></div>';
+	}
+
+	public function adminHistory(array $d) {
+		$d['history']->write('history', $d['admin']);
 	}
 
 	public function adminDutyHours(array $d) {

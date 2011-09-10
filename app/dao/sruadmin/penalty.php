@@ -91,21 +91,21 @@ extends UFdao {
 					(SELECT count(*) FROM penalties_history h WHERE h.penalty_id = foo.id) AS modificationcount,
 					d.alias AS userdormalias
 					FROM
-					(SELECT id, user_id AS userid, modified_at AS modifieda, type_id AS typeid, end_at AS endat, 
+					(SELECT id, user_id AS userid, p.modified_at AS modifieda, type_id AS typeid, end_at AS endat,
 						(SELECT title FROM penalty_templates t WHERE template_id = t.id) AS template,
-						modified_by AS modifiedby
-					FROM penalties " . $modBy . " 
+						p.modified_by AS modifiedby
+					FROM penalties p " . $modBy . "
 					UNION SELECT penalty_id AS id, (SELECT user_id FROM penalties WHERE penalty_id = id) AS userid, 
-					modified_at AS modifieda, (SELECT type_id FROM penalties WHERE penalty_id = id) AS typeid, 
+					h.modified_at AS modifieda, (SELECT type_id FROM penalties WHERE penalty_id = id) AS typeid,
 					end_at AS endat, 
 					(SELECT title FROM penalties p, penalty_templates t WHERE penalty_id = p.id 
 						AND p.template_id = t.id) AS template, modified_by AS modifiedby
-					FROM penalties_history " . $modBy . ")
+					FROM penalties_history h " . $modBy . ")
 					AS foo LEFT JOIN users u ON u.id = userid
 					LEFT JOIN admins a ON modifiedby = a.id
 					LEFT JOIN locations l ON l.id = u.location_id
 					LEFT JOIN dormitories d ON d.id = l.dormitory_id
-					WHERE modified_at is not null " . $timeCondition
+					WHERE u.modified_at is not null " . $timeCondition
 					. " GROUP BY foo.id, userid, u.name, surname, u.login, banned, u.active, typeid, endat, template, 
 						modifiedby, a.name, d.alias
 					ORDER BY foo.id, modifiedat DESC 

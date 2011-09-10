@@ -368,7 +368,7 @@ extends UFtpl_Common {
 		} elseif ($this->_srv->get('msg')->get('sendPassword/errors/email/notUnique')) {
 			echo $this->ERR('Podany email jest przypisany do kilku kont - proszę zgłosić się do administratora lokalnego w celu zmiany hasła.');
 		} elseif ($this->_isErr('sendPassword')) {
-			echo $this->ERR('Nie znaleziono aktywnego konta z podanym mailem.');
+			echo $this->ERR('Nie znaleziono aktywnego konta z podanym mailem. Czy aktywowałeś swoje konto w administracji DS?');
 		}
 		echo '<div id="recoverPassword">';
 		$form = UFra::factory('UFlib_Form', 'sendPassword');

@@ -3,7 +3,7 @@
  * admin
  */
 class UFbean_SruAdmin_Admin
-extends UFbeanSingle {
+extends UFbean_Common {
 
 	protected $_password = null;
 

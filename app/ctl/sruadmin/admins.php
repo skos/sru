@@ -36,7 +36,10 @@ extends UFctl {
 					if ($segCount > 2) {
 						switch ($req->segment(3)) {
 							case ':edit':
-								$get->view = 'admins/edit';
+								$get->view = 'admins/admin/edit';
+								break;
+							case 'history':
+								$get->view = 'admins/admin/history';
 								break;
 							default:
 								$get->view = 'error404';
@@ -59,7 +62,7 @@ extends UFctl {
 			$act = 'Admin_Login';
 		} elseif ('admins/add' == $get->view && $post->is('adminAdd') && $acl->sruAdmin('admin', 'add')) {
 			$act = 'Admin_Add';
-		} elseif ('admins/edit' == $get->view && $post->is('adminEdit') && $acl->sruAdmin('admin', 'edit', $get->adminId)) {
+		} elseif ('admins/admin/edit' == $get->view && $post->is('adminEdit') && $acl->sruAdmin('admin', 'edit', $get->adminId)) {
 			$act = 'Admin_Edit';
 		}
 
@@ -86,6 +89,8 @@ extends UFctl {
 				return 'SruAdmin_Admins';
 			case 'admins/admin':
 				return 'SruAdmin_Admin';
+			case 'admins/admin/history':
+				return 'SruAdmin_AdminHistory';
 			case 'admins/add':
 				if ($msg->get('adminAdd/ok')) {
 					return 'SruAdmin_Admins';
@@ -94,7 +99,7 @@ extends UFctl {
 				} else {
 					return 'Sru_Error404';
 				}
-			case 'admins/edit':
+			case 'admins/admin/edit':
 				if ($msg->get('adminEdit/ok')) { 
 					return 'SruAdmin_Admin';
 				} elseif ($acl->sruAdmin('admin', 'edit', $get->adminId)) {
