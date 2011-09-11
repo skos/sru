@@ -307,12 +307,30 @@ extends UFtpl_Common {
 		if (is_null($d['email'])) {
 			echo $this->ERR('Twoje konto zostało dopiero założone. Wymagana jest zmiana hasła.');
 		}
-		echo '<p><label>Typ konta:</label><span class="userData"> '.self::getUserType($d['typeId']).'</span></p>';
-		echo '<p><label>Zameldowanie:</label><span class="userData"> '.$d['dormitoryName'].', pok. '.$d['locationAlias'].'</span></p>';
-		echo '<p><label>Adres:</label><span class="userData"> '.$d['address'].'</span></p>';
-		echo '<p><label>Typ dokumentu:</label><span class="userData"> '.self::$documentTypes[$d['documentType']].'</span></p>';
-		echo '<p><label>Nr dokumentu:</label><span class="userData"> '.$d['documentNumber'].'</span></p>';
-		echo '<p><label>Narodowość:</label><span class="userData"> '.$d['nationality'].'</span></p>';
+		if(!is_null($d['typeId']) && $d['typeId'] != '')
+		{
+			echo '<p><label>Typ konta:</label><span class="userData"> '.self::getUserType($d['typeId']).'</span></p>';
+		}
+		if(!is_null($d['locationAlias']) && $d['locationAlias'] != '')
+		{
+			echo '<p><label>Zameldowanie:</label><span class="userData"> '.$d['dormitoryName'].', pok. '.$d['locationAlias'].'</span></p>';
+		}
+		if(!is_null($d['address']) && $d['address'] != '')
+		{
+			echo '<p><label>Adres:</label><span class="userData"> '.$d['address'].'</span></p>';
+		}
+		if(!is_null($d['documentType']) && $d['documentType'] != '')
+		{
+			echo '<p><label>Typ dokumentu:</label><span class="userData"> '.self::$documentTypes[$d['documentType']].'</span></p>';
+		}
+		if(!is_null($d['documentNumber']) && $d['documentNumber'] != '')
+		{
+			echo '<p><label>Nr dokumentu:</label><span class="userData"> '.$d['documentNumber'].'</span></p>';
+		}
+		if(!is_null($d['nationality']) && $d['nationality'] != '')
+		{
+			echo '<p><label>Narodowość:</label><span class="userData"> '.$d['nationality'].'</span></p>';
+		}
 		if(!is_null($d['pesel']) && $d['pesel'] != '')
 		{
 			echo '<p><label>PESEL:</label><span class="userData">'.$d['pesel'].'</span></p>';
