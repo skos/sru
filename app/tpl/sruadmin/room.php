@@ -57,7 +57,11 @@ extends UFtpl_Common {
 		if ($d['comment']) {
 			echo '<p class="comment">'.nl2br($this->_escape($d['comment'])).'</p>';		
 		}
-		echo '<p class="nav"><a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'/'.$d['alias'].'/:edit">Edytuj</a></p>';
+		echo '<p class="nav">';
+		echo '<a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'/'.$d['alias'].'">Dane</a>';
+		echo ' &bull; <a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'/'.$d['alias'].'/:edit">Edytuj</a>';
+		echo ' &bull; <a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'/'.$d['alias'].'/history">Historia zmian</a>';
+		echo '</p>';
 		
 		if(isset($_COOKIE['SRUDisplayUsers']) && $_COOKIE['SRUDisplayUsers'] == '1' && !isset($_COOKIE['SRUDisplayUsersChanged'])){
 			echo '<p class="nav"><a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'/'.$d['alias'].'" onClick="fullList()">Wyświetl pełną listę użytkowników i hostów</a></p>';

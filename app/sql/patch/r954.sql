@@ -1,5 +1,5 @@
 ALTER TABLE admins ADD COLUMN modified_by bigint; -- kto modyfikowal ostanio
-ALTER TABLE admins ADD COLUMN modified_at timestamp without time zone; -- kiedy ostanio modyfikowano
+ALTER TABLE admins ADD COLUMN modified_at timestamp without time zone DEFAULT now(); -- kiedy ostanio modyfikowano
 
 
 -- DROP TABLE admins_history;
@@ -20,7 +20,7 @@ CREATE TABLE admins_history
   active boolean NOT NULL DEFAULT true, -- czy konto jest aktywne?
   active_to timestamp without time zone,
   modified_by bigint,
-  modified_at timestamp without time zone,
+  modified_at timestamp without time zone DEFAULT now(),
   CONSTRAINT admins_history_pkey PRIMARY KEY (id),
   CONSTRAINT admins_history_modified_by_fkey FOREIGN KEY (modified_by)
       REFERENCES admins (id) MATCH SIMPLE

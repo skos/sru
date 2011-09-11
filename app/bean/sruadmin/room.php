@@ -3,5 +3,5 @@
  * akademik
  */
 class UFbean_SruAdmin_Room
-extends UFbeanSingle {
+extends UFbean_Common {
 }

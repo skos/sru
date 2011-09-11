@@ -985,6 +985,11 @@ extends UFtpl_Common {
 	public function roomEdit(array $d) {
 		echo $d['room']->write('formEdit');
 	}
+
+	public function roomHistory(array $d) {
+		$d['history']->write('history', $d['room']);
+	}
+
 	public function titleComputerAdd() {
 		echo 'Dodaj komputer';
 	}	

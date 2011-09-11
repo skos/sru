@@ -35,12 +35,15 @@ extends UFctl {
 				{
 					$get->view = 'dormitories/room';
 				}
-				elseif(4 == $segCount && $req->segment(4) == ':edit' )
-				{			
-					$get->view = 'dormitories/room/edit';
-				}
-				else
-				{
+				elseif(4 == $segCount) {
+					if ($req->segment(4) == ':edit' ) {
+						$get->view = 'dormitories/room/edit';
+					} else if ($req->segment(4) == 'history') {
+						$get->view = 'dormitories/room/history';
+					} else {
+						$get->view = 'error404';
+					}
+				} else {
 					$get->view = 'error404';
 				}		
 			}
@@ -99,7 +102,9 @@ extends UFctl {
 					return 'SruAdmin_Room';
 				} else{
 					return 'SruAdmin_RoomEdit';
-				}								
+				}
+			case 'dormitories/room/history':
+				return 'SruAdmin_RoomHistory';
 			default:
 				return 'Sru_Error404';
 		}

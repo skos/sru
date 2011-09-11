@@ -17,7 +17,9 @@ extends UFact {
 			
 			
 			$bean->fillFromPost(self::PREFIX, array(), array('comment'));
-														
+
+			$bean->modifiedById = $this->_srv->get('session')->authAdmin;
+			$bean->modifiedAt = NOW;
 			$bean->save();
 
 			$this->postDel(self::PREFIX);

@@ -1426,6 +1426,21 @@ extends UFbox {
 			return $this->render('roomNotFound');
 		}
 	}
+
+	public function roomHistory() {
+		try {
+			$room = $this->_getRoomFromGet();
+			$d['room'] = $room;
+			$history = UFra::factory('UFbean_SruAdmin_RoomHistoryList');
+			$history->listByRoomId($room->id);
+			$d['history'] = $history;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render('roomNotFound');
+		}
+	}
+
 	public function computerAdd() {
 		$bean = UFra::factory('UFbean_Sru_Computer');
 

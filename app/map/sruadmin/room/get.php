@@ -15,6 +15,9 @@ extends UFmap {
 		'dormitoryAlias'=> 'd.alias',
 		'dormitoryName' => 'd.name',
 		'usersMax'	=> 'l.users_max',
+		'modifiedById'   => 'l.modified_by',
+		'modifiedByName' => 'a.name',
+		'modifiedAt'     => 'l.modified_at',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -26,15 +29,20 @@ extends UFmap {
 		'dormitoryAlias' => self::TEXT,
 		'dormitoryName'  => self::TEXT,
 		'usersMax'	 => self::INT,
+		'modifiedById'   => self::NULL_INT,
+		'modifiedByName' => self::TEXT,
+		'modifiedAt'     => self::TS,
 	);
 	protected $tables = array(
 		'l' => 'locations',
 	);
 	protected $joins = array(
 		'd' => 'dormitories',
+		'a' => 'admins',
 	);	
 	protected $joinOns = array(
 		'd' => 'l.dormitory_id=d.id',
+		'a' => 'l.modified_by=a.id',
 	);	
 	protected $pk = 'id';
 }
