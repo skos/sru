@@ -24,6 +24,16 @@ extends UFmap {
 		'registryNo'	 => 'registry_no',
 		'updateNeeded'	 => 'update_needed',
 		'changePasswordNeeded'	=> 'change_password_needed',
+		'address'		=> 'address',
+		'documentType'	=> 'document_type',
+		'documentNumber'=> 'document_number',
+		'nationality'	=> 'nationality',
+		'pesel'			=> 'pesel',
+		'birthDate'		=> 'birth_date',
+		'birthPlace'	=> 'birth_place',
+		'userPhoneNumber'	=> 'user_phone_number',
+		'guardianPhoneNumber'	=> 'guardian_phone_number',
+		'sex'			=> 'sex'
 	);
 	protected $columnTypes = array(
 		'login'          => self::TEXT,
@@ -46,6 +56,16 @@ extends UFmap {
 		'registryNo'	 => self::NULL_INT,
 		'updateNeeded'	 => self::BOOL,
 		'changePasswordNeeded'	=> self::BOOL,
+		'address'		=> self::TEXT,
+		'documentType'	=> self::TEXT,
+		'documentNumber'=> self::TEXT,
+		'nationality'	=> self::INT,
+		'pesel'			=> self::TEXT,
+		'birthDate'		=> self::NULL_TS,
+		'birthPlace'	=> self::TEXT,
+		'userPhoneNumber'	=> self::TEXT,
+		'guardianPhoneNumber'	=> self::TEXT,
+		'sex'			=> self::BOOL
 	);
 	protected $tables = array(
 		'' => 'users',

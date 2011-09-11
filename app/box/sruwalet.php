@@ -244,6 +244,9 @@ extends UFbox {
 
 	public function userEdit() {
 		try {
+			$faculties = UFra::factory('UFbean_Sru_FacultyList');
+			$faculties->listAll();
+			
 			$bean = $this->_getUserFromGet();
 
 			$admin = UFra::factory('UFbean_SruWalet_Admin');
@@ -262,6 +265,7 @@ extends UFbox {
 
 			$d['user'] = $bean;
 			$d['dormitories'] = $dorms;
+			$d['faculties'] = $faculties;
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {

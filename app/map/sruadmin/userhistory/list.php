@@ -38,6 +38,16 @@ extends UFmap {
 		'passwordChanged'	=> 'u.password_changed',
 		'lang'		 => 'u.lang',
 		'typeId'	=> 'u.type_id',
+		'address'		=> 'u.address',
+		'documentType'	=> 'u.document_type',
+		'documentNumber'=> 'u.document_number',
+		'nationality'	=> 'u.nationality',
+		'pesel'			=> 'u.pesel',
+		'birthDate'		=> 'u.birth_date',
+		'birthPlace'	=> 'u.birth_place',
+		'userPhoneNumber'	=> 'u.user_phone_number',
+		'guardianPhoneNumber'	=> 'u.guardian_phone_number',
+		'sex'			=> 'u.sex'
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -72,6 +82,16 @@ extends UFmap {
 		'passwordChanged'	=> self::TS,
 		'lang'           => self::TEXT,
 		'typeId'	=> self::INT,
+		'address'		=> self::TEXT,
+		'documentType'	=> self::TEXT,
+		'documentNumber'=> self::TEXT,
+		'nationality'	=> self::INT,
+		'pesel'			=> self::TEXT,
+		'birthDate'		=> self::NULL_TS,
+		'birthPlace'	=> self::TEXT,
+		'userPhoneNumber'	=> self::TEXT,
+		'guardianPhoneNumber'	=> self::TEXT,
+		'sex'			=> self::BOOL
 	);
 	protected $tables = array(
 		'u' => 'users_history',

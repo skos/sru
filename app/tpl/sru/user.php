@@ -110,6 +110,10 @@ extends UFtpl_Common {
 		'referralStart/both' => 'Zameldowany mieszkaniec powinien mieć ustawioną tylko datę początku skierowania, zaś niezameldowany tylko datę końca skierowania.',
 		'referralEnd/inactive' => 'Niezameldowany mieszkaniec musi mieć podaną datę końca skierowania',
 		'referralEnd/5' => 'Nieprawidłowa data końca skierowania',
+		'address/noAddress' => 'Podaj adres',
+		'documentType/noDocumentType' => 'Podaj typ dokumentu tożsamości',
+		'documentNumber/noDocumentNumber' => 'Podaj numer dokumentu tożsamości',
+		'nationality/1' => 'Podaj narodowość',
 	);
 
 	/*
@@ -192,6 +196,31 @@ extends UFtpl_Common {
 		echo $form->name('Imię', array('class'=>'required'));
 		echo $form->surname('Nazwisko', array('class'=>'required', 'value'=>$surname));
 		echo $form->registryNo('Nr indeksu', array('value'=>$registryNo));
+		echo $form->address('Adres', array('class'=>'required'));
+		echo $form->documentType('Typ dokumentu', array('class'=>'required'));
+		echo $form->documentNumber('Numer Dokumentu', array('class'=>'required'));
+		echo $form->nationality('Narodowość', array('class'=>'required'));
+		echo $form->pesel('PESEL');
+		echo $form->birthDate('Data urodzenia');
+		echo $form->birthPlace('Miejsce urodzenia');
+		echo $form->userPhoneNumber('Nr telefonu mieszkańca');
+		echo $form->guardianPhoneNumber('Nr telefonu opiekuna');
+		echo $form->sex('Płeć', array(
+								'type' => $form->SELECT,
+								'labels' => $form->_labelize(array("Mężczyzna", "Kobieta")),
+								'class' => 'required',
+								'value'=>0));
+		$tmp = array();
+		foreach ($faculties as $fac) {
+			if ($fac['id'] == 0) continue; // N/D powinno być na końcu
+			$tmp[$fac['id']] = $fac['name'];
+		}
+		$tmp['0'] = 'N/D';
+		echo $form->facultyId('Wydział', array(
+			'type' => $form->SELECT,
+			'labels' => $form->_labelize($tmp),
+			'class'=>'required',
+		));
 		echo $form->typeId('Status - rok akademicki', array(
 			'type' => $form->RADIO,
 			'labels' => $form->_labelize(self::$userTypesForWaletAcademic),
@@ -254,34 +283,62 @@ extends UFtpl_Common {
 		}
 		echo '<p><label>Typ konta:</label><span class="userData"> '.self::getUserType($d['typeId']).'</span></p>';
 		echo '<p><label>Zameldowanie:</label><span class="userData"> '.$d['dormitoryName'].', pok. '.$d['locationAlias'].'</span></p>';
-		if (!is_null($d['registryNo']) && $d['registryNo'] != '') {
-			echo '<p><label>Nr indeksu:</label><span class="userData"> '.$d['registryNo'].'</span></p>';
+		echo '<p><label>Adres:</label><span class="userData"> '.$d['address'].'</span></p>';
+		echo '<p><label>Typ dokumentu:</label><span class="userData"> '.$d['documentType'].'</span></p>';
+		echo '<p><label>Nr dokumentu:</label><span class="userData"> '.$d['documentNumber'].'</span></p>';
+		echo '<p><label>Narodowość:</label><span class="userData"> '.$d['nationality'].'</span></p>';
+		if(!is_null($d['pesel']) && $d['pesel'] != '')
+		{
+			echo '<p><label>PESEL:</label><span class="userData">'.$d['pesel'].'</span></p>';
 		}
-		$tmp = array();
-		foreach ($faculties as $fac) {
-			if ($fac['id'] == 0) continue; // N/D powinno być na końcu
-			$tmp[$fac['id']] = $fac['name'];
+		if(!is_null($d['birthDate']) && $d['birthDate'] != '')
+		{
+			echo '<p><label>Data urodzenia:</label><span class="userData"> '.date(self::TIME_YYMMDD, $d['birthDate']).'</span></p>';	
 		}
-
-		$d['typeId'] == UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL ? $hidden = true : $hidden = false;
-		$tmp['0'] = 'N/D';
-		$tmp['-1'] = '';
-		echo $form->facultyId('Wydział', array(
-			'type' => $hidden ? $form->HIDDEN : $form->SELECT,
-			'labels' => $form->_labelize($tmp),
-			'class'=>'required',
-		));
-		echo $form->studyYearId('Rok studiów', array(
-			'type' => $hidden ? $form->HIDDEN : $form->SELECT,
-			'labels' => $form->_labelize(self::$studyYears),
-			'class'=>'required',
-		));
+		if(!is_null($d['birthPlace']) && $d['birthPlace'] != '')
+		{
+			echo '<p><label>Msc. urodzenia:</label><span class="userData"> '.$d['birthPlace'].'</span></p>';
+		}
+		if(!is_null($d['userPhoneNumber']) && $d['userPhoneNumber'] != '')
+		{
+			echo '<p><label>Tel. mieszkańca:</label><span class="userData"> '.$d['userPhoneNumber'].'</span></p>';
+		}
+		if(!is_null($d['guardianPhoneNumber']) && $d['guardianPhoneNumber'] != '')
+		{
+			echo '<p><label>Tel. opiekuna:</label><span class="userData"> '.$d['guardianPhoneNumber'].'</span></p>';
+		}
+		if(!is_null($d['sex']) && $d['sex'] != '')
+		{
+			echo '<p><label>Płeć:</label><span class="userData"> '.(!$d['sex'] ? 'Mężczyzna' : 'Kobieta').'</span></p>';
+		}
 		echo $form->gg('Gadu-Gadu', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Jeżeli podasz nr GG, będą na niego przesyłane informacje o zmianie statusu konta i Twoich komputerów." /><br/>'));
 		echo $form->lang('Język', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$languages),
 			'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Wiadomości e-mail i GG będa przychodziły w wybranym języku.<br/><br/>You will receive e-mails and gg messages in the chosen language." /><br/>',
 		));
+		echo '<br />';
+		
+		echo $form->_fieldset('Dane dotyczące studiów');
+		if (!is_null($d['registryNo']) && $d['registryNo'] != '') {
+			echo '<p><label>Nr indeksu:</label><span class="userData"> '.$d['registryNo'].'</span></p>';
+		}
+		if($d['typeId'] != UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL) {
+			$tmp = array();
+			foreach ($faculties as $fac) {
+				if ($fac['id'] == 0) continue; // N/D powinno być na końcu
+				$tmp[$fac['id']] = $fac['name'];
+			}
+
+			$tmp['0'] = 'N/D';
+				echo '<p><label>Wydział:</label><span class="userData"> '.($tmp[$d['facultyId']]).'</span></p>';
+
+			echo $form->studyYearId('Rok studiów', array(
+				'type' => $form->SELECT,
+				'labels' => $form->_labelize(self::$studyYears),
+				'class'=>'required',
+			));
+		}
 
 		echo '<br/>';
 		echo $form->_fieldset('Zmiana chronionych danych - konieczne podanie aktualnego hasła');
@@ -296,7 +353,7 @@ extends UFtpl_Common {
 			echo $form->password('Nowe hasło', array('type'=>$form->PASSWORD));
 			echo $form->password2('Potwierdź hasło', array('type'=>$form->PASSWORD));
 		}
-		echo $form->_end();
+		echo $form->_end();	
 	}
 
 	public function formSearch(array $d, array $searched) {
@@ -431,8 +488,10 @@ $(document).ready(function()
 			echo '<p><em>Gadu-Gadu:</em> <a href="gg:'.$d['gg'].'">'.$d['gg'].'</a></p>';
 		}
 		echo '<p><em>Miejsce:</em> <a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'/'.$d['locationAlias'].'">'.$d['locationAlias'].'</a> <small>(<a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'">'.$d['dormitoryAlias'].'</a>)</small>'.(strlen($d['locationComment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$d['locationComment'].'" />':'').'</p>';
-		echo '<p><em>Wydział:</em> '.(!is_null($d['facultyName'])?$d['facultyName']:'').'</p>';
-		echo '<p><em>Rok studiów:</em> '.(!is_null($d['studyYearId'])?self::$studyYears[$d['studyYearId']]:'').'</p>';
+		if($d['typeId'] != UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL) {
+			echo '<p><em>Wydział:</em> '.(!is_null($d['facultyName'])?$d['facultyName']:'').'</p>';
+			echo '<p><em>Rok studiów:</em> '.(!is_null($d['studyYearId'])?self::$studyYears[$d['studyYearId']]:'').'</p>';
+		}
 		if ($d['banned']) {
 			$bans = '<a href="'.$urlUser.'/penalties">'.$d['bans'].' <strong>(aktywne)</strong></a>';
 		} elseif ($d['bans']>0) {
@@ -535,8 +594,20 @@ changeVisibility();
 		echo '<p><em>Nr indeksu:</em> '.$d['registryNo'].'</p>';
 		echo '<p><em>Typ:</em> '.self::getUserType($d['typeId']);
 		echo '<p><em>E-mail:</em> <a href="mailto:'.$d['email'].'">'.$d['email'].'</a></p>';
-		echo '<p><em>Wydział:</em> '.(!is_null($d['facultyName'])?$d['facultyName']:'').'</p>';
-		echo '<p><em>Rok studiów:</em> '.(!is_null($d['studyYearId'])?self::$studyYears[$d['studyYearId']]:'').'</p>';
+		if($d['typeId'] != UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL) {
+			echo '<p><em>Wydział:</em> '.(!is_null($d['facultyName'])?$d['facultyName']:'').'</p>';
+			echo '<p><em>Rok studiów:</em> '.(!is_null($d['studyYearId'])?self::$studyYears[$d['studyYearId']]:'').'</p>';
+		}
+		echo '<p><em>Adres:</em>'.$d['address'].'</p>';
+		echo '<p><em>Typ dokumentu:</em>'.$d['documentType'].'</p>';
+		echo '<p><em>Nr dokumentu:</em>'.$d['documentNumber'].'</p>';
+		echo '<p><em>Narodowość:</em>'.$d['pesel'].'</p>';
+		echo '<p><em>PESEL:</em>'.$d['pesel'].'</p>';
+		echo '<p><em>Data urodzenia:</em>'.$d['birthDate'].'</p>';
+		echo '<p><em>Msc. urodzenia:</em>'.$d['birthPlace'].'</p>';
+		echo '<p><em>Tel. mieszkańca:</em>'.$d['userPhoneNumber'].'</p>';
+		echo '<p><em>Tel. opiekuna:</em>'.$d['guardianPhoneNumber'].'</p>';
+		echo '<p><em>Płeć:</em>'.(!$d['sex'] ? 'Mężczyzna' : 'Kobieta').'</p>';
 		if (is_null($d['modifiedBy'])) {
 			$changed = 'UŻYTKOWNIK';
 		} else {
@@ -571,7 +642,7 @@ changeVisibility();
 			echo '<p><em>Wydział:</em><span class="userData"> '.(!is_null($d['facultyName'])?$d['facultyName']:'').'</span></p>';
 			echo '<p><em>Rok studiów:</em><span class="userData"> '.(!is_null($d['studyYearId'])?self::$studyYears[$d['studyYearId']]:'').'</span></p>';
 		}
-		echo '<p"><a class="userAction" href="'.$this->url(0).'/profile">Edytuj</a>';
+		echo '<p"><a class="userAction" href="'.$this->url(0).'/profile">Edytuj/Szczegóły</a>';
 	}
 
 	public function titleDetails(array $d) {
@@ -607,20 +678,7 @@ changeVisibility();
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$languages),
 		));
-
-		if (!is_null($d['studyYearId'])) {
-			$tmp = array();
-			foreach ($faculties as $fac) {
-				if ($fac['id'] == 0) continue; // N/D powinno być na końcu
-				$tmp[$fac['id']] = $fac['name'];
-			}
-			$tmp['0'] = 'N/D';
-			echo $form->facultyId('Wydział', array(
-				'type' => $form->SELECT,
-				'labels' => $form->_labelize($tmp),
-			));
-		}
-		if (!is_null($d['studyYearId'])) {
+		if($d['typeId'] != UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL) {
 			echo $form->studyYearId('Rok studiów', array(
 				'type' => $form->SELECT,
 				'labels' => $form->_labelize(self::$studyYears),
@@ -652,15 +710,48 @@ changeVisibility();
 		echo $form->_end();
 	}
 
-	public function formEditWalet(array $d, $dormitories) {
+	public function formEditWalet(array $d, $dormitories, $faculties) {
 		$d['locationId'] = $d['locationAlias'];
 		$d['dormitory'] = $d['dormitoryId'];
 		$post = $this->_srv->get('req')->post;
 
+		if(!is_null($d['birthDate'])){
+			$d['birthDate'] = date(self::TIME_YYMMDD, $d['birthDate']);
+		}else{
+			$d['birthDate'] = '';
+		}
+		
 		$form = UFra::factory('UFlib_Form', 'userEdit', $d, $this->errors);
 		echo $form->name('Imię', array('class'=>'required'));
 		echo $form->surname('Nazwisko', array('class'=>'required'));
 		echo $form->registryNo('Nr indeksu');
+		echo $form->address('Adres', array('class'=>'required'));
+		echo $form->documentType('Typ dokumentu', array('class'=>'required'));
+		echo $form->documentNumber('Numer Dokumentu', array('class'=>'required'));
+		echo $form->nationality('Narodowość', array('class'=>'required'));
+		echo $form->pesel("PESEL");
+		echo $form->birthDate("Data urodzenia");
+		echo $form->birthPlace("Miejsce urodzenia");
+		echo $form->userPhoneNumber("Nr telefonu mieszkańca");
+		echo $form->guardianPhoneNumber("Nr telefonu opiekuna");
+		echo $form->sex('Płeć', array(
+								'type' => $form->SELECT,
+								'labels' => $form->_labelize(array("Mężczyzna", "Kobieta")),
+								'class' => 'required'));
+		if($d['typeId'] != UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL) { 
+			$tmp = array();
+			foreach ($faculties as $fac) {
+				if ($fac['id'] == 0) continue; // N/D powinno być na końcu
+				$tmp[$fac['id']] = $fac['name'];
+			}
+			$tmp['0'] = 'N/D';
+			
+			echo $form->facultyId('Wydział', array(
+				'type' => $form->SELECT,
+				'labels' => $form->_labelize($tmp),
+				'class'=>'required',
+			));
+		}
 		$tmp = array();
 		foreach ($dormitories as $dorm) {
 			$temp = explode("ds", $dorm['dormitoryAlias']);

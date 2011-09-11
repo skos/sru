@@ -189,7 +189,7 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 			}
 			echo $this->OK('Dane zostały zmienione.'.$msg);
 		}
-		echo $d['user']->write('formEditWalet', $d['dormitories']);
+		echo $d['user']->write('formEditWalet', $d['dormitories'], $d['faculties']);
 		echo $form->_submit('Zapisz');
 		echo $form->_end();
 		echo $form->_end(true);

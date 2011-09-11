@@ -106,6 +106,34 @@ extends UFbean_Common {
 		} catch (UFex_Dao_NotFound $e) {
 		}
 	}
+	
+	protected function validateAddress($val, $change) {
+		if(is_null($val) || $val == '')
+			return 'noAddress';
+		else
+			return;
+	}
+	
+	protected function validateDocumentType($val, $change) {
+		if(is_null($val) || $val == '')
+			return 'noDocumentType';
+		else
+			return;
+	}
+	
+	protected function validateDocumentNumber($val, $change) {
+		if(is_null($val) || $val == '')
+			return 'noDocumentNumber';
+		else
+			return;
+	}
+	
+	protected function validateNationality($val, $change) {
+		if(is_null($val))
+			return 1; //powinno być noNationality, ale i tak zawsze zwraca 1
+		else
+			return;
+	}
 
 	public function notifyByEmail() {
 		// nie mozna tego zrobic w jednej linii, bo php rzuca bledem "Can't use

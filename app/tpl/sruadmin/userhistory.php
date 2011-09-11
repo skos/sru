@@ -28,6 +28,16 @@ extends UFtpl_Common {
 		'passwordChanged' => 'Zmieniono hasło',
 		'lang' => 'Język',
 		'typeId' => 'Typ',
+		'address' => 'Adres',
+		'documentType' => 'Typ dokumentu',
+		'documentNumber' => 'Nr dokumentu',
+		'nationality' => 'Narodowość',
+		'pesel' => 'PESEL',
+		'birthDate'	=> 'Data urodzenia',
+		'birthPlace' => 'Miejsce urodzenia',
+		'userPhoneNumber' => 'Tel. mieszkańca',
+		'guardianPhoneNumber' => 'Tel. opiekuna',
+		'sex' => 'Płeć',
 	);
 
 	static protected $namesEn = array(
@@ -50,6 +60,16 @@ extends UFtpl_Common {
 		'passwordChanged' => 'Password changed',
 		'lang' => 'Language',
 		'typeId' => 'Type',
+		'address'		=> 'Address',
+		'documentType'	=> 'Document type',
+		'documentNumber'=> 'Document number',
+		'nationality'	=> 'Nationality',
+		'pesel'			=> 'PESEL',
+		'birthDate'		=> 'Birth date',
+		'birthPlace'	=> 'Birth place',
+		'userPhoneNumber'	=> 'User phone number',
+		'guardianPhoneNumber'	=> 'Guardian phone number',
+		'sex'			=> 'Sex'
 	);
 
 	protected function _diff(array $old, array $new) {
@@ -86,6 +106,16 @@ extends UFtpl_Common {
 				case 'typeId':
 					$changes[] = $names[$key].': '.UFtpl_Sru_User::getUserType($old['typeId']).$arr.UFtpl_Sru_User::getUserType($new['typeId']);
 					break;
+				case 'address': $changes[] = $names[$key] . ': '.$old['address'].$arr.$new[$key]; break;
+				case 'documentType': $changes[] = $names[$key] . ': '.$old[$key].$arr.$new[$key]; break;
+				case 'documentNumber': $changes[] = $names[$key] . ': '.$old[$key].$arr.$new[$key]; break;
+				case 'nationality': $changes[] = $names[$key] . ': '.$old[$key].$arr.$new[$key]; break;
+				case 'pesel': $changes[] = $names[$key] . ': '.($val == '' ? 'brak' : $old[$key]).$arr.$new[$key]; break;
+				case 'birthDate': $changes[] = $names[$key] . ': <q>'.($val == 0 ? 'brak' : date(self::TIME_YYMMDD, $val)).'</q>'.$arr.$new[$key]; break;
+				case 'birthPlace': $changes[] = $names[$key] . ': <q>'.($val =='' ? 'brak' : $old[$key]).'</q>'.$arr.'<q>'.$new[$key].'</q>'; break;
+				case 'userPhoneNumber': $changes[] = $names[$key] . ': '.($val == '' ? 'brak' : $old[$key]).$arr.$new[$key]; break;
+				case 'guardianPhoneNumber': $changes[] = $names[$key] . ': '.($val == '' ? 'brak' : $old[$key]).$arr.$new[$key]; break;
+				case 'sex': $changes[] = $names[$key] . ': <q>'.($val == false ? 'Mężczyzna' : 'Kobieta').'</q>'.$arr.'<q>'.($new[$key] == false ? 'Mężczyzna' : 'Kobieta').'</q>'; break;
 				default: continue;
 			}
 		}
@@ -129,6 +159,16 @@ extends UFtpl_Common {
 			'passwordChanged' => '0',
 			'lang' => $current->lang,
 			'typeId' => $current->typeId,
+			'address' => $current->address,
+			'documentType' => $current->documentType,
+			'documentNumber' => $current->documentNumber,
+			'nationality' => $current->nationality,
+			'pesel' => $current->pesel,
+			'birthDate' => $current->birthDate,
+			'birthPlace' => $current->birthPlace,
+			'userPhoneNumber' => $current->userPhoneNumber,
+			'guardianPhoneNumber' => $current->guardianPhoneNumber,
+			'sex' => $current->sex,
 		);
 		$url = $this->url(0).'/users/'.$current->id;
 		$urlAdmin = $this->url(0).'/admins/';
