@@ -16,9 +16,9 @@ extends UFtpl_Common {
 
 		foreach ($d as $c) {
 			if (UFbean_SruAdmin_Penalty::TYPE_WARNING == $c['typeId']) {
-				echo '<div class="warning">';
+				echo '<div class="userWarning">';
 			} else {
-				echo '<div class="ban">';
+				echo '<div class="userBan">';
 			}
 			echo '<small>Typ: ';
 
@@ -44,12 +44,12 @@ extends UFtpl_Common {
 		foreach ($d as $c) {
 			if ($c['endAt'] > time()) {	
 				if (UFbean_SruAdmin_Penalty::TYPE_WARNING == $c['typeId']) {
-					echo '<div class="warning">';
+					echo '<div class="userWarning">';
 				} else {
-					echo '<div class="ban">';
+					echo '<div class="userBan">';
 				}
 			} else {
-				echo '<div class="withoutban">';
+				echo '<div class="userWithoutBan">';
 			}
 			echo '<small>Typ: ';
 

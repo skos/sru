@@ -80,9 +80,11 @@ img { border-style: none; }
 #main .displayOnHover span:hover { color: black; }
 #main .nav { display: block; }
 #main .centralized { margin-left: auto; margin-right: auto; }
-#main .ban { background: #ff7200; padding: 5px; }
-#main .warning { background: #fff177; padding: 5px; }
-#main .withoutban { padding: 5px; }
+#main .ban { background: #ffa766; }
+#main .warning { background: #fff4ac; }
+#main .userBan { background: #ff7200; padding: 5px; }
+#main .userWarning { background: #fff177; padding: 5px; }
+#main .userWithoutBan { padding: 5px; }
 #main .ips, #main .legend { font-size: 0.8em; }
 #main .ips table, #main .legend table { width: 100%; border-collapse: collapse; margin-top: 2em; }
 #main .ips caption { font-size: 1.5em; }
