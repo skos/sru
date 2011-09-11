@@ -202,7 +202,7 @@ extends UFtpl_Common {
 		echo $form->name('Imię', array('class'=>'required'));
 		echo $form->surname('Nazwisko', array('class'=>'required', 'value'=>$surname));
 		echo $form->registryNo('Nr indeksu', array('value'=>$registryNo));
-		echo $form->address('Adres', array('class'=>'required'));
+		echo $form->address('Adres', array('class'=>'required', 'type'=>$form->TEXTAREA, 'rows'=>1));
 		echo $form->documentType('Typ dokumentu', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$documentTypes),
@@ -211,7 +211,8 @@ extends UFtpl_Common {
 		echo $form->documentNumber('Numer dokumentu', array('class'=>'required'));
 		echo $form->nationality('Narodowość', array('class'=>'required'));
 		echo $form->pesel('PESEL');
-		echo $form->birthDate('Data urodzenia');
+		echo $form->birthDate('Data urodzenia', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" 
+														title="Data w formacie RRRR-MM-DD, np. 1988-10-06" /><br />'));
 		echo $form->birthPlace('Miejsce urodzenia');
 		echo $form->userPhoneNumber('Nr telefonu mieszkańca');
 		echo $form->guardianPhoneNumber('Nr telefonu opiekuna');
@@ -635,9 +636,15 @@ changeVisibility();
 		echo '<h1>'.$this->_escape($d['name']).' '.$this->_escape($d['surname']).'</h1>';
 		echo '<p><em>Miejsce:</em> <a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'">'.strtoupper($d['dormitoryAlias']).'</a>, '.$d['locationAlias'].'</p>';
 		echo '<p><em>Login:</em> '.$d['login'].(!$d['active']?' <strong>(konto nieaktywne)</strong>':'').'</p>';
-		echo '<p><em>Nr indeksu:</em> '.$d['registryNo'].'</p>';
-		echo '<p><em>Typ:</em> '.self::getUserType($d['typeId']);
-		echo '<p><em>E-mail:</em> <a href="mailto:'.$d['email'].'">'.$d['email'].'</a></p>';
+		if(!is_null($d['registryNo']) && $d['registryNo'] != '') {
+			echo '<p><em>Nr indeksu:</em> '.$d['registryNo'].'</p>';
+		}
+		if(!is_null($d['typeId']) && $d['typeId'] != '') {
+			echo '<p><em>Typ:</em> '.self::getUserType($d['typeId']);
+		}
+		if(!is_null($d['email']) && $d['email'] != '') {
+			echo '<p><em>E-mail:</em> <a href="mailto:'.$d['email'].'">'.$d['email'].'</a></p>';
+		}
 		if($d['typeId'] != UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL) {
 			echo '<p><em>Wydział:</em> '.(!is_null($d['facultyName'])?$d['facultyName']:'').'</p>';
 			echo '<p><em>Rok studiów:</em> '.(!is_null($d['studyYearId'])?self::$studyYears[$d['studyYearId']]:'').'</p>';
@@ -646,11 +653,21 @@ changeVisibility();
 		echo '<p><em>Typ dokumentu:</em>'.self::$documentTypes[$d['documentType']].'</p>';
 		echo '<p><em>Nr dokumentu:</em>'.$d['documentNumber'].'</p>';
 		echo '<p><em>Narodowość:</em>'.$d['pesel'].'</p>';
-		echo '<p><em>PESEL:</em>'.$d['pesel'].'</p>';
-		echo '<p><em>Data urodzenia:</em>'.$d['birthDate'].'</p>';
-		echo '<p><em>Msc. urodzenia:</em>'.$d['birthPlace'].'</p>';
-		echo '<p><em>Tel. mieszkańca:</em>'.$d['userPhoneNumber'].'</p>';
-		echo '<p><em>Tel. opiekuna:</em>'.$d['guardianPhoneNumber'].'</p>';
+		if(!is_null($d['pesel']) && $d['pesel'] != '') {
+			echo '<p><em>PESEL:</em>'.$d['pesel'].'</p>';
+		}
+		if(!is_null($d['birthDate']) && $d['birthDate'] != '') {
+			echo '<p><em>Data urodzenia:</em>'.$d['birthDate'].'</p>';
+		}
+		if(!is_null($d['birthPlace']) && $d['birthPlace'] != '') {
+			echo '<p><em>Msc. urodzenia:</em>'.$d['birthPlace'].'</p>';
+		}
+		if(!is_null($d['userPhoneNumber']) && $d['userPhoneNumber'] != '') {
+			echo '<p><em>Tel. mieszkańca:</em>'.$d['userPhoneNumber'].'</p>';
+		}
+		if(!is_null($d['guardianPhoneNumber']) && $d['guardianPhoneNumber'] != '') {
+			echo '<p><em>Tel. opiekuna:</em>'.$d['guardianPhoneNumber'].'</p>';
+		}
 		echo '<p><em>Płeć:</em>'.(!$d['sex'] ? 'Mężczyzna' : 'Kobieta').'</p>';
 		if (is_null($d['modifiedBy'])) {
 			$changed = 'UŻYTKOWNIK';
@@ -769,7 +786,7 @@ changeVisibility();
 		echo $form->name('Imię', array('class'=>'required'));
 		echo $form->surname('Nazwisko', array('class'=>'required'));
 		echo $form->registryNo('Nr indeksu');
-		echo $form->address('Adres', array('class'=>'required'));
+		echo $form->address('Adres', array('class'=>'required', 'type'=>$form->TEXTAREA, 'rows'=>1));
 		echo $form->documentType('Typ dokumentu', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$documentTypes),
@@ -778,7 +795,8 @@ changeVisibility();
 		echo $form->documentNumber('Numer dokumentu', array('class'=>'required'));
 		echo $form->nationality('Narodowość', array('class'=>'required'));
 		echo $form->pesel("PESEL");
-		echo $form->birthDate("Data urodzenia");
+		echo $form->birthDate('Data urodzenia', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" 
+														title="Data w formacie RRRR-MM-DD, np. 1988-10-06" /><br />'));
 		echo $form->birthPlace("Miejsce urodzenia");
 		echo $form->userPhoneNumber("Nr telefonu mieszkańca");
 		echo $form->guardianPhoneNumber("Nr telefonu opiekuna");
