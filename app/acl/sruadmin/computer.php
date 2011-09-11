@@ -28,7 +28,7 @@ extends UFlib_ClassWithService {
 			return false;
 		}
 		// hosta można dodać tylko aktywnemu użytkownikowi
-		if ($bean->active === false) {
+		if ($bean->active === false || is_null($bean->email) || $bean->email == '' || is_null($bean->studyYearId)) {
 			return false;
 		}
 		return true;
