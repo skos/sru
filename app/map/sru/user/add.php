@@ -57,7 +57,7 @@ extends UFmap {
 		'updateNeeded'	 => self::BOOL,
 		'changePasswordNeeded'	=> self::BOOL,
 		'address'		=> self::TEXT,
-		'documentType'	=> self::TEXT,
+		'documentType'	=> self::INT,
 		'documentNumber'=> self::TEXT,
 		'nationality'	=> self::INT,
 		'pesel'			=> self::TEXT,

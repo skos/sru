@@ -26,6 +26,12 @@ extends UFtpl_Common {
 		'en' => 'English',
 	);
 
+	static public $documentTypes = array(
+		'0' => 'Dowód osobisty',
+		'1' => 'Paszport',
+		'2' => 'Inny',
+	);
+
 	protected static $userTypesForWaletAcademic = array(
 		1 => 'Student studiów dziennych',
 		2 => 'Doktorant',
@@ -197,8 +203,12 @@ extends UFtpl_Common {
 		echo $form->surname('Nazwisko', array('class'=>'required', 'value'=>$surname));
 		echo $form->registryNo('Nr indeksu', array('value'=>$registryNo));
 		echo $form->address('Adres', array('class'=>'required'));
-		echo $form->documentType('Typ dokumentu', array('class'=>'required'));
-		echo $form->documentNumber('Numer Dokumentu', array('class'=>'required'));
+		echo $form->documentType('Typ dokumentu', array(
+			'type' => $form->SELECT,
+			'labels' => $form->_labelize(self::$documentTypes),
+			'class'=>'required',
+		));
+		echo $form->documentNumber('Numer dokumentu', array('class'=>'required'));
 		echo $form->nationality('Narodowość', array('class'=>'required'));
 		echo $form->pesel('PESEL');
 		echo $form->birthDate('Data urodzenia');
@@ -206,10 +216,11 @@ extends UFtpl_Common {
 		echo $form->userPhoneNumber('Nr telefonu mieszkańca');
 		echo $form->guardianPhoneNumber('Nr telefonu opiekuna');
 		echo $form->sex('Płeć', array(
-								'type' => $form->SELECT,
-								'labels' => $form->_labelize(array("Mężczyzna", "Kobieta")),
-								'class' => 'required',
-								'value'=>0));
+			'type' => $form->SELECT,
+			'labels' => $form->_labelize(array("Mężczyzna", "Kobieta")),
+			'class' => 'required',
+			'value'=>0
+		));
 		$tmp = array();
 		foreach ($faculties as $fac) {
 			if ($fac['id'] == 0) continue; // N/D powinno być na końcu
@@ -284,7 +295,7 @@ extends UFtpl_Common {
 		echo '<p><label>Typ konta:</label><span class="userData"> '.self::getUserType($d['typeId']).'</span></p>';
 		echo '<p><label>Zameldowanie:</label><span class="userData"> '.$d['dormitoryName'].', pok. '.$d['locationAlias'].'</span></p>';
 		echo '<p><label>Adres:</label><span class="userData"> '.$d['address'].'</span></p>';
-		echo '<p><label>Typ dokumentu:</label><span class="userData"> '.$d['documentType'].'</span></p>';
+		echo '<p><label>Typ dokumentu:</label><span class="userData"> '.self::$documentTypes[$d['documentType']].'</span></p>';
 		echo '<p><label>Nr dokumentu:</label><span class="userData"> '.$d['documentNumber'].'</span></p>';
 		echo '<p><label>Narodowość:</label><span class="userData"> '.$d['nationality'].'</span></p>';
 		if(!is_null($d['pesel']) && $d['pesel'] != '')
@@ -599,7 +610,7 @@ changeVisibility();
 			echo '<p><em>Rok studiów:</em> '.(!is_null($d['studyYearId'])?self::$studyYears[$d['studyYearId']]:'').'</p>';
 		}
 		echo '<p><em>Adres:</em>'.$d['address'].'</p>';
-		echo '<p><em>Typ dokumentu:</em>'.$d['documentType'].'</p>';
+		echo '<p><em>Typ dokumentu:</em>'.self::$documentTypes[$d['documentType']].'</p>';
 		echo '<p><em>Nr dokumentu:</em>'.$d['documentNumber'].'</p>';
 		echo '<p><em>Narodowość:</em>'.$d['pesel'].'</p>';
 		echo '<p><em>PESEL:</em>'.$d['pesel'].'</p>';
@@ -726,8 +737,12 @@ changeVisibility();
 		echo $form->surname('Nazwisko', array('class'=>'required'));
 		echo $form->registryNo('Nr indeksu');
 		echo $form->address('Adres', array('class'=>'required'));
-		echo $form->documentType('Typ dokumentu', array('class'=>'required'));
-		echo $form->documentNumber('Numer Dokumentu', array('class'=>'required'));
+		echo $form->documentType('Typ dokumentu', array(
+			'type' => $form->SELECT,
+			'labels' => $form->_labelize(self::$documentTypes),
+			'class'=>'required',
+		));
+		echo $form->documentNumber('Numer dokumentu', array('class'=>'required'));
 		echo $form->nationality('Narodowość', array('class'=>'required'));
 		echo $form->pesel("PESEL");
 		echo $form->birthDate("Data urodzenia");
@@ -735,9 +750,10 @@ changeVisibility();
 		echo $form->userPhoneNumber("Nr telefonu mieszkańca");
 		echo $form->guardianPhoneNumber("Nr telefonu opiekuna");
 		echo $form->sex('Płeć', array(
-								'type' => $form->SELECT,
-								'labels' => $form->_labelize(array("Mężczyzna", "Kobieta")),
-								'class' => 'required'));
+			'type' => $form->SELECT,
+			'labels' => $form->_labelize(array("Mężczyzna", "Kobieta")),
+			'class' => 'required'
+		));
 		if($d['typeId'] != UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL) { 
 			$tmp = array();
 			foreach ($faculties as $fac) {

@@ -95,7 +95,7 @@ extends UFmap {
 		'changePasswordNeeded'	=> self::BOOL,
 		'locationComment'	=> self::TEXT,
 		'address'		=> self::TEXT,
-		'documentType'	=> self::TEXT,
+		'documentType'	=> self::INT,
 		'documentNumber'=> self::TEXT,
 		'nationality'	=> self::INT,
 		'pesel'			=> self::TEXT,

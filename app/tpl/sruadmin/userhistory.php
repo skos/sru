@@ -107,7 +107,7 @@ extends UFtpl_Common {
 					$changes[] = $names[$key].': '.UFtpl_Sru_User::getUserType($old['typeId']).$arr.UFtpl_Sru_User::getUserType($new['typeId']);
 					break;
 				case 'address': $changes[] = $names[$key] . ': '.$old['address'].$arr.$new[$key]; break;
-				case 'documentType': $changes[] = $names[$key] . ': '.$old[$key].$arr.$new[$key]; break;
+				case 'documentType': $changes[] = $names[$key] . ': '.UFtpl_Sru_User::$documentTypes[$old[$key]].$arr.UFtpl_Sru_User::$documentTypes[$new[$key]]; break;
 				case 'documentNumber': $changes[] = $names[$key] . ': '.$old[$key].$arr.$new[$key]; break;
 				case 'nationality': $changes[] = $names[$key] . ': '.$old[$key].$arr.$new[$key]; break;
 				case 'pesel': $changes[] = $names[$key] . ': '.($val == '' ? 'brak' : $old[$key]).$arr.$new[$key]; break;

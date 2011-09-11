@@ -1,13 +1,13 @@
 ALTER TABLE users 
-	ADD COLUMN nationality INTEGER,
+	ADD COLUMN nationality smallint,
 	ADD COLUMN address TEXT,
 	ADD COLUMN birth_date TIMESTAMP WITHOUT TIME ZONE,
-	ADD COLUMN birth_place TEXT,
-	ADD COLUMN pesel TEXT,
-	ADD COLUMN document_type TEXT,
-	ADD COLUMN document_number TEXT,
-	ADD COLUMN user_phone_number TEXT,
-	ADD COLUMN guardian_phone_number TEXT,
+	ADD COLUMN birth_place character varying(100),
+	ADD COLUMN pesel character(9),
+	ADD COLUMN document_type smallint NOT NULL default 0,
+	ADD COLUMN document_number character varying(20),
+	ADD COLUMN user_phone_number character varying(20),
+	ADD COLUMN guardian_phone_number character varying(20),
 	ADD COLUMN sex BOOLEAN NOT NULL DEFAULT false;
 
 ALTER TABLE users_history

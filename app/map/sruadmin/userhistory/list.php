@@ -83,7 +83,7 @@ extends UFmap {
 		'lang'           => self::TEXT,
 		'typeId'	=> self::INT,
 		'address'		=> self::TEXT,
-		'documentType'	=> self::TEXT,
+		'documentType'	=> self::INT,
 		'documentNumber'=> self::TEXT,
 		'nationality'	=> self::INT,
 		'pesel'			=> self::TEXT,
