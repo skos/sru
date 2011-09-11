@@ -835,6 +835,18 @@ function changeUnregisterVisibility() {
 		ac.checked = true;
 	}
 }
+(function (){
+	name = document.getElementById('userEdit_name');
+	function changeSex() {
+		var sex = document.getElementById('userEdit_sex');
+		if (name.value.slice(-1) == 'a') {
+			sex.value = 1;
+		} else {
+			sex.value = 0;
+		}
+	}
+	name.onchange = changeSex;
+})()
 </script><?
 	}
 
