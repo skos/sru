@@ -268,6 +268,21 @@ extends UFtpl_Common {
 		$referralStart = date(self::TIME_YYMMDD, time());
 		echo $form->referralStart('Początek skier.', array('value'=>$referralStart, 'class'=>'required'));
 		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
+
+?><script type="text/javascript">
+(function (){
+	name = document.getElementById('userAdd_name');
+	function changeSex() {
+		var sex = document.getElementById('userAdd_sex');
+		if (name.value.slice(-1) == 'a') {
+			sex.value = 1;
+		} else {
+			sex.value = 0;
+		}
+	}
+	name.onchange = changeSex;
+})()
+</script><?
 	}
 
 	public function formEdit(array $d, $faculties) {
