@@ -8,7 +8,7 @@ ALTER TABLE users
 	ADD COLUMN document_number TEXT,
 	ADD COLUMN user_phone_number TEXT,
 	ADD COLUMN guardian_phone_number TEXT,
-	ADD COLUMN sex BOOLEAN;
+	ADD COLUMN sex BOOLEAN NOT NULL DEFAULT false;
 
 ALTER TABLE users_history
 	ADD COLUMN nationality INTEGER,
