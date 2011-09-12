@@ -118,7 +118,7 @@ extends UFtpl_Common {
 		'address/noAddress' => 'Podaj adres',
 		'documentType/noDocumentType' => 'Podaj typ dokumentu tożsamości',
 		'documentNumber/noDocumentNumber' => 'Podaj numer dokumentu tożsamości',
-		'nationality/1' => 'Podaj narodowość',
+		'nationalityName/textMin' => 'Podaj narodowość',
 		'sex' => 'Podaj płeć',
 		'registryNo/noRegistryNo' => 'Podaj nr indeksu',
 		'pesel/noPesel' => 'Podaj nr PESEL',
@@ -238,7 +238,7 @@ extends UFtpl_Common {
 			'class'=>'required',
 		));
 		echo $form->documentNumber('Numer dokumentu', array('class'=>'required'));
-		echo $form->nationality('Narodowość', array('class'=>'required'));
+		echo $form->nationalityName('Narodowość', array('class'=>'required'));
 		echo $form->pesel('PESEL', array('after'=>'<span id="peselValidationResult"></span><br/>'));
 		echo $form->birthDate('Data urodzenia', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" 
 														title="Data w formacie RRRR-MM-DD, np. 1988-10-06" /><br />'));
@@ -310,6 +310,14 @@ extends UFtpl_Common {
 	}
 	pesel.onchange = validatePesel;
 })()
+$(function() {
+	$( "#userAdd_nationalityName" ).autocomplete({
+		source: function(req, resp) {
+			$.getJSON("<? echo $this->url(0); ?>/users/quickcountrysearch/" + encodeURIComponent(req.term), resp);
+		},
+		minLength: 1
+	});
+});
 </script><?
 	}
 
@@ -357,7 +365,7 @@ extends UFtpl_Common {
 		}
 		if(!is_null($d['nationality']) && $d['nationality'] != '')
 		{
-			echo '<p><label>Narodowość:</label><span class="userData"> '.$d['nationality'].'</span></p>';
+			echo '<p><label>Narodowość:</label><span class="userData"> '.$d['nationalityName'].'</span></p>';
 		}
 		if(!is_null($d['pesel']) && $d['pesel'] != '')
 		{
@@ -688,7 +696,7 @@ changeVisibility();
 		echo '<p><em>Adres:</em>'.$d['address'].'</p>';
 		echo '<p><em>Typ dokumentu:</em>'.self::$documentTypes[$d['documentType']].'</p>';
 		echo '<p><em>Nr dokumentu:</em>'.$d['documentNumber'].'</p>';
-		echo '<p><em>Narodowość:</em>'.$d['nationality'].'</p>';
+		echo '<p><em>Narodowość:</em>'.$d['nationalityName'].'</p>';
 		if(!is_null($d['pesel']) && $d['pesel'] != '') {
 			echo '<p><em>PESEL:</em>'.$d['pesel'].'</p>';
 		}
@@ -859,7 +867,7 @@ changeVisibility();
 			'class'=>'required',
 		));
 		echo $form->documentNumber('Numer dokumentu', array('class'=>'required'));
-		echo $form->nationality('Narodowość', array('class'=>'required'));
+		echo $form->nationalityName('Narodowość', array('class'=>'required'));
 		echo $form->pesel("PESEL", array('after'=>'<span id="peselValidationResult"></span><br/>'));
 		echo $form->birthDate('Data urodzenia', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" 
 														title="Data w formacie RRRR-MM-DD, np. 1988-10-06" /><br />'));
@@ -946,6 +954,14 @@ changeVisibility();
 	}
 	pesel.onchange = validatePesel;
 })()
+$(function() {
+	$( "#userEdit_nationalityName" ).autocomplete({
+		source: function(req, resp) {
+			$.getJSON("<? echo $this->url(0); ?>/users/quickcountrysearch/" + encodeURIComponent(req.term), resp);
+		},
+		minLength: 1
+	});
+});
 </script><?
 	}
 

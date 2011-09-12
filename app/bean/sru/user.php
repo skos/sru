@@ -116,12 +116,12 @@ extends UFbean_Common {
 		try {
 			if(isset($this->data['id'])){
 				$user->getByPK($this->data['id']);
-				if(($user->nationality == 0 && (is_null($val) || $val == '')
-					&& $post['nationality'] == 0)
-				|| ($post['nationality'] == 0 && (is_null($val) || $val == ''))) {
+				if(($user->nationality == 1 && (is_null($val) || $val == '')
+					&& $post['nationalityName'] == 'Polska')
+				|| ($post['nationalityName'] == 'Polska' && (is_null($val) || $val == ''))) {
 					return 'noPesel';
 				}
-			} else if($post['nationality'] == 0 && (is_null($val) || $val == '')) {
+			} else if($post['nationalityName'] == 'Polska' && (is_null($val) || $val == '')) {
 				return 'noPesel';
 			}
 			if (!is_null($val) && !$val == '' && !UFbean_Sru_User::validatePeselFormat($val)) {
@@ -177,13 +177,6 @@ extends UFbean_Common {
 	protected function validateDocumentNumber($val, $change) {
 		if(is_null($val) || $val == '')
 			return 'noDocumentNumber';
-		else
-			return;
-	}
-	
-	protected function validateNationality($val, $change) {
-		if(is_null($val))
-			return 1; //powinno być noNationality, ale i tak zawsze zwraca 1
 		else
 			return;
 	}

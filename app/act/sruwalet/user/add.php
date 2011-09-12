@@ -52,6 +52,17 @@ extends UFact {
 			$password = base_convert($password, 16, 35);
 			$password = substr($password, 0, 8);
 			$bean->password = $bean->generatePassword($bean->login, $password);
+
+			// zapis narodowości
+			try {
+				$country = UFra::factory('UFbean_SruWalet_Country');
+				$country->getByName(strtolower($post['nationalityName']));
+				$countryId = $country->id;
+			} catch (UFex_Dao_NotFound $e) {
+				$country->name = mb_convert_case($post['nationalityName'], MB_CASE_TITLE, "UTF-8");
+				$countryId = $country->save();
+			}
+			$bean->nationality = $countryId;
 				
 			$id = $bean->save();
 			$req = $this->_srv->get('req');

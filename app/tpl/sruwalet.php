@@ -131,6 +131,14 @@ extends UFtpl_Common {
 		echo json_encode(array_values(array_unique($response)));
 	}
 
+	public function quickCountrySearchResults(array $d) {
+		$response = array();
+		foreach ($d['countries'] as $country) {
+			$response[] = $country['name'];
+		}
+		echo json_encode(array_values(array_unique($response)));
+	}
+
 	public function validatePeselResults(array $d) {
 		if (!UFbean_Sru_User::validatePeselFormat($d['pesel'])) {
 			echo json_encode(false);

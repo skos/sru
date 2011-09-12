@@ -1,5 +1,33 @@
+-- Sequence: countries_id_seq
+
+-- DROP SEQUENCE countries_id_seq;
+
+CREATE SEQUENCE countries_id_seq
+  INCREMENT 1
+  MINVALUE 1
+  NO MAXVALUE
+  START 1
+  CACHE 1;
+
+-- Table: countries
+
+-- DROP TABLE countries;
+
+CREATE TABLE countries
+(
+  id bigserial NOT NULL,
+  name varchar(50) NOT NULL, -- Administrator
+  CONSTRAINT countries_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+
+ALTER TABLE countries ADD CONSTRAINT countries_name_key UNIQUE ("name");
+INSERT INTO countries VALUES (1, 'Polska');
+
 ALTER TABLE users 
-	ADD COLUMN nationality smallint,
+	ADD COLUMN nationality bigint NOT NULL DEFAULT 1,
 	ADD COLUMN address TEXT,
 	ADD COLUMN birth_date TIMESTAMP WITHOUT TIME ZONE,
 	ADD COLUMN birth_place character varying(100),
@@ -10,8 +38,10 @@ ALTER TABLE users
 	ADD COLUMN guardian_phone_number character varying(20),
 	ADD COLUMN sex BOOLEAN NOT NULL DEFAULT false;
 
+ALTER TABLE users ADD CONSTRAINT users_nationality_id_fkey FOREIGN KEY (nationality) REFERENCES countries (id) ON UPDATE CASCADE ON DELETE NO ACTION;
+
 ALTER TABLE users_history
-	ADD COLUMN nationality INTEGER,
+	ADD COLUMN nationality bigint,
 	ADD COLUMN address TEXT,
 	ADD COLUMN birth_date TIMESTAMP WITHOUT TIME ZONE,
 	ADD COLUMN birth_place TEXT,
@@ -21,6 +51,8 @@ ALTER TABLE users_history
 	ADD COLUMN user_phone_number TEXT,
 	ADD COLUMN guardian_phone_number TEXT,
 	ADD COLUMN sex BOOLEAN;
+
+ALTER TABLE users_history ADD CONSTRAINT users_history_nationality_id_fkey FOREIGN KEY (nationality) REFERENCES countries (id) ON UPDATE CASCADE ON DELETE NO ACTION;
 	
 CREATE OR REPLACE FUNCTION user_update()
   RETURNS trigger AS

@@ -10,18 +10,18 @@ extends UFact {
 
 	public function go() {
 		try {
+			$post = $this->_srv->get('req')->post->{self::PREFIX};
 			$this->begin();
+
 			$bean = UFra::factory('UFbean_Sru_User');
 			$bean->getByPK((int)$this->_srv->get('req')->get->userId);
 
 			$active = $bean->active;
 			$referralStart = $bean->referralStart;
 
-			$post = $this->_srv->get('req')->post->{self::PREFIX};
-			$login = $bean->login;
 			$dormitoryId = $bean->dormitoryId;
 
-			$bean->fillFromPost(self::PREFIX, array('password', 'referralStart', 'dormitory'));
+			$bean->fillFromPost(self::PREFIX, array('password', 'referralStart', 'dormitory', 'nationalityName'));
 			$bean->referralEnd = 0;
 			$bean->modifiedById = $this->_srv->get('session')->authWaletAdmin;
 			$bean->modifiedAt = NOW;
@@ -41,6 +41,17 @@ extends UFact {
 			if ((!$active && $bean->active) || $referralStart != $bean->referralStart) {
 				$bean->updateNeeded = true;
 			}
+
+			// zapis narodowości
+			try {
+				$country = UFra::factory('UFbean_SruWalet_Country');
+				$country->getByName(strtolower($post['nationalityName']));
+				$countryId = $country->id;
+			} catch (UFex_Dao_NotFound $e) {
+				$country->name = mb_convert_case($post['nationalityName'], MB_CASE_TITLE, "UTF-8");
+				$countryId = $country->save();
+			}
+			$bean->nationality = $countryId;
 
 			$bean->save();
 

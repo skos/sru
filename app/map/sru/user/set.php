@@ -74,6 +74,7 @@ extends UFmap {
 		'documentType'	=> self::INT,
 		'documentNumber'=> self::TEXT,
 		'nationality'	=> self::INT,
+		'nationalityName' => self::TEXT,	// kolumna tylko do walidacji
 		'pesel'			=> self::TEXT,
 		'birthDate'		=> self::NULL_TS,
 		'birthPlace'	=> self::TEXT,
@@ -97,6 +98,8 @@ extends UFmap {
 		'locationAlias' => array('textMin'=>1),
 		'locationId' => array('intMin'=>1),
 		'registryNo' => array('regexp'=>'^(|[0-9]{5,6})$'),
+		'nationalityName' => array('textMin'=>1),
+		'nationality' => array('intMin'=>1),
 	);
 	protected $pk = 'id';
 }

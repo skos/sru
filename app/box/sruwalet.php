@@ -159,7 +159,7 @@ extends UFbox {
 			$get = $this->_srv->get('req')->get;
 			$tmp = array();
 			try {
-				$tmp['surname'] = $get->searchedSurname.'*';
+				$tmp['surname'] = strtolower($get->searchedSurname).'*';
 			} catch (UFex_Core_DataNotFound $e) {
 			}
 			$bean->quickSearch($tmp);
@@ -168,7 +168,27 @@ extends UFbox {
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
-			return $this->render('userSearchResultsNotFound');
+			return '';
+		}
+	}
+
+	public function quickCountrySearchResults() {
+		try {
+			$bean = UFra::factory('UFbean_SruWalet_CountryList');
+
+			$get = $this->_srv->get('req')->get;
+			$tmp = array();
+			try {
+				$tmp['name'] = strtolower($get->searchedCountry).'*';
+			} catch (UFex_Core_DataNotFound $e) {
+			}
+			$bean->quickSearch($tmp);
+
+			$d['countries'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return '';
 		}
 	}
 

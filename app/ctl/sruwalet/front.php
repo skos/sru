@@ -40,6 +40,12 @@ extends UFctl {
 								}
 								$get->view = 'users/quicksearch';
 								break;
+							case 'quickcountrysearch':
+								if ($segCount > 2) {
+									$get->searchedCountry = urldecode($req->segment(3));
+								}
+								$get->view = 'users/quickcountrysearch';
+								break;
 							case 'validatepesel':
 								if ($segCount > 2) {
 									$get->peselToValidate = urldecode($req->segment(3));
@@ -239,6 +245,8 @@ extends UFctl {
 				return 'SruWalet_UserSearchResults';
 			case 'users/quicksearch':
 				return 'SruWalet_UserQuickSearch';
+			case 'users/quickcountrysearch':
+				return 'SruWalet_CountryQuickSearch';
 			case 'users/validatepesel':
 				return 'SruWalet_UserValidatePesel';
 			case 'users/user':
