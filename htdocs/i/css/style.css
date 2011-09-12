@@ -43,7 +43,7 @@ img { border-style: none; }
 #main ol li, #main ul li { margin-top: 0.4em; margin-bottom: 0.4em; }
 #main ol ol { list-style-type: upper-roman; }
 #main p { text-align: justify; margin-top: 0.6em; margin-bottom: 0.6em; }
-#main input { margin-bottom: 0.2em; }
+#main input, #main select, #main textarea { margin-bottom: 0.2em; }
 #main p.msgOk, #main p.msgError, #main .sruDutyHoursNoHours { border: 2px solid red; color: red; padding: 1em; text-align: center; margin: 1em; }
 #main p.msgOk input, #main p.msgOk label, #main p.msgError input, #main p.msgError label { display: inline; margin: 0; float: none; clear: none; }
 #main p.msgOk { color: #009a00; border-color: #009a00; }
@@ -61,6 +61,7 @@ img { border-style: none; }
 #main p.services input.submit { margin-left: 0px;}
 #main .switchPortsEdit input.submit { margin-left: 5px; margin-right: 5px;}
 #main textarea { width: 67%; }
+#main textarea.address { width: 47%; }
 #main .userAction { font-size: 0.8em; border-bottom: 1px dotted; }
 #main .userData { font-weight: bold; }
 #main .computer p, #main .user p, #main .penalty p { margin: 0; padding: 0; clear: both; }

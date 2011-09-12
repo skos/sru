@@ -3,7 +3,7 @@ ALTER TABLE users
 	ADD COLUMN address TEXT,
 	ADD COLUMN birth_date TIMESTAMP WITHOUT TIME ZONE,
 	ADD COLUMN birth_place character varying(100),
-	ADD COLUMN pesel character(9),
+	ADD COLUMN pesel character(11),
 	ADD COLUMN document_type smallint NOT NULL default 0,
 	ADD COLUMN document_number character varying(20),
 	ADD COLUMN user_phone_number character varying(20),

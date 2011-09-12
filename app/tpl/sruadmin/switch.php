@@ -225,8 +225,7 @@ changeVisibility();
 			$temp = explode("ds", $dorm['alias']);
 			if (!isset($temp[1])) {
 				$temp[1] = $dorm['alias'];
-			} else if($temp[1] == '5l')
-				$temp[1] = '5Ł';
+			}
 			$tmp[$dorm['id']] = $temp[1] . ' ' . $dorm['name'];
 		}
 		echo $form->dormitoryId('Akademik', array(
@@ -318,8 +317,7 @@ function fillData() {
 			$temp = explode("ds", $dorm['alias']);
 			if (!isset($temp[1])) {
 				$temp[1] = $dorm['alias'];
-			} else if($temp[1] == '5l')
-				$temp[1] = '5Ł';
+			}
 			$tmp[$dorm['id']] = $temp[1] . ' ' . $dorm['name'];
 		}
 		echo $form->dormitoryId('Akademik', array(

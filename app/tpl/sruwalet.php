@@ -127,6 +127,42 @@ extends UFtpl_Common {
 		echo json_encode(array_values(array_unique($response)));
 	}
 
+	public function validatePeselResults(array $d) {
+		if (!UFbean_Sru_User::validatePeselFormat($d['pesel'])) {
+			echo json_encode(false);
+			return;
+		} else {
+			$yearEndStr = substr($d['pesel'], 0, 2);
+			$monthStr = substr($d['pesel'], 2, 2);
+			$dayStr = substr($d['pesel'], 4,2);
+			$day = intval($dayStr);
+			$month = intval($monthStr);
+			$yearStartStr = '19';
+			if ($month >= 80) {
+				$yearStartStr = '18';
+				$month = $month - 80;
+			} else if ($month >= 60) {
+				$yearStartStr = '22';
+				$month = $month - 60;
+			} else if ($month >= 40) {
+				$yearStartStr = '21';
+				$month = $month - 40;
+			} else if ($month >= 20) {
+				$yearStartStr = '20';
+				$month = $month - 20;
+			}
+			$yearStr = $yearStartStr.$yearEndStr;
+			$year = intval($yearStr);
+			$monthStr = $month;
+			if (strlen($monthStr) < 2)
+			$monthStr = '0'.$monthStr;
+			$date = $yearStr.'-'.$monthStr.'-'.$dayStr;
+
+			echo json_encode($date);
+			return;
+		}
+	}
+
 	public function userSearchResultsNotFound(array $d) {
 		echo $this->ERR('Nie znaleziono.');
 	}

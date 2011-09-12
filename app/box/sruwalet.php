@@ -172,6 +172,12 @@ extends UFbox {
 		}
 	}
 
+	public function validatePeselResults() {
+		$get = $this->_srv->get('req')->get;
+		$d['pesel'] = $get->peselToValidate;
+		return $this->render(__FUNCTION__, $d);
+	}
+
 	public function toDoList() {
 		try {
 			$admin = UFra::factory('UFbean_SruWalet_Admin');

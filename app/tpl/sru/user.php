@@ -122,6 +122,8 @@ extends UFtpl_Common {
 		'nationality/1' => 'Podaj narodowość',
 		'sex' => 'Podaj płeć',
 		'registryNo/noRegistryNo' => 'Podaj nr indeksu',
+		'pesel/noPesel' => 'Podaj nr PESEL',
+		'pesel/invalid' => 'Niepoprawny nr PESEL',
 		'typeId/noTypeId' => 'Określ typ',
 		'birthDate/105' => 'Nieprawidłowy format daty',
 	);
@@ -181,8 +183,7 @@ extends UFtpl_Common {
 			$temp = explode("ds", $dorm['dormitoryAlias']);
 			if (!isset($temp[1])) {
 				$temp[1] = $dorm['dormitoryAlias'];
-			} else if($temp[1] == '5l')
-				$temp[1] = '5Ł';
+			}
 			$tmp[$dorm['dormitoryId']] = $temp[1] . ' ' . $dorm['dormitoryName'];
 		}
 		echo $form->dormitory('Akademik', array(
@@ -205,26 +206,21 @@ extends UFtpl_Common {
 
 		echo $form->name('Imię', array('class'=>'required'));
 		echo $form->surname('Nazwisko', array('class'=>'required', 'value'=>$surname));
-		echo $form->registryNo('Nr indeksu', array('value'=>$registryNo));
-		echo $form->address('Adres', array('class'=>'required', 'type'=>$form->TEXTAREA, 'rows'=>1, 'cols'=>40));
-		echo $form->documentType('Typ dokumentu', array(
-			'type' => $form->SELECT,
-			'labels' => $form->_labelize(self::$documentTypes),
-			'class'=>'required',
-		));
-		echo $form->documentNumber('Numer dokumentu', array('class'=>'required'));
-		echo $form->nationality('Narodowość', array('class'=>'required'));
-		echo $form->pesel('PESEL');
-		echo $form->birthDate('Data urodzenia', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" 
-														title="Data w formacie RRRR-MM-DD, np. 1988-10-06" /><br />'));
-		echo $form->birthPlace('Miejsce urodzenia');
-		echo $form->userPhoneNumber('Nr telefonu mieszkańca');
-		echo $form->guardianPhoneNumber('Nr telefonu opiekuna');
 		echo $form->sex('Płeć', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(array("Mężczyzna", "Kobieta"), '', ''),
 			'class' => 'required',
 		));
+
+		$tmp = array('----------Rok akademicki----------') + self::$userTypesForWaletAcademic;
+		$tmp = $tmp + array(20 => '----------Wakacje----------');
+		$tmp = $tmp + self::$userTypesForWaletSummer;
+		echo $form->typeId('Typ mieszkańca', array(
+			'type'=>$form->SELECT,
+			'labels' => $form->_labelize($tmp)
+		));
+		
+		echo $form->registryNo('Nr indeksu', array('value'=>$registryNo));
 		$tmp = array();
 		foreach ($faculties as $fac) {
 			if ($fac['id'] == 0) continue; // N/D powinno być na końcu
@@ -236,36 +232,28 @@ extends UFtpl_Common {
 			'labels' => $form->_labelize($tmp, '', ''),
 			'class'=>'required',
 		));
-		
-		$tmp = array('----------Rok akademicki----------') + self::$userTypesForWaletAcademic;
-		$tmp = $tmp + array(20 => '----------Wakacje----------');
-		$tmp = $tmp + self::$userTypesForWaletSummer;
-		echo $form->typeId('Typ mieszkańca', array(
-												'type'=>$form->SELECT,
-												'labels' => $form->_labelize($tmp)));
-		/*echo $form->typeId('', array('type' => $form->HIDDEN,
-									'labels' => $form->_labelize(array('')),
-									'value' => -1));
-		echo $form->typeId('Status - rok akademicki', array(
-			'type' => $form->RADIO,
-			'labels' => $form->_labelize(self::$userTypesForWaletAcademic),
-			'labelClass' => 'radio',
-			'class' => 'radio',
+		echo $form->address('Adres', array('class'=>'required address', 'type'=>$form->TEXTAREA, 'rows'=>3));
+		echo $form->documentType('Typ dokumentu', array(
+			'type' => $form->SELECT,
+			'labels' => $form->_labelize(self::$documentTypes),
+			'class'=>'required',
 		));
-		echo $form->typeId('Status - wakacje', array(
-			'type' => $form->RADIO,
-			'labels' => $form->_labelize(self::$userTypesForWaletSummer),
-			'labelClass' => 'radio',
-			'class' => 'radio',
-		));*/
+		echo $form->documentNumber('Numer dokumentu', array('class'=>'required'));
+		echo $form->nationality('Narodowość', array('class'=>'required'));
+		echo $form->pesel('PESEL', array('after'=>'<span id="peselValidationResult"></span><br/>'));
+		echo $form->birthDate('Data urodzenia', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" 
+														title="Data w formacie RRRR-MM-DD, np. 1988-10-06" /><br />'));
+		echo $form->birthPlace('Miejsce urodzenia');
+		echo $form->userPhoneNumber('Nr telefonu mieszkańca');
+		echo $form->guardianPhoneNumber('Nr telefonu opiekuna');
+
 		echo '<legend>Zamieszkanie</legend>';
 		$tmp = array();
 		foreach ($dormitories as $dorm) {
 			$temp = explode("ds", $dorm['dormitoryAlias']);
 			if (!isset($temp[1])) {
 				$temp[1] = $dorm['dormitoryAlias'];
-			} else if($temp[1] == '5l')
-				$temp[1] = '5Ł';
+			}
 			$tmp[$dorm['dormitoryId']] = $temp[1] . ' ' . $dorm['dormitoryName'];
 		}
 		echo $form->dormitory('Akademik', array(
@@ -295,6 +283,33 @@ extends UFtpl_Common {
 		}
 	}
 	name.onchange = changeSex;
+
+	var pesel = document.getElementById('userAdd_pesel');
+	function validatePesel() {
+		if (pesel.value == '') {
+			document.getElementById('peselValidationResult').innerHTML = '';
+			return;
+		}
+		if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+			xmlhttp = new XMLHttpRequest();
+		} else { // code for IE6, IE5
+			xmlhttp = new ActiveXObject('Microsoft.XMLHTTP');
+		}
+		xmlhttp.onreadystatechange = function() {
+			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+				if (xmlhttp.responseText == 'false') {
+					document.getElementById('peselValidationResult').innerHTML = ' <img src="<?=UFURL_BASE?>/i/img/wykrzyknik.png" alt="Błąd"/>';
+				} else {
+					var birthDate = document.getElementById('userAdd_birthDate');
+					birthDate.value = xmlhttp.responseText.replace(/"/g, '');
+					document.getElementById('peselValidationResult').innerHTML = ' <img src="<?=UFURL_BASE?>/i/img/ok.png" alt="OK"/>';
+				}
+			}
+		}
+		xmlhttp.open('GET',"<? echo $this->url(0); ?>/users/validatepesel/" + encodeURIComponent(pesel.value), true);
+		xmlhttp.send();
+	}
+	pesel.onchange = validatePesel;
 })()
 </script><?
 	}
@@ -432,8 +447,7 @@ extends UFtpl_Common {
 			$temp = explode("ds", $dorm['alias']);
 			if (!isset($temp[1])) {
 				$temp[1] = $dorm['alias'];
-			} else if($temp[1] == '5l')
-				$temp[1] = '5Ł';
+			}
 			$tmp[$dorm['alias']] = $temp[1] . ' ' . $dorm['name'];
 		}
 		echo $form->dormitory('Akademik', array(
@@ -764,8 +778,7 @@ changeVisibility();
 				$temp = explode("ds", $dorm['dormitoryAlias']);
 				if (!isset($temp[1])) {
 					$temp[1] = $dorm['dormitoryAlias'];
-				} else if($temp[1] == '5l')
-					$temp[1] = '5Ł';
+				}
 				$tmp[$dorm['dormitoryId']] = $temp[1] . ' ' . $dorm['dormitoryName'];
 			}
 			echo $form->dormitory('Akademik', array(
@@ -798,8 +811,36 @@ changeVisibility();
 		$form = UFra::factory('UFlib_Form', 'userEdit', $d, $this->errors);
 		echo $form->name('Imię', array('class'=>'required'));
 		echo $form->surname('Nazwisko', array('class'=>'required'));
+		echo $form->sex('Płeć', array(
+			'type' => $form->SELECT,
+			'labels' => $form->_labelize(array("Mężczyzna", "Kobieta")),
+			'class' => 'required'
+		));
+		
+		$tmp = array('----------Rok akademicki----------') + self::$userTypesForWaletAcademic;
+		$tmp = $tmp + array(20 => '----------Wakacje----------');
+		$tmp = $tmp + self::$userTypesForWaletSummer;
+		echo $form->typeId('Typ mieszkańca', array(
+			'type'=>$form->SELECT,
+			'labels' => $form->_labelize($tmp)
+		));
+
 		echo $form->registryNo('Nr indeksu');
-		echo $form->address('Adres', array('class'=>'required', 'type'=>$form->TEXTAREA, 'rows'=>1, 'cols'=>40));
+		if($d['typeId'] != UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL) {
+			$tmp = array();
+			foreach ($faculties as $fac) {
+				if ($fac['id'] == 0) continue; // N/D powinno być na końcu
+				$tmp[$fac['id']] = $fac['name'];
+			}
+			$tmp['0'] = 'N/D';
+
+			echo $form->facultyId('Wydział', array(
+				'type' => $form->SELECT,
+				'labels' => $form->_labelize($tmp),
+				'class'=>'required',
+			));
+		}
+		echo $form->address('Adres', array('class'=>'required address', 'type'=>$form->TEXTAREA, 'rows'=>3));
 		echo $form->documentType('Typ dokumentu', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$documentTypes),
@@ -807,56 +848,19 @@ changeVisibility();
 		));
 		echo $form->documentNumber('Numer dokumentu', array('class'=>'required'));
 		echo $form->nationality('Narodowość', array('class'=>'required'));
-		echo $form->pesel("PESEL");
+		echo $form->pesel("PESEL", array('after'=>'<span id="peselValidationResult"></span><br/>'));
 		echo $form->birthDate('Data urodzenia', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" 
 														title="Data w formacie RRRR-MM-DD, np. 1988-10-06" /><br />'));
 		echo $form->birthPlace("Miejsce urodzenia");
 		echo $form->userPhoneNumber("Nr telefonu mieszkańca");
 		echo $form->guardianPhoneNumber("Nr telefonu opiekuna");
-		echo $form->sex('Płeć', array(
-			'type' => $form->SELECT,
-			'labels' => $form->_labelize(array("Mężczyzna", "Kobieta")),
-			'class' => 'required'
-		));
-		if($d['typeId'] != UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL) { 
-			$tmp = array();
-			foreach ($faculties as $fac) {
-				if ($fac['id'] == 0) continue; // N/D powinno być na końcu
-				$tmp[$fac['id']] = $fac['name'];
-			}
-			$tmp['0'] = 'N/D';
-			
-			echo $form->facultyId('Wydział', array(
-				'type' => $form->SELECT,
-				'labels' => $form->_labelize($tmp),
-				'class'=>'required',
-			));
-		}		
-		$tmp = array('----------Rok akademicki----------') + self::$userTypesForWaletAcademic;
-		$tmp = $tmp + array(20 => '----------Wakacje----------');
-		$tmp = $tmp + self::$userTypesForWaletSummer;
-		echo $form->typeId('Typ mieszkańca', array(
-												'type'=>$form->SELECT,
-												'labels' => $form->_labelize($tmp)));
-		/*echo $form->typeId('Status - rok akademicki', array(
-			'type' => $form->RADIO,
-			'labels' => $form->_labelize(self::$userTypesForWaletAcademic),
-			'labelClass' => 'radio',
-			'class' => 'radio',
-		));
-		echo $form->typeId('Status - wakacje', array(
-			'type' => $form->RADIO,
-			'labels' => $form->_labelize(self::$userTypesForWaletSummer),
-			'labelClass' => 'radio',
-			'class' => 'radio',
-		));*/
+
 		$tmp = array();
 		foreach ($dormitories as $dorm) {
 			$temp = explode("ds", $dorm['dormitoryAlias']);
 			if (!isset($temp[1])) {
 				$temp[1] = $dorm['dormitoryAlias'];
-			} else if($temp[1] == '5l')
-				$temp[1] = '5Ł';
+			}
 			$tmp[$dorm['dormitoryId']] = $temp[1] . ' ' . $dorm['dormitoryName'];
 		}
 		echo '<legend>Zamieszkanie</legend>';
@@ -932,6 +936,33 @@ function changeUnregisterVisibility() {
 		}
 	}
 	name.onchange = changeSex;
+	
+	var pesel = document.getElementById('userEdit_pesel');
+	function validatePesel() {
+		if (pesel.value == '') {
+			document.getElementById('peselValidationResult').innerHTML = '';
+			return;
+		}
+		if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+			xmlhttp = new XMLHttpRequest();
+		} else { // code for IE6, IE5
+			xmlhttp = new ActiveXObject('Microsoft.XMLHTTP');
+		}
+		xmlhttp.onreadystatechange = function() {
+			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+				if (xmlhttp.responseText == 'false') {
+					document.getElementById('peselValidationResult').innerHTML = ' <img src="<?=UFURL_BASE?>/i/img/wykrzyknik.png" alt="Błąd"/>';
+				} else {
+					var birthDate = document.getElementById('userEdit_birthDate');
+					birthDate.value = xmlhttp.responseText.replace(/"/g, '');
+					document.getElementById('peselValidationResult').innerHTML = ' <img src="<?=UFURL_BASE?>/i/img/ok.png" alt="OK"/>';
+				}
+			}
+		}
+		xmlhttp.open('GET',"<? echo $this->url(0); ?>/users/validatepesel/" + encodeURIComponent(pesel.value), true);
+		xmlhttp.send();
+	}
+	pesel.onchange = validatePesel;
 })()
 </script><?
 	}

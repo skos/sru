@@ -70,35 +70,69 @@ extends UFbean_Common {
 		}
 	}
 	
-	protected function is_date( $str )
-	{
-	  $stamp = strtotime( $str );
-	 
-	  if (!is_numeric($stamp))
-	  {
-	     return FALSE;
-	  }
-	  
-	  if($stamp > time())
-	  {
-	  	return FALSE;
-	  }
-	  
-	  $month = date( 'm', $stamp );
-	  $day   = date( 'd', $stamp );
-	  $year  = date( 'Y', $stamp );
-	 
-	  if (checkdate($month, $day, $year))
-	  {
-	     return TRUE;
-	  }
-	 
-	  return FALSE;
-	} 
+	protected function isDate($str) {
+		$stamp = strtotime( $str );
+
+		if (!is_numeric($stamp)) {
+			return FALSE;
+		}
+		if($stamp > time()) {
+			return FALSE;
+		}
+
+		$month = date( 'm', $stamp );
+		$day   = date( 'd', $stamp );
+		$year  = date( 'Y', $stamp );
+
+		if (checkdate($month, $day, $year))  {
+			return TRUE;
+		}
+
+		return FALSE;
+	}
+
+	public static function validatePeselFormat($pesel) {
+		if (!preg_match('/^[0-9]{11}$/', $pesel)) { //sprawdzamy czy ciąg ma 11 cyfr
+			return false;
+		}
+
+		$arrSteps = array(1, 3, 7, 9, 1, 3, 7, 9, 1, 3); // tablica z odpowiednimi wagami
+		$intSum = 0;
+		for ($i = 0; $i < 10; $i++) {
+			$intSum += $arrSteps[$i] * $pesel[$i]; //mnożymy każdy ze znaków przez wagć i sumujemy wszystko
+		}
+		$int = 10 - $intSum % 10; //obliczamy sumć kontrolną
+		$intControlNr = ($int == 10) ? 0 : $int;
+		if ($intControlNr == $pesel[10]) { //sprawdzamy czy taka sama suma kontrolna jest w ciągu
+			return true;
+		}
+
+		return false;
+	}
+
+	protected function validatePesel($val, $change) {
+		$post = $this->_srv->get('req')->post->{$change?'userEdit':'userAdd'};
+		$user = UFra::factory('UFbean_Sru_User');
+		try {
+			if(isset($this->data['id'])){
+				$user->getByPK($this->data['id']);
+				if(($user->nationality == 0 && (is_null($val) || $val == '')
+					&& $post['nationality'] == 0)
+				|| ($post['nationality'] == 0 && (is_null($val) || $val == ''))) {
+					return 'noPesel';
+				}
+			} else if($post['nationality'] == 0 && (is_null($val) || $val == '')) {
+				return 'noPesel';
+			}
+			if (!is_null($val) && !$val == '' && !UFbean_Sru_User::validatePeselFormat($val)) {
+				return 'invalid';
+			}
+		} catch (UFex $e) {
+		}
+	}
 	
 	protected function validateBirthDate($val, $change) {
-		
-		if(!is_null($val) && $val != '' && !$this->is_date($val)){
+		if(!is_null($val) && $val != '' && !$this->isDate($val)){
 			return '105';
 		}else {
 			return;

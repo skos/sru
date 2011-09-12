@@ -170,8 +170,7 @@ extends UFtpl_Common {
 			$temp = explode("ds", $dorm['alias']);
 			if (!isset($temp[1])) {
 				$temp[1] = $dorm['alias'];
-			} else if($temp[1] == '5l')
-				$temp[1] = '5Ł';
+			}
 			$tmp[$dorm['id']] = $temp[1] . ' ' . $dorm['name'];
 		}
 		$tmp['0'] = 'N/D';
@@ -225,8 +224,7 @@ extends UFtpl_Common {
 			$temp = explode("ds", $dorm['alias']);
 			if (!isset($temp[1])) {
 				$temp[1] = $dorm['alias'];
-			} else if($temp[1] == '5l')
-				$temp[1] = '5Ł';
+			}
 			$tmp[$dorm['id']] = $temp[1] . ' ' . $dorm['name'];
 		}
 		$tmp[''] = 'N/D';

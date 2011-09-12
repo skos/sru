@@ -40,6 +40,12 @@ extends UFctl {
 								}
 								$get->view = 'users/quicksearch';
 								break;
+							case 'validatepesel':
+								if ($segCount > 2) {
+									$get->peselToValidate = urldecode($req->segment(3));
+								}
+								$get->view = 'users/validatepesel';
+								break;
 							case ':add':
 								$get->view = 'users/user/add';
 								for ($i = 3; $i <= $segCount; ++$i) {
@@ -230,6 +236,8 @@ extends UFctl {
 				return 'SruWalet_UserSearchResults';
 			case 'users/quicksearch':
 				return 'SruWalet_UserQuickSearch';
+			case 'users/validatepesel':
+				return 'SruWalet_UserValidatePesel';
 			case 'users/user':
 				if ($acl->sruWalet('user', 'view', $get->userId)) {
 					return 'SruWalet_User';
