@@ -1,1 +1,1 @@
-UPDATE users SET sex = true, modified_by = <id bota>, modified_at = now() WHERE SUBSTRING(name FROM '.$') = 'a';
+UPDATE users SET sex = true, modified_by = <id bota>, modified_at = now() WHERE SUBSTRING(name FROM '.$') = 'a' AND type_id < 50;
