@@ -272,7 +272,7 @@ extends UFtpl_Common {
 
 ?><script type="text/javascript">
 (function (){
-	name = document.getElementById('userAdd_name');
+	var name = document.getElementById('userAdd_name');
 	function changeSex() {
 		var sex = document.getElementById('userAdd_sex');
 		if (name.value.slice(-1) == 'a') {
@@ -903,7 +903,7 @@ function changeUnregisterVisibility() {
 	}
 }
 (function (){
-	name = document.getElementById('userEdit_name');
+	var name = document.getElementById('userEdit_name');
 	function changeSex() {
 		var sex = document.getElementById('userEdit_sex');
 		if (name.value.slice(-1) == 'a') {
