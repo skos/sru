@@ -111,7 +111,7 @@ extends UFtpl_Common {
 				case 'documentNumber': $changes[] = $names[$key] . ': '.$old[$key].$arr.$new[$key]; break;
 				case 'nationality': $changes[] = $names[$key] . ': '.$old[$key].$arr.$new[$key]; break;
 				case 'pesel': $changes[] = $names[$key] . ': '.($val == '' ? 'brak' : $old[$key]).$arr.$new[$key]; break;
-				case 'birthDate': $changes[] = $names[$key] . ': <q>'.($val == 0 ? 'brak' : date(self::TIME_YYMMDD, $val)).'</q>'.$arr.$new[$key]; break;
+				case 'birthDate': $changes[] = $names[$key] . ': <q>'.($val == 0 ? 'brak' : date(self::TIME_YYMMDD, $val)).'</q>'.$arr.date(self::TIME_YYMMDD, $new[$key]); break;
 				case 'birthPlace': $changes[] = $names[$key] . ': <q>'.($val =='' ? 'brak' : $old[$key]).'</q>'.$arr.'<q>'.$new[$key].'</q>'; break;
 				case 'userPhoneNumber': $changes[] = $names[$key] . ': '.($val == '' ? 'brak' : $old[$key]).$arr.$new[$key]; break;
 				case 'guardianPhoneNumber': $changes[] = $names[$key] . ': '.($val == '' ? 'brak' : $old[$key]).$arr.$new[$key]; break;

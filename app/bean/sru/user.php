@@ -69,7 +69,41 @@ extends UFbean_Common {
 		} catch (UFex_Dao_NotFound $e) {
 		}
 	}
-
+	
+	protected function is_date( $str )
+	{
+	  $stamp = strtotime( $str );
+	 
+	  if (!is_numeric($stamp))
+	  {
+	     return FALSE;
+	  }
+	  
+	  if($stamp > time())
+	  {
+	  	return FALSE;
+	  }
+	  
+	  $month = date( 'm', $stamp );
+	  $day   = date( 'd', $stamp );
+	  $year  = date( 'Y', $stamp );
+	 
+	  if (checkdate($month, $day, $year))
+	  {
+	     return TRUE;
+	  }
+	 
+	  return FALSE;
+	} 
+	
+	protected function validateBirthDate($val, $change) {
+		
+		if(!is_null($val) && $val != '' && !$this->is_date($val)){
+			return '105';
+		}else {
+			return;
+		}		
+	}
 	protected function validateLocationAlias($val, $change) {
 		$post = $this->_srv->get('req')->post->{$change?'userEdit':'userAdd'};
 		try {
@@ -92,21 +126,6 @@ extends UFbean_Common {
 		}
 	}
 
-	protected function validateRegistryNo($val, $change) {
-		if (is_null($val) || $val == '') {
-			return;
-		}
-		try {
-			$bean = UFra::factory('UFbean_Sru_User');
-			$bean->getByRegistryNo($val);
-			if ($change && $this->data['id'] == $bean->id) {
-				return;
-			}
-			return 'duplicated';
-		} catch (UFex_Dao_NotFound $e) {
-		}
-	}
-	
 	protected function validateAddress($val, $change) {
 		if(is_null($val) || $val == '')
 			return 'noAddress';
@@ -131,6 +150,56 @@ extends UFbean_Common {
 	protected function validateNationality($val, $change) {
 		if(is_null($val))
 			return 1; //powinno być noNationality, ale i tak zawsze zwraca 1
+		else
+			return;
+	}
+	
+	protected function validateFacultyId($val, $change) {
+		if(is_null($val) || $val == '')
+			return 'faculty';
+		else
+			return;
+	}
+	
+	protected function validateSex($val, $change) {
+		if(is_null($val) | $val == '')
+			return 'sex';
+		else
+			return;
+	}
+	
+	protected function validateRegistryNo($val, $change) {
+		$post = $this->_srv->get('req')->post->{$change?'userEdit':'userAdd'};
+		$user = UFra::factory('UFbean_Sru_User');
+		try {
+			if(isset($this->data['id'])){
+				$user->getByPK($this->data['id']);
+				if((in_array($user->typeId, UFra::shared('UFconf_Sru')->mustBeRegistryNo) && (is_null($val) || $val == '')
+					&& in_array($post['typeId'], UFra::shared('UFconf_Sru')->mustBeRegistryNo))
+				|| (in_array($post['typeId'], UFra::shared('UFconf_Sru')->mustBeRegistryNo) && (is_null($val) || $val == ''))) {
+					return 'noRegistryNo';
+				}
+			}else if(in_array($post['typeId'], UFra::shared('UFconf_Sru')->mustBeRegistryNo) && (is_null($val) || $val == '')) {
+				return 'noRegistryNo';
+			}
+		} catch (UFex $e) {
+		}
+		
+		try {
+			$user->getByRegistryNo($val);
+			if ($change && $this->data['id'] == $user->id) {
+					return;
+			}
+				return 'duplicated';
+			} catch (UFex_Dao_NotFound $e) {
+		}
+				
+		return;
+	}
+	
+	protected function validateTypeId($val, $change) {
+		if($val == 0 || $val == 20 || is_null($val) || $val == '')
+			return 'noTypeId';
 		else
 			return;
 	}

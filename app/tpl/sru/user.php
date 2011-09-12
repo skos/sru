@@ -120,6 +120,10 @@ extends UFtpl_Common {
 		'documentType/noDocumentType' => 'Podaj typ dokumentu tożsamości',
 		'documentNumber/noDocumentNumber' => 'Podaj numer dokumentu tożsamości',
 		'nationality/1' => 'Podaj narodowość',
+		'sex' => 'Podaj płeć',
+		'registryNo/noRegistryNo' => 'Podaj nr indeksu',
+		'typeId/noTypeId' => 'Określ typ',
+		'birthDate/105' => 'Nieprawidłowy format daty',
 	);
 
 	/*
@@ -202,7 +206,7 @@ extends UFtpl_Common {
 		echo $form->name('Imię', array('class'=>'required'));
 		echo $form->surname('Nazwisko', array('class'=>'required', 'value'=>$surname));
 		echo $form->registryNo('Nr indeksu', array('value'=>$registryNo));
-		echo $form->address('Adres', array('class'=>'required', 'type'=>$form->TEXTAREA, 'rows'=>1));
+		echo $form->address('Adres', array('class'=>'required', 'type'=>$form->TEXTAREA, 'rows'=>1, 'cols'=>40));
 		echo $form->documentType('Typ dokumentu', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$documentTypes),
@@ -218,9 +222,8 @@ extends UFtpl_Common {
 		echo $form->guardianPhoneNumber('Nr telefonu opiekuna');
 		echo $form->sex('Płeć', array(
 			'type' => $form->SELECT,
-			'labels' => $form->_labelize(array("Mężczyzna", "Kobieta")),
+			'labels' => $form->_labelize(array("Mężczyzna", "Kobieta"), '', ''),
 			'class' => 'required',
-			'value'=>0
 		));
 		$tmp = array();
 		foreach ($faculties as $fac) {
@@ -230,9 +233,19 @@ extends UFtpl_Common {
 		$tmp['0'] = 'N/D';
 		echo $form->facultyId('Wydział', array(
 			'type' => $form->SELECT,
-			'labels' => $form->_labelize($tmp),
+			'labels' => $form->_labelize($tmp, '', ''),
 			'class'=>'required',
 		));
+		
+		$tmp = array('----------Rok akademicki----------') + self::$userTypesForWaletAcademic;
+		$tmp = $tmp + array(20 => '----------Wakacje----------');
+		$tmp = $tmp + self::$userTypesForWaletSummer;
+		echo $form->typeId('Typ mieszkańca', array(
+												'type'=>$form->SELECT,
+												'labels' => $form->_labelize($tmp)));
+		/*echo $form->typeId('', array('type' => $form->HIDDEN,
+									'labels' => $form->_labelize(array('')),
+									'value' => -1));
 		echo $form->typeId('Status - rok akademicki', array(
 			'type' => $form->RADIO,
 			'labels' => $form->_labelize(self::$userTypesForWaletAcademic),
@@ -244,7 +257,7 @@ extends UFtpl_Common {
 			'labels' => $form->_labelize(self::$userTypesForWaletSummer),
 			'labelClass' => 'radio',
 			'class' => 'radio',
-		));
+		));*/
 		echo '<legend>Zamieszkanie</legend>';
 		$tmp = array();
 		foreach ($dormitories as $dorm) {
@@ -652,12 +665,12 @@ changeVisibility();
 		echo '<p><em>Adres:</em>'.$d['address'].'</p>';
 		echo '<p><em>Typ dokumentu:</em>'.self::$documentTypes[$d['documentType']].'</p>';
 		echo '<p><em>Nr dokumentu:</em>'.$d['documentNumber'].'</p>';
-		echo '<p><em>Narodowość:</em>'.$d['pesel'].'</p>';
+		echo '<p><em>Narodowość:</em>'.$d['nationality'].'</p>';
 		if(!is_null($d['pesel']) && $d['pesel'] != '') {
 			echo '<p><em>PESEL:</em>'.$d['pesel'].'</p>';
 		}
 		if(!is_null($d['birthDate']) && $d['birthDate'] != '') {
-			echo '<p><em>Data urodzenia:</em>'.$d['birthDate'].'</p>';
+			echo '<p><em>Data urodzenia:</em>'.date(self::TIME_YYMMDD,$d['birthDate']).'</p>';
 		}
 		if(!is_null($d['birthPlace']) && $d['birthPlace'] != '') {
 			echo '<p><em>Msc. urodzenia:</em>'.$d['birthPlace'].'</p>';
@@ -786,7 +799,7 @@ changeVisibility();
 		echo $form->name('Imię', array('class'=>'required'));
 		echo $form->surname('Nazwisko', array('class'=>'required'));
 		echo $form->registryNo('Nr indeksu');
-		echo $form->address('Adres', array('class'=>'required', 'type'=>$form->TEXTAREA, 'rows'=>1));
+		echo $form->address('Adres', array('class'=>'required', 'type'=>$form->TEXTAREA, 'rows'=>1, 'cols'=>40));
 		echo $form->documentType('Typ dokumentu', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$documentTypes),
@@ -818,17 +831,14 @@ changeVisibility();
 				'labels' => $form->_labelize($tmp),
 				'class'=>'required',
 			));
-		}
-		$tmp = array();
-		foreach ($dormitories as $dorm) {
-			$temp = explode("ds", $dorm['dormitoryAlias']);
-			if (!isset($temp[1])) {
-				$temp[1] = $dorm['dormitoryAlias'];
-			} else if($temp[1] == '5l')
-				$temp[1] = '5Ł';
-			$tmp[$dorm['dormitoryId']] = $temp[1] . ' ' . $dorm['dormitoryName'];
-		}
-		echo $form->typeId('Status - rok akademicki', array(
+		}		
+		$tmp = array('----------Rok akademicki----------') + self::$userTypesForWaletAcademic;
+		$tmp = $tmp + array(20 => '----------Wakacje----------');
+		$tmp = $tmp + self::$userTypesForWaletSummer;
+		echo $form->typeId('Typ mieszkańca', array(
+												'type'=>$form->SELECT,
+												'labels' => $form->_labelize($tmp)));
+		/*echo $form->typeId('Status - rok akademicki', array(
 			'type' => $form->RADIO,
 			'labels' => $form->_labelize(self::$userTypesForWaletAcademic),
 			'labelClass' => 'radio',
@@ -839,7 +849,16 @@ changeVisibility();
 			'labels' => $form->_labelize(self::$userTypesForWaletSummer),
 			'labelClass' => 'radio',
 			'class' => 'radio',
-		));
+		));*/
+		$tmp = array();
+		foreach ($dormitories as $dorm) {
+			$temp = explode("ds", $dorm['dormitoryAlias']);
+			if (!isset($temp[1])) {
+				$temp[1] = $dorm['dormitoryAlias'];
+			} else if($temp[1] == '5l')
+				$temp[1] = '5Ł';
+			$tmp[$dorm['dormitoryId']] = $temp[1] . ' ' . $dorm['dormitoryName'];
+		}
 		echo '<legend>Zamieszkanie</legend>';
 		echo $form->dormitory('Akademik', array(
 			'type' => $form->SELECT,
