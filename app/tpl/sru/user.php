@@ -355,7 +355,7 @@ $(function() {
 		{
 			echo '<p><label>Adres:</label><span class="userData"> '.$d['address'].'</span></p>';
 		}
-		if(!is_null($d['documentType']) && $d['documentType'] != '')
+		if(!is_null($d['documentType']) && self::$documentTypes[$d['documentType']] != '')
 		{
 			echo '<p><label>Typ dokumentu:</label><span class="userData"> '.self::$documentTypes[$d['documentType']].'</span></p>';
 		}
