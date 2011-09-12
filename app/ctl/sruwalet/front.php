@@ -76,6 +76,9 @@ extends UFctl {
 										case ':edit':
 											$get->view = 'users/user/edit';
 											break;
+										case ':del':
+											$get->view = 'users/user/del';
+											break;
 										case ':print':
 											$get->view = 'users/user/print';
 											if ($segCount > 3) {
@@ -198,7 +201,7 @@ extends UFctl {
 			$act = 'User_Add';
 		} elseif ($post->is('userEdit') && $acl->sruWalet('user', 'edit', $get->userId)) {
 			$act = 'User_Edit';
-		} elseif ('users/user/edit' == $get->view && $post->is('userDel') && $acl->sruWalet('user', 'del')) {
+		} elseif ('users/user/del' == $get->view && $post->is('userDel') && $acl->sruWalet('user', 'del', $get->userId)) {
 			$act = 'User_Del';
 		} elseif ('admins/add' == $get->view && $post->is('adminAdd') && $acl->sruWalet('admin', 'add')) {
 			$act = 'Admin_Add';
@@ -249,10 +252,18 @@ extends UFctl {
 			case 'users/user/servicehistory':
 				return 'SruWalet_ServiceHistory';
 			case 'users/user/edit':
+				if ($msg->get('userEdit/ok')) {
+					return 'SruWalet_User';
+				} else if ($acl->sruWalet('user', 'edit', $get->userId)) {
+					return 'SruWalet_UserEdit';
+				} else {
+					return 'Sru_Error403';
+				}
+			case 'users/user/del':
 				if ($msg->get('userDel/ok')) {
 					return 'SruWalet_Main';
-				} elseif ($acl->sruWalet('user', 'edit', $get->userId)) {
-					return 'SruWalet_UserEdit';
+				} elseif ($acl->sruWalet('user', 'del', $get->userId)) {
+					return 'SruWalet_UserDel';
 				} else {
 					return 'Sru_Error403';
 				}

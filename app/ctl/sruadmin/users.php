@@ -155,11 +155,7 @@ extends UFctl {
 					return 'Sru_Error403';
 				}
 			case 'users/user/edit':
-				if ($msg->get('userDel/ok')) {
-					return 'SruAdmin_Main';
-				} else {
-					return 'SruAdmin_UserEdit';
-				}
+				return 'SruAdmin_UserEdit';
 			case 'users/user/computers/add':
 				if ($msg->get('computerAdd/ok')) {
 					return 'SruAdmin_User';

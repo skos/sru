@@ -44,6 +44,7 @@ img { border-style: none; }
 #main ol ol { list-style-type: upper-roman; }
 #main p { text-align: justify; margin-top: 0.6em; margin-bottom: 0.6em; }
 #main input, #main select, #main textarea { margin-bottom: 0.2em; }
+#main input.checkbox { margin-bottom: 0.0em; }
 #main p.msgOk, #main p.msgError, #main .sruDutyHoursNoHours { border: 2px solid red; color: red; padding: 1em; text-align: center; margin: 1em; }
 #main p.msgOk input, #main p.msgOk label, #main p.msgError input, #main p.msgError label { display: inline; margin: 0; float: none; clear: none; }
 #main p.msgOk { color: #009a00; border-color: #009a00; }

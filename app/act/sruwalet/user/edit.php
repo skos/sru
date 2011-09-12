@@ -21,24 +21,15 @@ extends UFact {
 			$login = $bean->login;
 			$dormitoryId = $bean->dormitoryId;
 
-			$bean->fillFromPost(self::PREFIX, array('password', 'referralStart', 'referralEnd', 'dormitory'));
+			$bean->fillFromPost(self::PREFIX, array('password', 'referralStart', 'dormitory'));
+			$bean->referralEnd = 0;
 			$bean->modifiedById = $this->_srv->get('session')->authWaletAdmin;
 			$bean->modifiedAt = NOW;
 
 			if ($post['dormitory'] != $dormitoryId && $active) {
 				throw UFra::factory('UFex_Dao_DataNotValid', 'Move active user', 0, E_WARNING, array('dormitory' => 'movedActive'));
 			}
-			if (isset($post['referralStart']) && $post['referralStart'] != '' && isset($post['referralEnd']) && $post['referralEnd'] != '') {
-				throw UFra::factory('UFex_Dao_DataNotValid', 'Both referral dates', 0, E_WARNING, array('referralStart' => 'both'));
-			}
-			if (isset($post['referralEnd']) && $post['referralEnd'] == '') {
-				if (!$bean->active) {
-					throw UFra::factory('UFex_Dao_DataNotValid', 'Inactive without referral end', 0, E_WARNING, array('referralEnd' => 'inactive'));
-				}
-				$bean->referralEnd = 0;
-			} else if (isset($post['referralEnd'])) {
-				$bean->referralEnd = $post['referralEnd'];
-			}
+			
 			if (isset($post['referralStart']) && $post['referralStart'] == '') {
 				if ($bean->active) {
 					throw UFra::factory('UFex_Dao_DataNotValid', 'Active without referral start', 0, E_WARNING, array('referralStart' => 'active'));
@@ -69,12 +60,9 @@ extends UFact {
 				}
 				$typeId = (array_key_exists($bean->typeId, UFtpl_Sru_Computer::$userToComputerType) ? UFtpl_Sru_Computer::$userToComputerType[$bean->typeId] : UFbean_Sru_Computer::TYPE_STUDENT);
 				$comps->updateLocationAndTypeByUserId($bean->id, $bean->locationId, $typeId, $waletAdmin);
-				//$comps->updateLocationByUserId($bean->id, $bean->locationId, $waletAdmin);
-				//$comps->updateTypeByUserId($bean->id, $typeId, $waletAdmin);
 			} catch (UFex_Dao_NotFound $e) {
 				// uzytkownik nie ma komputerow
 			}
-
 
 			$conf = UFra::shared('UFconf_Sru');
 			if ($conf->sendEmail && $bean->notifyByEmail() && !is_null($bean->email) && $bean->email != '') {

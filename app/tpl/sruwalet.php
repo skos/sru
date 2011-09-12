@@ -75,6 +75,10 @@ extends UFtpl_Common {
 	public function userSearch(array $d) {
 		$form = UFra::factory('UFlib_Form');
 
+		if ($this->_srv->get('msg')->get('userDel/ok')) {
+			echo $this->OK('Użytkownik został wymeldowany.');
+		}
+
 		echo '<div class="userSearch">';
 		echo $form->_start($this->url(0).'/users/search');
 		echo $form->_fieldset('<img src="'.UFURL_BASE.'/i/img/lupa.png" alt="" /> Znajdź mieszkańca');
@@ -177,6 +181,21 @@ window.open("<? echo $url; ?>/:print/<? echo $this->_srv->get('req')->get->passw
 <?
 			echo $this->OK('Konto zostało założone.<br/><a href="'.$url.'/:print/'.$this->_srv->get('req')->get->password.'" target="_blank">Wydrukuj potwierdzenie założenia konta</a>.');
 		}
+		if ($this->_srv->get('msg')->get('userEdit/ok')) {
+			$msg = '';
+			try {
+				if ($this->_srv->get('req')->get->activated) {
+?>
+<script type="text/javascript">
+window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'width=800,height=600');
+</script>
+<?
+					$msg = '<br/><a href="'.$url.'/:print" target="_blank">Wydrukuj potwierdzenie zameldowania</a>.';
+				}
+			} catch (UFex_Core_DataNotFound $e) {
+			}
+			echo $this->OK('Dane zostały zmienione.'.$msg);
+		}
 
 		echo '<div class="user">';
 		$d['user']->write('detailsWalet');
@@ -210,22 +229,20 @@ window.open("<? echo $url; ?>/:print/<? echo $this->_srv->get('req')->get->passw
 		echo '<h2>Edycja</h2>';
 		echo $form->_start($this->url());
 		echo $form->_fieldset('Edycja użytkownika');
-		if ($this->_srv->get('msg')->get('userEdit/ok')) {
-			$msg = '';
-			try {
-				if ($this->_srv->get('req')->get->activated) {
-?>
-<script type="text/javascript">
-window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'width=800,height=600');
-</script>
-<?
-					$msg = '<br/><a href="'.$url.'/:print" target="_blank">Wydrukuj potwierdzenie zameldowania</a>.';
-				}
-			} catch (UFex_Core_DataNotFound $e) {
-			}
-			echo $this->OK('Dane zostały zmienione.'.$msg);
-		}
 		echo $d['user']->write('formEditWalet', $d['dormitories'], $d['faculties']);
+		echo $form->_submit('Zapisz');
+		echo $form->_end();
+		echo $form->_end(true);
+	}
+
+	public function userDel(array $d) {
+		$url = $this->url(0).'/users/'.$d['user']->id;
+		$form = UFra::factory('UFlib_Form');
+
+		echo '<h2>Wymeldowanie</h2>';
+		echo $form->_start($this->url());
+		echo $form->_fieldset('Wymeldowanie użytkownika');
+		echo $d['user']->write('formDelWalet');
 		echo $form->_submit('Zapisz');
 		echo $form->_end();
 		echo $form->_end(true);

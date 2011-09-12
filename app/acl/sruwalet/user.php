@@ -52,8 +52,14 @@ extends UFlib_ClassWithService {
 		return $this->_loggedIn();
 	}
 
-	public function del() {
-		return $this->_loggedIn();
+	public function del($userId) {
+		try {
+			$user = UFra::factory('UFbean_Sru_User');
+			$user->getByPK($userId);
+		} catch (UFex_Dao_NotFound $e) {
+			return false;
+		}
+		return $this->edit($userId) && $user->active;
 	}
 	
 	public function login() {

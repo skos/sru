@@ -275,7 +275,7 @@ extends UFbox {
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
-			return $this->render('computerNotFound');
+			return $this->render('userNotFound');
 		}
 	}
 
@@ -288,6 +288,17 @@ extends UFbox {
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
 			return $this->render(__FUNCTION__.'NotFound');
+		}
+	}
+
+	public function userDel() {
+		try {
+			$bean = $this->_getUserFromGet();
+			$d['user'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render('userNotFound');
 		}
 	}
 

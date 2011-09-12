@@ -113,7 +113,6 @@ extends UFtpl_Common {
 		'registryNo/duplicated' => 'Nr indeksu przypisany do innego mieszkańca',
 		'referralStart/active' => 'Zameldowany mieszkaniec musi mieć podaną datę początku skierowania',
 		'referralStart/5' => 'Nieprawidłowa data początku skierowania',
-		'referralStart/both' => 'Zameldowany mieszkaniec powinien mieć ustawioną tylko datę początku skierowania, zaś niezameldowany tylko datę końca skierowania.',
 		'referralEnd/inactive' => 'Niezameldowany mieszkaniec musi mieć podaną datę końca skierowania',
 		'referralEnd/5' => 'Nieprawidłowa data końca skierowania',
 		'address/noAddress' => 'Podaj adres',
@@ -503,6 +502,8 @@ extends UFtpl_Common {
 		echo '<th>Dom studencki</th>';
 		echo '<th>Pokój</th>';
 		echo '<th>Nr indeksu</th>';
+		echo '<th>Edycja</th>';
+		echo '<th>Wymeld.</th>';
 		echo '</tr></thead><tbody>';
 
 		$usersMax = 0;
@@ -521,6 +522,8 @@ extends UFtpl_Common {
 			echo '<td><a href="'.$url.'/dormitories/'.$c['dormitoryAlias'].'">'.strtoupper($c['dormitoryAlias']).'</a></td>';
 			echo '<td>'.$c['locationAlias'].'</td>';
 			echo '<td>'.$c['registryNo'].'</td>';
+			echo '<td><a href="'.$url.'/users/'.$c['id'].'/:edit">'.($c['active'] ? 'Edytuj' : 'Zamelduj').'</a></td>';
+			echo '<td>'.($c['active'] ? '<a href="'.$url.'/users/'.$c['id'].'/:del">Wymelduj</a>' : '').'</td>';
 		}
 		echo '</tbody></table>';
 ?>
@@ -531,6 +534,12 @@ $(document).ready(function()
 			headers: {
 				2: {
 					sorter: "ds"
+				},
+				5: {
+					sorter: false
+				},
+				6: {
+					sorter: false
 				}
 			}
 		});
@@ -714,7 +723,10 @@ changeVisibility();
 		echo '<p class="nav"><a href="'.$urlUser.'">Dane</a> ';
 		echo 	'&bull; <a href="'.$urlUser.'/history">Historia profilu</a>';
 		if ($acl->sruWalet('user', 'edit', $d['id'])) {
-			echo ' &bull; <a href="'.$urlUser.'/:edit">Edycja</a>';
+			echo ' &bull; <a href="'.$urlUser.'/:edit">'.($d['active'] ? 'Edycja' : 'Meldowanie').'</a>';
+		}
+		if ($acl->sruWalet('user', 'del', $d['id'])) {
+			echo ' &bull; <a href="'.$urlUser.'/:del">Wymeldowanie</a>';
 		}
 	}
 
@@ -738,7 +750,7 @@ changeVisibility();
 	}
 
 	public function titleEdit(array $d) {
-		echo $this->_escape($d['name']).' '.$this->_escape($d['surname']).' ('.$d['login'].')';
+		echo 'Edycja użytkownika: '.$this->_escape($d['name']).' '.$this->_escape($d['surname']).' ('.$d['login'].')';
 	}
 
 	public function formEditAdmin(array $d, $faculties, $dormitories) {
@@ -881,11 +893,6 @@ changeVisibility();
 				$referralStart = date(self::TIME_YYMMDD, $d['referralStart']);
 			}
 		}
-		try {
-			$referralEnd = $post->userEdit['referralEnd'];
-		} catch (UFex_Core_DataNotFound $e) {
-			$referralEnd = '';
-		}
 		echo $form->referralStart('Początek skier.', array('value'=>$referralStart));
 		echo $form->lang('Język', array(
 			'type' => $form->SELECT,
@@ -893,38 +900,13 @@ changeVisibility();
 			'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Wiadomości e-mail i GG będa przychodziły w wybranym języku.<br/><br/>You will receive e-mails and gg messages in the chosen language." /><br/>',
 		));
 		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
-		if ($d['active'] && !$this->_srv->get('msg')->get('userEdit/errors/referralEnd')) {
-			echo '<p><a href="#" onclick="return changeUnregisterVisibility();">Wyrejestruj</a></p>';
-			echo '<div id="unregisterMore" style="display: none;">';
+		echo '<legend>Meldunek</legend>';
+		if (!$d['active']) {
+			echo $form->active('Zamelduj (aktywuj konto)', array('type'=>$form->CHECKBOX));
 		}
-		echo $form->referralEnd('Koniec skier.', array('value'=>$referralEnd));
-		echo $form->active('Konto aktywne', array('type'=>$form->CHECKBOX));
-		if ($d['active'] && !$this->_srv->get('msg')->get('userEdit/errors/referralEnd')) {
-			echo '</div>';
-		}
+		echo $form->referralStart('Początek skier.', array('value'=>$referralStart));
 
 ?><script type="text/javascript">
-var rsOld = document.getElementById('userEdit_referralStart').value;
-function changeUnregisterVisibility() {
-	var um = document.getElementById('unregisterMore');
-	if (um.style.display == 'none') {
-		um.style.display = 'block';
-		var re = document.getElementById('userEdit_referralEnd');
-		re.value = "<? echo date(self::TIME_YYMMDD, time()); ?>";
-		var rs = document.getElementById('userEdit_referralStart');
-		rs.value = "";
-		var ac = document.getElementById('userEdit_active');
-		ac.checked = false;
-	} else {
-		um.style.display = 'none';
-		var re = document.getElementById('userEdit_referralEnd');
-		re.value = "";
-		var rs = document.getElementById('userEdit_referralStart');
-		rs.value = rsOld;
-		var ac = document.getElementById('userEdit_active');
-		ac.checked = true;
-	}
-}
 (function (){
 	var name = document.getElementById('userEdit_name');
 	function changeSex() {
@@ -965,6 +947,17 @@ function changeUnregisterVisibility() {
 	pesel.onchange = validatePesel;
 })()
 </script><?
+	}
+
+	public function formDelWalet(array $d) {
+		$post = $this->_srv->get('req')->post;
+		try {
+			$referralEnd = $post->userDel['referralEnd'];
+		} catch (UFex_Core_DataNotFound $e) {
+			$referralEnd = date(self::TIME_YYMMDD, time());;
+		}
+		$form = UFra::factory('UFlib_Form', 'userDel', $d, $this->errors);
+		echo $form->referralEnd('Koniec skier.', array('value'=>$referralEnd));
 	}
 
 	public function shortList(array $d) {
