@@ -54,7 +54,7 @@ extends UFconf {
 
 	protected $puuAvailable = true;
 	protected $mustBeRegistryNo = array( // typy userów, które powinny mieć nr indeksu
-		'1',
+		'1', '2', '5'
 	);
 
 	protected $rrdDataDir = '';
