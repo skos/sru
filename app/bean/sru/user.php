@@ -220,6 +220,9 @@ extends UFbean_Common {
 		}
 		
 		try {
+			if(is_null($val) || $val == '') {
+				return;
+			}
 			$user->getByRegistryNo($val);
 			if ($change && $this->data['id'] == $user->id) {
 					return;
