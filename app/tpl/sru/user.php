@@ -216,7 +216,8 @@ extends UFtpl_Common {
 		$tmp = $tmp + self::$userTypesForWaletSummer;
 		echo $form->typeId('Typ mieszkańca', array(
 			'type'=>$form->SELECT,
-			'labels' => $form->_labelize($tmp)
+			'labels' => $form->_labelize($tmp),
+			'class' => 'required'
 		));
 		
 		echo $form->registryNo('Nr indeksu', array('value'=>$registryNo));
@@ -850,7 +851,8 @@ changeVisibility();
 		$tmp = $tmp + self::$userTypesForWaletSummer;
 		echo $form->typeId('Typ mieszkańca', array(
 			'type'=>$form->SELECT,
-			'labels' => $form->_labelize($tmp)
+			'labels' => $form->_labelize($tmp),
+			'class' => 'required'
 		));
 
 		echo $form->registryNo('Nr indeksu');
@@ -909,7 +911,6 @@ changeVisibility();
 				$referralStart = date(self::TIME_YYMMDD, $d['referralStart']);
 			}
 		}
-		echo $form->referralStart('Początek skier.', array('value'=>$referralStart));
 		echo $form->lang('Język', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$languages),
