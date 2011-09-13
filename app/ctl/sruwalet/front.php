@@ -31,6 +31,9 @@ extends UFctl {
 										case 'registryNo':
 											$get->searchedRegistryNo = urldecode($tmp[1]);
 											break;
+										case 'pesel':
+											$get->searchedPesel = urldecode($tmp[1]);
+											break;
 									}
 								}
 								break;
@@ -62,6 +65,9 @@ extends UFctl {
 											break;
 										case 'registryNo':
 											$get->inputRegistryNo = urldecode($tmp[1]);
+											break;
+										case 'pesel':
+											$get->inputPesel = urldecode($tmp[1]);
 											break;
 									}
 								}

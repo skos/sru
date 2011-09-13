@@ -110,6 +110,13 @@ extends UFtpl_Common {
 				$search = $search.'/registryNo:'.$searched['registryNo'];
 			}
 		}
+		if (isset($searched['pesel'])) {
+			if ($search == '') {
+				$search = '/pesel:'.$searched['pesel'];
+			} else {
+				$search = $search.'/pesel:'.$searched['pesel'];
+			}
+		}
 		return ' <a href="'.$this->url(0).'/users/:add'.$search.'">Dodaj nowego mieszkańca</a>.';
 	}
 
@@ -274,7 +281,7 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 
 		echo $form->_start();
 		echo $form->_fieldset('Załóż konto');
-		echo $d['user']->write('formAddWalet', $d['dormitories'], $d['faculties'], $d['surname'], $d['registryNo']);
+		echo $d['user']->write('formAddWalet', $d['dormitories'], $d['faculties'], $d['surname'], $d['registryNo'], $d['pesel']);
 		echo $form->_submit('Załóż');
 		echo $form->_end();
 		echo $form->_end(true);

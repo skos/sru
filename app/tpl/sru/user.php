@@ -201,7 +201,7 @@ extends UFtpl_Common {
 		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
 	}
 
-	public function formAddWalet(array $d, $dormitories, $faculties, $surname, $registryNo) {
+	public function formAddWalet(array $d, $dormitories, $faculties, $surname, $registryNo, $pesel) {
 		$form = UFra::factory('UFlib_Form', 'userAdd', $d, $this->errors);
 		$conf = UFra::shared('UFconf_Sru');
 
@@ -246,7 +246,7 @@ extends UFtpl_Common {
 		));
 		echo $form->documentNumber('Numer dokumentu', array('class'=>'required'));
 		echo $form->nationalityName('Narodowość', array('class'=>'required'));
-		echo $form->pesel('PESEL', array('after'=>'<span id="peselValidationResult"></span><br/>'));
+		echo $form->pesel('PESEL', array('value'=>$pesel, 'after'=>'<span id="peselValidationResult"></span><br/>'));
 		echo $form->birthDate('Data urodzenia', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" 
 														title="Data w formacie RRRR-MM-DD, np. 1988-10-06" /><br />'));
 		echo $form->birthPlace('Miejsce urodzenia');
@@ -291,6 +291,7 @@ extends UFtpl_Common {
 	name.onchange = changeSex;
 
 	var pesel = document.getElementById('userAdd_pesel');
+	var birthDate = document.getElementById('userAdd_birthDate');
 	function validatePesel() {
 		if (pesel.value == '') {
 			document.getElementById('peselValidationResult').innerHTML = '';
@@ -306,7 +307,6 @@ extends UFtpl_Common {
 				if (xmlhttp.responseText == 'false') {
 					document.getElementById('peselValidationResult').innerHTML = ' <img src="<?=UFURL_BASE?>/i/img/wykrzyknik.png" alt="Błąd"/>';
 				} else {
-					var birthDate = document.getElementById('userAdd_birthDate');
 					birthDate.value = xmlhttp.responseText.replace(/"/g, '');
 					document.getElementById('peselValidationResult').innerHTML = ' <img src="<?=UFURL_BASE?>/i/img/ok.png" alt="OK"/>';
 				}
@@ -316,6 +316,9 @@ extends UFtpl_Common {
 		xmlhttp.send();
 	}
 	pesel.onchange = validatePesel;
+	if (birthDate.value == '') {
+		window.onload = validatePesel;
+	}
 })()
 $(function() {
 	$( "#userAdd_nationalityName" ).autocomplete({
@@ -480,8 +483,9 @@ $(function() {
 		$d = $searched + $d;
 		$form = UFra::factory('UFlib_Form', 'userSearch', $d, $this->errors);
 
-		echo $form->surname('Nazwisko', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Nazwisko szukanego mieszkańca. Można podać łącznie z numerem indeksu." /><br/>'));
-		echo $form->registryNo('Nr indeksu', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Numer indeksu szukanego mieszkańca. Można podać łącznie z nazwiskiem." /><br/>'));
+		echo $form->surname('Nazwisko', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Nazwisko szukanego mieszkańca. Można łączyć z pozostałymi polami wyszukiwania." /><br/>'));
+		echo $form->registryNo('Nr indeksu', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Numer indeksu szukanego mieszkańca. Można łączyć z pozostałymi polami wyszukiwania." /><br/>'));
+		echo $form->pesel('PESEL', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Numer PESEL szukanego mieszkańca. Można łączyć z pozostałymi polami wyszukiwania." /><br/>'));
 ?>
 <script type="text/javascript">
 	$(function() {

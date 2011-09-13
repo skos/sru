@@ -99,6 +99,10 @@ extends UFbox {
 			$tmp['registryNo'] = $get->searchedRegistryNo;
 		} catch (UFex_Core_DataNotFound $e) {
 		}
+		try {
+			$tmp['pesel'] = $get->searchedPesel;
+		} catch (UFex_Core_DataNotFound $e) {
+		}
 		$d['searched'] = $tmp;
 
 		return $this->render(__FUNCTION__, $d);
@@ -114,6 +118,10 @@ extends UFbox {
 			}
 			try {
 				$tmp['registryNo'] = $get->searchedRegistryNo;
+			} catch (UFex_Core_DataNotFound $e) {
+			}
+			try {
+				$tmp['pesel'] = $get->searchedPesel;
 			} catch (UFex_Core_DataNotFound $e) {
 			}
 			$d['searched'] = $tmp;
@@ -136,6 +144,10 @@ extends UFbox {
 			}
 			try {
 				$tmp['registryNo'] = $get->searchedRegistryNo;
+			} catch (UFex_Core_DataNotFound $e) {
+			}
+			try {
+				$tmp['pesel'] = $get->searchedPesel;
 			} catch (UFex_Core_DataNotFound $e) {
 			}
 			$bean->search($tmp, true);
@@ -372,6 +384,11 @@ extends UFbox {
 				$d['registryNo'] = $get->inputRegistryNo;
 			} catch (UFex_Core_DataNotFound $e) {
 				$d['registryNo'] = null;
+			}
+			try {
+				$d['pesel'] = $get->inputPesel;
+			} catch (UFex_Core_DataNotFound $e) {
+				$d['pesel'] = null;
 			}
 	
 			$d['user'] = $bean;
