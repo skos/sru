@@ -42,6 +42,7 @@ extends UFmap {
 		'documentType'	=> 'u.document_type',
 		'documentNumber'=> 'u.document_number',
 		'nationality'	=> 'u.nationality',
+		'nationalityName' => 'c.name',
 		'pesel'			=> 'u.pesel',
 		'birthDate'		=> 'u.birth_date',
 		'birthPlace'	=> 'u.birth_place',
@@ -86,6 +87,7 @@ extends UFmap {
 		'documentType'	=> self::INT,
 		'documentNumber'=> self::TEXT,
 		'nationality'	=> self::INT,
+		'nationalityName' => self::TEXT,
 		'pesel'			=> self::TEXT,
 		'birthDate'		=> self::NULL_TS,
 		'birthPlace'	=> self::TEXT,
@@ -101,12 +103,14 @@ extends UFmap {
 		'l' => 'locations',
 		'd' => 'dormitories',
 		'a' => 'admins',
+		'c' => 'countries',
 	);
 	protected $joinOns = array(
 		'f' => 'u.faculty_id=f.id',
 		'l' => 'u.location_id=l.id',
 		'd' => 'l.dormitory_id=d.id',
 		'a' => 'u.modified_by=a.id',
+		'c' => 'u.nationality=c.id',
 	);
 	protected $pk = 'u.id';
 }

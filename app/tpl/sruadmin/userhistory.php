@@ -109,7 +109,7 @@ extends UFtpl_Common {
 				case 'address': $changes[] = $names[$key] . ': '.$old['address'].$arr.$new[$key]; break;
 				case 'documentType': $changes[] = $names[$key] . ': '.UFtpl_Sru_User::$documentTypes[$old[$key]].$arr.UFtpl_Sru_User::$documentTypes[$new[$key]]; break;
 				case 'documentNumber': $changes[] = $names[$key] . ': '.$old[$key].$arr.$new[$key]; break;
-				case 'nationality': $changes[] = $names[$key] . ': '.$old[$key].$arr.$new[$key]; break;
+				case 'nationality': $changes[] = $names[$key] . ': '.$old['nationalityName'].$arr.$new['nationalityName']; break;
 				case 'pesel': $changes[] = $names[$key] . ': '.($val == '' ? 'brak' : $old[$key]).$arr.$new[$key]; break;
 				case 'birthDate': $changes[] = $names[$key] . ': <q>'.($val == 0 ? 'brak' : date(self::TIME_YYMMDD, $val)).'</q>'.$arr.date(self::TIME_YYMMDD, $new[$key]); break;
 				case 'birthPlace': $changes[] = $names[$key] . ': <q>'.($val =='' ? 'brak' : $old[$key]).'</q>'.$arr.'<q>'.$new[$key].'</q>'; break;
@@ -163,6 +163,7 @@ extends UFtpl_Common {
 			'documentType' => $current->documentType,
 			'documentNumber' => $current->documentNumber,
 			'nationality' => $current->nationality,
+			'nationalityName' => $current->nationalityName,
 			'pesel' => $current->pesel,
 			'birthDate' => $current->birthDate,
 			'birthPlace' => $current->birthPlace,
