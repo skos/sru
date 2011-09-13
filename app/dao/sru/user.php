@@ -34,6 +34,15 @@ extends UFdao {
 		return $this->doSelectFirst($query);
 	}
 
+	public function getByPesel($pesel) {
+		$mapping = $this->mapping('get');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->pesel, $pesel);
+
+		return $this->doSelectFirst($query);
+	}
+
 	public function getFromSession() {
 		return $this->getByPK($this->_srv->get('session')->auth);
 	}

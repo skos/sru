@@ -39,6 +39,7 @@ ALTER TABLE users
 	ADD COLUMN sex BOOLEAN NOT NULL DEFAULT false;
 
 ALTER TABLE users ADD CONSTRAINT users_nationality_id_fkey FOREIGN KEY (nationality) REFERENCES countries (id) ON UPDATE CASCADE ON DELETE NO ACTION;
+ALTER TABLE users ADD CONSTRAINT users_pesel_key UNIQUE (pesel);
 
 ALTER TABLE users_history
 	ADD COLUMN nationality bigint,

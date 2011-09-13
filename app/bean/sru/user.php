@@ -129,6 +129,15 @@ extends UFbean_Common {
 			}
 		} catch (UFex $e) {
 		}
+		// sprawdzmy jeszcze unikalnosc
+		try {
+			$user->getByPesel($val);
+			if ($change && $this->data['id'] == $user->id) {
+				return;
+			}
+			return 'duplicated';
+		} catch (UFex_Dao_NotFound $e) {
+		}
 	}
 	
 	protected function validateBirthDate($val, $change) {

@@ -123,6 +123,7 @@ extends UFtpl_Common {
 		'registryNo/noRegistryNo' => 'Podaj nr indeksu',
 		'pesel/noPesel' => 'Podaj nr PESEL',
 		'pesel/invalid' => 'Niepoprawny nr PESEL',
+		'pesel/duplicated' => 'PESEL przypisany do innego mieszkańca',
 		'typeId/noTypeId' => 'Określ typ',
 		'birthDate/105' => 'Nieprawidłowy format daty',
 	);
