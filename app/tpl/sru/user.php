@@ -202,6 +202,7 @@ extends UFtpl_Common {
 
 	public function formAddWalet(array $d, $dormitories, $faculties, $surname, $registryNo) {
 		$form = UFra::factory('UFlib_Form', 'userAdd', $d, $this->errors);
+		$conf = UFra::shared('UFconf_Sru');
 
 		echo $form->name('Imię', array('class'=>'required'));
 		echo $form->surname('Nazwisko', array('class'=>'required', 'value'=>$surname));
@@ -211,9 +212,13 @@ extends UFtpl_Common {
 			'class' => 'required',
 		));
 
-		$tmp = array('----------Rok akademicki----------') + self::$userTypesForWaletAcademic;
-		$tmp = $tmp + array(20 => '----------Wakacje----------');
-		$tmp = $tmp + self::$userTypesForWaletSummer;
+		$tmp = array();
+		if (in_array('1', $conf->userTypesToRegister)) {
+			$tmp = $tmp + array('----------Rok akademicki----------') + self::$userTypesForWaletAcademic;
+		}
+		if (in_array('2', $conf->userTypesToRegister)) {
+			$tmp = $tmp + array(20 => '----------Wakacje----------') + self::$userTypesForWaletSummer;
+		}
 		echo $form->typeId('Typ mieszkańca', array(
 			'type'=>$form->SELECT,
 			'labels' => $form->_labelize($tmp),
@@ -829,6 +834,7 @@ changeVisibility();
 	}
 
 	public function formEditWalet(array $d, $dormitories, $faculties) {
+		$conf = UFra::shared('UFconf_Sru');
 		$d['locationId'] = $d['locationAlias'];
 		$d['dormitory'] = $d['dormitoryId'];
 		$post = $this->_srv->get('req')->post;
@@ -848,9 +854,13 @@ changeVisibility();
 			'class' => 'required'
 		));
 		
-		$tmp = array('----------Rok akademicki----------') + self::$userTypesForWaletAcademic;
-		$tmp = $tmp + array(20 => '----------Wakacje----------');
-		$tmp = $tmp + self::$userTypesForWaletSummer;
+		$tmp = array();
+		if (in_array('1', $conf->userTypesToRegister)) {
+			$tmp = $tmp + array('----------Rok akademicki----------') + self::$userTypesForWaletAcademic;
+		}
+		if (in_array('2', $conf->userTypesToRegister)) {
+			$tmp = $tmp + array(20 => '----------Wakacje----------') + self::$userTypesForWaletSummer;
+		}
 		echo $form->typeId('Typ mieszkańca', array(
 			'type'=>$form->SELECT,
 			'labels' => $form->_labelize($tmp),

@@ -56,6 +56,9 @@ extends UFconf {
 	protected $mustBeRegistryNo = array( // typy userów, które powinny mieć nr indeksu
 		'1', '2', '5'
 	);
+	protected $userTypesToRegister = array( // typy userów, które powinny pojawić się na listach wyboru:
+		'1', '2' // 1-rok akademicki, 2-wakacje
+	);
 
 	protected $rrdDataDir = '';
 	protected $listOwnTime = '15 minutes'; //liczba minut uwzględniach w liście użytkownika w API
