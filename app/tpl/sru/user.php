@@ -521,10 +521,12 @@ $(function() {
 		$userCount = 0;
 		$usersFree = 0;
 		foreach ($d as $c) {
-			if (!$c['active'] || is_null($c['referralStart']) || $c['referralStart'] == 0) {
-				echo '<tr>';
-			} else if ($acl->sruWalet('user', 'edit', $c['id'])) {
+			$canEdit = $acl->sruWalet('user', 'edit', $c['id']);
+			$canDel = $acl->sruWalet('user', 'del', $c['id']);
+			if ($canDel) {
 				echo '<tr class="registeredOwn">';
+			} else if ($canEdit) {
+				echo '<tr>';
 			} else {
 				echo '<tr class="registeredOther">';
 			}
@@ -533,8 +535,8 @@ $(function() {
 			echo '<td><a href="'.$url.'/dormitories/'.$c['dormitoryAlias'].'">'.strtoupper($c['dormitoryAlias']).'</a></td>';
 			echo '<td>'.$c['locationAlias'].'</td>';
 			echo '<td>'.$c['registryNo'].'</td>';
-			echo '<td><a href="'.$url.'/users/'.$c['id'].'/:edit">'.($c['active'] ? 'Edytuj' : 'Zamelduj').'</a></td>';
-			echo '<td>'.($c['active'] ? '<a href="'.$url.'/users/'.$c['id'].'/:del">Wymelduj</a>' : '').'</td>';
+			echo '<td>'.($canEdit ? '<a href="'.$url.'/users/'.$c['id'].'/:edit">'.($canDel ? 'Edytuj' : 'Zamelduj') : '').'</a></td>';
+			echo '<td>'.($canDel ? '<a href="'.$url.'/users/'.$c['id'].'/:del">Wymelduj</a>' : '').'</td>';
 		}
 		echo '</tbody></table>';
 ?>
