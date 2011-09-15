@@ -65,13 +65,13 @@ img { border-style: none; }
 #main textarea.address { width: 47%; }
 #main .userAction { font-size: 0.8em; border-bottom: 1px dotted; }
 #main .userData { font-weight: bold; }
-#main .computer p, #main .user p, #main .penalty p { margin: 0; padding: 0; clear: both; }
-#main .computer p.comment, #main .user p.comment, #main .penalty p.comment { margin-left: 10.5em; margin-top: 1em; }
-#main .computer em, #main .user em, #main .penalty em { clear: both; display: block; width: 10em; text-align: right; font-style: normal; margin-right: 0.5em; float: left; font-weight: bold; color: #444444; }
-#main .computer ol, #main .user ol, #main .penalty ol { font-size: 0.8em; font-weight: bold; color: #444444; }
-#main .computer ol li:hover ul, #main .user ol li:hover ul, #main .penalty ol li:hover ul { background-color: #eee; }
-#main .computer ol ul, #main .user ol ul, #main .penalty ol ul { font-weight: normal; color: #444444; margin: 0; list-style-type: none; }
-#main .computer ol p a, #main .user ol p a, #main .penalty ol p a { font-weight: normal; font-size: 0.8em; }
+#main .computer p, #main .user p, #main .penalty p, #main .room p, #main .admin p { margin: 0; padding: 0; clear: both; }
+#main .computer p.comment, #main .user p.comment, #main .penalty p.comment, #main .room p.comment, #main .admin p.comment { margin-left: 10.5em; margin-top: 1em; }
+#main .computer em, #main .user em, #main .penalty em, #main .room em, #main .admin em { clear: both; display: block; width: 10em; text-align: right; font-style: normal; margin-right: 0.5em; float: left; font-weight: bold; color: #444444; }
+#main .computer ol, #main .user ol, #main .penalty ol, #main .room ol, #main .admin ol { font-size: 0.8em; font-weight: bold; color: #444444; }
+#main .computer ol li:hover ul, #main .user ol li:hover ul, #main .penalty ol li:hover ul, #main .room ol li:hover ul, #main .admin ol li:hover ul { background-color: #eee; }
+#main .computer ol ul, #main .user ol ul, #main .penalty ol ul, #main .room ol ul, #main .admin ol ul { font-weight: normal; color: #444444; margin: 0; list-style-type: none; }
+#main .computer ol p a, #main .user ol p a, #main .penalty ol p a, #main .room ol p a, #main .admin ol p a { font-weight: normal; font-size: 0.8em; }
 #main .rooms ul { list-style-type: none; margin: 0; padding: 0; clear: both; text-align: center; border-top: 1px solid #ccc; overflow: auto; }
 #main .rooms ul.first { border-top-style: none; }
 #main .rooms li { width: 10%; float: left; display: block; }

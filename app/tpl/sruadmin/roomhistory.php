@@ -19,7 +19,7 @@ extends UFtpl_Common {
 			}
 			switch ($key) {
 				case 'comment':
-					$changes[] = $names[$key].': '.$val.$arr.$new[$key];
+					$changes[] = $names[$key].': <q>'.nl2br($val).'</q>'.$arr.'<q>'.nl2br($new[$key]).'</q>';
 					break;
 				default: continue;
 			}
