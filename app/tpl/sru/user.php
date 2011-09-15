@@ -18,7 +18,7 @@ extends UFtpl_Common {
 		10 => 'Uzupełniające 1',
 		11 => 'Uzupełniające 2',
 		0 => 'N/D',
-		-1 => '',
+		null => '',
 	);
 
 	static public $languages = array(
@@ -335,9 +335,6 @@ $(function() {
 		if (is_null($d['facultyId'])) {
 			$d['facultyId'] = '-1';
 		}
-		if (is_null($d['studyYearId']) || is_null($d['email'])) {
-			$d['studyYearId'] = '-1';
-		}
 		if (is_null($d['gg']) || $d['gg'] == '') {
 			$d['gg'] = '0';
 		}
@@ -578,9 +575,6 @@ $(document).ready(function()
 		if (is_null($d['facultyId'])) {
 			$d['facultyId'] = '-1';
 		}
-		if (is_null($d['studyYearId']) || is_null($d['email'])) {
-			$d['studyYearId'] = '-1';
-		}
 
 		$url = $this->url(0);
 		$urlUser = $url.'/users/'.$d['id'];
@@ -595,7 +589,7 @@ $(document).ready(function()
 		if($d['typeId'] != UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL) {
 			echo '<p><em>Wydział:</em> '.(!is_null($d['facultyName'])?$d['facultyName']:'').'</p>';
 			if($d['facultyId'] != 0) {
-				echo '<p><em>Rok studiów:</em> '.(!is_null($d['studyYearId'])?self::$studyYears[$d['studyYearId']]:'').'</p>';
+				echo '<p><em>Rok studiów:</em> '.self::$studyYears[$d['studyYearId']].'</p>';
 			}
 		}
 		if ($d['banned']) {

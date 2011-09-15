@@ -59,7 +59,7 @@ extends UFact {
 			if (isset($post['facultyId']) && $post['facultyId'] == '0' && isset($post['studyYearId']) && $post['studyYearId'] != '0') {
 				throw UFra::factory('UFex_Dao_DataNotValid', 'Data "studyYearId" differ from "N/A"', 0, E_WARNING, array('studyYearId' => 'noFaculty'));
 			}
-			if(isset($bean->studyYearId)) {
+			if(isset($post['studyYearId'])) {
 				$bean->studyYearId = $post['studyYearId'];
 			}
 			$bean->updateNeeded = false;
