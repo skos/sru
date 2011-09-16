@@ -78,7 +78,9 @@ extends UFtpl_Common {
 <script type="text/javascript">
 $(document).ready(function() 
     { 
-        $("#adminsT<?=$tblId?>").tablesorter();
+        $("#adminsT<?=$tblId?>").tablesorter({
+            textExtraction:  'complex'
+        });
     } 
 );
 </script>
