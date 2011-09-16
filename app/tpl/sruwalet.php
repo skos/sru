@@ -46,6 +46,7 @@ extends UFtpl_Common {
 		echo '<li><a href="'.UFURL_BASE.'/walet/">Wyszukiwanie</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/walet/inhabitants/">Obsadzenie</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/walet/stats/">Statystyki</a></li>';
+		echo '<li><a href="'.UFURL_BASE.'/walet/nations/">Narodowości</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/walet/admins/">Administratorzy</a></li>';
 		echo '</ul>';
 	}
@@ -315,6 +316,25 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 		echo 'Błąd generowania wydruku';
 	}
 
+	/* Narodowości */
+
+	public function titleNations() {
+		echo 'Narodowości';
+	}
+
+	public function nations(array $d) {
+		echo '<h2>Narodowości</h2>';
+		echo '<p><img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" /> Kliknij w nazwę narodowości, by ją edytować.</p>';
+		$d['countries']->write('nations');
+	}
+	
+	public function nationsNotFound() {
+		echo $this->ERR('Nie znaleziono narodowości');
+	}
+
+	public function quickNationSaveResults(array $d) {
+		echo $d['nation'];
+	}
 
 	/* Obsadzenie */
 

@@ -429,6 +429,36 @@ extends UFbox {
 			return '';
 		}
 	}
+	
+	/* Narodowości */
+
+	public function nations() {
+		try {
+			$countries = UFra::factory('UFbean_SruWalet_CountryList');
+			$countries->listAll();
+			$d['countries'] = $countries;
+		
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound', $d);
+		}
+	}
+	
+	public function quickNationSaveResults() {
+		try {
+			$get = $this->_srv->get('req')->get;
+			
+			$bean = UFra::factory('UFbean_SruWalet_Country');
+			$bean->getByPk($get->nationId);
+			$bean->nationality = htmlspecialchars(urldecode($get->nationName));
+			$bean->save();
+			$d['nation'] = $bean->nationality;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex $e) {
+			return '';
+		}
+	}
 
 	/* Obsadzenie */
 

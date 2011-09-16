@@ -8,8 +8,4 @@ extends UFbeanList {
 	public function quickSearch(array $params) {
 		$this->data = $this->dao->quickSearch($params);
 	}
-
-	protected function chooseTemplate() {
-		return;
-	}
 }

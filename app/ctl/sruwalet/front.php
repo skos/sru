@@ -106,6 +106,27 @@ extends UFctl {
 						}
 					}
 					break;
+				case 'nations':
+					$get->view = 'nations/main';
+					if ($segCount > 1) {
+						switch ($req->segment(2)) {
+							case 'quicksave':
+								if ($segCount != 4) {
+									$get->view = 'error404';
+								} else {
+									$id = (int)$req->segment(3);
+									$name = $req->segment(4);
+									$get->view = 'nations/quicksave';
+									$get->nationId = $id;
+									$get->nationName = $name;
+								}
+								break;
+							default:
+								$get->view = 'error404';
+								break;
+						}
+					}
+					break;
 				case 'inhabitants':
 					$get->view = 'inhabitants/main';
 					break;
@@ -289,6 +310,10 @@ extends UFctl {
 				} else {
 					return 'SruWalet_UserAdd';
 				}
+			case 'nations/main':
+				return 'SruWalet_Nations';
+			case 'nations/quicksave':
+				return 'SruWalet_NationQuickSave';
 			case 'inhabitants/main':
 				return 'SruWalet_Inhabitants';
 			case 'dormitories/dorm':

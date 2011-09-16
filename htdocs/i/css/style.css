@@ -115,6 +115,7 @@ img { border-style: none; }
 #main .woman { background: #cff; }
 #main .additional { background: #f22; }
 #main .free { background: #00f; color: #ff0; }
+#main .editable { background-color: #ffffd3; }
 
 #main .switchports table { width: 100%; border-collapse: collapse;  }
 #main .switchports td { text-align: center; width: 12%; border: 1px solid #eee; }
