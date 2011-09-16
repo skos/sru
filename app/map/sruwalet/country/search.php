@@ -7,13 +7,13 @@ extends UFmap {
 
 	protected $columns = array(
 		'id'			=> 'c.id',
-		'name'			=> 'c.name',
-		'nameSearch'	=> 'lower(c.name)',
+		'nationality'			=> 'c.nationality',
+		'nationalitySearch'	=> 'lower(c.nationality)',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
-		'name'          => self::TEXT,
-		'nameSearch'    => self::TEXT,
+		'nationality'          => self::TEXT,
+		'nationalitySearch'    => self::TEXT,
 	);
 	protected $tables = array(
 		'c' => 'countries',

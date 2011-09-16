@@ -42,7 +42,7 @@ extends UFmap {
 		'documentType'	=> 'u.document_type',
 		'documentNumber'=> 'u.document_number',
 		'nationality'	=> 'u.nationality',
-		'nationalityName' => 'c.name',
+		'nationalityName' => 'c.nationality',
 		'pesel'			=> 'u.pesel',
 		'birthDate'		=> 'u.birth_date',
 		'birthPlace'	=> 'u.birth_place',

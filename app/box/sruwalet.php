@@ -191,7 +191,7 @@ extends UFbox {
 			$get = $this->_srv->get('req')->get;
 			$tmp = array();
 			try {
-				$tmp['name'] = strtolower($get->searchedCountry).'*';
+				$tmp['nationality'] = strtolower($get->searchedCountry).'*';
 			} catch (UFex_Core_DataNotFound $e) {
 			}
 			$bean->quickSearch($tmp);

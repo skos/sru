@@ -141,7 +141,7 @@ extends UFtpl_Common {
 	public function quickCountrySearchResults(array $d) {
 		$response = array();
 		foreach ($d['countries'] as $country) {
-			$response[] = $country['name'];
+			$response[] = $country['nationality'];
 		}
 		echo json_encode(array_values(array_unique($response)));
 	}

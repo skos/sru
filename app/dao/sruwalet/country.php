@@ -13,10 +13,10 @@ extends UFdao {
 			$mapping = $this->mapping('search');
 
 			$query = $this->prepareSelect($mapping);
-			$query->order($mapping->nameSearch, $query->ASC);
+			$query->order($mapping->nationalitySearch, $query->ASC);
 			foreach ($params as $var=>$val) {
 				switch ($var) {
-					case 'name':
+					case 'nationality':
 						$val = str_replace('%', '', $val);
 						$val = str_replace('*', '%', $val);
 						$query->where($var.'Search', $val, UFlib_Db_Query::LIKE);
@@ -36,7 +36,7 @@ extends UFdao {
 		$mapping = $this->mapping('get');
 
 		$query = $this->prepareSelect($mapping);
-		$query->where($mapping->nameSearch, $name);
+		$query->where($mapping->nationalitySearch, $name);
 
 		return $this->doSelectFirst($query);
 	}

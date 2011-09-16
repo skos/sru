@@ -16,15 +16,15 @@ CREATE SEQUENCE countries_id_seq
 CREATE TABLE countries
 (
   id bigserial NOT NULL,
-  name varchar(50) NOT NULL, -- Administrator
+  nationality varchar(50) NOT NULL, -- nazwa kraju
   CONSTRAINT countries_pkey PRIMARY KEY (id)
 )
 WITH (
   OIDS=FALSE
 );
 
-ALTER TABLE countries ADD CONSTRAINT countries_name_key UNIQUE ("name");
-INSERT INTO countries VALUES (1, 'Polska');
+ALTER TABLE countries ADD CONSTRAINT countries_nationality_key UNIQUE ("nationality");
+INSERT INTO countries VALUES (1, 'polska');
 
 ALTER TABLE users 
 	ADD COLUMN nationality bigint NOT NULL DEFAULT 1,

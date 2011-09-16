@@ -7,11 +7,11 @@ extends UFmap {
 
 	protected $columns = array(
 		'id'			=> 'id',
-		'name'			=> 'name',
+		'nationality'			=> 'nationality',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
-		'name'          => self::TEXT,
+		'nationality'          => self::TEXT,
 	);
 	protected $tables = array(
 		'' => 'countries',
