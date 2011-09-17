@@ -287,9 +287,23 @@ extends UFctl {
 			case 'users/user/servicehistory':
 				return 'SruWalet_ServiceHistory';
 			case 'users/user/edit':
+				$user = UFra::factory('UFbean_Sru_User');
+				$user->getByPK($get->userId);
+				if($user->documentNumber == '' || $user->nationality == '' ||
+					$user->address == '' || ($user->nationality == 1 && $user->pesel == '') || 
+					(in_array($user->typeId, UFra::shared('UFconf_Sru')->mustBeRegistryNo) && $user->registryNo == ''))
+					{
+						$msg->del('userEdit/ok');
+						$msg->set('userEdit/warn');
+						$msg = $this->_srv->get('msg');
+					}
 				if ($msg->get('userEdit/ok')) {
 					return 'SruWalet_User';
+				} else if($msg->get('userEdit/warn') && !$msg->get('userEdit/ok') && isset($_POST['submit']) // isset($post->submit) zawsze zwraca false O.O 
+							&& !$msg->get('userEdit/errors')) {
+					return 'SruWalet_User';
 				} else if ($acl->sruWalet('user', 'edit', $get->userId)) {
+					$msg->del('userEdit/warn');
 					return 'SruWalet_UserEdit';
 				} else {
 					return 'Sru_Error403';

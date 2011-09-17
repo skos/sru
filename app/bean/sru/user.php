@@ -18,7 +18,7 @@ extends UFbean_Common {
 	const DB_TOURIST_MIN = 21;
 	const DB_TOURIST_MAX = 30;
 
-	const NATIONALITY_PL = 'Polska';
+	const NATIONALITY_PL = 'polska';
 
 	protected $_locationId = null;
 	protected $_password = null;
@@ -126,14 +126,18 @@ extends UFbean_Common {
 			} else if($post['nationalityName'] == self::NATIONALITY_PL && (is_null($val) || $val == '')) {
 				return 'noPesel';
 			}
-			if (!is_null($val) && !$val == '' && !UFbean_Sru_User::validatePeselFormat($val)) {
+			if (!is_null($val) && $val != '' && !UFbean_Sru_User::validatePeselFormat($val)) {
 				return 'invalid';
 			}
 		} catch (UFex $e) {
 		}
 		// sprawdzmy jeszcze unikalnosc
 		try {
-			$user->getByPesel($val);
+			if(!is_null($val) && $val != '') {
+				$user->getByPesel($val);
+			} else {
+				return;	
+			}
 			if ($change && $this->data['id'] == $user->id) {
 				return;
 			}
@@ -173,21 +177,21 @@ extends UFbean_Common {
 
 	protected function validateAddress($val, $change) {
 		if(is_null($val) || $val == '')
-			return 'noAddress';
+			return ;//'noAddress';
 		else
 			return;
 	}
 	
 	protected function validateDocumentType($val, $change) {
 		if(is_null($val) || $val == '')
-			return 'noDocumentType';
+			return ;//'noDocumentType';
 		else
 			return;
 	}
 	
 	protected function validateDocumentNumber($val, $change) {
 		if(is_null($val) || $val == '')
-			return 'noDocumentNumber';
+			return ;//'noDocumentNumber';
 		else
 			return;
 	}

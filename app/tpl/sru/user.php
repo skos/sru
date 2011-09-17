@@ -238,15 +238,20 @@ extends UFtpl_Common {
 			'labels' => $form->_labelize($tmp, '', ''),
 			'class'=>'required',
 		));
-		echo $form->address('Adres', array('class'=>'required address', 'type'=>$form->TEXTAREA, 'rows'=>3));
+		echo $form->address('Adres', array('class'=>'necessary address', 'type'=>$form->TEXTAREA, 'rows'=>3));
 		echo $form->documentType('Typ dokumentu', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$documentTypes),
-			'class'=>'required',
+			'class'=>'necessary',
 		));
-		echo $form->documentNumber('Numer dokumentu', array('class'=>'required'));
-		echo $form->nationalityName('Narodowość', array('class'=>'required', 'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="np. polska, niemiecka" /><br />'));
-		echo $form->pesel('PESEL', array('value'=>$pesel, 'after'=>'<span id="peselValidationResult"></span><br/>'));
+
+		echo $form->documentNumber('Numer dokumentu', array('class'=>'necessary'));
+		echo $form->nationalityName('Narodowość', array('class'=>'necessary',
+														'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Np. &quot;polska&quot;, &quot;niemiecka&quot;, &quot;angielska&quot;" /><br/>',));
+		echo $form->pesel('PESEL', array('class'=>'necessary',
+										'value'=>$pesel,
+										'after'=>'<span id="peselValidationResult"></span><br/>'));
+
 		echo $form->birthDate('Data urodzenia', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" 
 														title="Data w formacie RRRR-MM-DD, np. 1988-10-06" /><br />'));
 		echo $form->birthPlace('Miejsce urodzenia');
@@ -881,15 +886,19 @@ changeVisibility();
 				'class'=>'required',
 			));
 		}
-		echo $form->address('Adres', array('class'=>'required address', 'type'=>$form->TEXTAREA, 'rows'=>3));
+		echo $form->address('Adres', array('class'=>'necessary address', 'type'=>$form->TEXTAREA, 'rows'=>3));
 		echo $form->documentType('Typ dokumentu', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$documentTypes),
-			'class'=>'required',
+			'class'=>'necessary',
 		));
-		echo $form->documentNumber('Numer dokumentu', array('class'=>'required'));
-		echo $form->nationalityName('Narodowość', array('class'=>'required', 'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="np. polska, niemiecka" /><br />'));
-		echo $form->pesel("PESEL", array('after'=>'<span id="peselValidationResult"></span><br/>'));
+
+		echo $form->documentNumber('Numer dokumentu', array('class'=>'necessary'));
+		echo $form->nationalityName('Narodowość', array('class'=>'necessary',
+														'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Np. &quot;polska&quot;, &quot;niemiecka&quot;, &quot;angielska&quot;" /><br/>',));
+		echo $form->pesel("PESEL", array('class'=>'necessary',
+										'after'=>'<span id="peselValidationResult"></span><br/>'));
+
 		echo $form->birthDate('Data urodzenia', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" 
 														title="Data w formacie RRRR-MM-DD, np. 1988-10-06" /><br />'));
 		echo $form->birthPlace("Miejsce urodzenia");

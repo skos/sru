@@ -128,6 +128,7 @@ img { border-style: none; }
 #main .switchports td.selectedPort { border: 2px solid red; }
 
 #main .required { border: solid 1px red; }
+#main .necessary { border: solid 1px orange; }
 #main .waletImg { position: relative; left: 620px; top: -130px; }
 
 #main ul .admin { background-color: yellow; }

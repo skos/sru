@@ -197,7 +197,7 @@ window.open("<? echo $url; ?>/:print/<? echo $this->_srv->get('req')->get->passw
 <?
 			echo $this->OK('Konto zostało założone.<br/><a href="'.$url.'/:print/'.$this->_srv->get('req')->get->password.'" target="_blank">Wydrukuj potwierdzenie założenia konta</a>.');
 		}
-		if ($this->_srv->get('msg')->get('userEdit/ok')) {
+		if ($this->_srv->get('msg')->get('userEdit/ok') || $this->_srv->get('msg')->get('userEdit/warn')) {
 			$msg = '';
 			try {
 				if ($this->_srv->get('req')->get->activated) {
@@ -210,7 +210,11 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 				}
 			} catch (UFex_Core_DataNotFound $e) {
 			}
-			echo $this->OK('Dane zostały zmienione.'.$msg);
+			if($this->_srv->get('msg')->get('userEdit/ok')) {
+				echo $this->OK('Dane zostały zmienione.'.$msg);
+			} else if ($this->_srv->get('msg')->get('userEdit/warn')) {
+				echo $this->OK('Dane zostały zmienione, ale są niekompletne.'.$msg);
+			}
 		}
 
 		echo '<div class="user">';
