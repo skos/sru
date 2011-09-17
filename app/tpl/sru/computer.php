@@ -99,10 +99,14 @@ extends UFtpl_Common {
 	
 	public function listOwn(array $d) {
 		$url = $this->url(0).'/computers/';
+		$acl = $this->_srv->get('acl');
 		foreach ($d as $c) {
 			echo '<li><span class="userData">'.$c['host'].'</span><small>&nbsp;&nbsp;IP: '.$c['ip'].'&nbsp;&nbsp;MAC: '.$c['mac'].'</small>
 				<span>'.(is_null($c['availableTo']) ? '' : date(self::TIME_YYMMDD, $c['availableTo'])).'</span>
-				<a class="userAction" href="'.$url.$c['id'].'">Szczegóły</a> &bull; <a class="userAction" href="'.$url.$c['id'].'/:edit">Edytuj</a></li>';
+				<a class="userAction" href="'.$url.$c['id'].'">Szczegóły</a>';
+				if ($acl->sru('computer', 'edit')) {
+					echo ' &bull; <a class="userAction" href="'.$url.$c['id'].'/:edit">Edytuj</a></li>';
+				}
 		}
 	}
 
