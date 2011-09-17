@@ -18,8 +18,6 @@ extends UFbean_Common {
 	const DB_TOURIST_MIN = 21;
 	const DB_TOURIST_MAX = 30;
 
-	const NATIONALITY_PL = 'polska';
-
 	protected $_locationId = null;
 	protected $_password = null;
 
@@ -113,24 +111,11 @@ extends UFbean_Common {
 	}
 
 	protected function validatePesel($val, $change) {
-		$post = $this->_srv->get('req')->post->{$change?'userEdit':'userAdd'};
 		$user = UFra::factory('UFbean_Sru_User');
-		try {
-			if(isset($this->data['id'])){
-				$user->getByPK($this->data['id']);
-				if(($user->nationality == 1 && (is_null($val) || $val == '')
-					&& $post['nationalityName'] == self::NATIONALITY_PL)
-				|| ($post['nationalityName'] == self::NATIONALITY_PL && (is_null($val) || $val == ''))) {
-					return 'noPesel';
-				}
-			} else if($post['nationalityName'] == self::NATIONALITY_PL && (is_null($val) || $val == '')) {
-				return 'noPesel';
-			}
-			if (!is_null($val) && $val != '' && !UFbean_Sru_User::validatePeselFormat($val)) {
-				return 'invalid';
-			}
-		} catch (UFex $e) {
+		if (!is_null($val) && $val != '' && !UFbean_Sru_User::validatePeselFormat($val)) {
+			return 'invalid';
 		}
+
 		// sprawdzmy jeszcze unikalnosc
 		try {
 			if(!is_null($val) && $val != '') {
