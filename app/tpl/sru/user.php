@@ -363,7 +363,7 @@ $(function() {
 
 	public function formEdit(array $d, $faculties) {
 		if (is_null($d['facultyId'])) {
-			$d['facultyId'] = '-1';
+			$d['facultyId'] = null;
 		}
 		if (is_null($d['gg']) || $d['gg'] == '') {
 			$d['gg'] = '0';
@@ -436,11 +436,13 @@ $(function() {
 		));
 		echo '<br />';
 		
-		echo $form->_fieldset('Dane dotyczące studiów');
+		if($d['typeId'] <= 50 || ($d['typeId'] > 50 && !is_null($d['registryNo']) && $d['registryNo'] != '')) {
+			echo $form->_fieldset('Dane dotyczące studiów');
+		}
 		if (!is_null($d['registryNo']) && $d['registryNo'] != '') {
 			echo '<p><label>Nr indeksu:</label><span class="userData"> '.$d['registryNo'].'</span></p>';
 		}
-		if($d['typeId'] != UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL) {
+		if($d['typeId'] != UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL && $d['typeId'] <= 50) {
 			$tmp = array();
 			foreach ($faculties as $fac) {
 				if ($fac['id'] == 0) continue; // N/D powinno być na końcu
@@ -603,7 +605,7 @@ $(document).ready(function()
 		$acl = $this->_srv->get('acl');
 		
 		if (is_null($d['facultyId'])) {
-			$d['facultyId'] = '-1';
+			$d['facultyId'] = null;
 		}
 
 		$url = $this->url(0);
@@ -616,7 +618,7 @@ $(document).ready(function()
 			echo '<p><em>Gadu-Gadu:</em> <a href="gg:'.$d['gg'].'">'.$d['gg'].'</a></p>';
 		}
 		echo '<p><em>Miejsce:</em> <a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'/'.$d['locationAlias'].'">'.$d['locationAlias'].'</a> <small>(<a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'">'.$d['dormitoryAlias'].'</a>)</small>'.(strlen($d['locationComment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$d['locationComment'].'" />':'').'</p>';
-		if($d['typeId'] != UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL) {
+		if($d['typeId'] != UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL && $d['typeId'] <= 50) {
 			echo '<p><em>Wydział:</em> '.(!is_null($d['facultyName'])?$d['facultyName']:'').'</p>';
 			if($d['facultyId'] != 0) {
 				echo '<p><em>Rok studiów:</em> '.self::$studyYears[$d['studyYearId']].'</p>';
@@ -730,7 +732,7 @@ changeVisibility();
 		if(!is_null($d['email']) && $d['email'] != '') {
 			echo '<p><em>E-mail:</em> <a href="mailto:'.$d['email'].'">'.$d['email'].'</a></p>';
 		}
-		if($d['typeId'] != UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL) {
+		if($d['typeId'] != UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL && $d['typeId'] <= 50) {
 			echo '<p><em>Wydział:</em> '.(!is_null($d['facultyName'])?$d['facultyName']:'').'</p>';
 			if($d['facultyId'] != 0) {
 				echo '<p><em>Rok studiów:</em> '.(!is_null($d['studyYearId'])?self::$studyYears[$d['studyYearId']]:'').'</p>';
@@ -789,7 +791,7 @@ changeVisibility();
 			echo '<p><em>Gadu-Gadu:</em><span class="userData"> <a href="gg:'.$d['gg'].'">'.$d['gg'].'</a></span></p>';
 		}
 		echo '<p><em>Zameldowanie:</em><span class="userData"> '.$d['dormitoryName'].', pok. '.$d['locationAlias'].'</span></p>';
-		if ($d['typeId'] != UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL) {
+		if ($d['typeId'] != UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL && $d['typeId'] <= 50) {
 			echo '<p><em>Wydział:</em><span class="userData"> '.(!is_null($d['facultyName'])?$d['facultyName']:'').'</span></p>';
 			if($d['facultyId'] != 0) {
 				echo '<p><em>Rok studiów:</em><span class="userData"> '.(!is_null($d['studyYearId'])?self::$studyYears[$d['studyYearId']]:'').'</span></p>';
@@ -831,7 +833,7 @@ changeVisibility();
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$languages),
 		));
-		if($d['typeId'] != UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL && $d['facultyId'] != 0) {
+		if($d['typeId'] != UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL && $d['facultyId'] != 0 && $d['typeId'] <= 50) {
 			echo $form->studyYearId('Rok studiów', array(
 				'type' => $form->SELECT,
 				'labels' => $form->_labelize(self::$studyYears),
@@ -911,7 +913,6 @@ changeVisibility();
 				'class'=>'required',
 			));
 		}
-		$indexForScript = 0;
 
 		echo $form->address('Adres', array('class'=>'necessary address', 
 											'type'=>$form->TEXTAREA, 

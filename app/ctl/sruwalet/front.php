@@ -309,6 +309,7 @@ extends UFctl {
 							&& !$msg->get('userEdit/errors')) {
 					return 'SruWalet_User';
 				} else if ($acl->sruWalet('user', 'edit', $get->userId)) {
+					$msg->del('userEdit/warn');
 					return 'SruWalet_UserEdit';
 				} else {
 					return 'Sru_Error403';

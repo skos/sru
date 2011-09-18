@@ -211,9 +211,9 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 			} catch (UFex_Core_DataNotFound $e) {
 			}
 			if($this->_srv->get('msg')->get('userEdit/ok')) {
-				echo $this->OK('Dane zostały zmienione.'.$msg);
+				echo $this->OK('Dane zostały zapisane.'.$msg);
 			} else if ($this->_srv->get('msg')->get('userEdit/warn')) {
-				echo $this->OK('Dane zostały zmienione, ale są <b>niekompletne</b>.'.$msg);
+				echo $this->OK('Dane zostały zapisane, ale są <b>niekompletne</b>.'.$msg);
 			}
 		}
 
