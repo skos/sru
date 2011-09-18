@@ -146,11 +146,17 @@ extends UFctl {
 								case ':usersexport':
 									$get->view = 'dormitories/dorm/docusersexport';
 									break;
+								case ':regbookexport':
+									$get->view = 'dormitories/dorm/docregbookexport';
+									break;
 								case ':dormexcelexport':
 									$get->view = 'dormitories/dorm/xlsdormexport';
 									break;
 								case ':usersexcelexport':
 									$get->view = 'dormitories/dorm/xlsusersexport';
+									break;
+								case ':regbookexcelexport':
+									$get->view = 'dormitories/dorm/xlsregbookexport';
 									break;
 								default:
 									$get->view = 'error404';
@@ -362,6 +368,12 @@ extends UFctl {
 				} else {
 					return 'Sru_Error403';
 				}
+			case 'dormitories/dorm/docregbookexport':
+				if ($acl->sruWalet('dorm', 'view', $get->dormAlias)) {
+					return 'SruWalet_DormRegBookDocExport';
+				} else {
+					return 'Sru_Error403';
+				}
 			case 'dormitories/dorm/xlsdormexport':
 				if ($acl->sruWalet('dorm', 'view', $get->dormAlias)) {
 					return 'SruWalet_DormXlsExport';
@@ -371,6 +383,12 @@ extends UFctl {
 			case 'dormitories/dorm/xlsusersexport':
 				if ($acl->sruWalet('dorm', 'view', $get->dormAlias)) {
 					return 'SruWalet_DormUsersXlsExport';
+				} else {
+					return 'Sru_Error403';
+				}
+			case 'dormitories/dorm/xlsregbookexport':
+				if ($acl->sruWalet('dorm', 'view', $get->dormAlias)) {
+					return 'SruWalet_DormRegBookXlsExport';
 				} else {
 					return 'Sru_Error403';
 				}

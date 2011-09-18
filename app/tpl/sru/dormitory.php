@@ -109,4 +109,38 @@ $(document).ready(function()
 		}
 		echo '</tbody></table>';
 	}
+
+	public function regBook(array $d, $users) {
+		echo '<table><thead><tr>';
+		echo '<th>L.p.</th>';
+		echo '<th>Nazwisko</th>';
+		echo '<th>Imię</th>';
+		echo '<th>Nr pokoju</th>';
+		echo '<th>Data urodzenia</th>';
+		echo '<th>Adres pobytu stałego</th>';
+		echo '<th>Okres pobytu</th>';
+		echo '<th>Oznaczenie dokumentu tożsamości</th>';
+		echo '<th>Wydział</th>';
+		echo '<th>Nr albumu</th>';
+		echo '<th>Uwagi</th>';
+		echo '</tr></thead><tbody>';
+		$i = 0;
+		foreach ($users as $user) {
+			if ($user['typeId'] > UFtpl_Sru_User::$userTypesLimit) {
+				continue;
+			}
+			echo '<tr><td style="border: 1px solid;">'.++$i.'</td>';
+			echo '<td style="border: 1px solid;">'.$user['surname'].'</td>';
+			echo '<td style="border: 1px solid;">'.$user['name'].'</td>';
+			echo '<td style="border: 1px solid;">'.$user['locationAlias'].'</td>';
+			echo '<td style="border: 1px solid;">'.(is_null($user['birthDate']) ? '&nbsp;' : date(self::TIME_YYMMDD, $user['birthDate'])).'</td>';
+			echo '<td style="border: 1px solid;">'.(is_null($user['address']) ? '&nbsp;' : nl2br($user['address'])).'</td>';
+			echo '<td style="border: 1px solid;">'.date(self::TIME_YYMMDD, $user['referralStart']).'-</td>';
+			echo '<td style="border: 1px solid;">'.(is_null($user['documentNumber']) ? '&nbsp;' : UFtpl_Sru_User::$documentTypes[$user['documentType']].': '.$user['documentNumber']).'</td>';
+			echo '<td style="border: 1px solid;">'.$user['facultyName'].'</td>';
+			echo '<td style="border: 1px solid;">'.(is_null($user['registryNo']) ? '&nbsp;' : $user['registryNo']).'</td>';
+			echo '<td style="border: 1px solid;">&nbsp;</td></tr>';
+		}
+		echo '</tbody></table>';
+	}
 }

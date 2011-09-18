@@ -357,8 +357,12 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 
 	public function dorm(array $d) {
 		echo '<h2><a href="'.$this->url(0).'/inhabitants">Obsadzenie</a><br/>';
-		echo '<small>Eksportuj do pliku MS Word&#153;: <a href="'.$this->url(3).'/:dormexport">obsadzenie</a> | <a href="'.$this->url(3).'/:usersexport">mieszkańców</a></small><br/>';
-		echo '<small>Eksportuj do pliku MS Excel&#153;: <a href="'.$this->url(3).'/:dormexcelexport">obsadzenie</a> | <a href="'.$this->url(3).'/:usersexcelexport">mieszkańców</a></small></h2>';
+		echo '<small>Eksportuj do pliku MS Word&#153;: <a href="'.$this->url(3).'/:dormexport">wg pokoi</a>
+			| <a href="'.$this->url(3).'/:usersexport">wg nazwisk</a>
+			| <a href="'.$this->url(3).'/:regbookexport">książka meldunkowa</a></small><br/>';
+		echo '<small>Eksportuj do pliku MS Excel&#153;: <a href="'.$this->url(3).'/:dormexcelexport">wg pokoi</a>
+			| <a href="'.$this->url(3).'/:usersexcelexport">wg nazwisk</a>
+			| <a href="'.$this->url(3).'/:regbookexcelexport">książka meldunkowa</a></small></h2>';
 		echo '<h3>'.$d['dorm']->name.'</h3>';
 		$d['rooms']->write('dormInhabitants', $d['dorm'], $d['users']);
 	}
@@ -387,6 +391,15 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 	public function dormUsersExport(array $d) {
 		echo '<h2>'.$d['dorm']->name.' - lista mieszkańców</h2>';
 		$d['dorm']->write('inhabitantsAlphabetically', $d['users']);
+	}
+
+	public function titleDormRegBookExport(array $d) {
+		echo $d['dorm']->alias.'-ksiazka_meldunkowa';
+	}
+
+	public function dormRegBookExport(array $d) {
+		echo '<h2>'.$d['dorm']->name.' - Książka meldunkowa</h2>';
+		$d['dorm']->write('regBook', $d['users']);
 	}
 
 

@@ -597,6 +597,38 @@ extends UFbox {
 		}
 	}
 
+	public function titleDormRegBookExport() {
+		try {
+			$bean = $this->_getDormFromGet();
+
+			$d['dorm'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render('inhabitantsNotFound');
+		}
+	}
+
+	public function dormRegBookExport() {
+		try {
+			$bean = $this->_getDormFromGet();
+			$d['dorm'] = $bean;
+
+			try {
+				$users = UFra::factory('UFbean_Sru_UserList');
+				$users->listActiveByDorm($bean->id);
+
+				$d['users'] = $users;
+			} catch (UFex_Dao_NotFound $e) {
+				$d['users'] = null;
+			}
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}
+	}
+
 	/* Statystyki */
 
 	public function statsUsers() {
