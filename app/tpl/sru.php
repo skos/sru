@@ -53,6 +53,10 @@ extends UFtpl_Common {
 
 	public function userInfo(array $d) {
 		// leftColumn continues...
+		if ($this->_srv->get('msg')->get('userEdit/ok')) {
+			echo $this->OK('Dane zostały zmienione. Pamiętaj, aby zaktualizować dane, gdy ponownie ulegną zmianie.');
+		}
+		
 		$form = UFra::factory('UFlib_Form');
 
 		echo $form->_start($this->url(0).'/');
@@ -230,9 +234,6 @@ extends UFtpl_Common {
 
 		echo $form->_start();
 		echo $form->_fieldset('Twoje dane');
-		if ($this->_srv->get('msg')->get('userEdit/ok')) {
-			echo $this->OK('Dane zostały zmienione. Pamiętaj, aby zaktualizować dane, gdy ponownie ulegną zmianie.');
-		}
 		echo $d['user']->write('formEdit', $d['faculties']);
 		echo $form->_submit('Zapisz');
 		echo $form->_end();

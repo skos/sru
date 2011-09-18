@@ -241,7 +241,7 @@ extends UFtpl_Common {
 		echo $form->address('Adres', array('class'=>'necessary address', 
 											'type'=>$form->TEXTAREA, 
 											'rows'=>3,
-											'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="' . nl2br("Kod pocztowy, miejscowość \n ulica nr/nr") . '" /><br/>'));
+											'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="' . nl2br("Format: \n kod pocztowy miejscowość \n ulica nr domu/nr mieszkania") . '" /><br/>'));
 		
 		echo $form->documentType('Typ dokumentu', array(
 			'type' => $form->SELECT,
@@ -374,7 +374,7 @@ $(function() {
 		if ($d['updateNeeded']) {
 			echo $this->ERR('Dane na Twoim koncie wymagają aktualizacji. Prosimy o wypełnienie prawidłowymi danymi wszystkich wymaganych pól (oznaczonych czerwoną obwódką). W celu ułatwienia kontaktu ze SKOS, możesz wypełnić także pola niewymagane.');
 		}
-		if ($d['changePasswordNeeded']) {
+		if ($d['changePasswordNeeded'] && !is_null($d['email'])) {
 			echo $this->ERR('Twoje hasło ze względów bezpieczeństwa musi zostać zmienione.');
 		}
 		if (is_null($d['email'])) {
@@ -520,7 +520,7 @@ $(function() {
 			source: function(req, resp) {
 				$.getJSON("<? echo $this->url(0); ?>/users/quicksearch/" + encodeURIComponent(req.term), resp);
 			},
-			minLength: 3
+			minLength: 2
 		});
 	});
 
@@ -916,7 +916,7 @@ changeVisibility();
 		echo $form->address('Adres', array('class'=>'necessary address', 
 											'type'=>$form->TEXTAREA, 
 											'rows'=>3,
-											'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="' . nl2br("Kod pocztowy miejscowość \n ulica nr/nr") . '" /><br/>'));
+											'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="' . nl2br("Format: \n kod pocztowy miejscowość \n ulica nr domu/nr mieszkania") . '" /><br/>'));
 		echo $form->documentType('Typ dokumentu', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$documentTypes),

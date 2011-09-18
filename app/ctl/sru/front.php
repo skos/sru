@@ -123,7 +123,9 @@ extends UFctl {
 					return 'Sru_UserMain';
 				}
 			case 'user/edit':
-				if ($acl->sru('user', 'edit')) {
+				if ($msg->get('userEdit/ok')) {
+					return 'Sru_UserMain';
+				} else if ($acl->sru('user', 'edit')) {
 					return 'Sru_UserEdit';
 				} else {
 					return 'Sru_Error403';

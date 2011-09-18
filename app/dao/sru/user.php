@@ -107,6 +107,7 @@ extends UFdao {
 			$mapping = $this->mapping('search');
 
 			$query = $this->prepareSelect($mapping);
+			$query->where($mapping->typeId, UFtpl_Sru_User::$userTypesLimit, $query->LTE); //sami studenci i turyści
 			$query->order($mapping->surnameSearch, $query->ASC);
 			foreach ($params as $var=>$val) {
 				switch ($var) {
