@@ -213,7 +213,7 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 			if($this->_srv->get('msg')->get('userEdit/ok')) {
 				echo $this->OK('Dane zostały zmienione.'.$msg);
 			} else if ($this->_srv->get('msg')->get('userEdit/warn')) {
-				echo $this->OK('Dane zostały zmienione, ale są niekompletne.'.$msg);
+				echo $this->OK('Dane zostały zmienione, ale są <b>niekompletne</b>.'.$msg);
 			}
 		}
 

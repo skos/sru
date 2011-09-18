@@ -99,9 +99,9 @@ extends UFbean_Common {
 		$arrSteps = array(1, 3, 7, 9, 1, 3, 7, 9, 1, 3); // tablica z odpowiednimi wagami
 		$intSum = 0;
 		for ($i = 0; $i < 10; $i++) {
-			$intSum += $arrSteps[$i] * $pesel[$i]; //mnożymy każdy ze znaków przez wagć i sumujemy wszystko
+			$intSum += $arrSteps[$i] * $pesel[$i]; //mnożymy każdy ze znaków przez wagę i sumujemy wszystko
 		}
-		$int = 10 - $intSum % 10; //obliczamy sumć kontrolną
+		$int = 10 - $intSum % 10; //obliczamy sumę kontrolną
 		$intControlNr = ($int == 10) ? 0 : $int;
 		if ($intControlNr == $pesel[10]) { //sprawdzamy czy taka sama suma kontrolna jest w ciągu
 			return true;
@@ -116,7 +116,7 @@ extends UFbean_Common {
 			return 'invalid';
 		}
 
-		// sprawdzmy jeszcze unikalnosc
+		// sprawdźmy jeszcze unikalność
 		try {
 			if(!is_null($val) && $val != '') {
 				$user->getByPesel($val);

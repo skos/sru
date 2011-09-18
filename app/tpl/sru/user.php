@@ -238,7 +238,11 @@ extends UFtpl_Common {
 			'labels' => $form->_labelize($tmp, '', ''),
 			'class'=>'required',
 		));
-		echo $form->address('Adres', array('class'=>'necessary address', 'type'=>$form->TEXTAREA, 'rows'=>3));
+		echo $form->address('Adres', array('class'=>'necessary address', 
+											'type'=>$form->TEXTAREA, 
+											'rows'=>3,
+											'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="' . nl2br("Kod pocztowy, miejscowość \n ulica nr/nr") . '" /><br/>'));
+		
 		echo $form->documentType('Typ dokumentu', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$documentTypes),
@@ -248,8 +252,7 @@ extends UFtpl_Common {
 		echo $form->documentNumber('Numer dokumentu', array('class'=>'necessary'));
 		echo $form->nationalityName('Narodowość', array('class'=>'necessary',
 														'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Np. &quot;polska&quot;, &quot;niemiecka&quot;, &quot;angielska&quot;" /><br/>',));
-		echo $form->pesel('PESEL', array('class'=>'necessary',
-										'value'=>$pesel,
+		echo $form->pesel('PESEL', array('value'=>$pesel,
 										'after'=>'<span id="peselValidationResult"></span><br/>'));
 
 		echo $form->birthDate('Data urodzenia', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" 
@@ -284,6 +287,28 @@ extends UFtpl_Common {
 
 ?><script type="text/javascript">
 (function (){
+	var typeId = document.getElementById('userAdd_typeId');
+	function registryChangeClass(){
+		var registryNo = document.getElementById('userAdd_registryNo');
+		if(typeId.value == 1 || typeId.value == 2 || typeId.value == 5) {
+			registryNo.setAttribute('class', 'required');
+		} else {
+			registryNo.setAttribute('class', '');
+		}
+	}
+	typeId.onchange = registryChangeClass;
+
+	var nationality = document.getElementById('userAdd_nationalityName');
+	function peselChangeClass(){
+		var pesel = document.getElementById('userAdd_pesel');
+		if(nationality.value.toLowerCase() == 'polska'){
+			pesel.setAttribute('class', 'necessary');
+		}else{
+			pesel.setAttribute('class', '');
+		}
+	}
+	nationality.onchange = peselChangeClass;
+	
 	var name = document.getElementById('userAdd_name');
 	function changeSex() {
 		var sex = document.getElementById('userAdd_sex');
@@ -886,7 +911,12 @@ changeVisibility();
 				'class'=>'required',
 			));
 		}
-		echo $form->address('Adres', array('class'=>'necessary address', 'type'=>$form->TEXTAREA, 'rows'=>3));
+		$indexForScript = 0;
+
+		echo $form->address('Adres', array('class'=>'necessary address', 
+											'type'=>$form->TEXTAREA, 
+											'rows'=>3,
+											'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="' . nl2br("Kod pocztowy miejscowość \n ulica nr/nr") . '" /><br/>'));
 		echo $form->documentType('Typ dokumentu', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$documentTypes),
@@ -896,8 +926,7 @@ changeVisibility();
 		echo $form->documentNumber('Numer dokumentu', array('class'=>'necessary'));
 		echo $form->nationalityName('Narodowość', array('class'=>'necessary',
 														'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Np. &quot;polska&quot;, &quot;niemiecka&quot;, &quot;angielska&quot;" /><br/>',));
-		echo $form->pesel("PESEL", array('class'=>'necessary',
-										'after'=>'<span id="peselValidationResult"></span><br/>'));
+		echo $form->pesel("PESEL", array('after'=>'<span id="peselValidationResult"></span><br/>'));
 
 		echo $form->birthDate('Data urodzenia', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" 
 														title="Data w formacie RRRR-MM-DD, np. 1988-10-06" /><br />'));
@@ -942,9 +971,33 @@ changeVisibility();
 			echo $form->active('Zamelduj (aktywuj konto)', array('type'=>$form->CHECKBOX));
 		}
 		echo $form->referralStart('Początek skier.', array('value'=>$referralStart));
-
+		
 ?><script type="text/javascript">
 (function (){
+	var typeId = document.getElementById('userEdit_typeId');
+	function registryChangeClass(){
+		var registryNo = document.getElementById('userEdit_registryNo');
+		if(typeId.value == 1 || typeId.value == 2 || typeId.value == 5) {
+			registryNo.setAttribute('class', 'required');
+		} else {
+			registryNo.setAttribute('class', '');
+		}
+	}
+	typeId.onchange = registryChangeClass; 
+	registryChangeClass();
+
+	var nationality = document.getElementById('userEdit_nationalityName');
+	function peselChangeClass(){
+		var pesel = document.getElementById('userEdit_pesel');
+		if(nationality.value.toLowerCase() == 'polska'){
+			pesel.setAttribute('class', 'necessary');
+		}else{
+			pesel.setAttribute('class', '');
+		}
+	}
+	nationality.onchange = peselChangeClass;
+	peselChangeClass();
+	
 	var name = document.getElementById('userEdit_name');
 	function changeSex() {
 		var sex = document.getElementById('userEdit_sex');

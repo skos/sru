@@ -42,14 +42,22 @@ extends UFact {
 				$bean->updateNeeded = true;
 			}
 
+			if($post['pesel'] == '') {
+				$bean->pesel = null;
+			}
+			
 			// zapis narodowości
-			try {
-				$country = UFra::factory('UFbean_SruWalet_Country');
-				$country->getByName(mb_convert_case($post['nationalityName'], MB_CASE_LOWER, "UTF-8"));
-				$countryId = $country->id;
-			} catch (UFex_Dao_NotFound $e) {
-				$country->nationality = mb_convert_case($post['nationalityName'], MB_CASE_LOWER, "UTF-8");
-				$countryId = $country->save();
+			if($post['nationalityName'] != '') {
+				try {
+					$country = UFra::factory('UFbean_SruWalet_Country');
+					$country->getByName(mb_convert_case($post['nationalityName'], MB_CASE_LOWER, "UTF-8"));
+					$countryId = $country->id;
+				} catch (UFex_Dao_NotFound $e) {
+					$country->nationality = mb_convert_case($post['nationalityName'], MB_CASE_LOWER, "UTF-8");
+					$countryId = $country->save();
+				}
+			} else {
+				$countryId = null;
 			}
 			$bean->nationality = $countryId;
 
