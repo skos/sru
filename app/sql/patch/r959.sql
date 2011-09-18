@@ -27,7 +27,7 @@ ALTER TABLE countries ADD CONSTRAINT countries_nationality_key UNIQUE ("national
 INSERT INTO countries VALUES (1, 'polska');
 
 ALTER TABLE users 
-	ADD COLUMN nationality bigint NOT NULL DEFAULT 1,
+	ADD COLUMN nationality bigint,
 	ADD COLUMN address TEXT,
 	ADD COLUMN birth_date TIMESTAMP WITHOUT TIME ZONE,
 	ADD COLUMN birth_place character varying(100),

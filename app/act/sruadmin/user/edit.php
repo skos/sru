@@ -41,7 +41,7 @@ extends UFact {
 			if (isset($post['dormitory'])) {
 				$bean->dormitory = $post['dormitory'];
 			}
-			if (!is_null($bean->studyYearId)) {
+			if (!is_null($bean->studyYearId) && isset($post['studyYearId'])) {
 				$bean->studyYearId = $post['studyYearId'];
 			}
 
