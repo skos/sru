@@ -201,8 +201,15 @@ extends UFdao {
 		$query = $this->prepareSelect($mapping);
 		$query->where($mapping->dormitoryId, $id);
 		$query->where($mapping->active, true);
-		$query->where($mapping->registryNo, null);
-		$query->where($mapping->typeId, $conf->mustBeRegistryNo, $query->IN);
+		$query->where($mapping->typeId, UFbean_Sru_User::DB_TOURIST_MAX, UFlib_Db_Query::LTE);
+		$query->where(
+			'('.$mapping->column('nationality').' IS NULL
+				OR '.$mapping->column('address').' IS NULL
+				OR '.$mapping->column('documentNumber').' IS NULL
+				OR ('.$mapping->column('pesel').' IS NULL AND '.$mapping->column('nationality').' = \''.UFbean_Sru_User::NATIONALITY_PL_ID.'\')
+			)',
+			null, $query->SQL
+		);
 		$query->order($mapping->surname);
 		$query->order($mapping->name);
 

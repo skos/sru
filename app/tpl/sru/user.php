@@ -301,7 +301,7 @@ extends UFtpl_Common {
 	var nationality = document.getElementById('userAdd_nationalityName');
 	function peselChangeClass(){
 		var pesel = document.getElementById('userAdd_pesel');
-		if(nationality.value.toLowerCase() == 'polska'){
+		if(nationality.value.toLowerCase() == '<?=UFbean_Sru_User::NATIONALITY_PL?>'){
 			pesel.setAttribute('class', 'necessary');
 		}else{
 			pesel.setAttribute('class', '');
@@ -989,7 +989,7 @@ changeVisibility();
 	var nationality = document.getElementById('userEdit_nationalityName');
 	function peselChangeClass(){
 		var pesel = document.getElementById('userEdit_pesel');
-		if(nationality.value.toLowerCase() == 'polska'){
+		if(nationality.value.toLowerCase() == '<?=UFbean_Sru_User::NATIONALITY_PL?>'){
 			pesel.setAttribute('class', 'necessary');
 		}else{
 			pesel.setAttribute('class', '');

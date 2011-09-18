@@ -18,6 +18,9 @@ extends UFbean_Common {
 	const DB_TOURIST_MIN = 21;
 	const DB_TOURIST_MAX = 30;
 
+	const NATIONALITY_PL_ID = 1;
+	const NATIONALITY_PL = 'polska';
+
 	protected $_locationId = null;
 	protected $_password = null;
 
