@@ -483,8 +483,8 @@ extends UFtpl_Common {
 		$url = $this->url(0).'/admins/';
 		
 		echo '<div class="admins">';
-		$d['admins']->write('activeOnDateAdmins', $d['activeOnDate']);
 		$this->activeOnDateAdminsForm($d['activeOnDate']);
+		$d['admins']->write('activeOnDateAdmins', $d['activeOnDate']);
 		echo '</div>';
 
 		echo '<p class="nav"><a href="'.$url.'">Powrót</a></p>';
