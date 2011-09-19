@@ -237,6 +237,14 @@ extends UFbean_Common {
 			return;
 	}
 
+	protected function validateReferralEnd($val, $change) {
+		$post = $this->_srv->get('req')->post->{$change?'userEdit':'userAdd'};
+		if ($post['referralStart'] >= $val) {
+			return 'tooOld';
+		}
+		return;
+	}
+
 	public function notifyByEmail() {
 		// nie mozna tego zrobic w jednej linii, bo php rzuca bledem "Can't use
 		// function return value in write context"

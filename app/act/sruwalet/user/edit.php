@@ -21,8 +21,7 @@ extends UFact {
 
 			$dormitoryId = $bean->dormitoryId;
 
-			$bean->fillFromPost(self::PREFIX, array('password', 'referralStart', 'dormitory', 'nationalityName'));
-			$bean->referralEnd = 0;
+			$bean->fillFromPost(self::PREFIX, array('password', 'dormitory', 'nationalityName'));
 			$bean->modifiedById = $this->_srv->get('session')->authWaletAdmin;
 			$bean->modifiedAt = NOW;
 
@@ -30,14 +29,6 @@ extends UFact {
 				throw UFra::factory('UFex_Dao_DataNotValid', 'Move active user', 0, E_WARNING, array('dormitory' => 'movedActive'));
 			}
 			
-			if (isset($post['referralStart']) && $post['referralStart'] == '') {
-				if ($bean->active) {
-					throw UFra::factory('UFex_Dao_DataNotValid', 'Active without referral start', 0, E_WARNING, array('referralStart' => 'active'));
-				}
-				$bean->referralStart = 0;
-			} else if (isset($post['referralStart'])) {
-				$bean->referralStart = $post['referralStart'];
-			}
 			if ((!$active && $bean->active) || $referralStart != $bean->referralStart) {
 				$bean->updateNeeded = true;
 			}

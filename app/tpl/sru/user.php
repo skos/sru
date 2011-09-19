@@ -111,10 +111,9 @@ extends UFtpl_Common {
 		'registryNo/regexp' => 'Niepoprawny numer indeksu',
 		'registryNo/101' => 'Niepoprawny numer indeksu',
 		'registryNo/duplicated' => 'Nr indeksu przypisany do innego mieszkańca',
-		'referralStart/active' => 'Zameldowany mieszkaniec musi mieć podaną datę początku skierowania',
 		'referralStart/5' => 'Nieprawidłowa data początku skierowania',
-		'referralEnd/inactive' => 'Niezameldowany mieszkaniec musi mieć podaną datę końca skierowania',
 		'referralEnd/5' => 'Nieprawidłowa data końca skierowania',
+		'referralEnd/tooOld' => 'Data końca skierowania musi być nowsza niż data początku skierowania',
 		'address/noAddress' => 'Podaj adres',
 		'documentType/noDocumentType' => 'Podaj typ dokumentu tożsamości',
 		'documentNumber/noDocumentNumber' => 'Podaj numer dokumentu tożsamości',
@@ -281,9 +280,19 @@ extends UFtpl_Common {
 			'labels' => $form->_labelize(self::$languages),
 			'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Wiadomości e-mail i GG będa przychodziły w wybranym języku.<br/><br/>You will receive e-mails and gg messages in the chosen language." /><br/>',
 		));
-		$referralStart = date(self::TIME_YYMMDD, time());
-		echo $form->referralStart('Początek skier.', array('value'=>$referralStart, 'class'=>'required'));
 		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
+		echo '<legend>Meldunek</legend>';
+		$referralStart = date(self::TIME_YYMMDD, time());
+		echo $form->referralStart('Początek skier.', array(
+			'value'=>$referralStart,
+			'class'=>'required',
+			'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Data początku pobytu." /><br/>',
+		));
+		$referralEnd = $conf->usersAvailableTo;
+		echo $form->referralEnd('Koniec skier.', array('value'=>$referralEnd,
+			'class'=>'required',
+			'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Data końca pobytu." /><br/>',
+		));
 
 ?><script type="text/javascript">
 (function (){
@@ -950,17 +959,7 @@ changeVisibility();
 			'class'=>'required',
 		));
 		echo $form->locationAlias('Pokój', array('class'=>'required'));
-		
-		try {
-			$referralStart = $post->userEdit['referralStart'];
-		} catch (UFex_Core_DataNotFound $e) {
-			$referralStart = $d['referralStart'];
-			if (!is_null($d['referralStart']) && ($d['referralStart'] == 0 || $d['active'] == false)) {
-				$referralStart = date(self::TIME_YYMMDD, time());
-			} else if (!is_null($d['referralStart'])) {
-				$referralStart = date(self::TIME_YYMMDD, $d['referralStart']);
-			}
-		}
+
 		echo $form->lang('Język', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$languages),
@@ -970,8 +969,37 @@ changeVisibility();
 		echo '<legend>Meldunek</legend>';
 		if (!$d['active']) {
 			echo $form->active('Zamelduj (aktywuj konto)', array('type'=>$form->CHECKBOX));
+			echo '<br/>';
 		}
-		echo $form->referralStart('Początek skier.', array('value'=>$referralStart));
+		try {
+			$referralStart = $post->userEdit['referralStart'];
+		} catch (UFex_Core_DataNotFound $e) {
+			$referralStart = date(self::TIME_YYMMDD, $d['referralStart']);
+			if ((is_null($d['referralStart']) || $d['referralStart'] == 0) && $d['active'] == false) {
+				$referralStart = '';
+			} else if ((is_null($d['referralStart']) || $d['referralStart'] == 0) && $d['active'] == true) {
+				$referralStart = date(self::TIME_YYMMDD, time());
+			}
+		}
+		echo $form->referralStart('Początek skier.', array(
+			'value'=>$referralStart,
+			'class'=>'required',
+			'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Data początku pobytu." /><br/>',
+		));
+		try {
+			$referralEnd = $post->userEdit['referralEnd'];
+		} catch (UFex_Core_DataNotFound $e) {
+			$referralEnd = date(self::TIME_YYMMDD, $d['referralEnd']);
+			if ((is_null($d['referralEnd']) || $d['referralEnd'] == 0) && $d['active'] == false) {
+				$referralEnd = '';
+			} else if ((is_null($d['referralEnd']) || $d['referralEnd'] == 0) && $d['active'] == true) {
+				$referralEnd = $conf->usersAvailableTo;
+			}
+		}
+		echo $form->referralEnd('Koniec skier.', array('value'=>$referralEnd,
+			'class'=>'required',
+			'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Data końca pobytu." /><br/>',
+		));
 		
 ?><script type="text/javascript">
 (function (){
@@ -998,7 +1026,7 @@ changeVisibility();
 	}
 	nationality.onchange = peselChangeClass;
 	peselChangeClass();
-	
+
 	var name = document.getElementById('userEdit_name');
 	function changeSex() {
 		var sex = document.getElementById('userEdit_sex');
@@ -1009,6 +1037,24 @@ changeVisibility();
 		}
 	}
 	name.onchange = changeSex;
+
+	var active = document.getElementById('userEdit_active');
+	var refStart = document.getElementById('userEdit_referralStart');
+	var refStartVal = document.getElementById('userEdit_referralStart').value;
+	var refEnd = document.getElementById('userEdit_referralEnd');
+	var refEndVal = document.getElementById('userEdit_referralEnd').value;
+	var startVal = '<?=date(self::TIME_YYMMDD, time())?>';
+	var endVal = '<?=$conf->usersAvailableTo?>';
+	function referralsChangeValues(){
+		if(active.checked){
+			refStart.value = startVal;
+			refEnd.value = endVal;
+		}else{
+			refStart.value = refStartVal;
+			refEnd.value = refEndVal;
+		}
+	}
+	active.onchange = referralsChangeValues;
 	
 	var pesel = document.getElementById('userEdit_pesel');
 	function validatePesel() {
@@ -1053,10 +1099,13 @@ $(function() {
 		try {
 			$referralEnd = $post->userDel['referralEnd'];
 		} catch (UFex_Core_DataNotFound $e) {
-			$referralEnd = date(self::TIME_YYMMDD, time());;
+			$referralEnd = date(self::TIME_YYMMDD, ($d['referralEnd']));
+			if (is_null($d['referralEnd']) || $d['referralEnd'] == 0) {
+				$referralEnd = $conf->usersAvailableTo;
+			}
 		}
 		$form = UFra::factory('UFlib_Form', 'userDel', $d, $this->errors);
-		echo $form->referralEnd('Koniec skier.', array('value'=>$referralEnd));
+		echo $form->referralEnd('Koniec skier.', array('class'=>'required', 'value'=>$referralEnd));
 	}
 
 	public function shortList(array $d) {

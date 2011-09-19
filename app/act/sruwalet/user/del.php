@@ -16,16 +16,10 @@ extends UFact {
 
 			$post = $this->_srv->get('req')->post->{self::PREFIX};
 			
-			$bean->fillFromPost(self::PREFIX, array('referralEnd'));
+			$bean->fillFromPost(self::PREFIX);
 			$bean->modifiedById = $this->_srv->get('session')->authWaletAdmin;
 			$bean->modifiedAt = NOW;
 			$bean->active = false;
-
-			if (isset($post['referralEnd']) && $post['referralEnd'] == '') {
-				throw UFra::factory('UFex_Dao_DataNotValid', 'Inactive without referral end', 0, E_WARNING, array('referralEnd' => 'inactive'));
-			} else if (isset($post['referralEnd'])) {
-				$bean->referralEnd = $post['referralEnd'];
-			}
 
 			$bean->save();
 

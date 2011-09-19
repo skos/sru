@@ -53,6 +53,7 @@ extends UFmap {
 		'active'         => self::BOOL,
 		'lang'           => self::TEXT,
 		'referralStart'	 => self::TS,
+		'referralEnd'	 => self::TS,
 		'registryNo'	 => self::NULL_INT,
 		'updateNeeded'	 => self::BOOL,
 		'changePasswordNeeded'	=> self::BOOL,
