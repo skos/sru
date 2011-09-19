@@ -233,7 +233,7 @@ extends UFbox {
 				foreach ($dorms as $dorm) {
 					try {
 						$users = UFra::factory('UFbean_Sru_UserList');
-						$users->listActiveWithoutRegistryByDorm($dorm['dormitoryId']);
+						$users->listActiveWithoutCompulsoryDataByDorm($dorm['dormitoryId']);
 
 						$d['users'][$dorm['dormitoryId']] = $users;
 					} catch (UFex_Dao_NotFound $e) {

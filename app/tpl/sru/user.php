@@ -1038,6 +1038,9 @@ changeVisibility();
 	}
 	name.onchange = changeSex;
 
+<?
+	if (!$d['active']) {
+?>
 	var active = document.getElementById('userEdit_active');
 	var refStart = document.getElementById('userEdit_referralStart');
 	var refStartVal = document.getElementById('userEdit_referralStart').value;
@@ -1055,6 +1058,9 @@ changeVisibility();
 		}
 	}
 	active.onchange = referralsChangeValues;
+<?
+	}
+?>
 	
 	var pesel = document.getElementById('userEdit_pesel');
 	function validatePesel() {
