@@ -159,9 +159,11 @@ extends UFctl {
 			case 'users/user/computers/add':
 				if ($msg->get('computerAdd/ok')) {
 					return 'SruAdmin_User';
-				} else {
+				} elseif ($acl->sruAdmin('computer', 'addForUser', $get->userId)) {
 					return 'SruAdmin_ComputerAdd';
-				} 		
+				} else {
+					return 'Sru_Error403';
+				}
 			case 'users/user/restore':
 				return 'SruAdmin_UserRestore';
 			case 'users/user/penalties':
