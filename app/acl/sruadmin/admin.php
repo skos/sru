@@ -64,7 +64,7 @@ extends UFlib_ClassWithService {
 		$bean = UFra::factory('UFbean_SruAdmin_Admin');
 		$bean->getByPK($id);
 		
-		if($this->_loggedIn() && $sess->is('typeId') && ($sess->typeId == self::CAMPUS || $sess->typeId == self::CENTRAL) && $bean->typeId == self::CENTRAL || $bean->typeId == self::CAMPUS || $bean->typeId == self::LOCAL) {
+		if($this->_loggedIn() && $sess->is('typeId') && ($sess->typeId == self::CAMPUS || $sess->typeId == self::CENTRAL) && ($bean->typeId == self::CENTRAL || $bean->typeId == self::CAMPUS || $bean->typeId == self::LOCAL)) {
 			return true;
 		} else {
 			return false;

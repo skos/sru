@@ -40,7 +40,7 @@ extends UFact {
 			$bean->save();
 
 			if (array_key_exists('dorm', $post)) {
-				while (!is_null(key($post['dorm'])) && $acl->sruAdmin('admin', 'advancedEdit')) {
+				while (!is_null(key($post['dorm'])) && $acl->sruAdmin('admin', 'changeAdminDorms', $bean->id)) {
 					if (current($post['dorm'])) {
 
 						try {
