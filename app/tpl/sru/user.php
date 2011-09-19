@@ -1095,6 +1095,7 @@ $(function() {
 	}
 
 	public function formDelWalet(array $d) {
+		$conf = UFra::shared('UFconf_Sru');
 		$post = $this->_srv->get('req')->post;
 		try {
 			$referralEnd = $post->userDel['referralEnd'];
