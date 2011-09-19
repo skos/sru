@@ -19,7 +19,7 @@ extends UFact {
 			$login = $bean->login;
 			$dormitoryId = $bean->dormitoryId;
 
-			$bean->fillFromPost(self::PREFIX, array('password'));
+			$bean->fillFromPost(self::PREFIX, array('password', 'studyYearId'));
 			if (isset($post['password']) && $post['password'] != '' ) {
 				$map = UFra::factory('UFmap_Sru_User_Set');
 				$valid = $map->valid('password');
@@ -41,7 +41,7 @@ extends UFact {
 			if (isset($post['dormitory'])) {
 				$bean->dormitory = $post['dormitory'];
 			}
-			if (!is_null($bean->studyYearId) && isset($post['studyYearId'])) {
+			if (isset($post['studyYearId']) && $post['studyYearId'] != '') {
 				$bean->studyYearId = $post['studyYearId'];
 			}
 
