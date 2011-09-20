@@ -21,6 +21,7 @@ extends UFmap {
 		'active'         => 'active',
 		'lang'		 => 'lang',
 		'referralStart'	 => 'referral_start',
+		'referralEnd'	 => 'referral_end',
 		'registryNo'	 => 'registry_no',
 		'updateNeeded'	 => 'update_needed',
 		'changePasswordNeeded'	=> 'change_password_needed',
