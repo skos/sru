@@ -57,15 +57,15 @@ extends UFmap {
 		'registryNo'	 => self::NULL_INT,
 		'updateNeeded'	 => self::BOOL,
 		'changePasswordNeeded'	=> self::BOOL,
-		'address'		=> self::TEXT,
+		'address'		=> self::NULL_TEXT,
 		'documentType'	=> self::INT,
-		'documentNumber'=> self::TEXT,
+		'documentNumber'=> self::NULL_TEXT,
 		'nationality'	=> self::NULL_INT,
 		'pesel'			=> self::NULL_TEXT,
 		'birthDate'		=> self::NULL_TS,
-		'birthPlace'	=> self::TEXT,
-		'userPhoneNumber'	=> self::TEXT,
-		'guardianPhoneNumber'	=> self::TEXT,
+		'birthPlace'	=> self::NULL_TEXT,
+		'userPhoneNumber'	=> self::NULL_TEXT,
+		'guardianPhoneNumber'	=> self::NULL_TEXT,
 		'sex'			=> self::BOOL
 	);
 	protected $tables = array(
