@@ -1108,7 +1108,7 @@ $(function() {
 		} catch (UFex_Core_DataNotFound $e) {
 			$referralEnd = date(self::TIME_YYMMDD, ($d['referralEnd']));
 			if (is_null($d['referralEnd']) || $d['referralEnd'] == 0) {
-				$referralEnd = $conf->usersAvailableTo;
+				$referralEnd = date(self::TIME_YYMMDD, time());
 			}
 		}
 		$form = UFra::factory('UFlib_Form', 'userDel', $d, $this->errors);
