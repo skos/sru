@@ -155,14 +155,30 @@ elsif
 	NEW.lang!=OLD.lang OR
 	NEW.type_id!=OLD.type_id OR
 	NEW.nationality!=OLD.nationality OR
+	(OLD.nationality IS NULL AND NEW.nationality IS NOT NULL) OR
+	(OLD.nationality IS NOT NULL AND NEW.nationality IS NULL) OR
 	NEW.address!=OLD.address OR
+	(OLD.address IS NULL AND NEW.address IS NOT NULL) OR
+	(OLD.address IS NOT NULL AND NEW.address IS NULL) OR
 	NEW.birth_date!=OLD.birth_date OR
+	(OLD.birth_date IS NULL AND NEW.birth_date IS NOT NULL) OR
+	(OLD.birth_date IS NOT NULL AND NEW.birth_date IS NULL) OR
 	NEW.birth_place!=OLD.birth_place OR
+	(OLD.birth_place IS NULL AND NEW.birth_place IS NOT NULL) OR
+	(OLD.birth_place IS NOT NULL AND NEW.birth_place IS NULL) OR
 	NEW.pesel!=OLD.pesel OR
+	(OLD.pesel IS NULL AND NEW.pesel IS NOT NULL) OR
+	(OLD.pesel IS NOT NULL AND NEW.pesel IS NULL) OR
 	NEW.document_type!=OLD.document_type OR
 	NEW.document_number!=OLD.document_number OR
+	(OLD.document_number IS NULL AND NEW.document_number IS NOT NULL) OR
+	(OLD.document_number IS NOT NULL AND NEW.document_number IS NULL) OR
 	NEW.user_phone_number!=OLD.user_phone_number OR
+	(OLD.user_phone_number IS NULL AND NEW.user_phone_number IS NOT NULL) OR
+	(OLD.user_phone_number IS NOT NULL AND NEW.user_phone_number IS NULL) OR
 	NEW.guardian_phone_number!=OLD.guardian_phone_number OR
+	(OLD.guardian_phone_number IS NULL AND NEW.guardian_phone_number IS NOT NULL) OR
+	(OLD.guardian_phone_number IS NOT NULL AND NEW.guardian_phone_number IS NULL) OR
 	NEW.sex!=OLD.sex
 then
 	INSERT INTO users_history (
