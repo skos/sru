@@ -41,6 +41,9 @@ extends UFact {
 			if (isset($post['dormitory'])) {
 				$bean->dormitory = $post['dormitory'];
 			}
+			if (!is_null($bean->studyYearId) && isset($post['studyYearId']) && $post['studyYearId'] == '') {
+				throw UFra::factory('UFex_Dao_DataNotValid', 'Cannot set empty year of study', 0, E_WARNING, array('studyYearId' => ''));
+			}
 			if (isset($post['studyYearId']) && $post['studyYearId'] != '') {
 				$bean->studyYearId = $post['studyYearId'];
 			}
