@@ -249,9 +249,5 @@ then
 end if;
 return NEW;
 END;$BODY$
-  LANGUAGE plpgsql VOLATILE
-  COST 100;
-ALTER FUNCTION user_update() OWNER TO postgres;
-GRANT EXECUTE ON FUNCTION user_update() TO postgres;
-GRANT EXECUTE ON FUNCTION user_update() TO public;
+  LANGUAGE plpgsql VOLATILE;
 COMMENT ON FUNCTION user_update() IS 'archiwizacja danych uzytkownika';

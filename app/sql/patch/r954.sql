@@ -1,6 +1,6 @@
 ALTER TABLE admins ADD COLUMN modified_by bigint; -- kto modyfikowal ostanio
 ALTER TABLE admins ADD COLUMN modified_at timestamp without time zone DEFAULT now(); -- kiedy ostanio modyfikowano
-UPDATE admins SET modified_at = '2007-10-01';
+UPDATE admins SET modified_at = '2008-10-16';
 
 
 -- DROP TABLE admins_history;
