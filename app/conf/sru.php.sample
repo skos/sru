@@ -50,8 +50,6 @@ extends UFconf {
 	protected $userImportantLinks = array( // ważne linki na stronę główną usera
 		'http://faq.ds.pg.gda.pl' => 'FAQ',
 	);
-	protected $userBannerLinks = array ( // linki do bannerów
-	);
 
 	protected $puuAvailable = true;
 	protected $mustBeRegistryNo = array( // typy userów, które powinny mieć nr indeksu

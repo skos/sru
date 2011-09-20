@@ -146,16 +146,8 @@ extends UFtpl_Common {
 
 	public function banners(array $d) {
 		// rightColumn continues...
-		if (!empty($d['content'])) {
-			$conf = UFra::shared('UFconf_Sru');
-			$links = $conf->userBannerLinks;
-			foreach ($d['content'] as $file) {
-				$file = preg_replace('/[^a-zA-Z0-9.]/', '', $file);
-				if ($file == '' || preg_match('/^[.].*/', $file)) continue;
-				echo '<p>'. (array_key_exists($file, $links) ? '<a href="'.$links[$file].'">' : '').
-					'<img src="'.UFURL_BASE.'/i/banners-img/'.$file.'" alt="" />'.
-					(array_key_exists($file, $links) ? '</a>' : '').'</p>';
-			}
+		if (!is_null($d['content'])) {
+			echo $d['content'];
 		}
 		echo '</div>';
 	}

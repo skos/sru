@@ -105,14 +105,14 @@ extends UFbox {
 	}
 
 	public function banners() {
-		$dirContent = scandir(UFURL_BASE.'i/banners-img');
-		foreach ($dirContent as $key=>&$value) {
-			if ($value == '.' || $value == '..') {
-				unset($dirContent[$key]);
-			}
+		$content = @file_get_contents(UFURL_BASE.'i/banners/banners.htm');
+		if ($content !== false) {
+			$content = ($content);
+			$d['content'] = $content;
+		} else {
+			$d['content'] = null;
 		}
-		$d['content'] = $dirContent;
-
+		
 		return $this->render(__FUNCTION__, $d);
 	}
 
