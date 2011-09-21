@@ -5,6 +5,8 @@
 class UFacl_SruAdmin_User
 extends UFlib_ClassWithService {
 	
+	protected $adminTypes = array(1, 2, 3, 4);
+	
 	protected function _loggedIn() {
 		return $this->_srv->get('session')->is('authAdmin');
 	}
@@ -52,5 +54,13 @@ extends UFlib_ClassWithService {
 	
 	public function logout() {
 		return $this->_loggedIn();
+	}
+	
+	public function fullHistory() {
+		$sess = $this->_srv->get('session');
+		/*if($this->_srv->get('session')->is('authAdmin') && $sess->is('typeId') && !in_array($sess->typeId, $this->adminTypes)){
+			return true;
+		}*/
+		return false;
 	}
 }
