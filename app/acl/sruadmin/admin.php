@@ -40,15 +40,6 @@ extends UFlib_ClassWithService {
 		}
 	}
 	
-	public function seeActiveTo($id){
-		$sess = $this->_srv->get('session');
-		
-		if($this->_loggedIn() && ($id == $sess->authAdmin || $sess->is('typeId') && ($sess->typeId == self::CENTRAL || $sess->typeId == self::CAMPUS)))
-			return true;
-		else
-			return false;
-	}
-	
 	public function changeUsersAndHostsDisplay($id){
 		$sess = $this->_srv->get('session');
 		

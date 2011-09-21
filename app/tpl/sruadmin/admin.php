@@ -115,15 +115,14 @@ extends UFtpl_Common {
 		echo '<p><em>Gadu-Gadu:</em> '.$d['gg'].'</p>';
 		echo '<p><em>Jabber:</em> '.$d['jid'].'</p>';
 		echo '<p><em>Adres:</em> '.$d['address'].'</p>';
-		if($this->_srv->get('acl')->sruAdmin('admin', 'seeActiveTo', $d['id'])){
-			if(!is_null($d['activeTo'])){
-				echo '<p><em>Data dezaktywacji:</em> '.date(self::TIME_YYMMDD, $d['activeTo']).'</p>';
-			}else{
-				echo '<p><em>Data dezaktywacji nie została podana</em></p>';
-			}
-			if($d['active'] == true && $d['activeTo'] - time() <= UFra::shared('UFconf_Sru')->adminDeactivateAfter && $d['activeTo'] - time() >= 0)
-				echo $this->ERR("Konto niedługo ulegnie dezaktywacji, należy przedłużyć jego ważność w CUI!");
+
+		if(!is_null($d['activeTo'])){
+			echo '<p><em>Data dezaktywacji:</em> '.date(self::TIME_YYMMDD, $d['activeTo']).'</p>';
+		}else{
+			echo '<p><em>Data dezaktywacji:</em>Data dezaktywacji nie została podana</p>';
 		}
+		if($d['id'] == $this->_srv->get('session')->authAdmin && $d['active'] == true && $d['activeTo'] - time() <= UFra::shared('UFconf_Sru')->adminDeactivateAfter && $d['activeTo'] - time() >= 0)
+			echo $this->ERR("Konto niedługo ulegnie dezaktywacji, należy przedłużyć jego ważność w CUI!");
 	}
 
 	public function listDorms($d, $dormList) {
