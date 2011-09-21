@@ -55,12 +55,4 @@ extends UFlib_ClassWithService {
 	public function logout() {
 		return $this->_loggedIn();
 	}
-	
-	public function fullHistory() {
-		$sess = $this->_srv->get('session');
-		/*if($this->_srv->get('session')->is('authAdmin') && $sess->is('typeId') && !in_array($sess->typeId, $this->adminTypes)){
-			return true;
-		}*/
-		return false;
-	}
 }

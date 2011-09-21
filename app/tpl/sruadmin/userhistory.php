@@ -171,8 +171,6 @@ extends UFtpl_Common {
 			'userPhoneNumber' => $current->userPhoneNumber,
 			'guardianPhoneNumber' => $current->guardianPhoneNumber,
 		);
-		/*if($this->_srv->get('acl')->sruAdmin('user', 'fullHistory')){
-		}*/
 
 		$url = $this->url(0).'/users/'.$current->id;
 		$urlAdmin = $this->url(0).'/admins/';
