@@ -451,7 +451,7 @@ $(function() {
 		if (!is_null($d['registryNo']) && $d['registryNo'] != '') {
 			echo '<p><label>Nr indeksu:</label><span class="userData"> '.$d['registryNo'].'</span></p>';
 		}
-		if($d['typeId'] != UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL && $d['typeId'] <= 50) {
+		if($d['typeId'] != UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL && $d['typeId'] <= 50 && !is_null($d['facultyId'])) {
 			$tmp = array();
 			foreach ($faculties as $fac) {
 				if ($fac['id'] == 0) continue; // N/D powinno być na końcu
@@ -459,7 +459,7 @@ $(function() {
 			}
 
 			$tmp['0'] = 'N/D';
-				echo '<p><label>Wydział:</label><span class="userData"> '.($tmp[$d['facultyId']]).'</span></p>';
+			echo '<p><label>Wydział:</label><span class="userData"> '.($tmp[$d['facultyId']]).'</span></p>';
 
 			if($d['facultyId'] != $tmp['0']) {
 				echo $form->studyYearId('Rok studiów', array(
