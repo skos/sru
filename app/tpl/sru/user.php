@@ -31,6 +31,11 @@ extends UFtpl_Common {
 		'1' => 'Paszport',
 		'2' => 'Inny',
 	);
+	static public $documentTypesShort = array(
+		'0' => 'D.O.',
+		'1' => 'Pa.',
+		'2' => 'In.',
+	);
 
 	protected static $userTypesForWaletAcademic = array(
 		1 => 'Student studiów dziennych',
