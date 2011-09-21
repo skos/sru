@@ -4,9 +4,6 @@
  */
 class UFacl_SruAdmin_User
 extends UFlib_ClassWithService {
-	
-	protected $adminTypes = array(1, 2, 3, 4);
-	
 	protected function _loggedIn() {
 		return $this->_srv->get('session')->is('authAdmin');
 	}
