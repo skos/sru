@@ -38,6 +38,7 @@ extends UFtpl_Common {
 		'userPhoneNumber' => 'Tel. mieszkańca',
 		'guardianPhoneNumber' => 'Tel. opiekuna',
 		'sex' => 'Płeć',
+		'lastLocationChange' => 'Przemeldowanie',
 	);
 
 	static protected $namesEn = array(
@@ -69,7 +70,8 @@ extends UFtpl_Common {
 		'birthPlace'	=> 'Birth place',
 		'userPhoneNumber'	=> 'User phone number',
 		'guardianPhoneNumber'	=> 'Guardian phone number',
-		'sex'			=> 'Sex'
+		'sex'			=> 'Sex',
+		'lastLocationChange' => 'Last check-in/out',
 	);
 
 	protected function _diff(array $old, array $new) {
@@ -98,6 +100,7 @@ extends UFtpl_Common {
 				case 'active': $changes[] = $names[$key].': '.($val?'tak':'nie').$arr.($new[$key]?'tak':'nie'); break;
 				case 'referralStart': $changes[] = $names[$key].': <q>'.($val == 0 ? 'brak' : date(self::TIME_YYMMDD, $val)).'</q>'.$arr.'<q>'.($new[$key] == 0 ? 'brak' : date(self::TIME_YYMMDD, $new[$key])).'</q>'; break;
 				case 'referralEnd': $changes[] = $names[$key].': <q>'.($val == 0 ? 'brak' : date(self::TIME_YYMMDD, $val)).'</q>'.$arr.'<q>'.($new[$key] == 0 ? 'brak' : date(self::TIME_YYMMDD, $new[$key])).'</q>'; break;
+				case 'lastLocationChange': $changes[] = $names[$key].': <q>'.($val == 0 ? 'brak' : date(self::TIME_YYMMDD, $val)).'</q>'.$arr.'<q>'.($new[$key] == 0 ? 'brak' : date(self::TIME_YYMMDD, $new[$key])).'</q>'; break;
 				case 'servicesAvailable': $changes[] = $names[$key].': '.($val?'tak':'nie').$arr.($new[$key]?'tak':'nie'); break;
 				case 'updateNeeded': $changes[] = $names[$key].': '.($val?'tak':'nie').$arr.($new[$key]?'tak':'nie'); break;
 				case 'changePasswordNeeded': $changes[] = $names[$key].': '.($val?'tak':'nie').$arr.($new[$key]?'tak':'nie'); break;
@@ -170,6 +173,7 @@ extends UFtpl_Common {
 			'birthPlace' => $current->birthPlace,
 			'userPhoneNumber' => $current->userPhoneNumber,
 			'guardianPhoneNumber' => $current->guardianPhoneNumber,
+			'lastLocationChange' => $current->lastLocationChange,
 		);
 
 		$url = $this->url(0).'/users/'.$current->id;

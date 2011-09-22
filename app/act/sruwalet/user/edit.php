@@ -18,10 +18,11 @@ extends UFact {
 
 			$active = $bean->active;
 			$referralStart = $bean->referralStart;
+			$locationAlias = $bean->locationAlias;
 
 			$dormitoryId = $bean->dormitoryId;
 
-			$bean->fillFromPost(self::PREFIX, array('password', 'dormitory', 'nationalityName'));
+			$bean->fillFromPost(self::PREFIX, array('password', 'dormitory', 'nationalityName', 'lastLocationChangeActive'));
 			$bean->modifiedById = $this->_srv->get('session')->authWaletAdmin;
 			$bean->modifiedAt = NOW;
 
@@ -31,6 +32,12 @@ extends UFact {
 			
 			if ((!$active && $bean->active) || $referralStart != $bean->referralStart) {
 				$bean->updateNeeded = true;
+			}
+			if ($active && $bean->active && $locationAlias != $bean->locationAlias) {
+				if (!UFbean_Sru_User::isDate($post['lastLocationChangeActive'])) {
+					throw UFra::factory('UFex_Dao_DataNotValid', 'Move active user', 0, E_WARNING, array('lastLocationChangeActive' => 'invalid'));
+				}
+				$bean->lastLocationChange = $post['lastLocationChangeActive'];
 			}
 
 			if($post['pesel'] == '') {

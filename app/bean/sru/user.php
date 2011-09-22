@@ -73,7 +73,7 @@ extends UFbean_Common {
 		}
 	}
 	
-	protected function isDate($str) {
+	public static function isDate($str) {
 		$stamp = strtotime( $str );
 
 		if (!is_numeric($stamp)) {
@@ -135,7 +135,7 @@ extends UFbean_Common {
 	}
 	
 	protected function validateBirthDate($val, $change) {
-		if(!is_null($val) && $val != '' && !$this->isDate($val)){
+		if(!is_null($val) && $val != '' && !UFbean_Sru_User::isDate($val)){
 			return '105';
 		}else {
 			return;

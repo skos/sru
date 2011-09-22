@@ -40,7 +40,8 @@ extends UFmap {
 		'birthPlace'	=> 'birth_place',
 		'userPhoneNumber'	=> 'user_phone_number',
 		'guardianPhoneNumber'	=> 'guardian_phone_number',
-		'sex'			=> 'sex'
+		'sex'			=> 'sex',
+		'lastLocationChange' => 'last_location_change',
 	);
 	protected $columnTypes = array(
 		'login'          => self::TEXT,
@@ -80,7 +81,8 @@ extends UFmap {
 		'birthPlace'	=> self::NULL_TEXT,
 		'userPhoneNumber'	=> self::NULL_TEXT,
 		'guardianPhoneNumber'	=> self::NULL_TEXT,
-		'sex'			=> self::BOOL
+		'sex'			=> self::BOOL,
+		'lastLocationChange' => self::TS,
 	);
 	protected $tables = array(
 		'' => 'users',

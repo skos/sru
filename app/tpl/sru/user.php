@@ -119,6 +119,8 @@ extends UFtpl_Common {
 		'referralStart/5' => 'Nieprawidłowa data początku skierowania',
 		'referralEnd/5' => 'Nieprawidłowa data końca skierowania',
 		'referralEnd/tooOld' => 'Data końca skierowania musi być nowsza niż data początku skierowania',
+		'lastLocationChange/5' => 'Nieprawidłowa data',
+		'lastLocationChangeActive/invalid' => 'Nieprawidłowa data',
 		'address/noAddress' => 'Podaj adres',
 		'documentType/noDocumentType' => 'Podaj typ dokumentu tożsamości',
 		'documentNumber/noDocumentNumber' => 'Podaj numer dokumentu tożsamości',
@@ -208,8 +210,14 @@ extends UFtpl_Common {
 	public function formAddWalet(array $d, $dormitories, $faculties, $surname, $registryNo, $pesel) {
 		$form = UFra::factory('UFlib_Form', 'userAdd', $d, $this->errors);
 		$conf = UFra::shared('UFconf_Sru');
+		$post = $this->_srv->get('req')->post;
 
 		echo $form->name('Imię', array('class'=>'required'));
+		try {
+			$surname = $post->userAdd['surname'];
+		} catch (UFex_Core_DataNotFound $e) {
+			//
+		}
 		echo $form->surname('Nazwisko', array('class'=>'required', 'value'=>$surname));
 		echo $form->sex('Płeć', array(
 			'type' => $form->SELECT,
@@ -229,7 +237,12 @@ extends UFtpl_Common {
 			'labels' => $form->_labelize($tmp),
 			'class' => 'required'
 		));
-		
+
+		try {
+			$registryNo = $post->userAdd['registryNo'];
+		} catch (UFex_Core_DataNotFound $e) {
+			//
+		}
 		echo $form->registryNo('Nr indeksu', array('value'=>$registryNo));
 		$tmp = array();
 		foreach ($faculties as $fac) {
@@ -256,6 +269,11 @@ extends UFtpl_Common {
 		echo $form->documentNumber('Numer dokumentu', array('class'=>'necessary'));
 		echo $form->nationalityName('Narodowość', array('class'=>'necessary',
 														'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Np. &quot;polska&quot;, &quot;niemiecka&quot;, &quot;angielska&quot;" /><br/>',));
+		try {
+			$pesel = $post->userAdd['pesel'];
+		} catch (UFex_Core_DataNotFound $e) {
+			//
+		}
 		echo $form->pesel('PESEL', array('value'=>$pesel,
 										'after'=>'<span id="peselValidationResult"></span><br/>'));
 
@@ -294,9 +312,16 @@ extends UFtpl_Common {
 			'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Data początku pobytu." /><br/>',
 		));
 		$referralEnd = $conf->usersAvailableTo;
-		echo $form->referralEnd('Koniec skierowania', array('value'=>$referralEnd,
+		echo $form->referralEnd('Koniec skierowania', array(
+			'value'=>$referralEnd,
 			'class'=>'required',
 			'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Data końca pobytu." /><br/>',
+		));
+		$checkIn = date(self::TIME_YYMMDD, time());
+		echo $form->lastLocationChange('Data zameldowania', array(
+			'value'=>$checkIn,
+			'class'=>'required',
+			'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Data, kiedy mieszkaniec wprowadził się do DSu." /><br/>',
 		));
 
 ?><script type="text/javascript">
@@ -784,6 +809,9 @@ changeVisibility();
 		if (!is_null($d['referralEnd']) && $d['referralEnd'] != 0) {
 			echo '<p><em>Koniec skierowania:</em> '.date(self::TIME_YYMMDD, $d['referralEnd']).'</p>';
 		}
+		if (!is_null($d['lastLocationChange']) && $d['lastLocationChange'] != 0) {
+			echo '<p><em>'.($d['active']? 'Zameldowany od' : 'Wymeldowany').':</em> '.date(self::TIME_YYMMDD, $d['lastLocationChange']).'</p>';
+		}
 		if (strlen($d['comment'])) {
 			echo '<p><em>Komentarz:</em></p><p class="comment">'.nl2br($this->_escape($d['comment'])).'</p>';
 		}
@@ -964,6 +992,18 @@ changeVisibility();
 			'class'=>'required',
 		));
 		echo $form->locationAlias('Pokój', array('class'=>'required'));
+		try {
+			$change = $post->userEdit['lastLocationChangeActive'];
+		} catch (UFex_Core_DataNotFound $e) {
+			$change = date(self::TIME_YYMMDD, time());
+		}
+		echo '<div id="changeLocationMore">';
+		echo $form->lastLocationChangeActive('Data zmiany pokoju', array(
+			'value'=>$change,
+			'class'=>'required',
+			'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Data, kiedy mieszkaniec zmienił pokój." /><br/>',
+		));
+		echo '</div>';
 
 		echo $form->lang('Język', array(
 			'type' => $form->SELECT,
@@ -1005,6 +1045,23 @@ changeVisibility();
 			'class'=>'required',
 			'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Data końca pobytu." /><br/>',
 		));
+		try {
+			$checkIn = $post->userEdit['lastLocationChange'];
+		} catch (UFex_Core_DataNotFound $e) {
+			$checkIn = date(self::TIME_YYMMDD, $d['lastLocationChange']);
+			if ((is_null($d['lastLocationChange']) || $d['lastLocationChange'] == 0) && $d['active'] == false) {
+				$checkIn = '';
+			} else if ((is_null($d['lastLocationChange']) || $d['lastLocationChange'] == 0) && $d['active'] == true) {
+				$checkIn = date(self::TIME_YYMMDD, time());
+			}
+		}
+		echo '<div id="checkInMore">';
+		echo $form->lastLocationChange('Data zameldowania', array(
+			'value'=>$checkIn,
+			'class'=>'required',
+			'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Data, kiedy mieszkaniec wprowadził się do DSu." /><br/>',
+		));
+		echo '</div>';
 		
 ?><script type="text/javascript">
 (function (){
@@ -1051,18 +1108,42 @@ changeVisibility();
 	var refStartVal = document.getElementById('userEdit_referralStart').value;
 	var refEnd = document.getElementById('userEdit_referralEnd');
 	var refEndVal = document.getElementById('userEdit_referralEnd').value;
+	var checkIn = document.getElementById('userEdit_lastLocationChange');
+	var checkInVal = document.getElementById('userEdit_lastLocationChange').value;
 	var startVal = '<?=date(self::TIME_YYMMDD, time())?>';
 	var endVal = '<?=$conf->usersAvailableTo?>';
 	function referralsChangeValues(){
 		if(active.checked){
 			refStart.value = startVal;
 			refEnd.value = endVal;
+			checkIn.value = startVal;
 		}else{
 			refStart.value = refStartVal;
 			refEnd.value = refEndVal;
+			checkIn.value = checkInVal;
 		}
 	}
 	active.onchange = referralsChangeValues;
+
+<?
+	} else {
+?>
+	var div = document.getElementById('changeLocationMore');
+	var div2 = document.getElementById('checkInMore');
+	var roomAlias = document.getElementById('userEdit_locationAlias');
+	roomVal = '<?=$d['locationAlias']?>';
+	function locationChangeValue() {
+		var roomCurr = document.getElementById('userEdit_locationAlias').value;
+		if(roomCurr == roomVal) {
+			div.style.display = 'none';
+			div2.style.display = 'block';
+		} else {
+			div.style.display = 'block';
+			div2.style.display = 'none';
+		}
+	}
+	roomAlias.onchange = locationChangeValue;
+	locationChangeValue();
 <?
 	}
 ?>
@@ -1109,15 +1190,16 @@ $(function() {
 		$conf = UFra::shared('UFconf_Sru');
 		$post = $this->_srv->get('req')->post;
 		try {
-			$referralEnd = $post->userDel['referralEnd'];
+			$checkOut = $post->userDel['lastLocationChange'];
 		} catch (UFex_Core_DataNotFound $e) {
-			$referralEnd = date(self::TIME_YYMMDD, ($d['referralEnd']));
-			if (is_null($d['referralEnd']) || $d['referralEnd'] == 0) {
-				$referralEnd = date(self::TIME_YYMMDD, time());
-			}
+			$checkOut = date(self::TIME_YYMMDD, time());
 		}
 		$form = UFra::factory('UFlib_Form', 'userDel', $d, $this->errors);
-		echo $form->referralEnd('Koniec skier.', array('class'=>'required', 'value'=>$referralEnd));
+		echo $form->lastLocationChange('Data wymeldowania', array(
+			'value'=>$checkOut,
+			'class'=>'required',
+			'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Data, kiedy mieszkaniec wyprowadził się z DSu." /><br/>',
+		));
 	}
 
 	public function shortList(array $d) {
