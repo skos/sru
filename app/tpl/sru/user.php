@@ -288,13 +288,13 @@ extends UFtpl_Common {
 		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
 		echo '<legend>Meldunek</legend>';
 		$referralStart = date(self::TIME_YYMMDD, time());
-		echo $form->referralStart('Początek skier.', array(
+		echo $form->referralStart('Początek skierowania', array(
 			'value'=>$referralStart,
 			'class'=>'required',
 			'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Data początku pobytu." /><br/>',
 		));
 		$referralEnd = $conf->usersAvailableTo;
-		echo $form->referralEnd('Koniec skier.', array('value'=>$referralEnd,
+		echo $form->referralEnd('Koniec skierowania', array('value'=>$referralEnd,
 			'class'=>'required',
 			'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Data końca pobytu." /><br/>',
 		));
@@ -671,10 +671,10 @@ $(document).ready(function()
 			echo '</p>';
 		}
 		if (!is_null($d['referralStart']) && $d['referralStart'] != 0) {
-			echo '<p><em>Początek skier.:</em> '.date(self::TIME_YYMMDD, $d['referralStart']).'</p>';
+			echo '<p><em>Początek skierowania:</em> '.date(self::TIME_YYMMDD, $d['referralStart']).'</p>';
 		}
 		if (!is_null($d['referralEnd']) && $d['referralEnd'] != 0) {
-			echo '<p><em>Koniec skier.:</em> '.date(self::TIME_YYMMDD, $d['referralEnd']).'</p>';
+			echo '<p><em>Koniec skierowania:</em> '.date(self::TIME_YYMMDD, $d['referralEnd']).'</p>';
 		}
 		echo '<p><em>Język:</em> '.self::$languages[$d['lang']];
 		if ($acl->sruAdmin('service', 'edit', $d['id'])) {
@@ -779,10 +779,10 @@ changeVisibility();
 		}
 		echo '<p><em>Zmiana:</em> '.date(self::TIME_YYMMDD_HHMM, $d['modifiedAt']).'<small> ('.$changed.')</small></p>';
 		if (!is_null($d['referralStart']) && $d['referralStart'] != 0) {
-			echo '<p><em>Początek skier.:</em> '.date(self::TIME_YYMMDD, $d['referralStart']).'</p>';
+			echo '<p><em>Początek skierowania:</em> '.date(self::TIME_YYMMDD, $d['referralStart']).'</p>';
 		}
 		if (!is_null($d['referralEnd']) && $d['referralEnd'] != 0) {
-			echo '<p><em>Koniec skier.:</em> '.date(self::TIME_YYMMDD, $d['referralEnd']).'</p>';
+			echo '<p><em>Koniec skierowania:</em> '.date(self::TIME_YYMMDD, $d['referralEnd']).'</p>';
 		}
 		if (strlen($d['comment'])) {
 			echo '<p><em>Komentarz:</em></p><p class="comment">'.nl2br($this->_escape($d['comment'])).'</p>';
@@ -986,7 +986,7 @@ changeVisibility();
 				$referralStart = date(self::TIME_YYMMDD, time());
 			}
 		}
-		echo $form->referralStart('Początek skier.', array(
+		echo $form->referralStart('Początek skierowania', array(
 			'value'=>$referralStart,
 			'class'=>'required',
 			'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Data początku pobytu." /><br/>',
@@ -1001,7 +1001,7 @@ changeVisibility();
 				$referralEnd = $conf->usersAvailableTo;
 			}
 		}
-		echo $form->referralEnd('Koniec skier.', array('value'=>$referralEnd,
+		echo $form->referralEnd('Koniec skierowania', array('value'=>$referralEnd,
 			'class'=>'required',
 			'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Data końca pobytu." /><br/>',
 		));

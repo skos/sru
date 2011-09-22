@@ -216,7 +216,7 @@ extends UFtpl_Common {
 		}
 		if ($d['typeId'] != UFbean_Sru_Computer::TYPE_SERVER && $d['typeId'] != UFbean_Sru_Computer::TYPE_SERVER_VIRT) {
 			echo '<p><em>Widziany:</em> '.($d['lastSeen'] == 0 ? 'nigdy' : date(self::TIME_YYMMDD_HHMM, $d['lastSeen'])).'</p>';
-			echo '<p><em>Autodezakt.:</em> '.($d['autoDeactivation'] ? 'tak' : 'nie').'</p>';
+			echo '<p><em>Autodezaktywacja:</em> '.($d['autoDeactivation'] ? 'tak' : 'nie').'</p>';
 		}
 		if (is_null($d['modifiedBy'])) {
 			$changed = 'UŻYTKOWNIK';

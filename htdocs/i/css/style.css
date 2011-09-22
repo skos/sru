@@ -11,12 +11,13 @@ img { border-style: none; }
 
 #body { width: 960px; margin-left: auto; margin-right: auto; }
 
-#head { text-align: left; font-size: 2em; letter-spacing: 0.3em; margin-bottom: 0.3em; }
+#head { text-align: left; letter-spacing: 0.3em; margin-bottom: 0.3em; }
 #head a { color: #aaa; }
 #head a:hover, #head a:active, #head a:focus { text-decoration: none; color: #999; }
 #head abbr { border-bottom: none; }
+#head h1 { font-size: 4em; }
 
-.userBar { position: absolute; width: 960px; margin-left: auto; margin-right: auto; float: right; top: 5px; font-size: 0.9em; text-align: right; }
+.userBar { position: absolute; width: 960px; margin-left: auto; margin-right: auto; top: 5px; font-size: 0.9em; text-align: right; }
 .userBar fieldset { border-style: none; }
 
 #nav { list-style-type: none; border-bottom: 1px solid #999; border-top: 1px solid #999; background: #ddd; text-align: center; font-weight: bold; }
@@ -67,7 +68,7 @@ img { border-style: none; }
 #main .userData { font-weight: bold; }
 #main .computer p, #main .user p, #main .penalty p, #main .room p, #main .admin p { margin: 0; padding: 0; clear: both; }
 #main .computer p.comment, #main .user p.comment, #main .penalty p.comment, #main .room p.comment, #main .admin p.comment { margin-left: 10.5em; margin-top: 1em; }
-#main .computer em, #main .user em, #main .penalty em, #main .room em, #main .admin em { clear: both; display: block; width: 10em; text-align: right; font-style: normal; margin-right: 0.5em; float: left; font-weight: bold; color: #444444; }
+#main .computer em, #main .user em, #main .penalty em, #main .room em, #main .admin em { clear: both; display: block; width: 15em; text-align: right; font-style: normal; margin-right: 0.5em; float: left; font-weight: bold; color: #444444; }
 #main .computer ol, #main .user ol, #main .penalty ol, #main .room ol, #main .admin ol { font-size: 0.8em; font-weight: bold; color: #444444; }
 #main .computer ol li:hover ul, #main .user ol li:hover ul, #main .penalty ol li:hover ul, #main .room ol li:hover ul, #main .admin ol li:hover ul { background-color: #eee; }
 #main .computer ol ul, #main .user ol ul, #main .penalty ol ul, #main .room ol ul, #main .admin ol ul { font-weight: normal; color: #444444; margin: 0; list-style-type: none; }
@@ -129,7 +130,7 @@ img { border-style: none; }
 
 #main .required { border: solid 1px red; }
 #main .necessary { border: solid 1px orange; }
-#main .waletImg { position: relative; left: 620px; top: -130px; }
+#main .waletImg { position: relative; margin-right: 230px; float: right; top: -130px; width: 100px; }
 
 #main ul .admin { background-color: yellow; }
 #main ul .serv { background-color: green; }
