@@ -360,8 +360,30 @@ extends UFdao {
 		$query->values($mapping->columns(), $data,  $mapping->columnTypes());
 		$query->where($mapping->userId, $userId);
 		$query->where($mapping->active, true);
+		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_SERVER, $query->NOT_EQ);
+		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_SERVER_VIRT, $query->NOT_EQ);
 
 		$return = $this->doUpdate($query);
+
+		$query = UFra::factory('UFlib_Db_Query');
+		$query->tables($mapping->tables());
+		$query->joins($mapping->joins(), $mapping->joinOns());
+		$data = array(
+			$mapping->locationId => $location,
+			$mapping->modifiedById => $modifiedBy,
+			$mapping->modifiedAt => NOW,
+		);
+		$query->values($mapping->columns(), $data,  $mapping->columnTypes());
+		$query->where($mapping->userId, $userId);
+		$query->where($mapping->active, true);
+		$query->where(
+			'('.$mapping->column('typeId').'!='.UFbean_Sru_Computer::TYPE_SERVER.' OR '.$mapping->column('typeId').'!='.UFbean_Sru_Computer::TYPE_SERVER_VIRT.')',
+			null, $query->SQL
+		);
+		$query->where($mapping->locationId, $location, $query->NOT_EQ);
+
+		$return = $return && $this->doUpdate($query);
+
 		return $return;
 	}
 
