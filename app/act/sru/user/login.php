@@ -25,6 +25,11 @@ extends UFact {
 			$sess->lastLoginAt  = $bean->lastLoginAt;
 			$sess->lastInvLoginIp  = $bean->lastInvLoginIp;
 			$sess->lastInvLoginAt  = $bean->lastInvLoginAt;
+			if ($_SERVER['SERVER_PORT'] != '443') {
+				$sess->secureConnection  = false;
+			} else {
+				$sess->secureConnection  = true;
+			}
 			
 			if($serv->is('HTTP_X_FORWARDED_FOR') && $serv->HTTP_X_FORWARDED_FOR != '' ) {
 				$bean->lastLoginIp = $serv->HTTP_X_FORWARDED_FOR;

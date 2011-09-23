@@ -10,6 +10,7 @@ extends UFconf {
 	protected $adminDeactivateAfter = 604800;	//czas w s, poniżej którego wyświetli się ostrzeżenie o zbliżającej się dezaktywacji
 	protected $timeForComputersRestoration = 259200; //czas w s, po przekroczeniu którego kompy nie zostaną przywrócone wraz z użytkownikiem; 3 dni
 	protected $sruUrl = 'https://sru.ds.pg.gda.pl';
+	protected $allowUnsecureConnections = false; // zezwalaj na poąłczenia z portu innego niż 443
 
 	protected $noEthers = array(
 		'153.19.208.22',

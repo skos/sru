@@ -24,4 +24,16 @@ extends UFlib_ClassWithService {
 	public function logout() {
 		return $this->_loggedIn();
 	}
+
+	public function viewPersonalData() {
+		if (!$this->_loggedIn()) {
+			return false;
+		}
+		// jeśli nie połaczone bezpiecznie - nie pokazuj!
+		$conf = UFra::shared('UFconf_Sru');
+		if (!$this->_srv->get('session')->secureConnection && !$conf->allowUnsecureConnections) {
+			return false;
+		}
+		return true;
+	}
 }

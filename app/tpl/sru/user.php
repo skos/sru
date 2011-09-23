@@ -403,6 +403,8 @@ $(function() {
 	}
 
 	public function formEdit(array $d, $faculties) {
+		$acl = $this->_srv->get('acl');
+		
 		if (is_null($d['facultyId'])) {
 			$d['facultyId'] = null;
 		}
@@ -429,45 +431,49 @@ $(function() {
 		{
 			echo '<p><label>Zameldowanie:</label><span class="userData"> '.$d['dormitoryName'].', pok. '.$d['locationAlias'].'</span></p>';
 		}
-		if(!is_null($d['address']) && $d['address'] != '')
-		{
-			echo '<p><label>Adres:</label><span class="userData"> '.$d['address'].'</span></p>';
-		}
-		if(!is_null($d['documentType']) && self::$documentTypes[$d['documentType']] != '')
-		{
-			echo '<p><label>Typ dokumentu:</label><span class="userData"> '.self::$documentTypes[$d['documentType']].'</span></p>';
-		}
-		if(!is_null($d['documentNumber']) && $d['documentNumber'] != '')
-		{
-			echo '<p><label>Nr dokumentu:</label><span class="userData"> '.$d['documentNumber'].'</span></p>';
-		}
-		if(!is_null($d['nationality']) && $d['nationality'] != '')
-		{
-			echo '<p><label>Narodowość:</label><span class="userData"> '.$d['nationalityName'].'</span></p>';
-		}
-		if(!is_null($d['pesel']) && $d['pesel'] != '')
-		{
-			echo '<p><label>PESEL:</label><span class="userData">'.$d['pesel'].'</span></p>';
-		}
-		if(!is_null($d['birthDate']) && $d['birthDate'] != '')
-		{
-			echo '<p><label>Data urodzenia:</label><span class="userData"> '.date(self::TIME_YYMMDD, $d['birthDate']).'</span></p>';	
-		}
-		if(!is_null($d['birthPlace']) && $d['birthPlace'] != '')
-		{
-			echo '<p><label>Miejsce urodzenia:</label><span class="userData"> '.$d['birthPlace'].'</span></p>';
-		}
-		if(!is_null($d['userPhoneNumber']) && $d['userPhoneNumber'] != '')
-		{
-			echo '<p><label>Tel. mieszkańca:</label><span class="userData"> '.$d['userPhoneNumber'].'</span></p>';
-		}
-		if(!is_null($d['guardianPhoneNumber']) && $d['guardianPhoneNumber'] != '')
-		{
-			echo '<p><label>Tel. opiekuna:</label><span class="userData"> '.$d['guardianPhoneNumber'].'</span></p>';
-		}
-		if(!is_null($d['sex']) && $d['sex'] != '')
-		{
-			echo '<p><label>Płeć:</label><span class="userData"> '.(!$d['sex'] ? 'Mężczyzna' : 'Kobieta').'</span></p>';
+		if ($acl->sru('user', 'viewPersonalData')) {
+			if(!is_null($d['address']) && $d['address'] != '')
+			{
+				echo '<p><label>Adres:</label><span class="userData"> '.$d['address'].'</span></p>';
+			}
+			if(!is_null($d['documentType']) && self::$documentTypes[$d['documentType']] != '')
+			{
+				echo '<p><label>Typ dokumentu:</label><span class="userData"> '.self::$documentTypes[$d['documentType']].'</span></p>';
+			}
+			if(!is_null($d['documentNumber']) && $d['documentNumber'] != '')
+			{
+				echo '<p><label>Nr dokumentu:</label><span class="userData"> '.$d['documentNumber'].'</span></p>';
+			}
+			if(!is_null($d['nationality']) && $d['nationality'] != '')
+			{
+				echo '<p><label>Narodowość:</label><span class="userData"> '.$d['nationalityName'].'</span></p>';
+			}
+			if(!is_null($d['pesel']) && $d['pesel'] != '')
+			{
+				echo '<p><label>PESEL:</label><span class="userData">'.$d['pesel'].'</span></p>';
+			}
+			if(!is_null($d['birthDate']) && $d['birthDate'] != '')
+			{
+				echo '<p><label>Data urodzenia:</label><span class="userData"> '.date(self::TIME_YYMMDD, $d['birthDate']).'</span></p>';
+			}
+			if(!is_null($d['birthPlace']) && $d['birthPlace'] != '')
+			{
+				echo '<p><label>Miejsce urodzenia:</label><span class="userData"> '.$d['birthPlace'].'</span></p>';
+			}
+			if(!is_null($d['userPhoneNumber']) && $d['userPhoneNumber'] != '')
+			{
+				echo '<p><label>Tel. mieszkańca:</label><span class="userData"> '.$d['userPhoneNumber'].'</span></p>';
+			}
+			if(!is_null($d['guardianPhoneNumber']) && $d['guardianPhoneNumber'] != '')
+			{
+				echo '<p><label>Tel. opiekuna:</label><span class="userData"> '.$d['guardianPhoneNumber'].'</span></p>';
+			}
+			if(!is_null($d['sex']) && $d['sex'] != '')
+			{
+				echo '<p><label>Płeć:</label><span class="userData"> '.(!$d['sex'] ? 'Mężczyzna' : 'Kobieta').'</span></p>';
+			}
+		} else {
+			echo $this->ERR('Łączysz się niezabezpieczonym połączeniem - Twoje dane osobowe nie mogą zostać wyświetlone.');
 		}
 		echo $form->gg('Gadu-Gadu', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Jeżeli podasz nr GG, będą na niego przesyłane informacje o zmianie statusu konta i Twoich komputerów." /><br/>'));
 		echo $form->lang('Język', array(
@@ -476,29 +482,31 @@ $(function() {
 			'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Wiadomości e-mail i GG będa przychodziły w wybranym języku.<br/><br/>You will receive e-mails and gg messages in the chosen language." /><br/>',
 		));
 		echo '<br />';
-		
-		if($d['typeId'] <= 50 || ($d['typeId'] > 50 && !is_null($d['registryNo']) && $d['registryNo'] != '')) {
-			echo $form->_fieldset('Dane dotyczące studiów');
-		}
-		if (!is_null($d['registryNo']) && $d['registryNo'] != '') {
-			echo '<p><label>Nr indeksu:</label><span class="userData"> '.$d['registryNo'].'</span></p>';
-		}
-		if($d['typeId'] != UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL && $d['typeId'] <= 50 && !is_null($d['facultyId'])) {
-			$tmp = array();
-			foreach ($faculties as $fac) {
-				if ($fac['id'] == 0) continue; // N/D powinno być na końcu
-				$tmp[$fac['id']] = $fac['name'];
+
+		if ($acl->sru('user', 'viewPersonalData')) {
+			if($d['typeId'] <= 50 || ($d['typeId'] > 50 && !is_null($d['registryNo']) && $d['registryNo'] != '')) {
+				echo $form->_fieldset('Dane dotyczące studiów');
 			}
+			if (!is_null($d['registryNo']) && $d['registryNo'] != '') {
+				echo '<p><label>Nr indeksu:</label><span class="userData"> '.$d['registryNo'].'</span></p>';
+			}
+			if($d['typeId'] != UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL && $d['typeId'] <= 50 && !is_null($d['facultyId'])) {
+				$tmp = array();
+				foreach ($faculties as $fac) {
+					if ($fac['id'] == 0) continue; // N/D powinno być na końcu
+					$tmp[$fac['id']] = $fac['name'];
+				}
 
-			$tmp['0'] = 'N/D';
-			echo '<p><label>Wydział:</label><span class="userData"> '.($tmp[$d['facultyId']]).'</span></p>';
+				$tmp['0'] = 'N/D';
+				echo '<p><label>Wydział:</label><span class="userData"> '.($tmp[$d['facultyId']]).'</span></p>';
 
-			if($d['facultyId'] != $tmp['0']) {
-				echo $form->studyYearId('Rok studiów', array(
-					'type' => $form->SELECT,
-					'labels' => $form->_labelize(self::$studyYears),
-					'class'=>'required',
-				));
+				if($d['facultyId'] != $tmp['0']) {
+					echo $form->studyYearId('Rok studiów', array(
+						'type' => $form->SELECT,
+						'labels' => $form->_labelize(self::$studyYears),
+						'class'=>'required',
+					));
+				}
 			}
 		}
 
