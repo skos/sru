@@ -305,13 +305,21 @@ extends UFtpl_Common {
 		));
 		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
 		echo '<legend>Meldunek</legend>';
-		$referralStart = date(self::TIME_YYMMDD, time());
+		try {
+			$referralStart = $post->userAdd['referralStart'];
+		} catch (UFex_Core_DataNotFound $e) {
+			$referralStart = date(self::TIME_YYMMDD, time());
+		}
 		echo $form->referralStart('Początek skierowania', array(
 			'value'=>$referralStart,
 			'class'=>'required',
 			'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Data początku pobytu." /><br/>',
 		));
-		$referralEnd = $conf->usersAvailableTo;
+		try {
+			$referralEnd = $post->userAdd['referralEnd'];
+		} catch (UFex_Core_DataNotFound $e) {
+			$referralEnd = $conf->usersAvailableTo;
+		}
 		echo $form->referralEnd('Koniec skierowania', array(
 			'value'=>$referralEnd,
 			'class'=>'required',
