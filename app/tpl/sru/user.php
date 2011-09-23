@@ -986,18 +986,20 @@ changeVisibility();
 			'class'=>'required',
 		));
 		echo $form->locationAlias('Pokój', array('class'=>'required'));
-		try {
-			$change = $post->userEdit['lastLocationChangeActive'];
-		} catch (UFex_Core_DataNotFound $e) {
-			$change = date(self::TIME_YYMMDD, time());
+		if ($d['active']) {
+			try {
+				$change = $post->userEdit['lastLocationChangeActive'];
+			} catch (UFex_Core_DataNotFound $e) {
+				$change = date(self::TIME_YYMMDD, time());
+			}
+			echo '<div id="changeLocationMore">';
+			echo $form->lastLocationChangeActive('Data zmiany pokoju', array(
+				'value'=>$change,
+				'class'=>'required',
+				'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Data, kiedy mieszkaniec zmienił pokój." /><br/>',
+			));
+			echo '</div>';
 		}
-		echo '<div id="changeLocationMore">';
-		echo $form->lastLocationChangeActive('Data zmiany pokoju', array(
-			'value'=>$change,
-			'class'=>'required',
-			'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Data, kiedy mieszkaniec zmienił pokój." /><br/>',
-		));
-		echo '</div>';
 
 		echo $form->lang('Język', array(
 			'type' => $form->SELECT,
