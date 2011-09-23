@@ -32,6 +32,7 @@ extends UFact {
 			
 			if ((!$active && $bean->active) || $referralStart != $bean->referralStart) {
 				$bean->updateNeeded = true;
+				$bean->lastLocationChange = $bean->referralStart;
 			}
 			if ($active && $bean->active && $locationAlias != $bean->locationAlias) {
 				if (!UFbean_Sru_User::isDate($post['lastLocationChangeActive'])) {

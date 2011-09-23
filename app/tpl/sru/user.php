@@ -1049,13 +1049,15 @@ changeVisibility();
 				$checkIn = date(self::TIME_YYMMDD, time());
 			}
 		}
-		echo '<div id="checkInMore">';
-		echo $form->lastLocationChange('Data zameldowania', array(
-			'value'=>$checkIn,
-			'class'=>'required',
-			'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Data, kiedy mieszkaniec wprowadził się do DSu." /><br/>',
-		));
-		echo '</div>';
+		if ($d['active']) {
+			echo '<div id="checkInMore">';
+			echo $form->lastLocationChange('Data zameldowania', array(
+				'value'=>$checkIn,
+				'class'=>'required',
+				'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Data, kiedy mieszkaniec wprowadził się do DSu." /><br/>',
+			));
+			echo '</div>';
+		}
 		
 ?><script type="text/javascript">
 (function (){
@@ -1102,19 +1104,15 @@ changeVisibility();
 	var refStartVal = document.getElementById('userEdit_referralStart').value;
 	var refEnd = document.getElementById('userEdit_referralEnd');
 	var refEndVal = document.getElementById('userEdit_referralEnd').value;
-	var checkIn = document.getElementById('userEdit_lastLocationChange');
-	var checkInVal = document.getElementById('userEdit_lastLocationChange').value;
 	var startVal = '<?=date(self::TIME_YYMMDD, time())?>';
 	var endVal = '<?=$conf->usersAvailableTo?>';
 	function referralsChangeValues(){
 		if(active.checked){
 			refStart.value = startVal;
 			refEnd.value = endVal;
-			checkIn.value = startVal;
 		}else{
 			refStart.value = refStartVal;
 			refEnd.value = refEndVal;
-			checkIn.value = checkInVal;
 		}
 	}
 	active.onchange = referralsChangeValues;
