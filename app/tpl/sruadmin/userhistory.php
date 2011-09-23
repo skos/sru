@@ -218,7 +218,7 @@ extends UFtpl_Common {
 			if ($lang == self::EN) {
 				echo "\n".'Your account has been DEACTIVATED by your dormitory administration. In case of problems, please contact your dormitory office.'."\n\n";
 			} else {
-				echo "\n".'Twoje konto zostało DEZAKTYWOWANE przed administrację Twojego DSu. W razie problemów prosimy o kontakt z administracją DSu.'."\n\n";
+				echo "\n".'Twoje konto zostało DEZAKTYWOWANE przez administrację Twojego DSu. W razie problemów prosimy o kontakt z administracją DSu.'."\n\n";
 			}
 		}
 

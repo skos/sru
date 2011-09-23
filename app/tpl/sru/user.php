@@ -453,7 +453,7 @@ $(function() {
 		}
 		if(!is_null($d['birthPlace']) && $d['birthPlace'] != '')
 		{
-			echo '<p><label>Msc. urodzenia:</label><span class="userData"> '.$d['birthPlace'].'</span></p>';
+			echo '<p><label>Miejsce urodzenia:</label><span class="userData"> '.$d['birthPlace'].'</span></p>';
 		}
 		if(!is_null($d['userPhoneNumber']) && $d['userPhoneNumber'] != '')
 		{
@@ -788,7 +788,7 @@ changeVisibility();
 			echo '<p><em>Data urodzenia:</em>'.date(self::TIME_YYMMDD,$d['birthDate']).'</p>';
 		}
 		if(!is_null($d['birthPlace']) && $d['birthPlace'] != '') {
-			echo '<p><em>Msc. urodzenia:</em>'.$d['birthPlace'].'</p>';
+			echo '<p><em>Miejsce urodzenia:</em>'.$d['birthPlace'].'</p>';
 		}
 		if(!is_null($d['userPhoneNumber']) && $d['userPhoneNumber'] != '') {
 			echo '<p><em>Tel. mieszkańca:</em>'.$d['userPhoneNumber'].'</p>';

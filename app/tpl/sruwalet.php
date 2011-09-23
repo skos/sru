@@ -301,7 +301,7 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 		echo '<div style="font-size: 0.8em;">';
 		echo '<i>imię i nazwisko:</i> '.$d['user']->name.' '.$d['user']->surname.'<br/>';
 		echo '<i>zameldowanie:</i> '.$d['user']->dormitoryName.', pok. '.$d['user']->locationAlias.'<br/>';
-		echo '<p>Aby zalogować się na swoje konto w Systemie Rejestracji Użytkowników (http://sru.ds.pg.gda.pl) skorzystaj z następujących danych:<br/><br/>
+		echo '<p>Aby mieć Internet, zaloguj się na swoje konto w Systemie Rejestracji Użytkowników (http://sru.ds.pg.gda.pl) skorzystaj z następujących danych:<br/><br/>
 			<i>login:</i> '.$d['user']->login.'<br/>';
 		if (is_null($d['password'])) {
 			echo '<br/>Użyj tego samego hasła, jakiego używał(a/e)ś poprzednio. Jeśli nie pamiętasz go, skorzystaj z przypomnienia hasła na SRU lub odwiedź administratora w godzinach dyżuru. Nie zapomnij wejściówki! Aby mieć Internet, po zalogowaniu się przywróć swoje komputery i odczekaj ok godzinę.';

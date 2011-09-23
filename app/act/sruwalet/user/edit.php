@@ -48,10 +48,11 @@ extends UFact {
 			if($post['nationalityName'] != '') {
 				try {
 					$country = UFra::factory('UFbean_SruWalet_Country');
-					$country->getByName(mb_convert_case($post['nationalityName'], MB_CASE_LOWER, "UTF-8"));
+					$nationality = mb_convert_case(trim($post['nationalityName']), MB_CASE_LOWER, "UTF-8");
+					$country->getByName($nationality);
 					$countryId = $country->id;
 				} catch (UFex_Dao_NotFound $e) {
-					$country->nationality = mb_convert_case($post['nationalityName'], MB_CASE_LOWER, "UTF-8");
+					$country->nationality = $nationality;
 					$countryId = $country->save();
 				}
 			} else {
