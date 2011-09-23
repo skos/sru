@@ -53,6 +53,7 @@ extends UFact {
 			$password = substr($password, 0, 8);
 			$bean->password = $bean->generatePassword($bean->login, $password);
 
+			$bean->lastLocationChange = $bean->referralStart;
 			if($post['pesel'] == '') {
 				$bean->pesel = null;
 			}

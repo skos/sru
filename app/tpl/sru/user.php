@@ -317,12 +317,6 @@ extends UFtpl_Common {
 			'class'=>'required',
 			'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Data końca pobytu." /><br/>',
 		));
-		$checkIn = date(self::TIME_YYMMDD, time());
-		echo $form->lastLocationChange('Data zameldowania', array(
-			'value'=>$checkIn,
-			'class'=>'required',
-			'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Data, kiedy mieszkaniec wprowadził się do DSu." /><br/>',
-		));
 
 ?><script type="text/javascript">
 (function (){
@@ -1142,7 +1136,7 @@ changeVisibility();
 			div2.style.display = 'none';
 		}
 	}
-	roomAlias.onchange = locationChangeValue;
+	roomAlias.onkeyup = locationChangeValue;
 	locationChangeValue();
 <?
 	}
