@@ -483,15 +483,32 @@ extends UFdao {
 		$comps = $this->getByUserId($userId);
 
 		for ($i = 0; $i < count($comps); $i++){
+			$name = $comps[$i]['host'];
+			$newName = '';
+			$iterator = '0';
+			
+			while(1){
+				try{
+					$this->getByHost($name);
+					$name = $comps[$i]['host'] . $iterator;
+					$iterator += 1;
+				} catch (Exception $e) {
+					if ($name != $comps[$i]['host']){
+						$newName = $name;
+					}
+					break;
+				}
+			}
+			
 			try{
 				if(!$dormitoryChanged){
 					$this->getActiveByIpDormitory($comps[$i]['ip'], $comps[$i]['dormitoryId']);
-					$this->setNewIp($comps[$i], $modifiedBy);
+					$this->setNewIp($comps[$i], $modifiedBy, $newName);
 				}else{
-					$this->setNewIp($comps[$i], $modifiedBy);
+					$this->setNewIp($comps[$i], $modifiedBy, $newName);
 				}
 			}catch(Exception $e){
-				$this->restoreWithOldIp($comps[$i], $modifiedBy);
+				$this->restoreWithOldIp($comps[$i], $modifiedBy, $newName);
 			}
 		}
 		
@@ -504,7 +521,7 @@ extends UFdao {
 	 * @param int $modifiedBy id wprowadzającego zmiany
 	 * @return bool sukces lub porażka
 	 */
-	public function setNewIp($comp, $modifiedBy = null){
+	public function setNewIp($comp, $modifiedBy = null, $newName = ''){
 		$user = UFra::factory('UFbean_Sru_User');
 		$user->getByPK($comp['userId']);
 		$ip = UFra::factory('UFbean_Sru_Ipv4');
@@ -514,14 +531,26 @@ extends UFdao {
 			return ;
 		}
 		$mapping = $this->mapping('set');
+		$data = array();
 		
-		$data = array(
-			$mapping->modifiedById => $modifiedBy,
-			$mapping->modifiedAt => NOW,
-			$mapping->ip => $ip->ip,
-			$mapping->active => true,
-			$mapping->availableTo => null,
-		);
+		if($newName != ''){
+			$data = array(
+				$mapping->host => $newName,
+				$mapping->modifiedById => $modifiedBy,
+				$mapping->modifiedAt => NOW,
+				$mapping->ip => $ip->ip,
+				$mapping->active => true,
+				$mapping->availableTo => null,
+			);
+		} else {
+			$data = array(
+				$mapping->modifiedById => $modifiedBy,
+				$mapping->modifiedAt => NOW,
+				$mapping->ip => $ip->ip,
+				$mapping->active => true,
+				$mapping->availableTo => null,
+			);
+		}
 
 		$query = $this->prepareUpdate($mapping, $data);
 		$query->where($mapping->host, $comp['host']);
@@ -544,17 +573,28 @@ extends UFdao {
 	 * @param int $modifiedBy id wprowadzającego zmiany
 	 * @return bool sukces lub porażka
 	 */
-	public function restoreWithOldIp($comp, $modifiedBy = null){
+	public function restoreWithOldIp($comp, $modifiedBy = null, $newName = ''){
 		$user = UFra::factory('UFbean_Sru_User');
 		$user->getByPK($comp['userId']);
-		$mapping = $this->mapping('set');
+		$mapping = $this->mapping('set');	
+		$data = array();
 		
-		$data = array(
-			$mapping->modifiedById => $modifiedBy,
-			$mapping->modifiedAt => NOW,
-			$mapping->active => true,
-			$mapping->availableTo => null,
-		);
+		if($newName != ''){
+			$data = array(
+				$mapping->host => $newName,
+				$mapping->modifiedById => $modifiedBy,
+				$mapping->modifiedAt => NOW,
+				$mapping->active => true,
+				$mapping->availableTo => null,
+			);
+		} else {
+			$data = array(
+				$mapping->modifiedById => $modifiedBy,
+				$mapping->modifiedAt => NOW,
+				$mapping->active => true,
+				$mapping->availableTo => null,
+			);
+		}
 		$query = $this->prepareUpdate($mapping, $data);
 		$query->where($mapping->host, $comp['host']);
 		$query->where($mapping->userId, $comp['userId']);
