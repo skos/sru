@@ -1026,7 +1026,6 @@ changeVisibility();
 		echo '<legend>Meldunek</legend>';
 		if (!$d['active']) {
 			echo $form->active('Zamelduj (aktywuj konto)', array('type'=>$form->CHECKBOX));
-			echo '<br/>';
 		}
 		try {
 			$referralStart = $post->userEdit['referralStart'];
@@ -1057,17 +1056,17 @@ changeVisibility();
 			'class'=>'required',
 			'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Data końca pobytu." /><br/>',
 		));
-		try {
-			$checkIn = $post->userEdit['lastLocationChange'];
-		} catch (UFex_Core_DataNotFound $e) {
-			$checkIn = date(self::TIME_YYMMDD, $d['lastLocationChange']);
-			if ((is_null($d['lastLocationChange']) || $d['lastLocationChange'] == 0) && $d['active'] == false) {
-				$checkIn = '';
-			} else if ((is_null($d['lastLocationChange']) || $d['lastLocationChange'] == 0) && $d['active'] == true) {
-				$checkIn = date(self::TIME_YYMMDD, time());
-			}
-		}
 		if ($d['active']) {
+			try {
+				$checkIn = $post->userEdit['lastLocationChange'];
+			} catch (UFex_Core_DataNotFound $e) {
+				$checkIn = date(self::TIME_YYMMDD, $d['lastLocationChange']);
+				if ((is_null($d['lastLocationChange']) || $d['lastLocationChange'] == 0) && $d['active'] == false) {
+					$checkIn = '';
+				} else if ((is_null($d['lastLocationChange']) || $d['lastLocationChange'] == 0) && $d['active'] == true) {
+					$checkIn = date(self::TIME_YYMMDD, time());
+				}
+			}
 			echo '<div id="checkInMore">';
 			echo $form->lastLocationChange('Data zameldowania', array(
 				'value'=>$checkIn,
