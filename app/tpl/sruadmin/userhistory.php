@@ -74,7 +74,7 @@ extends UFtpl_Common {
 		'lastLocationChange' => 'Last check-in/out',
 	);
 
-	protected function _diff(array $old, array $new) {
+	protected function _diff(array $old, array $new, $walet) {
 		$changes = array();
 		$arr = ' &rarr; ';
 		$names = self::$names;
@@ -111,14 +111,14 @@ extends UFtpl_Common {
 					break;
 				case 'nationality': $changes[] = $names[$key] . ': '.$old['nationalityName'].$arr.$new['nationalityName']; break;
 				case 'sex': $changes[] = $names[$key] . ': <q>'.($val == false ? 'Mężczyzna' : 'Kobieta').'</q>'.$arr.'<q>'.($new[$key] == false ? 'Mężczyzna' : 'Kobieta').'</q>'; break;
-				case 'address': $changes[] = $names[$key] . ': '.$old['address'].$arr.$new[$key]; break;
-				case 'documentType': $changes[] = $names[$key] . ': '.UFtpl_Sru_User::$documentTypes[$old[$key]].$arr.UFtpl_Sru_User::$documentTypes[$new[$key]]; break;
-				case 'documentNumber': $changes[] = $names[$key] . ': '.$old[$key].$arr.$new[$key]; break;
-				case 'pesel': $changes[] = $names[$key] . ': '.($val == '' ? 'brak' : $old[$key]).$arr.$new[$key]; break;
-				case 'birthDate': $changes[] = $names[$key] . ': <q>'.($val == 0 ? 'brak' : date(self::TIME_YYMMDD, $val)).'</q>'.$arr.date(self::TIME_YYMMDD, $new[$key]); break;
-				case 'birthPlace': $changes[] = $names[$key] . ': <q>'.($val =='' ? 'brak' : $old[$key]).'</q>'.$arr.'<q>'.$new[$key].'</q>'; break;
-				case 'userPhoneNumber': $changes[] = $names[$key] . ': '.($val == '' ? 'brak' : $old[$key]).$arr.$new[$key]; break;
-				case 'guardianPhoneNumber': $changes[] = $names[$key] . ': '.($val == '' ? 'brak' : $old[$key]).$arr.$new[$key]; break;
+				case 'address': $changes[] = $names[$key] . ': '.($walet ? $old['address'].$arr.$new[$key] : 'zmieniono'); break;
+				case 'documentType': $changes[] = $names[$key] . ': '.($walet ? UFtpl_Sru_User::$documentTypes[$old[$key]].$arr.UFtpl_Sru_User::$documentTypes[$new[$key]] : 'zmieniono'); break;
+				case 'documentNumber': $changes[] = $names[$key] . ': '.($walet ? $old[$key].$arr.$new[$key] : 'zmieniono'); break;
+				case 'pesel': $changes[] = $names[$key] . ': '.($walet ? ($val == '' ? 'brak' : $old[$key]).$arr.$new[$key] : 'zmieniono'); break;
+				case 'birthDate': $changes[] = $names[$key] . ': '.($walet ? ('<q>'.($val == 0 ? 'brak' : date(self::TIME_YYMMDD, $val)).'</q>'.$arr.'<q>'.date(self::TIME_YYMMDD, $new[$key]).'</q>') : 'zmieniono'); break;
+				case 'birthPlace': $changes[] = $names[$key] . ': '.($walet ? ('<q>'.($val =='' ? 'brak' : $old[$key]).'</q>'.$arr.'<q>'.$new[$key]) : 'zmieniono').'</q>'; break;
+				case 'userPhoneNumber': $changes[] = $names[$key] . ': '.($walet ? ($val == '' ? 'brak' : $old[$key]).$arr.$new[$key] : 'zmieniono'); break;
+				case 'guardianPhoneNumber': $changes[] = $names[$key] . ': '.($walet ? ($val == '' ? 'brak' : $old[$key]).$arr.$new[$key] : 'zmieniono'); break;
 				default: continue;
 			}
 		}
@@ -186,7 +186,7 @@ extends UFtpl_Common {
 				$changed = '<a href="'.$urlAdmin.$curr['modifiedById'].'">'.$this->_escape($curr['modifiedBy']).'</a>';
 			}
 			echo date(self::TIME_YYMMDD_HHMM, $curr['modifiedAt']).' &mdash; '.$changed;
-			echo $this->_diff($c, $curr);
+			echo $this->_diff($c, $curr, $walet);
 			if (!$walet) {
 				echo '<p><a href="'.$url.'/:edit/'.$c['id'].'">Cofnij zmiany</a></p>';
 			}

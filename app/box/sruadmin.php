@@ -680,7 +680,7 @@ extends UFbox {
 
 		$history = UFra::factory('UFbean_SruAdmin_UserHistoryList');
 		try {
-			$history->listByUserIdUncomplete($bean->id);
+			$history->listByUserId($bean->id);
 		} catch (UFex_Dao_NotFound $e) {
 		}
 		$d['history'] = $history;
