@@ -505,10 +505,18 @@ extends UFdao {
 					$this->getActiveByIpDormitory($comps[$i]['ip'], $comps[$i]['dormitoryId']);
 					$this->setNewIp($comps[$i], $modifiedBy, $newName);
 				}else{
-					$this->setNewIp($comps[$i], $modifiedBy, $newName);
+					try{
+						$this->setNewIp($comps[$i], $modifiedBy, $newName);
+					} catch (Exception $e) {
+						UFra::error("Nie udało się ustawić nowego IP dla nowego DSu: " . $e);
+					}
 				}
 			}catch(Exception $e){
-				$this->restoreWithOldIp($comps[$i], $modifiedBy, $newName);
+				try{
+					$this->restoreWithOldIp($comps[$i], $modifiedBy, $newName);
+				} catch(Exception $e) {
+					UFra::error("Nie udało się przywrócić komputera ze starym IP: " . $e);
+				}
 			}
 		}
 		
