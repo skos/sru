@@ -473,7 +473,7 @@ $(function() {
 				echo '<p><label>Płeć:</label><span class="userData"> '.(!$d['sex'] ? 'Mężczyzna' : 'Kobieta').'</span></p>';
 			}
 		} else {
-			echo $this->ERR('Łączysz się niezabezpieczonym połączeniem - Twoje dane osobowe nie mogą zostać wyświetlone.');
+			echo $this->ERR('Łączysz się przez niezabezpieczone połączenie - ze względów bezpieczeństwa Twoje dane osobowe nie są wyświetlane.');
 		}
 		echo $form->gg('Gadu-Gadu', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Jeżeli podasz nr GG, będą na niego przesyłane informacje o zmianie statusu konta i Twoich komputerów." /><br/>'));
 		echo $form->lang('Język', array(
