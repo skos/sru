@@ -17,7 +17,7 @@ extends UFtpl_Common {
 		echo '<div id="login">';
 		$form = UFra::factory('UFlib_Form');
 
-		echo $form->_start();
+		echo $form->_start($this->url(0).'/');
 		echo $form->_fieldset('Zaloguj się');
 
 		if ($this->_srv->get('msg')->get('userRecover/errors/token/invalid')) {
