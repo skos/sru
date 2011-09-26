@@ -76,6 +76,12 @@ extends UFact {
 					}catch(Exception $e){
 						//po prostu ma nic nie wyświetlić, gdy coś się nie uda, można dorobić obsługę Exceptiona w tym miejscu
 					}
+				} else if($post['dormitory'] != $bean->dormitoryId){
+					try{
+						$comps->changeIpToNewDormitory($bean->id, $waletAdmin);
+					}catch (Exception $e){
+						//po prostu ma nic nie wyświetlić, gdy coś się nie uda, można dorobić obsługę Exceptiona w tym miejscu
+					}
 				}
 				$typeId = (array_key_exists($bean->typeId, UFtpl_Sru_Computer::$userToComputerType) ? UFtpl_Sru_Computer::$userToComputerType[$bean->typeId] : UFbean_Sru_Computer::TYPE_STUDENT);
 				$comps->updateLocationAndTypeByUserId($bean->id, $bean->locationId, $typeId, $waletAdmin);
