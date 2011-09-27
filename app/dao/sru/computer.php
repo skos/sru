@@ -467,8 +467,11 @@ extends UFdao {
 		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_SERVER, $query->NOT_EQ);
 		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_SERVER_VIRT, $query->NOT_EQ);
 		$query->where($mapping->autoDeactivation, true);
-		$query->where($mapping->lastSeen, time() - $days*24*60*60, $query->LT);
 		$query->where($mapping->lastActivated, time() - $days*24*60*60, $query->LT);
+		$query->where(
+			'('.$mapping->column('lastSeen').' < TO_TIMESTAMP('.(time() - $days*24*60*60).') OR '.$mapping->column('lastSeen').' IS NULL)',
+			null, $query->SQL
+		);
 		
 		return $this->doUpdate($query);
 	}
