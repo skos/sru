@@ -194,9 +194,17 @@ extends UFctl {
 					return 'Sru_Error403';
 				}
 			case 'user/unregistered':
-				return 'Sru_UserUnregistered';
+				if ($acl->sru('user', 'login')) {
+					return 'Sru_UserUnregistered';
+				}else{
+					return 'Sru_UserMain';
+				}
 			case 'user/banned':
-				return 'Sru_UserBanned';
+				if ($acl->sru('user', 'login')) {
+					return 'Sru_UserBanned';
+				}else{
+					return 'Sru_UserMain';
+				}
 			default:
 				return 'Sru_Error404';
 		}
