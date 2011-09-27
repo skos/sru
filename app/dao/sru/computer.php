@@ -53,17 +53,6 @@ extends UFdao {
 		return $this->doSelectFirst($query);
 	}
 	
-	public function getActiveByIpDormitory ($ip, $dormitory){
-		$mapping = $this->mapping('get');
-		
-		$query = $this->prepareSelect($mapping);
-		$query->where($mapping->ip, $ip);
-		$query->where($mapping->dormitoryId, $dormitory);
-		$query->where($mapping->active, true);
-		
-		return $this->doSelectFirst($query);
-	}
-	
 	public function listByUserId($id) {
 		$mapping = $this->mapping('list');
 
@@ -483,7 +472,13 @@ extends UFdao {
 	 * @return bool sukces
 	 */
 	public function restore($userId, $dormitoryChanged, $modifiedBy = null){
-		$comps = $this->getByUserId($userId);
+		try {
+			$comps = $this->getByUserId($userId);
+			$user = UFra::factory('UFbean_Sru_User');
+			$user->getByPK($userId);
+		}catch(Exception $e){
+			return true;
+		}
 
 		for ($i = 0; $i < count($comps); $i++){
 			$name = $comps[$i]['host'];
@@ -502,22 +497,19 @@ extends UFdao {
 					break;
 				}
 			}
-			
+
 			try{
 				if(!$dormitoryChanged){
-					$this->getActiveByIpDormitory($comps[$i]['ip'], $comps[$i]['dormitoryId']);
+					$this->getByIp($comps[$i]['ip']);
 					$this->setNewIp($comps[$i], $modifiedBy, $newName);
 				}else{
 					try{
 						$this->setNewIp($comps[$i], $modifiedBy, $newName);
 					} catch (Exception $e) {
-						UFra::error("Nie udało się ustawić nowego IP dla nowego DSu: " . $e);
 					}
 				}
 			}catch(Exception $e){
 				try{
-					$user = UFra::factory('UFbean_Sru_User');
-					$user->getByPK($comps[$i]['userId']);
 					$ip = UFra::factory('UFbean_Sru_Ipv4');
 					if($ip->checkIpDormitory($comps[$i]['ip'], $user->dormitoryId)){
 						$this->restoreWithOldIp($comps[$i], $modifiedBy, $newName);
@@ -525,7 +517,6 @@ extends UFdao {
 						$this->setNewIp($comps[$i], $modifiedBy, $newName);
 					}
 				} catch(Exception $e) {
-					UFra::error("Nie udało się przywrócić komputera ze starym IP: " . $e);
 				}
 			}
 		}
