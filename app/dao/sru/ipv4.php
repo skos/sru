@@ -52,4 +52,19 @@ extends UFdao {
 
 		return $this->doSelect($query);
 	}
+	
+	public function checkIpDormitory($ip, $dormId) {
+		$mapping = $this->mapping('get');
+		
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->ip, $ip);
+		$query->where($mapping->dormitoryId, $dormId);
+		
+		try{
+			$this->doSelect($query);
+			return true;
+		}catch(Exception $e){
+			return false;
+		}
+	}
 }

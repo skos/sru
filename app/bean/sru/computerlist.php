@@ -36,8 +36,4 @@ extends UFbeanList {
 	public function updateLocationAndTypeByUserId($userId, $location, $typeId, $modifiedBy = null){
 		return $this->dao->updateLocationAndTypeByUserId($userId, $location, $typeId, $modifiedBy);
 	}
-	
-	public function changeIpToNewDormitory($userId, $modifiedBy = null){
-		return $this->dao->changeIp($userId, $modifiedBy);
-	}
 }

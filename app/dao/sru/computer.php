@@ -513,7 +513,14 @@ extends UFdao {
 				}
 			}catch(Exception $e){
 				try{
-					$this->restoreWithOldIp($comps[$i], $modifiedBy, $newName);
+					$user = UFra::factory('UFbean_Sru_User');
+					$user->getByPK($comps[$i]['userId']);
+					$ip = UFra::factory('UFbean_Sru_Ipv4');
+					if($ip->checkIpDormitory($comps[$i]['ip'], $user->dormitoryId)){
+						$this->restoreWithOldIp($comps[$i], $modifiedBy, $newName);
+					}else{
+						$this->setNewIp($comps[$i], $modifiedBy, $newName);
+					}
 				} catch(Exception $e) {
 					UFra::error("Nie udało się przywrócić komputera ze starym IP: " . $e);
 				}
@@ -585,13 +592,6 @@ extends UFdao {
 	public function restoreWithOldIp($comp, $modifiedBy = null, $newName = ''){
 		$user = UFra::factory('UFbean_Sru_User');
 		$user->getByPK($comp['userId']);
-		$ip = UFra::factory('UFbean_Sru_Ipv4');
-		try{
-			$ip->getFreeByDormitoryId($user->dormitoryId);
-		}catch (Exception $e){
-			//UFra::error("Nie znaleziono wolnego IP: " . $e);
-			return true;
-		}
 		$mapping = $this->mapping('set');	
 		$data = array();
 		
@@ -621,45 +621,6 @@ extends UFdao {
 			return $result = $this->doUpdate($query);
 		}catch(Exception $e){
 			return false;
-		}
-		
-		return false;
-	}
-	
-	/**
-	 * Zmienia adres IP computera bez jego aktywacji
-	 * @param int $userId id właściciela hosta
-	 * @param int $modifiedBy id wprowadzającego zmiany
-	 * @return bool sukces lub porażka
-	 */
-	public function changeIp($userId, $modifiedBy){
-		$comps = $this->getByUserId($userId);
-		$user = UFra::factory('UFbean_Sru_User');
-		$user->getByPK($comps[0]['userId']);
-		$ip = UFra::factory('UFbean_Sru_Ipv4');
-		try{
-			$ip->getFreeByDormitoryId($user->dormitoryId);
-		}catch (Exception $e){
-			//UFra::error("Nie znaleziono wolnego IP: " . $e);
-			return true;
-		}
-		$mapping = $this->mapping('set');
-		
-		$data = array(
-			$mapping->ip => $ip->ip,
-			$mapping->modifiedAt => NOW,
-			$mapping->modifiedById => $modifiedBy,
-			);
-			
-		$query = $this->prepareUpdate($mapping, $data);
-		$query->where($mapping->userId, $comps[0]['userId']);
-		$query->where($mapping->active, false);
-		$query->where($mapping->modifiedAt, time() - UFra::shared('UFconf_Sru')->timeForComputersRestoration, $query->GT);
-		
-		try{
-			return $result = $this->doUpdate($query);
-		}catch(Exception $e){
-			return true;
 		}
 		
 		return false;

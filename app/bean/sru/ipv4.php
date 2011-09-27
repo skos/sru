@@ -9,4 +9,7 @@ extends UFbeanSingle {
 		return $this->data[0]['ip'];
 	}
 
+	public function checkIpDormitory($ip, $dormId){
+		return $this->dao->checkIpDormitory($ip, $dormId);
+	}
 }
