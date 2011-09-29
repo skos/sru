@@ -121,8 +121,12 @@ extends UFtpl_Common {
 		}else{
 			echo '<p><em>Data dezaktywacji:</em>Data dezaktywacji nie została podana</p>';
 		}
-		if($d['id'] == $this->_srv->get('session')->authAdmin && $d['active'] == true && $d['activeTo'] - time() <= UFra::shared('UFconf_Sru')->adminDeactivateAfter && $d['activeTo'] - time() >= 0)
-			echo $this->ERR("Konto niedługo ulegnie dezaktywacji, należy przedłużyć jego ważność w CUI!");
+		if(($d['id'] == $this->_srv->get('session')->authAdmin || ($this->_srv->get('session')->is('typeId') 
+					&& ($this->_srv->get('session')->typeId == UFacl_SruAdmin_Admin::CENTRAL 
+						|| $this->_srv->get('session')->typeId == UFacl_SruAdmin_Admin::CAMPUS)))
+					&& $d['active'] == true && $d['activeTo'] - time() <= UFra::shared('UFconf_Sru')->adminDeactivateAfter && $d['activeTo'] - time() >= 0){
+			echo $this->ERR("<br />Konto niedługo ulegnie dezaktywacji, należy przedłużyć jego ważność w CUI!<br />&nbsp;");
+		}
 	}
 
 	public function listDorms($d, $dormList) {
