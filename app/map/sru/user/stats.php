@@ -31,6 +31,7 @@ extends UFmap {
 		'active'         => 'u.active',
 		'banned'         => 'u.banned',
 		'typeId'	 => 'u.type_id',
+                'sex'		 => 'sex',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -58,6 +59,7 @@ extends UFmap {
 		'active'         => self::BOOL,
 		'banned'         => self::BOOL,
 		'typeId'	 => self::INT,
+                'sex'		 => self::BOOL,
 	);
 	protected $tables = array(
 		'u' => 'users',

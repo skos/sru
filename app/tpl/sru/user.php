@@ -1427,7 +1427,7 @@ $(function() {
 			if(!array_key_exists($u['facultyName'], $faculties)) {
 				$faculties[$u['facultyName']] = new PeopleCounter();
 			}
-			if (strtolower(substr($u['name'], -1)) == 'a') {
+			if($u['sex']==true) {
 				$sum++;
 				$woman++;
 				$faculties[$u['facultyName']]->addUser(true);

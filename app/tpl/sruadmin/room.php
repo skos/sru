@@ -136,7 +136,7 @@ function fullList() {
 						$i++;
 						if ($i > $room->getLimit()) {
 							$class = 'additional';
-						} else if (substr($user['name'], -1) == 'a') {
+						} else if ($user['sex']==true) {
 							$class = 'woman';
 						} else {
 							$class = 'man';
