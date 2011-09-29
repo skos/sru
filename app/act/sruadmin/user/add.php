@@ -28,7 +28,17 @@ extends UFact {
 			$id = $bean->save();
 			$req = $this->_srv->get('req');
 			$req->get->userId = $id;
-
+			$req->get->password = $password;
+                                                                      
+            //wysy³anie maial powitalnego
+            $box = UFra::factory('UFbox_Sru');
+            $sender = UFra::factory('UFlib_Sender');
+            $title = $box->userAddByAdminMailTitle($bean);
+            $body = $box->userAddByAdminMailBody($bean);
+            var_dump($body);
+            $sender->send($bean, $title, $body, self::PREFIX);
+			
+			
 			$this->postDel(self::PREFIX);
 			$this->markOk(self::PREFIX);
 		} catch (UFex_Dao_DataNotValid $e) {

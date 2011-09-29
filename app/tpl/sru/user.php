@@ -1331,6 +1331,19 @@ $(function() {
 		echo 'PLEASE CHANGE YOUR PASSWORD JUST AFTER THE FIRS LOG IN!'."\n\n";
 	}
 
+	public function userAddByAdminMailTitle(array $d) {
+		echo 'Twoje konto zostało utworzone';
+	}
+        
+        public function userAddByAdminMailBody(array $d, $password) {
+		echo 'Potwierdzamy, że Twoje zostało utworzone.'."\n\n";
+		echo 'Login: '.$d['login']."\n";
+                echo 'Hasło: '.$password."\n";
+		echo 'Imię: '.$d['name']."\n";
+		echo 'Nazwisko: '.$d['surname']."\n";
+		echo 'E-mail: '.$d['email']."\n";
+	}
+	
 	public function dataChangedMailTitlePolish(array $d) {
 		echo 'Twoje dane zostały zmienione';
 	}

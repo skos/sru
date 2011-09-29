@@ -427,6 +427,14 @@ changeVisibility();
 <p>Log in to check the reason of your penalty. You can also contact us during <a href="http://dyzury.ds.pg.gda.pl/">our duty hours</a>.</p>';
 	}
 
+	public function userAddByAdminMailTitle(array $d) {
+            echo $d['user']->write('userAddByAdminMailTitle');	
+	}
+	
+	public function userAddByAdminMailBody(array $d) {
+            echo $d['user']->write('userAddByAdminMailBody', $d['password']);
+	}
+	
 	public function userAddMailTitle(array $d) {
 		if ($d['user']->lang == 'en') {
 			echo $d['user']->write('userAddMailTitleEnglish');

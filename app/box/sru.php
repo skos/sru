@@ -116,6 +116,21 @@ extends UFbox {
 		return $this->render(__FUNCTION__, $d);
 	}
 
+	public function userAddByAdminMailTitle($user) {
+		$d['user'] = $user;
+		return $this->render(__FUNCTION__, $d);
+	}
+
+	public function userAddByAdminMailBody($user) {
+                try {
+                        $d['password'] = $this->_srv->get('req')->get->password;
+                } catch (UFex_Core_DataNotFound $e) {
+                        $d['password'] = null;
+                }
+                $d['user'] = $user;
+		return $this->render(__FUNCTION__, $d);
+	}
+	
 	public function userAddMailTitle($user) {
 		$d['user'] = $user;
 		return $this->render(__FUNCTION__, $d);
