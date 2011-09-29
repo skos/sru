@@ -1577,7 +1577,7 @@ extends UFbox {
 					$d['computerId'] = $this->_srv->get('req')->get->computerId;
 				}
 			} catch (UFex_Dao_NotFound $e) {
-				if ($typeId == UFbean_SruAdmin_Penalty::TYPE_WARNING) {
+				if (isset($typeId) && $typeId == UFbean_SruAdmin_Penalty::TYPE_WARNING) {
 					$d['computerId'] = 0;
 				} else {
 					$d['computerId'] = '';

@@ -483,11 +483,10 @@ $(function() {
 		));
 		echo '<br />';
 
-		if ($acl->sru('user', 'viewPersonalData')) {
-			if($d['typeId'] <= 50 || ($d['typeId'] > 50 && !is_null($d['registryNo']) && $d['registryNo'] != '')) {
-				echo $form->_fieldset('Dane dotyczące studiów');
-			}
-			if (!is_null($d['registryNo']) && $d['registryNo'] != '') {
+		if($d['typeId'] <= 50) {
+			echo $form->_fieldset('Dane dotyczące studiów');
+
+			if (!is_null($d['registryNo']) && $d['registryNo'] != '' && $acl->sru('user', 'viewPersonalData')) {
 				echo '<p><label>Nr indeksu:</label><span class="userData"> '.$d['registryNo'].'</span></p>';
 			}
 			if($d['typeId'] != UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL && $d['typeId'] <= 50 && !is_null($d['facultyId'])) {
