@@ -30,12 +30,11 @@ extends UFact {
 			$req->get->userId = $id;
 			$req->get->password = $password;
                                                                       
-            //wysy³anie maial powitalnego
+            //wysylanie maial powitalnego
             $box = UFra::factory('UFbox_Sru');
             $sender = UFra::factory('UFlib_Sender');
             $title = $box->userAddByAdminMailTitle($bean);
             $body = $box->userAddByAdminMailBody($bean);
-            var_dump($body);
             $sender->send($bean, $title, $body, self::PREFIX);
 			
 			
