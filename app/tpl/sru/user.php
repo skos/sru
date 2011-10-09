@@ -1496,7 +1496,7 @@ $(function() {
 			if(!array_key_exists(' '.$u['studyYearId'], $years)) {
 				$years[' '.$u['studyYearId']] = new PeopleCounter();
 			}
-			if (strtolower(substr($u['name'], -1)) == 'a') {
+			if ($u['sex']) {
 				$years[' '.$u['studyYearId']]->addUser(true);
 			} else {
 				$years[' '.$u['studyYearId']]->addUser();
@@ -1546,7 +1546,7 @@ $(function() {
 			if(!array_key_exists($u['typeId'], $types)) {
 				$types[$u['typeId']] = new PeopleCounter();
 			}
-			if (strtolower(substr($u['name'], -1)) == 'a') {
+			if ($u['sex']) {
 				$types[$u['typeId']]->addUser(true);
 			} else {
 				$types[$u['typeId']]->addUser();
@@ -1658,17 +1658,17 @@ $(function() {
 		foreach ($d as $u) {
 			if ($u['banned']) {
 				$activeBannedSum++;
-				if (strtolower(substr($u['name'], -1)) == 'a') {
+				if ($u['sex']) {
 					$activeBannedWomanSum++;
 				}
 			}
 			$banSum += $u['bans'];
-			if (strtolower(substr($u['name'], - 1)) == 'a') {
+			if ($u['sex']) {
 					$womanBanSum += $u['bans'];
 			}
 			if ($u['bans'] > 0) {
 				$bannedSum++;
-				if (strtolower(substr($u['name'], -1)) == 'a') {
+				if ($u['sex']) {
 						$bannedWomanSum++;
 				}
 				$urlUser = $this->url(0).'/users/'.$u['id'];
@@ -1764,14 +1764,14 @@ $(function() {
 			if ($u['typeId'] > UFtpl_Sru_User::$userTypesLimit) {
 				continue;
 			}
-			if (strtolower(substr($u['name'], -1)) == 'a') {
+			if ($u['sex']) {
 				$dormitories[$u['dormitoryAlias']]->addUser(true);
 			} else {
 				$dormitories[$u['dormitoryAlias']]->addUser();
 			}
-			$dormitories[$u['dormitoryAlias']]->addToGroupFaculty($u['facultyName'], $u['name']);
-			$dormitories[$u['dormitoryAlias']]->addToGroupYear($u['studyYearId'], $u['name']);
-			$dormitories[$u['dormitoryAlias']]->addToGroupType($u['typeId'], $u['name']);
+			$dormitories[$u['dormitoryAlias']]->addToGroupFaculty($u['facultyName'], $u['sex']);
+			$dormitories[$u['dormitoryAlias']]->addToGroupYear($u['studyYearId'], $u['sex']);
+			$dormitories[$u['dormitoryAlias']]->addToGroupType($u['typeId'], $u['sex']);
 			$dormitories[$u['dormitoryAlias']]->addBans($u['bans']);
 			$dormitories[$u['dormitoryAlias']]->addActiveBans($u['activeBans']);
 			$banSum = $banSum + $u['bans'];
@@ -2014,7 +2014,7 @@ extends PeopleCounter
 		if(!array_key_exists(' '.$key, $this->groupFaculty)) {
 			$this->groupFaculty[' '.$key] = new PeopleCounter();
 		}
-		if (strtolower(substr($value, -1)) == 'a') {
+		if ($value) {
 			$this->groupFaculty[' '.$key]->addUser(true);
 		} else {
 			$this->groupFaculty[' '.$key]->addUser();
@@ -2041,7 +2041,7 @@ extends PeopleCounter
 		if(!array_key_exists(' '.$key, $this->groupYear)) {
 			$this->groupYear[' '.$key] = new PeopleCounter();
 		}
-		if (strtolower(substr($value, -1)) == 'a') {
+		if ($value) {
 			$this->groupYear[' '.$key]->addUser(true);
 		} else {
 			$this->groupYear[' '.$key]->addUser();
@@ -2052,7 +2052,7 @@ extends PeopleCounter
 		if(!array_key_exists($key, $this->groupType)) {
 			$this->groupType[$key] = new PeopleCounter();
 		}
-		if (strtolower(substr($value, -1)) == 'a') {
+		if ($value) {
 			$this->groupType[$key]->addUser(true);
 		} else {
 			$this->groupType[$key]->addUser();
