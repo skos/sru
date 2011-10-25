@@ -15,9 +15,13 @@ extends UFtpl_Common {
 <link rel="stylesheet" href="<?=UFURL_BASE;?>/i/css/style.css" type="text/css" media="screen" />
 <link rel="shortcut icon" href="<?=UFURL_BASE;?>/i/img/favicon.ico" type="image/x-icon" />
 <link type="text/css" href="<?=UFURL_BASE;?>/i/jquery/css/ui-lightness/jquery-ui-1.8.5.custom.css" rel="Stylesheet" />	
+<link type="text/css" href="<?=UFURL_BASE;?>/i/jquery/css/calendar.css" rel="Stylesheet" />	
 <script type="text/javascript" src="<?=UFURL_BASE;?>/i/jquery/jquery.tools.min.js"></script>
 <script type="text/javascript" src="<?=UFURL_BASE;?>/i/jquery/jquery-ui-1.8.5.custom.min.js"></script>
 <script type="text/javascript" src="<?=UFURL_BASE;?>/i/jquery/jquery.tablesorter.min.js"></script>
+<script type="text/javascript" src="<?=UFURL_BASE;?>/i/jquery/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="<?=UFURL_BASE;?>/i/jquery/cal.js"></script>
+
 <title><?=$d['title'];?></title>
 </head>
 <body>
