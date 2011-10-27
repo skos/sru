@@ -293,11 +293,17 @@ changeVisibility();
 		}
 	}
 
-	public function penaltyAddMailTitlePolish(array $d) {
+	public function penaltyAddMailTitlePolish(array $d, $user) {
 		if ($d['typeId'] == UFbean_SruAdmin_Penalty::TYPE_WARNING) {
-			echo 'Otrzymał(a/e)ś ostrzeżenie';
+                    if($user->sex == true)
+			echo 'Otrzymałaś ostrzeżenie';
+                    else
+                        echo 'Otrzymałeś ostrzeżenie';
 		} else {
-			echo 'Otrzymał(a/e)ś karę';
+                    if($user->sex == true)
+			echo 'Otrzymałaś karę';
+                    else
+                        echo 'Otrzymałaś karę';
 		}
 	}
 
@@ -310,7 +316,17 @@ changeVisibility();
 	}
 
 	public function penaltyAddMailBodyPolish(array $d, $user, $computers, $dutyHours) {
-		echo 'Informujemy, że otrzymał(a/e)ś ';
+            if($user->sex == true)
+            {
+		echo 'Informujemy, że otrzymałaś ';
+            $test = 'Informujemy, że otrzymałaś ';
+            }
+            else
+            {
+                echo 'Informujemy, że otrzymałeś ';
+                $test = 'Informujemy, że otrzymałeś ';
+            }
+
 		if ($d['typeId'] == UFbean_SruAdmin_Penalty::TYPE_WARNING) {
 			echo 'OSTRZEŻENIE';
 		} else {

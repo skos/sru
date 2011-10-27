@@ -479,7 +479,7 @@ changeVisibility();
 		if ($d['user']->lang == 'en') {
 			echo $d['penalty']->write('penaltyAddMailTitleEnglish');
 		} else {
-			echo $d['penalty']->write('penaltyAddMailTitlePolish');
+			echo $d['penalty']->write('penaltyAddMailTitlePolish', $d['user']);
 		}
 	}
 	
