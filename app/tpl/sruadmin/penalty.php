@@ -317,15 +317,9 @@ changeVisibility();
 
 	public function penaltyAddMailBodyPolish(array $d, $user, $computers, $dutyHours) {
             if($user->sex == true)
-            {
 		echo 'Informujemy, że otrzymałaś ';
-            $test = 'Informujemy, że otrzymałaś ';
-            }
             else
-            {
                 echo 'Informujemy, że otrzymałeś ';
-                $test = 'Informujemy, że otrzymałeś ';
-            }
 
 		if ($d['typeId'] == UFbean_SruAdmin_Penalty::TYPE_WARNING) {
 			echo 'OSTRZEŻENIE';
