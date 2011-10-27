@@ -36,6 +36,7 @@ extends UFmap {
 		'guardianPhoneNumber'	=> 'guardian_phone_number',
 		'sex'			=> 'sex',
 		'lastLocationChange' => 'last_location_change',
+		'commentSkos'	=> 'comment_skos',
 	);
 	protected $columnTypes = array(
 		'login'          => self::TEXT,
@@ -70,6 +71,7 @@ extends UFmap {
 		'guardianPhoneNumber'	=> self::NULL_TEXT,
 		'sex'			=> self::BOOL,
 		'lastLocationChange' => self::TS,
+		'commentSkos'	=> self::TEXT,
 	);
 	protected $tables = array(
 		'' => 'users',

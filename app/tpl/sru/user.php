@@ -204,7 +204,7 @@ extends UFtpl_Common {
 			'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Wiadomości e-mail i GG będa przychodziły w wybranym języku.<br/><br/>You will receive e-mails and gg messages in the chosen language." /><br/>',
 		));
 		$referralStart = date(self::TIME_YYMMDD, time());
-		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
+		echo $form->commentSkos('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
 	}
 
 	public function formAddWalet(array $d, $dormitories, $faculties, $surname, $registryNo, $pesel) {
@@ -582,7 +582,7 @@ $(function() {
 	public function searchResults(array $d) {
 		$url = $this->url(0);
 		foreach ($d as $c) {
-			echo '<li'.($c['banned']?' class="ban"':'').'>'.(!$c['active']?'<del>':'').'<a href="'.$url.'/users/'.$c['id'].'">'.$this->_escape($c['name']).' "'.$this->_escape($c['login']).'" '.$this->_escape($c['surname']).'</a>'.(strlen($c['comment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['comment'].'" />':'').' <span><a href="'.$url.'/dormitories/'.$c['dormitoryAlias'].'/'.$c['locationAlias'].'">'.$c['locationAlias'].'</a> <small>(<a href="'.$url.'/dormitories/'.$c['dormitoryAlias'].'">'.$c['dormitoryAlias'].'</a>)</small></span>'.(!$c['active']?'</del>':'').(strlen($c['locationComment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['locationComment'].'" />':'').'</li>';
+			echo '<li'.($c['banned']?' class="ban"':'').'>'.(!$c['active']?'<del>':'').'<a href="'.$url.'/users/'.$c['id'].'">'.$this->_escape($c['name']).' "'.$this->_escape($c['login']).'" '.$this->_escape($c['surname']).'</a>'.(strlen($c['commentSkos']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['commentSkos'].'" />':'').' <span><a href="'.$url.'/dormitories/'.$c['dormitoryAlias'].'/'.$c['locationAlias'].'">'.$c['locationAlias'].'</a> <small>(<a href="'.$url.'/dormitories/'.$c['dormitoryAlias'].'">'.$c['dormitoryAlias'].'</a>)</small></span>'.(!$c['active']?'</del>':'').(strlen($c['locationComment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['locationComment'].'" />':'').'</li>';
 		}
 	}
 
@@ -722,8 +722,8 @@ $(document).ready(function()
 		echo '</p>';
 		
 
-		if (strlen($d['comment'])) {
-			echo '<p><em>Komentarz:</em></p><p class="comment">'.nl2br($this->_escape($d['comment'])).'</p>';
+		if (strlen($d['commentSkos'])) {
+			echo '<p><em>Komentarz:</em></p><p class="comment">'.nl2br($this->_escape($d['commentSkos'])).'</p>';
 		}
 		echo '</div>';
 		echo '<p class="nav"><a href="'.$urlUser.'">Dane</a> ';
@@ -738,7 +738,7 @@ $(document).ready(function()
 		 	&bull; <a href="'.$urlUser.'/:edit">Edycja</a>
 		  	&bull; <span id="userMoreSwitch"></span>'; 
 	
-		if (strlen($d['comment'])) echo ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$d['comment'].'" />';
+		if (strlen($d['commentSkos'])) echo ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$d['commentSkos'].'" />';
 		echo '<p>';
 ?><script type="text/javascript">
 function changeVisibility() {
@@ -908,7 +908,7 @@ changeVisibility();
 		if ($acl->sruAdmin('service', 'edit', $d['id'])) {
 			echo $form->servicesAvailable('Dostępność PUU', array('type'=>$form->CHECKBOX));
 		}
-		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
+		echo $form->commentSkos('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
 		echo $form->_fieldset('Zmiana hasła');
 			echo $form->password('Nowe hasło', array('type'=>$form->PASSWORD,  ));
 			echo $form->password2('Potwierdź hasło', array('type'=>$form->PASSWORD));
@@ -1213,7 +1213,7 @@ $(function() {
 	public function shortList(array $d) {
 		$url = $this->url(0).'/users/';
 		foreach ($d as $c) {
-			echo '<li'.($c['banned']?' class="ban"':'').'>'.(!$c['active']?'<del>':'').'<a href="'.$url.$c['id'].'">'.$this->_escape($c['name']).' '.$this->_escape($c['surname']).'</a>'.(!$c['active']?'</del>':'').(strlen($c['comment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['comment'].'" />':'').'</li>';
+			echo '<li'.($c['banned']?' class="ban"':'').'>'.(!$c['active']?'<del>':'').'<a href="'.$url.$c['id'].'">'.$this->_escape($c['name']).' '.$this->_escape($c['surname']).'</a>'.(!$c['active']?'</del>':'').(strlen($c['commentSkos']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['commentSkos'].'" />':'').'</li>';
 		}
 	}
 

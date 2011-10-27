@@ -30,8 +30,9 @@ extends UFmap {
 		'comment'        => 'u.comment',
 		'active'         => 'u.active',
 		'banned'         => 'u.banned',
-		'typeId'	 => 'u.type_id',
-                'sex'		 => 'sex',
+		'typeId'		 => 'u.type_id',
+        'sex'			 => 'u.sex',
+		'commentSkos'	 => 'u.comment_skos',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -58,8 +59,9 @@ extends UFmap {
 		'comment'        => self::TEXT,
 		'active'         => self::BOOL,
 		'banned'         => self::BOOL,
-		'typeId'	 => self::INT,
-                'sex'		 => self::BOOL,
+		'typeId'		 => self::INT,
+        'sex'			 => self::BOOL,
+		'commentSkos'	 => self::TEXT,
 	);
 	protected $tables = array(
 		'u' => 'users',

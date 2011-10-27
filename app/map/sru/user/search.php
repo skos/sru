@@ -31,6 +31,7 @@ extends UFmap {
 		'locationComment'=> 'l.comment',
 		'typeId'		 => 'u.type_id',
 		'pesel'			 => 'u.pesel',
+		'commentSkos'    => 'u.comment_skos',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -58,6 +59,7 @@ extends UFmap {
 		'locationComment'=> self::TEXT,
 		'typeId'		 => self::INT,
 		'pesel'			 => self::TEXT,
+		'commentSkos'	 => self::TEXT,
 	);
 	protected $tables = array(
 		'u' => 'users',
