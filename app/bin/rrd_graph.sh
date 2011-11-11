@@ -27,7 +27,7 @@ function generate() {
 		"DEF:bytesavg=${data}/${1}.rrd:tcpbytes:AVERAGE" \
                 'CDEF:bytesavgNorm=bytesavg,60,/' \
                 'LINE1:bytesavgNorm#FF0000:transfer' \
-                -b 1024 -E -w 863 -h 350-e "${3} ${4}" -s end-7d -v B/s -t "${2} - tydzień" -l 0
+                -b 1024 -w 863 -h 350 -e "${3} ${4}" -s end-7d -v B/s -t "${2} - tydzień" -l 0
 
                 echo -n "${1} month"
 		rrdtool graph "${dir}/${1}${3}${4}.month.png" \
