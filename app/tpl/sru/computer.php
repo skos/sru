@@ -725,7 +725,7 @@ div.style.display = 'none';
 		$form = UFra::factory('UFlib_Form', 'penaltyAdd', $post);
 
 		$tmp = array(
-			'0' => '<em>Ostrzeżenie</em>',
+			'0' => '<i>Ostrzeżenie</i>',
 			'' => '<strong>Wszystkie komputery</strong>',
 		);
 		foreach ($d as $c) {

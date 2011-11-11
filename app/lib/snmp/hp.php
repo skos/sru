@@ -21,7 +21,7 @@ extends UFlib_Snmp {
 		'uptime' => '1.3.6.1.2.1.1.3',
 		'cpu' => '1.3.6.1.4.1.11.2.14.11.5.1.9.6.1.0',
 		'memAll' => '1.3.6.1.4.1.11.2.14.11.5.1.1.2.1.1.1.5.1',
-		'memUsed' => '1.3.6.1.4.1.11.2.14.11.5.1.1.2.1.1.1.6.1',
+		'memFree' => '1.3.6.1.4.1.11.2.14.11.5.1.1.2.1.1.1.6.1',
 		'serialNo' => 'SNMPv2-SMI::mib-2.47.1.1.1.1.11.1',
 		'model' => '1.3.6.1.4.1.11.2.36.1.1.2.5.0',
 		'portAliases' => '.1.3.6.1.2.1.31.1.1.1.18',
@@ -66,7 +66,7 @@ extends UFlib_Snmp {
 		$info['uptime'] = $uptime[0];
 		$info['cpu'] = @snmpget($this->ip, $this->communityR, $this->OIDs['cpu'], $this->timeout);
 		$info['memAll'] = @snmpget($this->ip, $this->communityR, $this->OIDs['memAll'], $this->timeout);
-		$info['memUsed'] = @snmpget($this->ip, $this->communityR, $this->OIDs['memUsed'], $this->timeout);
+		$info['memFree'] = @snmpget($this->ip, $this->communityR, $this->OIDs['memFree'], $this->timeout);
 		$info['serialNo'] = trim(@snmpget($this->ip, $this->communityR, $this->OIDs['serialNo'], $this->timeout));
 		return $info;
 	}

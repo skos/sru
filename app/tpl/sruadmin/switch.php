@@ -183,7 +183,7 @@ changeVisibility();
 			echo '<p><em>Uptime:</em> '.$uptimeD.' dni, '.$uptimeH.' godzin, '.$uptimeM.' minut, '.$uptimeS.' sekund</p>';
 			echo '<table style="text-align: center;"><tr>';
 			echo '<td><em>CPU:</em> '.$info['cpu'].'%</td>';
-			$mem = round($info['memUsed']/$info['memAll']*100,2);
+			$mem = round(($info['memAll']-$info['memFree'])/$info['memAll']*100,2);
 			echo '<td><em>Pamięć zużyta:</em> '.$mem.'%</td>';
 			echo '</tr><tr>';
 			echo '<td><img src="http://chart.apis.google.com/chart?chs=300x150&cht=gom&chd=t:'.$info['cpu'].'&chco=00FF00,FFFF00,FF8040,FF0000&chxt=x,y&chxl=0:||1:|0%|100%" alt=""/></td>';
