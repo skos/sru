@@ -118,7 +118,8 @@ $(document).ready(function()
 		echo '<th>Nr pokoju</th>';
 		echo '<th>Data urodzenia</th>';
 		echo '<th>Adres pobytu stałego</th>';
-		echo '<th>Okres pobytu</th>';
+		echo '<th>Pobyt od</th>';
+		echo '<th>Pobyt do</th>';
 		echo '<th>Oznaczenie dokumentu tożsamości</th>';
 		echo '<th>Wydział</th>';
 		echo '<th>Nr albumu</th>';
@@ -134,8 +135,9 @@ $(document).ready(function()
 			echo '<td style="border: 1px solid;">'.$user['name'].'</td>';
 			echo '<td style="border: 1px solid;">'.$user['locationAlias'].'</td>';
 			echo '<td style="border: 1px solid;">'.(is_null($user['birthDate']) ? '&nbsp;' : date(self::TIME_YYMMDD, $user['birthDate'])).'</td>';
-			echo '<td style="border: 1px solid;">'.(is_null($user['address']) ? '&nbsp;' : nl2br($user['address'])).'</td>';
-			echo '<td style="border: 1px solid;">'.date(self::TIME_YYMMDD, $user['referralStart']).' - '.((is_null($user['referralEnd']) || $user['referralEnd'] == 0) ? '' : date(self::TIME_YYMMDD, $user['referralEnd'])).'</td>';
+			echo '<td style="border: 1px solid;">'.(is_null($user['address']) ? '&nbsp;' : $user['address']).'</td>';
+			echo '<td style="border: 1px solid;">'.date(self::TIME_YYMMDD, $user['referralStart']).'</td>';
+			echo '<td style="border: 1px solid;">'.((is_null($user['referralEnd']) || $user['referralEnd'] == 0) ? '' : date(self::TIME_YYMMDD, $user['referralEnd'])).'</td>';
 			echo '<td style="border: 1px solid;">'.(is_null($user['documentNumber']) ? '&nbsp;' : UFtpl_Sru_User::$documentTypesShort[$user['documentType']].': '.$user['documentNumber']).'</td>';
 			echo '<td style="border: 1px solid;">'.(is_null($user['facultyId']) ? '&nbsp;' : strtoupper($user['facultyAlias'])).'</td>';
 			echo '<td style="border: 1px solid;">'.(is_null($user['registryNo']) ? '&nbsp;' : $user['registryNo']).'</td>';

@@ -719,6 +719,7 @@ $(document).ready(function()
 		echo ' <a href="http://nk.pl/search?query='.urlencode($d['name'].' '.$d['surname']).'">nasza-klasa</a>';
 		echo ' <a href="http://wyczajka.net/p/'.urlencode($d['name'].'_'.$d['surname']).'">wyczajka</a>';
 		echo ' <a href="http://www.facebook.com/#!/search/?q='.urlencode($d['name'].' '.$d['surname']).'">face-booczek</a>';
+		echo ' <a href="http://www.123people.pl/s/'.urlencode($d['name'].'+'.$d['surname']).'">123people</a>';
 		echo '</p>';
 		
 
