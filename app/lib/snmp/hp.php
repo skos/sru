@@ -27,6 +27,7 @@ extends UFlib_Snmp {
 		'portAliases' => '.1.3.6.1.2.1.31.1.1.1.18',
 		'portActivities' => '.1.3.6.1.2.1.2.2.1.8',
 		'portStatuses' => '.1.3.6.1.2.1.2.2.1.7',
+		'portSpeeds' => '1.3.6.1.2.1.31.1.1.1.15',
 		'macs' => '1.3.6.1.4.1.11.2.14.11.5.1.9.4.2.1.2',
 		'lockouts' => 'mib-2.17.7.1.3.1.1.4.4095',
 		'port' => '.1.3.6.1.2.1.17.4.3.1.2',
@@ -107,6 +108,17 @@ extends UFlib_Snmp {
 			return null;
 		}
 		return $alias;
+	}
+	
+	public function getPortSpeed($port) {
+		if ($this->getPortStatus($port) != self::UP) {
+			return null;
+		}
+		$speed = @snmpget($this->ip , $this->communityR, $this->OIDs['portSpeeds'].'.'.$this->translateSwitchPort($port), $this->timeout);
+		if ($speed == false) {
+			return null;
+		}
+		return $speed;
 	}
 
 	public function getPortStatuses() {

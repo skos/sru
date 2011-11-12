@@ -13,7 +13,7 @@ extends UFtpl_Common {
 		'portEnabled/enabledAndPenalty' => 'Nie można ustawić kary dla włączonego portu',
 	);
 
-	public function details(array $d, $switch, $alias) {
+	public function details(array $d, $switch, $alias, $speed) {
 		$url = $this->url(0).'/switches/';
 		$conf = UFra::shared('UFconf_Sru');
 		$swstatsLink = str_replace($conf->swstatsSwitchRegex, UFtpl_SruAdmin_Switch::displaySwitchName($switch->dormitoryAlias, $switch->hierarchyNo), $conf->swstatsLinkPort);
@@ -27,6 +27,9 @@ extends UFtpl_Common {
 		}
 		if (!is_null($alias) && $alias != '') {
 			echo '<p><em>Alias portu: </em>'.$alias.'</p>';
+		}
+		if (!is_null($speed)) {
+			echo '<p><em>Szybkość:</em> '.$speed.' Mb/s</p>';
 		}
 		if (!is_null($d['penaltyId'])) {
 			echo '<p><em>Przypisana kara: </em><a href="'.$this->url(0).'/penalties/'.$d['penaltyId'].'">'.$d['userName'].' "'.$d['userLogin'].'" '.$d['userSurname'].': '.$d['templateTitle'].' ('.$d['penaltyId'].')</a></p>';

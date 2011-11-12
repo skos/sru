@@ -1177,8 +1177,10 @@ extends UFbox {
 			if (!is_null($d['switch']->ip)) {
 				$switch = UFra::factory('UFlib_Snmp_Hp', $d['switch']->ip, $d['switch']);
 				$d['alias'] = $switch->getPortAlias($bean->ordinalNo);
+				$d['speed'] = $switch->getPortSpeed($bean->ordinalNo);
 			} else {
 				$d['alias'] = null;
+				$d['speed'] = null;
 			}
 
 			return $this->render(__FUNCTION__, $d);
