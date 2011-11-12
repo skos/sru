@@ -55,9 +55,9 @@ img { border-style: none; }
 #main fieldset { margin-top: 1em; border-style: none; background-color: #eee; padding: 0.5em; }
 #main fieldset fieldset { padding: 0.5em 0; }
 #main fieldset.radio legend { margin-left: 27%; padding-left: 2em; }
-#main legend { margin-left: 1em; background-color: #eee; padding: 0.1em 1em; font-family: "Georgia", serif; font-weight: bold; }
+#main legend { margin-left: 1em; background-color: #eee; padding: 0.1em 2em; font-family: "Georgia", serif; font-weight: bold; }
 #main label { display: block; width: 29.5%; float: left; clear: both; text-align: right; margin-right: 0.5%; }
-#main input.radio, #main input.checkbox { margin-left: 30%; float: left; clear: both; margin-top: 0.3em; }
+#main input.radio, #main input.checkbox { margin-left: 30%; float: left; clear: both; margin-top: 0.1em; }
 #main label.radio, #main label.checkbox { width: 67%; float: right; clear: none; text-align: left; }
 #main input.submit { padding: 0.2em 1em; margin-top: 0.5em; margin-left: 30%; }
 #main p.services input.submit { margin-left: 0px;}

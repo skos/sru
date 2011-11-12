@@ -139,29 +139,7 @@ extends UFctl {
 						if($segCount == 2) {
 							$get->view = 'dormitories/dorm';
 						} else {
-							switch ($req->segment(3)) {
-								case ':dormexport':
-									$get->view = 'dormitories/dorm/docdormexport';
-									break;
-								case ':usersexport':
-									$get->view = 'dormitories/dorm/docusersexport';
-									break;
-								case ':regbookexport':
-									$get->view = 'dormitories/dorm/docregbookexport';
-									break;
-								case ':dormexcelexport':
-									$get->view = 'dormitories/dorm/xlsdormexport';
-									break;
-								case ':usersexcelexport':
-									$get->view = 'dormitories/dorm/xlsusersexport';
-									break;
-								case ':regbookexcelexport':
-									$get->view = 'dormitories/dorm/xlsregbookexport';
-									break;
-								default:
-									$get->view = 'error404';
-									break;
-							}
+							$get->view = 'error404';
 						}
 					}
 					break;
@@ -246,6 +224,8 @@ extends UFctl {
 			$act = 'Admin_Add';
 		} elseif ('admins/edit' == $get->view && $post->is('adminEdit') && $acl->sruWalet('admin', 'edit', $get->adminId)) {
 			$act = 'Admin_Edit';
+		} elseif ('dormitories/dorm' == $get->view && $post->is('docExport') && $acl->sruWalet('dorm', 'view', $get->dormAlias)) {
+			$act = 'Doc_Export';
 		}
 
 		if (isset($act)) {
@@ -352,44 +332,10 @@ extends UFctl {
 			case 'inhabitants/main':
 				return 'SruWalet_Inhabitants';
 			case 'dormitories/dorm':
-				if ($acl->sruWalet('dorm', 'view', $get->dormAlias)) {
+				if ($msg->get('docExport/ok') && (!is_null($get->docCode))) {
+					return 'SruWalet_'.$get->docCode.'Export';
+				} else if ($acl->sruWalet('dorm', 'view', $get->dormAlias)) {
 					return 'SruWalet_Dorm';
-				} else {
-					return 'Sru_Error403';
-				}
-			case 'dormitories/dorm/docdormexport':
-				if ($acl->sruWalet('dorm', 'view', $get->dormAlias)) {
-					return 'SruWalet_DormDocExport';
-				} else {
-					return 'Sru_Error403';
-				}
-			case 'dormitories/dorm/docusersexport':
-				if ($acl->sruWalet('dorm', 'view', $get->dormAlias)) {
-					return 'SruWalet_DormUsersDocExport';
-				} else {
-					return 'Sru_Error403';
-				}
-			case 'dormitories/dorm/docregbookexport':
-				if ($acl->sruWalet('dorm', 'view', $get->dormAlias)) {
-					return 'SruWalet_DormRegBookDocExport';
-				} else {
-					return 'Sru_Error403';
-				}
-			case 'dormitories/dorm/xlsdormexport':
-				if ($acl->sruWalet('dorm', 'view', $get->dormAlias)) {
-					return 'SruWalet_DormXlsExport';
-				} else {
-					return 'Sru_Error403';
-				}
-			case 'dormitories/dorm/xlsusersexport':
-				if ($acl->sruWalet('dorm', 'view', $get->dormAlias)) {
-					return 'SruWalet_DormUsersXlsExport';
-				} else {
-					return 'Sru_Error403';
-				}
-			case 'dormitories/dorm/xlsregbookexport':
-				if ($acl->sruWalet('dorm', 'view', $get->dormAlias)) {
-					return 'SruWalet_DormRegBookXlsExport';
 				} else {
 					return 'Sru_Error403';
 				}

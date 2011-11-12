@@ -92,12 +92,123 @@ $(document).ready(function()
 </script>
 <?
 	}
+	
+	public function exportPanel(array $d) {
+		
+		echo '<h3><span id="exportMoreSwitch"></span></h3>';
+		echo '<div id="userMore">';
+		$form = UFra::factory('UFlib_Form', 'docExport', $d);
+		echo $form->_start();
+		echo $form->_fieldset('Dane eksportu');
+		$tmp = array(
+			'1' => 'Lista mieszkańców wg pokoi',
+			'2' => 'Lista mieszkańców alfabetycznie',
+			'3' => 'Książka meldunkowa',
+		);
+		echo $form->docTypeId('Dokument', array(
+			'type' => $form->RADIO,
+			'labels' => $form->_labelize($tmp),
+			'labelClass' => 'radio',
+			'class' => 'radio',
+			'value' => 1,
+		));
+		$tmp = array(
+			'1' => 'MS Word&#153;',
+			'2' => 'MS Excel&#153;',
+		);
+		echo $form->formatTypeId('Format', array(
+			'type' => $form->RADIO,
+			'labels' => $form->_labelize($tmp),
+			'labelClass' => 'radio',
+			'class' => 'radio',
+			'value' => 2,
+		));
+		echo $form->_fieldset('Uzupełnij o');
+		echo $form->addFaculty('Wydział', array(
+			'type' => $form->CHECKBOX,
+		));
+		echo $form->addYear('Rok studiów', array(
+			'type' => $form->CHECKBOX,
+		));
+		echo $form->_end();
+		echo $form->_submit('Eksportuj');
+		echo $form->_end();
+		echo $form->_end(true);
+		echo '</div>';
+		
+		?><script type="text/javascript">
+(function (){
+	var dormList = document.getElementById('docExport_docTypeId_1');
+	var regBook = document.getElementById('docExport_docTypeId_3');
+	var addFaculty = document.getElementById('docExport_addFaculty');
+	var addFacultyState = document.getElementById('docExport_addFaculty').checked;
+	var addYear = document.getElementById('docExport_addYear');
+	var addYearState = document.getElementById('docExport_addYear').checked;
+	var inputs = document.getElementsByName('docExport[docTypeId]');
+	for(i=0; i<inputs.length; i++) {
+		inputs[i].addEventListener('change', changeState, false);
+	}
+	function changeState() {
+		if(dormList.checked == true) {
+				addFaculty.checked = false;
+				addFaculty.disabled = true;
+				addYear.checked = false;
+				addYear.disabled = true;
+			} else if(regBook.checked == true) {
+				addFaculty.checked = true;
+				addFaculty.disabled = true;
+				addYear.checked = addYearState;
+				addYear.disabled = false;
+			} else {
+				addFaculty.checked = addFacultyState;
+				addFaculty.disabled = false;
+				addYear.checked = addYearState;
+				addYear.disabled = false;
+			}
+	}
+	changeState();
+	function changeAddFaculty() { 
+		addFacultyState = document.getElementById('docExport_addFaculty').checked;
+	}
+	addFaculty.onchange = changeAddFaculty;
+	function changeAddYear() { 
+		addYearState = document.getElementById('docExport_addYear').checked;
+	}
+	addYear.onchange = changeAddYear;
+})()
+function changeVisibility() {
+	var div = document.getElementById('userMore');
+	if (div.sruHidden != true) {
+		div.style.display = 'none';
+		div.sruHidden = true;
+	} else {
+		div.style.display = 'block';
+		div.sruHidden = false;
+	}
+}
+var container = document.getElementById('exportMoreSwitch');
+var button = document.createElement('a');
+button.onclick = function() {
+	changeVisibility();
+}
+var txt = document.createTextNode('Eksportuj do pliku');
+button.appendChild(txt);
+container.appendChild(button);
+changeVisibility();
+</script><?
+	}
 
-	public function inhabitantsAlphabetically(array $d, $users) {
+	public function inhabitantsAlphabetically(array $d, $users, $settings) {
 		echo '<table><thead><tr>';
 		echo '<th>Imię</th>';
 		echo '<th>Nazwisko</th>';
 		echo '<th>Pokój</th>';
+		if ($settings['faculty']) {
+			echo '<th>Wydział</th>';
+		}
+		if ($settings['year']) {
+			echo '<th>Rok studiów</th>';
+		}
 		echo '</tr></thead><tbody>';
 		foreach ($users as $user) {
 			if ($user['typeId'] > UFtpl_Sru_User::$userTypesLimit) {
@@ -105,12 +216,19 @@ $(document).ready(function()
 			}
 			echo '<tr><td style="border: 1px solid;">'.$user['name'].'</td>';
 			echo '<td style="border: 1px solid;">'.$user['surname'].'</td>';
-			echo '<td style="border: 1px solid;">'.$user['locationAlias'].'</td></tr>';
+			echo '<td style="border: 1px solid;">'.$user['locationAlias'].'</td>';
+			if ($settings['faculty']) {
+				echo '<td style="border: 1px solid;">'.(is_null($user['facultyId']) ? '&nbsp;' : strtoupper($user['facultyAlias'])).'</td>';
+			}
+			if ($settings['year']) {
+				echo '<td style="border: 1px solid;">'.UFtpl_Sru_User::$studyYears[$user['studyYearId']].'</td>';
+			}
+			echo '</tr>';
 		}
 		echo '</tbody></table>';
 	}
 
-	public function regBook(array $d, $users) {
+	public function regBook(array $d, $users, $settings) {
 		echo '<table><thead><tr>';
 		echo '<th>L.p.</th>';
 		echo '<th>Nazwisko</th>';
@@ -122,6 +240,9 @@ $(document).ready(function()
 		echo '<th>Pobyt do</th>';
 		echo '<th>Oznaczenie dokumentu tożsamości</th>';
 		echo '<th>Wydział</th>';
+		if ($settings['year']) {
+			echo '<th>Rok studiów</th>';
+		}
 		echo '<th>Nr albumu</th>';
 		echo '<th>Uwagi</th>';
 		echo '</tr></thead><tbody>';
@@ -140,6 +261,9 @@ $(document).ready(function()
 			echo '<td style="border: 1px solid;">'.((is_null($user['referralEnd']) || $user['referralEnd'] == 0) ? '' : date(self::TIME_YYMMDD, $user['referralEnd'])).'</td>';
 			echo '<td style="border: 1px solid;">'.(is_null($user['documentNumber']) ? '&nbsp;' : UFtpl_Sru_User::$documentTypesShort[$user['documentType']].': '.$user['documentNumber']).'</td>';
 			echo '<td style="border: 1px solid;">'.(is_null($user['facultyId']) ? '&nbsp;' : strtoupper($user['facultyAlias'])).'</td>';
+			if ($settings['year']) {
+				echo '<td style="border: 1px solid;">'.UFtpl_Sru_User::$studyYears[$user['studyYearId']].'</td>';
+			}
 			echo '<td style="border: 1px solid;">'.(is_null($user['registryNo']) ? '&nbsp;' : $user['registryNo']).'</td>';
 			echo '<td style="border: 1px solid;">&nbsp;</td></tr>';
 		}

@@ -558,7 +558,7 @@ extends UFbox {
 			} catch (UFex_Dao_NotFound $e) {
 				$d['users'] = null;
 			}
-		
+				
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
 			return $this->render('inhabitantsNotFound');
@@ -568,9 +568,8 @@ extends UFbox {
 	public function titleDormUsersExport() {
 		try {
 			$bean = $this->_getDormFromGet();
-
 			$d['dorm'] = $bean;
-
+			
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
 			return $this->render('inhabitantsNotFound');
@@ -590,6 +589,10 @@ extends UFbox {
 			} catch (UFex_Dao_NotFound $e) {
 				$d['users'] = null;
 			}
+			
+			$d['settings'] = array();
+			$d['settings']['year'] = (int)$this->_srv->get('req')->get->addYear;
+			$d['settings']['faculty'] = (int)$this->_srv->get('req')->get->addFaculty;
 		
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
@@ -600,7 +603,6 @@ extends UFbox {
 	public function titleDormRegBookExport() {
 		try {
 			$bean = $this->_getDormFromGet();
-
 			$d['dorm'] = $bean;
 
 			return $this->render(__FUNCTION__, $d);
@@ -622,6 +624,9 @@ extends UFbox {
 			} catch (UFex_Dao_NotFound $e) {
 				$d['users'] = null;
 			}
+			
+			$d['settings'] = array();
+			$d['settings']['year'] = (int)$this->_srv->get('req')->get->addYear;
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
