@@ -23,6 +23,8 @@ extends UFact {
 				$bean->exAdmin = false;
 			}
 			$bean->availableTo = NOW;
+			$bean->modifiedById = null;
+			$bean->modifiedAt = NOW;
 			$bean->save();
 
 			$user = UFra::factory('UFbean_Sru_User');
