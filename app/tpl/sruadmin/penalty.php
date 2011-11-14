@@ -303,7 +303,7 @@ changeVisibility();
                     if($user->sex == true)
 			echo 'Otrzymałaś karę';
                     else
-                        echo 'Otrzymałaś karę';
+                        echo 'Otrzymałeś karę';
 		}
 	}
 
