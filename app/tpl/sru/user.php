@@ -434,7 +434,7 @@ $(function() {
 		if ($acl->sru('user', 'viewPersonalData')) {
 			if(!is_null($d['address']) && $d['address'] != '')
 			{
-				echo '<p><label>Adres:</label><span class="userData"> '.$d['address'].'</span></p>';
+				echo '<p><label>Adres:</label><span class="userData"> '.nl2br($this->_escape($d['address'])).'</span></p>';
 			}
 			if(!is_null($d['documentType']) && self::$documentTypes[$d['documentType']] != '')
 			{
@@ -442,11 +442,11 @@ $(function() {
 			}
 			if(!is_null($d['documentNumber']) && $d['documentNumber'] != '')
 			{
-				echo '<p><label>Nr dokumentu:</label><span class="userData"> '.$d['documentNumber'].'</span></p>';
+				echo '<p><label>Nr dokumentu:</label><span class="userData"> '.nl2br($this->_escape($d['documentNumber'])).'</span></p>';
 			}
 			if(!is_null($d['nationality']) && $d['nationality'] != '')
 			{
-				echo '<p><label>Narodowość:</label><span class="userData"> '.$d['nationalityName'].'</span></p>';
+				echo '<p><label>Narodowość:</label><span class="userData"> '.nl2br($this->_escape($d['nationalityName'])).'</span></p>';
 			}
 			if(!is_null($d['pesel']) && $d['pesel'] != '')
 			{
@@ -458,15 +458,15 @@ $(function() {
 			}
 			if(!is_null($d['birthPlace']) && $d['birthPlace'] != '')
 			{
-				echo '<p><label>Miejsce urodzenia:</label><span class="userData"> '.$d['birthPlace'].'</span></p>';
+				echo '<p><label>Miejsce urodzenia:</label><span class="userData"> '.nl2br($this->_escape($d['birthPlace'])).'</span></p>';
 			}
 			if(!is_null($d['userPhoneNumber']) && $d['userPhoneNumber'] != '')
 			{
-				echo '<p><label>Tel. mieszkańca:</label><span class="userData"> '.$d['userPhoneNumber'].'</span></p>';
+				echo '<p><label>Tel. mieszkańca:</label><span class="userData"> '.nl2br($this->_escape($d['userPhoneNumber'])).'</span></p>';
 			}
 			if(!is_null($d['guardianPhoneNumber']) && $d['guardianPhoneNumber'] != '')
 			{
-				echo '<p><label>Tel. opiekuna:</label><span class="userData"> '.$d['guardianPhoneNumber'].'</span></p>';
+				echo '<p><label>Tel. opiekuna:</label><span class="userData"> '.nl2br($this->_escape($d['guardianPhoneNumber'])).'</span></p>';
 			}
 			if(!is_null($d['sex']) && $d['sex'] != '')
 			{
@@ -787,24 +787,24 @@ changeVisibility();
 				echo '<p><em>Rok studiów:</em> '.(!is_null($d['studyYearId'])?self::$studyYears[$d['studyYearId']]:'').'</p>';
 			}
 		}
-		echo '<p><em>Adres:</em>'.$d['address'].'</p>';
+		echo '<p><em>Adres:</em>'.nl2br($this->_escape($d['address'])).'</p>';
 		echo '<p><em>Typ dokumentu:</em>'.self::$documentTypes[$d['documentType']].'</p>';
-		echo '<p><em>Nr dokumentu:</em>'.$d['documentNumber'].'</p>';
-		echo '<p><em>Narodowość:</em>'.$d['nationalityName'].'</p>';
+		echo '<p><em>Nr dokumentu:</em>'.nl2br($this->_escape($d['documentNumber'])).'</p>';
+		echo '<p><em>Narodowość:</em>'.nl2br($this->_escape($d['nationalityName'])).'</p>';
 		if(!is_null($d['pesel']) && $d['pesel'] != '') {
-			echo '<p><em>PESEL:</em>'.$d['pesel'].'</p>';
+			echo '<p><em>PESEL:</em>'.nl2br($this->_escape($d['pesel'])).'</p>';
 		}
 		if(!is_null($d['birthDate']) && $d['birthDate'] != '') {
 			echo '<p><em>Data urodzenia:</em>'.date(self::TIME_YYMMDD,$d['birthDate']).'</p>';
 		}
 		if(!is_null($d['birthPlace']) && $d['birthPlace'] != '') {
-			echo '<p><em>Miejsce urodzenia:</em>'.$d['birthPlace'].'</p>';
+			echo '<p><em>Miejsce urodzenia:</em>'.nl2br($this->_escape($d['birthPlace'])).'</p>';
 		}
 		if(!is_null($d['userPhoneNumber']) && $d['userPhoneNumber'] != '') {
-			echo '<p><em>Tel. mieszkańca:</em>'.$d['userPhoneNumber'].'</p>';
+			echo '<p><em>Tel. mieszkańca:</em>'.nl2br($this->_escape($d['userPhoneNumber'])).'</p>';
 		}
 		if(!is_null($d['guardianPhoneNumber']) && $d['guardianPhoneNumber'] != '') {
-			echo '<p><em>Tel. opiekuna:</em>'.$d['guardianPhoneNumber'].'</p>';
+			echo '<p><em>Tel. opiekuna:</em>'.nl2br($this->_escape($d['guardianPhoneNumber'])).'</p>';
 		}
 		echo '<p><em>Płeć:</em>'.(!$d['sex'] ? 'Mężczyzna' : 'Kobieta').'</p>';
 		if (is_null($d['modifiedBy'])) {

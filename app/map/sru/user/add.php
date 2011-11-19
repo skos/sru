@@ -64,6 +64,7 @@ extends UFmap {
 		'documentType'	=> self::INT,
 		'documentNumber'=> self::NULL_TEXT,
 		'nationality'	=> self::NULL_INT,
+		'nationalityName' => self::TEXT,	// kolumna tylko do walidacji
 		'pesel'			=> self::NULL_TEXT,
 		'birthDate'		=> self::NULL_TS,
 		'birthPlace'	=> self::NULL_TEXT,
@@ -79,8 +80,8 @@ extends UFmap {
 	protected $valids = array(
 		'login' => array('textMin'=>1, 'textMax'=>100, 'regexp'=>'^[-a-zA-Z0-9\.@_]+$'),
 		'password' => array('textMin'=>6),
-		'name' => array('textMin'=>1, 'textMax'=>100),
-		'surname' => array('textMin'=>1, 'textMax'=>100),
+		'name' => array('textMin'=>1, 'textMax'=>100, 'regexp'=>'^[a-zA-Z]$'),
+		'surname' => array('textMin'=>1, 'textMax'=>100, 'regexp'=>'^[a-zA-Z]$'),
 		'email' => array('email'=>true, 'textMax'=>100),
 		'gg' => array('regexp'=>'^(|[0-9]{3,50})$|[0]'),
 		'facultyId' => array('textMin'=>1, 'regexp'=>'^(1|2|3|4|5|6|7|8|9|0)$'),
@@ -89,6 +90,7 @@ extends UFmap {
 		'locationAlias' => array('textMin'=>1),
 		'locationId' => array('intMin'=>1),
 		'registryNo' => array('regexp'=>'^(|[0-9]{5,6})$'),
+		'nationalityName' => array('textMin'=>1, 'regexp'=>'^[a-zA-Z]$'),
 	);
 	protected $pk = 'id';
 }
