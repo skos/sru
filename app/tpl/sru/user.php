@@ -1422,8 +1422,8 @@ $(function() {
 			if ($u['typeId'] > UFtpl_Sru_User::$userTypesLimit) {
 				continue;
 			}
-			if ($u['facultyName'] == '') {
-				$u['facultyName'] = " N/D";
+			if (is_null($u['facultyName']) || $u['facultyName'] == '') {
+				$u['facultyName'] = 'N/D';
 			}
 			if(!array_key_exists($u['facultyName'], $faculties)) {
 				$faculties[$u['facultyName']] = new PeopleCounter();
@@ -1493,6 +1493,9 @@ $(function() {
 		foreach ($d as $u) {
 			if ($u['typeId'] > UFtpl_Sru_User::$userTypesLimit) {
 				continue;
+			}
+			if (is_null($u['studyYearId']) || $u['studyYearId'] == '') {
+				$u['studyYearId'] = '';
 			}
 			if(!array_key_exists(' '.$u['studyYearId'], $years)) {
 				$years[' '.$u['studyYearId']] = new PeopleCounter();
@@ -2009,8 +2012,8 @@ extends PeopleCounter
 	private $activeBans = 0;
 
 	public function addToGroupFaculty($key, $value) {
-		if ($key == '') {
-			$key = ' N/D';
+		if (is_null($key) || $key == '') {
+			$key = 'N/D';
 		}
 		if(!array_key_exists(' '.$key, $this->groupFaculty)) {
 			$this->groupFaculty[' '.$key] = new PeopleCounter();
@@ -2039,6 +2042,9 @@ extends PeopleCounter
 	}
 
 	public function addToGroupYear($key, $value) {
+		if (is_null($key) || $key == '') {
+			$key = '';
+		}
 		if(!array_key_exists(' '.$key, $this->groupYear)) {
 			$this->groupYear[' '.$key] = new PeopleCounter();
 		}
