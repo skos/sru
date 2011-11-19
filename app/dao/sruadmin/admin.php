@@ -128,13 +128,15 @@ extends UFdao {
 		$mapping = $this->mapping('list');
 
 		$query = $this->prepareSelect($mapping);
-		$query->raw("SELECT id, active, name FROM
-			(SELECT admin_id AS id, modified_at AS mod, active AS active, name as name FROM admins_history WHERE type_id < ".UFacl_SruAdmin_Admin::BOT."
-			UNION SELECT id AS id, modified_at AS mod, active AS active, name as name from admins  WHERE type_id < ".UFacl_SruAdmin_Admin::BOT.
-			(strtotime($date) > time() ? " AND (active_to >= '".$date."' or active_to IS NULL)" : "").
-			") AS foo
-			WHERE (mod <= '".$date."' or mod IS NULL) GROUP BY id, active, name ORDER BY max (mod) DESC;");
-
+		if (strtotime($date) < time()) {
+			$query->raw("SELECT id, active, name FROM
+				(SELECT admin_id AS id, modified_at AS mod, active AS active, name as name FROM admins_history WHERE type_id < ".UFacl_SruAdmin_Admin::BOT."
+				UNION SELECT id AS id, modified_at AS mod, active AS active, name as name FROM admins  WHERE type_id < ".UFacl_SruAdmin_Admin::BOT.") AS foo
+				WHERE (mod <= '".$date."' or mod IS NULL) GROUP BY id, active, name ORDER BY max (mod) DESC;");
+		} else {
+			$query->raw("SELECT id, active, name FROM admins WHERE type_id < ".UFacl_SruAdmin_Admin::BOT.
+				" AND (active_to >= '".$date."' or active_to IS NULL);");
+		}
 		return $this->doSelect($query);
 	}
 
