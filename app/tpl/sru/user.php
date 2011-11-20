@@ -98,7 +98,7 @@ extends UFtpl_Common {
 		'name/regexp' => 'Imię zawiera niedozwolone znaki',
 		'name/textMax' => 'Imię jest za długie',
 		'surname' => 'Podaj nazwisko',
-		'surnname/regexp' => 'Nazwisko zawiera niedozwolone znaki',
+		'surname/regexp' => 'Nazwisko zawiera niedozwolone znaki',
 		'surname/textMax' => 'Nazwisko jest za długie',
 		'email' => 'Podaj prawidłowy email',
 		'email/notnull' => 'Podaj prawidłowy email',
