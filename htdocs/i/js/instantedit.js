@@ -31,6 +31,8 @@ function cleanUp(obj, keepEditable){
 }
 
 function editComplete(t, obj){
+	var res = document.getElementById(obj.id+'_result');
+	res.innerHTML = '';
 	obj.innerHTML = t.responseText;
 	showAsEditable(obj, true);
 }

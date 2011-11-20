@@ -456,6 +456,7 @@ extends UFbox {
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex $e) {
+			UFlib_Http::notFound();
 			return '';
 		}
 	}

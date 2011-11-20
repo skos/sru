@@ -8,7 +8,7 @@ extends UFtpl_Common {
 	public function nations(array $d) {
 		echo '<ul>';
 		foreach ($d as $c) {
-			echo '<li><span id="'.$c['id'].'">'.$c['nationality'].'</span><span id="'.$c['id'].'_result"> (mieszkańców: '.$c['nationalityUsers'].')</li>';
+			echo '<li><span id="'.$c['id'].'">'.$c['nationality'].'</span><span id="'.$c['id'].'_result"></span> (mieszkańców: '.$c['nationalityUsers'].')</li>';
 		}
 		echo '</ul>';
 		
