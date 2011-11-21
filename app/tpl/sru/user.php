@@ -1260,12 +1260,10 @@ $(function() {
                 if($d['sex']==true)
                 {
                     echo 'Jeżeli otrzymałaś tę wiadomość, a nie masz konta w SKOS PG, prosimy o zignorowanie tej wiadomości.'."\n\n";
-                    var_dump("otrzymałaś");
                 }
                 else
                 {
                     echo 'Jeżeli otrzymałeś tę wiadomość, a nie masz konta w SKOS PG, prosimy o zignorowanie tej wiadomości.'."\n\n";   
-                    var_dump("otrzymałeś");
                 }
                 echo '- - - - - - - - - - -'."\n";
 		echo "\n";
