@@ -1254,10 +1254,20 @@ $(function() {
 			$waletText = $conf->userMailWaletText;
 			$skosText = $conf->userMailSkosText;
 		}
+
 		echo 'Witamy w Sieci Komputerowej Osiedla Studenckiego Politechniki Gdańskiej!'."\n";
 		echo "\n";
-		echo 'Jeżeli otrzymałeś/aś tę wiadomość, a nie masz konta w SKOS PG, prosimy o zignorowanie tej wiadomości.'."\n\n";
-		echo '- - - - - - - - - - -'."\n";
+                if($d['sex']==true)
+                {
+                    echo 'Jeżeli otrzymałaś tę wiadomość, a nie masz konta w SKOS PG, prosimy o zignorowanie tej wiadomości.'."\n\n";
+                    var_dump("otrzymałaś");
+                }
+                else
+                {
+                    echo 'Jeżeli otrzymałeś tę wiadomość, a nie masz konta w SKOS PG, prosimy o zignorowanie tej wiadomości.'."\n\n";   
+                    var_dump("otrzymałeś");
+                }
+                echo '- - - - - - - - - - -'."\n";
 		echo "\n";
 		echo 'Nasza sieć obejmuje swoim zasięgiem sieci LAN wszystkich Domów Studenckich Politechniki Gdańskiej, jest częścią Uczelnianej Sieci Komputerowej (USK PG) i dołączona jest bezpośrednio do sieci TASK.'."\n";
 		echo "\n";
@@ -1275,6 +1285,7 @@ $(function() {
 			$dutyHours->write('upcomingDutyHoursToEmailPolish', $d, 3);
 			echo "\n";
 		}
+                
 	}
 	
 	public function userAddMailBodyEnglish(array $d, $dutyHours) {
