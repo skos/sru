@@ -174,8 +174,6 @@ extends UFctl {
 			$act = 'Penalty_Amnesty';
 		} elseif ('computer' == $get->view && 'DELETE' == $req->server->REQUEST_METHOD && $acl->sruApi('computer', 'edit')) {
 			$act = 'Computer_Deactivate';
-		} elseif ('computers/delete' == $get->view && 'DELETE' == $req->server->REQUEST_METHOD && $acl->sruApi('computer', 'edit')) {
-			$act = 'Computer_DeactivateNotSeen';
 		} elseif ('penalties/timeline' == $get->view) {
 			$act = 'Penalty_Timeline';
 		} elseif ('admins/delete' == $get->view && 'DELETE' == $req->server->REQUEST_METHOD && $acl->sruApi('admin', 'delete')) {

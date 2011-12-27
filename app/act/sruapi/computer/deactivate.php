@@ -34,7 +34,6 @@ extends UFact {
 				$sender = UFra::factory('UFlib_Sender');
 				$title = $box->hostDeactivatedMailTitle($bean, $user);
 				$body = $box->hostDeactivatedMailBody($bean, self::PREFIX, $user);
-				var_dump($body);
 				$sender->send($user, $title, $body, self::PREFIX);
 			}
 
