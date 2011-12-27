@@ -34,6 +34,9 @@ extends UFmap {
 		'exAdmin'        => 'c.exadmin',
 		'carerId'		 => 'c.carer_id',
 		'masterHostId'	 => 'c.master_host_id',
+		'lastSeen'		 => 'c.last_seen',
+		'lastActivated'	 => 'c.last_activated',
+		'autoDeactivation' => 'c.auto_deactivation',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -64,6 +67,9 @@ extends UFmap {
 		'exAdmin'        => self::BOOL,
 		'carerId'		 => self::NULL_INT,
 		'masterHostId'	 => self::NULL_INT,
+		'lastSeen'		 => self::TS,
+		'lastActivated'	 => self::TS,
+		'autoDeactivation' => self::BOOL,
 	);
 	protected $tables = array(
 		'c' => 'computers',

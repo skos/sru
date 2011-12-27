@@ -775,6 +775,12 @@ div.style.display = 'none';
 			echo $c['host']."\n";
 		}
 	}
+	
+	public function apiComputersNotSeen(array $d) {
+		foreach ($d as $c) {
+			echo $c['host'].' '.date(self::TIME_YYMMDD_HHMMSS,$c['lastActivated'])."\n";
+		}
+	}
 
 	public function hostChangedMailTitlePolish(array $d) {
 		echo 'Dane Twojego hosta zostały zmienione';

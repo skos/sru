@@ -230,6 +230,21 @@ extends UFbox {
 		}
 	}
 	
+	public function computersNotSeen() {
+		try {
+			$conf = UFra::shared('UFconf_Sru'); 
+			
+			$bean = UFra::factory('UFbean_Sru_ComputerList');
+			$bean->listNotSeen($conf->computersMaxNotSeen);
+
+			$d['computers'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return '';
+		}
+	}
+	
 	public function adminsOutdated() {
 		try {
 			$bean = UFra::factory('UFbean_SruAdmin_AdminList');

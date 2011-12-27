@@ -439,20 +439,13 @@ extends UFdao {
 	}
 
 	/**
-	 * Dezaktywuje komputery, które nie były widzialne w sieci (i aktywowane) od $days dni
+	 * Wyswietla komputery, które nie były widzialne w sieci (i aktywowane) od $days dni
 	 * @return bool sukces lub porażka
 	 */
-	public function deactivateNotSeen($days, $modifiedBy = null) {
-		$mapping = $this->mapping('set');
-		$data = array(
-			$mapping->active => false,
-			$mapping->modifiedById => $modifiedBy,
-			$mapping->modifiedAt => NOW,
-			$mapping->availableTo => NOW,
-			$mapping->canAdmin = false,
-			$mapping->exAdmin = false,
-		);
-		$query = $this->prepareUpdate($mapping, $data);
+	public function listNotSeen($days, $limit = 100) {
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
 		$query->where($mapping->active, true);
 		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_SERVER, $query->NOT_EQ);
 		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_SERVER_VIRT, $query->NOT_EQ);
@@ -462,8 +455,9 @@ extends UFdao {
 			'('.$mapping->column('lastSeen').' < TO_TIMESTAMP('.(time() - $days*24*60*60).') OR '.$mapping->column('lastSeen').' IS NULL)',
 			null, $query->SQL
 		);
-		
-		return $this->doUpdate($query);
+		$query->limit($limit);
+
+		return $this->doSelect($query);
 	}
 
 	/**
@@ -552,6 +546,7 @@ extends UFdao {
 				$mapping->ip => $ip->ip,
 				$mapping->active => true,
 				$mapping->availableTo => null,
+				$mapping->lastActivated => NOW,
 			);
 		} else {
 			$data = array(
@@ -560,6 +555,7 @@ extends UFdao {
 				$mapping->ip => $ip->ip,
 				$mapping->active => true,
 				$mapping->availableTo => null,
+				$mapping->lastActivated => NOW,
 			);
 		}
 
@@ -597,6 +593,7 @@ extends UFdao {
 				$mapping->modifiedAt => NOW,
 				$mapping->active => true,
 				$mapping->availableTo => null,
+				$mapping->lastActivated => NOW,
 			);
 		} else {
 			$data = array(
@@ -604,6 +601,7 @@ extends UFdao {
 				$mapping->modifiedAt => NOW,
 				$mapping->active => true,
 				$mapping->availableTo => null,
+				$mapping->lastActivated => NOW,
 			);
 		}
 		$query = $this->prepareUpdate($mapping, $data);

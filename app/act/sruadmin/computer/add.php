@@ -45,10 +45,12 @@ extends UFact {
 			try {
 				$bean->getInactiveByMacUserId($post['mac'], $user->id);
 				$bean->active = true;
+				$bean->lastActivated = NOW;
 			} catch (UFex $e) {
 				try {
 					$bean->getInactiveByHostUserId($post['host'], $user->id);
 					$bean->active = true;
+					$bean->lastActivated = NOW;
 				} catch (UFex $e) {
 				}
 			}

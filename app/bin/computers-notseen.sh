@@ -2,7 +2,7 @@
 
 BASE=$(dirname "$0")
 LOGFILE="$BASE/../var/log/cron.log"
-PIDFILE="$BASE/../var/run/cron_admins_deactivate.pid"
+PIDFILE="$BASE/../var/run/cron_deactivate_notseen.pid"
 
 . $BASE/api.sh
 
@@ -14,6 +14,8 @@ fi
 
 echo "$$" > "$PIDFILE"
 
-del "computers/delete"
+for host in $(get 'computers/notseen'); do
+	del "computer/${host}" && log "${host}" || log "${host} ERROR"
+done
 
 rm "$PIDFILE"

@@ -123,8 +123,8 @@ extends UFctl {
 							case 'outdated':
 								$get->view = 'computers/outdated';
 								break;
-							case 'delete':
-								$get->view = 'computers/delete';
+							case 'notseen':
+								$get->view = 'computers/notseen';
 								break;
 						}
 					}
@@ -266,8 +266,13 @@ extends UFctl {
 				} else {
 					return 'SruApi_Error403';
 				}
-			case 'computers/delete':
-				if ($acl->sruApi('computer', 'edit')) {
+			case 'computers/notseen':
+				if ($acl->sruApi('computer', 'show')) {
+					return 'SruApi_ComputersNotSeen';
+				} else {
+					return 'SruApi_Error403';
+				}
+				/*if ($acl->sruApi('computer', 'edit')) {
 					if($msg->get('computersDelete/ok')) {
 						return 'SruApi_Status200';
 					} elseif($msg->get('computersDelete/error')) {
@@ -277,7 +282,7 @@ extends UFctl {
 					}
 				} else {
 					return 'SruApi_Error403';
-				}
+				}*/
 			case 'myapi/lanstats':
 				return 'SruApi_MyLanstats';
 			case 'admins/delete':
