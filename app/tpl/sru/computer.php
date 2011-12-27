@@ -149,7 +149,7 @@ extends UFtpl_Common {
 		if (is_null($d['userId'])) {
 			$user = 'BRAK';
 		} else {
-			$user = '<a href="'.$url.'/users/'.$d['userId'].'">'.$this->_escape($d['userName']).' '.$this->_escape($d['userSurname']).'</a>'.(strlen($d['userComment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$d['userComment'].'" />':'');
+			$user = '<a href="'.$url.'/users/'.$d['userId'].'">'.$this->_escape($d['userName']).' '.$this->_escape($d['userSurname']).'</a>'.(strlen($d['userCommentSkos']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$d['userCommentSkos'].'" />':'');
 		}
 		echo '<p><em>Typ komputera:</em> '.self::$computerTypes[$d['typeId']].'</p>';
 		if (!is_null($d['carerName'])) {
