@@ -39,6 +39,9 @@ extends UFlib_Snmp {
 	public $biggerTrunkNumbers = array(
 		'J4906A',
 		'J8435A',
+		'J8693A',
+		'J9145A',
+		'J9147A',
 		'J9452A',
 	);
 
