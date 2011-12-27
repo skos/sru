@@ -11,7 +11,7 @@ function generate() {
 		"DEF:bytesavg=${data}/${1}.rrd:tcpbytes:AVERAGE" \
 		'CDEF:bytesNorm=bytes,60,/' \
 		'CDEF:bytesavgNorm=bytesavg,60,/' \
-		'AREA:bytesavgNorm#FFDDDD:average (10min)' \
+		'AREA:bytesavgNorm#FFDDDD:średnio (10min)' \
 		'LINE1:bytesNorm#FF0000:transfer' \
 		-b 1024 -w 863 -h 350 -e "${3} ${4}" -s end-3h  -v B/s -t "${2} - 3h" -l 0
 

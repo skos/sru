@@ -106,9 +106,13 @@ extends UFbox {
 			$bean = $this->_getComputerFromGet();
 			$d['computer'] = $bean;
 
-			$hp = UFra::factory('UFlib_Snmp_Hp');
-			$switchPort = $hp->findMac($bean->mac);
-			$d['switchPort'] = $switchPort;
+			try {
+				$hp = UFra::factory('UFlib_Snmp_Hp');
+				$switchPort = $hp->findMac($bean->mac);
+				$d['switchPort'] = $switchPort;
+			} catch (UFex $e) {
+				$d['switchPort'] = null;
+			}
 
 			if ($bean->typeId == UFbean_Sru_Computer::TYPE_SERVER || $bean->typeId == UFbean_Sru_Computer::TYPE_SERVER_VIRT) {
 				try {
