@@ -1478,7 +1478,9 @@ extends UFtpl_Common {
 		$conf = UFra::shared('UFconf_Sru');
 		$host = $conf->sruUrl;
 
-		echo 'Zmodyfikowano port '.$d['port']->ordinalNo.((!is_null($d['port']->locationAlias) && $d['port']->locationAlias != '') ? ' ('.$d['port']->locationAlias.')' : '').' na switchu '.UFtpl_SruAdmin_Switch::displaySwitchName($d['port']->dormitoryAlias, $d['port']->switchNo)."\n";
+		echo 'Zmodyfikowano port '.$d['port']->ordinalNo.((!is_null($d['port']->locationAlias) && $d['port']->locationAlias != '') ? ' ('.$d['port']->locationAlias.')' : '').
+				(!is_null($d['port']->connectedSwitchId) ? ' ('.$d['port']->connectedSwitchDorm.'-hp'.$d['port']->connectedSwitchNo.')' : '').
+				' na switchu '.UFtpl_SruAdmin_Switch::displaySwitchName($d['port']->dormitoryAlias, $d['port']->switchNo)."\n";
 		if (!is_null($d['port']->comment) && $d['port']->comment != '') {
 			echo 'Komentarz portu: '.$d['port']->comment."\n";
 		}
