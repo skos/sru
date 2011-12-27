@@ -778,7 +778,7 @@ div.style.display = 'none';
 	
 	public function apiComputersNotSeen(array $d) {
 		foreach ($d as $c) {
-			echo $c['host'].' '.date(self::TIME_YYMMDD_HHMMSS,$c['lastActivated'])."\n";
+			echo $c['host']."\n";
 		}
 	}
 
