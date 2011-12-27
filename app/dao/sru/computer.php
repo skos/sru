@@ -450,6 +450,7 @@ extends UFdao {
 			$mapping->modifiedAt => NOW,
 			$mapping->availableTo => NOW,
 			$mapping->canAdmin = false,
+			$mapping->exAdmin = false,
 		);
 		$query = $this->prepareUpdate($mapping, $data);
 		$query->where($mapping->active, true);
