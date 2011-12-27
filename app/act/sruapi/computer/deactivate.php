@@ -5,7 +5,7 @@
 class UFact_SruApi_Computer_Deactivate
 extends UFact {
 
-	const PREFIX = 'computerDel';
+	const PREFIX = 'computerDeactivate';
 
 	public function go() {
 		try {
@@ -23,6 +23,20 @@ extends UFact {
 			$bean->exAdmin = false;
 			
 			$bean->save();
+
+			$conf = UFra::shared('UFconf_Sru');
+			if ($conf->sendEmail) {
+				$user = UFra::factory('UFbean_Sru_User');
+				$user->getByPK($bean->userId);
+				// nie musimy pobierać nowych danych hosta, ponieważ nie powinny się zmienić
+				// wyslanie maila do usera
+				$box = UFra::factory('UFbox_SruApi');
+				$sender = UFra::factory('UFlib_Sender');
+				$title = $box->hostDeactivatedMailTitle($bean, $user);
+				$body = $box->hostDeactivatedMailBody($bean, self::PREFIX, $user);
+				var_dump($body);
+				$sender->send($user, $title, $body, self::PREFIX);
+			}
 
 			$this->markOk(self::PREFIX);
 		} catch (UFex_Dao_NotFound $e) {

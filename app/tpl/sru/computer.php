@@ -824,6 +824,8 @@ div.style.display = 'none';
 			echo 'Informujemy, że do Twojego konta w SKOS PG dodano nowego hosta.'."\n\n";
 		} else if ($action == UFact_SruAdmin_Computer_Edit::PREFIX) {
 			echo 'Informujemy, że dane Twojego hosta w SKOS PG uległy zmianie.'."\n\n";
+		} else if ($action == UFact_SruApi_Computer_Deactivate::PREFIX) {
+			echo 'Informujemy, że Twój host w SKOS PG został automatycznie dezaktywowany z powodu długiej nieobecności w sieci lub przekroczenia czasu rejestracji.'."\n\n";
 		} else {
 			echo 'Informujemy, że Twój host w SKOS PG został dezaktywowany.'."\n\n";
 		}
@@ -846,6 +848,8 @@ div.style.display = 'none';
 			echo 'We inform, that a new host has been added to your SKOS PG account.'."\n\n";
 		} else if ($action == UFact_SruAdmin_Computer_Edit::PREFIX) {
 			echo 'We inform, that data of your host in SKOS PG has been changed.'."\n\n";
+		} else if ($action == UFact_SruApi_Computer_Deactivate::PREFIX) {
+			echo 'We inform, that your host in SKOS PG has been deactivated because of a long absence in the network or registration timeout.'."\n\n";
 		} else {
 			echo 'We inform, that your host in SKOS PG has been deactivated.'."\n\n";
 		}

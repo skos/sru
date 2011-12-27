@@ -364,4 +364,17 @@ extends UFbox {
 			return '';
 		}
 	}
+	
+	public function hostDeactivatedMailTitle($host, $user) {
+		$d['host'] = $host;
+		$d['user'] = $user;
+		return $this->render(__FUNCTION__, $d);
+	}
+	
+	public function hostDeactivatedMailBody($host, $action, $user) {
+		$d['host'] = $host;
+		$d['action'] = $action;
+		$d['user'] = $user;
+		return $this->render(__FUNCTION__, $d);
+	}
 }

@@ -111,4 +111,20 @@ extends UFtpl_Common {
 	public function dutyHoursUpcoming(array $d) {
 		$d['hours']->write('apiUpcomingDutyHours', $d['days'], $d['dormitories']);
 	}
+	
+	public function hostDeactivatedMailTitle(array $d) {
+		if ($d['user']->lang == 'en') {
+			echo $d['host']->write('hostChangedMailTitleEnglish');
+		} else {
+			echo $d['host']->write('hostChangedMailTitlePolish');
+		}
+	}
+	
+	public function hostDeactivatedMailBody(array $d) {
+		if ($d['user']->lang == 'en') {
+			echo $d['host']->write('hostAdminChangedMailBodyEnglish', $d['action']);
+		} else {
+			echo $d['host']->write('hostAdminChangedMailBodyPolish', $d['action']);
+		}
+	}
 }

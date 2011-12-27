@@ -203,9 +203,9 @@ extends UFctl {
 					return 'SruApi_Error403';
 				}
 			case 'computer':
-				if ($msg->get('computerDel/ok')) {
+				if ($msg->get('computerDeactivate/ok')) {
 					return 'SruApi_Status200';
-				} elseif ($msg->get('computerDel/error')) {
+				} elseif ($msg->get('computerDeactivate/error')) {
 					return 'SruApi_Error403';
 				} else {
 					return 'SruApi_Error404';
