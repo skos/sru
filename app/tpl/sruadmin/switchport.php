@@ -97,6 +97,13 @@ extends UFtpl_Common {
 				'type' => $form->SELECT,
 				'labels' => $form->_labelize($tmp, '', ''),
 			));
+		} else if (!is_null($d['penaltyId'])) {
+			$tmp = array();
+			$tmp[$d['penaltyId']] = $d['userName'].' "'.$d['userLogin'].'" '.$d['userSurname'].': '.$d['templateTitle'].' ('.$d['penaltyId'].')';
+			echo $form->penaltyId('Kara', array(
+				'type' => $form->SELECT,
+				'labels' => $form->_labelize($tmp, '', ''),
+			));
 		}
 		if (!is_null($status)) {
 			echo $form->portStatus('', array('type'=>$form->HIDDEN, 'value'=>($status == UFlib_Snmp_Hp::DISABLED ? 0 : 1)));
