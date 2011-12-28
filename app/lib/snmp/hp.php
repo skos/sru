@@ -34,6 +34,8 @@ extends UFlib_Snmp {
 		'trunk' => '1.3.6.1.4.1.11.2.14.11.5.1.7.1.3.1.1.8',
 		'gbicModel' => 'SNMPv2-SMI::mib-2.47.1.1.1.1.13',
 		'gbicSerial' => '1.3.6.1.4.1.11.2.14.10.5.1.1.1.1.2',
+		'vlans' => '1.3.6.1.2.1.17.7.1.4.3.1.1',
+		'untaggedVlanOnPorts' => '1.3.6.1.2.1.17.7.1.4.5.1.1',
 	);
 
 	public $biggerTrunkNumbers = array(
@@ -72,6 +74,7 @@ extends UFlib_Snmp {
 		$info['memAll'] = @snmpget($this->ip, $this->communityR, $this->OIDs['memAll'], $this->timeout);
 		$info['memFree'] = @snmpget($this->ip, $this->communityR, $this->OIDs['memFree'], $this->timeout);
 		$info['serialNo'] = trim(@snmpget($this->ip, $this->communityR, $this->OIDs['serialNo'], $this->timeout));
+		$info['vlans'] = @snmprealwalk($this->ip, $this->communityR, $this->OIDs['vlans'], $this->timeout);
 		return $info;
 	}
 
@@ -122,6 +125,15 @@ extends UFlib_Snmp {
 			return null;
 		}
 		return $speed;
+	}
+	
+	public function getUntaggedVlan($port) {
+		$vlan = @snmpget($this->ip , $this->communityR, $this->OIDs['untaggedVlanOnPorts'].'.'.$this->translateSwitchPort($port), $this->timeout);
+		if ($vlan == false || $vlan == 1) {
+			return null;
+		}
+		$vlanName = @snmpget($this->ip, $this->communityR, $this->OIDs['vlans'].'.'.$vlan, $this->timeout);
+		return $vlanName.' ('.$vlan.')';
 	}
 
 	public function getPortStatuses() {

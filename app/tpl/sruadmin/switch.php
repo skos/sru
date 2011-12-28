@@ -181,6 +181,15 @@ changeVisibility();
 			$uptimeM = floor($info['uptime'] / (100 * 60)) - $uptimeD * 24 * 60 - $uptimeH * 60;
 			$uptimeS = floor($info['uptime'] / (100)) - $uptimeD * 24 * 60 * 60 - $uptimeH * 60 * 60 - $uptimeM * 60;
 			echo '<p><em>Uptime:</em> '.$uptimeD.' dni, '.$uptimeH.' godzin, '.$uptimeM.' minut, '.$uptimeS.' sekund</p>';
+			echo '<p><em>VLANy:</em> ';
+			$vlans = '';
+			foreach ($info['vlans'] as $id=>$vlan) {
+				$vlans .= $vlan.' ('.substr($id, strrpos($id, '.') + 1).'), ';
+			}
+			if (strlen($vlans) > 0) {
+				$vlans = substr($vlans, 0, -1);
+			}
+			echo $vlans.'</p>';
 			echo '<table style="text-align: center;"><tr>';
 			echo '<td><em>CPU:</em> '.$info['cpu'].'%</td>';
 			$mem = round(($info['memAll']-$info['memFree'])/$info['memAll']*100,2);
