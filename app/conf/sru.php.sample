@@ -4,6 +4,7 @@ class UFconf_Sru
 extends UFconf {
 	//usage UFra::shared('UFconf_Sru')->NAZWA_ZMIENNEJ
 
+	protected $usersAvailableSince = '';	// data poczatku rejestracji nowych mieszkancow
 	protected $usersAvailableTo = '';	// data konca rejestracji nowych mieszkancow
 	protected $computerAvailableTo = '';	// data waznosci noworejestrowanych komputerow
 	protected $computersMaxNotSeen = '14'; // liczba dni, po których komputer zostanie dezaktywowany, jeśli nie był widziany w sieci

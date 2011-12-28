@@ -618,8 +618,10 @@ extends UFbox {
 			$d['dorm'] = $bean;
 
 			try {
+				$conf = UFra::shared('UFconf_Sru');
+				
 				$users = UFra::factory('UFbean_Sru_UserList');
-				$users->listActiveByDorm($bean->id);
+				$users->listToRegBookByDorm($bean->id, $conf->usersAvailableSince);
 
 				$d['users'] = $users;
 			} catch (UFex_Dao_NotFound $e) {

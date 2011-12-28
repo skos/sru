@@ -248,23 +248,27 @@ changeVisibility();
 		echo '</tr></thead><tbody>';
 		$i = 0;
 		foreach ($users as $user) {
-			if ($user['typeId'] > UFtpl_Sru_User::$userTypesLimit) {
+			if ($user['type_id'] > UFtpl_Sru_User::$userTypesLimit) {
 				continue;
 			}
 			echo '<tr><td style="border: 1px solid;">'.++$i.'</td>';
 			echo '<td style="border: 1px solid;">'.$user['surname'].'</td>';
 			echo '<td style="border: 1px solid;">'.$user['name'].'</td>';
-			echo '<td style="border: 1px solid;">'.$user['locationAlias'].'</td>';
-			echo '<td style="border: 1px solid;">'.(is_null($user['birthDate']) ? '&nbsp;' : date(self::TIME_YYMMDD, $user['birthDate'])).'</td>';
+			echo '<td style="border: 1px solid;">'.$user['alias'].'</td>';
+			echo '<td style="border: 1px solid;">'.(is_null($user['birth_date']) ? '&nbsp;' : date(self::TIME_YYMMDD, $user['birth_date'])).'</td>';
 			echo '<td style="border: 1px solid;">'.(is_null($user['address']) ? '&nbsp;' : $user['address']).'</td>';
-			echo '<td style="border: 1px solid;">'.date(self::TIME_YYMMDD, $user['referralStart']).'</td>';
-			echo '<td style="border: 1px solid;">'.((is_null($user['referralEnd']) || $user['referralEnd'] == 0) ? '' : date(self::TIME_YYMMDD, $user['referralEnd'])).'</td>';
-			echo '<td style="border: 1px solid;">'.(is_null($user['documentNumber']) ? '&nbsp;' : UFtpl_Sru_User::$documentTypesShort[$user['documentType']].': '.$user['documentNumber']).'</td>';
-			echo '<td style="border: 1px solid;">'.(is_null($user['facultyId']) ? '&nbsp;' : strtoupper($user['facultyAlias'])).'</td>';
+			echo '<td style="border: 1px solid;">'.date(self::TIME_YYMMDD, $user['referral_start']).'</td>';
+			echo '<td style="border: 1px solid;">';
+			if (!$user['active']) {
+				echo date(self::TIME_YYMMDD, $user['last_location_change']);
+			}
+			echo '</td>';
+			echo '<td style="border: 1px solid;">'.(is_null($user['document_number']) ? '&nbsp;' : UFtpl_Sru_User::$documentTypesShort[$user['document_type']].': '.$user['document_number']).'</td>';
+			echo '<td style="border: 1px solid;">'.(is_null($user['faculty_id']) ? '&nbsp;' : strtoupper($user['faculty_alias'])).'</td>';
 			if ($settings['year']) {
 				echo '<td style="border: 1px solid;">'.UFtpl_Sru_User::$studyYears[$user['studyYearId']].'</td>';
 			}
-			echo '<td style="border: 1px solid;">'.(is_null($user['registryNo']) ? '&nbsp;' : $user['registryNo']).'</td>';
+			echo '<td style="border: 1px solid;">'.(is_null($user['registry_no']) ? '&nbsp;' : $user['registry_no']).'</td>';
 			echo '<td style="border: 1px solid;">&nbsp;</td></tr>';
 		}
 		echo '</tbody></table>';
