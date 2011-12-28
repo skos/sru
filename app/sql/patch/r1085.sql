@@ -1,8 +1,5 @@
-ALTER TABLE users ADD COLUMN comment_skos TEXT NOT NULL DEFAULT '';
-ALTER TABLE users_history ADD COLUMN comment_skos TEXT NOT NULL DEFAULT '';
-
-UPDATE users SET comment_skos = comment WHERE comment <> '' AND comment IS NOT NULL;
-UPDATE users_history SET comment_skos = comment WHERE comment <> '' AND comment IS NOT NULL;
+ALTER TABLE users ADD COLUMN over_limit boolean NOT NULL DEFAULT FALSE;
+ALTER TABLE users_history ADD COLUMN over_limit boolean NOT NULL DEFAULT FALSE;
 
 CREATE OR REPLACE FUNCTION user_update()
   RETURNS trigger AS
@@ -44,7 +41,8 @@ then
 		guardian_phone_number,
 		sex,
 		last_location_change,
-		comment_skos
+		comment_skos,
+		over_limit
 	) VALUES (
 		OLD.id,
 		OLD.name,
@@ -79,7 +77,8 @@ then
 		OLD.guardian_phone_number,
 		OLD.sex,
 		OLD.last_location_change,
-		OLD.comment_skos
+		OLD.comment_skos,
+		OLD.over_limit
 	);
 elsif
 	NEW.name!=OLD.name OR
@@ -135,7 +134,8 @@ elsif
 	NEW.sex!=OLD.sex OR
 	NEW.last_location_change!=OLD.last_location_change OR
 	(OLD.last_location_change IS NULL AND NEW.last_location_change IS NOT NULL) OR
-	NEW.comment_skos!=OLD.comment_skos
+	NEW.comment_skos!=OLD.comment_skos OR
+	NEW.over_limit!=OLD.over_limit
 then
 	INSERT INTO users_history (
 		user_id,
@@ -170,7 +170,8 @@ then
 		guardian_phone_number,
 		sex,
 		last_location_change,
-		comment_skos
+		comment_skos,
+		over_limit
 	) VALUES (
 		OLD.id,
 		OLD.name,
@@ -204,7 +205,8 @@ then
 		OLD.guardian_phone_number,
 		OLD.sex,
 		OLD.last_location_change,
-		OLD.comment_skos
+		OLD.comment_skos,
+		OLD.over_limit
 	);
 end if;
 return NEW;

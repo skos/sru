@@ -134,7 +134,10 @@ function fullList() {
 					$i = 0;
 					foreach ($room->getUsers() as $user) {
 						$i++;
-						if ($i > $room->getLimit()) {
+						if ($user['overLimit']) {
+							$class = 'additional';
+							$i--;
+						} else if ($i > $room->getLimit()) {
 							$class = 'additional';
 						} else if ($user['sex']==true) {
 							$class = 'woman';

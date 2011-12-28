@@ -37,6 +37,7 @@ extends UFmap {
 		'sex'			=> 'sex',
 		'lastLocationChange' => 'last_location_change',
 		'commentSkos'	=> 'comment_skos',
+		'overLimit'		=> 'over_limit',
 	);
 	protected $columnTypes = array(
 		'login'          => self::TEXT,
@@ -73,6 +74,7 @@ extends UFmap {
 		'sex'			=> self::BOOL,
 		'lastLocationChange' => self::TS,
 		'commentSkos'	=> self::TEXT,
+		'overLimit'		=> self::BOOL,
 	);
 	protected $tables = array(
 		'' => 'users',

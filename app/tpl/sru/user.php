@@ -298,6 +298,7 @@ extends UFtpl_Common {
 			'class'=>'required',
 		));
 		echo $form->locationAlias('Pokój', array('class'=>'required'));
+		echo $form->overLimit('Dokwaterowany', array('type'=>$form->CHECKBOX));
 		echo $form->lang('Język', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$languages),
@@ -771,6 +772,7 @@ changeVisibility();
 
 		echo '<h1>'.$this->_escape($d['name']).' '.$this->_escape($d['surname']).'</h1>';
 		echo '<p><em>Miejsce:</em> <a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'">'.strtoupper($d['dormitoryAlias']).'</a>, '.$d['locationAlias'].'</p>';
+		echo '<p><em>Dokwaterowany:</em> '.($d['overLimit'] ? 'tak' : 'nie').'</p>';
 		echo '<p><em>Login:</em> '.$d['login'].(!$d['active']?' <strong>(konto nieaktywne)</strong>':'').'</p>';
 		if(!is_null($d['registryNo']) && $d['registryNo'] != '') {
 			echo '<p><em>Nr indeksu:</em> '.$d['registryNo'].'</p>';
@@ -1016,6 +1018,7 @@ changeVisibility();
 			));
 			echo '</div>';
 		}
+		echo $form->overLimit('Dokwaterowany', array('type'=>$form->CHECKBOX));
 
 		echo $form->lang('Język', array(
 			'type' => $form->SELECT,
