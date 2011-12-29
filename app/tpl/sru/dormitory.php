@@ -246,31 +246,72 @@ changeVisibility();
 		echo '<th>Nr albumu</th>';
 		echo '<th>Uwagi</th>';
 		echo '</tr></thead><tbody>';
-		$i = 0;
+		$lastUser = array();
 		foreach ($users as $user) {
 			if ($user['type_id'] > UFtpl_Sru_User::$userTypesLimit) {
 				continue;
 			}
+			$currentEnd = end($lastUser);
+			if (!is_null($currentEnd) && $currentEnd['name'] != $user['name'] && $currentEnd['surname'] != $user['surname']) {
+				$this->displayRegBookData($lastUser, $settings);
+				$lastUser = array();
+			}
+			if (!is_null($currentEnd) && $currentEnd['name'] == $user['name'] && $currentEnd['surname'] == $user['surname'] && $currentEnd['alias'] == $user['alias'] && $currentEnd['last_location_change'] == $user['last_location_change']) {
+				array_pop($lastUser);
+			}
+			$lastUser[] = $user;
+		}
+		$this->displayRegBookData($lastUser, $settings);
+		echo '</tbody></table>';
+	}
+	
+	private function displayRegBookData(array $userCollection, $settings) {
+		$i = 0;
+		end($userCollection);
+		$tempPrevLocationChange = null;
+		$tempLastLocationChange = null;
+		while ($curr = current($userCollection)) {
+			$prev = prev($userCollection);
+			if ($curr['alias'] == $prev['alias']) {
+				$tempPrevLocationChange = $prev['last_location_change'];
+				$tempLastLocationChange = $curr['last_location_change'];
+				continue;
+			}
+			
 			echo '<tr><td style="border: 1px solid;">'.++$i.'</td>';
-			echo '<td style="border: 1px solid;">'.$user['surname'].'</td>';
-			echo '<td style="border: 1px solid;">'.$user['name'].'</td>';
-			echo '<td style="border: 1px solid;">'.$user['alias'].'</td>';
-			echo '<td style="border: 1px solid;">'.(is_null($user['birth_date']) ? '&nbsp;' : date(self::TIME_YYMMDD, $user['birth_date'])).'</td>';
-			echo '<td style="border: 1px solid;">'.(is_null($user['address']) ? '&nbsp;' : $user['address']).'</td>';
-			echo '<td style="border: 1px solid;">'.date(self::TIME_YYMMDD, $user['referral_start']).'</td>';
+			echo '<td style="border: 1px solid;">'.$curr['surname'].'</td>';
+			echo '<td style="border: 1px solid;">'.$curr['name'].'</td>';
+			echo '<td style="border: 1px solid;">'.$curr['alias'].'</td>';
+			echo '<td style="border: 1px solid;">'.(is_null($curr['birth_date']) ? '&nbsp;' : date(self::TIME_YYMMDD, $curr['birth_date'])).'</td>';
+			echo '<td style="border: 1px solid;">'.(is_null($curr['address']) ? '&nbsp;' : $curr['address']).'</td>';
 			echo '<td style="border: 1px solid;">';
-			if (!$user['active']) {
-				echo date(self::TIME_YYMMDD, $user['last_location_change']);
+			if (is_null($tempLastLocationChange)) {
+				echo date(self::TIME_YYMMDD, $curr['last_location_change']);
+			} else {
+				echo date(self::TIME_YYMMDD, $tempLastLocationChange);
 			}
 			echo '</td>';
-			echo '<td style="border: 1px solid;">'.(is_null($user['document_number']) ? '&nbsp;' : UFtpl_Sru_User::$documentTypesShort[$user['document_type']].': '.$user['document_number']).'</td>';
-			echo '<td style="border: 1px solid;">'.(is_null($user['faculty_id']) ? '&nbsp;' : strtoupper($user['faculty_alias'])).'</td>';
-			if ($settings['year']) {
-				echo '<td style="border: 1px solid;">'.UFtpl_Sru_User::$studyYears[$user['studyYearId']].'</td>';
+			echo '<td style="border: 1px solid;">';
+			if (!is_null($prev['last_location_change'])) {
+				if (is_null($tempPrevLocationChange)) {
+					echo date(self::TIME_YYMMDD, $prev['last_location_change']);
+				} else {
+					echo date(self::TIME_YYMMDD, $tempPrevLocationChange);
+				}
 			}
-			echo '<td style="border: 1px solid;">'.(is_null($user['registry_no']) ? '&nbsp;' : $user['registry_no']).'</td>';
+			echo '</td>';
+			echo '<td style="border: 1px solid;">'.(is_null($curr['document_number']) ? '&nbsp;' : UFtpl_Sru_curr::$documentTypesShort[$curr['document_type']].': '.$curr['document_number']).'</td>';
+			echo '<td style="border: 1px solid;">'.(is_null($curr['faculty_id']) ? '&nbsp;' : strtoupper($curr['faculty_alias'])).'</td>';
+			if ($settings['year']) {
+				echo '<td style="border: 1px solid;">'.UFtpl_Sru_curr::$studyYears[$curr['studyYearId']].'</td>';
+			}
+			echo '<td style="border: 1px solid;">'.(is_null($curr['registry_no']) ? '&nbsp;' : $curr['registry_no']).'</td>';
 			echo '<td style="border: 1px solid;">&nbsp;</td></tr>';
+			
+			if ($curr['alias'] != $prev['alias']) {
+				$tempLastLocationChange = null;
+				$tempPrevLocationChange = null;
+			}
 		}
-		echo '</tbody></table>';
 	}
 }
