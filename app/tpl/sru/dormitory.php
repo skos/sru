@@ -246,16 +246,18 @@ changeVisibility();
 		echo '<th>Nr albumu</th>';
 		echo '<th>Uwagi</th>';
 		echo '</tr></thead><tbody>';
-		$lastUser = array();
+		$lastUser = array(); // wpisy dot. aktualnie obrabianego usera
 		foreach ($users as $user) {
 			if ($user['type_id'] > UFtpl_Sru_User::$userTypesLimit) {
 				continue;
 			}
 			$currentEnd = end($lastUser);
+			// jeśli to kolejny user, to wyświetlmy wszystko, co wiemy o poprzednim
 			if (!is_null($currentEnd) && $currentEnd['name'] != $user['name'] && $currentEnd['surname'] != $user['surname']) {
 				$this->displayRegBookData($lastUser, $settings);
 				$lastUser = array();
 			}
+			// jeśli żadna wyświetlana dana się nie zmieniła, to wywalamy, wpis jest nieciakawy ;>
 			if (!is_null($currentEnd) && $currentEnd['name'] == $user['name'] && $currentEnd['surname'] == $user['surname'] && $currentEnd['alias'] == $user['alias'] && $currentEnd['last_location_change'] == $user['last_location_change']) {
 				array_pop($lastUser);
 			}
@@ -265,6 +267,11 @@ changeVisibility();
 		echo '</tbody></table>';
 	}
 	
+	/**
+	 * Wyświetla wpisy ksiązki adresowej dot. jednego użytkownika
+	 * @param array $userCollection zestaw wpisów dot. użytkownika
+	 * @param type $settings ustawienia wyświetlania
+	 */
 	private function displayRegBookData(array $userCollection, $settings) {
 		$i = 0;
 		end($userCollection);
@@ -272,6 +279,7 @@ changeVisibility();
 		$tempLastLocationChange = null;
 		while ($curr = current($userCollection)) {
 			$prev = prev($userCollection);
+			// jeśli się nie przeprowadził, to zapamiętajmy tylko datę zmiany - ah ta historia w SRU... :>
 			if ($curr['alias'] == $prev['alias']) {
 				$tempPrevLocationChange = $prev['last_location_change'];
 				$tempLastLocationChange = $curr['last_location_change'];
