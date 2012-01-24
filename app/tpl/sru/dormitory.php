@@ -247,6 +247,7 @@ changeVisibility();
 		echo '<th>Uwagi</th>';
 		echo '</tr></thead><tbody>';
 		$lastUser = array(); // wpisy dot. aktualnie obrabianego usera
+		$i = 0; // l.p.
 		foreach ($users as $user) {
 			if ($user['type_id'] > UFtpl_Sru_User::$userTypesLimit) {
 				continue;
@@ -254,7 +255,7 @@ changeVisibility();
 			$currentEnd = end($lastUser);
 			// jeśli to kolejny user, to wyświetlmy wszystko, co wiemy o poprzednim
 			if (!is_null($currentEnd) && $currentEnd['name'] != $user['name'] && $currentEnd['surname'] != $user['surname']) {
-				$this->displayRegBookData($lastUser, $settings);
+				$i = $this->displayRegBookData($lastUser, $settings, $i);
 				$lastUser = array();
 			}
 			// jeśli żadna wyświetlana dana się nie zmieniła, to wywalamy, wpis jest nieciakawy ;>
@@ -263,7 +264,7 @@ changeVisibility();
 			}
 			$lastUser[] = $user;
 		}
-		$this->displayRegBookData($lastUser, $settings);
+		$this->displayRegBookData($lastUser, $settings, $i);
 		echo '</tbody></table>';
 	}
 	
@@ -272,8 +273,7 @@ changeVisibility();
 	 * @param array $userCollection zestaw wpisów dot. użytkownika
 	 * @param type $settings ustawienia wyświetlania
 	 */
-	private function displayRegBookData(array $userCollection, $settings) {
-		$i = 0;
+	private function displayRegBookData(array $userCollection, $settings, $i) {
 		end($userCollection);
 		$tempPrevLocationChange = null;
 		$tempLastLocationChange = null;
@@ -285,7 +285,6 @@ changeVisibility();
 				$tempLastLocationChange = $curr['last_location_change'];
 				continue;
 			}
-			
 			echo '<tr><td style="border: 1px solid;">'.++$i.'</td>';
 			echo '<td style="border: 1px solid;">'.$curr['surname'].'</td>';
 			echo '<td style="border: 1px solid;">'.$curr['name'].'</td>';
@@ -308,7 +307,7 @@ changeVisibility();
 				}
 			}
 			echo '</td>';
-			echo '<td style="border: 1px solid;">'.(is_null($curr['document_number']) ? '&nbsp;' : UFtpl_Sru_curr::$documentTypesShort[$curr['document_type']].': '.$curr['document_number']).'</td>';
+			echo '<td style="border: 1px solid;">'.(is_null($curr['document_number']) ? '&nbsp;' : UFtpl_Sru_User::$documentTypesShort[$curr['document_type']].': '.$curr['document_number']).'</td>';
 			echo '<td style="border: 1px solid;">'.(is_null($curr['faculty_id']) ? '&nbsp;' : strtoupper($curr['faculty_alias'])).'</td>';
 			if ($settings['year']) {
 				echo '<td style="border: 1px solid;">'.UFtpl_Sru_curr::$studyYears[$curr['studyYearId']].'</td>';
@@ -321,5 +320,6 @@ changeVisibility();
 				$tempPrevLocationChange = null;
 			}
 		}
+		return $i;
 	}
 }
