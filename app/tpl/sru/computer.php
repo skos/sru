@@ -282,6 +282,7 @@ changeVisibility();
 		$form = UFra::factory('UFlib_Form', 'computerEdit', $d, $this->errors);
 
 		echo '<h1>'.$d['host'].'.ds.pg.gda.pl</h1>';
+                echo $form->host('Nazwa');
 		echo $form->mac('MAC', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" alt="?" title="Adres fizyczny karty sieciowej komputera." /> '.$this->showMacHint().'<br/>'));
 	}
 

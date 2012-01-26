@@ -12,10 +12,9 @@ extends UFact {
 		try {
 			$bean = UFra::factory('UFbean_Sru_Computer');
 			$bean->getByUserIdPK((int)$this->_srv->get('session')->auth, (int)$this->_srv->get('req')->get->computerId);
-			$bean->host = $bean->host; // aby wywołać walidację
 			$user = UFra::factory('UFbean_Sru_User');
 			$user->getByPK($bean->userId);
-			$bean->fillFromPost(self::PREFIX, null, array('mac'));
+			$bean->fillFromPost(self::PREFIX, null, array('mac', 'host'));
 			if (!$bean->active) {
 				// przywrocenie aktywnosci komputera
 				$computers = UFra::factory('UFbean_Sru_ComputerList');

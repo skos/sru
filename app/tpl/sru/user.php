@@ -414,7 +414,8 @@ $(function() {
 		}
 		$form = UFra::factory('UFlib_Form', 'userEdit', $d, $this->errors);
 
-		echo '<h1>'.$d['name'].' '.$d['surname'].'</h1>';
+		echo '<h1>'.$d['name'].' '.$d['surname'].'<img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Itanieje możliwość loginu u Administratora SKOSu.<br/><br/>You can change your login by visiting SKOS Admin." /></h1><br/>';
+
 		if ($d['updateNeeded']) {
 			echo $this->ERR('Dane na Twoim koncie wymagają aktualizacji. Prosimy o wypełnienie prawidłowymi danymi wszystkich wymaganych pól (oznaczonych czerwoną obwódką). W celu ułatwienia kontaktu ze SKOS, możesz wypełnić także pola niewymagane.');
 		}
