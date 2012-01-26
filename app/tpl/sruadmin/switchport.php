@@ -113,7 +113,7 @@ extends UFtpl_Common {
 		echo $form->admin('Port admina', array('type'=>$form->CHECKBOX));
 		echo $form->comment('Komentarz');
 		if (!is_null($status)) {
-			echo $form->copyToSwitch('Zapisz opis na switcha <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Zapis spowoduje nadpisanie aliasu portu na switchu. Będzie to nr pokoju, podłaczony switch (o ile podano) i komentarz." />', array('type'=>$form->CHECKBOX));
+			echo $form->copyToSwitch('Zapisz opis na switcha '.UFlib_Helper::displayHint("Zapis spowoduje nadpisanie aliasu portu na switchu. Będzie to nr pokoju, podłaczony switch (o ile podano) i komentarz."), array('type'=>$form->CHECKBOX));
 		}
 	}
 

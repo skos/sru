@@ -201,7 +201,7 @@ extends UFtpl_Common {
 		echo $form->lang('Język', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$languages),
-			'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Wiadomości e-mail i GG będa przychodziły w wybranym języku.<br/><br/>You will receive e-mails and gg messages in the chosen language." /><br/>',
+			'after'=>UFlib_Helper::displayHint("Wiadomości e-mail i GG będa przychodziły w wybranym języku.<br/><br/>You will receive e-mails and gg messages in the chosen language."),
 		));
 		$referralStart = date(self::TIME_YYMMDD, time());
 		echo $form->commentSkos('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
@@ -258,7 +258,7 @@ extends UFtpl_Common {
 		echo $form->address('Adres', array('class'=>'necessary address', 
 											'type'=>$form->TEXTAREA, 
 											'rows'=>3,
-											'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="' . nl2br("Format: \n kod pocztowy miejscowość \n ulica nr domu/nr mieszkania") . '" /><br/>'));
+											'after'=>UFlib_Helper::displayHint(nl2br("Format: \n kod pocztowy miejscowość \n ulica nr domu/nr mieszkania"))));
 		
 		echo $form->documentType('Typ dokumentu', array(
 			'type' => $form->SELECT,
@@ -268,7 +268,7 @@ extends UFtpl_Common {
 
 		echo $form->documentNumber('Numer dokumentu', array('class'=>'necessary'));
 		echo $form->nationalityName('Narodowość', array('class'=>'necessary',
-														'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Np. &quot;polska&quot;, &quot;niemiecka&quot;, &quot;angielska&quot;" /><br/>',));
+														'after'=>UFlib_Helper::displayHint("Np. &quot;polska&quot;, &quot;niemiecka&quot;, &quot;angielska&quot;")));
 		try {
 			$pesel = $post->userAdd['pesel'];
 		} catch (UFex_Core_DataNotFound $e) {
@@ -277,8 +277,7 @@ extends UFtpl_Common {
 		echo $form->pesel('PESEL', array('value'=>$pesel,
 										'after'=>'<span id="peselValidationResult"></span><br/>'));
 
-		echo $form->birthDate('Data urodzenia', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" 
-														title="Data w formacie RRRR-MM-DD, np. 1988-10-06" /><br />'));
+		echo $form->birthDate('Data urodzenia', array('after'=>UFlib_Helper::displayHint("Data w formacie RRRR-MM-DD, np. 1988-10-06")));
 		echo $form->birthPlace('Miejsce urodzenia');
 		echo $form->userPhoneNumber('Nr telefonu mieszkańca');
 		echo $form->guardianPhoneNumber('Nr telefonu opiekuna');
@@ -302,7 +301,7 @@ extends UFtpl_Common {
 		echo $form->lang('Język', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$languages),
-			'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Wiadomości e-mail i GG będa przychodziły w wybranym języku.<br/><br/>You will receive e-mails and gg messages in the chosen language." /><br/>',
+			'after'=>UFlib_Helper::displayHint("Wiadomości e-mail i GG będa przychodziły w wybranym języku.<br/><br/>You will receive e-mails and gg messages in the chosen language."),
 		));
 		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
 		echo '<legend>Meldunek</legend>';
@@ -314,7 +313,7 @@ extends UFtpl_Common {
 		echo $form->referralStart('Początek skierowania', array(
 			'value'=>$referralStart,
 			'class'=>'required',
-			'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Data początku pobytu." /><br/>',
+			'after'=>UFlib_Helper::displayHint("Data początku pobytu."),
 		));
 		try {
 			$referralEnd = $post->userAdd['referralEnd'];
@@ -324,7 +323,7 @@ extends UFtpl_Common {
 		echo $form->referralEnd('Koniec skierowania', array(
 			'value'=>$referralEnd,
 			'class'=>'required',
-			'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Data końca pobytu." /><br/>',
+			'after'=>UFlib_Helper::displayHint("Data końca pobytu."),
 		));
 
 ?><script type="text/javascript">
@@ -414,7 +413,7 @@ $(function() {
 		}
 		$form = UFra::factory('UFlib_Form', 'userEdit', $d, $this->errors);
 
-		echo '<h1>'.$d['name'].' '.$d['surname'].'<img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Itanieje możliwość loginu u Administratora SKOSu.<br/><br/>You can change your login by visiting SKOS Admin." /></h1><br/>';
+		echo '<h1>'.$d['name'].' '.$d['surname'].UFlib_Helper::displayHint("Itanieje możliwość loginu u Administratora SKOSu.<br/><br/>You can change your login by visiting SKOS Admin.")."</h1>";
 
 		if ($d['updateNeeded']) {
 			echo $this->ERR('Dane na Twoim koncie wymagają aktualizacji. Prosimy o wypełnienie prawidłowymi danymi wszystkich wymaganych pól (oznaczonych czerwoną obwódką). W celu ułatwienia kontaktu ze SKOS, możesz wypełnić także pola niewymagane.');
@@ -477,11 +476,11 @@ $(function() {
 		} else {
 			echo $this->ERR('Łączysz się przez niezabezpieczone połączenie - ze względów bezpieczeństwa Twoje dane osobowe nie są wyświetlane.');
 		}
-		echo $form->gg('Gadu-Gadu', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Jeżeli podasz nr GG, będą na niego przesyłane informacje o zmianie statusu konta i Twoich komputerów." /><br/>'));
+		echo $form->gg('Gadu-Gadu', array('after'=> UFlib_Helper::displayHint("Jeżeli podasz nr GG, będą na niego przesyłane informacje o zmianie statusu konta i Twoich komputerów.")));
 		echo $form->lang('Język', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$languages),
-			'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Wiadomości e-mail i GG będa przychodziły w wybranym języku.<br/><br/>You will receive e-mails and gg messages in the chosen language." /><br/>',
+			'after'=> UFlib_Helper::displayHint("Wiadomości e-mail i GG będa przychodziły w wybranym języku.<br/><br/>You will receive e-mails and gg messages in the chosen language."),
 		));
 		echo '<br />';
 
@@ -562,9 +561,9 @@ $(function() {
 		$d = $searched + $d;
 		$form = UFra::factory('UFlib_Form', 'userSearch', $d, $this->errors);
 
-		echo $form->surname('Nazwisko', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Nazwisko szukanego mieszkańca. Można łączyć z pozostałymi polami wyszukiwania." /><br/>'));
-		echo $form->registryNo('Nr indeksu', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Numer indeksu szukanego mieszkańca. Można łączyć z pozostałymi polami wyszukiwania." /><br/>'));
-		echo $form->pesel('PESEL', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Numer PESEL szukanego mieszkańca. Można łączyć z pozostałymi polami wyszukiwania." /><br/>'));
+		echo $form->surname('Nazwisko', array('after'=>UFlib_Helper::displayHint("Nazwisko szukanego mieszkańca. Można łączyć z pozostałymi polami wyszukiwania.")));
+		echo $form->registryNo('Nr indeksu', array('after'=>UFlib_Helper::displayHint("Numer indeksu szukanego mieszkańca. Można łączyć z pozostałymi polami wyszukiwania.")));
+		echo $form->pesel('PESEL', array('after'=>UFlib_Helper::displayHint("Numer PESEL szukanego mieszkańca. Można łączyć z pozostałymi polami wyszukiwania.")));
 ?>
 <script type="text/javascript">
 	$(function() {
@@ -972,7 +971,7 @@ changeVisibility();
 		echo $form->address('Adres', array('class'=>'necessary address', 
 											'type'=>$form->TEXTAREA, 
 											'rows'=>3,
-											'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="' . nl2br("Format: \n kod pocztowy miejscowość \n ulica nr domu/nr mieszkania") . '" /><br/>'));
+											'after'=>UFlib_Helper::displayHint(nl2br("Format: \n kod pocztowy miejscowość \n ulica nr domu/nr mieszkania"))));
 		echo $form->documentType('Typ dokumentu', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$documentTypes),
@@ -981,11 +980,10 @@ changeVisibility();
 
 		echo $form->documentNumber('Numer dokumentu', array('class'=>'necessary'));
 		echo $form->nationalityName('Narodowość', array('class'=>'necessary',
-														'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Np. &quot;polska&quot;, &quot;niemiecka&quot;, &quot;angielska&quot;" /><br/>',));
+														'after'=>UFlib_Helper::displayHint("Np. &quot;polska&quot;, &quot;niemiecka&quot;, &quot;angielska&quot;,")));
 		echo $form->pesel("PESEL", array('after'=>'<span id="peselValidationResult"></span><br/>'));
 
-		echo $form->birthDate('Data urodzenia', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" 
-														title="Data w formacie RRRR-MM-DD, np. 1988-10-06" /><br />'));
+		echo $form->birthDate('Data urodzenia', array('after'=>UFlib_Helper::displayHint("Data w formacie RRRR-MM-DD, np. 1988-10-06")));
 		echo $form->birthPlace("Miejsce urodzenia");
 		echo $form->userPhoneNumber("Nr telefonu mieszkańca");
 		echo $form->guardianPhoneNumber("Nr telefonu opiekuna");
@@ -1015,7 +1013,7 @@ changeVisibility();
 			echo $form->lastLocationChangeActive('Data zmiany pokoju', array(
 				'value'=>$change,
 				'class'=>'required',
-				'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Data, kiedy mieszkaniec zmienił pokój." /><br/>',
+				'after'=>UFlib_Helper::displayHint("Data, kiedy mieszkaniec zmienił pokój."),
 			));
 			echo '</div>';
 		}
@@ -1024,7 +1022,7 @@ changeVisibility();
 		echo $form->lang('Język', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$languages),
-			'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Wiadomości e-mail i GG będa przychodziły w wybranym języku.<br/><br/>You will receive e-mails and gg messages in the chosen language." /><br/>',
+			'after'=>UFlib_Helper::displayHint("Wiadomości e-mail i GG będa przychodziły w wybranym języku.<br/><br/>You will receive e-mails and gg messages in the chosen language."),
 		));
 		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
 		echo '<legend>Meldunek</legend>';
@@ -1044,7 +1042,7 @@ changeVisibility();
 		echo $form->referralStart('Początek skierowania', array(
 			'value'=>$referralStart,
 			'class'=>'required',
-			'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Data początku pobytu." /><br/>',
+			'after'=>UFlib_Helper::displayHint("Data początku pobytu."),
 		));
 		try {
 			$referralEnd = $post->userEdit['referralEnd'];
@@ -1058,7 +1056,7 @@ changeVisibility();
 		}
 		echo $form->referralEnd('Koniec skierowania', array('value'=>$referralEnd,
 			'class'=>'required',
-			'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Data końca pobytu." /><br/>',
+			'after'=>UFlib_Helper::displayHint("Data końca pobytu."),
 		));
 		if ($d['active']) {
 			try {
@@ -1075,7 +1073,7 @@ changeVisibility();
 			echo $form->lastLocationChange('Data zameldowania', array(
 				'value'=>$checkIn,
 				'class'=>'required',
-				'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Data, kiedy mieszkaniec wprowadził się do DSu." /><br/>',
+				'after'=>UFlib_Helper::displayHint("Data, kiedy mieszkaniec wprowadził się do DSu."),
 			));
 			echo '</div>';
 		}
@@ -1211,7 +1209,7 @@ $(function() {
 		echo $form->lastLocationChange('Data wymeldowania', array(
 			'value'=>$checkOut,
 			'class'=>'required',
-			'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Data, kiedy mieszkaniec wyprowadził się z DSu." /><br/>',
+			'after'=>UFlib_Helper::displayHint("Data, kiedy mieszkaniec wyprowadził się z DSu."),
 		));
 	}
 

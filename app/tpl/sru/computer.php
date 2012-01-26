@@ -283,7 +283,7 @@ changeVisibility();
 
 		echo '<h1>'.$d['host'].'.ds.pg.gda.pl</h1>';
                 echo $form->host('Nazwa');
-		echo $form->mac('MAC', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" alt="?" title="Adres fizyczny karty sieciowej komputera." /> '.$this->showMacHint().'<br/>'));
+		echo $form->mac('MAC', array('after'=>UFlib_Helper::displayHint("Adres fizyczny karty sieciowej komputera.").$this->showMacHint().'<br/>'));
 	}
 
 	public function formEditAdmin(array $d, $dormitories, $user = null, $history = null, $servers = null, $waletAdmins = null, $virtuals = null) {
@@ -321,7 +321,7 @@ changeVisibility();
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$computerTypes),
 			'disabled' => ((is_null($virtuals)) ? false : true),
-			'after' => ((is_null($virtuals)) ? '<br/>' : ' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Nie można zmienić typu serwerowi, do którego przypisane są serwery wirtualne."/><br/>'),
+			'after' => ((is_null($virtuals)) ? '<br/>' : UFlib_Helper::displayHint("Nie można zmienić typu serwerowi, do którego przypisane są serwery wirtualne.")),
 		));
 		if (!is_null($waletAdmins)) {
 			$tmp = array();
@@ -353,13 +353,13 @@ changeVisibility();
 			echo '</div>';
 		}
 		echo $form->_fieldset('Uprawnienia');
-		echo $form->canAdmin('Komputer administratora <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Oznacza komputer na liście uploaderów oraz umozliwia dostęp do części webaplikacji SKOS."/>', array('type'=>$form->CHECKBOX));
-		echo $form->exAdmin('Komputer ex-administratora <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Oznacza komputer na liście uploaderów."/>', array('type'=>$form->CHECKBOX));
+		echo $form->canAdmin('Komputer administratora '.UFlib_Helper::displayHint("Oznacza komputer na liście uploaderów oraz umozliwia dostęp do części webaplikacji SKOS."), array('type'=>$form->CHECKBOX));
+		echo $form->exAdmin('Komputer ex-administratora'.UFlib_Helper::displayHint("Oznacza komputer na liście uploaderów."), array('type'=>$form->CHECKBOX));
 		echo $form->_end();
 		echo $form->_fieldset('Inne');
 		$conf = UFra::shared('UFconf_Sru');
 		echo '<div id="autoDeactivation">';
-		echo $form->autoDeactivation('Autodezaktywacja <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Komputery, które nie były widziane dłużej niż '.$conf->computersMaxNotSeen.' dni, zostaną dezaktywowane. Hosty typu serwerowego nigdy nie są dezaktywowane z powodu braku widzialności."/>', array('type'=>$form->CHECKBOX));
+		echo $form->autoDeactivation('Autodezaktywacja'.UFlib_Helper::displayHint("Komputery, które nie były widziane dłużej niż '.$conf->computersMaxNotSeen.' dni, zostaną dezaktywowane. Hosty typu serwerowego nigdy nie są dezaktywowane z powodu braku widzialności."), array('type'=>$form->CHECKBOX));
 		echo '<br/></div>';
 		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
 		echo $form->_end();
@@ -510,7 +510,7 @@ activateChkB.onclick = function() {
 				echo '</div>';
 			}
 		}
-		echo $form->host('Nazwa', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Nazwa komputera w sieci - nie musi być zgodna z nazwą w systemie Windows/Linux. Możesz podać inną nazwę niż propozycja SRU - jest ona prawie dowolna, ale może zawierać tylko litery, cyfry oraz myślnik." /><br/>'));
+		echo $form->host('Nazwa', array('after'=>UFlib_Helper::displayHint("Nazwa komputera w sieci - nie musi być zgodna z nazwą w systemie Windows/Linux. Możesz podać inną nazwę niż propozycja SRU - jest ona prawie dowolna, ale może zawierać tylko litery, cyfry oraz myślnik.")));
 		if ($admin) {
 			echo $form->ip('IP');
 ?><script type="text/javascript">
@@ -566,7 +566,7 @@ if (input) {
 		}
 		echo '</a></span>';
 		echo '<div id="macMore">';
-		echo $form->mac('MAC', array('value'=>$mac, 'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Adres fizyczny karty sieciowej komputera." /> '.$this->showMacHint().'<br/>'));
+		echo $form->mac('MAC', array('value'=>$mac, 'after'=>''.UFlib_Helper::displayHint("Adres fizyczny karty sieciowej komputera.").$this->showMacHint().'<br/>'));
 		echo '</div>';
 
 ?><script type="text/javascript">
@@ -617,7 +617,7 @@ div.style.display = 'none';
 			echo $this->ERR($this->errors['host/regexp']);
 		}
 		echo $form->alias('Alias');
-		echo $form->isCname('Wpis CNAME <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Aliasy są domyślnie wpisami CNAME.">', array('type'=>$form->CHECKBOX, 'value'=>'1'));
+		echo $form->isCname('Wpis CNAME '.UFlib_Helper::displayHint("Aliasy są domyślnie wpisami CNAME."), array('type'=>$form->CHECKBOX, 'value'=>'1'));
 		echo $form->_end();
 	}
 
@@ -746,7 +746,7 @@ div.style.display = 'none';
 		echo $form->_fieldset();
 		echo $form->statHour('Godzina (HH:MM)', array('value'=>$hour));
 		echo $form->statDate('Data (YYYYMMDD)', array('value'=>$date));
-		echo $form->_submit('Zobacz', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" alt="?" title="Podgląd danych z przeszłości, gdzie data jest końcem wyświetlanych okresów. Uwaga, im starsze dane, tym mniej precyzyjne!" />'));
+		echo $form->_submit('Zobacz', array('after'=>UFlib_Helper::displayHint("Podgląd danych z przeszłości, gdzie data jest końcem wyświetlanych okresów. Uwaga, im starsze dane, tym mniej precyzyjne!")));
 		echo $form->_end();
 		echo $form->_end(true);
 

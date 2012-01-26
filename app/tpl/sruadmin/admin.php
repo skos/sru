@@ -154,10 +154,10 @@ extends UFtpl_Common {
 		echo $form->login('Login');
 		echo $form->password('Hasło', array('type'=>$form->PASSWORD));
 		echo $form->password2('Powtórz hasło', array('type'=>$form->PASSWORD));
-		echo $form->name('Nazwa', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Imię i nazwisko administratora lub inne oznaczenie." /><br/>'));
+		echo $form->name('Nazwa', array('after'=>UFlib_Helper::displayHint("Imię i nazwisko administratora lub inne oznaczenie.")));
 		
 		if($this->_srv->get('acl')->sruAdmin('admin', 'addChangeActiveDate'))
-			 echo $form->activeTo('Aktywny do', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="' . $this->instrukcjaObslugiPolaAktywnyDo . '" /><br/>'));
+			 echo $form->activeTo('Aktywny do', array('after'=> UFlib_Helper::displayHint("' . $this->instrukcjaObslugiPolaAktywnyDo . '")));
 		echo $form->typeId('Uprawnienia', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(UFtpl_SruAdmin_Admin::$adminTypes),
@@ -166,7 +166,7 @@ extends UFtpl_Common {
 		echo $form->phone('Telefon');
 		echo $form->gg('GG');
 		echo $form->jid('Jabber');
-		echo $form->address('Adres', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Lokalizacja lub miejsce przebywania administratora. Zawartość tego pola pojawi się w tabeli dyżurów, więc powinna być zgodna z formatem wpisywanych tam danych." /><br/>'));
+		echo $form->address('Adres', array('after'=> UFlib_Helper::displayHint("Lokalizacja lub miejsce przebywania administratora. Zawartość tego pola pojawi się w tabeli dyżurów, więc powinna być zgodna z formatem wpisywanych tam danych.")));
 		
 		$tmp = array();
 		foreach ($dormitories as $dorm) {
@@ -193,14 +193,14 @@ extends UFtpl_Common {
 
 		echo $form->_fieldset('Dane podstawowe');
 		
-		echo $form->name('Nazwa', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Imię i nazwisko administratora lub inne oznaczenie." /><br/>'));
+		echo $form->name('Nazwa', array('after'=> UFlib_Helper::displayHint("Imię i nazwisko administratora lub inne oznaczenie.")));
 		
 		echo $form->password('Hasło', array('type'=>$form->PASSWORD));
 		echo $form->password2('Powtórz hasło', array('type'=>$form->PASSWORD));
 		if($this->_srv->get('acl')->sruAdmin('admin', 'addChangeActiveDate'))
-			echo $form->activeTo('Aktywny do', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="' . $this->instrukcjaObslugiPolaAktywnyDo . '" /><br/>'));
+			echo $form->activeTo('Aktywny do', array('after'=>UFlib_Helper::displayHint("' . $this->instrukcjaObslugiPolaAktywnyDo . '")));
 		else
-			echo $form->activeTo('Aktywny do', array('disabled' => true, 'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="' . $this->instrukcjaObslugiPolaAktywnyDo . '" /><br/>'));
+			echo $form->activeTo('Aktywny do', array('disabled' => true, 'after'=>UFlib_Helper::displayHint("' . $this->instrukcjaObslugiPolaAktywnyDo . '")));
 		if($advanced)
 		{
 			echo $form->typeId('Uprawnienia', array(
@@ -220,7 +220,7 @@ extends UFtpl_Common {
 		echo $form->phone('Telefon');
 		echo $form->gg('GG');
 		echo $form->jid('Jabber');
-		echo $form->address('Adres', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Lokalizacja lub miejsce przebywania administratora. Zawartość tego pola pojawi się w tabeli dyżurów, więc powinna być zgodna z formatem wpisywanych tam danych." /><br/>'));
+		echo $form->address('Adres', array('after'=>UFlib_Helper::displayHint("Lokalizacja lub miejsce przebywania administratora. Zawartość tego pola pojawi się w tabeli dyżurów, więc powinna być zgodna z formatem wpisywanych tam danych.")));
 
 		$tmp = array();
 		foreach ($dormitories as $dorm) {
@@ -262,7 +262,7 @@ extends UFtpl_Common {
 				$dhComment = $dHours[$i]->getComment();
 				$dhActive = $dHours[$i]->getActive();
 			}
-			echo $form->dutyHours(UFtpl_SruAdmin_DutyHours::getDayName($i), array('name'=>'adminEdit[dutyHours]['.$i.']', 'value'=>$dHour, 'after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Godziny dyżurów danego dnia w formacie: 20:00-21:00" /><br/>'));
+			echo $form->dutyHours(UFtpl_SruAdmin_DutyHours::getDayName($i), array('name'=>'adminEdit[dutyHours]['.$i.']', 'value'=>$dHour, 'after'=>UFlib_Helper::displayHint("Godziny dyżurów danego dnia w formacie: 20:00-21:00")));
 			echo $form->dhComment('Komentarz', array('name'=>'adminEdit[dhComment]['.$i.']', 'value'=>$dhComment));
 			echo $form->dhActive('Odbędzie się', array('type'=>$form->CHECKBOX, 'name'=>'adminEdit[dhActive]['.$i.']', 'value'=>$dhActive));
 			echo '<br />';

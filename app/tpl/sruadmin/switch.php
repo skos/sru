@@ -204,7 +204,7 @@ changeVisibility();
 		if ($d['modelSfpPorts'] > 0) {
 			echo '<h3>Dane mini-GBICków w urządzeniu</h3>';
 			if (!is_null($gbics)) {
-				echo '<table class="bordered"><tr><th>Port</th><th>Model</th><th>S/N <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="W przypadku oryginalnych mini-GBICów HP należy na początku S/N dodać &quot;MY3&quot;"/></th></tr>';
+				echo '<table class="bordered"><tr><th>Port</th><th>Model</th><th>S/N '.UFlib_Helper::displayHint("W przypadku oryginalnych mini-GBICów HP należy na początku S/N dodać &quot;MY3&quot;").'</th></tr>';
 				for ($i = 1; $i < 5; $i++) {
 					echo '<tr><td>'.($d['modelPorts'] - 4 + $i).'</td><td>'.(isset($gbics[$i]) ? $gbics[$i] : '-').'</td><td>'.(isset($gbics[($i+4)]) ? $gbics[($i+4)] : '-').'</td>';
 				}
@@ -241,9 +241,9 @@ changeVisibility();
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize($tmp, '', ''),
 		));
-		echo $form->hierarchyNo('Nr w hierarchii', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Nr kolejny switcha w akademiku, np. dla pierwszego dsX-hp0. Brak nr oznacza, że switch jest nieużywany." /><br/>'));
-		echo $form->ip('IP', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="IP switcha. Brak IP oznacza, że switch został wyłączony (czasowo). Jeżeli switch jest nieużywany całkowicie, należy usunąć mu nr w hierarchii." /> <button type="button" onclick=fillData()>Pobierz dane</button><br/>'));
-		echo $form->localization('Lokalizacja', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Pomieszczenie w akademiku, gdzie znajduje się switch." /><br/>'));
+		echo $form->hierarchyNo('Nr w hierarchii', array('after'=>UFlib_Helper::displayHint("Nr kolejny switcha w akademiku, np. dla pierwszego dsX-hp0. Brak nr oznacza, że switch jest nieużywany.")));
+		echo $form->ip('IP', array('after'=>UFlib_Helper::displayHint("IP switcha. Brak IP oznacza, że switch został wyłączony (czasowo). Jeżeli switch jest nieużywany całkowicie, należy usunąć mu nr w hierarchii.").' <button type="button" onclick=fillData()>Pobierz dane</button><br/>'));
+		echo $form->localization('Lokalizacja', array('after'=>UFlib_Helper::displayHint("Pomieszczenie w akademiku, gdzie znajduje się switch.")));
 		echo $form->inventoryNo('Nr inwentarzowy');
 		echo $form->received('Na stanie od');
 		echo $form->inoperational('Uszkodzony', array('type'=>$form->CHECKBOX));
@@ -333,9 +333,9 @@ function fillData() {
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize($tmp, '', ''),
 		));
-		echo $form->hierarchyNo('Nr w hierarchii', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Nr kolejny switcha w akademiku, np. dla pierwszego dsX-hp0. Brak nr oznacza, że switch jest nieużywany." /><br/>'));
-		echo $form->ip('IP', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="IP switcha. Brak IP oznacza, że switch został wyłączony (czasowo). Jeżeli switch jest nieużywany całkowicie, należy usunąć mu nr w hierarchii." /><br/>'));
-		echo $form->localization('Lokalizacja', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Pomieszczenie w akademiku, gdzie znajduje się switch." /><br/>'));
+		echo $form->hierarchyNo('Nr w hierarchii', array('after'=>UFlib_Helper::displayHint("Nr kolejny switcha w akademiku, np. dla pierwszego dsX-hp0. Brak nr oznacza, że switch jest nieużywany.")));
+		echo $form->ip('IP', array('after'=>UFlib_Helper::displayHint("IP switcha. Brak IP oznacza, że switch został wyłączony (czasowo). Jeżeli switch jest nieużywany całkowicie, należy usunąć mu nr w hierarchii.")));
+		echo $form->localization('Lokalizacja', array('after'=>UFlib_Helper::displayHint("Pomieszczenie w akademiku, gdzie znajduje się switch.")));
 		echo $form->inventoryNo('Nr inwentarzowy');
 		echo $form->received('Na stanie od');
 		echo $form->inoperational('Uszkodzony', array('type'=>$form->CHECKBOX));

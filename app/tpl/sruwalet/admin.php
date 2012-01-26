@@ -149,11 +149,11 @@ $(document).ready(function()
 		echo $form->login('Login', array('class'=>'required'));
 		echo $form->password('Hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
 		echo $form->password2('Powtórz hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
-		echo $form->name('Imię i nazwisko', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Imię i nazwisko administratora lub inne oznaczenie." /><br/>', 'class'=>'required')); 
+		echo $form->name('Imię i nazwisko', array('after'=>UFlib_Helper::displayHint("Imię i nazwisko administratora lub inne oznaczenie."), 'class'=>'required')); 
 		echo $form->typeId('Uprawnienia', array( 
 			'type' => $form->SELECT, 
 			'labels' => $form->_labelize(UFtpl_SruWalet_Admin::$adminTypes), 
-			'after'=> ' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Kierownik OS ma uprawnienia do wszystkich części Waleta, zaś Pracownik OS jedynie do wybranych Domów Studenckich. Starszy pracownik OS może także dostęp do obsadzenia każdego DSu." /><br/>', 
+			'after'=> UFlib_Helper::displayHint("Kierownik OS ma uprawnienia do wszystkich części Waleta, zaś Pracownik OS jedynie do wybranych Domów Studenckich. Starszy pracownik OS może także dostęp do obsadzenia każdego DSu."), 
 		));
 		echo $form->_end();
 
@@ -189,25 +189,25 @@ $(document).ready(function()
 		echo $form->_fieldset();
 		echo $form->email('E-mail', array('class'=>'required'));
 		echo $form->phone('Telefon');
-		echo $form->gg('GG', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Numer w komunikatorze GG." /><br/>'));
-		echo $form->jid('Jabber', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Adres w komunikatorze sieci Jabber." /><br/>'));
-		echo $form->address('Adres', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Lokalizacja lub miejsce przebywania administratora." /><br/>'));
+		echo $form->gg('GG', array('after'=>UFlib_Helper::displayHint("Numer w komunikatorze GG.")));
+		echo $form->jid('Jabber', array('after'=>UFlib_Helper::displayHint("Adres w komunikatorze sieci Jabber.")));
+		echo $form->address('Adres', array('after'=>UFlib_Helper::displayHint("Lokalizacja lub miejsce przebywania administratora.")));
 	}
 
 	public function formEdit(array $d, $dormitories, $dormList, $advanced=false) {
 		$form = UFra::factory('UFlib_Form', 'adminEdit', $d, $this->errors);
 
 		echo $form->_fieldset();
-		echo $form->name('Imię i nazwisko', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Imię i nazwisko administratora lub inne oznaczenie." /><br/>', 'class'=>'required'));
+		echo $form->name('Imię i nazwisko', array('after'=>UFlib_Helper::displayHint("Imię i nazwisko administratora lub inne oznaczenie."), 'class'=>'required'));
 		echo $form->password('Hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
 		echo $form->password2('Powtórz hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
 		if($advanced) {
 			echo $form->typeId('Uprawnienia', array( 
 				'type' => $form->SELECT, 
 				'labels' => $form->_labelize(UFtpl_SruWalet_Admin::$adminTypes), 
-				'after'=> ' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Kierownik OS ma uprawnienia do wszystkich części Waleta, zaś Pracownik OS jedynie do wybranych Domów Studenckich. Starszy pracownik OS może także dostęp do obsadzenia każdego DSu." /><br/>', 
+				'after'=> UFlib_Helper::displayHint("Kierownik OS ma uprawnienia do wszystkich części Waleta, zaś Pracownik OS jedynie do wybranych Domów Studenckich. Starszy pracownik OS może także dostęp do obsadzenia każdego DSu."), 
 			));
-			echo $form->active('Aktywny <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Tylko aktywni administratorzy mogą zalogować się do Waleta." />', array('type'=>$form->CHECKBOX) );
+			echo $form->active('Aktywny'.UFlib_Helper::displayHint("Tylko aktywni administratorzy mogą zalogować się do Waleta.").'', array('type'=>$form->CHECKBOX) );
 		}
 
 		echo $form->_end();
@@ -258,9 +258,9 @@ $(document).ready(function()
 		echo $form->_fieldset();
 		echo $form->email('E-mail', array('class'=>'required'));
 		echo $form->phone('Telefon');
-		echo $form->gg('GG', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Numer w komunikatorze GG." /><br/>'));
-		echo $form->jid('Jabber', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Adres w komunikatorze sieci Jabber." /><br/>'));
-		echo $form->address('Adres', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="Lokalizacja lub miejsce przebywania administratora." /><br/>'));
+		echo $form->gg('GG', array('after'=>UFlib_Helper::displayHint("Numer w komunikatorze GG.")));
+		echo $form->jid('Jabber', array('after'=>UFlib_Helper::displayHint("Adres w komunikatorze sieci Jabber.")));
+		echo $form->address('Adres', array('after'=>UFlib_Helper::displayHint("Lokalizacja lub miejsce przebywania administratora.")));
 	}
 
 	public function waletBar(array $d, $ip, $time, $invIp, $invTime) {

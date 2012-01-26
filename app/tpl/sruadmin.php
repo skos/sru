@@ -517,7 +517,7 @@ extends UFtpl_Common {
 		echo $form->_start($this->url(0).'/admins/active');
 		echo $form->_fieldset();
 		echo $form->activeOn('Data (YYYY-MM-DD)', array('value'=>$date));
-		echo $form->_submit('Zobacz', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" alt="?" title="Pokazuje adminów aktywnych w danym dniu oraz adminów, którym nie udało się ustalić statusu na dany dzień." />'));
+		echo $form->_submit('Zobacz', array('after'=>UFlib_Helper::displayHint("Pokazuje adminów aktywnych w danym dniu oraz adminów, którym nie udało się ustalić statusu na dany dzień.")));
 		echo $form->_end();
 		echo $form->_end(true);
 	}
