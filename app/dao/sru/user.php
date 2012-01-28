@@ -205,10 +205,10 @@ extends UFdao {
 		$mapping = $this->mapping('regbook');
 		$query = $this->prepareSelect($mapping);
 		
-		$query->raw("SELECT id, name, surname, active, alias, EXTRACT (EPOCH FROM birth_date) AS birth_date, address, registry_no, type_id, faculty_id, (SELECT alias from faculties WHERE id = faculty_id) AS faculty_alias, document_type, document_number, EXTRACT (EPOCH FROM referral_start) AS referral_start, EXTRACT (EPOCH FROM referral_end) AS referral_end, EXTRACT (EPOCH FROM last_location_change) AS last_location_change FROM
-					(SELECT u.id, u.name, u.surname, u.active, l.alias, u.birth_date, u.address, u.registry_no, u.type_id, u.faculty_id, u.document_type, u.document_number, u.referral_start, u.referral_end, u.last_location_change
+		$query->raw("SELECT id, name, surname, active, alias, study_year_id, EXTRACT (EPOCH FROM birth_date) AS birth_date, address, registry_no, type_id, faculty_id, (SELECT alias from faculties WHERE id = faculty_id) AS faculty_alias, document_type, document_number, EXTRACT (EPOCH FROM referral_start) AS referral_start, EXTRACT (EPOCH FROM referral_end) AS referral_end, EXTRACT (EPOCH FROM last_location_change) AS last_location_change FROM
+					(SELECT u.id, u.name, u.surname, u.active, l.alias, u.study_year_id, u.birth_date, u.address, u.registry_no, u.type_id, u.faculty_id, u.document_type, u.document_number, u.referral_start, u.referral_end, u.last_location_change
 					FROM users u, locations l WHERE l.dormitory_id=" . $id . " AND u.referral_end > '".$activeSince."' AND u.location_id = l.id ".
-					"UNION SELECT u.user_id AS id, u.name, u.surname, u.active, l.alias, u.birth_date, u.address, u.registry_no, u.type_id, u.faculty_id, u.document_type::smallint, u.document_number, u.referral_start, u.referral_end, u.last_location_change
+					"UNION SELECT u.user_id AS id, u.name, u.surname, u.active, l.alias, u.study_year_id, u.birth_date, u.address, u.registry_no, u.type_id, u.faculty_id, u.document_type::smallint, u.document_number, u.referral_start, u.referral_end, u.last_location_change
 					FROM users_history u, locations l WHERE l.dormitory_id=" . $id . " AND u.referral_end > '".$activeSince."' AND u.location_id = l.id)
 					AS foo
 					ORDER BY surname, name, last_location_change DESC;");

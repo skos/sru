@@ -310,7 +310,7 @@ changeVisibility();
 			echo '<td style="border: 1px solid;">'.(is_null($curr['document_number']) ? '&nbsp;' : UFtpl_Sru_User::$documentTypesShort[$curr['document_type']].': '.$curr['document_number']).'</td>';
 			echo '<td style="border: 1px solid;">'.(is_null($curr['faculty_id']) ? '&nbsp;' : strtoupper($curr['faculty_alias'])).'</td>';
 			if ($settings['year']) {
-				echo '<td style="border: 1px solid;">'.UFtpl_Sru_curr::$studyYears[$curr['studyYearId']].'</td>';
+				echo '<td style="border: 1px solid;">'.(is_null($curr['study_year_id']) ? 'N/D' : UFtpl_Sru_User::$studyYears[$curr['study_year_id']]).'</td>';
 			}
 			echo '<td style="border: 1px solid;">'.(is_null($curr['registry_no']) ? '&nbsp;' : $curr['registry_no']).'</td>';
 			echo '<td style="border: 1px solid;">&nbsp;</td></tr>';
