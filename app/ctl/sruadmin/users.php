@@ -46,6 +46,9 @@ extends UFctl {
 							case 'typeId':
 								$get->searchedTypeId = urldecode($tmp[1]);
 								break;
+							case 'active':
+								$get->searchedActive = true;
+								break;
 						}
 					}
 					break;

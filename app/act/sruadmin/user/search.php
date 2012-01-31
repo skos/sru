@@ -14,7 +14,7 @@ extends UFact {
 			foreach ($post as &$tmp) {
 				$tmp = trim($tmp);
 			}
-
+			
 			$bean = UFra::factory('UFbean_Sru_User');
 
 			$finds = array();
@@ -42,6 +42,10 @@ extends UFact {
 			if (isset($post['typeId']) && !empty($post['typeId'])) {
 				$finds[] = 'typeId:'.urlencode(mb_strtolower($post['typeId'], 'UTF-8'));
 			}
+			if (isset($post['active']) && $post['active'] == true) {
+				$finds[] = 'active:' . true;
+			}
+			
 			if (count($finds)) {
 				UFlib_Http::redirect(UFURL_BASE.'/'.implode('/', $this->_srv->get('req')->segments(0)).'/users/search/'.implode('/', $finds));
 			}

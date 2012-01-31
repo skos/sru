@@ -86,6 +86,9 @@ extends UFdao {
 							$query->where($var, UFbean_Sru_User::DB_TOURIST_MIN, UFlib_Db_Query::GTE);
 							break;
 						}
+					case 'active':
+						$query->where($var, $val);
+						break;
 					case 'registryNo':
 					case 'pesel':
 					default:

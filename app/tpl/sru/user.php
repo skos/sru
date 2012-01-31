@@ -555,6 +555,18 @@ $(function() {
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::getUserTypes()),
 		));
+		
+		if(isset($_COOKIE['SRUDisplayUsers']) && $_COOKIE['SRUDisplayUsers'] == "1" || !isset($_COOKIE['SRUDisplayUsers'])) {
+			echo $form->active('Tylko aktywni', array(
+				'type' => $form->CHECKBOX,
+				'checked' => true,
+			));
+		} else {
+			echo $form->active('Tylko aktywni', array(
+				'type' => $form->CHECKBOX,
+				'checked' => false,
+			));
+		}
 	}
 
 	public function formSearchWalet(array $d, array $searched) {

@@ -454,6 +454,10 @@ extends UFbox {
 			$tmp['typeId'] = $get->searchedTypeId;
 		} catch (UFex_Core_DataNotFound $e) {
 		}
+		try {
+			$tmp['active'] = $get->searchedActive;
+		} catch (UFex_Core_DataNotFound $e) {
+		}
 		$d['searched'] = $tmp;
 
 		return $this->render(__FUNCTION__, $d);
@@ -497,7 +501,13 @@ extends UFbox {
 				$tmp['typeId'] = $get->searchedTypeId;
 			} catch (UFex_Core_DataNotFound $e) {
 			}
+			try {
+				$tmp['active'] = $get->searchedActive;
+			} catch (UFex_Core_DataNotFound $e) {
+			}
+			
 			$bean->search($tmp);
+			
 			if (1 == count($bean)) {
 				$get->userId = $bean[0]['id'];
 				return $this->user().$this->userComputers().$this->roomSwitchPorts().$this->userInactiveComputers();
