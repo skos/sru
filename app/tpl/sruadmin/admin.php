@@ -300,10 +300,11 @@ extends UFtpl_Common {
 		if($this->_srv->get('acl')->sruAdmin('admin', 'changeUsersAndHostsDisplay', $d['id'])) {
 			echo $form->_fieldset('Ustawienia');
 
+			$textDisplayUsers = 'Widok pokoju: użytkownicy i hosty - tylko aktywne; wyszukiwanie użytkowników: tylko aktywni';
 			if(isset($_COOKIE['SRUDisplayUsers']) && $_COOKIE['SRUDisplayUsers'] == "1")
-				echo $form->displayUsers('Widok pokoju: użytkownicy i hosty - tylko aktywne', array('type'=>$form->CHECKBOX, 'value'=>'1'));
+				echo $form->displayUsers($textDisplayUsers, array('type'=>$form->CHECKBOX, 'value'=>'1'));
 			else
-				echo $form->displayUsers('Widok pokoju: użytkownicy i hosty - tylko aktywne', array('type'=>$form->CHECKBOX, 'value'=>'0'));
+				echo $form->displayUsers($textDisplayUsers, array('type'=>$form->CHECKBOX, 'value'=>'0'));
 			
 			echo $form->_submit('Zapisz');
 			echo ' <a href="'.$this->url(0).'/admins/'.$d['id'].'">Powrót</a>';
