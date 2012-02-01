@@ -351,6 +351,10 @@ extends UFdao {
 		$query->where($mapping->active, true);
 		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_SERVER, $query->NOT_EQ);
 		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_SERVER_VIRT, $query->NOT_EQ);
+		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_ADMINISTRATION, $query->NOT_EQ);
+		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_ORGANIZATION, $query->NOT_EQ);
+		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_STUDENT_OTHER, $query->NOT_EQ);
+		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_STUDENT_AP, $query->NOT_EQ);
 
 		$return = $this->doUpdate($query);
 
