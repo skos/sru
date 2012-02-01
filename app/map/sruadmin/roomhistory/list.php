@@ -12,6 +12,8 @@ extends UFmap {
 		'modifiedById'  => 'h.modified_by',
 		'modifiedByName'=> 'a.name',
 		'modifiedAt'    => 'h.modified_at',
+		'usersMax'		=> 'h.users_max',
+		'typeId'		=> 'h.type_id',
 	);
 	protected $columnTypes = array(
 		'id'            => self::INT,
@@ -20,6 +22,8 @@ extends UFmap {
 		'modifiedById'   => self::NULL_INT,
 		'modifiedByName' => self::TEXT,
 		'modifiedAt'     => self::TS,
+		'usersMax'		=> self::INT,
+		'typeId'		=> self::INT,
 	);
 	protected $tables = array(
 		'h' => 'locations_history',

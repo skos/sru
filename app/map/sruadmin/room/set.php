@@ -15,6 +15,8 @@ extends UFmap {
 		'dormitoryId'	=> 'dormitory_id',
 		'modifiedById'   => 'modified_by',
 		'modifiedAt'     => 'modified_at',
+		'usersMax'		=> 'users_max',
+		'typeId'		=> 'type_id',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -25,9 +27,14 @@ extends UFmap {
 		'dormitoryId'    => self::INT,
 		'modifiedById'   => self::NULL_INT,
 		'modifiedAt'     => self::TS,
+		'usersMax'		=> self::INT,
+		'typeId'		=> self::INT,
 	);
 	protected $tables = array(
 		'' => 'locations',
+	);
+	protected $valids = array(
+		'usersMax' => array('regexp'=>'^([0-9]{1})$'),
 	);
 	protected $pk = 'id';
 }

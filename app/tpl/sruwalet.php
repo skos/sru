@@ -356,6 +356,9 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 	}
 
 	public function dorm(array $d) {
+		if ($this->_srv->get('msg')->get('roomEdit/ok')) {
+			echo $this->OK('Zmodyfikowano dane pokoju');
+		}
 		echo '<h2><a href="'.$this->url(0).'/inhabitants">Obsadzenie</a><br/>';
 		$d['dorm']->write('exportPanel');
 		echo '<h3>'.$d['dorm']->name.'</h3>';
@@ -395,6 +398,22 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 	public function dormRegBookExport(array $d) {
 		echo '<h2>'.$d['dorm']->name.' - Książka meldunkowa</h2>';
 		$d['dorm']->write('regBook', $d['users'], $d['settings']);
+	}
+	
+	public function titleRoom(array $d) {
+		echo $d['room']->write('titleDetails');
+	}
+	
+	public function roomEdit(array $d) {
+		echo $d['room']->write('formEditWalet');
+	}
+	
+	public function roomNotFound() {
+		echo $this->ERR('Nie znaleziono pokoju');
+	}
+	
+	public function titleRoomNotFound() {
+		echo 'Nie znaleziono pokoju';
 	}
 
 

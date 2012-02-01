@@ -5,6 +5,25 @@
 class UFtpl_SruAdmin_Room
 extends UFtpl_Common {
 	
+	protected static $locationTypesForWalet = array(
+		1 => 'Studencki',
+		2 => 'Gościnny',
+	);
+
+	protected static $locationTypesForAdmin = array(
+		11 => 'SKOS',
+		12 => 'Administracja',
+	);
+	
+	protected $errors = array(
+		'usersMax' => 'Podaj poprawną liczbę osób (0-9)',
+	);
+	
+	public static function getRoomType($typeId) {
+		$locTypes = self::$locationTypesForWalet + self::$locationTypesForAdmin;
+		return $locTypes[$typeId];
+	}
+	
 	public function listRooms(array $d) {
 		$url = $this->url(0).'/dormitories/';
 		
@@ -54,8 +73,9 @@ extends UFtpl_Common {
 		$url = $this->url(0);
 
 		echo '<h2>'.$d['alias'].' (<a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'">'.strtoupper($d['dormitoryAlias']).'</a>)<br/><small>(liczba użytkowników: '.$d['userCount'].' &bull; liczba komputerów: '.$d['computerCount'].')</small></h2>';
+		echo '<p><em>Typ:</em> '.self::getRoomType($d['typeId']).'</p>';
 		if ($d['comment']) {
-			echo '<p class="comment">'.nl2br($this->_escape($d['comment'])).'</p>';		
+			echo '<p><em>Komentarz:</em></p><p class="comment">'.nl2br($this->_escape($d['comment'])).'</p>';		
 		}
 		echo '<p class="nav">';
 		echo '<a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'/'.$d['alias'].'">Dane</a>';
@@ -78,13 +98,35 @@ function fullList() {
 	}
 
 	public function formEdit(array $d) {
-	
-		$form = UFra::factory('UFlib_Form', 'roomEdit', $d, array());
-		
+		var_dump($this->_srv->get('msg'));
+		$form = UFra::factory('UFlib_Form', 'roomEdit', $d, $this->errors);
 		echo $form->_start($this->url());
 		
-		echo $form->_fieldset('Komentarz');
+		echo $form->_fieldset('Dane pomieszczenia');
+		if (array_key_exists($d['typeId'], self::$locationTypesForAdmin)) {
+			echo $form->typeId('Typ', array(
+				'type' => $form->SELECT,
+				'labels' => $form->_labelize(self::$locationTypesForAdmin),
+			));
+		}
 		echo $form->comment('', array('type'=>$form->TEXTAREA, 'rows'=>5));
+		echo $form->_submit('Zapisz');
+		echo $form->_end();
+		echo $form->_end(true);
+	}
+	
+	public function formEditWalet(array $d) {
+		$form = UFra::factory('UFlib_Form', 'roomEdit', $d, $this->errors);
+		echo $form->_start($this->url());
+		
+		echo $form->_fieldset('Dane pokoju');
+		if (array_key_exists($d['typeId'], self::$locationTypesForWalet)) {
+			echo $form->typeId('Typ', array(
+				'type' => $form->SELECT,
+				'labels' => $form->_labelize(self::$locationTypesForWalet),
+			));
+		}
+		echo $form->usersMax('Liczba miejsc');
 		echo $form->_submit('Zapisz');
 		echo $form->_end();
 		echo $form->_end(true);
@@ -95,9 +137,12 @@ function fullList() {
 		
 		$dorm = isset($d[0]['dormitoryAlias']) ? $d[0]['dormitoryAlias'] : '';
 		$aliases = array();
-		
+
 		foreach ($d as $c) {
 			$roomInt = (int)$c['alias'];
+			if ((int)$c['alias'] == 0) {
+				$roomInt = $c['alias'];
+			}
 			if (!array_key_exists($roomInt, $aliases)) {
 				$aliases[$roomInt] = new Connector();
 			}
@@ -107,7 +152,12 @@ function fullList() {
 
 		foreach ($users as $user) {
 			$roomInt = (int)$user['locationAlias'];
-			$aliases[$roomInt]->addPerson($user['locationAlias'], $user);
+			if ((int)$user['locationAlias'] == 0) {
+				$roomInt = $user['locationAlias'];
+			}
+			if (array_key_exists($roomInt, $aliases)) {
+				$aliases[$roomInt]->addPerson($user['locationAlias'], $user);
+			}
 		}
 		
 		if (!$export) {
@@ -129,7 +179,8 @@ function fullList() {
 			if ($rooms == null || count($rooms) == 0) {
 			} else {
 				foreach ($rooms as $room) {
-					$dispRoom = ($connector == 0 ? '' : $connector).$room->getExt().' <small>('.$room->getLimit().'-os)</small>';
+					$roomNumber = ($connector == 0 ? '' : $connector).$room->getExt();
+					$dispRoom = '<a href="'.$this->url(2).'/'.$roomNumber.'/:edit">'.$roomNumber.'</a> <small>('.$room->getLimit().'-os)</small>';
 					echo '<tr><td>'.$dispRoom.'</td>';
 					$i = 0;
 					foreach ($room->getUsers() as $user) {
@@ -197,13 +248,11 @@ class Connector
 {
 	private $rooms = array();
 
-	public function addRoom($room, $limit = 0, $addEmpty = false, $comment = null) {
+	public function addRoom($room, $limit = 0, $comment = null) {
 		$roomInt = (int)$room;
 		if (substr($room, 0, 1) == 'm') {
 			$this->rooms[] = new Room($room, $limit, $comment);
-		} else if (!$addEmpty && ($roomInt == 0 || $limit == 0)) {
-			// nie dodajemy do zestawienia
-		} else if ($addEmpty && $roomInt == 0) {
+		} else if ($roomInt == 0) {
 			$this->rooms[] = new Room($room, $limit, $comment);
 		} else if (strlen($roomInt) < strlen($room)) {
 			$this->rooms[] = new Room(substr($room, strlen($roomInt)), $limit, $comment);
@@ -213,11 +262,14 @@ class Connector
 	}
 
 	public function addRoomForListing($room, $comment) {
-		$this->addRoom($room, 0, true, $comment);
+		$this->addRoom($room, 0, $comment);
 	}
 
 	public function addPerson($room, $user) {
 		$roomInt = (int)$room;
+		if ($roomInt == 0) {
+			$roomInt = $room;
+		}
 
 		if (substr($room, 0, 1) == 'm') {
 			foreach ($this->rooms as $c) {
@@ -226,8 +278,6 @@ class Connector
 					break;
 				}
 			}
-		} else if ($roomInt == 0) {
-			// nie dodajemy do zestawienia
 		} else if (strlen($roomInt) < strlen($room)) {
 			foreach ($this->rooms as $c) {
 				if ($c->getExt() == substr($room, strlen($roomInt))) {

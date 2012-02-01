@@ -18,6 +18,7 @@ extends UFmap {
 		'modifiedById'   => 'l.modified_by',
 		'modifiedByName' => 'a.name',
 		'modifiedAt'     => 'l.modified_at',
+		'typeId'		=> 'l.type_id',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -32,6 +33,7 @@ extends UFmap {
 		'modifiedById'   => self::NULL_INT,
 		'modifiedByName' => self::TEXT,
 		'modifiedAt'     => self::TS,
+		'typeId'		=> self::INT,
 	);
 	protected $tables = array(
 		'l' => 'locations',

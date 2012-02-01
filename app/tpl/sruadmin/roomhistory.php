@@ -7,6 +7,8 @@ extends UFtpl_Common {
 
 	static protected $names = array(
 		'comment' => 'Komentarz',
+		'typeId' => 'Typ',
+		'usersMax' => 'Liczba miejsc',
 	);
 
 	protected function _diff(array $old, array $new) {
@@ -20,6 +22,12 @@ extends UFtpl_Common {
 			switch ($key) {
 				case 'comment':
 					$changes[] = $names[$key].': <q>'.nl2br($val).'</q>'.$arr.'<q>'.nl2br($new[$key]).'</q>';
+					break;
+				case 'typeId':
+					$changes[] = $names[$key].': <q>'.UFtpl_SruAdmin_Room::getRoomType($val).'</q>'.$arr.'<q>'.UFtpl_SruAdmin_Room::getRoomType($new[$key]).'</q>';
+					break;
+				case 'usersMax':
+					$changes[] = $names[$key].': '.$val.$arr.$new[$key].'</q>';
 					break;
 				default: continue;
 			}
@@ -41,6 +49,8 @@ extends UFtpl_Common {
 
 		$curr = array(
 			'comment' => $current->comment,
+			'typeId' => $current->typeId,
+			'usersMax' => $current->usersMax,
 			'modifiedById' => $current->modifiedById,
 			'modifiedByName' => $current->modifiedByName,
 			'modifiedAt' => $current->modifiedAt,

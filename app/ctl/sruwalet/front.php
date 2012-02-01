@@ -138,6 +138,14 @@ extends UFctl {
 						$get->dormAlias = $alias;
 						if($segCount == 2) {
 							$get->view = 'dormitories/dorm';
+						} else if ($segCount == 4) {
+							$alias = $req->segment(3);  
+							$get->roomAlias = $alias;
+							if ($req->segment(4) == ':edit') {
+								$get->view = 'dormitories/room/edit';
+							} else {
+								$get->view = 'error404';
+							}
 						} else {
 							$get->view = 'error404';
 						}
@@ -226,6 +234,8 @@ extends UFctl {
 			$act = 'Admin_Edit';
 		} elseif ('dormitories/dorm' == $get->view && $post->is('docExport') && $acl->sruWalet('dorm', 'view', $get->dormAlias)) {
 			$act = 'Doc_Export';
+		} elseif ('dormitories/room/edit' == $get->view && $post->is('roomEdit') && $acl->sruWalet('dorm', 'view', $get->dormAlias)) {
+			$act = 'Room_Edit';
 		}
 
 		if (isset($act)) {
@@ -336,6 +346,14 @@ extends UFctl {
 					return 'SruWalet_'.$get->docCode.'Export';
 				} else if ($acl->sruWalet('dorm', 'view', $get->dormAlias)) {
 					return 'SruWalet_Dorm';
+				} else {
+					return 'Sru_Error403';
+				}
+			case 'dormitories/room/edit':
+				if ($msg->get('roomEdit/ok')) {
+					return 'SruWalet_Dorm';
+				} else if ($acl->sruWalet('dorm', 'view', $get->dormAlias)) {
+					return 'SruWalet_RoomEdit';
 				} else {
 					return 'Sru_Error403';
 				}
