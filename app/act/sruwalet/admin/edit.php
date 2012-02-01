@@ -16,6 +16,7 @@ extends UFact {
 			$acl = $this->_srv->get('acl');
 			$login = $bean->login;
 			$bean->fillFromPost(self::PREFIX, array('password', 'login', 'typeId', 'active'));
+			$bean->modifiedById = $this->_srv->get('session')->authWaletAdmin;
 				
 			if(isset($post['password']) && $post['password'] != '' ) {
 				$bean->password = $post['password'];

@@ -11,8 +11,8 @@ extends UFact {
 		try {
 			$bean = UFra::factory('UFbean_SruAdmin_Admin');
 			$bean->fillFromPost(self::PREFIX);
+			$bean->modifiedById = $this->_srv->get('session')->authAdmin;
 			$id = $bean->save();
-
 
 			$this->postDel(self::PREFIX);
 			$this->markOk(self::PREFIX);

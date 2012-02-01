@@ -24,6 +24,7 @@ extends UFmap {
 		'modifiedById'   => 'h.modified_by',
 		'modifiedByName' => 'a.name',
 		'modifiedAt'     => 'h.modified_at',
+		'passwordChanged'=> 'h.password_changed',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -44,6 +45,7 @@ extends UFmap {
 		'modifiedById'   => self::NULL_INT,
 		'modifiedByName' => self::TEXT,
 		'modifiedAt'     => self::TS,
+		'passwordChanged'=> self::TS,
 	);
 	protected $tables = array(
 		'h' => 'admins_history',

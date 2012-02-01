@@ -12,6 +12,7 @@ extends UFact {
 			$this->begin();
 			$bean = UFra::factory('UFbean_SruWalet_Admin');
 			$bean->fillFromPost(self::PREFIX);
+			$bean->modifiedById = $this->_srv->get('session')->authWaletAdmin;
 			$id = $bean->save();
 
 			$bean->getByPK($id);

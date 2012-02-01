@@ -19,7 +19,8 @@ extends UFmap {
 		'jid'            => 'jid',
 		'email'          => 'email',
 		'address'        => 'address',
-		'active'	 => 'active',
+		'active'		 => 'active',
+		'modifiedById'   => 'modified_by',
 	);
 	protected $columnTypes = array(
 		'password'       => self::TEXT,
@@ -34,7 +35,8 @@ extends UFmap {
 		'jid'            => self::TEXT,
 		'email'          => self::TEXT,
 		'address'        => self::TEXT,
-		'active'	 => self::BOOL,
+		'active'		 => self::BOOL,
+		'modifiedById'   => self::NULL_INT,
 	);	
 	protected $tables = array(
 		'' => 'admins',
