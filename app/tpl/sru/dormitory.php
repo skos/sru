@@ -254,7 +254,7 @@ changeVisibility();
 			}
 			$currentEnd = end($lastUser);
 			// jeśli to kolejny user, to wyświetlmy wszystko, co wiemy o poprzednim
-			if (!is_null($currentEnd) && $currentEnd['name'] != $user['name'] && $currentEnd['surname'] != $user['surname']) {
+			if (!is_null($currentEnd) && $currentEnd['id'] != $user['id']) {
 				$i = $this->displayRegBookData($lastUser, $settings, $i);
 				$lastUser = array();
 			}
@@ -275,6 +275,9 @@ changeVisibility();
 	 */
 	private function displayRegBookData(array $userCollection, $settings, $i) {
 		end($userCollection);
+		$curr = current($userCollection);
+		$lastName = $curr['name'];
+		$lastSurname = $curr['surname'];
 		$tempPrevLocationChange = null;
 		$tempLastLocationChange = null;
 		while ($curr = current($userCollection)) {
@@ -286,8 +289,8 @@ changeVisibility();
 				continue;
 			}
 			echo '<tr><td style="border: 1px solid;">'.++$i.'</td>';
-			echo '<td style="border: 1px solid;">'.$curr['surname'].'</td>';
-			echo '<td style="border: 1px solid;">'.$curr['name'].'</td>';
+			echo '<td style="border: 1px solid;">'.$lastSurname.'</td>';
+			echo '<td style="border: 1px solid;">'.$lastName.'</td>';
 			echo '<td style="border: 1px solid;">'.$curr['alias'].'</td>';
 			echo '<td style="border: 1px solid;">'.(is_null($curr['birth_date']) ? '&nbsp;' : date(self::TIME_YYMMDD, $curr['birth_date'])).'</td>';
 			echo '<td style="border: 1px solid;">'.(is_null($curr['address']) ? '&nbsp;' : $curr['address']).'</td>';
