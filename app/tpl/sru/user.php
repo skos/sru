@@ -556,7 +556,20 @@ $(function() {
 			'labels' => $form->_labelize(self::getUserTypes()),
 		));
 		
-		if(isset($_COOKIE['SRUDisplayUsers']) && $_COOKIE['SRUDisplayUsers'] == "1" || !isset($_COOKIE['SRUDisplayUsers'])) {
+		$url = split('/', $this->url());
+		if(!in_array('active:1', $url) && in_array('search', $url)) {
+			echo $form->active('Tylko aktywni', array(
+				'type' => $form->CHECKBOX,
+				'checked' => false
+			));
+		} 
+		else if(in_array('active:1', $url) && in_array('search', $url)) {
+			echo $form->active('Tylko aktywni', array(
+				'type' => $form->CHECKBOX,
+				'checked' => false
+			));
+		} 
+		else if(isset($_COOKIE['SRUDisplayUsers']) && $_COOKIE['SRUDisplayUsers'] == "1" || !isset($_COOKIE['SRUDisplayUsers'])) {
 			echo $form->active('Tylko aktywni', array(
 				'type' => $form->CHECKBOX,
 				'checked' => true,

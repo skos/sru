@@ -36,6 +36,10 @@ extends UFact {
 			if (isset($post['ip']) && !empty($post['ip'])) {
 				$finds[] = 'ip:'.urlencode($post['ip']);
 			}
+			if (isset($post['computersActive']) && $post['computersActive'] == true) {
+				$finds[] = 'computersActive:' . true;
+			}
+			
 			if (count($finds)) {
 				UFlib_Http::redirect(UFURL_BASE.'/'.implode('/', $this->_srv->get('req')->segments(0)).'/computers/search/'.implode('/', $finds));
 			}

@@ -331,6 +331,10 @@ extends UFbox {
 			$tmp['ip'] = $get->searchedIp;
 		} catch (UFex_Core_DataNotFound $e) {
 		}
+		try {
+			$tmp['active'] = $get->searchedActive;
+		} catch (UFex_Core_DataNotFound $e) {
+		}
 
 		$d['searched'] = $tmp;
 	
@@ -359,6 +363,10 @@ extends UFbox {
 			}
 			try {
 				$tmp['ip'] = $get->searchedIp;
+			} catch (UFex_Core_DataNotFound $e) {
+			}
+			try {
+				$tmp['active'] = $get->searchedActive;
 			} catch (UFex_Core_DataNotFound $e) {
 			}
 			$bean->search($tmp);

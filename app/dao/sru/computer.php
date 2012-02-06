@@ -178,6 +178,7 @@ extends UFdao {
 						}
 						$query->where($var, $val);
 						break;
+					case 'active':
 					default:
 						$query->where($var, $val);
 				}

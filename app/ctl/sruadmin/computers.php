@@ -35,6 +35,9 @@ extends UFctl {
 							case 'mac':
 								$get->searchedMac = urldecode($tmp[1]);
 								break;
+							case 'computersActive':
+								$get->searchedActive = true;
+								break;
 						}
 					}
 					break;

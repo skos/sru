@@ -643,6 +643,30 @@ div.style.display = 'none';
 		echo $form->host('Host');
 		echo $form->ip('IP (153.19.)');
 		echo $form->mac('MAC');
+		
+		$url = split('/', $this->url());
+		if(!in_array('computersActive:1', $url) && in_array('search', $url)) {
+			echo $form->computersActive('Tylko aktywne', array(
+				'type' => $form->CHECKBOX,
+				'checked' => false
+			));
+		} else if(in_array('computersActive:1', $url) && in_array('search', $url)) {
+			echo $form->computersActive('Tylko aktywne', array(
+				'type' => $form->CHECKBOX,
+				'checked' => true
+			));
+		}
+		else if(isset($_COOKIE['SRUDisplayUsers']) && $_COOKIE['SRUDisplayUsers'] == "1" || !isset($_COOKIE['SRUDisplayUsers'])) {
+			echo $form->computersActive('Tylko aktywne', array(
+				'type' => $form->CHECKBOX,
+				'checked' => true,
+			));
+		} else {
+			echo $form->computersActive('Tylko aktywne', array(
+				'type' => $form->CHECKBOX,
+				'checked' => false,
+			));
+		}
 	}
 
 	public function searchResults(array $d) {

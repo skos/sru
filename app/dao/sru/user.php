@@ -87,8 +87,6 @@ extends UFdao {
 							break;
 						}
 					case 'active':
-						$query->where($var, $val);
-						break;
 					case 'registryNo':
 					case 'pesel':
 					default:
