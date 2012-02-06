@@ -87,11 +87,11 @@ extends UFtpl_Common {
 	}
 
 	public function titleNotFound() {
-		echo 'Strony nie znaleziono';
+		echo 'Nie znaleziono strony';
 	}
 
 	public function textNotFound() {
-		UFtpl_Html::msgErr('Strony nie znaleziono');
+		UFtpl_Html::msgErr('Nie znaleziono strony');
 	}
 
 	public function delete(array $d) {

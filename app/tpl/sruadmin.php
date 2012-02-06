@@ -66,11 +66,11 @@ extends UFtpl_Common {
 	}
 
 	public function titleComputerNotFound() {
-		echo 'Komputera nie znaleziono';
+		echo 'Nie znaleziono komputera';
 	}
 
 	public function computerNotFound() {
-		echo $this->ERR('Komputera nie znaleziono');
+		echo $this->ERR('Nie znaleziono komputera');
 	}
 
 	public function computer(array $d) {
@@ -146,7 +146,7 @@ extends UFtpl_Common {
 	}
 
 	public function computersNotFound() {
-		echo $this->ERR('Komputerów nie znaleziono');
+		echo $this->ERR('Nie znaleziono komputerów');
 	}
 
 	public function computerHistory(array $d) {
@@ -330,7 +330,7 @@ extends UFtpl_Common {
 	}
 
 	public function userNotFound() {
-		echo $this->ERR('Użytkownika nie znaleziono');
+		echo $this->ERR('Nie znaleziono użytkownika');
 	}
 
 	public function titleUser(array $d) {
@@ -338,7 +338,7 @@ extends UFtpl_Common {
 	}
 
 	public function titleUserNotFound() {
-		echo 'Użytkownika nie znaleziono';
+		echo 'Nie znaleziono użytkownika';
 	}
 
 	public function userComputers(array $d) {
@@ -380,7 +380,7 @@ extends UFtpl_Common {
 	}
 
 	public function userServicesNotFound() {
-		echo $this->ERR('Usług nie znaleziono');
+		echo $this->ERR('Nie znaleziono usług');
 	}
 
 	public function userComputersNotFound(array $d) {

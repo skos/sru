@@ -223,7 +223,7 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 	}
 
 	public function userNotFound() {
-		echo $this->ERR('Użytkownika nie znaleziono');
+		echo $this->ERR('Nie znaleziono użytkownika');
 	}
 
 	public function titleUser(array $d) {
@@ -231,7 +231,7 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 	}
 
 	public function titleUserNotFound() {
-		echo 'Użytkownika nie znaleziono';
+		echo 'Nie znaleziono użytkownika';
 	}
 
 	public function titleUserEdit(array $d) {

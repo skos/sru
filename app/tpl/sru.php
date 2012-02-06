@@ -202,7 +202,7 @@ extends UFtpl_Common {
 	}
 
 	public function titleError404() {
-		echo 'Strony nie znaleziono';
+		echo 'Nie znaleziono strony';
 	}
 
 	public function error403() {
@@ -214,7 +214,7 @@ extends UFtpl_Common {
 	}
 
 	public function error404() {
-		echo $this->ERR('Strony nie znaleziono. Wróć do <a href="'.$this->url(0).'/" title="System Rejestracji Użytkowników">SRU</a>.');
+		echo $this->ERR('Nie znaleziono strony. Wróć do <a href="'.$this->url(0).'/" title="System Rejestracji Użytkowników">SRU</a>.');
 	}
 
 	public function titleUserEdit() {
@@ -270,7 +270,7 @@ extends UFtpl_Common {
 	}
 
 	public function titleUserComputerNotFound(array $d) {
-		echo 'Komputera nie znaleziono';
+		echo 'Nie znaleziono komputera';
 	}
 
 	public function userComputer(array $d) {
@@ -286,7 +286,7 @@ extends UFtpl_Common {
 	}
 
 	public function userComputerNotFound() {
-		echo $this->ERR('Komputera nie znaleziono');
+		echo $this->ERR('Nie znaleziono komputera');
 	}
 
 	public function userComputerEdit(array $d) {
