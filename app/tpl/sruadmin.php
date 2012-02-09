@@ -21,9 +21,14 @@ extends UFtpl_Common {
 		echo $form->_submit('Zaloguj');
 		echo $form->_end();
 		echo $form->_end(true);
+		if ($this->_srv->get('msg')->get('adminLogin/errors')) {?>
+			<script type="text/javascript">
+				document.getElementById('adminLogin_password').focus();
+			</script>
+		<?php                
+		}
 	}
-
-	public function logout(array $d) {
+        public function logout(array $d) {
 		$form = UFra::factory('UFlib_Form');
 
 		echo $form->_start($this->url(0).'/');
@@ -66,11 +71,11 @@ extends UFtpl_Common {
 	}
 
 	public function titleComputerNotFound() {
-		echo 'Nie znaleziono komputera';
+		echo 'Komputera nie znaleziono';
 	}
 
 	public function computerNotFound() {
-		echo $this->ERR('Nie znaleziono komputera');
+		echo $this->ERR('Komputera nie znaleziono');
 	}
 
 	public function computer(array $d) {
@@ -146,7 +151,7 @@ extends UFtpl_Common {
 	}
 
 	public function computersNotFound() {
-		echo $this->ERR('Nie znaleziono komputerów');
+		echo $this->ERR('Komputerów nie znaleziono');
 	}
 
 	public function computerHistory(array $d) {
@@ -330,7 +335,7 @@ extends UFtpl_Common {
 	}
 
 	public function userNotFound() {
-		echo $this->ERR('Nie znaleziono użytkownika');
+		echo $this->ERR('Użytkownika nie znaleziono');
 	}
 
 	public function titleUser(array $d) {
@@ -338,7 +343,7 @@ extends UFtpl_Common {
 	}
 
 	public function titleUserNotFound() {
-		echo 'Nie znaleziono użytkownika';
+		echo 'Użytkownika nie znaleziono';
 	}
 
 	public function userComputers(array $d) {
@@ -380,7 +385,7 @@ extends UFtpl_Common {
 	}
 
 	public function userServicesNotFound() {
-		echo $this->ERR('Nie znaleziono usług');
+		echo $this->ERR('Usług nie znaleziono');
 	}
 
 	public function userComputersNotFound(array $d) {
@@ -517,7 +522,7 @@ extends UFtpl_Common {
 		echo $form->_start($this->url(0).'/admins/active');
 		echo $form->_fieldset();
 		echo $form->activeOn('Data (YYYY-MM-DD)', array('value'=>$date));
-		echo $form->_submit('Zobacz', array('after'=>UFlib_Helper::displayHint("Pokazuje adminów aktywnych w danym dniu oraz adminów, którym nie udało się ustalić statusu na dany dzień.")));
+		echo $form->_submit('Zobacz', array('after'=>' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" alt="?" title="Pokazuje adminów aktywnych w danym dniu oraz adminów, którym nie udało się ustalić statusu na dany dzień." />'));
 		echo $form->_end();
 		echo $form->_end(true);
 	}
@@ -862,7 +867,7 @@ extends UFtpl_Common {
 	}
 
 	public function switchPortsNotFound(array $d) {
-		echo $this->ERR('Nie znaleziono portów switcha');
+		echo $this->ERR('Portów switcha nie znaleziono');
 	}
 
 	public function switchAdd(array $d) {
