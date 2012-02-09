@@ -271,11 +271,12 @@ changeVisibility();
 	input = document.getElementById('penaltyEdit_endAt');                                                                                                                                                         
 	if (input) {                                                                                                                                                                                                  
 		button = document.createElement('input');                                                                                                                                                              
-		button.setAttribute('value', 'Zdejmij karę');                                                                                                                                                          
-		button.setAttribute('type', 'button');                                                                                                                                                                 
+		button.setAttribute('value', 'Skróć');                                                                                                                                                          
+		button.setAttribute('type', 'button');      
+                
 		button.onclick = function() {                                                                                                                                                                          
 			input = document.getElementById('penaltyEdit_endAt');                                                                                                                                          
-			input.value = '';
+            input.value = '<?php echo date(self::TIME_YYMMDD_HHMMSS, $d['startAt'] + 24*3600*$amnestyDays);?>';
 			input = document.getElementById('penaltyEdit_newComment');
 			input.value = '';
 			input.focus();
