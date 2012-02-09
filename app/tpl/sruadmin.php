@@ -25,7 +25,7 @@ extends UFtpl_Common {
 			<script type="text/javascript">
 				document.getElementById('adminLogin_password').focus();
 			</script>
-		<?php                
+		<?php
 		}
 	}
         public function logout(array $d) {
