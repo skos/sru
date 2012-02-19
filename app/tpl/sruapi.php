@@ -77,6 +77,10 @@ extends UFtpl_Common {
 		$d['sum']->write('apiDormitoryFreeIps', $d['used']);
 	}
 
+	public function uploaders(array $d) {
+		$d['transfer']->write('apiTransferStats');
+	}
+	
 	public function myLanstats(array $d) {
 		$d['transfer']->write('myTransferStats', $d['upload'], $d['host']);
 	}

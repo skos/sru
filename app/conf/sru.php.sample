@@ -54,6 +54,7 @@ extends UFconf {
 	);
 
 	protected $puuAvailable = true;
+	protected $transferLimit = 150; // limit dopuszczalnego transferu
 	protected $mustBeRegistryNo = array( // typy userów, które powinny mieć nr indeksu
 		'1', '2', '5'
 	);

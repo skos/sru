@@ -5,6 +5,8 @@
 class UFtpl_SruAdmin_Transfer
 extends UFtpl_Common {
 	public function transferStats(array $d) {
+		$limit = UFra::shared('UFconf_Sru')->transferLimit;
+		$prevAvg = $limit + 1;
 		echo '<ul>';
 		$sumAvg = 0;
 		$sum = 0;
@@ -31,7 +33,10 @@ extends UFtpl_Common {
 			if ($uploader['isBanned']) {
 				$class = '<li class="ban">';
 			}
-
+			if ($prevAvg > $limit && $uploader['bytes_sum'] < $limit) {
+				echo '<hr style="color: #f00;"/>';
+			}
+			$prevAvg = $uploader['bytes_sum'];
 			echo $class.'<a href="'.$this->url(0).'/computers/'.$uploader['hostId'].'/stats">'.$uploader['host'].' <small>('.$uploader['ip'].')</small></a>: '.$uploader['bytes_min'].'/<b>'.$uploader['bytes_sum'].'</b>/'.$uploader['bytes_max'].' kB/s'.$suffix.'</li>';
 			$sumAvg += $uploader['bytes_sum'];
 			$sum++;
@@ -41,6 +46,12 @@ extends UFtpl_Common {
 		echo 'Format: min/avg/max. Dane pochodzą z ostatnich 30 minut, maksymalnie 20 najbardziej aktywnych IP z transferem powyżej 10kB/s.';
 	}
 
+	public function apiTransferStats(array $d) {
+		foreach ($d as $c) {
+			echo $c['ip']."\n";
+		}
+	}
+	
 	public function myTransferStats(array $d, array $uploadList, $host) {
 		$this->displayComputerStats($host, $uploadList[$host]);
 

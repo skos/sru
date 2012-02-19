@@ -12,6 +12,20 @@ extends UFdao {
 		$query->where('l.time > now() - interval \'30 minutes\' and c.active=true GROUP BY l.ip, c.can_admin, c.exadmin, c.type_id, c.host, c.id, c.banned HAVING sum(bytes) > 10*1024*1800 ORDER BY sum(bytes) DESC LIMIT 20', null, $query->SQL);
 		return $this->doSelect($query);
 	}
+	
+	public function listUploaders() {
+		$mapping = $this->mapping('list');
+		$limit = UFra::shared('UFconf_Sru')->transferLimit;
+
+		$query = $this->prepareSelect($mapping);
+		$query->where('l.time > now() - interval \'30 minutes\' and c.active=true 
+			and c.type_id != '.UFbean_Sru_Computer::TYPE_SERVER.' 
+			and c.type_id != '.UFbean_Sru_Computer::TYPE_SERVER_VIRT.' 
+			and c.can_admin=false and c.exadmin=false 
+			GROUP BY l.ip, c.can_admin, c.exadmin, c.type_id, c.host, c.id, c.banned 
+			HAVING sum(bytes) > '.($limit*1024*1800).' ORDER BY sum(bytes)', null, $query->SQL);
+		return $this->doSelect($query);
+	}
 
 	public function listByIp($ip) {
 		$mapping = $this->mapping('get');

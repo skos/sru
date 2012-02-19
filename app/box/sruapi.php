@@ -289,6 +289,18 @@ extends UFbox {
 		}
 	}
 
+	public function uploaders() {
+		try {
+			$transfer = UFra::factory('UFbean_SruAdmin_Transfer');
+			$transfer->listUploaders();
+			$d['transfer'] = $transfer;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return '';
+		}
+	}
+	
 	public function myLanstats() {
 		try {
 			$serv = $this->_srv->get('req')->server;
