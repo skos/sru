@@ -31,16 +31,18 @@ extends UFtpl_Common {
 		$acl = $this->_srv->get('acl');
 
 		$people = array();
+		$peopleLimit = array();
 		$freePlaces = array();
 		$overPlaces = array();
 		foreach ($d as $c) {
 			$people[$c['id']] = 0;
+			$peopleLimit[$c['id']] = 0;
 			$freePlaces[$c['id']] = 0;
 			$overPlaces[$c['id']] = 0;
 		}
 		foreach ($rooms as $room) {
-			if ((int)$room['alias'] == 0 && substr($room['alias'], 0, 1) != 'm') continue;
 			$people[$room['dormitoryId']] += $room['userCount'];
+			$peopleLimit[$room['dormitoryId']] += $room['usersMax'];
 			if ($room['userCount'] < $room['usersMax']) {
 				$freePlaces[$room['dormitoryId']] += ($room['usersMax'] - $room['userCount']);
 			} else if ($room['userCount'] > $room['usersMax']) {
@@ -64,7 +66,7 @@ extends UFtpl_Common {
 			echo '<tr><td>';
 			echo ($acl->sruWalet('dorm', 'view', $c['alias']) ? '<a href="'.$url.$c['alias'].'">' : '').$c['name'].($acl->sruWalet('dorm', 'view', $c['alias']) ? '</a>' : '');
 			echo '</td>';
-			echo '<td style="text-align: right;">'.$c['usersMax'].'</td>';
+			echo '<td style="text-align: right;">'.$peopleLimit[$c['id']].'</td>';
 			echo '<td style="text-align: right;">'.$people[$c['id']].'</td>';
 			echo '<td style="text-align: right;">'.$freePlaces[$c['id']].'</td>';
 			echo '<td style="text-align: right;">'.$overPlaces[$c['id']].'</td></tr>';
