@@ -98,7 +98,6 @@ function fullList() {
 	}
 
 	public function formEdit(array $d) {
-		var_dump($this->_srv->get('msg'));
 		$form = UFra::factory('UFlib_Form', 'roomEdit', $d, $this->errors);
 		echo $form->_start($this->url());
 		
