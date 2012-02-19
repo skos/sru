@@ -644,7 +644,7 @@ div.style.display = 'none';
 		echo $form->ip('IP (153.19.)');
 		echo $form->mac('MAC');
 		
-		$url = split('/', $this->url());
+		$url = explode('/', $this->url());
 		if(!in_array('computersActive:1', $url) && in_array('search', $url)) {
 			echo $form->computersActive('Tylko aktywne', array(
 				'type' => $form->CHECKBOX,

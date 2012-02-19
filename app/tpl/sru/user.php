@@ -556,7 +556,7 @@ $(function() {
 			'labels' => $form->_labelize(self::getUserTypes()),
 		));
 		
-		$url = split('/', $this->url());
+		$url = explode('/', $this->url());
 		if(!in_array('active:1', $url) && in_array('search', $url)) {
 			echo $form->active('Tylko aktywni', array(
 				'type' => $form->CHECKBOX,
