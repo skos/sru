@@ -143,7 +143,7 @@ extends UFtpl_Common {
 		echo 'Dodanie nowego administratora';
 	}
 
-	private $instrukcjaObslugiPolaAktywnyDo = 'Wypełnia administrator centralny. Data w formacie YYYY-MM-DD<br/>Możliwe warunki to:<br/>1. Brak daty - administrator nigdy nie zostanie zdezaktywowany automatycznie.<br />2. Data >= now() - administrator zostanie zdezaktywowany, gdy przyjdzie na niego czas.<br />';
+	private $instrukcjaObslugiPolaAktywnyDo = 'Wypełnia administrator centralny. Data w formacie YYYY-MM-DD<br/>Możliwości:<br/>1. Brak daty - administrator nigdy nie zostanie zdezaktywowany automatycznie.<br />2. Data >= now() - administrator zostanie zdezaktywowany w danym dniu.';
 	public function formAdd(array $d, $dormitories) {
 		if (!isset($d['typeId'])) {
 			$d['typeId'] = 3;
@@ -157,7 +157,7 @@ extends UFtpl_Common {
 		echo $form->name('Nazwa', array('after'=>UFlib_Helper::displayHint("Imię i nazwisko administratora lub inne oznaczenie.")));
 		
 		if($this->_srv->get('acl')->sruAdmin('admin', 'addChangeActiveDate'))
-			 echo $form->activeTo('Aktywny do', array('after'=> UFlib_Helper::displayHint("' . $this->instrukcjaObslugiPolaAktywnyDo . '")));
+			 echo $form->activeTo('Aktywny do', array('after'=> UFlib_Helper::displayHint($this->instrukcjaObslugiPolaAktywnyDo)));
 		echo $form->typeId('Uprawnienia', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(UFtpl_SruAdmin_Admin::$adminTypes),
@@ -198,9 +198,9 @@ extends UFtpl_Common {
 		echo $form->password('Hasło', array('type'=>$form->PASSWORD));
 		echo $form->password2('Powtórz hasło', array('type'=>$form->PASSWORD));
 		if($this->_srv->get('acl')->sruAdmin('admin', 'addChangeActiveDate'))
-			echo $form->activeTo('Aktywny do', array('after'=>UFlib_Helper::displayHint("' . $this->instrukcjaObslugiPolaAktywnyDo . '")));
+			echo $form->activeTo('Aktywny do', array('after'=>UFlib_Helper::displayHint($this->instrukcjaObslugiPolaAktywnyDo)));
 		else
-			echo $form->activeTo('Aktywny do', array('disabled' => true, 'after'=>UFlib_Helper::displayHint("' . $this->instrukcjaObslugiPolaAktywnyDo . '")));
+			echo $form->activeTo('Aktywny do', array('disabled' => true, 'after'=>UFlib_Helper::displayHint($this->instrukcjaObslugiPolaAktywnyDo)));
 		if($advanced)
 		{
 			echo $form->typeId('Uprawnienia', array(
