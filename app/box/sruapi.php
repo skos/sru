@@ -257,8 +257,22 @@ extends UFbox {
 			return '';
 		}
 	}
-
+	
 	public function dormitoryIps() {
+		try {
+			$dorm = UFra::factory('UFbean_Sru_Dormitory');
+			$dorm->getByAlias($this->_srv->get('req')->get->dormAlias);
+			$ips = UFra::factory('UFbean_Sru_Ipv4List');
+			$ips->listByDormitoryId($dorm->id);
+			$d['ips'] = $ips;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return '';
+		}
+	}
+
+	public function dormitoryFreeIps() {
 		try {
 			$dorm = UFra::factory('UFbean_Sru_Dormitory');
 			$dorm->getByAlias($this->_srv->get('req')->get->dormAlias);

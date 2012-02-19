@@ -110,6 +110,9 @@ extends UFctl {
 								case 'computers':
 									$get->view = 'dormitory/computers';
 									break;
+								case 'freeips':
+									$get->view = 'dormitory/freeips';
+									break;
 								case 'ips':
 									$get->view = 'dormitory/ips';
 									break;
@@ -256,6 +259,8 @@ extends UFctl {
 				} else {
 					return 'SruApi_Error403';
 				}
+			case 'dormitory/freeips':
+				return 'SruApi_DormitoryFreeIps';
 			case 'dormitory/ips':
 				return 'SruApi_DormitoryIps';
 			case 'computers/outdated':

@@ -70,7 +70,11 @@ extends UFtpl_Common {
 	}
 
 	public function dormitoryIps(array $d) {
-		$d['sum']->write('apiDormitoryIps', $d['used']);
+		$d['ips']->write('apiDormitoryIps');
+	}
+	
+	public function dormitoryFreeIps(array $d) {
+		$d['sum']->write('apiDormitoryFreeIps', $d['used']);
 	}
 
 	public function myLanstats(array $d) {

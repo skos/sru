@@ -67,4 +67,13 @@ extends UFdao {
 			return false;
 		}
 	}
+	
+	public function listByDormitoryId($dormId) {
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->dormitoryId, $dormId);
+
+		return $this->doSelect($query);
+	}
 }
