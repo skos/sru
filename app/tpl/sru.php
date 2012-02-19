@@ -29,6 +29,12 @@ extends UFtpl_Common {
 		echo $form->_submit('Zaloguj');
 		echo $form->_end();
 		echo $form->_end(true);
+		if ($this->_srv->get('msg')->get('userLogin/errors')) {?>
+			<script type="text/javascript">
+				document.getElementById('userLogin_password').focus();
+			</script>
+		<?php
+		}
 		echo '<span id="recoverPasswordSwitch"></span>';
 		echo '</div>';
 		// left column will continue...
