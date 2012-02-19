@@ -413,7 +413,7 @@ $(function() {
 		}
 		$form = UFra::factory('UFlib_Form', 'userEdit', $d, $this->errors);
 
-		echo '<h1>'.$d['name'].' '.$d['surname'].UFlib_Helper::displayHint("Itanieje możliwość loginu u Administratora SKOSu.<br/><br/>You can change your login by visiting SKOS Admin.")."</h1>";
+		echo '<h1>'.$d['name'].' '.$d['surname'].'</h1>';
 
 		if ($d['updateNeeded']) {
 			echo $this->ERR('Dane na Twoim koncie wymagają aktualizacji. Prosimy o wypełnienie prawidłowymi danymi wszystkich wymaganych pól (oznaczonych czerwoną obwódką). W celu ułatwienia kontaktu ze SKOS, możesz wypełnić także pola niewymagane.');
@@ -424,6 +424,7 @@ $(function() {
 		if (is_null($d['email'])) {
 			echo $this->ERR('Twoje konto zostało dopiero założone. Wymagana jest zmiana hasła.');
 		}
+		echo '<p><label>Login:</label><span class="userData"> '.$d['login'].'</span>'.UFlib_Helper::displayHint('Istnieje możliwość zmiany loginu u Administratora SKOS.<br/><br/>You can change your login by visiting any SKOS Admin.').'</p>';
 		if(!is_null($d['typeId']) && $d['typeId'] != '')
 		{
 			echo '<p><label>Typ konta:</label><span class="userData"> '.self::getUserType($d['typeId']).'</span></p>';
