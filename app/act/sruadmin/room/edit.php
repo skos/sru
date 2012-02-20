@@ -13,10 +13,8 @@ extends UFact {
 			$bean = UFra::factory('UFbean_SruAdmin_Room');
 			$bean->getByAlias($this->_srv->get('req')->get->dormAlias, $this->_srv->get('req')->get->roomAlias);
 			
-			$post = $this->_srv->get('req')->post->{self::PREFIX};
-			
-			
-			$bean->fillFromPost(self::PREFIX, array(), array('comment'));
+			$post = $this->_srv->get('req')->post->{self::PREFIX};			
+			$bean->fillFromPost(self::PREFIX, array(), array('comment', 'typeId'));
 
 			$bean->modifiedById = $this->_srv->get('session')->authAdmin;
 			$bean->modifiedAt = NOW;
