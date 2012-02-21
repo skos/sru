@@ -24,6 +24,7 @@ extends UFmap_Sru_User_Get {
 		'birth_date'		=> 'u.birth_date',
 		'last_location_change' => 'u.last_location_change',
 		'nationality'	=> 'u.nationality',
+		'modified_at'	=> 'umodified_at',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -44,6 +45,7 @@ extends UFmap_Sru_User_Get {
 		'birth_date'		=> self::NULL_TS,
 		'last_location_change' => self::TS,
 		'nationality'	=> self::INT,
+		'modified_at'	=> self::TS,
 	);
 	protected $tables = array(
 		'u' => 'users',

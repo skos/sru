@@ -286,8 +286,8 @@ changeVisibility();
 			$prev = prev($userCollection);
 			// jeśli się nie przeprowadził, to zapamiętajmy tylko datę zmiany - ah ta historia w SRU... :>
 			if ($curr['alias'] == $prev['alias']) {
-				$tempPrevLocationChange = $prev['last_location_change'];
-				$tempLastLocationChange = $curr['last_location_change'];
+				$tempPrevLocationChange = ($prev['last_location_change'] == 0 ? $prev['modified_at'] : $prev['last_location_change']);
+				$tempLastLocationChange = ($curr['last_location_change'] == 0 ? $curr['modified_at'] : $curr['last_location_change']);
 				continue;
 			}
 			echo '<tr><td style="border: 1px solid;">'.++$i.'</td>';
@@ -298,7 +298,7 @@ changeVisibility();
 			echo '<td style="border: 1px solid;">'.(is_null($curr['address']) ? '&nbsp;' : $curr['address']).'</td>';
 			echo '<td style="border: 1px solid;">';
 			if (is_null($tempLastLocationChange)) {
-				echo date(self::TIME_YYMMDD, $curr['last_location_change']);
+				echo date(self::TIME_YYMMDD, ($curr['last_location_change'] == 0 ? $curr['modified_at'] : $curr['last_location_change']));
 			} else {
 				echo date(self::TIME_YYMMDD, $tempLastLocationChange);
 			}
@@ -306,10 +306,12 @@ changeVisibility();
 			echo '<td style="border: 1px solid;">';
 			if (!is_null($prev['last_location_change'])) {
 				if (is_null($tempPrevLocationChange)) {
-					echo date(self::TIME_YYMMDD, $prev['last_location_change']);
+					echo date(self::TIME_YYMMDD, ($prev['last_location_change'] == 0 ? $prev['modified_at'] : $prev['last_location_change']));
 				} else {
 					echo date(self::TIME_YYMMDD, $tempPrevLocationChange);
 				}
+			} else if (!$curr['active']) {
+				echo date(self::TIME_YYMMDD, ($curr['last_location_change'] == 0 ? $curr['modified_at'] : $curr['last_location_change']));
 			}
 			echo '</td>';
 			echo '<td style="border: 1px solid;">'.(is_null($curr['document_number']) ? '&nbsp;' : UFtpl_Sru_User::$documentTypesShort[$curr['document_type']].': '.$curr['document_number']).'</td>';
