@@ -6,10 +6,11 @@ class UFtpl_SruAdmin_Transfer
 extends UFtpl_Common {
 	public function transferStats(array $d) {
 		$limit = UFra::shared('UFconf_Sru')->transferLimit;
-		$prevAvg = $limit + 1;
+		$prevAvg = 0;
 		echo '<ul>';
 		$sumAvg = 0;
 		$sum = 0;
+		$uploadersCounter = 0;
 		foreach ($d as $uploader) {
 			$suffix = '';
 			$class = '<li>';
@@ -33,7 +34,9 @@ extends UFtpl_Common {
 			if ($uploader['isBanned']) {
 				$class = '<li class="ban">';
 			}
-			if ($prevAvg > $limit && $uploader['bytes_sum'] < $limit) {
+			if($uploader['bytes_sum'] >= $limit) {
+				$uploadersCounter++;
+			} else if ($prevAvg >= $limit && $uploadersCounter > 0) {
 				echo '<hr style="color: #f00;"/>';
 			}
 			$prevAvg = $uploader['bytes_sum'];
