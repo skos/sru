@@ -24,12 +24,11 @@ extends UFtpl_Common {
 		echo $form->_end(true);
 
 		echo '<div class="waletImg"><img src="'.UFURL_BASE.'/i/img/walet.png" alt="Walet"/></div>';
-		if ($this->_srv->get('msg')->get('adminLogin/errors')) {?>
-			<script type="text/javascript">
-				document.getElementById('adminLogin_password').focus();
-			</script>
-		<?php
-		}
+		if ($this->_srv->get('msg')->get('adminLogin/errors')) {
+                    UFlib_Script::focus('adminLogin_password');
+		}else{
+                    UFlib_Script::focus('adminLogin_login');
+                }
 	}
 
 	public function logout(array $d) {
