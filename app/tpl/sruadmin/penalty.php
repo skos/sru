@@ -276,7 +276,7 @@ changeVisibility();
                 
 		button.onclick = function() {                                                                                                                                                                          
 			input = document.getElementById('penaltyEdit_endAt');                                                                                                                                          
-			input.value = '<?php echo date(self::TIME_YYMMDD_HHMM, $d['startAt'] + 24*3600*$amnestyDays);?>';
+			input.value = '<?php echo date(self::TIME_YYMMDD_HHMM, $d['startAt'] + 24*3600*$amnestyDays + 60); //dodana minuta bo rowno nie działa ?>';
 			input = document.getElementById('penaltyEdit_newComment');
 			input.value = '';
 			input.focus();
