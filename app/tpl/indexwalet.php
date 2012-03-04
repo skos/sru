@@ -11,7 +11,7 @@ extends UFtpl_Common {
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pl" lang="pl">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-<meta name="robots" CONTENT="noindex,nofollow,noarchive" />
+<meta name="robots" content="noindex,nofollow,noarchive" />
 <link rel="stylesheet" href="<?=UFURL_BASE;?>/i/css/style.css" type="text/css" media="screen" />
 <link rel="shortcut icon" href="<?=UFURL_BASE;?>/i/img/favicon.ico" type="image/x-icon" />
 <link type="text/css" href="<?=UFURL_BASE;?>/i/jquery/css/ui-lightness/jquery-ui-1.8.5.custom.css" rel="Stylesheet" />	
