@@ -96,9 +96,36 @@ extends UFtpl_Common {
 	}
 
 	public function headerDetails(array $d) {
-		echo '<h2>Switch <a href="'.$this->url(0).'/switches/'.$d['serialNo'].'">';
-		echo $this->displaySwitchName($d['dormitoryAlias'], $d['hierarchyNo']);
-		echo '</a></h2>';
+                $daoSwitch = UFra::factory('UFdao_SruAdmin_Switch');
+                $switches = $daoSwitch->listByDormitoryId($d['dormitoryId']);
+                $left = null;
+                $right = null;
+                $current = null;
+                list($key, $left) = each($switches);
+                if($left['id'] == $d['id']){ //brak lewego
+                    $current = $left;
+                    list($key, $right) = each($switches);
+                    $left = null;
+                }else{
+                    list($key, $current) = each($switches);
+                    while(true){
+                        list($key, $right) = each($switches);
+                        if($current['id'] == $d['id'] || $right == null){
+                            break;
+                        }
+                        $left = $current;
+                        $current = $right;
+                    }
+                }
+		echo '<h2>';
+                if(!is_null($left)) {
+                    echo '<a href="'.$this->url(0).'/switches/'.$left['serialNo'].'"><</a>';
+                }
+                echo 'Switch <a href="'.$this->url(0).'/switches/'.$d['serialNo'].'">'.$this->displaySwitchName($d['dormitoryAlias'], $d['hierarchyNo']).'</a>';
+                if(!is_null($right)){
+                    echo '<a href="'.$this->url(0).'/switches/'.$right['serialNo'].'">></a>';
+                }
+                echo '</h2>';
 	}
 
 	public function details(array $d, $info, $lockouts) {
@@ -115,7 +142,7 @@ extends UFtpl_Common {
 				echo $this->ERR('Oprogramowanie na switchu jest nieaktualne');
 			}
 		}
-
+                UFra::error("switches count: ".count($d['switches']));
 		echo '<h3>Dane urządzenia</h3>';
 		echo '<p'.($d['inoperational'] ? ' class="inoperational"' : '').'><em>Model:</em> '.$d['model'].' ('.$d['modelNo'].')</p>';
 		echo '<p><em>IP:</em> '.$d['ip'].'</p>';
@@ -147,27 +174,7 @@ extends UFtpl_Common {
 		echo '</p>';
 		echo '<p><em>Komentarz:</em> '.nl2br($this->_escape($d['comment'])).'</p>';
 		echo '</div>';
-?><script type="text/javascript">
-function changeVisibility() {
-	var div = document.getElementById('switchMore');
-	if (div.sruHidden != true) {
-		div.style.display = 'none';
-		div.sruHidden = true;
-	} else {
-		div.style.display = 'block';
-		div.sruHidden = false;
-	}
-}
-var container = document.getElementById('switchMoreSwitch');
-var button = document.createElement('a');
-button.onclick = function() {
-	changeVisibility();
-}
-var txt = document.createTextNode('Szczegóły');
-button.appendChild(txt);
-container.appendChild(button);
-changeVisibility();
-</script><?
+                UFlib_Script::SruAdmin_Switch_changeVisibility();
 	}
 
 	public function techDetails(array $d, $info, $gbics) {
