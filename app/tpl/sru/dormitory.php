@@ -236,7 +236,7 @@ changeVisibility();
 		echo '<th>Nazwisko</th>';
 		echo '<th>Imię</th>';
 		echo '<th>Nr pokoju</th>';
-		echo '<th>Data urodzenia</th>';
+		echo '<th>PESEL</th>';
 		echo '<th>Adres pobytu stałego</th>';
 		echo '<th>Pobyt od</th>';
 		echo '<th>Pobyt do</th>';
@@ -249,16 +249,21 @@ changeVisibility();
 		echo '<th>Uwagi</th>';
 		echo '</tr></thead><tbody>';
 		$lastUser = array(); // wpisy dot. aktualnie obrabianego usera
-		$i = 0; // l.p.
+		$toDisplay = array(); // dane do wyświetlenia
+		$freshData = null; // najnowsze dane usera
 		foreach ($users as $user) {
 			if ($user['type_id'] > UFtpl_Sru_User::$userTypesLimit) {
 				continue;
 			}
+			if (is_null($freshData)) {
+				$freshData = $user;
+			}
 			$currentEnd = end($lastUser);
 			// jeśli to kolejny user, to wyświetlmy wszystko, co wiemy o poprzednim
 			if (!is_null($currentEnd) && $currentEnd['id'] != $user['id']) {
-				$i = $this->displayRegBookData($lastUser, $settings, $i);
+				$toDisplay += $this->displayRegBookData($lastUser, $freshData, $settings);
 				$lastUser = array();
+				$freshData = $user;
 			}
 			// jeśli żadna wyświetlana dana się nie zmieniła, to wywalamy, wpis jest nieciakawy ;>
 			if (!is_null($currentEnd) && $currentEnd['name'] == $user['name'] && $currentEnd['surname'] == $user['surname'] && $currentEnd['alias'] == $user['alias'] && $currentEnd['last_location_change'] == $user['last_location_change']) {
@@ -266,7 +271,13 @@ changeVisibility();
 			}
 			$lastUser[] = $user;
 		}
-		$this->displayRegBookData($lastUser, $settings, $i);
+		$toDisplay += $this->displayRegBookData($lastUser, $freshData, $settings);
+		ksort($toDisplay);
+		$i = 0; // l.p.
+		foreach ($toDisplay as $tD) {
+			echo '<tr><td style="border: 1px solid;">'.++$i.'</td>';
+			echo $tD;
+		}
 		echo '</tbody></table>';
 	}
 	
@@ -275,58 +286,64 @@ changeVisibility();
 	 * @param array $userCollection zestaw wpisów dot. użytkownika
 	 * @param type $settings ustawienia wyświetlania
 	 */
-	private function displayRegBookData(array $userCollection, $settings, $i) {
+	private function displayRegBookData(array $userCollection, $freshData, $settings) {
+		$toDisplay = array();
 		end($userCollection);
 		$curr = current($userCollection);
-		$lastName = $curr['name'];
-		$lastSurname = $curr['surname'];
+		$lastName = $freshData['name'];
+		$lastSurname = $freshData['surname'];
 		$tempPrevLocationChange = null;
 		$tempLastLocationChange = null;
+		$i = 0;
+
 		while ($curr = current($userCollection)) {
 			$prev = prev($userCollection);
 			// jeśli się nie przeprowadził, to zapamiętajmy tylko datę zmiany - ah ta historia w SRU... :>
 			if ($curr['alias'] == $prev['alias']) {
 				$tempPrevLocationChange = ($prev['last_location_change'] == 0 ? $prev['modified_at'] : $prev['last_location_change']);
-				$tempLastLocationChange = ($curr['last_location_change'] == 0 ? $curr['modified_at'] : $curr['last_location_change']);
+				// data mogla byc poprawiona
+				if (is_null($tempLastLocationChange)) {
+					$tempLastLocationChange = ($curr['last_location_change'] == 0 ? $curr['modified_at'] : $curr['last_location_change']);
+				}
 				continue;
 			}
-			echo '<tr><td style="border: 1px solid;">'.++$i.'</td>';
-			echo '<td style="border: 1px solid;">'.$lastSurname.'</td>';
-			echo '<td style="border: 1px solid;">'.$lastName.'</td>';
-			echo '<td style="border: 1px solid;">'.$curr['alias'].'</td>';
-			echo '<td style="border: 1px solid;">'.(is_null($curr['birth_date']) ? '&nbsp;' : date(self::TIME_YYMMDD, $curr['birth_date'])).'</td>';
-			echo '<td style="border: 1px solid;">'.(is_null($curr['address']) ? '&nbsp;' : $curr['address']).'</td>';
-			echo '<td style="border: 1px solid;">';
+			++$i;
+			$toDisplay[$lastSurname.$lastName.$i] = '<td style="border: 1px solid;">'.$lastSurname.'</td>';
+			$toDisplay[$lastSurname.$lastName.$i] .= '<td style="border: 1px solid;">'.$lastName.'</td>';
+			$toDisplay[$lastSurname.$lastName.$i] .= '<td style="border: 1px solid;">'.$curr['alias'].'</td>';
+			$toDisplay[$lastSurname.$lastName.$i] .= '<td style="border: 1px solid;">'.(is_null($freshData['pesel']) ? (is_null($freshData['birth_date']) ? '&nbsp;' : $freshData['birth_date']) : $freshData['pesel']).'</td>';
+			$toDisplay[$lastSurname.$lastName.$i] .= '<td style="border: 1px solid;">'.(is_null($freshData['address']) ? '&nbsp;' : $freshData['address']).'</td>';
+			$toDisplay[$lastSurname.$lastName.$i] .= '<td style="border: 1px solid;">';
 			if (is_null($tempLastLocationChange)) {
-				echo date(self::TIME_YYMMDD, ($curr['last_location_change'] == 0 ? $curr['modified_at'] : $curr['last_location_change']));
+				$toDisplay[$lastSurname.$lastName.$i] .= date(self::TIME_YYMMDD, ($curr['last_location_change'] == 0 ? $curr['modified_at'] : $curr['last_location_change']));
 			} else {
-				echo date(self::TIME_YYMMDD, $tempLastLocationChange);
+				$toDisplay[$lastSurname.$lastName.$i] .= date(self::TIME_YYMMDD, $tempLastLocationChange);
 			}
-			echo '</td>';
-			echo '<td style="border: 1px solid;">';
+			$toDisplay[$lastSurname.$lastName.$i] .= '</td>';
+			$toDisplay[$lastSurname.$lastName.$i] .= '<td style="border: 1px solid;">';
 			if (!is_null($prev['last_location_change'])) {
 				if (is_null($tempPrevLocationChange)) {
-					echo date(self::TIME_YYMMDD, ($prev['last_location_change'] == 0 ? $prev['modified_at'] : $prev['last_location_change']));
+					$toDisplay[$lastSurname.$lastName.$i] .= date(self::TIME_YYMMDD, ($prev['last_location_change'] == 0 ? $prev['modified_at'] : $prev['last_location_change']));
 				} else {
-					echo date(self::TIME_YYMMDD, $tempPrevLocationChange);
+					$toDisplay[$lastSurname.$lastName.$i] .= date(self::TIME_YYMMDD, $tempPrevLocationChange);
 				}
 			} else if (!$curr['active']) {
-				echo date(self::TIME_YYMMDD, ($curr['last_location_change'] == 0 ? $curr['modified_at'] : $curr['last_location_change']));
+				$toDisplay[$lastSurname.$lastName.$i] .= date(self::TIME_YYMMDD, ($curr['last_location_change'] == 0 ? $curr['modified_at'] : $curr['last_location_change']));
 			}
-			echo '</td>';
-			echo '<td style="border: 1px solid;">'.(is_null($curr['document_number']) ? '&nbsp;' : UFtpl_Sru_User::$documentTypesShort[$curr['document_type']].': '.$curr['document_number']).'</td>';
-			echo '<td style="border: 1px solid;">'.(is_null($curr['faculty_id']) ? '&nbsp;' : strtoupper($curr['faculty_alias'])).'</td>';
+			$toDisplay[$lastSurname.$lastName.$i] .= '</td>';
+			$toDisplay[$lastSurname.$lastName.$i] .= '<td style="border: 1px solid;">'.(is_null($freshData['document_number']) ? '&nbsp;' : UFtpl_Sru_User::$documentTypesShort[$freshData['document_type']].': '.$freshData['document_number']).'</td>';
+			$toDisplay[$lastSurname.$lastName.$i] .= '<td style="border: 1px solid;">'.(is_null($freshData['faculty_id']) ? '&nbsp;' : strtoupper($freshData['faculty_alias'])).'</td>';
 			if ($settings['year']) {
-				echo '<td style="border: 1px solid;">'.(is_null($curr['study_year_id']) ? 'N/D' : UFtpl_Sru_User::$studyYears[$curr['study_year_id']]).'</td>';
+				$toDisplay[$lastSurname.$lastName.$i] .= '<td style="border: 1px solid;">'.(is_null($freshData['study_year_id']) ? 'N/D' : UFtpl_Sru_User::$studyYears[$freshData['study_year_id']]).'</td>';
 			}
-			echo '<td style="border: 1px solid;">'.(is_null($curr['registry_no']) ? '&nbsp;' : $curr['registry_no']).'</td>';
-			echo '<td style="border: 1px solid;">&nbsp;</td></tr>';
+			$toDisplay[$lastSurname.$lastName.$i] .= '<td style="border: 1px solid;">'.(is_null($freshData['registry_no']) ? '&nbsp;' : $freshData['registry_no']).'</td>';
+			$toDisplay[$lastSurname.$lastName.$i] .= '<td style="border: 1px solid;">&nbsp;</td></tr>';
 			
 			if ($curr['alias'] != $prev['alias']) {
 				$tempLastLocationChange = null;
 				$tempPrevLocationChange = null;
 			}
 		}
-		return $i;
+		return $toDisplay;
 	}
 }
