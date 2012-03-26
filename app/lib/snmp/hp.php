@@ -264,8 +264,10 @@ extends UFlib_Snmp {
 							$name = $portUser - 48;
 						} else if ($portUser < 200) {
 							$name = $portUser - 50;
-						} else {
+						} else if ($portUser < 280) {
 							$name = $portUser - 218;
+						} else {
+							$name = $portUser - 288;
 						}
 						if ($name < 0) $name = $name + 2;
 						$trunks = @snmpwalk($switchIp, $this->communityR, $this->OIDs['trunk'], $this->timeout);
