@@ -36,4 +36,27 @@ class UFlib_Helper {
             $returnString = ' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="'.$txt.'" /><br/>';
             return $returnString;
         }
+        
+        public static function getLeftRight($array, $id, $field = 'id'){
+                $left = null;
+                $right = null;
+                $current = null;
+                list($key, $left) = each($array);
+                if($left[$field] == $id){ //brak lewego
+                    $current = $left;
+                    list($key, $right) = each($array);
+                    $left = null;
+                }else{
+                    list($key, $current) = each($array);
+                    while(true){
+                        list($key, $right) = each($array);
+                        if($current[$field] == $id || $right == null){
+                            break;
+                        }
+                        $left = $current;
+                        $current = $right;
+                    }
+                }
+                return array($left, $current, $right);
+        }
 }

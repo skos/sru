@@ -98,32 +98,14 @@ extends UFtpl_Common {
 	public function headerDetails(array $d) {
                 $daoSwitch = UFra::factory('UFdao_SruAdmin_Switch');
                 $switches = $daoSwitch->listByDormitoryId($d['dormitoryId']);
-                $left = null;
-                $right = null;
-                $current = null;
-                list($key, $left) = each($switches);
-                if($left['id'] == $d['id']){ //brak lewego
-                    $current = $left;
-                    list($key, $right) = each($switches);
-                    $left = null;
-                }else{
-                    list($key, $current) = each($switches);
-                    while(true){
-                        list($key, $right) = each($switches);
-                        if($current['id'] == $d['id'] || $right == null){
-                            break;
-                        }
-                        $left = $current;
-                        $current = $right;
-                    }
-                }
+                $leftRight = UFlib_Helper::getLeftRight($switches, $d['id']);
 		echo '<h2>';
-                if(!is_null($left)) {
-                    echo '<a href="'.$this->url(0).'/switches/'.$left['serialNo'].'"><</a>';
+                if(!is_null($leftRight[0])) {
+                    echo '<a href="'.$this->url(0).'/switches/'.$leftRight[0]['serialNo'].'"><</a>';
                 }
                 echo 'Switch <a href="'.$this->url(0).'/switches/'.$d['serialNo'].'">'.$this->displaySwitchName($d['dormitoryAlias'], $d['hierarchyNo']).'</a>';
-                if(!is_null($right)){
-                    echo '<a href="'.$this->url(0).'/switches/'.$right['serialNo'].'">></a>';
+                if(!is_null($leftRight[2])){
+                    echo '<a href="'.$this->url(0).'/switches/'.$leftRight[2]['serialNo'].'">></a>';
                 }
                 echo '</h2>';
 	}
