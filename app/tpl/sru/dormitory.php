@@ -287,6 +287,8 @@ changeVisibility();
 	 * @param type $settings ustawienia wyświetlania
 	 */
 	private function displayRegBookData(array $userCollection, $freshData, $settings) {
+		$conf = UFra::shared('UFconf_Sru');
+
 		$toDisplay = array();
 		end($userCollection);
 		$curr = current($userCollection);
@@ -327,8 +329,15 @@ changeVisibility();
 				} else {
 					$toDisplay[$lastSurname.$lastName.$i] .= date(self::TIME_YYMMDD, $tempPrevLocationChange);
 				}
-			} else if (!$curr['active']) {
-				$toDisplay[$lastSurname.$lastName.$i] .= date(self::TIME_YYMMDD, ($curr['last_location_change'] == 0 ? $curr['modified_at'] : $curr['last_location_change']));
+			} else if (!$freshData['active']) {
+				// w przypadku wprowadzenia błednej daty i późniejszego poprawienia, user jest wybrany z bazy mimo że nie powinien
+				$endDate = date(self::TIME_YYMMDD, ($curr['last_location_change'] == 0 ? $curr['modified_at'] : $curr['last_location_change']));
+	                        if ($endDate <= $conf->usersAvailableSince) {
+					unset($toDisplay[$lastSurname.$lastName.$i]);
+					continue;
+				} else {
+					$toDisplay[$lastSurname.$lastName.$i] .= date(self::TIME_YYMMDD, ($curr['last_location_change'] == 0 ? $curr['modified_at'] : $curr['last_location_change']));
+				}
 			}
 			$toDisplay[$lastSurname.$lastName.$i] .= '</td>';
 			$toDisplay[$lastSurname.$lastName.$i] .= '<td style="border: 1px solid;">'.(is_null($freshData['document_number']) ? '&nbsp;' : UFtpl_Sru_User::$documentTypesShort[$freshData['document_type']].': '.$freshData['document_number']).'</td>';
