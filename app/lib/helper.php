@@ -36,7 +36,15 @@ class UFlib_Helper {
             $returnString = ' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="'.$txt.'" /><br/>';
             return $returnString;
         }
-        
+
+        /**
+         * 
+         * @param $array Tablica wejsciowa
+         * @param $id szukana wartosc srodkowego elementu
+         * @param $field nazwa klucza w tablicy wejsciowej gdzie szukamy, domyslnie 'id'
+         * 
+         * @return Tablica zawierajaca 3 elementy (lewy, srodkowy, prawy), jeśli srodkowy nie posiada lewego lub prawego, zamiast nich wstawia nulle
+         */
         public static function getLeftRight($array, $id, $field = 'id'){
                 $left = null;
                 $right = null;
