@@ -552,8 +552,8 @@ changeVisibility();
 		$biggestSum = 0;
 		$j = 0;
 		while ($b = current ($banners)) {
-			$urlAdmin = $this->url(0).'/admins/'.$admins[key($banners)];
-			$warningsNum = $warningers[key($banners)];
+			$urlAdmin = $this->url(0).'/admins/'.$admins[$tmp2[$j][0]];
+			$warningsNum = $warningers[$tmp2[$j][0]];
 			echo '<tr><td><a href="'.$urlAdmin.'">'.$tmp2[$j][0].'</td></a><td>'.$tmp2[$j][1].'</td><td>'.$tmp2[$j][2].'</td></tr>';
 			$j++;
 			if ($i < 10) {
