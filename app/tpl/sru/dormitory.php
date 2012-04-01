@@ -248,6 +248,10 @@ changeVisibility();
 		echo '<th>Nr albumu</th>';
 		echo '<th>Uwagi</th>';
 		echo '</tr></thead><tbody>';
+		if (is_null($users)) {
+			echo '</tbody></table>';
+			return;
+		}
 		$lastUser = array(); // wpisy dot. aktualnie obrabianego usera
 		$toDisplay = array(); // dane do wyświetlenia
 		$freshData = null; // najnowsze dane usera
