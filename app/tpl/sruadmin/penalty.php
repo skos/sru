@@ -83,7 +83,7 @@ extends UFtpl_Common {
 		if (!is_null($ports)) {
 			$tmp = array();
 			foreach ($ports as $port) {
-				$tmp[$port['id']] = UFtpl_SruAdmin_Switch::displaySwitchName($port['dormitoryAlias'], $port['switchNo']) . ', port '.$port['ordinalNo'];
+				$tmp[$port['id']] = UFtpl_SruAdmin_Switch::displaySwitchName($port['dormitoryAlias'], $port['switchNo'], $port['switchLab']) . ', port '.$port['ordinalNo'];
 			}
 			echo $form->portId('Zablokuj port', array(
 				'type' => $form->SELECT,

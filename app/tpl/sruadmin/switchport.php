@@ -16,7 +16,7 @@ extends UFtpl_Common {
 	public function details(array $d, $switch, $alias, $speed, $vlan) {
 		$url = $this->url(0).'/switches/';
 		$conf = UFra::shared('UFconf_Sru');
-		$swstatsLink = str_replace($conf->swstatsSwitchRegex, UFtpl_SruAdmin_Switch::displaySwitchName($switch->dormitoryAlias, $switch->hierarchyNo), $conf->swstatsLinkPort);
+		$swstatsLink = str_replace($conf->swstatsSwitchRegex, UFtpl_SruAdmin_Switch::displaySwitchName($switch->dormitoryAlias, $switch->hierarchyNo, $switch->lab), $conf->swstatsLinkPort);
 		$swstatsLink = str_replace($conf->swstatsPortRegex, $d['ordinalNo'], $swstatsLink);
 
 		echo '<h3>Port '.$d['ordinalNo'].'</h3>';
@@ -238,7 +238,7 @@ $(document).ready( function() {
 					}
 					echo '</table>';
 				}
-				echo '<h4>Switch <a href="'.$url.$port['switchSn'].'">'.UFtpl_SruAdmin_Switch::displaySwitchName($port['dormitoryAlias'], $port['switchNo']).'</a></h4>';
+				echo '<h4>Switch <a href="'.$url.$port['switchSn'].'">'.UFtpl_SruAdmin_Switch::displaySwitchName($port['dormitoryAlias'], $port['switchNo'], $port['switchLab']).'</a></h4>';
 				$switch = $port['switchId'];
 				echo '<table>';
 				$j = 0;

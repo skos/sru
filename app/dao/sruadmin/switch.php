@@ -65,13 +65,14 @@ extends UFdao {
 		return $this->doSelectFirst($query);
 	}
 
-	public function getByHierarchyNoAndDorm($no, $dorm) {
+	public function getByHierarchyNoDormLab($no, $dorm, $lab) {
 		try {
 			$mapping = $this->mapping('get');
 
 			$query = $this->prepareSelect($mapping);
 			$query->where($mapping->hierarchyNo, $no);
 			$query->where($mapping->dormitoryId, $dorm);
+			$query->where($mapping->lab, $lab);
 
 			return $this->doSelectFirst($query);
 		} catch (UFex_Dao_NotFound $e) {

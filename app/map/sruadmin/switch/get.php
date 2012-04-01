@@ -23,6 +23,7 @@ extends UFmap {
 		'localization'	=> 's.localization',
 		'comment'	=> 's.comment',
 		'ip'		=> 's.ipv4',
+		'lab'		=> 's.lab',
 	);
 	protected $columnTypes = array(
 		'id'		=> self::INT,
@@ -42,6 +43,7 @@ extends UFmap {
 		'localization'	=> self::NULL_TEXT,
 		'comment'	=> self::NULL_TEXT,
 		'ip'		=> self::NULL_TEXT,
+		'lab'		=> self::BOOL,
 	);
 	protected $tables = array(
 		's' => 'switches',

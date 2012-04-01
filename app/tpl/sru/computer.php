@@ -176,7 +176,7 @@ extends UFtpl_Common {
 		echo '<p><em>MAC:</em> ';
 		if ($switchPort != null) {
 			echo '<a href="'.$this->url(0).'/switches/'.$switchPort->switchSn.'/port/'.$switchPort->ordinalNo.'/macs">'.$d['mac'].'</a> ';
-			echo '<small>(<a href="'.$this->url(0).'/switches/'.$switchPort->switchSn.'">'.UFtpl_SruAdmin_Switch::displaySwitchName($switchPort->dormitoryAlias, $switchPort->switchNo).'</a>, ';
+			echo '<small>(<a href="'.$this->url(0).'/switches/'.$switchPort->switchSn.'">'.UFtpl_SruAdmin_Switch::displaySwitchName($switchPort->dormitoryAlias, $switchPort->switchNo, $switchPort->switchLab).'</a>, ';
 			echo '<a href="'.$this->url(0).'/switches/'.$switchPort->switchSn.'/port/'.$switchPort->ordinalNo.'">port '.$switchPort->ordinalNo.'</a>)</small>';
 		} else {
 			echo $d['mac'];
@@ -701,7 +701,7 @@ div.style.display = 'none';
 	public function searchResultsUnregistered(array $d, $switchPort) {
 		$url = $this->url(0);
 		echo '<h1>Komputer niezarejestrowany</h1>';
-		echo '<p><em>Switch i port:</em> <a href="'.$this->url(0).'/switches/'.$switchPort->switchSn.'">'.UFtpl_SruAdmin_Switch::displaySwitchName($switchPort->dormitoryAlias, $switchPort->switchNo).'</a>, ';
+		echo '<p><em>Switch i port:</em> <a href="'.$this->url(0).'/switches/'.$switchPort->switchSn.'">'.UFtpl_SruAdmin_Switch::displaySwitchName($switchPort->dormitoryAlias, $switchPort->switchNo, $switchPort->switchLab).'</a>, ';
 		echo '<a href="'.$this->url(0).'/switches/'.$switchPort->switchSn.'/port/'.$switchPort->ordinalNo.'">port '.$switchPort->ordinalNo.'</a></p>';
 	}
 

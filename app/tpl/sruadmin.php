@@ -899,7 +899,7 @@ extends UFtpl_Common {
                 if(!is_null($leftRight[0])) {
                     echo '<a href="'.$this->url(0).'/switches/'.$leftRight[0]['serialNo'].'/:edit"><</a>';
                 }
-                echo 'Edycja switcha <a href="'.$this->url(0).'/switches/'.$d['switch']->serialNo.'">'.UFtpl_SruAdmin_Switch::displaySwitchName($d['switch']->dormitoryAlias, $d['switch']->hierarchyNo).'</a>';
+                echo 'Edycja switcha <a href="'.$this->url(0).'/switches/'.$d['switch']->serialNo.'">'.UFtpl_SruAdmin_Switch::displaySwitchName($d['switch']->dormitoryAlias, $d['switch']->hierarchyNo, $d['switch']->lab).'</a>';
                 if(!is_null($leftRight[2])) {
                     echo '<a href="'.$this->url(0).'/switches/'.$leftRight[2]['serialNo'].'/:edit">></a>';
                 }
@@ -920,7 +920,7 @@ extends UFtpl_Common {
 		$form = UFra::factory('UFlib_Form');
 		$url = $this->url(0);
 
-		echo '<h2>Edycja portów switcha <a href="'.$this->url(0).'/switches/'.$d['switch']->serialNo.'">'.UFtpl_SruAdmin_Switch::displaySwitchName($d['switch']->dormitoryAlias, $d['switch']->hierarchyNo).'</a></h2>';
+		echo '<h2>Edycja portów switcha <a href="'.$this->url(0).'/switches/'.$d['switch']->serialNo.'">'.UFtpl_SruAdmin_Switch::displaySwitchName($d['switch']->dormitoryAlias, $d['switch']->hierarchyNo, $d['switch']->lab).'</a></h2>';
 		echo $form->_start();
 		echo $d['ports']->write('formEdit', $d['switch'], $d['enabledSwitches'], $d['portAliases']);
 		echo $form->_end();
@@ -1488,7 +1488,7 @@ extends UFtpl_Common {
 	}
 
 	public function switchPortModifiedMailTitle(array $d) {
-		echo 'Zmodyfikowano port '.$d['port']->ordinalNo.' na switchu '.UFtpl_SruAdmin_Switch::displaySwitchName($d['port']->dormitoryAlias, $d['port']->switchNo);
+		echo 'Zmodyfikowano port '.$d['port']->ordinalNo.' na switchu '.UFtpl_SruAdmin_Switch::displaySwitchName($d['port']->dormitoryAlias, $d['port']->switchNo, $d['port']->switchLab);
 	}
 	
 	public function switchPortModifiedMailBody(array $d) {
@@ -1497,7 +1497,7 @@ extends UFtpl_Common {
 
 		echo 'Zmodyfikowano port '.$d['port']->ordinalNo.((!is_null($d['port']->locationAlias) && $d['port']->locationAlias != '') ? ' ('.$d['port']->locationAlias.')' : '').
 				(!is_null($d['port']->connectedSwitchId) ? ' ('.$d['port']->connectedSwitchDorm.'-hp'.$d['port']->connectedSwitchNo.')' : '').
-				' na switchu '.UFtpl_SruAdmin_Switch::displaySwitchName($d['port']->dormitoryAlias, $d['port']->switchNo)."\n";
+				' na switchu '.UFtpl_SruAdmin_Switch::displaySwitchName($d['port']->dormitoryAlias, $d['port']->switchNo, $d['port']->switchLab)."\n";
 		if (!is_null($d['port']->comment) && $d['port']->comment != '') {
 			echo 'Komentarz portu: '.$d['port']->comment."\n";
 		}

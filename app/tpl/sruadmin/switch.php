@@ -18,11 +18,11 @@ extends UFtpl_Common {
 		'mac/wrongFormat' => 'Błędny format adresu MAC',
 	);
 
-	public static function displaySwitchName($dormitoryAlias, $hierarchyNo) {
+	public static function displaySwitchName($dormitoryAlias, $hierarchyNo, $lab) {
 		if (is_null($hierarchyNo)) {
 			$swName = $dormitoryAlias.'-nieużywany';
 		} else {
-			$swName =  $dormitoryAlias.'-hp'.$hierarchyNo;
+			$swName =  $dormitoryAlias.($lab ? '-lab' : '-hp').$hierarchyNo;
 		}
 		return $swName;
 	}
@@ -53,13 +53,13 @@ extends UFtpl_Common {
 			echo is_null($c['ip']) ? '<del>' : '';
 			echo $c['inoperational'] ? '<span class="inoperational">' : '';
 			echo '<a href="'.$url.$c['serialNo'].'">';
-			echo $this->displaySwitchName($c['dormitoryAlias'], $c['hierarchyNo']);
+			echo $this->displaySwitchName($c['dormitoryAlias'], $c['hierarchyNo'], $c['lab']);
 			echo ' ('.$this->_escape($c['model']).')';
 			echo '</a>';
 			echo $c['inoperational'] ? '</span>' : '';
 			echo is_null($c['ip']) ? '</del>' : '';
 			echo ' - <small><a href="'.$url.''.$c['serialNo'].'/:edit">Edytuj</a>';
-			$swstatsLink = str_replace($conf->swstatsSwitchRegex, UFtpl_SruAdmin_Switch::displaySwitchName($c['dormitoryAlias'], $c['hierarchyNo']), $conf->swstatsLinkSwitch);
+			$swstatsLink = str_replace($conf->swstatsSwitchRegex, UFtpl_SruAdmin_Switch::displaySwitchName($c['dormitoryAlias'], $c['hierarchyNo'], $c['lab']), $conf->swstatsLinkSwitch);
 			if (!is_null($c['ip'])) {
 				echo ' &bull; <a href="'.$url.''.$c['serialNo'].'/:lockoutsedit">Lockout-MAC</a>';
 				echo ' &bull; <a href="'.$url.$c['serialNo'].'/tech">Technikalia</a>';
@@ -91,23 +91,23 @@ extends UFtpl_Common {
 
 	public function titleDetails(array $d) {
 		echo 'Switch ';
-		echo $this->displaySwitchName($d['dormitoryAlias'], $d['hierarchyNo']);
+		echo $this->displaySwitchName($d['dormitoryAlias'], $d['hierarchyNo'], $d['lab']);
 		echo ' ('.$d['dormitoryName'].')';
 	}
 
 	public function headerDetails(array $d) {
-                $daoSwitch = UFra::factory('UFdao_SruAdmin_Switch');
-                $switches = $daoSwitch->listByDormitoryId($d['dormitoryId']);
-                $leftRight = UFlib_Helper::getLeftRight($switches, $d['id']);
+        $daoSwitch = UFra::factory('UFdao_SruAdmin_Switch');
+        $switches = $daoSwitch->listByDormitoryId($d['dormitoryId']);
+        $leftRight = UFlib_Helper::getLeftRight($switches, $d['id']);
 		echo '<h2>';
-                if(!is_null($leftRight[0])) {
-                    echo '<a href="'.$this->url(0).'/switches/'.$leftRight[0]['serialNo'].'"><</a>';
-                }
-                echo 'Switch <a href="'.$this->url(0).'/switches/'.$d['serialNo'].'">'.$this->displaySwitchName($d['dormitoryAlias'], $d['hierarchyNo']).'</a>';
-                if(!is_null($leftRight[2])){
-                    echo '<a href="'.$this->url(0).'/switches/'.$leftRight[2]['serialNo'].'">></a>';
-                }
-                echo '</h2>';
+        if(!is_null($leftRight[0])) {
+			echo '<a href="'.$this->url(0).'/switches/'.$leftRight[0]['serialNo'].'"><</a>';
+        }
+        echo 'Switch <a href="'.$this->url(0).'/switches/'.$d['serialNo'].'">'.$this->displaySwitchName($d['dormitoryAlias'], $d['hierarchyNo'], $d['lab']).'</a>';
+        if(!is_null($leftRight[2])){
+			echo '<a href="'.$this->url(0).'/switches/'.$leftRight[2]['serialNo'].'">></a>';
+        }
+        echo '</h2>';
 	}
 
 	public function details(array $d, $info, $lockouts) {
@@ -127,7 +127,7 @@ extends UFtpl_Common {
                 UFra::error("switches count: ".count($d['switches']));
 		echo '<h3>Dane urządzenia</h3>';
 		echo '<p'.($d['inoperational'] ? ' class="inoperational"' : '').'><em>Model:</em> '.$d['model'].' ('.$d['modelNo'].')</p>';
-		echo '<p><em>IP:</em> '.$d['ip'].'</p>';
+		echo '<p><em>IP:</em> '.$d['ip'].' '.($d['lab'] ? '(SKOSlab)' : '').'</p>';
 		echo '<p class="nav"><a href="'.$url.'/switches/dorm/'.$d['dormitoryAlias'].'">Wróć do listy</a> &bull; 
 			 <a href="'.$url.'/switches/">Pokaż wszystkie</a> &bull; 
 			 <a href="'.$url.'/switches/'.$d['serialNo'].'/:edit">Edytuj</a> &bull; ';
@@ -136,7 +136,7 @@ extends UFtpl_Common {
 		}
 		echo '<a href="'.$url.'/switches/'.$d['serialNo'].'/tech">Technikalia</a> &bull;';
 		if (!is_null($d['ip'])) {
-			$swstatsLink = str_replace($conf->swstatsSwitchRegex, UFtpl_SruAdmin_Switch::displaySwitchName($d['dormitoryAlias'], $d['hierarchyNo']), $conf->swstatsLinkSwitch);
+			$swstatsLink = str_replace($conf->swstatsSwitchRegex, UFtpl_SruAdmin_Switch::displaySwitchName($d['dormitoryAlias'], $d['hierarchyNo'], $d['lab']), $conf->swstatsLinkSwitch);
 			echo ' <a href="'.$swstatsLink.'">SWStats</a> &bull;';
 		}
 		echo ' <span id="switchMoreSwitch"></span></p>';
@@ -236,6 +236,7 @@ extends UFtpl_Common {
 		echo $form->inventoryNo('Nr inwentarzowy');
 		echo $form->received('Na stanie od');
 		echo $form->inoperational('Uszkodzony', array('type'=>$form->CHECKBOX));
+		echo $form->lab('SKOSlab', array('type'=>$form->CHECKBOX), array('after'=>UFlib_Helper::displayHint("Czy switch znajduje się w SKOSlabie (służy do testów).")));
 		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
 ?>
 <script>
@@ -284,13 +285,13 @@ function fillData() {
 
 	public function titleEditDetails(array $d) {
 		echo 'Edycja switcha ';
-		echo $this->displaySwitchName($d['dormitoryAlias'], $d['hierarchyNo']);
+		echo $this->displaySwitchName($d['dormitoryAlias'], $d['hierarchyNo'], $d['lab']);
 		echo ' ('.$d['dormitoryName'].')';
 	}
 
 	public function titlePortsEditDetails(array $d) {
 		echo 'Edycja portów switcha ';
-		echo $this->displaySwitchName($d['dormitoryAlias'], $d['hierarchyNo']);
+		echo $this->displaySwitchName($d['dormitoryAlias'], $d['hierarchyNo'], $d['lab']);
 		echo ' ('.$d['dormitoryName'].')';
 	}
 
@@ -328,6 +329,7 @@ function fillData() {
 		echo $form->inventoryNo('Nr inwentarzowy');
 		echo $form->received('Na stanie od');
 		echo $form->inoperational('Uszkodzony', array('type'=>$form->CHECKBOX));
+		echo $form->lab('SKOSlab', array('type'=>$form->CHECKBOX), array('after'=>UFlib_Helper::displayHint("Czy switch znajduje się w SKOSlabie (służy do testów).")));
 		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
 	}
 

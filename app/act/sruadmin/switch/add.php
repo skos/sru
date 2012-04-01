@@ -15,7 +15,7 @@ extends UFact {
 
 			if (!is_null($bean->hierarchyNo)) {
 				$switch = UFra::factory('UFdao_SruAdmin_Switch');
-				$exists = $switch->getByHierarchyNoAndDorm($bean->hierarchyNo, $bean->dormitoryId);
+				$exists = $switch->getByHierarchyNoDormLab($bean->hierarchyNo, $bean->dormitoryId, $bean->lab);
 
 				if (!is_null($exists)) {
 					throw UFra::factory('UFex_Dao_DataNotValid', 'Data hierarchyNo dupliacted in dormirory', 0, E_WARNING, array('hierarchyNo' => 'duplicated'));
