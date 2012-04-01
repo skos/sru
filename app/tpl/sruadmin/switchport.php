@@ -133,8 +133,7 @@ extends UFtpl_Common {
 		if ($port != null) {
 			$selectedPort = $port->ordinalNo;
 		}
-
-		echo '<div class="switchports">';
+		echo '<div id="switchPortsT" class="switchports">';
 		echo '<h3>Lista portów</h3>';
 		$this->showLegend();
 		echo '<table>';
@@ -142,7 +141,7 @@ extends UFtpl_Common {
 			if ($i % 8 == 0) {
 				echo '<tr>';
 			}
-			echo '<td title="'.$this->_escape($d[$i]['comment']).'" class="';
+			echo '<td id="'.($i+1).'" title="'.$this->_escape($d[$i]['comment']).'" class="';
 			if ($portStatuses == null || !isset($portStatuses[$i])) {
 				echo "unknown";
 			} else if ($portStatuses[$i] == UFlib_Snmp_Hp::DISABLED) {
@@ -192,6 +191,32 @@ extends UFtpl_Common {
 			<a href="'.$url.$switch->serialNo.'/:portsedit">Edytuj porty</a>
 			</p>
 			</div>';
+		
+		echo '<ul id="switchContexMenu" class="contextMenu">
+    <li class="editSwitchContexMenu">
+        <a href="#edit">Edytuj</a>
+    </li>
+	<li class="macSwitchContexMenu">
+        <a href="#mac">Pokaż adresy MAC</a>
+    </li>
+</ul>
+
+
+<script type="text/javascript">
+$(document).ready( function() {
+    $("#switchPortsT td").contextMenu({
+        menu: "switchContexMenu"
+    },
+        function(action, el, pos) {
+			if (action == "edit") {
+				window.location = "'.$url.$switch->serialNo.'/port/" + $(el).attr("id") + "/:edit";
+			} else if (action == "mac") {
+				window.location = "'.$url.$switch->serialNo.'/port/" + $(el).attr("id") + "/macs";
+			}
+    });
+});
+</script>
+';
 	}
 
 	public function listRoomPorts(array $d, $room, $portStatuses) {

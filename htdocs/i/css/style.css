@@ -177,4 +177,49 @@ td.listAdminWalet {
 border-top: 1px solid;
 }
 
+/* context menu */
+#main .contextMenu {
+	position: absolute;
+	width: 220px;
+	z-index: 99999;
+	border: solid 1px #CCC;
+	background: #e7ffc4;
+	padding: 0px;
+	margin: 0px;
+	display: none;
+	margin-left: 0em;
+}
+
+#main .contextMenu li {
+	list-style: none;
+	padding: 0px;
+	margin: 0px;
+}
+
+#main .contextMenu a {
+	color: #333;
+	text-decoration: none;
+	display: block;
+	line-height: 20px;
+	height: 20px;
+	background-position: 6px;
+	background-repeat: no-repeat;
+	outline: none;
+	padding: 1px 5px;
+	padding-left: 28px;
+}
+
+#main .contextMenu li.hover a {
+	color: #FFF;
+	background-color: #8bd079;
+}
+
+#main .contextMenu li.separator {
+	border-top: solid 1px #CCC;
+}
+
+#main .contextMenu li.editSwitchContexMenu a { background-image: url(../img/edycja.png); }
+#main .contextMenu li.macSwitchContexMenu a { background-image: url(../img/jablko.png); }
+
+
 #foot { text-align: center; font-size: 0.5em; margin-top: 2em; clear: both; }
