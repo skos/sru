@@ -247,21 +247,21 @@ extends UFtpl_Common {
 	}
 
 	public function computerSearchResults(array $d) {
-		echo '<h2>Znalezione komputery:</h2>';
+		echo '<h2>Znalezione komputery ('.count($d['computers']).'):</h2>';
 		echo '<div class="computerSearchResults"><ul>';
 		echo $d['computers']->write('searchResults');
 		echo '</ul></div>';
 	}
 
 	public function computerSearchByAliasResults(array $d) {
-		echo '<h2>Znalezione aliasy:</h2>';
+		echo '<h2>Znalezione aliasy ('.count($d['aliases']).'):</h2>';
 		echo '<ul>';
 		echo $d['aliases']->write('listAliases');
 		echo '</ul></div>';
 	}
 
 	public function computerSearchHistoryResults(array $d) {
-		echo '<h2>Znalezione komputery używające wcześniej szukanego IP:</h2>';
+		echo '<h2>Znalezione komputery używające wcześniej szukanego IP ('.count($d['computers']).'):</h2>';
 		echo '<ul>';
 		echo $d['computers']->write('searchResults');
 		echo '</ul></div>';
@@ -308,12 +308,14 @@ extends UFtpl_Common {
 	}
 
 	public function userSearchResults(array $d) {
+		echo '<h2>Znalezieni użytkownicy ('.count($d['users']).'):</h2>';
 		echo '<div class="userSearchResults"><ul>';
 		echo $d['users']->write('searchResults');
 		echo '</ul></div>';
 	}
 
 	public function userSearchResultsNotFound() {
+		echo '<h2>Znalezieni użytkownicy:</h2>';
 		echo $this->ERR('Nie znaleziono');
 	}
 
