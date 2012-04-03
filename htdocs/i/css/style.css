@@ -122,7 +122,7 @@ img { border-style: none; }
 
 #main .switchports table { width: 100%; border-collapse: collapse;  }
 #main .switchports td { text-align: center; width: 12%; border: 1px solid #eee; }
-#main .switchports td.disabled { background-color: #ffa37f;}
+#main .switchports td.dis { background-color: #ffa37f;}
 #main .switchports td.down { background-color: #888888;}
 #main .switchports td.up { background-color: #a4ff42;}
 #main .switchports td.unknown { background-color: white;}

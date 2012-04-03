@@ -118,7 +118,7 @@ extends UFtpl_Common {
 	}
 
 	private function showLegend() {
-		echo '<div class="legend"><table class="switchports"><tr><td class="disabled">Wyłączony</td><td class="down">Nieaktywny</td><td class="up">Aktywny</td><td class="unknown">Status nieznany</td></tr></table><br/></div>';
+		echo '<div class="legend"><table class="switchports"><tr><td class="dis">Wyłączony</td><td class="down">Nieaktywny</td><td class="up">Aktywny</td><td class="unknown">Status nieznany</td></tr></table><br/></div>';
 	}
 
 	public function listPorts(array $d, $switch, $portStatuses, $trunks, $port = null) {
@@ -133,10 +133,10 @@ extends UFtpl_Common {
 		if ($port != null) {
 			$selectedPort = $port->ordinalNo;
 		}
-		echo '<div id="switchPortsT" class="switchports">';
+		echo '<div class="switchports">';
 		echo '<h3>Lista portów</h3>';
 		$this->showLegend();
-		echo '<table>';
+		echo '<table id="switchPortsT">';
 		for ($i = 0; $i < count($d); $i++) {
 			if ($i % 8 == 0) {
 				echo '<tr>';
@@ -145,7 +145,7 @@ extends UFtpl_Common {
 			if ($portStatuses == null || !isset($portStatuses[$i])) {
 				echo "unknown";
 			} else if ($portStatuses[$i] == UFlib_Snmp_Hp::DISABLED) {
-				echo "disabled";
+				echo "dis";
 			} else if ($portStatuses[$i] == UFlib_Snmp_Hp::DOWN) {
 				echo "down";
 			} else {
@@ -250,7 +250,7 @@ $(document).ready( function() {
 			if ($portStatuses == null) {
 				echo "unknown";
 			} else if ($portStatuses[$i] == UFlib_Snmp_Hp::DISABLED) {
-				echo "disabled";
+				echo "dis";
 			} else if ($portStatuses[$i] == UFlib_Snmp_Hp::DOWN) {
 				echo "down";
 			} else {
