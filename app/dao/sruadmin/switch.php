@@ -10,6 +10,7 @@ extends UFdao {
 
 		$query = $this->prepareSelect($mapping);
 		$query->order($mapping->dormitoryId);
+		$query->order($mapping->lab);
 		$query->order($mapping->hierarchyNo);
 
 		return $this->doSelect($query);
@@ -21,6 +22,7 @@ extends UFdao {
 		$query = $this->prepareSelect($mapping);
 		$query->where($mapping->dormitoryId, $dormitoryId);
 		$query->order($mapping->dormitoryId);
+		$query->order($mapping->lab);
 		$query->order($mapping->hierarchyNo);
 
 		return $this->doSelect($query);
@@ -33,6 +35,7 @@ extends UFdao {
 		$query->where($mapping->hierarchyNo, null, UFlib_Db_Query::NOT_EQ);
 		$query->where($mapping->ip, null, UFlib_Db_Query::NOT_EQ);
 		$query->order($mapping->dormitoryId);
+		$query->order($mapping->lab);
 		$query->order($mapping->hierarchyNo);
 
 		return $this->doSelect($query);

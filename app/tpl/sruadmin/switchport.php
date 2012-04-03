@@ -23,7 +23,7 @@ extends UFtpl_Common {
 		if(is_null($d['connectedSwitchId'])) {
 			echo '<p><em>Lokalizacja:</em> <a href="'.$this->url(0).'/dormitories/'.$d['dormitoryAlias'].'/'.$d['locationAlias'].'">'.$d['locationAlias'].'</a></p>';
 		} else {
-			echo '<p><em>Podłączony switch:</em> <a href="'.$url.$d['connectedSwitchSn'].'">'.$d['connectedSwitchDorm'].'-hp'.$d['connectedSwitchNo'].'</a></p>';
+			echo '<p><em>Podłączony switch:</em> <a href="'.$url.$d['connectedSwitchSn'].'">'.UFtpl_SruAdmin_Switch::displaySwitchName($d['connectedSwitchDorm'], $d['connectedSwitchNo'], $d['connectedSwitchLab']).'</a></p>';
 		}
 		if (!is_null($alias) && $alias != '') {
 			echo '<p><em>Alias portu: </em>'.$alias.'</p>';
@@ -80,7 +80,7 @@ extends UFtpl_Common {
 		$tmp = array();
 		foreach ($enabledSwitches as $sw) {
 			if ($sw['id'] == $switch->id) continue;
-			$tmp[$sw['id']] = $sw['dormitoryAlias'].'-hp'.$sw['hierarchyNo'];
+			$tmp[$sw['id']] = UFtpl_SruAdmin_Switch::displaySwitchName($sw['dormitoryAlias'], $sw['hierarchyNo'], $sw['lab']);
 		}
 
 		echo '<h3>Edycja portu '.$d['ordinalNo'].'</h3>';
