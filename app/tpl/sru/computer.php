@@ -145,24 +145,7 @@ extends UFtpl_Common {
 	public function details(array $d, $switchPort, $aliases, $virtuals) {
 		$url = $this->url(0);
                 $urlNav = $this->url(0).'/computers/'.$d['id'];
-                $adminControl = UFra::factory('UFacl_SruAdmin_Admin');
-                if(!$adminControl->login()){ //zalogowany jako admin
-                    $daoComputer = UFra::factory('UFdao_Sru_Computer');
-                    $class = substr($d['ip'], 7, 3);
-                    $computers = $daoComputer->listAllActiveByIpClass($class);
-                    $leftRight = UFlib_Helper::getLeftRight($computers, $d['id']);
-                    echo '<h1>';
-                    if(!is_null($leftRight[0])) {
-                        echo '<a href="'.$this->url(0).'/computers/'.$leftRight[0]['id'].'"><</a> ';
-                    }
-                    echo $d['host'];
-                    if(!is_null($leftRight[2])) {
-                        echo ' <a href="'.$this->url(0).'/computers/'.$leftRight[2]['id'].'">></a> ';
-                    }
-                    echo '</h1>';
-                }else{
-                    echo '<h1>'.$d['host'].'</h1>';
-                }
+                echo '<h1>'.$d['host'].'</h1>';
                 if (is_null($d['userId'])) {
 			$user = 'BRAK';
 		} else {

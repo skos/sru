@@ -892,18 +892,7 @@ extends UFtpl_Common {
 	public function switchEdit(array $d) {
 		$form = UFra::factory('UFlib_Form');
 		$url = $this->url(0);
-                $daoSwitch = UFra::factory('UFdao_SruAdmin_Switch');
-                $switches = $daoSwitch->listByDormitoryId($d['switch']->dormitoryId);
-                $leftRight = UFlib_Helper::getLeftRight($switches, $d['switch']->id);
-		echo '<h2>';
-                if(!is_null($leftRight[0])) {
-                    echo '<a href="'.$this->url(0).'/switches/'.$leftRight[0]['serialNo'].'/:edit"><</a>';
-                }
-                echo 'Edycja switcha <a href="'.$this->url(0).'/switches/'.$d['switch']->serialNo.'">'.UFtpl_SruAdmin_Switch::displaySwitchName($d['switch']->dormitoryAlias, $d['switch']->hierarchyNo, $d['switch']->lab).'</a>';
-                if(!is_null($leftRight[2])) {
-                    echo '<a href="'.$this->url(0).'/switches/'.$leftRight[2]['serialNo'].'/:edit">></a>';
-                }
-                echo '</h2>';
+                echo '<h2>Edycja switcha <a href="'.$this->url(0).'/switches/'.$d['switch']->serialNo.'">'.UFtpl_SruAdmin_Switch::displaySwitchName($d['switch']->dormitoryAlias, $d['switch']->hierarchyNo).'</a></h2>'; 
 		echo $form->_start();
 		echo $d['switch']->write('formEdit', $d['dormitories'], $d['swModels']);
 		echo $form->_submit('Zapisz');
@@ -1145,7 +1134,6 @@ extends UFtpl_Common {
 	public function computerPenalties(array $d)
 	{
 		$acl = $this->_srv->get('acl');		
-		
 		echo '<h2>Lista kar dla hosta <a href="'.$this->url(1).'/'.$d['computer']->id.'">'.$d['computer']->host.'</a></h2>';
 
 		$d['penalties']->write('listComputerPenalty');
