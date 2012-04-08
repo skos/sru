@@ -1013,8 +1013,7 @@ extends UFbox {
 		try
 		{
 			$bean = $this->_getDormFromGet();
-
-			$d['dorm'] = $bean;
+                        $d['dorm'] = $bean;
 
 			return $this->render(__FUNCTION__, $d);
 		}
@@ -1026,8 +1025,9 @@ extends UFbox {
 	public function dorm() {
 		try {
 			$bean = $this->_getDormFromGet();
-
+                        $bean->leftRight();
 			$d['dorm'] = $bean;
+                        
 			$d['rooms'] = array();
 			
 			try {
@@ -1053,6 +1053,7 @@ extends UFbox {
 			$d['dorm'] = null;
 			try {
 				$dorm = $this->_getDormFromGet();
+                                $dorm->leftRight();
 				$d['dorm'] = $dorm;
 				$bean->listByDormitoryId($dorm->id);
 			} catch (UFex_Core_DataNotFound $e) {
@@ -1070,6 +1071,11 @@ extends UFbox {
 		try {
 			$bean = $this->_getSwitchFromGet();
 			$d['switch'] = $bean;
+                        $daoSwitch = UFra::factory('UFdao_SruAdmin_Switch');
+                        $switches = $daoSwitch->listByDormitoryId($d['dormitoryId']);
+                        $leftRight = UFlib_Helper::getLeftRight($switches, $d['id']);
+                        $d['left'] = $leftRight[0];
+                        $d['right'] = $leftRight[2];
 			if (!is_null($d['switch']->ip)) {
 				$switch = UFra::factory('UFlib_Snmp_Hp', $d['switch']->ip);
 				$d['info'] = $switch->getStdInfo();
@@ -1993,11 +1999,12 @@ extends UFbox {
 		try {
 			$bean = UFra::factory('UFbean_SruAdmin_Ips');
 			$d['ips'] =& $bean;	
-
+                        
 			$d['dorm'] = null;
 			try {
 				$dorm = $this->_getDormFromGet();
-				$d['dorm'] = $dorm;
+                                $dorm->leftRight();
+                                $d['dorm'] = $dorm;
 				$bean->listByDormitory($dorm->id);
 
 				$used = UFra::factory('UFbean_Sru_Ipv4');

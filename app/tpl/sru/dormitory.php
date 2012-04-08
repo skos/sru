@@ -18,12 +18,24 @@ extends UFtpl_Common {
 	}
 
 	public function titleDetails(array $d) {
-		echo $d['name'];
+                echo $d['name'];
 	}
-	public function details(array $d) {
+	public function details(array $d, $admin = false, $left = null, $right = null) {
 		$url = $this->url(0).'/';
-		
-		echo '<h2>'.$d['name'].'<br/><small>(liczba użytkowników: '.$d['userCount'].' &bull; <a href="'.$url.'ips/'.$d['alias'].'">liczba komputerów: '.$d['computerCount'].'</a> &bull; <a href="'.$url.'switches/dorm/'.$d['alias'].'">switche</a>)</small></h2>';
+		echo '<h2>';
+                if($admin){
+                    if($left != null){
+                        echo '<a href="'.$urlSw.$left['alias'].'" >< </a>';
+                    }
+                    echo $d['name'];
+                    if($right != null){
+                        echo '<a href="'.$urlSw.$right['alias'].'" > ></a>';
+                    }
+                }else{
+                    echo $d['name'];
+                }
+
+            echo '<br/><small>(liczba użytkowników: '.$d['userCount'].' &bull; <a href="'.$url.'ips/'.$d['alias'].'">liczba komputerów: '.$d['computerCount'].'</a> &bull; <a href="'.$url.'switches/dorm/'.$d['alias'].'">switche</a>)</small></h2>';
 	}
 
 	public function inhabitants(array $d, $rooms) {
