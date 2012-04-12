@@ -37,8 +37,8 @@ changeVisibility();
 		/**
 		 * Wyświetla menu kontekstowe edycji portu
 		 */
-		public static function displaySwitchPortMenu($switchUrl) {
-?><ul id="switchContexMenu" class="contextMenu">
+		public static function displaySwitchPortMenu(array $switchUrls) {
+			echo '<ul id="switchContexMenu" class="contextMenu">
     <li class="editSwitchContexMenu">
         <a href="#edit">Edytuj</a>
     </li>
@@ -47,20 +47,22 @@ changeVisibility();
     </li>
 </ul>';
 
-<script type="text/javascript">
+			foreach ($switchUrls as $swId => $swUrl) {
+?><script type="text/javascript">
 $(document).ready( function() {
-    $("#switchPortsT td").contextMenu({
+    $("#switchPortsT<? echo $swId ?> td").contextMenu({
         menu: "switchContexMenu"
     },
         function(action, el, pos) {
 			if (action == "edit") {
-				window.location = "<? echo $switchUrl ?>/port/" + $(el).attr("id") + "/:edit";
+				window.location = "<? echo $swUrl ?>/port/" + $(el).attr("id") + "/:edit";
 			} else if (action == "mac") {
-				window.location = "<? echo $switchUrl ?>/port/" + $(el).attr("id") + "/macs";
+				window.location = "<? echo $swUrl ?>/port/" + $(el).attr("id") + "/macs";
 			}
     });
 });
 </script><?
+			}
 		}
 
 }

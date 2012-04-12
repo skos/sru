@@ -141,7 +141,7 @@ extends UFtpl_Common {
 			if ($i % 8 == 0) {
 				echo '<tr>';
 			}
-			echo '<td id="'.($i+1).'" title="'.$this->_escape($d[$i]['comment']).'" class="';
+			echo '<td id="'.$d[$i]['ordinalNo'].'" title="'.$this->_escape($d[$i]['comment']).'" class="';
 			if ($portStatuses == null || !isset($portStatuses[$i])) {
 				echo "unknown";
 			} else if ($portStatuses[$i] == UFlib_Snmp_Hp::DISABLED) {
@@ -192,7 +192,7 @@ extends UFtpl_Common {
 			</p>
 			</div>';
 		
-		UFlib_Script::displaySwitchPortMenu($url.$switch->serialNo);
+		UFlib_Script::displaySwitchPortMenu(array('' => $url.$switch->serialNo));
 	}
 
 	public function listRoomPorts(array $d, $room, $portStatuses) {
@@ -200,6 +200,7 @@ extends UFtpl_Common {
 		$i = 0;
 		$j = 0;
 		$switch = 0;
+		$switches = array();
 
 		echo '<div class="switchports">';
 		foreach ($d as $port) {
@@ -216,13 +217,14 @@ extends UFtpl_Common {
 				}
 				echo '<h4>Switch <a href="'.$url.$port['switchSn'].'">'.UFtpl_SruAdmin_Switch::displaySwitchName($port['dormitoryAlias'], $port['switchNo'], $port['switchLab']).'</a></h4>';
 				$switch = $port['switchId'];
-				echo '<table>';
+				echo '<table id="switchPortsT'.$port['switchId'].'">';
 				$j = 0;
+				$switches[$port['switchId']] = $url.$port['switchSn'];
 			}
 			if ($j % 8 == 0) {
 				echo '<tr>';
 			}
-			echo '<td title="'.$this->_escape($port['comment']).'" class="';
+			echo '<td id="'.$port['ordinalNo'].' title="'.$this->_escape($port['comment']).'" class="';
 			if ($portStatuses == null) {
 				echo "unknown";
 			} else if ($portStatuses[$i] == UFlib_Snmp_Hp::DISABLED) {
@@ -257,6 +259,8 @@ extends UFtpl_Common {
 		echo '</table>';
 		echo '<p class="nav"><a href="'.$url.'dorm/'.$room->dormitoryAlias.'">Pokaż switche akademika</a> </p>';
 		echo '</div>';
+		
+		UFlib_Script::displaySwitchPortMenu($switches);
 	}
 
 	public function formEdit(array $d, $switch, $enabledSwitches, $portAliases) {
