@@ -22,10 +22,10 @@ extends UFtpl_Common {
 		echo $form->_end();
 		echo $form->_end(true);
 		if ($this->_srv->get('msg')->get('adminLogin/errors')) {
-                    UFlib_Script::focus('adminLogin_password');
+			UFlib_Script::focus('adminLogin_password');
 		}else{
-                    UFlib_Script::focus('adminLogin_login');
-                }
+			UFlib_Script::focus('adminLogin_login');
+		}
 	}
 
 	public function logout(array $d) {
@@ -769,7 +769,7 @@ extends UFtpl_Common {
 		$d['dorm']->write('details', true, $d['dorm']->left, $d['dorm']->right);
 		if($d['rooms']) {
 			echo '<div class="rooms">';
-			echo '<h3>Pokoje</hh23>';			
+			echo '<h3>Pokoje</h3>';			
 
 			$d['rooms']->write('listRooms');
 			echo '</div>';
@@ -793,17 +793,17 @@ extends UFtpl_Common {
 	public function switches(array $d) {
 		$url = $this->url(0).'/dormitories/';
 		$urlIp = $this->url(0).'/ips/';
-                $urlSw = $this->url(0).'/switches/dorm/';
+		$urlSw = $this->url(0).'/switches/dorm/';
 		if (!is_null($d['dorm'])) {
 			echo '<h2>';
-                        if($d['dorm']->left != null){
-                            echo '<a href="'.$urlSw.$d['dorm']->left['alias'].'" >< </a>';
-                        }
-                        echo $d['dorm']->name;
-                        if($d['dorm']->right != null){
-                            echo '<a href="'.$urlSw.$d['dorm']->right['alias'].'" > ></a>';
-                        }
-                        
+			if($d['dorm']->left != null){
+				echo '<a href="'.$urlSw.$d['dorm']->left['alias'].'" >< </a>';
+			}
+			echo $d['dorm']->name;
+			if($d['dorm']->right != null){
+				echo '<a href="'.$urlSw.$d['dorm']->right['alias'].'" > ></a>';
+			}
+
 			echo '<br/><small>(<a href="'.$url.$d['dorm']->alias.'">pokoje</a> &bull; <a href="'.$urlIp.$d['dorm']->alias.'">komputery</a> &bull; liczba switchy: '.count($d['switches']).')</small></h2>';
 		} else {
 			echo '<h2>Switche</h2>';
@@ -899,7 +899,7 @@ extends UFtpl_Common {
 	public function switchEdit(array $d) {
 		$form = UFra::factory('UFlib_Form');
 		$url = $this->url(0);
-                echo '<h2>Edycja switcha <a href="'.$this->url(0).'/switches/'.$d['switch']->serialNo.'">'.UFtpl_SruAdmin_Switch::displaySwitchName($d['switch']->dormitoryAlias, $d['switch']->hierarchyNo).'</a></h2>'; 
+		echo '<h2>Edycja switcha <a href="'.$this->url(0).'/switches/'.$d['switch']->serialNo.'">'.UFtpl_SruAdmin_Switch::displaySwitchName($d['switch']->dormitoryAlias, $d['switch']->hierarchyNo).'</a></h2>'; 
 		echo $form->_start();
 		echo $d['switch']->write('formEdit', $d['dormitories'], $d['swModels']);
 		echo $form->_submit('Zapisz');
@@ -1207,25 +1207,25 @@ extends UFtpl_Common {
 	public function ips(array $d) {
 		$url = $this->url(0).'/dormitories/';
 		$urlSw = $this->url(0).'/switches/dorm/';
-                $urlIP = $this->url(0).'/ips/';
+		$urlIp = $this->url(0).'/ips/';
 		if (!is_null($d['dorm'])) {
 			echo '<h2>';
-                        if($d['dorm']->left != null){
-                            echo '<a href="'.$urlIp.$d['dorm']->left['alias'].'" >< </a>';
-                        }
-                        echo $d['dorm']->name;
-                        if($d['dorm']->right != null){
-                            echo '<a href="'.$urlIp.$d['dorm']->right['alias'].'" > ></a>';
-                        }
-                    	echo '<br/><small>(<a href="'.$url.$d['dorm']->alias.'">pokoje</a> &bull; zajętość puli: '.$d['used']->getIpCount().'/'.$d['sum']->getIpCount().' ~> '.($d['sum']->getIpCount() > 0 ? round($d['used']->getIpCount()/$d['sum']->getIpCount()*100) : 0).'% &bull; <a href="'.$urlSw.$d['dorm']->alias.'">switche</a>)</small></h2>';
+			if($d['dorm']->left != null){
+				echo '<a href="'.$urlIp.$d['dorm']->left['alias'].'" >< </a>';
+			}
+			echo $d['dorm']->name;
+			if($d['dorm']->right != null){
+				echo '<a href="'.$urlIp.$d['dorm']->right['alias'].'" > ></a>';
+			}
+			echo '<br/><small>(<a href="'.$url.$d['dorm']->alias.'">pokoje</a> &bull; zajętość puli: '.$d['used']->getIpCount().'/'.$d['sum']->getIpCount().' ~> '.($d['sum']->getIpCount() > 0 ? round($d['used']->getIpCount()/$d['sum']->getIpCount()*100) : 0).'% &bull; <a href="'.$urlSw.$d['dorm']->alias.'">switche</a>)</small></h2>';
 		} else {
 			echo '<h2>Zestawienie numerów IP</h2>';
 		}
 		echo '<div class="ips">';
-		
+
 		$d['ips']->write('ips', $d['dorm']);
 		echo '</div>';
-	}						
+	}
 	
 	public function ipsNotFound(array $d) {
 		if (!is_null($d['dorm'])) {

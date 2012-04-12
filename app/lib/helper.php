@@ -22,19 +22,19 @@ class UFlib_Helper {
 	}
         public static function displayHint($string) {
 
-            $licz = strlen($string); 
+		$licz = strlen($string); 
 
-            if ($licz>=250) 
-            { 
-                $tnij = substr($string,0,250); 
-                $txt = $tnij."..."; 
-            } 
-            else 
-            { 
-                $txt = $string; 
-            } 
-            $returnString = ' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="'.$txt.'" /><br/>';
-            return $returnString;
+		if ($licz>=250) 
+		{ 
+			$tnij = substr($string,0,250); 
+			$txt = $tnij."..."; 
+		} 
+		else 
+		{ 
+			$txt = $string; 
+		} 
+		$returnString = ' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="'.$txt.'" /><br/>';
+		return $returnString;
         }
 
         /**
@@ -45,26 +45,26 @@ class UFlib_Helper {
          * 
          * @return Tablica zawierajaca 3 elementy (lewy, srodkowy, prawy), jeśli srodkowy nie posiada lewego lub prawego, zamiast nich wstawia nulle
          */
-        public static function getLeftRight($array, $id, $field = 'id'){
-                $left = null;
-                $right = null;
-                $current = null;
-                list($key, $left) = each($array);
-                if($left[$field] == $id){ //brak lewego
-                    $current = $left;
-                    list($key, $right) = each($array);
-                    $left = null;
-                }else{
-                    list($key, $current) = each($array);
-                    while(true){
-                        list($key, $right) = each($array);
-                        if($current[$field] == $id || $right == null){
-                            break;
-                        }
-                        $left = $current;
-                        $current = $right;
-                    }
-                }
-                return array($left, $current, $right);
-        }
+	public static function getLeftRight($array, $id, $field = 'id'){
+		$left = null;
+		$right = null;
+		$current = null;
+		list($key, $left) = each($array);
+		if($left[$field] == $id){ //brak lewego
+			$current = $left;
+			list($key, $right) = each($array);
+			$left = null;
+		}else{
+			list($key, $current) = each($array);
+			while(true){
+				list($key, $right) = each($array);
+				if($current[$field] == $id || $right == null){
+					break;
+				}
+				$left = $current;
+				$current = $right;
+			}
+		}
+		return array($left, $current, $right);
+	}
 }

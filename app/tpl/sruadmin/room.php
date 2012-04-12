@@ -67,25 +67,13 @@ extends UFtpl_Common {
 	}
 
 	public function titleDetails(array $d) {
-            echo $d['alias'].' ('.$d['dormitoryAlias'].')';
+		echo $d['alias'].' ('.$d['dormitoryAlias'].')';
 	}
 	public function details(array $d) {
 		$url = $this->url(0);
-                $daoRoom = UFra::factory('UFdao_SruAdmin_Room');
-                $rooms = $daoRoom->listByDormitoryId($d['dormitoryId']);
-                $leftRight = UFlib_Helper::getLeftRight($rooms, $d['id']);
-		echo '<h2>';
-                if(!is_null($leftRight[0])) {
-                    echo '<a href="'.$this->url(0).'/dormitories/'.$d['dormitoryAlias'].'/'.$leftRight[0]['alias'].'"><</a> ';
-                }
-                echo $d['alias'].' (<a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'">'.strtoupper($d['dormitoryAlias']).'</a>)';
-                if(!is_null($leftRight[2])) {
-                    echo ' <a href="'.$this->url(0).'/dormitories/'.$d['dormitoryAlias'].'/'.$leftRight[2]['alias'].'">></a>';
-                }
 
-                echo '<br/><small>(liczba użytkowników: '.$d['userCount'].' &bull; liczba komputerów: '.$d['computerCount'].')</small>';
-                echo '</h2>';
-                echo '<p><em>Typ:</em> '.self::getRoomType($d['typeId']).'</p>';
+		echo '<h2>'.$d['alias'].' (<a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'">'.strtoupper($d['dormitoryAlias']).'</a>)<br/><small>(liczba użytkowników: '.$d['userCount'].' &bull; liczba komputerów: '.$d['computerCount'].')</small></h2>'; 
+		echo '<p><em>Typ:</em> '.self::getRoomType($d['typeId']).'</p>'; 
 		if ($d['comment']) {
 			echo '<p><em>Komentarz:</em></p><p class="comment">'.nl2br($this->_escape($d['comment'])).'</p>';		
 		}
@@ -94,7 +82,7 @@ extends UFtpl_Common {
 		echo ' &bull; <a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'/'.$d['alias'].'/:edit">Edytuj</a>';
 		echo ' &bull; <a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'/'.$d['alias'].'/history">Historia zmian</a>';
 		echo '</p>';
-		
+
 		if(isset($_COOKIE['SRUDisplayUsers']) && $_COOKIE['SRUDisplayUsers'] == '1' && !isset($_COOKIE['SRUDisplayUsersChanged'])){
 			echo '<p class="nav"><a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'/'.$d['alias'].'" onClick="fullList()">Wyświetl pełną listę użytkowników i hostów</a></p>';
 		}else if(isset($_COOKIE['SRUDisplayUsers']) && $_COOKIE['SRUDisplayUsers'] == '1'){

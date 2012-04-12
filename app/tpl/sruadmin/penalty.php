@@ -266,7 +266,7 @@ changeVisibility();
 		echo $form->_end();
 		echo $form->_end(true);
 		echo '<p class="nav"><a href="'.$urlPenalty.'">Dane</a> &bull; <a href="'.$url.'/penalties/'.$d['id'].'/history/">Historia kary</a></p>';
-                                                                                                                 
+
 ?><script type="text/javascript">
 	input = document.getElementById('penaltyEdit_endAt');                                                                                                                                                         
 	if (input) {                                                                                                                                                                                                  

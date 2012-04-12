@@ -144,9 +144,9 @@ extends UFtpl_Common {
 
 	public function details(array $d, $switchPort, $aliases, $virtuals) {
 		$url = $this->url(0);
-                $urlNav = $this->url(0).'/computers/'.$d['id'];
-                echo '<h1>'.$d['host'].'</h1>';
-                if (is_null($d['userId'])) {
+		$urlNav = $this->url(0).'/computers/'.$d['id'];
+		echo '<h1>'.$d['host'].'</h1>';
+		if (is_null($d['userId'])) {
 			$user = 'BRAK';
 		} else {
 			$user = '<a href="'.$url.'/users/'.$d['userId'].'">'.$this->_escape($d['userName']).' '.$this->_escape($d['userSurname']).'</a>'.(strlen($d['userCommentSkos']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$d['userCommentSkos'].'" />':'');
