@@ -8,7 +8,7 @@ class UFlib_Script {
         </script>
     <?}
     
-    public static function SruAdmin_Switch_changeVisibility(){
+    public static function switchMoreChangeVisibility(){
 ?><script type="text/javascript">
 function changeVisibility() {
 	var div = document.getElementById('switchMore');
@@ -32,6 +32,36 @@ changeVisibility();
 </script><?
         
     }
+	
+			
+		/**
+		 * Wyświetla menu kontekstowe edycji portu
+		 */
+		public static function displaySwitchPortMenu($switchUrl) {
+?><ul id="switchContexMenu" class="contextMenu">
+    <li class="editSwitchContexMenu">
+        <a href="#edit">Edytuj</a>
+    </li>
+	<li class="macSwitchContexMenu">
+        <a href="#mac">Pokaż adresy MAC</a>
+    </li>
+</ul>';
+
+<script type="text/javascript">
+$(document).ready( function() {
+    $("#switchPortsT td").contextMenu({
+        menu: "switchContexMenu"
+    },
+        function(action, el, pos) {
+			if (action == "edit") {
+				window.location = "<? echo $switchUrl ?>/port/" + $(el).attr("id") + "/:edit";
+			} else if (action == "mac") {
+				window.location = "<? echo $switchUrl ?>/port/" + $(el).attr("id") + "/macs";
+			}
+    });
+});
+</script><?
+		}
 
 }
 ?>

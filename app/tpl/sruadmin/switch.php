@@ -153,7 +153,8 @@ extends UFtpl_Common {
 		echo '</p>';
 		echo '<p><em>Komentarz:</em> '.nl2br($this->_escape($d['comment'])).'</p>';
 		echo '</div>';
-                UFlib_Script::SruAdmin_Switch_changeVisibility();
+		
+		UFlib_Script::switchMoreChangeVisibility();
 	}
 
 	public function techDetails(array $d, $info, $gbics) {

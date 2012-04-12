@@ -187,36 +187,12 @@ extends UFtpl_Common {
 		}
 		echo '</table>';
 		echo '<p class="nav"><a href="'.$url.'dorm/'.$switch->dormitoryAlias.'">Wróć do listy</a> &bull; 
-			 <a href="'.$url.'">Pokaż wszystkie</a> &bull; 
+			<a href="'.$url.'">Pokaż wszystkie</a> &bull; 
 			<a href="'.$url.$switch->serialNo.'/:portsedit">Edytuj porty</a>
 			</p>
 			</div>';
 		
-		echo '<ul id="switchContexMenu" class="contextMenu">
-    <li class="editSwitchContexMenu">
-        <a href="#edit">Edytuj</a>
-    </li>
-	<li class="macSwitchContexMenu">
-        <a href="#mac">Pokaż adresy MAC</a>
-    </li>
-</ul>
-
-
-<script type="text/javascript">
-$(document).ready( function() {
-    $("#switchPortsT td").contextMenu({
-        menu: "switchContexMenu"
-    },
-        function(action, el, pos) {
-			if (action == "edit") {
-				window.location = "'.$url.$switch->serialNo.'/port/" + $(el).attr("id") + "/:edit";
-			} else if (action == "mac") {
-				window.location = "'.$url.$switch->serialNo.'/port/" + $(el).attr("id") + "/macs";
-			}
-    });
-});
-</script>
-';
+		UFlib_Script::displaySwitchPortMenu($url.$switch->serialNo);
 	}
 
 	public function listRoomPorts(array $d, $room, $portStatuses) {
