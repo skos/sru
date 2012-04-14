@@ -766,7 +766,7 @@ extends UFtpl_Common {
 	}
 	public function dorm(array $d) {
 		echo '<div class="dorm">';
-		$d['dorm']->write('details', true, $d['dorm']->left, $d['dorm']->right);
+		$d['dorm']->write('details', true, $d['leftRight'][0], $d['leftRight'][2]);
 		if($d['rooms']) {
 			echo '<div class="rooms">';
 			echo '<h3>Pokoje</h3>';			
@@ -796,12 +796,12 @@ extends UFtpl_Common {
 		$urlSw = $this->url(0).'/switches/dorm/';
 		if (!is_null($d['dorm'])) {
 			echo '<h2>';
-			if($d['dorm']->left != null){
-				echo '<a href="'.$urlSw.$d['dorm']->left['alias'].'" >< </a>';
+			if($d['leftRight'][0] != null){
+				echo '<a href="'.$urlSw.$d['leftRight'][0]['alias'].'" >< </a>';
 			}
 			echo $d['dorm']->name;
-			if($d['dorm']->right != null){
-				echo '<a href="'.$urlSw.$d['dorm']->right['alias'].'" > ></a>';
+			if($d['leftRight'][2] != null){
+				echo '<a href="'.$urlSw.$d['leftRight'][2]['alias'].'" > ></a>';
 			}
 
 			echo '<br/><small>(<a href="'.$url.$d['dorm']->alias.'">pokoje</a> &bull; <a href="'.$urlIp.$d['dorm']->alias.'">komputery</a> &bull; liczba switchy: '.count($d['switches']).')</small></h2>';
@@ -835,7 +835,7 @@ extends UFtpl_Common {
 		if ($this->_srv->get('msg')->get('switchLockoutsEdit/ok')) {
 			echo $this->OK('Zablokowane adresy MAC na switchu zostały zmienione');
 		}
-		$d['switch']->write('headerDetails');
+		$d['switch']->write('headerDetails', $d['leftRight'][0], $d['leftRight'][2]);
 		$d['switch']->write('details', $d['info'], $d['lockouts']);
 	}
 
@@ -1210,12 +1210,12 @@ extends UFtpl_Common {
 		$urlIp = $this->url(0).'/ips/';
 		if (!is_null($d['dorm'])) {
 			echo '<h2>';
-			if($d['dorm']->left != null){
-				echo '<a href="'.$urlIp.$d['dorm']->left['alias'].'" >< </a>';
+			if($d['leftRight'][0] != null){
+				echo '<a href="'.$urlIp.$d['leftRight'][0]['alias'].'" >< </a>';
 			}
 			echo $d['dorm']->name;
-			if($d['dorm']->right != null){
-				echo '<a href="'.$urlIp.$d['dorm']->right['alias'].'" > ></a>';
+			if($d['leftRight'][2] != null){
+				echo '<a href="'.$urlIp.$d['leftRight'][2]['alias'].'" > ></a>';
 			}
 			echo '<br/><small>(<a href="'.$url.$d['dorm']->alias.'">pokoje</a> &bull; zajętość puli: '.$d['used']->getIpCount().'/'.$d['sum']->getIpCount().' ~> '.($d['sum']->getIpCount() > 0 ? round($d['used']->getIpCount()/$d['sum']->getIpCount()*100) : 0).'% &bull; <a href="'.$urlSw.$d['dorm']->alias.'">switche</a>)</small></h2>';
 		} else {

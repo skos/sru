@@ -1025,7 +1025,6 @@ extends UFbox {
 	public function dorm() {
 		try {
 			$bean = $this->_getDormFromGet();
-			$bean->leftRight();
 			$d['dorm'] = $bean;
 
 			$d['rooms'] = array();
@@ -1035,7 +1034,12 @@ extends UFbox {
 				$d['rooms'] = $rooms;
 			} catch (UFex_Dao_NotFound $e) {
 
-			}			
+			}
+			
+			$dormitories = UFra::factory('UFbean_Sru_DormitoryList');
+			$dormitories->listAll();
+			$leftRight = UFlib_Helper::getLeftRight($dormitories, $bean->id);
+			$d['leftRight'] = $leftRight;
 		
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
@@ -1049,13 +1053,17 @@ extends UFbox {
 			$dorm = null;
 			try {
 				$dorm = $this->_getDormFromGet();
-				$dorm->leftRight();
 				$bean->listByDormitoryId($dorm->id);
 			} catch (UFex_Core_DataNotFound $e) {
 				$bean->listAll();
 			}
 			$d['switches'] = $bean;
 			$d['dorm'] = $dorm;
+			
+			$dormitories = UFra::factory('UFbean_Sru_DormitoryList');
+			$dormitories->listAll();
+			$leftRight = UFlib_Helper::getLeftRight($dormitories, $dorm->id);
+			$d['leftRight'] = $leftRight;
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
@@ -1067,14 +1075,6 @@ extends UFbox {
 		try {
 			$bean = $this->_getSwitchFromGet();
 			$d['switch'] = $bean;
-			$d['switch']->leftRight();
-			//$d['left'] = $d['switch']->left;
-			//$d['right'] = $d['switch']->right;
-			//$daoSwitch = UFra::factory('UFdao_SruAdmin_Switch');
-			//$switches = $daoSwitch->listByDormitoryId($d['dormitoryId']);
-			//$leftRight = UFlib_Helper::getLeftRight($switches, $d['id']);
-			//$d['left'] = $leftRight[0];
-			//$d['right'] = $leftRight[2];
 			if (!is_null($d['switch']->ip)) {
 				$switch = UFra::factory('UFlib_Snmp_Hp', $d['switch']->ip);
 				$d['info'] = $switch->getStdInfo();
@@ -1083,6 +1083,12 @@ extends UFbox {
 				$d['info'] = null;
 				$d['lockouts'] = null;
 			}
+			
+			$switches = UFra::factory('UFbean_SruAdmin_SwitchList');
+			$switches->listAll();
+			$leftRight = UFlib_Helper::getLeftRight($switches, $bean->id);
+			$d['leftRight'] = $leftRight;
+			
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
 			return $this->render('switchNotFound');
@@ -2001,7 +2007,6 @@ extends UFbox {
 			$d['dorm'] = null;
 			try {
 				$dorm = $this->_getDormFromGet();
-				$dorm->leftRight();
 				$d['dorm'] = $dorm;
 				$bean->listByDormitory($dorm->id);
 
@@ -2016,6 +2021,11 @@ extends UFbox {
 				$d['used'] = null;
 				$d['sum'] = null;
 			}
+			
+			$dormitories = UFra::factory('UFbean_Sru_DormitoryList');
+			$dormitories->listAll();
+			$leftRight = UFlib_Helper::getLeftRight($dormitories, $dorm->id);
+			$d['leftRight'] = $leftRight;
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {

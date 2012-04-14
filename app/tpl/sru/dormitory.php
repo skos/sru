@@ -18,7 +18,7 @@ extends UFtpl_Common {
 	}
 
 	public function titleDetails(array $d) {
-                echo $d['name'];
+		echo $d['name'];
 	}
 	public function details(array $d, $admin = false, $left = null, $right = null) {
 		$url = $this->url(0).'/';

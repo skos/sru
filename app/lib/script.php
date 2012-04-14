@@ -2,13 +2,15 @@
 /* Wszelkie skrypty JS */
 class UFlib_Script {
 
-	public static function focus($id){?>        
-	<script type="text/javascript">
-	    document.getElementById('<?php echo $id; ?>').focus();
-	</script>
-	<?}
+	public static function focus($id){
+		?>        
+		<script type="text/javascript">
+			document.getElementById('<? echo $id; ?>').focus();
+		</script>
+		<?
+	}
 
-    public static function SruAdmin_Switch_changeVisibility(){
+    public static function switchMoreChangeVisibility(){
 ?><script type="text/javascript">
 	function changeVisibility() {
 		var div = document.getElementById('switchMore');
@@ -30,44 +32,39 @@ class UFlib_Script {
 	container.appendChild(button);
 	changeVisibility();
 </script><?
-
     }
 
                        
-    /**
-    * Wyświetla menu kontekstowe edycji portu
-    */
-public static function displaySwitchPortMenu(array $switchUrls) {
-                        echo '<ul id="switchContexMenu" class="contextMenu">
-    <li class="editSwitchContexMenu">
-        <a href="#edit">Edytuj</a>
-    </li>
-        <li class="macSwitchContexMenu">
-        <a href="#mac">Pokaż adresy MAC</a>
-    </li>
+	/**
+	* Wyświetla menu kontekstowe edycji portu
+	*/
+	public static function displaySwitchPortMenu(array $switchUrls) {
+		echo '<ul id="switchContexMenu" class="contextMenu">
+	<li class="editSwitchContexMenu">
+		<a href="#edit">Edytuj</a>
+	</li>
+	<li class="macSwitchContexMenu">
+		<a href="#mac">Pokaż adresy MAC</a>
+	</li>
 </ul>';
 
-                        foreach ($switchUrls as $swId => $swUrl) {
+		foreach ($switchUrls as $swId => $swUrl) {
 ?><script type="text/javascript">
 $(document).ready( function() {
-    $("#switchPortsT<? echo $swId ?> td").contextMenu({
-        menu: "switchContexMenu"
-    },
-        function(action, el, pos) {
-                        if (action == "edit") {
-                                window.location = "<? echo $swUrl ?>/port/" + $(el).attr("id") + "/:edit";
-                        } else if (action == "mac") {
-                                window.location = "<? echo $swUrl ?>/port/" + $(el).attr("id") + "/macs";
-                        }
-    });
-});
+	$("#switchPortsT<? echo $swId ?> td").contextMenu({
+		menu: "switchContexMenu"
+	},
+		function(action, el, pos) {
+			if (action == "edit") {
+				window.location = "<? echo $swUrl ?>/port/" + $(el).attr("id") + "/:edit";
+			} else if (action == "mac") {
+				window.location = "<? echo $swUrl ?>/port/" + $(el).attr("id") + "/macs";
+			}
+		});
+	});
 </script><?
-                        }
-                }
-public static function switchmorechangevisibility() {
-    
-}
-
+		}
+	}
 }
 
 ?>

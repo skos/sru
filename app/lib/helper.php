@@ -20,7 +20,8 @@ class UFlib_Helper {
 
 		return strtolower(preg_replace($unPretty, $pretty, nl2br(htmlspecialchars(trim($string)))));
 	}
-        public static function displayHint($string) {
+	
+	public static function displayHint($string) {
 
 		$licz = strlen($string); 
 
@@ -35,36 +36,47 @@ class UFlib_Helper {
 		} 
 		$returnString = ' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="'.$txt.'" /><br/>';
 		return $returnString;
-        }
-
-        /**
-         * 
-         * @param $array Tablica wejsciowa
-         * @param $id szukana wartosc srodkowego elementu
-         * @param $field nazwa klucza w tablicy wejsciowej gdzie szukamy, domyslnie 'id'
-         * 
-         * @return Tablica zawierajaca 3 elementy (lewy, srodkowy, prawy), jeśli srodkowy nie posiada lewego lub prawego, zamiast nich wstawia nulle
-         */
-	public static function getLeftRight($array, $id, $field = 'id'){
+	}
+	
+	/**
+	 * @param type $array Tablica wejsciowa
+	 * @param type $id szukana wartosc srodkowego elementu
+	 * @param type $field nazwa klucza w tablicy wejsciowej gdzie szukamy, domyslnie 'id'
+	 * 
+	 * @return Tablica zawierajaca 3 elementy (lewy, srodkowy, prawy), jeśli srodkowy nie posiada lewego lub prawego, zamiast nich wstawia nulle
+	 */
+	public static function getLeftRight($bean, $id, $field = 'id'){
 		$left = null;
+		$middle = null;
 		$right = null;
-		$current = null;
-		list($key, $left) = each($array);
-		if($left[$field] == $id){ //brak lewego
-			$current = $left;
-			list($key, $right) = each($array);
+		if($bean->valid()){
+			$left = $bean->current();
+		}
+		if($left['id'] == $id){//brak lewego
 			$left = null;
+			$bean->next();
+			if($bean->valid()){
+				$right = $bean->current();
+			}
 		}else{
-			list($key, $current) = each($array);
+			$bean->next();
+			if($bean->valid()){
+				$middle = $bean->current();
+			}
 			while(true){
-				list($key, $right) = each($array);
-				if($current[$field] == $id || $right == null){
+				$right = null;
+				$bean->next();
+				if($bean->valid()){
+					$right = $bean->current();
+				}
+				if($id == $middle['id']){
 					break;
 				}
-				$left = $current;
-				$current = $right;
+				$left = $middle;
+				$middle = $right;
 			}
 		}
-		return array($left, $current, $right);
+
+		return array($left, $middle, $right);
 	}
 }
