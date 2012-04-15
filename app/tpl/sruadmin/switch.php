@@ -173,7 +173,7 @@ extends UFtpl_Common {
 				$vlans .= $vlan.' ('.substr($id, strrpos($id, '.') + 1).'), ';
 			}
 			if (strlen($vlans) > 0) {
-				$vlans = substr($vlans, 0, -1);
+				$vlans = substr($vlans, 0, -2);
 			}
 			echo $vlans.'</p>';
 			echo '<table style="text-align: center;"><tr>';
