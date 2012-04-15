@@ -1067,7 +1067,17 @@ extends UFbox {
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
-			return $this->render('switchesNotFound');
+			try {
+				$dorm = $this->_getDormFromGet();
+				$d['dorm'] = $dorm;
+				$dormitories = UFra::factory('UFbean_Sru_DormitoryList');
+				$dormitories->listAll();
+				$leftRight = UFlib_Helper::getLeftRight($dormitories, $dorm->id);
+				$d['leftRight'] = $leftRight;
+			} catch (UFex_Dao_NotFound $e) {
+				return $this->render('switchesNotFound', null);
+			}
+			return $this->render('switchesNotFound', $d);
 		}
 	}
 

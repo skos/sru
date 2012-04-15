@@ -816,9 +816,24 @@ extends UFtpl_Common {
 		$d['switches']->write('listSwitches', $d['dorm']);
 		echo '</div>';
 	}
-	public function switchesNotFound() {
-		$url = $this->url(0).'/switches/';
-		echo $this->ERR('Nie znaleziono switchy<br/><a href="'.$url.':add">Dodaj nowego switcha</a>');
+	public function switchesNotFound($d) {
+		if (!is_null($d)) {
+			$url = $this->url(0).'/dormitories/';
+			$urlAdd = $this->url(0).'/switches/';
+			$urlIp = $this->url(0).'/ips/';
+			$urlSw = $this->url(0).'/switches/dorm/';
+			echo '<h2>';
+			if($d['leftRight'][0] != null){
+				echo '<a href="'.$urlSw.$d['leftRight'][0]['alias'].'" ><</a> ';
+			}
+			echo $d['dorm']->name;
+			if($d['leftRight'][2] != null){
+				echo ' <a href="'.$urlSw.$d['leftRight'][2]['alias'].'" >></a>';
+			}
+			echo '<br/><small>(<a href="'.$url.$d['dorm']->alias.'">pokoje</a> &bull; <a href="'.$urlIp.$d['dorm']->alias.'">komputery</a> &bull; liczba switchy: 0)</small></h2>';
+		}
+		
+		echo $this->ERR('Nie znaleziono switchy<br/><a href="'.$urlAdd.':add">Dodaj nowego switcha</a>');
 	}
 
 	public function titleSwitch(array $d) {
@@ -899,7 +914,7 @@ extends UFtpl_Common {
 	public function switchEdit(array $d) {
 		$form = UFra::factory('UFlib_Form');
 		$url = $this->url(0);
-		echo '<h2>Edycja switcha <a href="'.$this->url(0).'/switches/'.$d['switch']->serialNo.'">'.UFtpl_SruAdmin_Switch::displaySwitchName($d['switch']->dormitoryAlias, $d['switch']->hierarchyNo).'</a></h2>'; 
+		echo '<h2>Edycja switcha <a href="'.$this->url(0).'/switches/'.$d['switch']->serialNo.'">'.UFtpl_SruAdmin_Switch::displaySwitchName($d['switch']->dormitoryAlias, $d['switch']->hierarchyNo, $d['switch']->lab).'</a></h2>'; 
 		echo $form->_start();
 		echo $d['switch']->write('formEdit', $d['dormitories'], $d['swModels']);
 		echo $form->_submit('Zapisz');

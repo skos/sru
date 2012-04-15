@@ -171,7 +171,7 @@ extends UFtpl_Common {
 			echo ($d[$i]['comment'] == '') ? '' : ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$d[$i]['comment'].'" />';
 			echo '<br/><small>(';
 			echo is_null($d[$i]['connectedSwitchId']) ? ('<a href="'.$this->url(0).'/dormitories/'.$d[$i]['dormitoryAlias'].'/'.$d[$i]['locationAlias'].'">'.
-				$d[$i]['locationAlias'].'</a>') : ('<a href="'.$url.$d[$i]['connectedSwitchSn'].'">'.$d[$i]['connectedSwitchDorm'].'-hp'.$d[$i]['connectedSwitchNo'].'</a>');
+				$d[$i]['locationAlias'].'</a>') : ('<a href="'.$url.$d[$i]['connectedSwitchSn'].'">'.UFtpl_SruAdmin_Switch::displaySwitchName($d[$i]['connectedSwitchDorm'], $d[$i]['connectedSwitchNo'], $d[$i]['connectedSwitchLab']).'</a>');
 			echo ')</small>';
 			echo '</td>';
 			if (($i + 1) % 8 == 0) {
