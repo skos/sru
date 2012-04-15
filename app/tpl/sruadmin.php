@@ -1243,8 +1243,19 @@ extends UFtpl_Common {
 	}
 	
 	public function ipsNotFound(array $d) {
+		$url = $this->url(0).'/dormitories/';
+		$urlSw = $this->url(0).'/switches/dorm/';
+		$urlIp = $this->url(0).'/ips/';
 		if (!is_null($d['dorm'])) {
-			echo '<h2><a href="'.$this->url(0).'/dormitories/'.$d['dorm']->alias.'">'.$d['dorm']->name.'</a></h2>';
+						echo '<h2>';
+			if($d['leftRight'][0] != null){
+				echo '<a href="'.$urlIp.$d['leftRight'][0]['alias'].'" ><</a> ';
+			}
+			echo $d['dorm']->name;
+			if($d['leftRight'][2] != null){
+				echo ' <a href="'.$urlIp.$d['leftRight'][2]['alias'].'" >></a>';
+			}
+			echo '<br/><small>(<a href="'.$url.$d['dorm']->alias.'">pokoje</a> &bull; zajętość puli: 0/0 ~> 0% &bull; <a href="'.$urlSw.$d['dorm']->alias.'">switche</a>)</small></h2>';
 		} else {
 			echo '<h2>Zestawienie numerów IP</h2>';
 		}

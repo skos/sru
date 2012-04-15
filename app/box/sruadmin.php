@@ -2016,11 +2016,17 @@ extends UFbox {
 		try {
 			$bean = UFra::factory('UFbean_SruAdmin_Ips');
 			$d['ips'] =& $bean;	
-
+			
 			$d['dorm'] = null;
 			try {
 				$dorm = $this->_getDormFromGet();
 				$d['dorm'] = $dorm;
+				
+				$dormitories = UFra::factory('UFbean_Sru_DormitoryList');
+				$dormitories->listAll();
+				$leftRight = UFlib_Helper::getLeftRight($dormitories, $dorm->id);
+				$d['leftRight'] = $leftRight;
+				
 				$bean->listByDormitory($dorm->id);
 
 				$used = UFra::factory('UFbean_Sru_Ipv4');
@@ -2034,11 +2040,6 @@ extends UFbox {
 				$d['used'] = null;
 				$d['sum'] = null;
 			}
-			
-			$dormitories = UFra::factory('UFbean_Sru_DormitoryList');
-			$dormitories->listAll();
-			$leftRight = UFlib_Helper::getLeftRight($dormitories, $dorm->id);
-			$d['leftRight'] = $leftRight;
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
