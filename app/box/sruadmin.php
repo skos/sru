@@ -1085,7 +1085,7 @@ extends UFbox {
 			}
 			
 			$switches = UFra::factory('UFbean_SruAdmin_SwitchList');
-			$switches->listAll();
+			$switches->listByDormitoryId($bean->dormitoryId);
 			$leftRight = UFlib_Helper::getLeftRight($switches, $bean->id);
 			$d['leftRight'] = $leftRight;
 			
