@@ -55,12 +55,15 @@ $(document).ready( function() {
 		menu: "switchContexMenu"
 	},
 		function(action, el, pos) {
-			if (action == "edit") {
-				window.location = "<? echo $swUrl ?>/port/" + $(el).attr("id") + "/:edit";
-			} else if (action == "mac") {
-				window.location = "<? echo $swUrl ?>/port/" + $(el).attr("id") + "/macs";
+			if ($(el).attr("id") != '') {
+				if (action == "edit") {
+					window.location = "<? echo $swUrl ?>/port/" + $(el).attr("id") + "/:edit";
+				} else if (action == "mac") {
+					window.location = "<? echo $swUrl ?>/port/" + $(el).attr("id") + "/macs";
+				}
 			}
 		});
+		$('.contexMenuDisabled').disableContextMenu();
 	});
 </script><?
 		}

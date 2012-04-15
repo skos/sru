@@ -180,7 +180,7 @@ extends UFtpl_Common {
 		}
 		if (count($d) % 8 != 0) {
 			while ($i % 8 != 0) {
-				echo '<td></td>';
+				echo '<td class="contexMenuDisabled"></td>';
 				$i++;
 			}
 			echo '</tr>';
@@ -224,7 +224,7 @@ extends UFtpl_Common {
 			if ($j % 8 == 0) {
 				echo '<tr>';
 			}
-			echo '<td id="'.$port['ordinalNo'].' title="'.$this->_escape($port['comment']).'" class="';
+			echo '<td id="'.$port['ordinalNo'].'" class="';
 			if ($portStatuses == null) {
 				echo "unknown";
 			} else if ($portStatuses[$i] == UFlib_Snmp_Hp::DISABLED) {
@@ -251,7 +251,7 @@ extends UFtpl_Common {
 		}
 		if (($j + 1) % 8 != 0) {
 			while (($j + 1) % 8 != 0) {
-				echo '<td></td>';
+				echo '<td class="contexMenuDisabled"></td>';
 				$j++;
 			}
 			echo '</tr>';
