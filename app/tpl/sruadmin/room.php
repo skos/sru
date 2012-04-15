@@ -69,10 +69,20 @@ extends UFtpl_Common {
 	public function titleDetails(array $d) {
 		echo $d['alias'].' ('.$d['dormitoryAlias'].')';
 	}
-	public function details(array $d) {
+	public function details(array $d, $left = null, $right = null) {
 		$url = $this->url(0);
+		$urlRoom = $url.'/dormitories/'.$d['dormitoryAlias'].'/';
 
-		echo '<h2>'.$d['alias'].' (<a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'">'.strtoupper($d['dormitoryAlias']).'</a>)<br/><small>(liczba użytkowników: '.$d['userCount'].' &bull; liczba komputerów: '.$d['computerCount'].')</small></h2>'; 
+		echo '<h2>';
+		if($left != null){
+			echo '<a href="'.$urlRoom.$left['alias'].'" ><</a> ';
+		}
+		echo $d['alias'].' (<a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'">'.strtoupper($d['dormitoryAlias']).'</a>)';
+		if($right != null){
+			echo ' <a href="'.$urlRoom.$right['alias'].'" >></a>';
+		}
+		echo '<br/><small>(liczba użytkowników: '.$d['userCount'].' &bull; liczba komputerów: '.$d['computerCount'].')</small></h2>';
+		
 		echo '<p><em>Typ:</em> '.self::getRoomType($d['typeId']).'</p>'; 
 		if ($d['comment']) {
 			echo '<p><em>Komentarz:</em></p><p class="comment">'.nl2br($this->_escape($d['comment'])).'</p>';		

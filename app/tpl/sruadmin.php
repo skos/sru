@@ -960,7 +960,7 @@ extends UFtpl_Common {
 			echo $this->OK('Komentarz został zmieniony');
 		}
 		
-		$d['room']->write('details');
+		$d['room']->write('details', $d['leftRight'][0], $d['leftRight'][2]);
 	}
 
 	public function roomNotFound() {

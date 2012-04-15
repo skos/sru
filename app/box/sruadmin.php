@@ -1393,7 +1393,6 @@ extends UFbox {
 		try
 		{
 			$bean = $this->_getRoomFromGet();
-
 			$d['room'] = $bean;
 
 			return $this->render(__FUNCTION__, $d);
@@ -1407,6 +1406,11 @@ extends UFbox {
 		try {
 			$bean = $this->_getRoomFromGet();
 			$d['room'] = $bean;
+			
+			$rooms = UFra::factory('UFbean_SruAdmin_RoomList');
+			$rooms->listByDormitoryId($bean->dormitoryId);
+			$leftRight = UFlib_Helper::getLeftRight($rooms, $bean->id);
+			$d['leftRight'] = $leftRight;
 			
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
