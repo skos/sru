@@ -98,11 +98,11 @@ extends UFtpl_Common {
 	public function headerDetails(array $d, $left = null, $right = null) {
 		echo '<h2>';
 		if(!is_null($left)) {
-			echo '<a href="'.$this->url(0).'/switches/'.$left['serialNo'].'"><</a>';
+			echo '<a href="'.$this->url(0).'/switches/'.$left['serialNo'].'"><</a> ';
 		}
 		echo 'Switch <a href="'.$this->url(0).'/switches/'.$d['serialNo'].'">'.$this->displaySwitchName($d['dormitoryAlias'], $d['hierarchyNo'], $d['lab']).'</a>';
 		if(!is_null($right)){
-			echo '<a href="'.$this->url(0).'/switches/'.$right['serialNo'].'">></a>';
+			echo ' <a href="'.$this->url(0).'/switches/'.$right['serialNo'].'">></a>';
 		}
 		echo '</h2>';
 	}

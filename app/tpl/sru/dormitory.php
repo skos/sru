@@ -26,11 +26,11 @@ extends UFtpl_Common {
 		echo '<h2>';
 		if($admin){
 			if($left != null){
-				echo '<a href="'.$urlDorm.$left['alias'].'" >< </a>';
+				echo '<a href="'.$urlDorm.$left['alias'].'" ><</a> ';
 			}
 			echo $d['name'];
 			if($right != null){
-				echo '<a href="'.$urlDorm.$right['alias'].'" > ></a>';
+				echo ' <a href="'.$urlDorm.$right['alias'].'" >></a>';
 			}
 		}else{
 			echo $d['name'];

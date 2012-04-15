@@ -797,11 +797,11 @@ extends UFtpl_Common {
 		if (!is_null($d['dorm'])) {
 			echo '<h2>';
 			if($d['leftRight'][0] != null){
-				echo '<a href="'.$urlSw.$d['leftRight'][0]['alias'].'" >< </a>';
+				echo '<a href="'.$urlSw.$d['leftRight'][0]['alias'].'" ><</a> ';
 			}
 			echo $d['dorm']->name;
 			if($d['leftRight'][2] != null){
-				echo '<a href="'.$urlSw.$d['leftRight'][2]['alias'].'" > ></a>';
+				echo ' <a href="'.$urlSw.$d['leftRight'][2]['alias'].'" >></a>';
 			}
 
 			echo '<br/><small>(<a href="'.$url.$d['dorm']->alias.'">pokoje</a> &bull; <a href="'.$urlIp.$d['dorm']->alias.'">komputery</a> &bull; liczba switchy: '.count($d['switches']).')</small></h2>';
@@ -1211,11 +1211,11 @@ extends UFtpl_Common {
 		if (!is_null($d['dorm'])) {
 			echo '<h2>';
 			if($d['leftRight'][0] != null){
-				echo '<a href="'.$urlIp.$d['leftRight'][0]['alias'].'" >< </a>';
+				echo '<a href="'.$urlIp.$d['leftRight'][0]['alias'].'" ><</a> ';
 			}
 			echo $d['dorm']->name;
 			if($d['leftRight'][2] != null){
-				echo '<a href="'.$urlIp.$d['leftRight'][2]['alias'].'" > ></a>';
+				echo ' <a href="'.$urlIp.$d['leftRight'][2]['alias'].'" >></a>';
 			}
 			echo '<br/><small>(<a href="'.$url.$d['dorm']->alias.'">pokoje</a> &bull; zajętość puli: '.$d['used']->getIpCount().'/'.$d['sum']->getIpCount().' ~> '.($d['sum']->getIpCount() > 0 ? round($d['used']->getIpCount()/$d['sum']->getIpCount()*100) : 0).'% &bull; <a href="'.$urlSw.$d['dorm']->alias.'">switche</a>)</small></h2>';
 		} else {

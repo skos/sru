@@ -1406,7 +1406,6 @@ extends UFbox {
 	public function room() {
 		try {
 			$bean = $this->_getRoomFromGet();
-
 			$d['room'] = $bean;
 			
 			return $this->render(__FUNCTION__, $d);
