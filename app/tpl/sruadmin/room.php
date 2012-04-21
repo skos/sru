@@ -83,7 +83,7 @@ extends UFtpl_Common {
 		}
 		echo '<br/><small>(liczba użytkowników: '.$d['userCount'].' &bull; liczba komputerów: '.$d['computerCount'].')</small></h2>';
 		
-		echo '<p><em>Typ:</em> '.self::getRoomType($d['typeId']).'</p>'; 
+		echo '<p><em>Typ:</em> '.self::getRoomType($d['typeId']).' ('.$d['usersMax'].'-os)</p>'; 
 		if ($d['comment']) {
 			echo '<p><em>Komentarz:</em></p><p class="comment">'.nl2br($this->_escape($d['comment'])).'</p>';		
 		}
