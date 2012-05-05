@@ -11,7 +11,7 @@ extends UFtpl_Common {
 		3 => 'wszystkie komputery',
 	);	
 
-	public function listPenalty(array $d) {
+	public function listPenalty(array $d, $computers) {
 		$url = $this->url(0);
 
 		foreach ($d as $c) {
@@ -26,7 +26,15 @@ extends UFtpl_Common {
 				echo 'Ostrzeżenie';
 			} else {
 				echo '<strong>Kara</strong>';
+				if(empty($computers[$c['id']]) == false){
+					echo '<br />Komputery: ';
+					$url = $this->url(0).'/computers/';
+					foreach($computers[$c['id']] as $computer){
+						echo '<b><a href="' . $url . $computer['id'] . '">' . $computer['name'] . '</a></b>&nbsp;&nbsp;';
+					}
+				}
 			}
+
 			echo '<br/>Ważna do: '.date(self::TIME_YYMMDD_HHMM, $c['endAt']);
 			echo '<br/>Powód: '.nl2br($this->_escape($c['reason']));
 			echo '</small></div>';
@@ -34,7 +42,7 @@ extends UFtpl_Common {
 		}
 	}
 
-	public function listAllPenalty(array $d) {
+	public function listAllPenalty(array $d, $computers) {
 		$url = $this->url(0);
 		$form = UFra::factory('UFlib_Form');
 		echo $form->_start();
@@ -58,6 +66,13 @@ extends UFtpl_Common {
 				echo '<span class="userData">Ostrzeżenie</span>';
 			} else {
 				echo '<span class="userData">Kara</span>';
+				if(empty($computers[$c['id']]) == false){
+					echo '<br />Komputery: ';
+					$url = $this->url(0).'/computers/';
+					foreach($computers[$c['id']] as $computer){
+						echo '<b><a href="' . $url . $computer['id'] . '">' . $computer['name'] . '</a></b>&nbsp;&nbsp;';
+					}
+				}
 			}
 			echo '<br/>Ważna do: <span class="userData">'.date(self::TIME_YYMMDD, $c['endAt']).'</span>';
 			echo '<br/>Powód: '.nl2br($this->_escape($c['reason']));

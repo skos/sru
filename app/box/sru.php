@@ -6,6 +6,31 @@
 class UFbox_Sru
 extends UFbox {
 
+	private function getPenalizedComputers($penalties){
+		$result = null;
+		
+		foreach($penalties as $penalty) {
+			if (UFbean_SruAdmin_Penalty::TYPE_COMPUTER === $penalty['typeId'] || UFbean_SruAdmin_Penalty::TYPE_COMPUTERS === $penalty['typeId']) {
+				try {
+					$computers = UFra::factory('UFbean_SruAdmin_ComputerBanList');
+					$computers->listByPenaltyId($penalty['id']);
+					foreach($computers as $computer){
+						$result[$penalty['id']][] = array(
+																'name' => $computer['computerHost'],
+																'id' => $computer['computerId']
+																);
+					}
+				} catch (UFex_Dao_NotFound $e) {
+					$result[$penalty['id']] = null;
+				}
+			} else {
+				$result[$penalty['id']] = null;
+			}
+		}
+		
+		return $result;
+	}
+	
 	protected function _getComputerFromGetByCurrentUser() {
 		$bean = UFra::factory('UFbean_Sru_Computer');
 		$bean->getByUserIdPK((int)$this->_srv->get('session')->auth, (int)$this->_srv->get('req')->get->computerId);
@@ -60,6 +85,9 @@ extends UFbox {
 			$bean = UFra::factory('UFbean_Sru_PenaltyList');
 			$bean->listByUserId($user->id);
 			$d['penalties'] = $bean;
+
+			$d['computers'] = $this->getPenalizedComputers($d['penalties']);
+			
 		} catch (UFex_Dao_NotFound $e) {
 			$d['penalties'] = null;
 		}
@@ -357,7 +385,9 @@ extends UFbox {
 			$bean = UFra::factory('UFbean_Sru_PenaltyList');	
 			$bean->listAllByUserId($user->id);
 			$d['penalties'] = $bean;
-
+			
+			$d['computers'] = $this->getPenalizedComputers($d['penalties']);
+			
 			return $this->render(__FUNCTION__, $d);
 		} 
 		catch (UFex_Dao_NotFound $e) 

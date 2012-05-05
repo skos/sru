@@ -49,7 +49,7 @@ extends UFtpl_Common {
 			$form = UFra::factory('UFlib_Form');
 			echo $form->_start($this->url(0).'/');
 			echo $form->_fieldset('Aktywne kary i ostrzeżenia');
-			echo $d['penalties']->write('listPenalty');
+			echo $d['penalties']->write('listPenalty', $d['computers']);
 			echo $form->_end();
 			echo $form->_end(true);
 		}
@@ -158,7 +158,7 @@ extends UFtpl_Common {
 	}
 
 	public function userPenalties(array $d) {
-		$d['penalties']->write('listAllPenalty');
+		$d['penalties']->write('listAllPenalty', $d['computers']);
 	}
 
 
