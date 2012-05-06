@@ -1466,7 +1466,7 @@ extends UFtpl_Common {
 			echo 'Kara nałożona na host(y): ';
 			foreach ($d['computers'] as $computer) {
 				if (is_array($computer)) {
-					echo $computer['host'] . ' (' . $computer['ip'] . ')';
+					echo $computer['host'] . ' (' . $computer['ip'] . ') ';
 				} else {
 					echo $computer->host. ' (' . $computer->ip . ')';
 				}
