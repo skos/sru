@@ -49,13 +49,37 @@ extends UFbean_Common {
 	}
 
 	protected function validateMac($val, $change) {
+		$invalidMac = array(
+			'FF-FF-FF-FF-FF-FF',
+			'01-00-0C-CC-CC-CC',
+			'01-00-0C-CC-CC-CD',
+			'01-80-C2-00-00-00',
+			'01-80-C2-00-00-08',
+			'01-80-C2-00-00-02',
+			'01-00-5E-xx-xx-xx',
+			'33-33-xx-xx-xx-xx'
+		);
 		try {
 			$bean = UFra::factory('UFbean_Sru_Computer');
+			$val2 = strtoupper($val);
+			$val2 = str_replace(':', '-', $val2);
+			$val2 = str_replace(' ', '-', $val2);
+			foreach($invalidMac as $invalid){
+				$ok = false;
+				for($i=0; $i<17; $i++){
+					if($invalid{$i} !== $val2{$i} && $invalid{$i} !== 'x'){
+						$ok = true;
+						break;
+					}
+				}
+				if(!$ok){
+					throw new UFex_Db_QueryFailed();
+				}
+			}
 			$bean->getByMac($val);
 			if ($change && $this->data['id'] == $bean->id) {
 				return;
 			}
-
 			try {
 				// sprawdzamy, czy mamy do czynienia z serwerem
 				$post = $this->_srv->get('req')->post->{self::EDIT_PREFIX};
