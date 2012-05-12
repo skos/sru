@@ -67,7 +67,7 @@ extends UFbean_Common {
 			$val2 = str_replace(' ', '', $val2);
 			foreach($invalidMac as $invalid){
 				$ok = false;
-				for($i=0; $i<17; $i++){
+				for($i=0; $i<12; $i++){
 					if($invalid{$i} !== $val2{$i} && $invalid{$i} !== 'x'){
 						$ok = true;
 						break;
