@@ -73,7 +73,7 @@ extends UFbean_Common {
 					}
 				}
 				if(!$ok){
-					throw new UFex_Db_QueryFailed();
+					return ''
 				}
 			}
 			$bean->getByMac($val);
@@ -84,7 +84,7 @@ extends UFbean_Common {
 				// sprawdzamy, czy mamy do czynienia z serwerem
 				$post = $this->_srv->get('req')->post->{self::EDIT_PREFIX};
 				if (isset($post['typeId']) && ($post['typeId'] == self::TYPE_SERVER || $post['typeId'] == self::TYPE_SERVER_VIRT)) {
-					return;
+					return 'regexp';
 				}
 			} catch (UFex $e) {
 			}
