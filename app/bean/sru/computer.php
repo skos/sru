@@ -50,20 +50,21 @@ extends UFbean_Common {
 
 	protected function validateMac($val, $change) {
 		$invalidMac = array(
-			'FF-FF-FF-FF-FF-FF',
-			'01-00-0C-CC-CC-CC',
-			'01-00-0C-CC-CC-CD',
-			'01-80-C2-00-00-00',
-			'01-80-C2-00-00-08',
-			'01-80-C2-00-00-02',
-			'01-00-5E-xx-xx-xx',
-			'33-33-xx-xx-xx-xx'
+			'FFFFFFFFFFFF',
+			'01000CCCCCCC',
+			'01000CCCCCCD',
+			'0180C2000000',
+			'0180C2000008',
+			'0180C2000002',
+			'01005Exxxxxx',
+			'3333xxxxxxxx'
 		);
 		try {
 			$bean = UFra::factory('UFbean_Sru_Computer');
 			$val2 = strtoupper($val);
-			$val2 = str_replace(':', '-', $val2);
-			$val2 = str_replace(' ', '-', $val2);
+			$val2 = str_replace(':', '', $val2);
+			$val2 = str_replace('-', '', $val2);
+			$val2 = str_replace(' ', '', $val2);
 			foreach($invalidMac as $invalid){
 				$ok = false;
 				for($i=0; $i<17; $i++){
