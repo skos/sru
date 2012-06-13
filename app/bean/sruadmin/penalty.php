@@ -20,4 +20,8 @@ extends UFbean_Common {
 		$ans = array_intersect(array_keys($this->dataChanged), $this->notifyAbout);
 		return !empty($ans);
 	}
+	
+	public function getAllActiveByUserId($userId){
+		return $this->dao->getAllActiveByUserId($userId);
+	}
 }

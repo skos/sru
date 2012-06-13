@@ -86,4 +86,25 @@ extends UFdao {
 		$return = $this->doUpdate($query);
 		return $return;
 	}
+	
+	public function erasePenalty($penaltyId){
+		$mapping = $this->mapping('set');
+		
+		$data = array($mapping->penaltyId => null);
+		
+		$query = $this->prepareUpdate($mapping, $data);
+		$query->where($mapping->penaltyId, $penaltyId);
+
+		return $this->doUpdate($query);
+	}
+	
+	public function getByPenaltyUserId($penaltyId, $userId){
+		$mapping = $this->mapping('getPort');
+		
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->penaltyId, $penaltyId);
+		$query->where($mapping->userId, $userId);
+
+		return $this->doSelect($query);
+	}
 }

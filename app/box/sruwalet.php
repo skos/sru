@@ -335,7 +335,7 @@ extends UFbox {
 		try {
 			$bean = $this->_getUserFromGet();
 			$d['user'] = $bean;
-
+			
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
 			return $this->render('userNotFound');

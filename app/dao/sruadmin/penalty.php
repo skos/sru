@@ -134,4 +134,14 @@ extends UFdao {
 
 		return $this->doSelect($query);
 	}
+	
+	public function getAllActiveByUserId($userId) {
+		$mapping = $this->mapping('list');
+		
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->userId, $userId);
+		$query->where($mapping->active, true);
+		
+		return $this->doSelect($query);
+	}
 }
