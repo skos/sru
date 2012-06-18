@@ -92,7 +92,7 @@ extends UFmap {
 		'locationAlias' => array('textMin'=>1),
 		'locationId' => array('intMin'=>1),
 		'registryNo' => array('regexp'=>'^(|[0-9]{5,6})$'),
-		'nationalityName' => array('textMin'=>1, 'regexp'=>'^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+$'),
+		'nationalityName' => array('regexp'=>'^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]*$'),
 	);
 	protected $pk = 'id';
 }
