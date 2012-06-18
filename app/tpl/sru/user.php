@@ -235,7 +235,8 @@ extends UFtpl_Common {
 		echo $form->typeId('Typ mieszkańca', array(
 			'type'=>$form->SELECT,
 			'labels' => $form->_labelize($tmp),
-			'class' => 'required'
+			'class' => 'required',
+			'id' => 'userTypeSelector'
 		));
 
 		try {
@@ -254,6 +255,7 @@ extends UFtpl_Common {
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize($tmp, '', ''),
 			'class'=>'required',
+			'id' => 'facultySelector'
 		));
 		echo $form->address('Adres', array('class'=>'necessary address', 
 											'type'=>$form->TEXTAREA, 
@@ -327,8 +329,14 @@ extends UFtpl_Common {
 		));
 
 ?><script type="text/javascript">
+$('#userTypeSelector').change(function(){
+	var userTypeSelector = $('#userTypeSelector');
+	if(userTypeSelector.val() == 23){
+		$('#facultySelector').val(0);
+	}
+});
 (function (){
-	var typeId = document.getElementById('userAdd_typeId');
+	var typeId = document.getElementById('userTypeSelector');
 	function registryChangeClass(){
 		var registryNo = document.getElementById('userAdd_registryNo');
 		if(typeId.value == 1 || typeId.value == 2 || typeId.value == 5) {
@@ -975,7 +983,8 @@ changeVisibility();
 		echo $form->typeId('Typ mieszkańca', array(
 			'type'=>$form->SELECT,
 			'labels' => $form->_labelize($tmp),
-			'class' => 'required'
+			'class' => 'required',
+			'id' => 'userTypeSelector'
 		));
 
 		echo $form->registryNo('Nr indeksu');
@@ -991,6 +1000,7 @@ changeVisibility();
 				'type' => $form->SELECT,
 				'labels' => $form->_labelize($tmp),
 				'class'=>'required',
+				'id' => 'facultySelector'
 			));
 		}
 
@@ -1105,8 +1115,14 @@ changeVisibility();
 		}
 		
 ?><script type="text/javascript">
+$('#userTypeSelector').change(function(){
+	var userTypeSelector = $('#userTypeSelector');
+	if(userTypeSelector.val() == 23){
+		$('#facultySelector').val(0);
+	}
+});
 (function (){
-	var typeId = document.getElementById('userEdit_typeId');
+	var typeId = document.getElementById('userTypeSelector');
 	function registryChangeClass(){
 		var registryNo = document.getElementById('userEdit_registryNo');
 		if(typeId.value == 1 || typeId.value == 2 || typeId.value == 5) {
