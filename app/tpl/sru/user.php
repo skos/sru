@@ -988,21 +988,20 @@ changeVisibility();
 		));
 
 		echo $form->registryNo('Nr indeksu');
-		if($d['typeId'] != UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL) {
-			$tmp = array();
-			foreach ($faculties as $fac) {
-				if ($fac['id'] == 0) continue; // N/D powinno być na końcu
-				$tmp[$fac['id']] = $fac['name'];
-			}
-			$tmp['0'] = 'N/D';
-
-			echo $form->facultyId('Wydział', array(
-				'type' => $form->SELECT,
-				'labels' => $form->_labelize($tmp),
-				'class'=>'required',
-				'id' => 'facultySelector'
-			));
+		
+		$tmp = array();
+		foreach ($faculties as $fac) {
+			if ($fac['id'] == 0) continue; // N/D powinno być na końcu
+			$tmp[$fac['id']] = $fac['name'];
 		}
+		$tmp['0'] = 'N/D';
+
+		echo '<span id="facultyFields">' . $form->facultyId('Wydział', array(
+			'type' => $form->SELECT,
+			'labels' => $form->_labelize($tmp),
+			'class'=>'required',
+			'id' => 'facultySelector'
+		)) . '</span>';
 
 		echo $form->address('Adres', array('class'=>'necessary address', 
 											'type'=>$form->TEXTAREA, 
@@ -1115,10 +1114,18 @@ changeVisibility();
 		}
 		
 ?><script type="text/javascript">
+$(document).ready(function(){
+	if($('#userTypeSelector').val() == 23){
+		$('#facultyFields').hide();
+	}
+});
+
 $('#userTypeSelector').change(function(){
 	var userTypeSelector = $('#userTypeSelector');
 	if(userTypeSelector.val() == 23){
 		$('#facultySelector').val(0);
+	}else if(userTypeSelector.val() != 23 && $('#facultyFields').is(':hidden') == true){
+		$('#facultyFields').show();
 	}
 });
 (function (){
