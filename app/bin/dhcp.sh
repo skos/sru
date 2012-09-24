@@ -1,10 +1,13 @@
 #!/bin/bash
 tmp="/tmp/sru-dhcp.tmp"
-dir='/opt/skos/dhcp'
+dir='/srv/skos/dhcp'
+link="http://chinook.srv/api/dhcp"
 changed="$(dirname $0)/changed.sh"
 
-wget -q --no-check-certificate -O $tmp https://sru.ds.pg.gda.pl/api/dhcp/stud && mv $tmp "$dir/studs.inc"
-wget -q --no-check-certificate -O $tmp https://sru.ds.pg.gda.pl/api/dhcp/org && mv $tmp "$dir/org.inc"
-wget -q --no-check-certificate -O $tmp https://sru.ds.pg.gda.pl/api/dhcp/adm && mv $tmp "$dir/adm.inc"
+wget -q --no-check-certificate -O $tmp $link/stud && mv $tmp "$dir/studs.inc"
+wget -q --no-check-certificate -O $tmp $link/org && mv $tmp "$dir/org.inc"
+wget -q --no-check-certificate -O $tmp $link/adm && mv $tmp "$dir/adm.inc"
+wget -q --no-check-certificate -O $tmp $link/serv && mv $tmp "$dir/serv.inc"
 
-$changed "$dir/studs.inc" "$dir/org.inc" "$dir/adm.inc" && /etc/init.d/dhcpd restart
+
+$changed "$dir/studs.inc" "$dir/org.inc" "$dir/adm.inc" "$dir/serv.inc" && /etc/init.d/isc-dhcp-server restart
