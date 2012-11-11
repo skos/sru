@@ -67,6 +67,13 @@ extends UFbox {
 
 		return $bean;
 	}
+	
+	protected function _getVlanFromGet() {
+		$bean = UFra::factory('UFbean_SruAdmin_Vlan');
+		$bean->getByPK((int)$this->_srv->get('req')->get->vlanId);
+		return $bean;
+	}
+
 
 	public function login() {
 		$bean = UFra::factory('UFbean_SruAdmin_Admin');
@@ -295,7 +302,7 @@ extends UFbox {
 			return $this->render('computerAliasesNotFound');
 		}
 	}
-
+	
 	public function computerDel() {
 		try {
 			$bean = $this->_getComputerFromGet();
@@ -2018,10 +2025,20 @@ extends UFbox {
 			$d['ips'] =& $bean;	
 			
 			$d['dorm'] = null;
+			$d['vlan'] = null;
 			try {
 				$dorm = $this->_getDormFromGet();
 				$d['dorm'] = $dorm;
+			} catch (UFex_Core_DataNotFound $e) {
+			}
+			
+			try {
+				$vlan = $this->_getVlanFromGet();
+				$d['vlan'] = $vlan;
+			} catch (UFex_Core_DataNotFound $e) {
+			}
 				
+			if (!is_null($d['dorm'])) {
 				$dormitories = UFra::factory('UFbean_Sru_DormitoryList');
 				$dormitories->listAll();
 				$leftRight = UFlib_Helper::getLeftRight($dormitories, $dorm->id);
@@ -2035,7 +2052,21 @@ extends UFbox {
 				$sum = UFra::factory('UFbean_Sru_Ipv4');
 				$sum->getSumByDorm($dorm->id);
 				$d['sum'] = $sum;
-			} catch (UFex_Core_DataNotFound $e) {
+			} else if (!is_null($d['vlan'])) {	
+				$vlans = UFra::factory('UFbean_SruAdmin_VlanList');
+				$vlans->listAll();
+				$leftRight = UFlib_Helper::getLeftRight($vlans, $vlan->id);
+				$d['leftRight'] = $leftRight;
+				
+				$bean->listByVlanId($vlan->id);
+				
+				$used = UFra::factory('UFbean_Sru_Ipv4');
+				$used->getUsedByVlan($vlan->id);
+				$d['used'] = $used;
+				$sum = UFra::factory('UFbean_Sru_Ipv4');
+				$sum->getSumByVlan($vlan->id);
+				$d['sum'] = $sum;
+			} else {
 				$bean->listAll();
 				$d['used'] = null;
 				$d['sum'] = null;

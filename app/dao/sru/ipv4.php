@@ -53,6 +53,24 @@ extends UFdao {
 		return $this->doSelect($query);
 	}
 	
+	public function getUsedByVlan($vlanId) {
+		$mapping = $this->mapping('count');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where('i.vlan = '.$vlanId. ' and i.ip=c.ipv4 and c.active', null, $query->SQL);
+
+		return $this->doSelect($query);
+	}
+
+	public function getSumByVlan($vlanId) {
+		$mapping = $this->mapping('count');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where('i.vlan = '.$vlanId, null, $query->SQL);
+
+		return $this->doSelect($query);
+	}
+	
 	public function checkIpDormitory($ip, $dormId) {
 		$mapping = $this->mapping('get');
 		

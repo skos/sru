@@ -213,7 +213,7 @@ extends UFtpl_Common {
 	public function computerAliasesNotFound() {
 		echo $this->ERR('Błąd wyświetlania aliasów');
 	}
-
+	
 	public function computerDel(array $d) {
 		$form = UFra::factory('UFlib_Form');
 
@@ -292,7 +292,8 @@ extends UFtpl_Common {
 		$form = UFra::factory('UFlib_Form');
 		$acl = $this->_srv->get('acl');
 
-		echo '<h2>Szukaj | <a href="'.$this->url(0).'/services">Usługi</a></h2>';
+		echo '<h2>Szukaj | <a href="'.$this->url(0).'/ips/vlan/42">VLANy</a></h2>';
+		//| <a href="'.$this->url(0).'/services">Usługi</a></h2>';
 
 		echo '<div class="userSearch">';
 		echo $form->_start($this->url(0).'/users/search');
@@ -792,7 +793,7 @@ extends UFtpl_Common {
 	}	
 	public function switches(array $d) {
 		$url = $this->url(0).'/dormitories/';
-		$urlIp = $this->url(0).'/ips/';
+		$urlIp = $this->url(0).'/ips/ds/';
 		$urlSw = $this->url(0).'/switches/dorm/';
 		if (!is_null($d['dorm'])) {
 			echo '<h2>';
@@ -820,7 +821,7 @@ extends UFtpl_Common {
 		if (!is_null($d)) {
 			$url = $this->url(0).'/dormitories/';
 			$urlAdd = $this->url(0).'/switches/';
-			$urlIp = $this->url(0).'/ips/';
+			$urlIp = $this->url(0).'/ips/ds/';
 			$urlSw = $this->url(0).'/switches/dorm/';
 			echo '<h2>';
 			if($d['leftRight'][0] != null){
@@ -1222,7 +1223,9 @@ extends UFtpl_Common {
 	public function ips(array $d) {
 		$url = $this->url(0).'/dormitories/';
 		$urlSw = $this->url(0).'/switches/dorm/';
-		$urlIp = $this->url(0).'/ips/';
+		$urlIpAll = $this->url(0).'/ips/';
+		$urlIp = $this->url(0).'/ips/ds/';
+		$urlVlan = $this->url(0).'/ips/vlan/';
 		if (!is_null($d['dorm'])) {
 			echo '<h2>';
 			if($d['leftRight'][0] != null){
@@ -1232,7 +1235,17 @@ extends UFtpl_Common {
 			if($d['leftRight'][2] != null){
 				echo ' <a href="'.$urlIp.$d['leftRight'][2]['alias'].'" >></a>';
 			}
-			echo '<br/><small>(<a href="'.$url.$d['dorm']->alias.'">pokoje</a> &bull; zajętość puli: '.$d['used']->getIpCount().'/'.$d['sum']->getIpCount().' ~> '.($d['sum']->getIpCount() > 0 ? round($d['used']->getIpCount()/$d['sum']->getIpCount()*100) : 0).'% &bull; <a href="'.$urlSw.$d['dorm']->alias.'">switche</a>)</small></h2>';
+			echo '<br/><small>(<a href="'.$url.$d['dorm']->alias.'">pokoje</a> &bull; zajętość puli: '.$d['used']->getIpCount().'/'.$d['sum']->getIpCount().' ~> '.($d['sum']->getIpCount() > 0 ? round($d['used']->getIpCount()/$d['sum']->getIpCount()*100) : 0).'% &bull; <a href="'.$urlSw.$d['dorm']->alias.'">switche</a>&bull; <a href="'.$urlIpAll.'">wszystkie IP</a>)</small></h2>';
+		} else if (!is_null($d['vlan'])) {
+			echo '<h2>';
+			if($d['leftRight'][0] != null){
+				echo '<a href="'.$urlVlan.$d['leftRight'][0]['id'].'" ><</a> ';
+			}
+			echo 'VLAN '.$d['vlan']->name.' ('.$d['vlan']->id.')';
+			if($d['leftRight'][2] != null){
+				echo ' <a href="'.$urlVlan.$d['leftRight'][2]['id'].'" >></a>';
+			}
+			echo '<br/><small>(zajętość puli: '.$d['used']->getIpCount().'/'.$d['sum']->getIpCount().' ~> '.($d['sum']->getIpCount() > 0 ? round($d['used']->getIpCount()/$d['sum']->getIpCount()*100) : 0).'% &bull; <a href="'.$urlIpAll.'">wszystkie IP</a>)</small></h2>';
 		} else {
 			echo '<h2>Zestawienie numerów IP</h2>';
 		}
@@ -1245,7 +1258,7 @@ extends UFtpl_Common {
 	public function ipsNotFound(array $d) {
 		$url = $this->url(0).'/dormitories/';
 		$urlSw = $this->url(0).'/switches/dorm/';
-		$urlIp = $this->url(0).'/ips/';
+		$urlIp = $this->url(0).'/ips/ds/';
 		if (!is_null($d['dorm'])) {
 						echo '<h2>';
 			if($d['leftRight'][0] != null){
@@ -1256,10 +1269,20 @@ extends UFtpl_Common {
 				echo ' <a href="'.$urlIp.$d['leftRight'][2]['alias'].'" >></a>';
 			}
 			echo '<br/><small>(<a href="'.$url.$d['dorm']->alias.'">pokoje</a> &bull; zajętość puli: 0/0 ~> 0% &bull; <a href="'.$urlSw.$d['dorm']->alias.'">switche</a>)</small></h2>';
+		} else if (!is_null($d['vlan'])) {
+			echo '<h2>';
+			if($d['leftRight'][0] != null){
+				echo '<a href="'.$urlVlan.$d['leftRight'][0]['id'].'" ><</a> ';
+			}
+			echo 'VLAN '.$d['vlan']->name.' ('.$d['vlan']->id.')';
+			if($d['leftRight'][2] != null){
+				echo ' <a href="'.$urlVlan.$d['leftRight'][2]['id'].'" >></a>';
+			}
+			echo '<br/><small>(zajętość puli: 0 / 0 ~> 0% &bull; <a href="'.$urlIpAll.'">wszystkie IP</a>)</small></h2>';
 		} else {
 			echo '<h2>Zestawienie numerów IP</h2>';
 		}
-		echo $this->ERR('Brak adresów IP dla tego DS-u');
+		echo $this->ERR('Brak przydzielonych adresów IP');
 	}
 
 	public function titleStatsTransfer() {

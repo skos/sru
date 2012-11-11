@@ -39,6 +39,8 @@ extends UFmap {
 		'masterHostId'	 => 'c.master_host_id',
 		'masterHostName' => 's.host',
 		'autoDeactivation' => 'c.auto_deactivation',
+		'vlanId'	=> 'i.vlan',
+		'vlanName'	=> 'v.name',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -74,6 +76,8 @@ extends UFmap {
 		'masterHostId'	 => self::NULL_INT,
 		'masterHostName' => self::TEXT,
 		'autoDeactivation' => self::BOOL,
+		'vlanId'	=> self::INT,
+		'vlanName'	=> self::TEXT,
 	);
 	protected $tables = array(
 		'c' => 'computers',
@@ -85,6 +89,8 @@ extends UFmap {
 		'd' => 'dormitories',
 		'w' => 'admins',
 		's' => 'computers',
+		'i' => 'ipv4s',
+		'v' => 'vlans',
 	);
 	protected $joinOns = array(
 		'u' => 'c.user_id=u.id',
@@ -93,6 +99,8 @@ extends UFmap {
 		'd' => 'l.dormitory_id=d.id',
 		'w' => 'c.carer_id=w.id',
 		's' => 'c.master_host_id=s.id',
+		'i' => 'c.ipv4=i.ip',
+		'v' => 'i.vlan=v.id',
 	);
 	protected $valids = array(
 		'host' => array('textMin'=>1, 'textMax'=>50, 'regexp'=>'^[a-z][-a-z0-9]*$'),

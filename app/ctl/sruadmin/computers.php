@@ -100,7 +100,7 @@ extends UFctl {
 			$act = 'Computer_Search';
 		} elseif ($post->is('computerEdit') && $acl->sruAdmin('computer', 'edit')) {
 			$act = 'Computer_Edit';
-		} elseif ($post->is('computerAliasesEdit') && $acl->sruAdmin('computer', 'editAliases')) {
+		} elseif ($post->is('computerAliasesEdit') && $acl->sruAdmin('computer', 'editServer')) {
 			$act = 'Computer_AliasesEdit';
 		} elseif ('computers/computer/delete' == $get->view && $post->is('computerDel') ) {
 			$act = 'Computer_Del';

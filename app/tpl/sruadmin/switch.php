@@ -30,7 +30,7 @@ extends UFtpl_Common {
 	public function listSwitches(array $d, $dorm) {
 		$url = $this->url(0).'/switches/';
 		$urlds = $this->url(0).'/dormitories/';
-		$urlIp = $this->url(0).'/ips/';
+		$urlIp = $this->url(0).'/ips/ds/';
 		$conf = UFra::shared('UFconf_Sru');
 		$lastDom = '-';
 		$switches = array();

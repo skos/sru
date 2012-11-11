@@ -5,20 +5,26 @@
 class UFmap_Sru_Ipv4_List
 extends UFmap_Sru_Ipv4_Get {
 	protected $columns = array(
-		'ip'			=> 'i.ip',
+		'ip'		=> 'i.ip',
 		'dormitoryId'	=> 'i.dormitory_id',
-		'host'			=> 'c.host',
+		'vlanId'	=> 'i.vlan',
+		'vlanName'	=> 'v.name',
 	);
 	protected $columnTypes = array(
-		'ip'			=> self::TEXT,
+		'ip'		=> self::TEXT,
 		'dormitoryId'	=> self::INT,
-		'host'			=> self::NULL_TEXT,
+		'host'		=> self::NULL_TEXT,
+		'vlanId'	=> self::INT,
+		'vlanName'	=> self::TEXT,
 	);
 	protected $tables = array(
 		'i' => 'ipv4s',
 	);
 	protected $joins = array(
-		'c' => 'computers',
+		'v' => 'vlans',
+	);
+	protected $joinOns = array(
+		'i.vlan=v.id',
 	);
 	protected $pk = 'i.id';
 }

@@ -147,7 +147,7 @@ img { border-style: none; }
 
 .tooltip {
 	display:none;
-	background:transparent url(../img/chmurka.png);
+	background:transparent url('../img/chmurka.png');
 	font-size:12px;
 	height:120px;
 	padding:20px 20px 10px 20px;
@@ -156,7 +156,7 @@ img { border-style: none; }
 }
 
 th.header { 
-    background-image: url(../img/small.gif);     
+    background-image: url('../img/small.gif');     
     cursor: pointer; 
     font-weight: bold; 
     background-repeat: no-repeat; 
@@ -166,11 +166,11 @@ th.header {
     margin-left: -1px; 
 } 
 th.headerSortUp { 
-    background-image: url(../img/small_asc.gif); 
+    background-image: url('../img/small_asc.gif'); 
     background-color: #999; 
 }
 th.headerSortDown { 
-    background-image: url(../img/small_desc.gif); 
+    background-image: url('../img/small_desc.gif'); 
     background-color: #999; 
 }
 td.listAdminWalet { 
@@ -218,8 +218,8 @@ border-top: 1px solid;
 	border-top: solid 1px #CCC;
 }
 
-#main .contextMenu li.editSwitchContexMenu a { background-image: url(../img/edycja.png); }
-#main .contextMenu li.macSwitchContexMenu a { background-image: url(../img/jablko.png); }
+#main .contextMenu li.editSwitchContexMenu a { background-image: url('../img/edycja.png'); }
+#main .contextMenu li.macSwitchContexMenu a { background-image: url('../img/jablko.png'); }
 
 
 #foot { text-align: center; font-size: 0.5em; margin-top: 2em; clear: both; }

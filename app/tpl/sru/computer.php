@@ -130,7 +130,7 @@ extends UFtpl_Common {
 	public function titleAliasesEdit(array $d) {
 		echo 'Edycja aliasów komputera "'.$d['host'].'"';
 	}
-
+	
 	public function detailsOwn(array $d) {
 		echo '<h1>'.$d['host'].'.ds.pg.gda.pl</h1>';
 		echo '<p><em>Typ:</em> '.self::$computerTypes[$d['typeId']].'</p>';
@@ -166,6 +166,7 @@ extends UFtpl_Common {
 		}
 		echo '</p>';
 		echo '<p><em>IP:</em> '.$d['ip'].'</p>';
+		echo '<p><em>VLAN:</em> '.$d['vlanName'].' ('.$d['vlanId'].')</p>';
 		if (!$d['active']) {
 			$max = '<strong>BRAK</strong>';
 		} else {
@@ -620,7 +621,7 @@ div.style.display = 'none';
 		echo $form->isCname('Wpis CNAME '.UFlib_Helper::displayHint("Aliasy są domyślnie wpisami CNAME."), array('type'=>$form->CHECKBOX, 'value'=>'1'));
 		echo $form->_end();
 	}
-
+	
 	public function listAdmin(array $d) {
 		$url = $this->url(0).'/computers/';
 		foreach ($d as $c) {

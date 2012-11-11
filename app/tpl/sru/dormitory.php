@@ -7,7 +7,7 @@ extends UFtpl_Common {
 	
 	public function listDorms(array $d) {
 		$url = $this->url(0).'/dormitories/';
-		$urlIp = $this->url(0).'/ips/';
+		$urlIp = $this->url(0).'/ips/ds/';
 		$urlSw = $this->url(0).'/switches/dorm/';
 		
 		echo '<ul>';
@@ -36,7 +36,7 @@ extends UFtpl_Common {
 			echo $d['name'];
 		}
 
-		echo '<br/><small>(liczba użytkowników: '.$d['userCount'].' &bull; <a href="'.$url.'ips/'.$d['alias'].'">liczba komputerów: '.$d['computerCount'].'</a> &bull; <a href="'.$url.'switches/dorm/'.$d['alias'].'">switche</a>)</small></h2>';
+		echo '<br/><small>(liczba użytkowników: '.$d['userCount'].' &bull; <a href="'.$url.'ips/ds/'.$d['alias'].'">liczba komputerów: '.$d['computerCount'].'</a> &bull; <a href="'.$url.'switches/dorm/'.$d['alias'].'">switche</a>)</small></h2>';
 	}
 
 	public function inhabitants(array $d, $rooms) {

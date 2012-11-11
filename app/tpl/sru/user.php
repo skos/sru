@@ -40,7 +40,7 @@ extends UFtpl_Common {
 	protected static $userTypesForWaletAcademic = array(
 		1 => 'Student studiów dziennych',
 		2 => 'Doktorant',
-		3 => 'Sokrates',
+		3 => 'Erasmus',
 		4 => 'Student - obcokrajowiec',
 		5 => 'Student studiów wieczorowych/zaocznych',
 		6 => 'Student innej uczelni',

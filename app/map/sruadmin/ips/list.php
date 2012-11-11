@@ -8,6 +8,7 @@ extends UFmap {
 	protected $columns = array(
 		'ip'           => 'i.ip',
 		'dormitoryId'  => 'i.dormitory_id',
+		'vlan'		   => 'i.vlan',
 		'dormitoryAlias' => 'id.alias',
 		'computerId'   => 'c.id',
 		'computerHost' => 'c.host',
@@ -20,6 +21,7 @@ extends UFmap {
 	protected $columnTypes = array(
 		'ip'           => self::TEXT,
 		'dormitoryId'  => self::NULL_INT,
+		'vlan'		   => self::INT,
 		'dormitoryAlias' => self::NULL_TEXT,
 		'computerId'   => self::NULL_INT,
 		'computerHost' => self::NULL_TEXT,
