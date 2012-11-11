@@ -415,9 +415,11 @@ changeVisibility();
 		echo '<h1>Twój komputer jest niezarejestrowany w SKOS PG</h1>
 <p>Aby zarejestrować się, musisz zameldować się w administracji swojego akademika.</p>
 <p>Jeżeli posiadasz konto w  SRU, a lista Twoich komputerów jest pusta, należy dodać komputer. Po zarejestrowaniu komputera należy poczekać nawet godzinę.</p>
+<p>Zobacz także: <a href="http://skos.ds.pg.gda.pl">Strona SKOS</a></p>
 <h1>Your computer is not registered in the SKOS PG</h1>
 <p>You should visit your dorm administration.</p>
-<p>If you have an account in SRU, but the list of your computers is empty, you should add your computer. After that you need to wait for 1 hour.</p>
+<p>If you have an account in SRU, but the list of your computers is empty, you should add your computer. After that you need to wait for 1 hour.</p
+<p>See also: <a href="http://skos.ds.pg.gda.pl">SKOS web page</a></p>
 <p>*SKOS PG - it is a polish acronym for the campus network</p>';
 	}
 
@@ -428,8 +430,10 @@ changeVisibility();
 	public function userBanned() {
 		echo '<h1>Twój komputer został ukarany odcięciem od Internetu</h1>
 <p>Zaloguj się, aby sprawdzić powód kary. Możesz się także skontaktować z administratorami w <a href="http://dyzury.ds.pg.gda.pl/">godzianch dyżurów</a>.</p>
+<p>Zobacz także: <a href="http://skos.ds.pg.gda.pl">Strona SKOS</a> &bull; <a href="http://kary.ds.pg.gda.pl">Polityka kar</a></p>
 <h1>Your computer has been punished by cutting off Internet</h1>
-<p>Log in to check the reason of your penalty. You can also contact us during <a href="http://dyzury.ds.pg.gda.pl/">our duty hours</a>.</p>';
+<p>Log in to check the reason of your penalty. You can also contact us during <a href="http://dyzury.ds.pg.gda.pl/">our duty hours</a>.</p>
+<p>See also: <a href="http://skos.ds.pg.gda.pl">SKOS web page</a> &bull; <a href="http://kary.ds.pg.gda.pl">Penalties politic</a></p>';
 	}
 
 	public function userAddByAdminMailTitle(array $d) {
