@@ -268,6 +268,17 @@ extends UFdao {
 
 		return $this->doSelect($query);
 	}
+	
+	public function listExAdmins() {
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->exAdmin, true);
+		$query->where($mapping->active, true);
+		$query->order($mapping->ip, $query->ASC);
+
+		return $this->doSelect($query);
+	}
 
 	public function listTourists() {
 		$mapping = $this->mapping('list');

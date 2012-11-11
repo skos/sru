@@ -69,6 +69,9 @@ extends UFctl {
 					$get->view = 'admins';
 						if($segCount > 1) {
 							switch($req->segment(2)) {
+								case 'ex':
+									$get->view = 'admins/exadmins';
+									break;
 								case 'outdated':
 									$get->view = 'admins/outdated';
 									break;
@@ -248,6 +251,8 @@ extends UFctl {
 				return 'SruApi_Ethers';
 			case 'admins':
 				return 'SruApi_Admins';
+			case 'admins/exadmins':
+				return 'SruApi_ExAdmins';
 			case 'tourists':
 				return 'SruApi_Tourists';
 			case 'switches':
