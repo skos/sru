@@ -14,7 +14,11 @@ extends UFact {
 			$bean = UFra::factory('UFbean_Sru_User');
 			$userId = (int)$this->_srv->get('req')->get->userId;
 			$penalties = UFra::factory('UFbean_SruAdmin_Penalty');
-			$penaltyList = $penalties->getAllActiveByUserId($userId);
+			try{
+				$penaltyList = $penalties->getAllActiveByUserId($userId);
+			}catch(Exception $e){
+				$penaltyList = array();
+			}
 			
 			foreach($penaltyList as $penalty){
 				$port = UFra::factory('UFbean_SruAdmin_SwitchPort');
