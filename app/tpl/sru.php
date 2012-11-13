@@ -418,7 +418,7 @@ changeVisibility();
 <p>Zobacz także: <a href="http://skos.ds.pg.gda.pl">Strona SKOS</a></p>
 <h1>Your computer is not registered in the SKOS PG</h1>
 <p>You should visit your dorm administration.</p>
-<p>If you have an account in SRU, but the list of your computers is empty, you should add your computer. After that you need to wait for 1 hour.</p
+<p>If you have an account in SRU, but the list of your computers is empty, you should add your computer. After that you need to wait for 1 hour.</p>
 <p>See also: <a href="http://skos.ds.pg.gda.pl">SKOS web page</a></p>
 <p>*SKOS PG - it is a polish acronym for the campus network</p>';
 	}
