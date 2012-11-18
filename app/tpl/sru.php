@@ -11,7 +11,7 @@ extends UFtpl_Common {
 
 	public function login(array $d) {
 		echo '<div class="rightColumn">';
-		echo '<div class="rightColumnInfo"><h2>Informacja</h2><p>Na swoje konto możesz zalogować się dopiero po zameldowaniu Cię przez administrację DSu.</p></div>';
+		echo '<div class="rightColumnInfo"><h2>Informacja</h2><p>Na swoje konto możesz zalogować się dopiero po zameldowaniu Cię przez Biuro DSu.</p></div>';
 		echo '</div>';
 		echo '<div class="leftColumn">';
 		echo '<div id="login">';
@@ -23,7 +23,7 @@ extends UFtpl_Common {
 		if ($this->_srv->get('msg')->get('userRecover/errors/token/invalid')) {
 			echo $this->ERR('Token w linku jest nieprawidłowy.');
 		} elseif ($this->_srv->get('msg')->get('userLogin/errors')) {
-			echo $this->ERR('Nieprawidłowy login lub hasło. Czy aktywowałeś swoje konto w administracji DS?');
+			echo $this->ERR('Nieprawidłowy login lub hasło. Czy aktywowałeś swoje konto w Biurze DS?');
 		}
 		echo $d['user']->write('formLogin');
 		echo $form->_submit('Zaloguj');
@@ -368,7 +368,7 @@ extends UFtpl_Common {
 		} elseif ($this->_srv->get('msg')->get('sendPassword/errors/email/notUnique')) {
 			echo $this->ERR('Podany email jest przypisany do kilku kont - proszę zgłosić się do administratora lokalnego w celu zmiany hasła.');
 		} elseif ($this->_isErr('sendPassword')) {
-			echo $this->ERR('Nie znaleziono aktywnego konta z podanym mailem. Czy aktywowałeś swoje konto w administracji DS?');
+			echo $this->ERR('Nie znaleziono aktywnego konta z podanym mailem. Czy aktywowałeś swoje konto w Biurze DS?');
 		}
 		echo '<div id="recoverPassword">';
 		$form = UFra::factory('UFlib_Form', 'sendPassword');
@@ -413,7 +413,7 @@ changeVisibility();
 
 	public function userUnregistered() {
 		echo '<h1>Twój komputer jest niezarejestrowany w SKOS PG</h1>
-<p>Aby zarejestrować się, musisz zameldować się w administracji swojego akademika.</p>
+<p>Aby zarejestrować się, musisz zameldować się w Biurze swojego akademika.</p>
 <p>Jeżeli posiadasz konto w  SRU, a lista Twoich komputerów jest pusta, należy dodać komputer. Po zarejestrowaniu komputera należy poczekać nawet godzinę.</p>
 <p>Zobacz także: <a href="http://skos.ds.pg.gda.pl">Strona SKOS</a></p>
 <h1>Your computer is not registered in the SKOS PG</h1>

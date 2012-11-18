@@ -226,7 +226,7 @@ extends UFtpl_Common {
 			if ($lang == self::EN) {
 				echo "\n".'Your account has been DEACTIVATED by your dormitory administration. In case of problems, please contact your dormitory office.'."\n\n";
 			} else {
-				echo "\n".'Twoje konto zostało DEZAKTYWOWANE przez administrację Twojego DSu. W razie problemów prosimy o kontakt z administracją DSu.'."\n\n";
+				echo "\n".'Twoje konto zostało DEZAKTYWOWANE przez Biuro Twojego DSu. W razie problemów prosimy o kontakt z BIUREM DSu.'."\n\n";
 			}
 		}
 
@@ -295,7 +295,7 @@ extends UFtpl_Common {
 		if ($lang == self::EN) {
 			echo "\n".'*) Only dormitory administration can change these data. In case of problems, please contact your dormitory office.'."\n";
 		} else {
-			echo "\n".'*) Te dane konta mogą zostać zmienione wyłącznie przez administrację DSu. W razie problemów prosimy o kontakt z administracją DSu.'."\n";
+			echo "\n".'*) Te dane konta mogą zostać zmienione wyłącznie przez Biuro DSu. W razie problemów prosimy o kontakt z Biurem DSu.'."\n";
 		}
 	}
 
