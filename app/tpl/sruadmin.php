@@ -1258,7 +1258,9 @@ extends UFtpl_Common {
 	public function ipsNotFound(array $d) {
 		$url = $this->url(0).'/dormitories/';
 		$urlSw = $this->url(0).'/switches/dorm/';
+		$urlIpAll = $this->url(0).'/ips/';
 		$urlIp = $this->url(0).'/ips/ds/';
+		$urlVlan = $this->url(0).'/ips/vlan/';
 		if (!is_null($d['dorm'])) {
 						echo '<h2>';
 			if($d['leftRight'][0] != null){
