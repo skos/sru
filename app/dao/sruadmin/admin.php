@@ -9,9 +9,13 @@ extends UFdao {
 	 * @return bool sukces lub porażka
 	 * Funkcja zmienia wartość pola 'active' z true na false w przypadku adminów, którym minął czas rejestracji
 	 */
-	public function deactivateOutdated(){
+	public function deactivateOutdated($user){
 		$mapping = $this->mapping('set');
-		$val = array($mapping->active => false);
+		$val = array(
+			$mapping->active => false,
+			$mapping->modifiedById => $user,
+			$mapping->modifiedAt => NOW,
+		);
 		$query = $this->prepareUpdate($mapping, $val);
 		$query->where($mapping->active, true);
 		$query->where($mapping->activeTo, time(), $query->LT);

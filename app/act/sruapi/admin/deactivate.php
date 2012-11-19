@@ -9,8 +9,11 @@ extends UFact {
 	
 	public function go(){
 		try{
+			$admin = UFra::factory('UFbean_SruAdmin_Admin');
+			$admin->getFromHttp();
+
 			$toDel = UFra::factory('UFbean_SruAdmin_AdminList');
-			$toDel->deactivateOutdated();
+			$toDel->deactivateOutdated($admin->id);
 			$this->markOk(self::PREFIX);
 		} catch (UFex $e) {
 			$this->markErrors(self::PREFIX);
