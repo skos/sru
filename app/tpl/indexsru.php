@@ -31,6 +31,14 @@ extends UFtpl_Common {
 &copy;&nbsp;<a href="mailto:adnet@ds.pg.gda.pl">SKOS PG</a>
 </div><!-- foot -->
 </div><!-- body -->
+<ul id="socialSidebar">
+<li class="facebook">
+<a href="http://facebook.com/skospg"><img alt="facebook" src="<?=UFURL_BASE;?>/i/img/socialSidebar_facebook.png" /></a>
+</li>
+<li class="gplus">
+<a href="https://plus.google.com/101381300119889439141/posts"><img alt="gplus" src="<?=UFURL_BASE;?>/i/img/socialSidebar_gplus.png" /></a>
+</li>
+</ul>
 <script type="text/javascript">
 $("#main img[title]").tooltip({ position: "center right"});
 </script>
