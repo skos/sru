@@ -259,8 +259,8 @@ extends UFlib_Snmp {
 				$portUser = $this->recoverSwitchPort((int)$portUser);
 				// sprawdzamy, czy na znalezionym porcie jest jakis switch
 				try {
-					if ($portUser > 48) {
-						if ($portUser <= 50) {
+					if ($portUser > $switch->modelPorts) {
+						if ($portUser <= 50 && $switch->modelPorts < 50) {
 							$name = $portUser - 48;
 						} else if ($portUser < 200) {
 							$name = $portUser - 50;
