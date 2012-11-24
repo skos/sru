@@ -224,17 +224,21 @@ border-top: 1px solid;
 
 #foot { text-align: center; font-size: 0.5em; margin-top: 2em; clear: both; }
 
-#socialSidebar {
-    top: 180px;
+#socialBar {
+    top: 142px;
     font-size: 0;
-    left: 0;
-    margin: 0;
+    margin-left: auto;
+    margin-right: auto;
+    width: 1004px;
     padding: 0;
-    position: fixed;
-    z-index: 5000;
+    position: absolute;
+}
+#socialSidebar {
+	float: right;
 }
 #socialSidebar li {
     background: none repeat scroll 0 0 transparent;
+    list-style: none;
     height: 38px;
     margin-top: 6px;
     padding: 0;

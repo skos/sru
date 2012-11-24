@@ -24,13 +24,7 @@ extends UFtpl_Common {
 </div><!-- head -->
 <?=$d['userMainMenu'];?>
 <?=$d['userBar'];?>
-<div id="main">
-<?=$d['body'];?>
-</div><!-- main -->
-<div id="foot">
-&copy;&nbsp;<a href="mailto:adnet@ds.pg.gda.pl">SKOS PG</a>
-</div><!-- foot -->
-</div><!-- body -->
+<div id="socialBar">
 <ul id="socialSidebar">
 <li class="facebook">
 <a href="http://facebook.com/skospg"><img alt="facebook" src="<?=UFURL_BASE;?>/i/img/socialSidebar_facebook.png" /></a>
@@ -39,6 +33,14 @@ extends UFtpl_Common {
 <a href="https://plus.google.com/101381300119889439141/posts"><img alt="gplus" src="<?=UFURL_BASE;?>/i/img/socialSidebar_gplus.png" /></a>
 </li>
 </ul>
+</div>
+<div id="main">
+<?=$d['body'];?>
+</div><!-- main -->
+<div id="foot">
+&copy;&nbsp;<a href="mailto:adnet@ds.pg.gda.pl">SKOS PG</a>
+</div><!-- foot -->
+</div><!-- body -->
 <script type="text/javascript">
 $("#main img[title]").tooltip({ position: "center right"});
 </script>
