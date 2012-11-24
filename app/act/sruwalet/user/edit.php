@@ -11,16 +11,17 @@ extends UFact {
 	public function go() {
 		try {
 			$post = $this->_srv->get('req')->post->{self::PREFIX};
-			$this->begin();
-
+			
 			$bean = UFra::factory('UFbean_Sru_User');
 			$bean->getByPK((int)$this->_srv->get('req')->get->userId);
-
+			
 			$active = $bean->active;
 			$referralStart = $bean->referralStart;
 			$locationAlias = $bean->locationAlias;
-
+			
 			$dormitoryId = $bean->dormitoryId;
+			
+			$this->begin();
 
 			$bean->fillFromPost(self::PREFIX, array('password', 'dormitory', 'nationalityName', 'lastLocationChangeActive'));
 			$bean->modifiedById = $this->_srv->get('session')->authWaletAdmin;
@@ -63,15 +64,6 @@ extends UFact {
 
 			$bean->save();
 
-			try {
-				$comps = UFra::factory('UFbean_Sru_ComputerList');
-				$waletAdmin = $this->_srv->get('session')->authWaletAdmin;
-				$typeId = (array_key_exists($bean->typeId, UFtpl_Sru_Computer::$userToComputerType) ? UFtpl_Sru_Computer::$userToComputerType[$bean->typeId] : UFbean_Sru_Computer::TYPE_STUDENT);
-				$comps->updateLocationAndTypeByUserId($bean->id, $bean->locationId, $typeId, $waletAdmin);
-			} catch (UFex_Dao_NotFound $e) {
-				// uzytkownik nie ma komputerow
-			}
-
 			$conf = UFra::shared('UFconf_Sru');
 			if ($conf->sendEmail && $bean->notifyByEmail() && !is_null($bean->email) && $bean->email != '') {
 				$sender = UFra::factory('UFlib_Sender');
@@ -100,7 +92,13 @@ extends UFact {
 			$this->markOk(self::PREFIX);
 			$this->commit();
 			
-			try{
+			$bean = UFra::factory('UFbean_Sru_User');
+			$bean->getByPK((int)$this->_srv->get('req')->get->userId);
+			
+			/* outside transaction - computers operations, they aren't critical - no problems if fail */
+			try {
+				$comps = UFra::factory('UFbean_Sru_ComputerList');
+				$waletAdmin = $this->_srv->get('session')->authWaletAdmin;
 				if(!$active && $bean->active){
 					try{
 						if($post['dormitory'] != $bean->dormitoryId){
@@ -112,8 +110,10 @@ extends UFact {
 						//po prostu ma nic nie wyświetlić, gdy coś się nie uda, można dorobić obsługę Exceptiona w tym miejscu
 					}
 				}
-			}catch(Exception $e){
-				// jw.
+				$typeId = (array_key_exists($bean->typeId, UFtpl_Sru_Computer::$userToComputerType) ? UFtpl_Sru_Computer::$userToComputerType[$bean->typeId] : UFbean_Sru_Computer::TYPE_STUDENT);
+				$comps->updateLocationAndTypeByUserId($bean->id, $bean->locationId, $typeId, $waletAdmin);
+			} catch (UFex_Dao_NotFound $e) {
+				// uzytkownik nie ma komputerow
 			}
 			
 		} catch (UFex_Dao_DataNotValid $e) {
