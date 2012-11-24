@@ -66,17 +66,6 @@ extends UFact {
 			try {
 				$comps = UFra::factory('UFbean_Sru_ComputerList');
 				$waletAdmin = $this->_srv->get('session')->authWaletAdmin;
-				if(!$active && $bean->active){
-					try{
-						if($post['dormitory'] != $bean->dormitoryId){
-							$comps->restoreWithUser($bean->id, true, $waletAdmin);
-						}else{
-							$comps->restoreWithUser($bean->id, false, $waletAdmin);
-						}
-					}catch(Exception $e){
-						//po prostu ma nic nie wyświetlić, gdy coś się nie uda, można dorobić obsługę Exceptiona w tym miejscu
-					}
-				}
 				$typeId = (array_key_exists($bean->typeId, UFtpl_Sru_Computer::$userToComputerType) ? UFtpl_Sru_Computer::$userToComputerType[$bean->typeId] : UFbean_Sru_Computer::TYPE_STUDENT);
 				$comps->updateLocationAndTypeByUserId($bean->id, $bean->locationId, $typeId, $waletAdmin);
 			} catch (UFex_Dao_NotFound $e) {
@@ -110,6 +99,23 @@ extends UFact {
 			$this->postDel(self::PREFIX);
 			$this->markOk(self::PREFIX);
 			$this->commit();
+			
+			try{
+				if(!$active && $bean->active){
+					try{
+						if($post['dormitory'] != $bean->dormitoryId){
+							$comps->restoreWithUser($bean->id, true, $waletAdmin);
+						}else{
+							$comps->restoreWithUser($bean->id, false, $waletAdmin);
+						}
+					}catch(Exception $e){
+						//po prostu ma nic nie wyświetlić, gdy coś się nie uda, można dorobić obsługę Exceptiona w tym miejscu
+					}
+				}
+			}catch(Exception $e){
+				// jw.
+			}
+			
 		} catch (UFex_Dao_DataNotValid $e) {
 			$this->rollback();
 			$this->markErrors(self::PREFIX, $e->getData());
