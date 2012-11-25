@@ -192,7 +192,8 @@ extends UFtpl_Common {
 			if (!is_null($gbics)) {
 				echo '<table class="bordered"><tr><th>Port</th><th>Model</th><th>S/N '.UFlib_Helper::displayHint("W przypadku oryginalnych mini-GBICów HP należy na początku S/N dodać &quot;MY3&quot;").'</th></tr>';
 				for ($i = 1; $i <= $d['modelSfpPorts']; $i++) {
-					echo '<tr><td>'.($d['modelPorts'] - $d['modelSfpPorts'] + $i).'</td><td>'.(isset($gbics[$i]) ? $gbics[$i] : '-').'</td><td>'.(isset($gbics[($i+$d['modelSfpPorts'])]) ? $gbics[($i+$d['modelSfpPorts'])] : '-').'</td>';
+					$port = $d['modelPorts'] - $d['modelSfpPorts'] + $i;
+					echo '<tr><td>'.$port.'</td><td>'.(isset($gbics[$port][1]) ? $gbics[$port][1] : '-').'</td><td>'.(isset($gbics[$port][0]) ? $gbics[$port][0] : '-').'</td>';
 				}
 				echo '</table>';
 			} else {

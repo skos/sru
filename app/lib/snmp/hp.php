@@ -45,6 +45,7 @@ extends UFlib_Snmp {
 		'J9145A',
 		'J9147A',
 		'J9452A',
+		'J8697A',
 	);
 
 	public $movedPortsNumbers = array(
@@ -204,17 +205,13 @@ extends UFlib_Snmp {
 
 	public function getGbics($sfpPorts) {
 		$gbics = array();
-		$serials = @snmpwalk($this->ip , $this->communityR, $this->OIDs['gbicSerial'], $this->timeout);
+		$serials = @snmprealwalk($this->ip , $this->communityR, $this->OIDs['gbicSerial'], $this->timeout);
 		$models = @snmpwalk($this->ip , $this->communityR, $this->OIDs['gbicModel'], $this->timeout);
-		$start = $sfpPorts + 1;
-		$diff = $sfpPorts * 2 + 1;
-		for ($i = $start; $i < $start + $sfpPorts; $i++) {
-			if (isset($serials[count($serials) - $diff + $i]) && $serials[count($serials) - $diff + $i] != '') {
-				$gbics[$i] = @snmpget($this->ip , $this->communityR, $this->OIDs['gbicSerial'].'.4'.$i, $this->timeout);
-			}
-			if (isset($models[count($models) - $diff + $i]) && $models[count($models) - $diff + $i] != '') {
-				$gbics[($i - $sfpPorts)] = @snmpget($this->ip , $this->communityR, $this->OIDs['gbicModel'].'.6'.($i - $sfpPorts), $this->timeout);
-			}
+		foreach ($serials as $portOid => $serial) {
+			$oid = explode(".", $portOid);
+			$port = array_pop($oid);
+			$gbics[$port][0] = $serial;
+			$gbics[$port][1] = $models[$port + 10];
 		}
 		return $gbics;
 	}
