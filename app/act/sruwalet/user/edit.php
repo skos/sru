@@ -13,7 +13,8 @@ extends UFact {
 			$post = $this->_srv->get('req')->post->{self::PREFIX};
 			
 			$bean = UFra::factory('UFbean_Sru_User');
-			$bean->getByPK((int)$this->_srv->get('req')->get->userId);
+			$userId = (int)$this->_srv->get('req')->get->userId;
+			$bean->getByPK($userId);
 			
 			$active = $bean->active;
 			$referralStart = $bean->referralStart;
@@ -93,7 +94,7 @@ extends UFact {
 			$this->commit();
 			
 			$bean = UFra::factory('UFbean_Sru_User');
-			$bean->getByPK((int)$this->_srv->get('req')->get->userId);
+			$bean->getByPK($userId);
 			
 			/* outside transaction - computers operations, they aren't critical - no problems if fail */
 			try {
@@ -114,6 +115,32 @@ extends UFact {
 				$comps->updateLocationAndTypeByUserId($bean->id, $bean->locationId, $typeId, $waletAdmin);
 			} catch (UFex_Dao_NotFound $e) {
 				// uzytkownik nie ma komputerow
+			}
+			
+			if($dormitoryId != $bean->dormitoryId || $locationAlias != $bean->locationAlias){
+				try{
+					$penaltyList = $penalties->getAllActiveByUserId($userId);
+				}catch(Exception $e){
+					$penaltyList = array();
+				}
+				
+				foreach($penaltyList as $penalty){
+					$port = UFra::factory('UFbean_SruAdmin_SwitchPort');
+					$portData = $port->getByPenaltyUserId($penalty['id'], $userId);
+				
+					if($portData[0]['switchId'] > 0 && $portData[0]['ordinalNo'] > 0 && $portData[0]['portId'] > 0){
+						$switch = UFra::factory('UFbean_SruAdmin_Switch');
+						$switch->getByPK($portData[0]['switchId']);
+						$hp = UFra::factory('UFlib_Snmp_Hp', $switch->ip, $switch);
+						$hp->setPortStatus($portData[0]['ordinalNo'], UFlib_Snmp_Hp::ENABLED);
+						$hp->setPortAlias($portData[0]['ordinalNo'], $portData[0]['locationAlias']);
+					}
+				
+					try{
+						UFra::factory('UFbean_SruAdmin_SwitchPort')->erasePenalty($penalty['id']);
+					} catch(Exception $e) {
+					}
+				}
 			}
 			
 		} catch (UFex_Dao_DataNotValid $e) {
