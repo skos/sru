@@ -118,6 +118,7 @@ extends UFact {
 			}
 			
 			if($dormitoryId != $bean->dormitoryId || $locationAlias != $bean->locationAlias){
+				$penalties = UFra::factory('UFbean_SruAdmin_Penalty');
 				try{
 					$penaltyList = $penalties->getAllActiveByUserId($userId);
 				}catch(Exception $e){
