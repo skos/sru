@@ -8,7 +8,7 @@ extends UFmap {
 		'userId' => 'u.id',
 		'switchId' => 'p.switch',
 		'ordinalNo' => 'p.ordinal_no',
-		'locationAlias' => 'p.location'
+		'locationAlias' => 'l.alias'
 	);
 	
 	protected $columnTypes = array(
@@ -26,12 +26,14 @@ extends UFmap {
 	
 	protected $joins = array( 
 		'p' => 'switches_port',
-		'u' => 'users'
+		'u' => 'users',
+		'l' => 'locations'
 	);
 	
 	protected $joinOns = array(
 		'p' => 'b.id=p.penalty_id',
-		'u' => 'u.id=b.user_id'
+		'u' => 'u.id=b.user_id',
+		'l' => 'l.id=p.location'
 	);
 	//protected $pk = 'b.id';
 }
