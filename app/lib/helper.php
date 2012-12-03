@@ -79,4 +79,32 @@ class UFlib_Helper {
 
 		return array($left, $middle, $right);
 	}
+	
+	public static function removePenaltyFromPort(){
+		$conf = UFra::shared('UFconf_Sru');
+		$penalties = UFra::factory('UFbean_SruAdmin_Penalty');
+		try{
+			$penaltyList = $penalties->getAllActiveByUserId($userId);
+		}catch(Exception $e){
+			$penaltyList = array();
+		}
+		
+		foreach($penaltyList as $penalty){
+			$port = UFra::factory('UFbean_SruAdmin_SwitchPort');
+			$portData = $port->getByPenaltyUserId($penalty['id'], $userId);
+		
+			if($portData[0]['switchId'] > 0 && $portData[0]['ordinalNo'] > 0 && $portData[0]['portId'] > 0){
+				$switch = UFra::factory('UFbean_SruAdmin_Switch');
+				$switch->getByPK($portData[0]['switchId']);
+				$hp = UFra::factory('UFlib_Snmp_Hp', $switch->ip, $switch);
+				$hp->setPortStatus($portData[0]['ordinalNo'], UFlib_Snmp_Hp::ENABLED);
+				$hp->setPortAlias($portData[0]['ordinalNo'], str_replace($conf->penaltyPrefix, '', $hp->getPortAlias($portData[0]['ordinalNo'])));
+			}
+		
+			try{
+				UFra::factory('UFbean_SruAdmin_SwitchPort')->erasePenalty($penalty['id']);
+			} catch(Exception $e) {
+			}
+		}
+	}
 }
