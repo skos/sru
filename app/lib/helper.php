@@ -80,7 +80,7 @@ class UFlib_Helper {
 		return array($left, $middle, $right);
 	}
 	
-	public static function removePenaltyFromPort(){
+	public static function removePenaltyFromPort($userId){
 		$conf = UFra::shared('UFconf_Sru');
 		$penalties = UFra::factory('UFbean_SruAdmin_Penalty');
 		try{
