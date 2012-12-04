@@ -14,7 +14,7 @@ extends UFact {
 			$bean = UFra::factory('UFbean_Sru_User');
 			$userId = (int)$this->_srv->get('req')->get->userId;
 			
-			UFlib_Helper::removePenaltyFromPort();
+			UFlib_Helper::removePenaltyFromPort($userId);
 			
 			$bean->getByPK($userId);
 

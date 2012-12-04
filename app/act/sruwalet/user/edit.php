@@ -118,7 +118,7 @@ extends UFact {
 			}
 			
 			if($dormitoryId != $bean->dormitoryId || $locationAlias != $bean->locationAlias){
-				UFlib_Helper::removePenaltyFromPort();
+				UFlib_Helper::removePenaltyFromPort($userId);
 			}
 			
 		} catch (UFex_Dao_DataNotValid $e) {
