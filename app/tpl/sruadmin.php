@@ -864,12 +864,12 @@ extends UFtpl_Common {
 	}
 
 	public function switchPorts(array $d) {
-		$d['ports']->write('listPorts', $d['switch'], $d['portStatuses'], $d['trunks'], $d['port']);
+		$d['ports']->write('listPorts', $d['switch'], $d['portStatuses'], $d['trunks'], $d['port'], $d['flags']);
 	}
 
 	public function roomSwitchPorts(array $d) {
 		echo '<h3>Przypisane porty</h3>';
-		$d['ports']->write('listRoomPorts', $d['room'], $d['portStatuses']);
+		$d['ports']->write('listRoomPorts', $d['room'], $d['portStatuses'], $d['portFlags']);
 	}
 
 	public function switchPortDetails(array $d) {

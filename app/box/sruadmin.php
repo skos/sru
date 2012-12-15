@@ -1163,9 +1163,11 @@ extends UFbox {
 				$switch = UFra::factory('UFlib_Snmp_Hp', $d['switch']->ip);
 				$d['portStatuses'] = $switch->getPortStatuses();
 				$d['trunks'] = $switch->getTrunks();
+				$d['flags'] = $switch->getIntrusionFlags();
 			} else {
 				$d['portStatuses'] = null;
 				$d['trunks'] = null;
+				$d['flags'] = null;
 			}
 
 			try {
@@ -1198,6 +1200,7 @@ extends UFbox {
 			$d['ports'] = $ports;
 			
 			$statuses = array();
+			$flags = array();
 			foreach ($ports as $port) {
 				$switch = UFra::factory('UFbean_SruAdmin_Switch');
 				$switch->getByPK($port['switchId']);
@@ -1207,8 +1210,11 @@ extends UFbox {
 					return $this->render('switchNotFound');
 				}
 				$statuses[] = $status;
+				$flag = $hp->getIntrusionFlag($port['ordinalNo']);
+				$flags[] = $flag;			
 			}
 			$d['portStatuses'] = $statuses;
+			$d['portFlags'] = $flags;
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {

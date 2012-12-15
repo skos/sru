@@ -14,18 +14,12 @@ extends UFtpl_Common {
 	);
 
 	public function details(array $d, $switch, $alias, $speed, $vlan, $flag, $learnMode, $addrLimit, $alarmState, $loopProtect) {
-		echo '
-<script>
-$(function() {
-$( "#tabs" ).tabs();
-});
-</script>';
 		$url = $this->url(0).'/switches/';
 		$conf = UFra::shared('UFconf_Sru');
 		$swstatsLink = str_replace($conf->swstatsSwitchRegex, UFtpl_SruAdmin_Switch::displaySwitchName($switch->dormitoryAlias, $switch->hierarchyNo, $switch->lab), $conf->swstatsLinkPort);
 		$swstatsLink = str_replace($conf->swstatsPortRegex, $d['ordinalNo'], $swstatsLink);
 
-		echo '<h3>Port '.$d['ordinalNo'].($flag == UFlib_Snmp_Hp::UP ? ' <img src="'.UFURL_BASE.'/i/img/flaga.png" alt="" title="Podniesiona flaga wtargnięcia (intrusion flag)" />' : '').'</h3>';
+		echo '<h3>Port '.$d['ordinalNo'].'</h3>';
 		echo '<div id="tabs"><ul>';
 		echo '<li><a href="#data">Dane</a></li>';
 		echo '<li><a href="#security">Bezpieczeństwo</a></li>';
@@ -60,7 +54,12 @@ $( "#tabs" ).tabs();
 		echo '<p><em>Flaga wtargnięcia:</em> '.(is_null($flag) ? 'brak' : ($flag == UFlib_Snmp_Hp::UP ? 'podniesiona' : 'opuszczona')).' '.UFlib_Helper::displayHint('Intrusion flag', false).'</p>';
 		echo '<p><em>Zabezpieczenie przet pętlą:</em> '.(is_null($loopProtect) ? 'brak' : ($loopProtect == UFlib_Snmp_Hp::ENABLED ? 'aktywne' : 'nieaktywne')).' '.UFlib_Helper::displayHint('Loop protect', false).'</p>';
 		echo '</div></div>';
-		
+				echo '
+<script>
+$(function() {
+$( "#tabs" ).tabs();
+});
+</script>';	
 	}
 
 	public function portMacs(array $d, $switch, $macs) {
@@ -140,7 +139,7 @@ $( "#tabs" ).tabs();
 		echo '<div class="legend"><table class="switchports"><tr><td class="dis">Wyłączony</td><td class="down">Nieaktywny</td><td class="up">Aktywny</td><td class="unknown">Status nieznany</td></tr></table><br/></div>';
 	}
 
-	public function listPorts(array $d, $switch, $portStatuses, $trunks, $port = null) {
+	public function listPorts(array $d, $switch, $portStatuses, $trunks, $port = null, $flags) {
 		$url = $this->url(0).'/switches/';
 		$hpLib = UFra::shared('UFlib_Snmp_Hp');
 		if (in_array($switch->modelNo, $hpLib->biggerTrunkNumbers)) {
@@ -186,6 +185,7 @@ $( "#tabs" ).tabs();
 			}
 			echo $d[$i]['admin'] ?'</strong>' : '';
 			echo '</a>';
+			echo (isset($flags[$i]) && $flags[$i] == UFlib_Snmp_Hp::UP) ? ' <img src="'.UFURL_BASE.'/i/img/flaga.png" alt="" title="Podniesiona flaga wtargnięcia (intrusion flag)" />' : '';
 			echo ($d[$i]['penaltyId'] == '') ? '' : ' <a href="'.$this->url(0).'/penalties/'.$d[$i]['penaltyId'].'"><img src="'.UFURL_BASE.'/i/img/czaszka.png" alt="" title="'.$d[$i]['userName'].' &quot;'.$d[$i]['userLogin'].'&quot; '.$d[$i]['userSurname'].': '.$d[$i]['templateTitle'].' ('.$d[$i]['penaltyId'].')" /></a>';
 			echo ($d[$i]['comment'] == '') ? '' : ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$d[$i]['comment'].'" />';
 			echo '<br/><small>(';
@@ -214,7 +214,7 @@ $( "#tabs" ).tabs();
 		UFlib_Script::displaySwitchPortMenu(array('' => $url.$switch->serialNo));
 	}
 
-	public function listRoomPorts(array $d, $room, $portStatuses) {
+	public function listRoomPorts(array $d, $room, $portStatuses, $portFlags) {
 		$url = $this->url(0).'/switches/';
 		$i = 0;
 		$j = 0;
@@ -259,6 +259,7 @@ $( "#tabs" ).tabs();
 			echo $port['ordinalNo'];
 			echo $port['admin'] ?'</strong>' : '';
 			echo '</a>';
+			echo (isset($portFlags[$i]) && $portFlags[$i] == UFlib_Snmp_Hp::UP) ? ' <img src="'.UFURL_BASE.'/i/img/flaga.png" alt="" title="Podniesiona flaga wtargnięcia (intrusion flag)" />' : '';
 			echo ($d[$i]['penaltyId'] == '') ? '' : ' <a href="'.$this->url(0).'/penalties/'.$d[$i]['penaltyId'].'"><img src="'.UFURL_BASE.'/i/img/czaszka.png" alt="" title="'.$d[$i]['userName'].' &quot;'.$d[$i]['userLogin'].'&quot; '.$d[$i]['userSurname'].': '.$d[$i]['templateTitle'].' ('.$d[$i]['penaltyId'].')" /></a>';
 			echo ($port['comment'] == '') ? '' : ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$port['comment'].'" />';
 			echo '</td>';

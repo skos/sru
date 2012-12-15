@@ -170,6 +170,24 @@ extends UFlib_Snmp {
 		return $result;
 	}
 	
+	public function getIntrusionFlags() {
+		$flags = @snmpwalk($this->ip, $this->communityR, $this->OIDs['intrusionFlag'], $this->timeout);
+		if ($flags == false) {
+			return null;
+		}
+
+		$result = array();
+		for ($i = 0; $i < count($flags); $i++) {
+			if ($flags[$i] == 1) {
+				$result[$i] = self::UP;
+			} else {
+				$result[$i] = self::DOWN;
+			}
+		}
+
+		return $result;
+	}
+	
 	public function getLearnMode($port) {
 		$learnMode = @snmpget($this->ip , $this->communityR, $this->OIDs['learnMode'].'.'.$this->translateSwitchPort($port), $this->timeout);
 		if ($learnMode == false) {

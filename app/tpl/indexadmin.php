@@ -16,7 +16,6 @@ extends UFtpl_Common {
 <link rel="stylesheet" href="<?=UFURL_BASE;?>/i/jquery/css/smoothness/jquery-ui.custom.css" type="text/css" />	
 <link rel="shortcut icon" href="<?=UFURL_BASE;?>/i/img/favicon.ico" type="image/x-icon" />
 <script type="text/javascript" src="<?=UFURL_BASE;?>/i/jquery/jquery.js"></script>
-<script type="text/javascript" src="<?=UFURL_BASE;?>/i/jquery/jquery.tools.min.js"></script>
 <script type="text/javascript" src="<?=UFURL_BASE;?>/i/jquery/jquery-ui.custom.min.js"></script>
 <script type="text/javascript" src="<?=UFURL_BASE;?>/i/jquery/jquery.contextMenu.js"></script>
 <title><?=$d['title'];?></title>
@@ -36,7 +35,9 @@ extends UFtpl_Common {
 </div><!-- foot -->
 </div><!-- body -->
 <script type="text/javascript">
-$("#main img[title]").tooltip({ position: "center right"});
+$(function() {
+	$( document ).tooltip();
+});
 </script>
 <?
 $stop = microtime(true);

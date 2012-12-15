@@ -24,10 +24,6 @@ class UFlib_Helper {
 	public static function displayHint($string, $breakLine = true) {
 		$length = strlen($string); 
 		$string = htmlentities($string, ENT_QUOTES);
-		if ($length >= 250) { 
-			$tnij = substr($string,0,250); 
-			$string = $tnij.'...'; 
-		}
 		$returnString = ' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="'.$string.'" />';
 		if ($breakLine) {
 			$returnString .= '<br/>';

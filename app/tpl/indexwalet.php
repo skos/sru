@@ -15,7 +15,7 @@ extends UFtpl_Common {
 <link rel="stylesheet" href="<?=UFURL_BASE;?>/i/css/style.css" type="text/css" media="screen" />
 <link rel="stylesheet" href="<?=UFURL_BASE;?>/i/jquery/css/smoothness/jquery-ui.custom.css" type="text/css" />
 <link rel="shortcut icon" href="<?=UFURL_BASE;?>/i/img/favicon.ico" type="image/x-icon" />	
-<script type="text/javascript" src="<?=UFURL_BASE;?>/i/jquery/jquery.tools.min.js"></script>
+<script type="text/javascript" src="<?=UFURL_BASE;?>/i/jquery/jquery.js"></script>
 <script type="text/javascript" src="<?=UFURL_BASE;?>/i/jquery/jquery-ui.custom.min.js"></script>
 <script type="text/javascript" src="<?=UFURL_BASE;?>/i/jquery/jquery.tablesorter.min.js"></script>
 
@@ -36,7 +36,9 @@ extends UFtpl_Common {
 </div><!-- foot -->
 </div><!-- body -->
 <script type="text/javascript">
-$("#main img[title]").tooltip({ position: "center right"});
+$(function() {
+	$( document ).tooltip();
+});
 $.tablesorter.addParser({
 	id: 'ds',
 	is: function(s) {
