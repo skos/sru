@@ -21,10 +21,10 @@ class UFlib_Helper {
 		return strtolower(preg_replace($unPretty, $pretty, nl2br(htmlspecialchars(trim($string)))));
 	}
 	
-	public static function displayHint($string, $breakLine = false) {
+	public static function displayHint($string, $breakLine = true) {
 		$length = strlen($string); 
 		$string = htmlentities($string, ENT_QUOTES);
-		if ($licz >= 250) { 
+		if ($length >= 250) { 
 			$tnij = substr($string,0,250); 
 			$string = $tnij.'...'; 
 		}
