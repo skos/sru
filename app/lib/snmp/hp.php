@@ -305,7 +305,7 @@ extends UFlib_Snmp {
 		if ($trunk == false) {
 			return self::DISABLED;
 		}
-		if ($trunk == 1) {
+		if ($trunk > 0) {
 			$result = self::ENABLED;
 		} else {
 			$result = self::DISABLED;

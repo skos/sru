@@ -91,8 +91,11 @@ extends UFact {
 					$status = UFlib_Snmp_Hp::DISABLED;
 				}
 				$result = $hp->setPortStatus($bean->ordinalNo, $status);
-				// zawsze przy edycji opuszczamy flagę
-				$result = $result && $hp->setIntrusionFlag($bean->ordinalNo, UFlib_Snmp_Hp::DOWN);
+				// zawsze przy edycji opuszczamy flagę, jesli jest podniesiona
+				$flag = $hp->getIntrusionFlag($bean->ordinalNo);
+				if ($flag == UFlib_Snmp_Hp::UP) {
+					$result = $result && $hp->setIntrusionFlag($bean->ordinalNo, UFlib_Snmp_Hp::DOWN);
+				}
 				if (!$result) {
 					throw UFra::factory('UFex_Dao_DataNotValid', 'Writing to switch error', 0, E_WARNING, array('switch' => 'writingError'));
 				}
