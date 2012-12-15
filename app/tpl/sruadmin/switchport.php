@@ -13,7 +13,7 @@ extends UFtpl_Common {
 		'portEnabled/enabledAndPenalty' => 'Nie można ustawić kary dla włączonego portu',
 	);
 
-	public function details(array $d, $switch, $alias, $speed, $vlan, $flag, $learnMode, $addrLimit, $alarmState, $loopProtect) {
+	public function details(array $d, $switch, $alias, $speed, $vlan, $flag, $learnMode, $addrLimit, $alarmState, $loopProtect, $trunk) {
 		$url = $this->url(0).'/switches/';
 		$conf = UFra::shared('UFconf_Sru');
 		$swstatsLink = str_replace($conf->swstatsSwitchRegex, UFtpl_SruAdmin_Switch::displaySwitchName($switch->dormitoryAlias, $switch->hierarchyNo, $switch->lab), $conf->swstatsLinkPort);
@@ -42,19 +42,23 @@ extends UFtpl_Common {
 			echo '<p><em>Przypisana kara: </em><a href="'.$this->url(0).'/penalties/'.$d['penaltyId'].'">'.$d['userName'].' "'.$d['userLogin'].'" '.$d['userSurname'].': '.$d['templateTitle'].' ('.$d['penaltyId'].')</a></p>';
 		}
 		echo '<p><em>Komentarz:</em> '.$d['comment'].'</p>';
+		echo '</div><div id="security">';
+		if ($trunk == UFlib_Snmp_Hp::DISABLED) { // jeśli nie jest trunkiem
+			echo '<p><em>Tryb nauki:</em> '.(is_null($learnMode) ? 'brak' : UFlib_Snmp_Hp::$learnModes[$learnMode]).' '.UFlib_Helper::displayHint('Learning mode</br><a href="http://tinyurl.com/bprhaqf">info</a>', false).'</p>';
+			echo '<p><em>Limit adresów MAC:</em> '.(is_null($addrLimit) ? 'brak' : $addrLimit).'</p>';
+			echo '<p><em>Akcja:</em> '.(is_null($alarmState) ? 'brak' : UFlib_Snmp_Hp::$alarmStates[$alarmState]).' '.UFlib_Helper::displayHint('Akcja po przekroczeniu liczby adresów', false).'</p>';
+			echo '<p><em>Flaga wtargnięcia:</em> '.(is_null($flag) ? 'brak' : ($flag == UFlib_Snmp_Hp::UP ? 'podniesiona' : 'opuszczona')).' '.UFlib_Helper::displayHint('Intrusion flag', false).'</p>';
+			echo '<p><em>Zabezpieczenie przet pętlą:</em> '.(is_null($loopProtect) ? 'brak' : ($loopProtect == UFlib_Snmp_Hp::ENABLED ? 'aktywne' : 'nieaktywne')).' '.UFlib_Helper::displayHint('Loop protect', false).'</p>';
+		} else {
+			echo '<p><img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" /> Dane dot. bezpieczeństwa nie są dostępne dla trunków.</p>';
+		}
+		echo '</div></div>';
 		echo '<p class="nav"><a href="'.$url.'dorm/'.$d['dormitoryAlias'].'">Wróć do listy</a> &bull; 
 			 <a href="'.$url.'">Pokaż wszystkie</a> &bull; 
 			<a href="'.$url.$switch->serialNo.'/port/'.$d['ordinalNo'].'/macs">Pokaż adresy MAC</a> &bull; 
 			<a href="'.$url.$switch->serialNo.'/port/'.$d['ordinalNo'].'/:edit">Edytuj port</a> &bull;
 			<a href="'.$swstatsLink.'">SWStats</a></p>';
-		echo '</div><div id="security">';
-		echo '<p><em>Tryb nauki:</em> '.(is_null($learnMode) ? 'brak' : UFlib_Snmp_Hp::$learnModes[$learnMode]).' '.UFlib_Helper::displayHint('Learning mode</br><a href="http://tinyurl.com/bprhaqf">info</a>', false).'</p>';
-		echo '<p><em>Limit adresów MAC:</em> '.(is_null($addrLimit) ? 'brak' : $addrLimit).'</p>';
-		echo '<p><em>Akcja:</em> '.(is_null($alarmState) ? 'brak' : UFlib_Snmp_Hp::$alarmStates[$alarmState]).' '.UFlib_Helper::displayHint('Akcja po przekroczeniu liczby adresów', false).'</p>';
-		echo '<p><em>Flaga wtargnięcia:</em> '.(is_null($flag) ? 'brak' : ($flag == UFlib_Snmp_Hp::UP ? 'podniesiona' : 'opuszczona')).' '.UFlib_Helper::displayHint('Intrusion flag', false).'</p>';
-		echo '<p><em>Zabezpieczenie przet pętlą:</em> '.(is_null($loopProtect) ? 'brak' : ($loopProtect == UFlib_Snmp_Hp::ENABLED ? 'aktywne' : 'nieaktywne')).' '.UFlib_Helper::displayHint('Loop protect', false).'</p>';
-		echo '</div></div>';
-				echo '
+		echo '
 <script>
 $(function() {
 $( "#tabs" ).tabs();
@@ -139,7 +143,7 @@ $( "#tabs" ).tabs();
 		echo '<div class="legend"><table class="switchports"><tr><td class="dis">Wyłączony</td><td class="down">Nieaktywny</td><td class="up">Aktywny</td><td class="unknown">Status nieznany</td></tr></table><br/></div>';
 	}
 
-	public function listPorts(array $d, $switch, $portStatuses, $trunks, $port = null, $flags) {
+	public function listPorts(array $d, $switch, $portStatuses, $trunks, $flags, $port = null) {
 		$url = $this->url(0).'/switches/';
 		$hpLib = UFra::shared('UFlib_Snmp_Hp');
 		if (in_array($switch->modelNo, $hpLib->biggerTrunkNumbers)) {

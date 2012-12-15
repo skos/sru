@@ -864,7 +864,7 @@ extends UFtpl_Common {
 	}
 
 	public function switchPorts(array $d) {
-		$d['ports']->write('listPorts', $d['switch'], $d['portStatuses'], $d['trunks'], $d['port'], $d['flags']);
+		$d['ports']->write('listPorts', $d['switch'], $d['portStatuses'], $d['trunks'], $d['flags'], $d['port']);
 	}
 
 	public function roomSwitchPorts(array $d) {
@@ -876,7 +876,7 @@ extends UFtpl_Common {
 		if ($this->_srv->get('msg')->get('switchPortEdit/ok')) {
 			echo $this->OK('Dane portu switcha zostały zmienione');
 		}
-		$d['port']->write('details', $d['switch'], $d['alias'], $d['speed'], $d['vlan'], $d['flag'], $d['learnMode'], $d['addrLimit'], $d['alarmState'], $d['loopProtect']);
+		$d['port']->write('details', $d['switch'], $d['alias'], $d['speed'], $d['vlan'], $d['flag'], $d['learnMode'], $d['addrLimit'], $d['alarmState'], $d['loopProtect'], $d['trunk']);
 	}
 
 	public function switchPortMacs(array $d) {
@@ -944,7 +944,7 @@ extends UFtpl_Common {
 		$form = UFra::factory('UFlib_Form');
 		echo $form->_start();
 		echo $d['port']->write('formEditOne', $d['switch'], $d['enabledSwitches'], $d['status'], $d['penalties']);
-		echo $form->_submit('Zapisz');
+		echo $form->_submit('Zapisz', array('after'=>UFlib_Helper::displayHint("Zapisanie portu spowoduje opuszczenie flagi wtargnięcia (o ile jest podniesiona).")));
 		echo ' <a href="'.$url.'/switches/'.$d['switch']->serialNo.'/port/'.$d['port']->ordinalNo.'">Powrót</a>';
 		echo $form->_end();
 		echo $form->_end(true);

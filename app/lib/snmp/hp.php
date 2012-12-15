@@ -170,6 +170,15 @@ extends UFlib_Snmp {
 		return $result;
 	}
 	
+	public function setIntrusionFlag($port, $flag) {
+		if ($status == self::UP) {
+			$flagInt = 1;
+		} else {
+			$flagInt = 2;
+		}
+		return @snmpset($this->ip, $this->communityW, $this->OIDs['intrusionFlag'].'.'.$this->translateSwitchPort($port), 'i', $flagInt, $this->timeout);
+	}
+	
 	public function getIntrusionFlags() {
 		$flags = @snmpwalk($this->ip, $this->communityR, $this->OIDs['intrusionFlag'], $this->timeout);
 		if ($flags == false) {
@@ -289,6 +298,19 @@ extends UFlib_Snmp {
 			return null;
 		}
 		return $trunks;
+	}
+	
+	public function isTrunk($port) {
+		$trunk = @snmpget($this->ip , $this->communityR, $this->OIDs['trunk'].'.'.$this->translateSwitchPort($port), $this->timeout);
+		if ($trunk == false) {
+			return self::DISABLED;
+		}
+		if ($trunk == 1) {
+			$result = self::ENABLED;
+		} else {
+			$result = self::DISABLED;
+		}
+		return $result;
 	}
 
 	public function getGbics($sfpPorts) {
