@@ -13,13 +13,13 @@ extends UFtpl_Common {
 		'portEnabled/enabledAndPenalty' => 'Nie można ustawić kary dla włączonego portu',
 	);
 
-	public function details(array $d, $switch, $alias, $speed, $vlan) {
+	public function details(array $d, $switch, $alias, $speed, $vlan, $flag, $learnMode, $addrLimit, $alarmState, $loopProtect) {
 		$url = $this->url(0).'/switches/';
 		$conf = UFra::shared('UFconf_Sru');
 		$swstatsLink = str_replace($conf->swstatsSwitchRegex, UFtpl_SruAdmin_Switch::displaySwitchName($switch->dormitoryAlias, $switch->hierarchyNo, $switch->lab), $conf->swstatsLinkPort);
 		$swstatsLink = str_replace($conf->swstatsPortRegex, $d['ordinalNo'], $swstatsLink);
 
-		echo '<h3>Port '.$d['ordinalNo'].'</h3>';
+		echo '<h3>Port '.$d['ordinalNo'].($flag == UFlib_Snmp_Hp::UP ? ' <img src="'.UFURL_BASE.'/i/img/flaga.png" alt="" title="Podniesiona flaga wtargnięcia (intrusion flag)" />' : '').'</h3>';
 		if(is_null($d['connectedSwitchId'])) {
 			echo '<p><em>Lokalizacja:</em> <a href="'.$this->url(0).'/dormitories/'.$d['dormitoryAlias'].'/'.$d['locationAlias'].'">'.$d['locationAlias'].'</a></p>';
 		} else {
@@ -29,9 +29,14 @@ extends UFtpl_Common {
 			echo '<p><em>Alias portu: </em>'.$alias.'</p>';
 		}
 		if (!is_null($speed)) {
-			echo '<p><em>Prędkość:</em> '.$speed.' Mb/s</p>';
+			echo '<p><em>Przepustowość:</em> '.$speed.' Mb/s</p>';
 		}
 		echo '<p><em>Nietagowany VLAN:</em> '.(is_null($vlan) ? 'brak' : $vlan).'</p>';
+		echo '<p><em>Tryb nauki:</em> '.(is_null($learnMode) ? 'brak' : UFlib_Snmp_Hp::$learnModes[$learnMode]).' '.UFlib_Helper::displayHint('Learning mode</br><a href="http://tinyurl.com/bprhaqf">info</a>', false).'</p>';
+		echo '<p><em>Limit adresów MAC:</em> '.(is_null($addrLimit) ? 'brak' : $addrLimit).'</p>';
+		echo '<p><em>Akcja:</em> '.(is_null($alarmState) ? 'brak' : UFlib_Snmp_Hp::$alarmStates[$alarmState]).' '.UFlib_Helper::displayHint('Akcja po przekroczeniu liczby adresów', false).'</p>';
+		echo '<p><em>Flaga wtargnięcia:</em> '.(is_null($flag) ? 'brak' : ($flag == UFlib_Snmp_Hp::UP ? 'podniesiona' : 'opuszczona')).' '.UFlib_Helper::displayHint('Intrusion flag', false).'</p>';
+		echo '<p><em>Zabezpieczenie przet pętlą:</em> '.(is_null($loopProtect) ? 'brak' : ($loopProtect == UFlib_Snmp_Hp::ENABLED ? 'aktywne' : 'nieaktywne')).' '.UFlib_Helper::displayHint('Loop protect', false).'</p>';
 		if (!is_null($d['penaltyId'])) {
 			echo '<p><em>Przypisana kara: </em><a href="'.$this->url(0).'/penalties/'.$d['penaltyId'].'">'.$d['userName'].' "'.$d['userLogin'].'" '.$d['userSurname'].': '.$d['templateTitle'].' ('.$d['penaltyId'].')</a></p>';
 		}

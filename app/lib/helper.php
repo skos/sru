@@ -21,20 +21,17 @@ class UFlib_Helper {
 		return strtolower(preg_replace($unPretty, $pretty, nl2br(htmlspecialchars(trim($string)))));
 	}
 	
-	public static function displayHint($string) {
-
-		$licz = strlen($string); 
-
-		if ($licz>=250) 
-		{ 
+	public static function displayHint($string, $breakLine = false) {
+		$length = strlen($string); 
+		$string = htmlentities($string, ENT_QUOTES);
+		if ($licz >= 250) { 
 			$tnij = substr($string,0,250); 
-			$txt = $tnij."..."; 
-		} 
-		else 
-		{ 
-			$txt = $string; 
-		} 
-		$returnString = ' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="'.$txt.'" /><br/>';
+			$string = $tnij.'...'; 
+		}
+		$returnString = ' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="'.$string.'" />';
+		if ($breakLine) {
+			$returnString .= '<br/>';
+		}
 		return $returnString;
 	}
 	

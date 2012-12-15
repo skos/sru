@@ -876,7 +876,7 @@ extends UFtpl_Common {
 		if ($this->_srv->get('msg')->get('switchPortEdit/ok')) {
 			echo $this->OK('Dane portu switcha zostały zmienione');
 		}
-		$d['port']->write('details', $d['switch'], $d['alias'], $d['speed'], $d['vlan']);
+		$d['port']->write('details', $d['switch'], $d['alias'], $d['speed'], $d['vlan'], $d['flag'], $d['learnMode'], $d['addrLimit'], $d['alarmState'], $d['loopProtect']);
 	}
 
 	public function switchPortMacs(array $d) {

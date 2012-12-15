@@ -1228,9 +1228,20 @@ extends UFbox {
 				$d['alias'] = $switch->getPortAlias($bean->ordinalNo);
 				$d['speed'] = $switch->getPortSpeed($bean->ordinalNo);
 				$d['vlan'] = $switch->getUntaggedVlan($bean->ordinalNo);
+				$d['flag'] = $switch->getIntrusionFlag($bean->ordinalNo);
+				$d['learnMode'] = $switch->getLearnMode($bean->ordinalNo);
+				$d['addrLimit'] = $switch->getAddrLimit($bean->ordinalNo);
+				$d['alarmState'] = $switch->getAlarmState($bean->ordinalNo);
+				$d['loopProtect'] = $switch->getLoopProtect($bean->ordinalNo);
 			} else {
 				$d['alias'] = null;
 				$d['speed'] = null;
+				$d['vlan'] = null;
+				$d['flag'] = null;
+				$d['learnMode'] = null;
+				$d['addrLimit'] = null;
+				$d['alarmState'] = null;
+				$d['loopProtect'] = null;
 			}
 
 			return $this->render(__FUNCTION__, $d);

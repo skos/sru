@@ -15,6 +15,21 @@ extends UFlib_Snmp {
 	const DOWN = "down";
 	const DISABLED = "disabled";
 	const ENABLED = "enabled";
+	
+	static public $learnModes = array(
+		1 => 'learnContinuous',
+		2 => 'learnFirstN',
+		3 => 'learnFirstNConditionally',
+		4 => 'configureSpecific',
+		5 =>'learn8021xAuthorized',
+		6 =>'learnLimitedContinuous',
+	);
+	
+	static public $alarmStates = array(
+		1 => 'wyłączony',
+		2 => 'wyślij powiadomienie',
+		3 => 'wyślij powiadomienie i wyłącz port',
+	);
 
 	protected $OIDs = array(
 		'ios' => '1.3.6.1.2.1.1.1',
@@ -36,6 +51,11 @@ extends UFlib_Snmp {
 		'gbicSerial' => '1.3.6.1.4.1.11.2.14.10.5.1.1.1.1.2',
 		'vlans' => '1.3.6.1.2.1.17.7.1.4.3.1.1',
 		'untaggedVlanOnPorts' => '1.3.6.1.2.1.17.7.1.4.5.1.1',
+		'intrusionFlag' => '1.3.6.1.4.1.11.2.14.2.10.3.1.7.1',
+		'learnMode' => '1.3.6.1.4.1.11.2.14.2.10.3.1.4.1',
+		'addrLimit' => '1.3.6.1.4.1.11.2.14.2.10.3.1.3.1',
+		'alarmState' => '1.3.6.1.4.1.11.2.14.2.10.3.1.6.1',
+		'loopProtect' => '1.3.6.1.4.1.11.2.14.11.5.1.12.1.5.2.1.1.1',
 	);
 
 	public $biggerTrunkNumbers = array(
@@ -135,6 +155,56 @@ extends UFlib_Snmp {
 		}
 		$vlanName = @snmpget($this->ip, $this->communityR, $this->OIDs['vlans'].'.'.$vlan, $this->timeout);
 		return $vlanName.' ('.$vlan.')';
+	}
+	
+	public function getIntrusionFlag($port) {
+		$flag = @snmpget($this->ip , $this->communityR, $this->OIDs['intrusionFlag'].'.'.$this->translateSwitchPort($port), $this->timeout);
+		if ($flag == false) {
+			return null;
+		}
+		if ($flag == 1) {
+			$result = self::UP;
+		} else {
+			$result = self::DOWN;
+		}
+		return $result;
+	}
+	
+	public function getLearnMode($port) {
+		$learnMode = @snmpget($this->ip , $this->communityR, $this->OIDs['learnMode'].'.'.$this->translateSwitchPort($port), $this->timeout);
+		if ($learnMode == false) {
+			return null;
+		}
+		return $learnMode;
+	}
+	
+	public function getAddrLimit($port) {
+		$addrLimit = @snmpget($this->ip , $this->communityR, $this->OIDs['addrLimit'].'.'.$this->translateSwitchPort($port), $this->timeout);
+		if ($addrLimit == false) {
+			return null;
+		}
+		return $addrLimit;
+	}
+	
+	public function getAlarmState($port) {
+		$alarmState = @snmpget($this->ip , $this->communityR, $this->OIDs['alarmState'].'.'.$this->translateSwitchPort($port), $this->timeout);
+		if ($alarmState == false) {
+			return null;
+		}
+		return $alarmState;
+	}
+	
+	public function getLoopProtect($port) {
+		$loopProtect = @snmpget($this->ip , $this->communityR, $this->OIDs['loopProtect'].'.'.$this->translateSwitchPort($port), $this->timeout);
+		if ($loopProtect == false) {
+			return null;
+		}
+		if ($loopProtect == 1) {
+			$result = self::ENABLED;
+		} else {
+			$result = self::DISABLED;
+		}
+		return $result;
 	}
 
 	public function getPortStatuses() {
