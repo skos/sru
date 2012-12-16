@@ -946,6 +946,9 @@ changeVisibility();
 			echo $form->servicesAvailable('Dostępność PUU', array('type'=>$form->CHECKBOX));
 		}
 		echo $form->commentSkos('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
+		if ($acl->sruAdmin('user', 'fullEdit', $d['id'])) {
+			echo $form->active('Aktywny', array('type'=>$form->CHECKBOX));
+		}
 		echo $form->_fieldset('Zmiana hasła');
 			echo $form->password('Nowe hasło', array('type'=>$form->PASSWORD,  ));
 			echo $form->password2('Potwierdź hasło', array('type'=>$form->PASSWORD));

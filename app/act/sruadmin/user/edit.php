@@ -18,6 +18,7 @@ extends UFact {
 			$post = $this->_srv->get('req')->post->{self::PREFIX};
 			$login = $bean->login;
 			$dormitoryId = $bean->dormitoryId;
+			$active = $bean->active;
 
 			$bean->fillFromPost(self::PREFIX, array('password', 'studyYearId'));
 			if (isset($post['password']) && $post['password'] != '' ) {
@@ -47,6 +48,9 @@ extends UFact {
 			if (isset($post['studyYearId']) && $post['studyYearId'] != '') {
 				$bean->studyYearId = $post['studyYearId'];
 			}
+			if (($active && $bean->active == false) && !$acl->sruAdmin('user', 'fullEdit', $bean->id)) {
+				throw UFra::factory('UFex_Dao_DataNotValid', 'Activate/deactivate not-SKOS user', 0, E_ERROR, array('active' => 'invalid'));
+			}					
 
 			$bean->modifiedById = $this->_srv->get('session')->authAdmin;
 			$bean->modifiedAt = NOW;
