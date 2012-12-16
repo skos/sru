@@ -37,7 +37,7 @@ extends UFtpl_Common {
 			if (!array_key_exists($roomInt, $aliases)) {
 				$aliases[$roomInt] = new Connector();
 			}
-			$aliases[$roomInt]->addRoomForListing($c['alias'], $c['comment']);
+			$aliases[$roomInt]->addRoomForListing($c['alias'], $c['typeId'], $c['comment']);
 		}
 		ksort($aliases);
 
@@ -155,7 +155,7 @@ function fullList() {
 			if (!array_key_exists($roomInt, $aliases)) {
 				$aliases[$roomInt] = new Connector();
 			}
-			$aliases[$roomInt]->addRoom($c['alias'], $c['usersMax']);
+			$aliases[$roomInt]->addRoom($c['alias'], $c['typeId'], $c['usersMax']);
 		}
 		ksort($aliases);
 
@@ -189,7 +189,7 @@ function fullList() {
 			} else {
 				foreach ($rooms as $room) {
 					$roomNumber = ($connector == 0 ? '' : $connector).$room->getExt();
-					$dispRoom = '<a href="'.$this->url(2).'/'.$roomNumber.'/:edit">'.$roomNumber.'</a> <small>('.$room->getLimit().'-os)</small>';
+					$dispRoom = '<a href="'.$this->url(2).'/'.$roomNumber.'/:edit">'.$roomNumber.'</a> <small>('.$room->getLimit().'-os'.($room->getType() == UFbean_SruAdmin_Room::TYPE_GUEST ? ', gościnny' : '').')</small>';
 					echo '<tr><td>'.$dispRoom.'</td>';
 					$i = 0;
 					foreach ($room->getUsers() as $user) {
@@ -257,21 +257,21 @@ class Connector
 {
 	private $rooms = array();
 
-	public function addRoom($room, $limit = 0, $comment = null) {
+	public function addRoom($room, $type, $limit = 0, $comment = null) {
 		$roomInt = (int)$room;
 		if (substr($room, 0, 1) == 'm') {
-			$this->rooms[] = new Room($room, $limit, $comment);
+			$this->rooms[] = new Room($room, $type, $limit, $comment);
 		} else if ($roomInt == 0) {
-			$this->rooms[] = new Room($room, $limit, $comment);
+			$this->rooms[] = new Room($room, $type, $limit, $comment);
 		} else if (strlen($roomInt) < strlen($room)) {
-			$this->rooms[] = new Room(substr($room, strlen($roomInt)), $limit, $comment);
+			$this->rooms[] = new Room(substr($room, strlen($roomInt)), $type, $limit, $comment);
 		} else {
-			$this->rooms[] = new Room(null, $limit, $comment);
+			$this->rooms[] = new Room(null, $type, $limit, $comment);
 		}
 	}
 
-	public function addRoomForListing($room, $comment) {
-		$this->addRoom($room, 0, $comment);
+	public function addRoomForListing($room, $type, $comment) {
+		$this->addRoom($room, $type, 0, $comment);
 	}
 
 	public function addPerson($room, $user) {
@@ -314,11 +314,17 @@ class Room
 	private $limit;
 	private $users = array();
 	private $comment;
+	private $type;
 
-	function __construct($ext, $limit, $comment = null) {
+	function __construct($ext, $type, $limit, $comment = null) {
 		$this->roomExt = $ext;
+		$this->type = $type;
 		$this->limit = $limit;
 		$this->comment = $comment;
+	}
+	
+	public function getType() {
+		return $this->type;
 	}
 
 	function addPerson($user) {
