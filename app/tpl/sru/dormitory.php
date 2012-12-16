@@ -83,7 +83,7 @@ extends UFtpl_Common {
 			echo '<td style="text-align: right;">'.$people[$c['id']].'</td>';
 			echo '<td style="text-align: right;">'.$freePlaces[$c['id']].'</td>';
 			echo '<td style="text-align: right;">'.$overPlaces[$c['id']].'</td></tr>';
-			$usersMax += $c['usersMax'];
+			$usersMax += $peopleLimit[$c['id']];
 			$userCount += $people[$c['id']];
 			$usersFree += $freePlaces[$c['id']];
 			$usersOver += $overPlaces[$c['id']];
