@@ -48,7 +48,7 @@ extends UFact {
 			if (isset($post['studyYearId']) && $post['studyYearId'] != '') {
 				$bean->studyYearId = $post['studyYearId'];
 			}
-			if (($active && $bean->active == false) && !$acl->sruAdmin('user', 'fullEdit', $bean->id)) {
+			if (($active && $bean->active == false) && !$acl->sruAdmin('user', 'fullEdit', $bean->id) && $acl->sruAdmin('user', 'add')) {
 				throw UFra::factory('UFex_Dao_DataNotValid', 'Activate/deactivate not-SKOS user', 0, E_ERROR, array('active' => 'invalid'));
 			}					
 
