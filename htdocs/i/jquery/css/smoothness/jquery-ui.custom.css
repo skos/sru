@@ -216,7 +216,7 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
 	padding: 8px;
 	position: absolute;
 	z-index: 9999;
-	max-width: 300px;
+	max-width: 400px;
 	-webkit-box-shadow: 0 0 5px #aaa;
 	box-shadow: 0 0 5px #aaa;
 }
