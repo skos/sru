@@ -23,7 +23,7 @@ class UFlib_Helper {
 	
 	public static function displayHint($string, $breakLine = true) {
 		$length = strlen($string); 
-		$string = htmlentities($string, ENT_QUOTES, UTF-8);
+		$string = htmlentities($string, ENT_QUOTES, 'UTF-8');
 		$returnString = ' <img src="'.UFURL_BASE.'/i/img/pytajnik.png" alt="?" title="'.$string.'" />';
 		if ($breakLine) {
 			$returnString .= '<br/>';
