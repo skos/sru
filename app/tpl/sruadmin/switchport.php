@@ -44,7 +44,7 @@ extends UFtpl_Common {
 		echo '<p><em>Komentarz:</em> '.$d['comment'].'</p>';
 		echo '</div><div id="security">';
 		if ($trunk == UFlib_Snmp_Hp::DISABLED) { // jeśli nie jest trunkiem
-			echo '<p><em>Tryb nauki:</em> '.(is_null($learnMode) ? 'brak' : UFlib_Snmp_Hp::$learnModes[$learnMode]).' '.UFlib_Helper::displayHint('Learning mode</br><a href="http://tinyurl.com/bprhaqf">info</a>', false).'</p>';
+			echo '<p><em>Tryb nauki:</em> '.(is_null($learnMode) ? 'brak' : UFlib_Snmp_Hp::$learnModes[$learnMode]).' <a href="http://tinyurl.com/bprhaqf">'.UFlib_Helper::displayHint('Learning mode</br>Kliknij po więcej informacji (zewnętrzna strona)', false).'</a></p>';
 			echo '<p><em>Limit adresów MAC:</em> '.(is_null($addrLimit) ? 'brak' : $addrLimit).'</p>';
 			echo '<p><em>Akcja:</em> '.(is_null($alarmState) ? 'brak' : UFlib_Snmp_Hp::$alarmStates[$alarmState]).' '.UFlib_Helper::displayHint('Akcja po przekroczeniu liczby adresów', false).'</p>';
 			echo '<p><em>Flaga wtargnięcia:</em> '.(is_null($flag) ? 'brak' : ($flag == UFlib_Snmp_Hp::UP ? 'podniesiona' : 'opuszczona')).' '.UFlib_Helper::displayHint('Intrusion flag', false).'</p>';
