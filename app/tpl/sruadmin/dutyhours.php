@@ -33,6 +33,7 @@ extends UFtpl_Common {
 		$lastAdmin = 0;
 		$allDormAdmins = array();
 		foreach ($dormitories as $dorm) {
+			if (is_null($dorm)) continue;
 			foreach ($dorm as $admin) {
 				$allDormAdmins[$admin['admin']] = 1;
 			}
@@ -98,8 +99,18 @@ extends UFtpl_Common {
 		$nextWeek = '';
 		$comments = array();
 		$lastComment = 0;
+		$allDormAdmins = array();
+		foreach ($dormitories as $dorm) {
+			if (is_null($dorm)) continue;
+			foreach ($dorm as $admin) {
+				$allDormAdmins[$admin['admin']] = 1;
+			}
+		}
 
 		foreach ($d as $c) {
+			if (!array_key_exists($c['adminId'], $allDormAdmins)) {
+				continue;
+			}
 			if (($c['day'] == $currentDay && $c['endHour'] > date('Hi')) || ($c['day'] > $currentDay && $c['day'] <= $lastDay)) {
 				if (strlen($c['comment'])) {
 					$lastComment++;
