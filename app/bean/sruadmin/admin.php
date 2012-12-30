@@ -28,6 +28,16 @@ extends UFbean_Common {
 
 	protected function validatePassword($val, $change) {
 		$post = $this->_srv->get('req')->post->{$change?'adminEdit':'adminAdd'};
+		$admin = UFra::factory('UFbean_SruAdmin_Admin');
+		try {
+			$admin->getByPK($this->data['id']);
+			if ($admin->password == self::generatePassword($val)) {
+				return 'same';
+			}
+		} catch (UFex $e) {
+			return 'unknown';
+		}
+		
 		try {
 			if ($post['password2'] !== $val) {
 				return 'mismatch';

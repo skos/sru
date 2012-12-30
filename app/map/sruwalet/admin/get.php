@@ -21,6 +21,7 @@ extends UFmap {
 		'email'          => 'a.email',
 		'address'        => 'a.address',
 		'active'         => 'a.active',
+		'lastPswChange'  => 'a.last_psw_change',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -38,6 +39,7 @@ extends UFmap {
 		'email'          => self::TEXT,
 		'address'        => self::TEXT,
 		'active'         => self::BOOL,
+		'lastPswChange'  => self::TS,
 	);
 	protected $tables = array(
 		'a' => 'admins',

@@ -28,6 +28,7 @@ extends UFmap {
 		'modifiedById'   => 'a.modified_by',
 		'modifiedByName' => 'b.name',
 		'modifiedAt'     => 'a.modified_at',
+		'lastPswChange'  => 'a.last_psw_change',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -52,6 +53,7 @@ extends UFmap {
 		'modifiedById'   => self::NULL_INT,
 		'modifiedByName' => self::TEXT,
 		'modifiedAt'     => self::TS,
+		'lastPswChange'  => self::TS,
 	);
 	protected $tables = array(
 		'a' => 'admins',

@@ -24,6 +24,7 @@ extends UFmap {
 		'activeTo'		 => 'active_to',
 		'modifiedById'   => 'modified_by',
 		'modifiedAt'     => 'modified_at',
+		'lastPswChange'  => 'last_psw_change',
 	);
 	protected $columnTypes = array(
 		'password'       => self::TEXT,
@@ -43,13 +44,14 @@ extends UFmap {
 		'activeTo'		 => self::NULL_TS,
 		'modifiedById'   => self::NULL_INT,
 		'modifiedAt'     => self::TS,
-	);	
+		'lastPswChange'  => self::TS,
+	);
 	protected $tables = array(
 		'' => 'admins',
 	);
 	protected $valids = array(
 		'login' => array('textMin'=>1, 'textMax'=>100, 'regexp'=>'^[-a-zA-Z0-9\.@_]+$'),
-		'password' => array('textMin'=>6), 
+		'password' => array('textMin'=>8, 'regexp'=>'^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$'), 
 		'name' => array('textMin'=>1, 'textMax'=>100),
 		'email' => array('email'=>true),
 		'dormitory' => array('textMin'=>1),

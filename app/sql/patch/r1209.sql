@@ -1,0 +1,1 @@
+ALTER TABLE admins ADD COLUMN last_psw_change timestamp without time zone DEFAULT NULL;

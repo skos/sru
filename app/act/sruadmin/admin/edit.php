@@ -27,6 +27,7 @@ extends UFact {
 				
 			if(isset($post['password']) && $post['password'] != '' ) {
 				$bean->password = $post['password'];
+				$bean->lastPswChange = NOW;
 			}
 			
 			if(isset($post['typeId']) && $acl->sruAdmin('admin', 'advancedEdit')) {

@@ -17,8 +17,9 @@ extends UFtpl_Common {
 		'login/regexp' => 'Login zawiera niedozwolone znaki',
 		'login/duplicated' => 'Login jest zajęty',
 		'login/textMax' => 'Login jest za długi',
-		'password' => 'Hasło musi mieć co najmniej 6 znaków',
+		'password' => 'Hasło musi mieć co najmniej 8 znaków, zawierać co najmniej 1 dużą literę, 1 małą literę, 1 cyfrę i 1 znak specjalny',
 		'password/mismatch' => 'Hasła różnią się',
+		'password/same' => 'Hasło jest identyczne z poprzednim',
 		'name' => 'Podaj nazwę',
 		'name/regexp' => 'Nazwa zawiera niedozwolone znaki',
 		'name/textMax' => 'Nazwa jest za długa',
@@ -121,6 +122,7 @@ extends UFtpl_Common {
 		}else{
 			echo '<p><em>Data dezaktywacji:</em>Data dezaktywacji nie została podana</p>';
 		}
+		echo '<p><em>Ostatnia zmiana hasła:</em> '.((is_null($d['lastPswChange']) || $d['lastPswChange'] == 0) ? 'brak' : date(self::TIME_YYMMDD_HHMM, $d['lastPswChange'])).'</p>';
 		if(($d['id'] == $this->_srv->get('session')->authAdmin || ($this->_srv->get('session')->is('typeId') 
 					&& ($this->_srv->get('session')->typeId == UFacl_SruAdmin_Admin::CENTRAL 
 						|| $this->_srv->get('session')->typeId == UFacl_SruAdmin_Admin::CAMPUS)))
