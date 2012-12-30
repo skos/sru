@@ -13,6 +13,7 @@ extends UFtpl_Common {
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <meta name="robots" content="noindex,nofollow,noarchive" />
 <link rel="stylesheet" href="<?=UFURL_BASE;?>/i/css/style.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="<?=UFURL_BASE;?>/i/jquery/css/smoothness/jquery-ui.custom.css" type="text/css" />	
 <link rel="shortcut icon" href="<?=UFURL_BASE;?>/i/img/favicon.ico" type="image/x-icon" />
 <script type="text/javascript" src="<?=UFURL_BASE;?>/i/jquery/jquery.js"></script>
 <script type="text/javascript" src="<?=UFURL_BASE;?>/i/jquery/jquery-ui.custom.min.js"></script>
@@ -28,10 +29,10 @@ extends UFtpl_Common {
 <div id="socialBar">
 <ul id="socialSidebar">
 <li class="facebook">
-<a href="http://facebook.com/skospg"><img alt="facebook" src="<?=UFURL_BASE;?>/i/img/socialSidebar_facebook.png" /></a>
+<a href="http://facebook.com/skospg"><img alt="facebook" src="<?=UFURL_BASE;?>/i/img/socialSidebar_facebook.png" title="Znajdź nas na Facebooku" /></a>
 </li>
 <li class="gplus">
-<a href="https://plus.google.com/101381300119889439141/posts"><img alt="gplus" src="<?=UFURL_BASE;?>/i/img/socialSidebar_gplus.png" /></a>
+<a href="https://plus.google.com/101381300119889439141/posts"><img alt="gplus" src="<?=UFURL_BASE;?>/i/img/socialSidebar_gplus.png" title="Znajdź nas na Google+" /></a>
 </li>
 </ul>
 </div>

@@ -1,0 +1,1 @@
+ALTER TABLE admins ADD COLUMN password_blow character(64);

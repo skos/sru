@@ -16,6 +16,25 @@ extends UFbean_Common {
 	static function generatePassword($password) {
 		return md5($password);
 	}
+	
+	/**
+	 * Generowanie hasła zaszyfrowanego Blowfishem
+	 * @param type $password
+	 * @return null 
+	 */
+	static function generateBlowfishPassword($password) {
+		// Base-2 logarithm of the iteration count used for password stretching
+		$hash_cost_log2 = 8;
+		// Do we require the hashes to be portable to older systems (less secure)?
+		$hash_portable = FALSE;
+		$hasher = UFra::factory('UFlib_PasswordHash');
+		$hasher->PasswordHash($hash_cost_log2, $hash_portable);
+		$hash = $hasher->HashPassword($password);
+		unset($hasher);
+		if (strlen($hash) < 20) return null;
+		
+		return $hash;
+	}
 
 	protected function validateLogin($val, $change) {
 		try {

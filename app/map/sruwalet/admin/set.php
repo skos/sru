@@ -8,6 +8,7 @@ class UFmap_SruWalet_Admin_Set
 extends UFmap {
 	protected $columns = array(
 		'password'       => 'password',
+		'passwordBlow'   => 'password_blow',
 		'lastLoginAt'	 => 'last_login_at',
 		'lastLoginIp'	 => 'last_login_ip',
 		'lastInvLoginAt' => 'last_inv_login_at',
@@ -25,6 +26,7 @@ extends UFmap {
 	);
 	protected $columnTypes = array(
 		'password'       => self::TEXT,
+		'passwordBlow'   => self::TEXT,
 		'lastLoginAt'	 => self::TS,
 		'lastLoginIp'	 => self::TEXT,
 		'lastInvLoginAt' => self::TS,

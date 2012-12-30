@@ -16,6 +16,10 @@ extends UFbeanSingle {
 	static function generatePassword($password) {
 		return md5($password);
 	}
+	
+	static function generateBlowfishPassword($password) {
+		return UFbean_SruAdmin_Admin::generateBlowfishPassword($password);
+	}
 
 	protected function validateLogin($val, $change) {
 		try {

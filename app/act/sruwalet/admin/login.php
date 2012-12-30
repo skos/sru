@@ -35,6 +35,12 @@ extends UFact {
 				$bean->lastLoginIp =  $serv->REMOTE_ADDR;
 			}
 			$bean->lastLoginAt = NOW;
+			
+			//TODO #673
+			if (is_null($bean->passwordBlow) || $bean->passwordBlow == 0) {
+				$bean->passwordBlow = UFbean_SruWalet_Admin::generateBlowfishPassword($password);
+			}
+			
 			$bean->save();
 			
 			$this->postDel(self::PREFIX);
