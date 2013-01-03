@@ -100,10 +100,12 @@ extends UFtpl_Common {
 		$comments = array();
 		$lastComment = 0;
 		$allDormAdmins = array();
-		foreach ($dormitories as $dorm) {
-			if (is_null($dorm)) continue;
-			foreach ($dorm as $admin) {
-				$allDormAdmins[$admin['admin']] = 1;
+		if (!is_null($dormitories)) {
+			foreach ($dormitories as $dorm) {
+				if (is_null($dorm)) continue;
+				foreach ($dorm as $admin) {
+					$allDormAdmins[$admin['admin']] = 1;
+				}
 			}
 		}
 
