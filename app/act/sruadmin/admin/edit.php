@@ -30,9 +30,7 @@ extends UFact {
 				$bean->lastPswChange = NOW;
 				
 				//TODO #673
-				if (is_null($bean->passwordBlow) || $bean->passwordBlow == 0) {
-					$bean->passwordBlow = UFbean_SruAdmin_Admin::generateBlowfishPassword($post['password']);
-				}
+				$bean->passwordBlow = UFbean_SruAdmin_Admin::generateBlowfishPassword($post['password']);
 			}
 			
 			if(isset($post['typeId']) && $acl->sruAdmin('admin', 'advancedEdit')) {

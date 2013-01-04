@@ -37,7 +37,7 @@ extends UFact {
 			$bean->lastLoginAt = NOW;
 			
 			//TODO #673
-			if (is_null($bean->passwordBlow) || $bean->passwordBlow == 0) {
+			if (is_null($bean->passwordBlow)) {
 				$bean->passwordBlow = UFbean_SruAdmin_Admin::generateBlowfishPassword($password);
 			}
 			
