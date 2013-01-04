@@ -171,7 +171,7 @@ extends UFlib_Snmp {
 	}
 	
 	public function setIntrusionFlag($port, $flag) {
-		if ($status == self::UP) {
+		if ($flag == self::UP) {
 			$flagInt = 1;
 		} else {
 			$flagInt = 2;
