@@ -5,12 +5,15 @@
 class UFdao_Sru_Ipv4
 extends UFdao {
 
-	public function getFreeByDormitoryId($dormitory) {
+	public function getFreeByDormitoryIdAndVlan($dormitory, $vlan = UFbean_SruAdmin_Vlan::DEFAULT_VLAN) {
 		$mapping = $this->mapping('get');
 
 		$query = $this->prepareSelect($mapping);
-		$query->where($mapping->dormitoryId, $dormitory);
+		if ($vlan == UFbean_SruAdmin_Vlan::DEFAULT_VLAN) {
+			$query->where($mapping->dormitoryId, $dormitory);
+		}
 		$query->where($mapping->host, null);
+		$query->where($mapping->vlan, $vlan);
 		$query->where('(((SELECT modified_at FROM computers_history h where h.ipv4=i.ip limit 1) IS NULL) OR (SELECT modified_at FROM computers_history h where h.ipv4=i.ip order by modified_at desc limit 1) < (TIMESTAMP \'NOW\' - TIME \'01:00\'))', null ,$query->SQL);
 
 		return $this->doSelectFirst($query);

@@ -8,11 +8,13 @@ extends UFmap {
 	protected $columns = array(
 		'ip'		=> 'i.ip',
 		'dormitoryId'	=> 'i.dormitory_id',
+		'vlan'		=> 'i.vlan',
 		'host'		=> 'c.host',
 	);
 	protected $columnTypes = array(
 		'ip'		=> self::TEXT,
 		'dormitoryId'	=> self::INT,
+		'vlan'		=> self::INT,
 		'host'		=> self::NULL_TEXT,
 	);
 	protected $tables = array(

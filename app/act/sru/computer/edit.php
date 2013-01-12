@@ -36,7 +36,7 @@ extends UFact {
 				// przypisanie nowego IP
 				try {
 					$ip = UFra::factory('UFbean_Sru_Ipv4');
-					$ip->getFreeByDormitoryId($user->dormitoryId);
+					$ip->getFreeByDormitoryIdAndVlan($user->dormitoryId);
 					$bean->ip = $ip->ip;
 				} catch (UFex_Dao_NotFound $e) {
 					$this->rollback();

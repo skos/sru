@@ -546,7 +546,7 @@ extends UFdao {
 		$user->getByPK($comp['userId']);
 		$ip = UFra::factory('UFbean_Sru_Ipv4');
 		try{
-			$ip->getFreeByDormitoryId($user->dormitoryId);
+			$ip->getFreeByDormitoryIdAndVlan($user->dormitoryId);
 		}catch (Exception $e){
 			//UFra::error("Nie znaleziono wolnego IP: " . $e);
 			return true;

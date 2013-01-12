@@ -55,7 +55,7 @@ extends UFtpl_Common {
 		'mac/duplicated' => 'MAC jest już zajęty',
 		'ip' => 'Nieprawidłowy format',
 		'ip/noFree' => 'Nie ma wolnych IP w tym DS-ie - skontaktuj się ze swoim administratorem lokalnym w godzinach dyżurów',
-		'ip/noFreeAdmin' => 'Nie ma wolnych IP w tym DS-ie',
+		'ip/noFreeAdmin' => 'Nie ma wolnych IP w tym DS-ie/VLAN-ie',
 		'ip/notFound' => 'Niedozwolony adres IP',
 		'ip/duplicated' => 'IP zajęte',
 		'availableTo' => 'Nieprawidłowy format',

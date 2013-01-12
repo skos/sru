@@ -25,6 +25,13 @@ extends UFbean_Common {
 		'mac',
 		'availableTo',
 	);
+	
+	protected $typeToVLAN = array(
+		self::TYPE_ADMINISTRATION => UFbean_SruAdmin_Vlan::DS_ADM,
+		self::TYPE_ORGANIZATION => UFbean_SruAdmin_Vlan::DS_ORGAN,
+		self::TYPE_SERVER => UFbean_SruAdmin_Vlan::DS_SRW,
+		self::TYPE_SERVER_VIRT => UFbean_SruAdmin_Vlan::DS_SRW,
+	);
 
 	protected function validateHost($val, $change) {
 		try {
@@ -154,6 +161,13 @@ extends UFbean_Common {
 		// function return value in write context"
 		$ans = array_intersect(array_keys($this->dataChanged), $this->notifyAbout);
 		return !empty($ans);
+	}
+	
+	public function getVlanByComputerType($computerType) {
+		if (array_key_exists($computerType, $this->typeToVLAN)) {
+			return $this->typeToVLAN[$computerType];
+		}
+		return UFbean_SruAdmin_Vlan::DEFAULT_VLAN;
 	}
 
 	protected function validateCarerId($val, $change) {
