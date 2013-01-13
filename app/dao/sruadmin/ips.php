@@ -22,6 +22,7 @@ extends UFdao {
 			'('.$mapping->column('dormitoryId').'='.$dormitory.' OR '.$mapping->column('computerDormitoryId').'='.$dormitory.')',
 			null, $query->SQL
 		);
+		$query->order($mapping->vlan, $query->ASC);
 		$query->order($mapping->ip, $query->ASC);
 			
 		return $this->doSelect($query);

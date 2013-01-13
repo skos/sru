@@ -292,7 +292,7 @@ extends UFtpl_Common {
 		$form = UFra::factory('UFlib_Form');
 		$acl = $this->_srv->get('acl');
 
-		echo '<h2>Szukaj | <a href="'.$this->url(0).'/ips/vlan/42">VLANy</a></h2>';
+		echo '<h2>Szukaj | <a href="'.$this->url(0).'/ips/vlan/'.UFbean_SruAdmin_Vlan::DEFAULT_VLAN.'">VLANy</a></h2>';
 		//| <a href="'.$this->url(0).'/services">Usługi</a></h2>';
 
 		echo '<div class="userSearch">';
@@ -1235,7 +1235,7 @@ extends UFtpl_Common {
 			if($d['leftRight'][2] != null){
 				echo ' <a href="'.$urlIp.$d['leftRight'][2]['alias'].'" >></a>';
 			}
-			echo '<br/><small>(<a href="'.$url.$d['dorm']->alias.'">pokoje</a> &bull; zajętość puli: '.$d['used']->getIpCount().'/'.$d['sum']->getIpCount().' ~> '.($d['sum']->getIpCount() > 0 ? round($d['used']->getIpCount()/$d['sum']->getIpCount()*100) : 0).'% &bull; <a href="'.$urlSw.$d['dorm']->alias.'">switche</a>&bull; <a href="'.$urlIpAll.'">wszystkie IP</a>)</small></h2>';
+			echo '<br/><small>(<a href="'.$url.$d['dorm']->alias.'">pokoje</a> &bull; zajętość puli (VLAN '.UFbean_SruAdmin_Vlan::DEFAULT_VLAN.'): '.$d['used']->getIpCount().'/'.$d['sum']->getIpCount().' ~> '.($d['sum']->getIpCount() > 0 ? round($d['used']->getIpCount()/$d['sum']->getIpCount()*100) : 0).'% &bull; <a href="'.$urlSw.$d['dorm']->alias.'">switche</a>&bull; <a href="'.$urlIpAll.'">wszystkie IP</a>)</small></h2>';
 		} else if (!is_null($d['vlan'])) {
 			echo '<h2>';
 			if($d['leftRight'][0] != null){
