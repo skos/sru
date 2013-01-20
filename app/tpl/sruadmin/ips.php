@@ -81,7 +81,10 @@ extends UFtpl_Common {
 				$vlans[$ip['vlan']] = 'VLAN '.$ip['vlan'];
 			}
 		}
-		$vlans[9999] = 'VLAN '.UFbean_SruAdmin_Vlan::DEFAULT_VLAN.' - inne DS';
+		$vlans[0] = 'Brak VLANu';
+		if (isset($dorm)) {
+			$vlans[9999] = 'VLAN '.UFbean_SruAdmin_Vlan::DEFAULT_VLAN.' - inne DS';
+		}
 		
 		echo '<div id="tabs"><ul>';
 		foreach ($vlans as $vlanId => $vlanName) {
@@ -107,24 +110,32 @@ $( "#tabs" ).tabs();
 
 	private function writeAll($d, $dorm, $perLine, $classOld, $validDorm = null) {
 		$tmp = array();
-		$curVlan = 0;
+		$curVlan = -1;
 		foreach ($d as &$ip) {
 			$ipEx = explode('.', $ip['ip']);
 			$class = $ipEx[1].$ipEx[2];
-			if ($class != $classOld) {
+			$vlan = $ip['vlan'];
+			if ($validDorm === false) {
+				$vlan = 9999;
+			}
+			if ($vlan != $curVlan) {
+				if (!empty($tmp)) {
+					$dormId = current($tmp);
+					$dormId = current($dormId);
+					$dormId = $dormId['dormitoryId'];
+					if (!isset($validDorm) || ($validDorm === true && $dormId === $dorm->id) || ($validDorm === false && $dormId !== $dorm->id)) {
+						$this->writeClass($tmp, $perLine, $dorm);
+					}
+				}
+				if ($curVlan != -1) {
+					echo '</div>';
+				}
+				$curVlan = $vlan;
+				echo '<div id="vlan'.$curVlan.'">';
+				$tmp = array();
+			} else if ($class != $classOld) {
 				$dormId = current($tmp);
 				$dormId = current($dormId);
-				$vlan = $dormId['vlan'];
-				if ($validDorm == false) {
-					$vlan = 9999;
-				}
-				if ($vlan != $curVlan) {
-					if ($curVlan != 0) {
-						echo '</div>';
-					}
-					$curVlan = $vlan;
-					echo '<div id="vlan'.$curVlan.'">';
-				}
 				$dormId = $dormId['dormitoryId'];
 				if (!isset($validDorm) || ($validDorm === true && $dormId === $dorm->id) || ($validDorm === false && $dormId !== $dorm->id)) {
 					$this->writeClass($tmp, $perLine, $dorm);
@@ -138,7 +149,7 @@ $( "#tabs" ).tabs();
 		$dormId = current($tmp);
 		$dormId = current($dormId);
 		$vlan = $dormId['vlan'];
-		if ($validDorm == false) {
+		if ($validDorm === false) {
 			$vlan = 9999;
 		}
 		if ($vlan != $curVlan) {
