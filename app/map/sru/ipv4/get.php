@@ -13,7 +13,7 @@ extends UFmap {
 	);
 	protected $columnTypes = array(
 		'ip'		=> self::TEXT,
-		'dormitoryId'	=> self::INT,
+		'dormitoryId'	=> self::NULL_INT,
 		'vlan'		=> self::INT,
 		'host'		=> self::NULL_TEXT,
 	);

@@ -23,7 +23,11 @@ extends UFact {
 			if($post['ip'] == '') {
 				try {
 					$ip = UFra::factory('UFbean_Sru_Ipv4');
-					$ip->getFreeByDormitoryIdAndVlan((int) $post['dormitory'], $bean->getVlanByComputerType($bean->typeId));
+					$dormitory = null;
+					if ($user->typeId < UFbean_Sru_User::TYPE_SKOS) {
+						$dormitory = (int) $post['dormitory'];
+					}
+					$ip->getFreeByDormitoryIdAndVlan($dormitory, $bean->getVlanByComputerType($bean->typeId));
 					$post['ip'] = $ip->ip;
 					$this->_srv->get('req')->post->{self::PREFIX} = $post;
 				} catch (UFex_Dao_NotFound $e) {

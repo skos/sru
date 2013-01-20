@@ -24,7 +24,11 @@ extends UFact {
 			if($post['ip'] == '') {
 				try {
 					$ip = UFra::factory('UFbean_Sru_Ipv4');
-					$ip->getFreeByDormitoryIdAndVlan($user->dormitoryId, $bean->getVlanByComputerType($post['typeId']));
+					$dormitory = null;
+					if ($user->typeId < UFbean_Sru_User::TYPE_SKOS) {
+						$dormitory = $user->dormitoryId;
+					}
+					$ip->getFreeByDormitoryIdAndVlan($dormitory, $bean->getVlanByComputerType($post['typeId']));
 				} catch (UFex_Dao_NotFound $e) {
 					$this->markErrors(self::PREFIX, array('ip'=>'noFreeAdmin'));
 					return;

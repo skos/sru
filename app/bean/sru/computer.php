@@ -29,8 +29,6 @@ extends UFbean_Common {
 	protected $typeToVLAN = array(
 		self::TYPE_ADMINISTRATION => UFbean_SruAdmin_Vlan::DS_ADM,
 		self::TYPE_ORGANIZATION => UFbean_SruAdmin_Vlan::DS_ORGAN,
-		self::TYPE_SERVER => UFbean_SruAdmin_Vlan::DS_SRW,
-		self::TYPE_SERVER_VIRT => UFbean_SruAdmin_Vlan::DS_SRW,
 	);
 
 	protected function validateHost($val, $change) {
