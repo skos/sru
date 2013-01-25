@@ -193,7 +193,10 @@ extends UFctl {
 								if ($segCount > 2) {
 									switch ($req->segment(3)) {
 										case ':edit':
-											$get->view = 'admins/edit';
+											$get->view = 'admins/admin/edit';
+											break;
+										case 'history':
+											$get->view = 'admins/admin/history';
 											break;
 										default:
 											$get->view = 'error404';
@@ -230,7 +233,7 @@ extends UFctl {
 			$act = 'User_Del';
 		} elseif ('admins/add' == $get->view && $post->is('adminAdd') && $acl->sruWalet('admin', 'add')) {
 			$act = 'Admin_Add';
-		} elseif ('admins/edit' == $get->view && $post->is('adminEdit') && $acl->sruWalet('admin', 'edit', $get->adminId)) {
+		} elseif ('admins/admin/edit' == $get->view && $post->is('adminEdit') && $acl->sruWalet('admin', 'edit', $get->adminId)) {
 			$act = 'Admin_Edit';
 		} elseif ('dormitories/dorm' == $get->view && $post->is('docExport') && $acl->sruWalet('dorm', 'view', $get->dormAlias)) {
 			$act = 'Doc_Export';
@@ -369,6 +372,8 @@ extends UFctl {
 				return 'SruWalet_Admins';
 			case 'admins/admin':
 				return 'SruWalet_Admin';
+			case 'admins/admin/history':
+				return 'SruWalet_AdminHistory';
 			case 'admins/add':
 				if ($msg->get('adminAdd/ok')) {
 					return 'SruWalet_Admins';
@@ -377,7 +382,7 @@ extends UFctl {
 				} else {
 					return 'Sru_Error404';
 				}
-			case 'admins/edit':
+			case 'admins/admin/edit':
 				if ($msg->get('adminEdit/ok')) { 
 					return 'SruWalet_Admin';
 				} elseif ($acl->sruWalet('admin', 'edit', $get->adminId)) {

@@ -797,6 +797,25 @@ extends UFbox {
 			return $this->render(__FUNCTION__.'NotFound');
 		}
 	}
+	
+	public function adminHistory() {
+		try {
+			$bean = $this->_getAdminFromGet();
+			$d['admin'] = $bean;
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render('adminNotFound');
+		}
+
+		// uzyjemy definicji dla admina SKOSowego
+		$history = UFra::factory('UFbean_SruAdmin_AdminHistoryList');
+		try {
+			$history->listByAdminId($bean->id);
+		} catch (UFex_Dao_NotFound $e) {
+		}
+		$d['history'] = $history;
+
+		return $this->render(__FUNCTION__, $d);
+	}
 
 	public function adminDorms() {
 		try {
