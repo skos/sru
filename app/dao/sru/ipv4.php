@@ -5,11 +5,11 @@
 class UFdao_Sru_Ipv4
 extends UFdao {
 
-	public function getFreeByDormitoryIdAndVlan($dormitory, $vlan = UFbean_SruAdmin_Vlan::DEFAULT_VLAN) {
+	public function getFreeByDormitoryIdAndVlan($dormitory, $vlan, $useDorm = true) {
 		$mapping = $this->mapping('get');
 
 		$query = $this->prepareSelect($mapping);
-		if ($vlan == UFbean_SruAdmin_Vlan::DEFAULT_VLAN) {
+		if ($useDorm) {
 			$query->where($mapping->dormitoryId, $dormitory);
 		}
 		$query->where($mapping->host, null);

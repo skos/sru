@@ -25,10 +25,15 @@ extends UFact {
 				try {
 					$ip = UFra::factory('UFbean_Sru_Ipv4');
 					$dormitory = null;
-					if ($user->typeId < UFbean_Sru_User::TYPE_SKOS) {
-						$dormitory = $user->dormitoryId;
+					$vlan = $bean->getVlanByComputerType($post['typeId']);
+					$useDorm = false;
+					if ($vlan == UFbean_SruAdmin_Vlan::DEFAULT_VLAN) {
+						$dormitory = UFra::factory('UFbean_Sru_Dormitory');
+						$dormitory->getByPK($user->dormitoryId);
+						$vlan = $dormitory->vlan;
+						$useDorm = true;
 					}
-					$ip->getFreeByDormitoryIdAndVlan($dormitory, $bean->getVlanByComputerType($post['typeId']));
+					$ip->getFreeByDormitoryIdAndVlan($dormitory->id, $vlan, $useDorm);
 				} catch (UFex_Dao_NotFound $e) {
 					$this->markErrors(self::PREFIX, array('ip'=>'noFreeAdmin'));
 					return;

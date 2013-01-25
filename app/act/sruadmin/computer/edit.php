@@ -24,10 +24,15 @@ extends UFact {
 				try {
 					$ip = UFra::factory('UFbean_Sru_Ipv4');
 					$dormitory = null;
-					if ($user->typeId < UFbean_Sru_User::TYPE_SKOS) {
-						$dormitory = (int) $post['dormitory'];
+					$vlan = $bean->getVlanByComputerType($bean->typeId);
+					$useDorm = false;
+					if ($vlan == UFbean_SruAdmin_Vlan::DEFAULT_VLAN) {
+						$dormitory = UFra::factory('UFbean_Sru_Dormitory');
+						$dormitory->getByPK($user->dormitoryId);
+						$vlan = $dormitory->vlan;
+						$useDorm = true;
 					}
-					$ip->getFreeByDormitoryIdAndVlan($dormitory, $bean->getVlanByComputerType($bean->typeId));
+					$ip->getFreeByDormitoryIdAndVlan($dormitory->id, $vlan, $useDorm);
 					$post['ip'] = $ip->ip;
 					$this->_srv->get('req')->post->{self::PREFIX} = $post;
 				} catch (UFex_Dao_NotFound $e) {

@@ -13,6 +13,7 @@ extends UFmap {
 		'computerCount' => 'computers_count',
 		'usersMax'     => 'users_max',
 		'computersMax' => 'computers_max',
+		'vlan'		=> 'vlan',
 	);
 	protected $columnTypes = array(
 		'id'           => self::INT,
@@ -22,6 +23,7 @@ extends UFmap {
 		'computerCount' => self::INT,
 		'usersMax'     => self::INT,
 		'computersMax' => self::INT,
+		'vlan'		=> self::INT,
 	);
 	protected $tables = array(
 		'' => 'dormitories',

@@ -23,8 +23,11 @@ extends UFact {
 			} 
 
 			try {
+				$dormitory = UFra::factory('UFbean_Sru_Dormitory');
+				$dormitory->getByPK($user->dormitoryId);
+				$vlan = $dormitory->vlan;
 				$ip = UFra::factory('UFbean_Sru_Ipv4');
-				$ip->getFreeByDormitoryIdAndVlan($user->dormitoryId);
+				$ip->getFreeByDormitoryIdAndVlan($user->dormitoryId, $vlan, true);
 			} catch (UFex_Dao_NotFound $e) {
 				$this->markErrors(self::PREFIX, array('ip'=>'noFree'));
 				return;

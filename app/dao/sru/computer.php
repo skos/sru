@@ -544,9 +544,11 @@ extends UFdao {
 	public function setNewIp($comp, $modifiedBy = null, $newName = ''){
 		$user = UFra::factory('UFbean_Sru_User');
 		$user->getByPK($comp['userId']);
+		$dormitory = UFra::factory('UFbean_Sru_Dormitory');
+		$dormitory->getByPK($user->dormitoryId);
 		$ip = UFra::factory('UFbean_Sru_Ipv4');
 		try{
-			$ip->getFreeByDormitoryIdAndVlan($user->dormitoryId);
+			$ip->getFreeByDormitoryIdAndVlan($user->dormitoryId, $dormitory->vlan, true);
 		}catch (Exception $e){
 			//UFra::error("Nie znaleziono wolnego IP: " . $e);
 			return true;
