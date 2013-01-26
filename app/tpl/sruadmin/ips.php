@@ -65,7 +65,7 @@ extends UFtpl_Common {
 		echo '<table><tr><td colspan="3"><span class="normal">OK</span></td></tr><tr><td><span class="admin">admin</span></td><td><span class="exadmin">ex-admin</span></td><td><span class="not_signed">brak przypisania DS</span></td></tr><tr><td><span class="wrong_dorm">brak zgodności DS / uszkodzony</span></td><td><span class="banned">kara</span></td><td><span class="banned_wrong_dorm">kara i brak zgodności DS</span></td></tr></table><br/>';
 	}
 
-	public function ips(array $d, $dorm) {
+	public function ips(array $d, $dorm, $vlan) {
 		$perLine = 16;
 
 		// pobranie pierwszej klasy (moze byc roznie zaindeksowany, dlatego takie obejscie)
@@ -81,7 +81,9 @@ extends UFtpl_Common {
 				$vlans[$ip['vlan']] = 'VLAN '.$ip['vlan'];
 			}
 		}
-		$vlans[0] = 'Brak VLANu';
+		if (!isset($vlan)) {
+			$vlans[0] = 'Brak VLANu';
+		}
 		if (isset($dorm)) {
 			$vlans[9999] = 'VLAN '.UFbean_SruAdmin_Vlan::DEFAULT_VLAN.' - inne DS';
 		}

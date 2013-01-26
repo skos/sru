@@ -59,7 +59,7 @@ extends UFmap {
 		'cl' => 'c.location_id = cl.id',
 		'cd' => 'cl.dormitory_id = cd.id',
 		's' => 'i.ip=s.ipv4',
-		'sd' => 's.model = sm.id',
+		'sm' => 's.model = sm.id',
 		'sd' => 's.dormitory = sd.id',
 	);
 	protected $pk = 'i.id';

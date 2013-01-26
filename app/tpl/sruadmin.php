@@ -1251,7 +1251,7 @@ extends UFtpl_Common {
 		}
 		echo '<div class="ips">';
 
-		$d['ips']->write('ips', $d['dorm']);
+		$d['ips']->write('ips', $d['dorm'], $d['vlan']);
 		echo '</div>';
 	}
 	
