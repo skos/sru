@@ -16,8 +16,10 @@ extends UFact {
 			$login = $post['login'];
 			$password = $post['password'];
 			
-			$password = UFbean_SruAdmin_Admin::generatePassword($password);
-			$bean->getByLoginPassword($login, $password);
+			$bean->getByLoginToAuthenticate($login);
+			if (!UFbean_SruAdmin_Admin::validateBlowfishPassword($password, $bean->password)) {
+				throw UFra::factory('UFex_Dao_NotFound', 'Incorrect login or password', 0, E_ERROR);
+			}
 			
 			$sess = $this->_srv->get('session');
 			$sess->authWaletAdmin = $bean->id;
@@ -35,11 +37,6 @@ extends UFact {
 				$bean->lastLoginIp =  $serv->REMOTE_ADDR;
 			}
 			$bean->lastLoginAt = NOW;
-			
-			//TODO #673
-			if (is_null($bean->passwordBlow)) {
-				$bean->passwordBlow = UFbean_SruWalet_Admin::generateBlowfishPassword($password);
-			}
 			
 			$bean->save();
 			

@@ -43,22 +43,34 @@ extends UFdao {
 
 		return $this->doSelect($query);
 	}
+
+	public function getByLoginToAuthenticate($login) {
+		$mapping = $this->mapping('get');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->active, true);
+		$query->where($mapping->login, $login);
+		$query->where($mapping->typeId, UFacl_SruAdmin_Admin::BOT, UFlib_Db_Query::LT);
+
+		return $this->doSelectFirst($query);
+	}
 	
+	/**
+	 * Logowanie botów
+	 * @param type $login
+	 * @param type $password
+	 * @return type 
+	 */
 	public function getByLoginPassword($login, $password) {
-		$key = $this->cachePrefix.'/'.__FUNCTION__.'/'.md5($login.'*#$%^@@!'.$password);
-		try {
-			return $this->cacheGet($key);
-		} catch (UFex_Core_DataNotFound $e) {
-			$mapping = $this->mapping('get');
+		$mapping = $this->mapping('get');
 
-			$query = $this->prepareSelect($mapping);
-			$query->where($mapping->active, true);
-			$query->where($mapping->login, $login);
-			$query->where($mapping->password, $password);
-			$query->where($mapping->typeId, UFacl_SruAdmin_Admin::BOT, UFlib_Db_Query::LTE);
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->active, true);
+		$query->where($mapping->login, $login);
+		$query->where($mapping->passwordInner, $password);
+		$query->where($mapping->typeId, UFacl_SruAdmin_Admin::BOT);
 
-			return $this->doSelectFirst($query);
-		}
+		return $this->doSelectFirst($query);
 	}
 
 	public function getByLogin($login) {
@@ -118,7 +130,7 @@ extends UFdao {
 		$server = $this->_srv->get('req')->server;
 		$login = $server->PHP_AUTH_USER;
 		$password = $server->PHP_AUTH_PW;
-		$password = UFbean_SruAdmin_Admin::generatePassword($password);
+		$password = UFbean_SruAdmin_Admin::generateMd5Password($password);
 
 		return $this->getByLoginPassword($login, $password);
 	}

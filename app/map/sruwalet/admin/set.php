@@ -8,7 +8,6 @@ class UFmap_SruWalet_Admin_Set
 extends UFmap {
 	protected $columns = array(
 		'password'       => 'password',
-		'passwordBlow'   => 'password_blow',
 		'lastLoginAt'	 => 'last_login_at',
 		'lastLoginIp'	 => 'last_login_ip',
 		'lastInvLoginAt' => 'last_inv_login_at',
@@ -26,7 +25,6 @@ extends UFmap {
 	);
 	protected $columnTypes = array(
 		'password'       => self::TEXT,
-		'passwordBlow'   => self::TEXT,
 		'lastLoginAt'	 => self::TS,
 		'lastLoginIp'	 => self::TEXT,
 		'lastInvLoginAt' => self::TS,
@@ -47,7 +45,7 @@ extends UFmap {
 	);
 	protected $valids = array(
 		'login' => array('textMin'=>1, 'textMax'=>100, 'regexp'=>'^[-a-zA-Z0-9\.@_]+$'),
-		'password' => array('textMin'=>8, 'regexp'=>'^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$'), 
+		'password' => array('textMin'=>8, 'regexp'=>'^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$'),
 		'name' => array('textMin'=>1, 'textMax'=>100),
 		'email' => array('email'=>true),
 		'lastLoginIp' => array('regexp'=>'^([0-9a-fA-F:]+)?[0-9.]{7,15}$'),

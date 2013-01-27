@@ -6,19 +6,13 @@ class UFbean_SruWalet_Admin
 extends UFbeanSingle {
 
 	protected $_password = null;
-
-	/**
-	 * zaszyfrowane haslo
-	 * 
-	 * @param string $password - haslo
-	 * @return string
-	 */
-	static function generatePassword($password) {
-		return md5($password);
-	}
 	
 	static function generateBlowfishPassword($password) {
 		return UFbean_SruAdmin_Admin::generateBlowfishPassword($password);
+	}
+	
+	static function validateBlowfishPassword($password, $hash) {
+		return UFbean_SruAdmin_Admin::validateBlowfishPassword($password, $hash);
 	}
 
 	protected function validateLogin($val, $change) {
@@ -35,7 +29,7 @@ extends UFbeanSingle {
 		$admin = UFra::factory('UFbean_SruWalet_Admin');
 		try {
 			$admin->getByPK($this->data['id']);
-			if ($admin->password == self::generatePassword($val)) {
+			if (self::validateBlowfishPassword($val, $admin->password)) {
 				return 'same';
 			}
 		} catch (UFex $e) {
@@ -53,20 +47,7 @@ extends UFbeanSingle {
 
 	protected function normalizePassword($val, $change) {
 		$this->_password = $val;
-		return self::generatePassword($val);
-	}
-
-	protected function normalizeLogin($val, $change) {
-		if (is_string($this->_password)) {
-			$pass = $this->_password;
-		} else {
-			$pass = microtime();
-		}
-		if (isset($this->_password)) {
-			$this->data['password'] = self::generatePassword($pass);
-			$this->dataChanged['password'] = $this->data['password'];
-		}
-		return $val;
+		return self::generateBlowfishPassword($val);
 	}
 
 	protected function normalizeDormitoryId($val, $change) {

@@ -7,6 +7,7 @@ extends UFmap {
 	protected $columns = array(
 		'login'          => 'login',
 		'password'       => 'password',
+		'passwordInner'  => 'password_inner', // boty mają na starcie to hasło
 		'name'           => 'name',
 		'typeId'         => 'type_id',
 		'phone'          => 'phone',
@@ -21,6 +22,7 @@ extends UFmap {
 	protected $columnTypes = array(
 		'login'          => self::TEXT,
 		'password'       => self::TEXT,
+		'passwordInner'  => self::TEXT,
 		'name'           => self::TEXT,
 		'typeId'         => self::INT,
 		'phone'          => self::TEXT,

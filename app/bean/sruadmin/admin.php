@@ -13,7 +13,7 @@ extends UFbean_Common {
 	 * @param string $password - haslo
 	 * @return string
 	 */
-	static function generatePassword($password) {
+	static function generateMd5Password($password) {
 		return md5($password);
 	}
 	
@@ -35,6 +35,14 @@ extends UFbean_Common {
 		
 		return $hash;
 	}
+	
+	static function validateBlowfishPassword($password, $hash) {
+		$hasher = UFra::factory('UFlib_PasswordHash');
+		$result = $hasher->CheckPassword($password, $hash);
+		unset($hasher);
+		
+		return $result;
+	}
 
 	protected function validateLogin($val, $change) {
 		try {
@@ -48,13 +56,18 @@ extends UFbean_Common {
 	protected function validatePassword($val, $change) {
 		$post = $this->_srv->get('req')->post->{$change?'adminEdit':'adminAdd'};
 		$admin = UFra::factory('UFbean_SruAdmin_Admin');
-		try {
-			$admin->getByPK($this->data['id']);
-			if ($admin->password == self::generatePassword($val)) {
-				return 'same';
+		if ($change) {
+			try {
+				$admin->getByPK($this->data['id']);
+				if (self::validateBlowfishPassword($val, $admin->password)) {
+					return 'same';
+				}
+				if ($admin->passwordInner == self::generateMd5Password($val)) {
+					return 'sameAsInner';
+				}
+			} catch (UFex $e) {
+				return 'unknown';
 			}
-		} catch (UFex $e) {
-			return 'unknown';
 		}
 		
 		try {
@@ -63,6 +76,44 @@ extends UFbean_Common {
 			}
 		} catch (UFex $e) {
 			return 'unknown';
+		}
+	}
+	
+	protected function validatePasswordInner($val, $change) {
+		if ($change) {
+			$post = $this->_srv->get('req')->post->adminEdit;
+			$admin = UFra::factory('UFbean_SruAdmin_Admin');
+		
+			try {
+				$admin->getByPK($this->data['id']);
+				if ($admin->passwordInner == self::generateMd5Password($val)) {
+					return 'same';
+				}
+				if (self::validateBlowfishPassword($val, $admin->password)) {
+					return 'sameAsMain';
+				}
+			} catch (UFex $e) {
+				return 'unknown';
+			}
+		
+			try {
+				if ($post['passwordInner2'] !== $val) {
+					return 'mismatch';
+				}
+			} catch (UFex $e) {
+				return 'unknown';
+			}
+
+			// gdy edytujemy bota, to nie ustawiamy hasła
+			if (array_key_exists('password', $post)) {
+				try {
+					if ($post['password'] === $post['passwordInner']) {
+						return 'sameAsMain';
+					}
+				} catch (UFex $e) {
+					return 'unknown';
+				}
+			}
 		}
 	}
 	
@@ -85,20 +136,12 @@ extends UFbean_Common {
 
 	protected function normalizePassword($val, $change) {
 		$this->_password = $val;
-		return self::generatePassword($val);
+		return self::generateBlowfishPassword($val);
 	}
-
-	protected function normalizeLogin($val, $change) {
-		if (is_string($this->_password)) {
-			$pass = $this->_password;
-		} else {
-			$pass = microtime();
-		}
-		if (isset($this->_password)) {
-			$this->data['password'] = self::generatePassword($pass);
-			$this->dataChanged['password'] = $this->data['password'];
-		}
-		return $val;
+	
+	protected function normalizePasswordInner($val, $change) {
+		$this->passwordInner = $val;
+		return self::generateMd5Password($val);
 	}
 
 	protected function normalizeDormitoryId($val, $change) {

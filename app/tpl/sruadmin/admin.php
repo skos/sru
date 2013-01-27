@@ -20,6 +20,11 @@ extends UFtpl_Common {
 		'password' => 'Hasło musi mieć co najmniej 8 znaków, zawierać co najmniej 1 dużą literę, 1 małą literę, 1 cyfrę i 1 znak specjalny',
 		'password/mismatch' => 'Hasła różnią się',
 		'password/same' => 'Hasło jest identyczne z poprzednim',
+		'password/sameAsInner' => 'Hasło jest identyczne zhasłem wewnętrznym',
+		'passwordInner' => 'Hasło musi mieć co najmniej 8 znaków, zawierać co najmniej 1 dużą literę, 1 małą literę, 1 cyfrę i 1 znak specjalny',
+		'passwordInner/mismatch' => 'Hasła różnią się',
+		'passwordInner/same' => 'Hasło jest identyczne z poprzednim',
+		'passwordInner/sameAsMain' => 'Hasło jest identyczne z hasłem do SRU',
 		'name' => 'Podaj nazwę',
 		'name/regexp' => 'Nazwa zawiera niedozwolone znaki',
 		'name/textMax' => 'Nazwa jest za długa',
@@ -123,6 +128,7 @@ extends UFtpl_Common {
 			echo '<p><em>Data dezaktywacji:</em>Data dezaktywacji nie została podana</p>';
 		}
 		echo '<p><em>Ostatnia zmiana hasła:</em> '.((is_null($d['lastPswChange']) || $d['lastPswChange'] == 0) ? 'brak' : date(self::TIME_YYMMDD_HHMM, $d['lastPswChange'])).'</p>';
+		echo '<p><em>Ostatnia zmiana hasła wew.:</em> '.((is_null($d['lastPswInnerChange']) || $d['lastPswInnerChange'] == 0) ? 'brak' : date(self::TIME_YYMMDD_HHMM, $d['lastPswInnerChange'])).'</p>';
 		if(($d['id'] == $this->_srv->get('session')->authAdmin || ($this->_srv->get('session')->is('typeId') 
 					&& ($this->_srv->get('session')->typeId == UFacl_SruAdmin_Admin::CENTRAL 
 						|| $this->_srv->get('session')->typeId == UFacl_SruAdmin_Admin::CAMPUS)))
@@ -197,8 +203,11 @@ extends UFtpl_Common {
 		
 		echo $form->name('Nazwa', array('after'=> UFlib_Helper::displayHint("Imię i nazwisko administratora lub inne oznaczenie.")));
 		
-		echo $form->password('Hasło', array('type'=>$form->PASSWORD));
+		echo $form->password('Hasło', array('type'=>$form->PASSWORD, 'after'=> UFlib_Helper::displayHint("Hasło do logowania się do SRU.")));
 		echo $form->password2('Powtórz hasło', array('type'=>$form->PASSWORD));
+		echo $form->passwordInner('Hasło wewnętrzne', array('type'=>$form->PASSWORD, 'after'=> UFlib_Helper::displayHint("Hasło do logowania się do systemów SKOS.")));
+		echo $form->passwordInner2('Powtórz hasło wewnętrzne', array('type'=>$form->PASSWORD));
+
 		if($this->_srv->get('acl')->sruAdmin('admin', 'addChangeActiveDate'))
 			echo $form->activeTo('Aktywny do', array('after'=>UFlib_Helper::displayHint($this->instrukcjaObslugiPolaAktywnyDo)));
 		else

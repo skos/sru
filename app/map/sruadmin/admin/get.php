@@ -9,7 +9,7 @@ extends UFmap {
 		'id'             => 'a.id',
 		'login'          => 'a.login',
 		'password'       => 'a.password',
-		'passwordBlow'   => 'a.password_blow',
+		'passwordInner'  => 'a.password_inner',
 		'name'           => 'a.name',
 		'lastLoginAt'    => 'a.last_login_at',
 		'lastLoginIp'    => 'a.last_login_ip',
@@ -25,17 +25,18 @@ extends UFmap {
 		'dormitoryId'    => 'a.dormitory_id',
 		'dormitoryAlias' => 'd.alias',
 		'dormitoryName'  => 'd.name',
-		'activeTo'		 => 'a.active_to',
+		'activeTo'	 => 'a.active_to',
 		'modifiedById'   => 'a.modified_by',
 		'modifiedByName' => 'b.name',
 		'modifiedAt'     => 'a.modified_at',
 		'lastPswChange'  => 'a.last_psw_change',
+		'lastPswInnerChange' => 'a.last_psw_inner_change',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
 		'login'          => self::TEXT,
 		'password'       => self::TEXT,
-		'passwordBlow'   => self::TEXT,
+		'passwordInner'  => self::TEXT,
 		'name'           => self::TEXT,
 		'lastLoginAt'    => self::NULL_TS,
 		'lastLoginIp'    => self::NULL_TEXT,
@@ -56,6 +57,7 @@ extends UFmap {
 		'modifiedByName' => self::TEXT,
 		'modifiedAt'     => self::TS,
 		'lastPswChange'  => self::TS,
+		'lastPswInnerChange' => self::TS,
 	);
 	protected $tables = array(
 		'a' => 'admins',

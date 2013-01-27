@@ -15,7 +15,7 @@ extends UFact {
 			$post = $this->_srv->get('req')->post->{self::PREFIX};
 			$acl = $this->_srv->get('acl');
 			$login = $bean->login;
-			$bean->fillFromPost(self::PREFIX, array('password', 'login', 'typeId', 'active'));
+			$bean->fillFromPost(self::PREFIX, array('password', 'passwordInner', 'login', 'typeId', 'active'));
 
 			if (isset($post['displayUsers'])) {
 				if($post['displayUsers'] == 1) {
@@ -28,9 +28,11 @@ extends UFact {
 			if(isset($post['password']) && $post['password'] != '' ) {
 				$bean->password = $post['password'];
 				$bean->lastPswChange = NOW;
-				
-				//TODO #673
-				$bean->passwordBlow = UFbean_SruAdmin_Admin::generateBlowfishPassword($post['password']);
+			}
+			
+			if(isset($post['passwordInner']) && $post['passwordInner'] != '' ) {
+				$bean->passwordInner = $post['passwordInner'];
+				$bean->lastPswInnerChange = NOW;
 			}
 			
 			if(isset($post['typeId']) && $acl->sruAdmin('admin', 'advancedEdit')) {

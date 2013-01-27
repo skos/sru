@@ -8,7 +8,7 @@ class UFmap_SruAdmin_Admin_Set
 extends UFmap {
 	protected $columns = array(
 		'password'       => 'password',
-		'passwordBlow'   => 'password_blow',
+		'passwordInner'  => 'password_inner',
 		'lastLoginAt'	 => 'last_login_at',
 		'lastLoginIp'	 => 'last_login_ip',
 		'lastInvLoginAt' => 'last_inv_login_at',
@@ -20,16 +20,17 @@ extends UFmap {
 		'jid'            => 'jid',
 		'email'          => 'email',
 		'address'        => 'address',
-		'active'		 => 'active',
+		'active'	 => 'active',
 		'dormitoryId'    => 'dormitory_id',
-		'activeTo'		 => 'active_to',
+		'activeTo'	 => 'active_to',
 		'modifiedById'   => 'modified_by',
 		'modifiedAt'     => 'modified_at',
 		'lastPswChange'  => 'last_psw_change',
+	    	'lastPswInnerChange' => 'last_psw_inner_change',	
 	);
 	protected $columnTypes = array(
 		'password'       => self::TEXT,
-		'passwordBlow'   => self::TEXT,
+		'passwordInner'  => self::TEXT,
 		'lastLoginAt'	 => self::TS,
 		'lastLoginIp'	 => self::TEXT,
 		'lastInvLoginAt' => self::TS,
@@ -47,13 +48,15 @@ extends UFmap {
 		'modifiedById'   => self::NULL_INT,
 		'modifiedAt'     => self::TS,
 		'lastPswChange'  => self::TS,
+		'lastPswInnerChange' => self::TS,
 	);
 	protected $tables = array(
 		'' => 'admins',
 	);
 	protected $valids = array(
 		'login' => array('textMin'=>1, 'textMax'=>100, 'regexp'=>'^[-a-zA-Z0-9\.@_]+$'),
-		'password' => array('textMin'=>8, 'regexp'=>'^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$'), 
+		'password' => array('textMin'=>8, 'regexp'=>'^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$'),
+		'passwordInner' => array('textMin'=>8, 'regexp'=>'^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$'), 
 		'name' => array('textMin'=>1, 'textMax'=>100),
 		'email' => array('email'=>true),
 		'dormitory' => array('textMin'=>1),
