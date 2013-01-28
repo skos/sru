@@ -28,6 +28,7 @@ extends UFact {
 			if(isset($post['password']) && $post['password'] != '' ) {
 				$bean->password = $post['password'];
 				$bean->lastPswChange = NOW;
+				$bean->badLogins = 0;
 			}
 			
 			if(isset($post['passwordInner']) && $post['passwordInner'] != '' ) {
