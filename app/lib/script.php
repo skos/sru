@@ -9,6 +9,19 @@ class UFlib_Script {
 		</script>
 		<?
 	}
+	
+	public static function focusIfLoginNotEmpty($idToFocus, $idToCheck){
+		?>        
+		<script type="text/javascript">
+		    console.log($('#' + '<? echo $idToCheck; ?>').val());
+			if($('#<? echo $idToCheck; ?>').val() != ''){
+			    $('#<? echo $idToFocus; ?>').focus();
+			}else{
+			    $('#<? echo $idToCheck; ?>').focus();
+			}
+		</script>
+		<?
+	}
 
     public static function switchMoreChangeVisibility(){
 ?><script type="text/javascript">

@@ -6,6 +6,7 @@ class UFact_SruWalet_Admin_Login
 extends UFact {
 
 	const PREFIX = 'adminLogin';
+	private $maxBadLoginsCount = 2;
 
 	public function go() {
 		try {
@@ -19,6 +20,15 @@ extends UFact {
 			$bean->getByLoginToAuthenticate($login);
 			if (!UFbean_SruAdmin_Admin::validateBlowfishPassword($password, $bean->password)) {
 				throw UFra::factory('UFex_Dao_NotFound', 'Incorrect login or password', 0, E_ERROR);
+			}
+			
+			if($bean->badLogins > 0){
+			    $bean->badLogins -= 1;
+			    $bean->save();
+			    $this->markOk(self::PREFIX);
+			    if($bean->badLogins > 0){
+				return ;
+			    }
 			}
 			
 			$sess = $this->_srv->get('session');
@@ -50,6 +60,9 @@ extends UFact {
 				$bean = UFra::factory('UFbean_SruWalet_Admin');
 				$login = $post['login'];
 				$bean->getByLogin($login);
+				if($bean->badLogins < $this->maxBadLoginsCount){
+				    $bean->badLogins += 1;
+				}
 				if($serv->is('HTTP_X_FORWARDED_FOR') && $serv->HTTP_X_FORWARDED_FOR != '' ) {
 					$bean->lastInvLoginIp = $serv->HTTP_X_FORWARDED_FOR;
 				} else {

@@ -22,6 +22,7 @@ extends UFmap {
 		'active'		 => 'active',
 		'modifiedById'   => 'modified_by',
 		'lastPswChange'  => 'last_psw_change',
+		'badLogins'	 => 'bad_logins'
 	);
 	protected $columnTypes = array(
 		'password'       => self::TEXT,
@@ -39,6 +40,7 @@ extends UFmap {
 		'active'		 => self::BOOL,
 		'modifiedById'   => self::NULL_INT,
 		'lastPswChange'  => self::TS,
+		'badLogins'	 => self::INT
 	);	
 	protected $tables = array(
 		'' => 'admins',
