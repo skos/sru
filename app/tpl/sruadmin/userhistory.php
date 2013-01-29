@@ -100,7 +100,7 @@ extends UFtpl_Common {
 					break;
 				case 'locationId': $changes[] = $names[$key].': '.$old['locationAlias'].'<small>&nbsp;('.$old['dormitoryAlias'].')</small>'.$arr.$new['locationAlias'].'<small>&nbsp;('.$new['dormitoryAlias'].')</small>'; break;
 				case 'studyYearId': $changes[] = $names[$key].': '. (is_null($val) ? '' : UFtpl_Sru_User::$studyYears[$val]).$arr.UFtpl_Sru_User::$studyYears[$new[$key]]; break;
-				case 'comment': $changes[] = $names[$key] . ($walet ? ': <q>'.nl2br($val).'</q>'.$arr.'<q>'.nl2br($new[$key]).'</q>' : ' dla administratorów Waleta: zmieniono'); break;
+				case 'comment': $changes[] = $names[$key] . ($walet ? ': <q>'.nl2br($this->_escape($val)).'</q>'.$arr.'<q>'.nl2br($this->_escape($new[$key])).'</q>' : ' dla administratorów Waleta: zmieniono'); break;
 				case 'active': $changes[] = $names[$key].': '.($val?'tak':'nie').$arr.($new[$key]?'tak':'nie'); break;
 				case 'referralStart': $changes[] = $names[$key].': <q>'.($val == 0 ? 'brak' : date(self::TIME_YYMMDD, $val)).'</q>'.$arr.'<q>'.($new[$key] == 0 ? 'brak' : date(self::TIME_YYMMDD, $new[$key])).'</q>'; break;
 				case 'referralEnd': $changes[] = $names[$key].': <q>'.($val == 0 ? 'brak' : date(self::TIME_YYMMDD, $val)).'</q>'.$arr.'<q>'.($new[$key] == 0 ? 'brak' : date(self::TIME_YYMMDD, $new[$key])).'</q>'; break;
@@ -115,15 +115,15 @@ extends UFtpl_Common {
 					break;
 				case 'nationality': $changes[] = $names[$key] . ': '.$old['nationalityName'].$arr.$new['nationalityName']; break;
 				case 'sex': $changes[] = $names[$key] . ': <q>'.($val == false ? 'Mężczyzna' : 'Kobieta').'</q>'.$arr.'<q>'.($new[$key] == false ? 'Mężczyzna' : 'Kobieta').'</q>'; break;
-				case 'address': $changes[] = $names[$key] . ': '.($walet ? $old['address'].$arr.$new[$key] : 'zmieniono'); break;
+				case 'address': $changes[] = $names[$key] . ': '.($walet ? nl2br($this->_escape($old['address'])).$arr.nl2br($this->_escape($new[$key])) : 'zmieniono'); break;
 				case 'documentType': $changes[] = $names[$key] . ': '.($walet ? UFtpl_Sru_User::$documentTypes[$old[$key]].$arr.UFtpl_Sru_User::$documentTypes[$new[$key]] : 'zmieniono'); break;
-				case 'documentNumber': $changes[] = $names[$key] . ': '.($walet ? $old[$key].$arr.$new[$key] : 'zmieniono'); break;
+				case 'documentNumber': $changes[] = $names[$key] . ': '.($walet ? $this->_escape($old[$key]).$arr.$this->_escape($new[$key]) : 'zmieniono'); break;
 				case 'pesel': $changes[] = $names[$key] . ': '.($walet ? ($val == '' ? 'brak' : $old[$key]).$arr.$new[$key] : 'zmieniono'); break;
 				case 'birthDate': $changes[] = $names[$key] . ': '.($walet ? ('<q>'.($val == 0 ? 'brak' : date(self::TIME_YYMMDD, $val)).'</q>'.$arr.'<q>'.date(self::TIME_YYMMDD, $new[$key]).'</q>') : 'zmieniono'); break;
-				case 'birthPlace': $changes[] = $names[$key] . ': '.($walet ? ('<q>'.($val =='' ? 'brak' : $old[$key]).'</q>'.$arr.'<q>'.$new[$key]) : 'zmieniono').'</q>'; break;
+				case 'birthPlace': $changes[] = $names[$key] . ': '.($walet ? ('<q>'.($val =='' ? 'brak' : $this->_escape($old[$key])).'</q>'.$arr.'<q>'.$this->_escape($new[$key])) : 'zmieniono').'</q>'; break;
 				case 'userPhoneNumber': $changes[] = $names[$key] . ': '.($walet ? ($val == '' ? 'brak' : $old[$key]).$arr.$new[$key] : 'zmieniono'); break;
 				case 'guardianPhoneNumber': $changes[] = $names[$key] . ': '.($walet ? ($val == '' ? 'brak' : $old[$key]).$arr.$new[$key] : 'zmieniono'); break;
-				case 'commentSkos': $changes[] = $names[$key] . ($walet ? ' dla administratorów SKOS: zmieniono' : ': <q>'.nl2br($val).'</q>'.$arr.'<q>'.nl2br($new[$key]).'</q>'); break;
+				case 'commentSkos': $changes[] = $names[$key] . ($walet ? ' dla administratorów SKOS: zmieniono' : ': <q>'.nl2br($this->_escape($val)).'</q>'.$arr.'<q>'.nl2br($this->_escape($new[$key])).'</q>'); break;
 				case 'overLimit': $changes[] = $names[$key].': '.($val?'tak':'nie').$arr.($new[$key]?'tak':'nie'); break;
 				default: continue;
 			}
