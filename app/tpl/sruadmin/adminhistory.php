@@ -17,7 +17,8 @@ extends UFtpl_Common {
 		'active' => 'Aktywny',
 		'activeTo' => 'Aktywny do',
 		'dormitoryId' => 'Akademik',
-		'passwordChanged' => 'Zmieniono hasło',
+		'passwordChanged' => 'Zmieniono hasło do SRU',
+		'passwordInnerChanged' => 'Zmieniono hasło wewnętrzne',
 	);
 
 	protected function _diff(array $old, array $new) {
@@ -51,6 +52,7 @@ extends UFtpl_Common {
 					$changes[] = $names[$key].': '.$old['dormitoryName'].$arr.$new['dormitoryName'];
 					break;
 				case 'passwordChanged': $val > 0 ? ($changes[] = $names[$key]) : ''; break;
+				case 'passwordInnerChanged': $val > 0 ? ($changes[] = $names[$key]) : ''; break;
 				default: continue;
 			}
 		}
@@ -86,6 +88,7 @@ extends UFtpl_Common {
 			'modifiedByName' => $current->modifiedByName,
 			'modifiedAt' => $current->modifiedAt,
 			'passwordChanged' => '0',
+			'passwordInnerChanged' => '0',
 		);
 		$urlAdmin = $this->url(0).'/admins/';
 		foreach ($d as $c) {

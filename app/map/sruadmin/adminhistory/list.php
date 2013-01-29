@@ -25,6 +25,7 @@ extends UFmap {
 		'modifiedByName' => 'a.name',
 		'modifiedAt'     => 'h.modified_at',
 		'passwordChanged'=> 'h.password_changed',
+		'passwordInnerChanged'=> 'h.password_inner_changed',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -46,6 +47,7 @@ extends UFmap {
 		'modifiedByName' => self::TEXT,
 		'modifiedAt'     => self::TS,
 		'passwordChanged'=> self::TS,
+		'passwordInnerChanged'=> self::TS,
 	);
 	protected $tables = array(
 		'h' => 'admins_history',
