@@ -27,13 +27,15 @@ extends UFbeanSingle {
 	protected function validatePassword($val, $change) {
 		$post = $this->_srv->get('req')->post->{$change?'adminEdit':'adminAdd'};
 		$admin = UFra::factory('UFbean_SruWalet_Admin');
-		try {
-			$admin->getByPK($this->data['id']);
-			if (self::validateBlowfishPassword($val, $admin->password)) {
-				return 'same';
+		if ($change) {
+			try {
+				$admin->getByPK($this->data['id']);
+				if (self::validateBlowfishPassword($val, $admin->password)) {
+					return 'same';
+				}
+			} catch (UFex $e) {
+				return 'unknown';
 			}
-		} catch (UFex $e) {
-			return 'unknown';
 		}
 		
 		try {
