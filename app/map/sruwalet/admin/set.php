@@ -19,8 +19,9 @@ extends UFmap {
 		'jid'            => 'jid',
 		'email'          => 'email',
 		'address'        => 'address',
-		'active'		 => 'active',
+		'active'	 => 'active',
 		'modifiedById'   => 'modified_by',
+		'modifiedAt'     => 'modified_at',
 		'lastPswChange'  => 'last_psw_change',
 		'badLogins'	 => 'bad_logins'
 	);
@@ -37,8 +38,9 @@ extends UFmap {
 		'jid'            => self::TEXT,
 		'email'          => self::TEXT,
 		'address'        => self::TEXT,
-		'active'		 => self::BOOL,
+		'active'	 => self::BOOL,
 		'modifiedById'   => self::NULL_INT,
+		'modifiedAt'     => self::TS,
 		'lastPswChange'  => self::TS,
 		'badLogins'	 => self::INT
 	);	

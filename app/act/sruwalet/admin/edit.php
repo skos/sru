@@ -16,7 +16,6 @@ extends UFact {
 			$acl = $this->_srv->get('acl');
 			$login = $bean->login;
 			$bean->fillFromPost(self::PREFIX, array('password', 'login', 'typeId', 'active'));
-			$bean->modifiedById = $this->_srv->get('session')->authWaletAdmin;
 				
 			if(isset($post['password']) && $post['password'] != '' ) {
 				$bean->password = $post['password'];
@@ -30,7 +29,8 @@ extends UFact {
 			if(isset($post['active']) && $acl->sruWalet('admin', 'advancedEdit')) {
 				$bean->active = $post['active'];
 			}
-
+			$bean->modifiedById = $this->_srv->get('session')->authWaletAdmin;
+			$bean->modifiedAt = NOW;
 			$bean->save();
 
 			while (!is_null(key($post['dorm'])) && $acl->sruWalet('admin', 'advancedEdit')) {

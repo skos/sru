@@ -15,7 +15,7 @@ extends UFbeanSingle {
 	 * nadpisuje metodę UFbeanSingle - sprawdza, czy jest co zapisać i wywołuje metodę nadpisywaną
 	 *
 	 * @param bool $lastVal - czy pobierac wartosc autoincrement, gdy dodawana jest nowa wartosc?
-	 * @return int - idengyfikator nowododanego rekordu lub ilosc
+	 * @return int - identyfikator nowododanego rekordu lub ilosc
 	 *               zmodyfikowanych rekordow w zaleznosci od tego, skad
 	 *               pochodzily dane
 	 */

@@ -46,7 +46,7 @@ extends UFtpl_Common {
 					$changes[] = $names[$key].': '.(is_null($val) ? 'brak limitu' : date(self::TIME_YYMMDD, $val)).$arr.(is_null($new[$key]) ? 'brak limitu' : date(self::TIME_YYMMDD, $new[$key]));
 					break;
 				case 'typeId':
-					$changes[] = $names[$key].': '.UFtpl_SruAdmin_Admin::$adminTypes[$old['typeId']].$arr.UFtpl_SruAdmin_Admin::$adminTypes[$new['typeId']];
+					$changes[] = $names[$key].': '.(array_key_exists($old['typeId'], UFtpl_SruAdmin_Admin::$adminTypes) ? UFtpl_SruAdmin_Admin::$adminTypes[$old['typeId']] : UFtpl_SruWalet_Admin::$adminTypes[$old['typeId']]).$arr.(array_key_exists($old['typeId'], UFtpl_SruAdmin_Admin::$adminTypes) ? UFtpl_SruAdmin_Admin::$adminTypes[$new['typeId']] : UFtpl_SruWalet_Admin::$adminTypes[$new['typeId']]);
 					break;
 				case 'dormitoryId':
 					$changes[] = $names[$key].': '.$old['dormitoryName'].$arr.$new['dormitoryName'];

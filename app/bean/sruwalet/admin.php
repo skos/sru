@@ -3,7 +3,7 @@
  * admin Waleta
  */
 class UFbean_SruWalet_Admin
-extends UFbeanSingle {
+extends UFbean_Common {
 
 	protected $_password = null;
 	
