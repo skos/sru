@@ -81,11 +81,11 @@ extends UFtpl_Common {
 				$vlans[$ip['vlan']] = 'VLAN '.$ip['vlan'];
 			}
 		}
-		if (!isset($vlan)) {
+		if (!isset($dorm) && !isset($vlan)) {
 			$vlans[0] = 'Brak VLANu';
 		}
 		if (isset($dorm)) {
-			$vlans[9999] = 'VLAN '.UFbean_SruAdmin_Vlan::DEFAULT_VLAN.' - inne DS';
+			$vlans[9999] = 'Błędny przydział IP';
 		}
 		
 		echo '<div id="tabs"><ul>';
