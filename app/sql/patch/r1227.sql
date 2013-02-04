@@ -8,7 +8,7 @@ CREATE OR REPLACE FUNCTION admin_update()
   RETURNS trigger AS
 $BODY$BEGIN
 if
-	NEW.password!=OLD.password AND NEW.password_inner=OLD.password_inner
+	NEW.password!=OLD.password AND (OLD.password_inner IS NULL OR NEW.password_inner=OLD.password_inner)
 then
 	INSERT INTO admins_history (
 		admin_id,
@@ -44,7 +44,7 @@ then
 		now()
 	);
 elsif
-	NEW.password=OLD.password AND NEW.password_inner!=OLD.password_inner
+	NEW.password=OLD.password AND ((OLD.password_inner IS NULL AND NEW.password_inner IS NOT NULL) OR NEW.password_inner!=OLD.password_inner)
 then
 	INSERT INTO admins_history (
 		admin_id,
@@ -80,7 +80,7 @@ then
 		now()
 	);
 elsif
-	NEW.password!=OLD.password AND NEW.password_inner!=OLD.password_inner
+	NEW.password!=OLD.password AND ((OLD.password_inner IS NULL AND NEW.password_inner IS NOT NULL) OR NEW.password_inner!=OLD.password_inner)
 then
 	INSERT INTO admins_history (
 		admin_id,
