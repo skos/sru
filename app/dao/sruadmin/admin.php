@@ -148,7 +148,7 @@ extends UFdao {
 			$query->raw("SELECT id, active, name FROM
 				(SELECT admin_id AS id, modified_at AS mod, active AS active, name as name FROM admins_history WHERE type_id < ".UFacl_SruAdmin_Admin::BOT."
 				UNION SELECT id AS id, modified_at AS mod, active AS active, name as name FROM admins  WHERE type_id < ".UFacl_SruAdmin_Admin::BOT.") AS foo
-				WHERE (mod <= '".$date."' or mod IS NULL) GROUP BY id, active, name ORDER BY max (mod) DESC;");
+				WHERE (mod <= '".$date."' or mod IS NULL) GROUP BY id, active, name ORDER BY max (mod) DESC, active;");
 		} else {
 			$query->raw("SELECT id, active, name FROM admins WHERE type_id < ".UFacl_SruAdmin_Admin::BOT.
 				" AND (active_to >= '".$date."' or active_to IS NULL);");
