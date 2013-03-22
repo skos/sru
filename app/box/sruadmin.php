@@ -1069,7 +1069,11 @@ extends UFbox {
 			
 			$dormitories = UFra::factory('UFbean_Sru_DormitoryList');
 			$dormitories->listAll();
-			$leftRight = UFlib_Helper::getLeftRight($dormitories, $dorm->id);
+			if (!is_null($dorm)) {
+				$leftRight = UFlib_Helper::getLeftRight($dormitories, $dorm->id);
+			} else {
+				$leftRight = null;
+			}
 			$d['leftRight'] = $leftRight;
 
 			return $this->render(__FUNCTION__, $d);

@@ -33,7 +33,8 @@ extends UFact {
 						$vlan = $dormitory->vlan;
 						$useDorm = true;
 					}
-					$ip->getFreeByDormitoryIdAndVlan($dormitory->id, $vlan, $useDorm);
+					$dormId = $useDorm ? $dormitory->id : null;
+					$ip->getFreeByDormitoryIdAndVlan($dormId, $vlan, $useDorm);
 				} catch (UFex_Dao_NotFound $e) {
 					$this->markErrors(self::PREFIX, array('ip'=>'noFreeAdmin'));
 					return;
