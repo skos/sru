@@ -14,8 +14,6 @@ extends UFact {
 
 			$bean = UFra::factory('UFbean_Sru_Computer');
 			$bean->getByPK((int)$this->_srv->get('req')->get->computerId);
-			$user = UFra::factory('UFbean_Sru_User');
-			$user->getByPK($bean->userId);
 
 			// w przypadku, gdy pole IP jest puste, pobieramy pierwszy wolny
 			// IP w danym DS
@@ -24,11 +22,11 @@ extends UFact {
 				try {
 					$ip = UFra::factory('UFbean_Sru_Ipv4');
 					$dormitory = null;
-					$vlan = $bean->getVlanByComputerType($bean->typeId);
+					$vlan = $bean->getVlanByComputerType($post['typeId']);
 					$useDorm = false;
 					if ($vlan == UFbean_SruAdmin_Vlan::DEFAULT_VLAN) {
 						$dormitory = UFra::factory('UFbean_Sru_Dormitory');
-						$dormitory->getByPK($user->dormitoryId);
+						$dormitory->getByPK($post['dormitory']);
 						$vlan = $dormitory->vlan;
 						$useDorm = true;
 					}
