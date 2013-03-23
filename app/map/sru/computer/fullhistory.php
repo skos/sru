@@ -15,6 +15,7 @@ extends UFmap {
 		'name'			 => 'name',
 		'surname'		 => 'surname',
 		'active'		 => 'active',
+		'u_active'		 => 'u_active',
 		'login'			 => 'login',
 		
 	);
@@ -29,6 +30,7 @@ extends UFmap {
 		'name'			 => self::TEXT,
 		'surname'		 => self::TEXT,
 		'active'		 => self::BOOL,
+		'u_active'		 => self::BOOL,
 		'login'			 => self::TEXT,
 	);
 }

@@ -443,13 +443,13 @@ extends UFdao {
 		$query = $this->prepareSelect($mapping);
 		
 		$query->raw("SELECT computer_id AS id, hoste AS host, EXTRACT (EPOCH FROM max(modifieda)) AS modifiedat, 
-							userid, name, surname, login, banned, active FROM
+							userid, name, surname, login, c.banned, c.active, u.active AS u_active FROM
 							(SELECT user_id as userid, id AS computer_id, host as hoste, modified_at AS modifieda
 							 FROM computers WHERE modified_by=" . $id . 
 							"UNION SELECT user_id as userid, computer_id as computer_id, host as hoste, 
 								modified_at AS modifieda FROM computers_history WHERE modified_by=" . $id .")
-							AS foo LEFT JOIN users ON id = userid
-							GROUP BY hoste, computer_id, userid, name, surname, login, banned, active 
+							AS foo LEFT JOIN users u ON id = userid LEFT JOIN computers c ON computer_id = c.id
+							GROUP BY hoste, computer_id, userid, name, surname, login, c.banned, c.active, u.active 
 							ORDER BY modifiedAt DESC LIMIT 10;");
 		
 		return $this->doSelect($query);
