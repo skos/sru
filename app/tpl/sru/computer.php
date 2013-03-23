@@ -471,6 +471,11 @@ activateChkB.onclick = function() {
 			$mac = $post->computerAdd['mac']; //jeśli jest w poście, to przypisz
 		} catch (UFex_Core_DataNotFound $e) {
 		}
+		$typeId = null;
+		try {
+			$typeId = $post->computerAdd['typeId']; //jeśli jest w poście, to przypisz
+		} catch (UFex_Core_DataNotFound $e) {
+		}
 		$form = UFra::factory('UFlib_Form', 'computerAdd', $d, $this->errors);
 		if (!$admin && $this->_srv->get('msg')->get('computerAdd/errors/ip/noFree')) {
 			echo $this->ERR($this->errors['ip/noFree']);
@@ -482,7 +487,7 @@ activateChkB.onclick = function() {
 			echo $form->typeId('Typ', array(
 				'type' => $form->SELECT,
 				'labels' => $form->_labelize(self::$computerTypes),
-				'value' => (array_key_exists($user->typeId, self::$userToComputerType) ? self::$userToComputerType[$user->typeId] : UFbean_Sru_Computer::TYPE_STUDENT),
+				'value' => !is_null($typeId) ? $typeId : (array_key_exists($user->typeId, self::$userToComputerType) ? self::$userToComputerType[$user->typeId] : UFbean_Sru_Computer::TYPE_STUDENT),
 			));
 			if (!is_null($waletAdmins)) {
 				$tmp = array();
