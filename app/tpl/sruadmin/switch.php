@@ -208,6 +208,7 @@ extends UFtpl_Common {
 
 		echo $form->_fieldset();
 		$tmp = array();
+		echo $form->ip('IP', array('after'=>UFlib_Helper::displayHint("IP switcha. Brak IP oznacza, że switch został wyłączony (czasowo). Jeżeli switch jest nieużywany całkowicie, należy usunąć mu nr w hierarchii.", false).' <button type="button" onclick=fillData()>Pobierz dane</button><br/>'));
 		foreach ($models as $model) {
 			$tmp[$model['id']] = $model['model'].' ('.$model['modelNo'].')';
 		}
@@ -229,7 +230,6 @@ extends UFtpl_Common {
 			'labels' => $form->_labelize($tmp, '', ''),
 		));
 		echo $form->hierarchyNo('Nr w hierarchii', array('after'=>UFlib_Helper::displayHint("Nr kolejny switcha w akademiku, np. dla pierwszego dsX-hp0. Brak nr oznacza, że switch jest nieużywany.")));
-		echo $form->ip('IP', array('after'=>UFlib_Helper::displayHint("IP switcha. Brak IP oznacza, że switch został wyłączony (czasowo). Jeżeli switch jest nieużywany całkowicie, należy usunąć mu nr w hierarchii.").' <button type="button" onclick=fillData()>Pobierz dane</button><br/>'));
 		echo $form->localization('Lokalizacja', array('after'=>UFlib_Helper::displayHint("Pomieszczenie w akademiku, gdzie znajduje się switch.")));
 		echo $form->inventoryNo('Nr inwentarzowy');
 		echo $form->received('Na stanie od');
@@ -300,6 +300,7 @@ function fillData() {
 		if ($this->_srv->get('msg')->get('switchEdit/errors/model/change')) {
 			echo $this->ERR('Zmiana modelu switcha spowoduje skasowanie wszystkich przypisanych do niego portów. '.$form->ignoreModelChange('Kontnuuj', array('type'=>$form->CHECKBOX)));
 		}
+		echo $form->ip('IP', array('after'=>UFlib_Helper::displayHint("IP switcha. Brak IP oznacza, że switch został wyłączony (czasowo). Jeżeli switch jest nieużywany całkowicie, należy usunąć mu nr w hierarchii.")));
 		$tmp = array();
 		foreach ($models as $model) {
 			$tmp[$model['id']] = $model['model'].' ('.$model['modelNo'].')';
@@ -322,7 +323,6 @@ function fillData() {
 			'labels' => $form->_labelize($tmp, '', ''),
 		));
 		echo $form->hierarchyNo('Nr w hierarchii', array('after'=>UFlib_Helper::displayHint("Nr kolejny switcha w akademiku, np. dla pierwszego dsX-hp0. Brak nr oznacza, że switch jest nieużywany.")));
-		echo $form->ip('IP', array('after'=>UFlib_Helper::displayHint("IP switcha. Brak IP oznacza, że switch został wyłączony (czasowo). Jeżeli switch jest nieużywany całkowicie, należy usunąć mu nr w hierarchii.")));
 		echo $form->localization('Lokalizacja', array('after'=>UFlib_Helper::displayHint("Pomieszczenie w akademiku, gdzie znajduje się switch.")));
 		echo $form->inventoryNo('Nr inwentarzowy');
 		echo $form->received('Na stanie od');
