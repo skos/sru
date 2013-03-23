@@ -229,8 +229,8 @@ extends UFdao {
 			'('.$mapping->column('nationality').' IS NULL
 				OR '.$mapping->column('address').' IS NULL
 				OR '.$mapping->column('address').' = \'\'
-				OR '.$mapping->column('documentNumber').' IS NULL
-				OR '.$mapping->column('documentNumber').' = \'\'
+				OR ('.$mapping->column('documentNumber').' IS NULL AND '.$mapping->column('documentType').' != \''. UFbean_Sru_User::DOC_TYPE_NONE.'\')
+				OR ('.$mapping->column('documentNumber').' = \'\' AND '.$mapping->column('documentType').' != \''. UFbean_Sru_User::DOC_TYPE_NONE.'\')
 				OR ('.$mapping->column('pesel').' IS NULL AND '.$mapping->column('nationality').' = \''.UFbean_Sru_User::NATIONALITY_PL_ID.'\')
 				OR ('.$mapping->column('pesel').' = \'\' AND '.$mapping->column('nationality').' = \''.UFbean_Sru_User::NATIONALITY_PL_ID.'\')
 			)',

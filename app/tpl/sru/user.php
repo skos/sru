@@ -30,6 +30,7 @@ extends UFtpl_Common {
 		'0' => 'Dowód osobisty',
 		'1' => 'Paszport',
 		'2' => 'Inny',
+		'3' => 'Brak (dziecko)',
 	);
 	static public $documentTypesShort = array(
 		'0' => 'D.O.',
@@ -258,26 +259,28 @@ extends UFtpl_Common {
 			'id' => 'facultySelector'
 		));
 		echo $form->address('Adres', array('class'=>'necessary address', 
-											'type'=>$form->TEXTAREA, 
-											'rows'=>3,
-											'after'=>UFlib_Helper::displayHint(nl2br("Format: \n kod pocztowy miejscowość \n ulica nr domu/nr mieszkania"))));
+			'type'=>$form->TEXTAREA, 
+			'rows'=>3,
+			'after'=>UFlib_Helper::displayHint(nl2br("Format: \n kod pocztowy miejscowość \n ulica nr domu/nr mieszkania"))
+		));
 		
 		echo $form->documentType('Typ dokumentu', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$documentTypes),
 			'class'=>'necessary',
+			'id' => 'documentTypeSelector'
 		));
 
 		echo $form->documentNumber('Numer dokumentu', array('class'=>'necessary'));
 		echo $form->nationalityName('Narodowość', array('class'=>'necessary',
-														'after'=>UFlib_Helper::displayHint("Np. &quot;polska&quot;, &quot;niemiecka&quot;, &quot;angielska&quot;")));
+			'after'=>UFlib_Helper::displayHint("Np. &quot;polska&quot;, &quot;niemiecka&quot;, &quot;angielska&quot;")));
 		try {
 			$pesel = $post->userAdd['pesel'];
 		} catch (UFex_Core_DataNotFound $e) {
 			//
 		}
 		echo $form->pesel('PESEL', array('value'=>$pesel,
-										'after'=>'<span id="peselValidationResult"></span><br/>'));
+			'after'=>'<span id="peselValidationResult"></span><br/>'));
 
 		echo $form->birthDate('Data urodzenia', array('after'=>UFlib_Helper::displayHint("Data w formacie RRRR-MM-DD, np. 1988-10-06")));
 		echo $form->birthPlace('Miejsce urodzenia');
@@ -346,6 +349,17 @@ $('#userTypeSelector').change(function(){
 		}
 	}
 	typeId.onchange = registryChangeClass;
+	
+	var documentTypeId = document.getElementById('documentTypeSelector');
+	function documentNumberChangeClass(){
+		var documentNo = document.getElementById('userAdd_documentNumber');
+		if(documentTypeId.value != <?=UFbean_Sru_User::DOC_TYPE_NONE?>) {
+			documentNo.setAttribute('class', 'necessary');
+		} else {
+			documentNo.setAttribute('class', '');
+		}
+	}
+	documentTypeId .onchange = documentNumberChangeClass;
 
 	var nationality = document.getElementById('userAdd_nationalityName');
 	function peselChangeClass(){
@@ -1007,13 +1021,14 @@ changeVisibility();
 		)) . '</span>';
 
 		echo $form->address('Adres', array('class'=>'necessary address', 
-											'type'=>$form->TEXTAREA, 
-											'rows'=>3,
-											'after'=>UFlib_Helper::displayHint(nl2br("Format: \n kod pocztowy miejscowość \n ulica nr domu/nr mieszkania"))));
+			'type'=>$form->TEXTAREA, 
+			'rows'=>3,
+			'after'=>UFlib_Helper::displayHint(nl2br("Format: \n kod pocztowy miejscowość \n ulica nr domu/nr mieszkania"))));
 		echo $form->documentType('Typ dokumentu', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$documentTypes),
 			'class'=>'necessary',
+			'id' => 'documentTypeSelector',
 		));
 
 		echo $form->documentNumber('Numer dokumentu', array('class'=>'necessary'));
@@ -1143,6 +1158,18 @@ $('#userTypeSelector').change(function(){
 	}
 	typeId.onchange = registryChangeClass; 
 	registryChangeClass();
+	
+	var documentTypeId = document.getElementById('documentTypeSelector');
+	function documentNumberChangeClass(){
+		var documentNo = document.getElementById('userEdit_documentNumber');
+		if(documentTypeId.value != <?=UFbean_Sru_User::DOC_TYPE_NONE?>) {
+			documentNo.setAttribute('class', 'necessary');
+		} else {
+			documentNo.setAttribute('class', '');
+		}
+	}
+	documentTypeId .onchange = documentNumberChangeClass;
+	documentNumberChangeClass();
 
 	var nationality = document.getElementById('userEdit_nationalityName');
 	function peselChangeClass(){

@@ -20,6 +20,8 @@ extends UFbean_Common {
 
 	const NATIONALITY_PL_ID = 1;
 	const NATIONALITY_PL = 'polska';
+	
+	const DOC_TYPE_NONE = 3;
 
 	protected $_locationId = null;
 	protected $_password = null;
