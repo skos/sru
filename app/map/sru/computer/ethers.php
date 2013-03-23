@@ -10,6 +10,7 @@ extends UFmap {
 		'mac'            => "coalesce(c.mac,'00:00:00:00:00:00')",
 		'active'         => 'c.active',
 		'banned'         => 'c.banned',
+		'taskExport'	 => 'v.task_export',
 	);
 	protected $columnTypes = array(
 		'ip'             => self::TEXT,
@@ -17,15 +18,18 @@ extends UFmap {
 		'host'           => self::TEXT,
 		'active'         => self::NULL_BOOL,
 		'banned'         => self::NULL_BOOL,
+		'taskExport'	 => self::BOOL,
 	);
 	protected $tables = array(
 		'i' => 'ipv4s',
 	);
 	protected $joins = array(
 		'c' => 'computers',
+		'v' => 'vlans',
 	);
 	protected $joinOns = array(
 		'c' => '(i.ip=c.ipv4 AND c.active AND NOT c.banned)',
+		'v' => 'i.vlan = v.id',
 	);
 	protected $pk = 'i.idp';
 }

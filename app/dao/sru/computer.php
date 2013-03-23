@@ -252,6 +252,7 @@ extends UFdao {
 
 		$query = $this->prepareSelect($mapping);
 		$query->where($mapping->ip, $conf->noEthers, $query->NOT_IN);
+		$query->where($mapping->taskExport, true);
 		$query->distinct();
 		$query->order($mapping->ip, $query->ASC);
 
