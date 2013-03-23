@@ -110,7 +110,7 @@ extends UFtpl_Common {
 		}
 
 		foreach ($d as $c) {
-			if (!array_key_exists($c['adminId'], $allDormAdmins)) {
+			if (!array_key_exists($c['adminId'], $allDormAdmins) && !is_null($dormitories)) {
 				continue;
 			}
 			if (($c['day'] == $currentDay && $c['endHour'] > date('Hi')) || ($c['day'] > $currentDay && $c['day'] <= $lastDay)) {
