@@ -248,7 +248,7 @@ $( "#tabs" ).tabs();
 				echo '<tr>';
 			}
 			echo '<td id="'.$port['ordinalNo'].'" class="';
-			if ($portStatuses == null) {
+			if ($portStatuses == null || !isset($portStatuses[$i])) {
 				echo "unknown";
 			} else if ($portStatuses[$i] == UFlib_Snmp_Hp::DISABLED) {
 				echo "dis";

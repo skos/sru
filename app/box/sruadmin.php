@@ -1210,9 +1210,6 @@ extends UFbox {
 				$switch->getByPK($port['switchId']);
 				$hp = UFra::factory('UFlib_Snmp_Hp', $port['switchIp'], $switch);
 				$status = $hp->getPortStatus($port['ordinalNo']);
-				if (is_null($status)) {
-					return $this->render('switchNotFound');
-				}
 				$statuses[] = $status;
 				$flag = $hp->getIntrusionFlag($port['ordinalNo']);
 				$flags[] = $flag;			
