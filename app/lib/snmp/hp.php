@@ -84,45 +84,45 @@ extends UFlib_Snmp {
 
 	public function getInfo() {
 		$info = array();
-		$ios = @snmpwalk($this->ip , $this->communityR , $this->OIDs['ios'], $this->timeout);
+		$ios = snmpwalk($this->ip , $this->communityR , $this->OIDs['ios'], $this->timeout);
 		if ($ios == false) {
 			return null;
 		}
 		$info['ios'] = $ios[0];
-		$uptime = @snmpwalk($this->ip, $this->communityR, $this->OIDs['uptime'], $this->timeout);
+		$uptime = snmpwalk($this->ip, $this->communityR, $this->OIDs['uptime'], $this->timeout);
 		$info['uptime'] = $uptime[0];
-		$info['cpu'] = @snmpget($this->ip, $this->communityR, $this->OIDs['cpu'], $this->timeout);
-		$info['memAll'] = @snmpget($this->ip, $this->communityR, $this->OIDs['memAll'], $this->timeout);
-		$info['memFree'] = @snmpget($this->ip, $this->communityR, $this->OIDs['memFree'], $this->timeout);
-		$info['serialNo'] = trim(@snmpget($this->ip, $this->communityR, $this->OIDs['serialNo'], $this->timeout));
-		$info['vlans'] = @snmprealwalk($this->ip, $this->communityR, $this->OIDs['vlans'], $this->timeout);
+		$info['cpu'] = snmpget($this->ip, $this->communityR, $this->OIDs['cpu'], $this->timeout);
+		$info['memAll'] = snmpget($this->ip, $this->communityR, $this->OIDs['memAll'], $this->timeout);
+		$info['memFree'] = snmpget($this->ip, $this->communityR, $this->OIDs['memFree'], $this->timeout);
+		$info['serialNo'] = trim(snmpget($this->ip, $this->communityR, $this->OIDs['serialNo'], $this->timeout));
+		$info['vlans'] = snmprealwalk($this->ip, $this->communityR, $this->OIDs['vlans'], $this->timeout);
 		return $info;
 	}
 
 	public function getStdInfo() {
 		$info = array();
-		$ios = @snmpwalk($this->ip , $this->communityR , $this->OIDs['ios'], $this->timeout);
+		$ios = snmpwalk($this->ip , $this->communityR , $this->OIDs['ios'], $this->timeout);
 		if ($ios == false) {
 			return null;
 		}
 		$info['ios'] = $ios[0];
-		$info['serialNo'] = trim(@snmpget($this->ip, $this->communityR, $this->OIDs['serialNo'], $this->timeout));
+		$info['serialNo'] = trim(snmpget($this->ip, $this->communityR, $this->OIDs['serialNo'], $this->timeout));
 		return $info;
 	}
 
 	public function getQuickInfo() {
 		$info = array();
-		$model = @snmpget($this->ip , $this->communityR , $this->OIDs['model'], $this->timeout);
+		$model = snmpget($this->ip , $this->communityR , $this->OIDs['model'], $this->timeout);
 		if ($model == false) {
 			return null;
 		}
 		$info['model'] = $model;
-		$info['serialNo'] = trim(@snmpget($this->ip, $this->communityR, $this->OIDs['serialNo'], $this->timeout));
+		$info['serialNo'] = trim(snmpget($this->ip, $this->communityR, $this->OIDs['serialNo'], $this->timeout));
 		return $info;
 	}
 
 	public function getPortAliases() {
-		$aliases = @snmpwalk($this->ip , $this->communityR, $this->OIDs['portAliases'], $this->timeout);
+		$aliases = snmpwalk($this->ip , $this->communityR, $this->OIDs['portAliases'], $this->timeout);
 		if ($aliases == false) {
 			return null;
 		}
@@ -130,7 +130,7 @@ extends UFlib_Snmp {
 	}
 
 	public function getPortAlias($port) {
-		$alias = @snmpget($this->ip , $this->communityR, $this->OIDs['portAliases'].'.'.$this->translateSwitchPort($port), $this->timeout);
+		$alias = snmpget($this->ip , $this->communityR, $this->OIDs['portAliases'].'.'.$this->translateSwitchPort($port), $this->timeout);
 		if ($alias == false) {
 			return null;
 		}
@@ -141,7 +141,7 @@ extends UFlib_Snmp {
 		if ($this->getPortStatus($port) != self::UP) {
 			return null;
 		}
-		$speed = @snmpget($this->ip , $this->communityR, $this->OIDs['portSpeeds'].'.'.$this->translateSwitchPort($port), $this->timeout);
+		$speed = snmpget($this->ip , $this->communityR, $this->OIDs['portSpeeds'].'.'.$this->translateSwitchPort($port), $this->timeout);
 		if ($speed == false) {
 			return null;
 		}
@@ -149,16 +149,16 @@ extends UFlib_Snmp {
 	}
 	
 	public function getUntaggedVlan($port) {
-		$vlan = @snmpget($this->ip , $this->communityR, $this->OIDs['untaggedVlanOnPorts'].'.'.$this->translateSwitchPort($port), $this->timeout);
+		$vlan = snmpget($this->ip , $this->communityR, $this->OIDs['untaggedVlanOnPorts'].'.'.$this->translateSwitchPort($port), $this->timeout);
 		if ($vlan == false || $vlan == 1) {
 			return null;
 		}
-		$vlanName = @snmpget($this->ip, $this->communityR, $this->OIDs['vlans'].'.'.$vlan, $this->timeout);
+		$vlanName = snmpget($this->ip, $this->communityR, $this->OIDs['vlans'].'.'.$vlan, $this->timeout);
 		return $vlanName.' ('.$vlan.')';
 	}
 	
 	public function getIntrusionFlag($port) {
-		$flag = @snmpget($this->ip , $this->communityR, $this->OIDs['intrusionFlag'].'.'.$this->translateSwitchPort($port), $this->timeout);
+		$flag = snmpget($this->ip , $this->communityR, $this->OIDs['intrusionFlag'].'.'.$this->translateSwitchPort($port), $this->timeout);
 		if ($flag == false) {
 			return null;
 		}
@@ -176,11 +176,11 @@ extends UFlib_Snmp {
 		} else {
 			$flagInt = 2;
 		}
-		return @snmpset($this->ip, $this->communityW, $this->OIDs['intrusionFlag'].'.'.$this->translateSwitchPort($port), 'i', $flagInt, $this->timeout);
+		return snmpset($this->ip, $this->communityW, $this->OIDs['intrusionFlag'].'.'.$this->translateSwitchPort($port), 'i', $flagInt, $this->timeout);
 	}
 	
 	public function getIntrusionFlags() {
-		$flags = @snmpwalk($this->ip, $this->communityR, $this->OIDs['intrusionFlag'], $this->timeout);
+		$flags = snmpwalk($this->ip, $this->communityR, $this->OIDs['intrusionFlag'], $this->timeout);
 		if ($flags == false) {
 			return null;
 		}
@@ -198,7 +198,7 @@ extends UFlib_Snmp {
 	}
 	
 	public function getLearnMode($port) {
-		$learnMode = @snmpget($this->ip , $this->communityR, $this->OIDs['learnMode'].'.'.$this->translateSwitchPort($port), $this->timeout);
+		$learnMode = snmpget($this->ip , $this->communityR, $this->OIDs['learnMode'].'.'.$this->translateSwitchPort($port), $this->timeout);
 		if ($learnMode == false) {
 			return null;
 		}
@@ -206,7 +206,7 @@ extends UFlib_Snmp {
 	}
 	
 	public function getAddrLimit($port) {
-		$addrLimit = @snmpget($this->ip , $this->communityR, $this->OIDs['addrLimit'].'.'.$this->translateSwitchPort($port), $this->timeout);
+		$addrLimit = snmpget($this->ip , $this->communityR, $this->OIDs['addrLimit'].'.'.$this->translateSwitchPort($port), $this->timeout);
 		if ($addrLimit == false) {
 			return null;
 		}
@@ -214,7 +214,7 @@ extends UFlib_Snmp {
 	}
 	
 	public function getAlarmState($port) {
-		$alarmState = @snmpget($this->ip , $this->communityR, $this->OIDs['alarmState'].'.'.$this->translateSwitchPort($port), $this->timeout);
+		$alarmState = snmpget($this->ip , $this->communityR, $this->OIDs['alarmState'].'.'.$this->translateSwitchPort($port), $this->timeout);
 		if ($alarmState == false) {
 			return null;
 		}
@@ -222,7 +222,7 @@ extends UFlib_Snmp {
 	}
 	
 	public function getLoopProtect($port) {
-		$loopProtect = @snmpget($this->ip , $this->communityR, $this->OIDs['loopProtect'].'.'.$this->translateSwitchPort($port), $this->timeout);
+		$loopProtect = snmpget($this->ip , $this->communityR, $this->OIDs['loopProtect'].'.'.$this->translateSwitchPort($port), $this->timeout);
 		if ($loopProtect == false) {
 			return null;
 		}
@@ -235,11 +235,11 @@ extends UFlib_Snmp {
 	}
 
 	public function getPortStatuses() {
-		$activities = @snmpwalk($this->ip, $this->communityR, $this->OIDs['portActivities'], $this->timeout);
+		$activities = snmpwalk($this->ip, $this->communityR, $this->OIDs['portActivities'], $this->timeout);
 		if ($activities == false) {
 			return null;
 		}
-		$statuses = @snmpwalk($this->ip, $this->communityR, $this->OIDs['portStatuses'], $this->timeout);
+		$statuses = snmpwalk($this->ip, $this->communityR, $this->OIDs['portStatuses'], $this->timeout);
 
 		$result = array();
 		for ($i = 0; $i < count($statuses); $i++) {
@@ -256,11 +256,11 @@ extends UFlib_Snmp {
 	}
 
 	public function getPortStatus($port) {
-		$status = @snmpget($this->ip, $this->communityR, $this->OIDs['portStatuses'].'.'.$this->translateSwitchPort($port), $this->timeout);
+		$status = snmpget($this->ip, $this->communityR, $this->OIDs['portStatuses'].'.'.$this->translateSwitchPort($port), $this->timeout);
 		if ($status == false) {
 			return null;
 		}
-		$activity = @snmpget($this->ip, $this->communityR, $this->OIDs['portActivities'].'.'.$this->translateSwitchPort($port), $this->timeout);
+		$activity = snmpget($this->ip, $this->communityR, $this->OIDs['portActivities'].'.'.$this->translateSwitchPort($port), $this->timeout);
 		if ($status == 2) {
 			$result = self::DISABLED;
 		} else if ($activity == 2) {
@@ -277,11 +277,11 @@ extends UFlib_Snmp {
 		} else {
 			$statusInt = 1;
 		}
-		return @snmpset($this->ip, $this->communityW, $this->OIDs['portStatuses'].'.'.$this->translateSwitchPort($port), 'i', $statusInt, $this->timeout);
+		return snmpset($this->ip, $this->communityW, $this->OIDs['portStatuses'].'.'.$this->translateSwitchPort($port), 'i', $statusInt, $this->timeout);
 	}
 
 	public function getLockouts() {
-		$lockouts = @snmprealwalk($this->ip , $this->communityR, $this->OIDs['lockouts'], $this->timeout);
+		$lockouts = snmprealwalk($this->ip , $this->communityR, $this->OIDs['lockouts'], $this->timeout);
 		if ($lockouts == false) {
 			return null;
 		}
@@ -293,7 +293,7 @@ extends UFlib_Snmp {
 	}
 
 	public function getTrunks() {
-		$trunks = @snmpwalk($this->ip , $this->communityR, $this->OIDs['trunk'], $this->timeout);
+		$trunks = snmpwalk($this->ip , $this->communityR, $this->OIDs['trunk'], $this->timeout);
 		if ($trunks == false) {
 			return null;
 		}
@@ -301,7 +301,7 @@ extends UFlib_Snmp {
 	}
 	
 	public function isTrunk($port) {
-		$trunk = @snmpget($this->ip , $this->communityR, $this->OIDs['trunk'].'.'.$this->translateSwitchPort($port), $this->timeout);
+		$trunk = snmpget($this->ip , $this->communityR, $this->OIDs['trunk'].'.'.$this->translateSwitchPort($port), $this->timeout);
 		if ($trunk == false) {
 			return self::DISABLED;
 		}
@@ -315,8 +315,8 @@ extends UFlib_Snmp {
 
 	public function getGbics($sfpPorts) {
 		$gbics = array();
-		$serials = @snmprealwalk($this->ip , $this->communityR, $this->OIDs['gbicSerial'], $this->timeout);
-		$models = @snmpwalk($this->ip , $this->communityR, $this->OIDs['gbicModel'], $this->timeout);
+		$serials = snmprealwalk($this->ip , $this->communityR, $this->OIDs['gbicSerial'], $this->timeout);
+		$models = snmpwalk($this->ip , $this->communityR, $this->OIDs['gbicModel'], $this->timeout);
 		foreach ($serials as $portOid => $serial) {
 			$oid = explode(".", $portOid);
 			$port = array_pop($oid);
@@ -327,12 +327,12 @@ extends UFlib_Snmp {
 	}
 
 	public function setPortAlias($port, $name) {
-		return @snmpset($this->ip, $this->communityW, $this->OIDs['portAliases'].'.'.$this->translateSwitchPort($port), 's', $name, $this->timeout);
+		return snmpset($this->ip, $this->communityW, $this->OIDs['portAliases'].'.'.$this->translateSwitchPort($port), 's', $name, $this->timeout);
 	}
 
 	public function getMacsFromPort($port) {
 		snmp_set_valueretrieval(SNMP_VALUE_LIBRARY);
-		$macs = @snmpwalk($this->ip , $this->communityR, $this->OIDs['macs'].'.'.$this->translateSwitchPort($port), $this->timeout);
+		$macs = snmpwalk($this->ip , $this->communityR, $this->OIDs['macs'].'.'.$this->translateSwitchPort($port), $this->timeout);
 		snmp_set_valueretrieval(SNMP_VALUE_PLAIN);
 		if ($macs == false) {
 			return null;
@@ -346,7 +346,7 @@ extends UFlib_Snmp {
 		} else {
 			$op = '2';
 		}
-		return @snmpset($this->ip, $this->communityW, $this->OIDs['lockouts'].'.'.$this->mac2int($mac).'.0', 'i', $op); // brak timeoutu w zwiazku z #429
+		return snmpset($this->ip, $this->communityW, $this->OIDs['lockouts'].'.'.$this->mac2int($mac).'.0', 'i', $op); // brak timeoutu w zwiazku z #429
 	}
 
 	public function findMac($searchMac) {
@@ -358,7 +358,7 @@ extends UFlib_Snmp {
 		$watchdog = 20;
 		while ($watchdog > 0) {
 			--$watchdog;
-			$portUser = @snmpget($switchIp, $this->communityR, $this->OIDs['port'].'.'.$needle, $this->timeout);
+			$portUser = snmpget($switchIp, $this->communityR, $this->OIDs['port'].'.'.$needle, $this->timeout);
 			if ($portUser) {
 				$switch = UFra::factory('UFbean_SruAdmin_Switch');
 				$switch->getByIp($switchIp);
@@ -377,7 +377,7 @@ extends UFlib_Snmp {
 							$name = $portUser - 288;
 						}
 						if ($name < 0) $name = $name + 2;
-						$trunks = @snmpwalk($switchIp, $this->communityR, $this->OIDs['trunk'], $this->timeout);
+						$trunks = snmpwalk($switchIp, $this->communityR, $this->OIDs['trunk'], $this->timeout);
 						for ($i = 0; $i < count($trunks); $i++) {
 							if ($trunks[$i] == $name) {
 								$portUser = $i + 1;

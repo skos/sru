@@ -43,7 +43,11 @@ extends UFraCore{
 	}
 
 	static public function phpError($errNo, $errStr, $errFile, $errLine) {
-		file_put_contents(UFDIR_APP.'var/log/ufra-errors.log', date('c')." $errFile:$errLine $errStr\n", FILE_APPEND);
+		if (strpos($errStr, 'snmp') !== false) {
+			file_put_contents(UFDIR_APP.'var/log/snmp-errors.log', date('c')." $errFile:$errLine $errStr\n", FILE_APPEND);
+		} else {
+			file_put_contents(UFDIR_APP.'var/log/ufra-errors.log', date('c')." $errFile:$errLine $errStr\n", FILE_APPEND);
+		}
 		self::errorHandler($errNo, $errStr, $errFile, $errLine);
 	}
 
