@@ -18,7 +18,7 @@ extends UFmap {
 		'modifiedById'   => 'l.modified_by',
 		'modifiedByName' => 'a.name',
 		'modifiedAt'     => 'l.modified_at',
-		'typeId'		=> 'l.type_id',
+		'typeId'	 => 'l.type_id',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,

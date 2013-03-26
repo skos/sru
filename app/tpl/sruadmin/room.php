@@ -6,8 +6,8 @@ class UFtpl_SruAdmin_Room
 extends UFtpl_Common {
 	
 	protected static $locationTypesForWalet = array(
-		1 => 'Studencki',
-		2 => 'Gościnny',
+		1 => 'studencki',
+		2 => 'gościnny',
 	);
 
 	protected static $locationTypesForAdmin = array(

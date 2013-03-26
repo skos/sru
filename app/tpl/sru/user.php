@@ -815,7 +815,9 @@ changeVisibility();
 		$urlUser = $url.'/users/'.$d['id'];
 
 		echo '<h1>'.$this->_escape($d['name']).' '.$this->_escape($d['surname']).'</h1>';
-		echo '<p><em>Miejsce:</em> <a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'">'.strtoupper($d['dormitoryAlias']).'</a>, '.$d['locationAlias'].'</p>';
+		echo '<p><em>Miejsce:</em> <a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'">'.strtoupper($d['dormitoryAlias']).'</a>, 
+			<a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'/'.$d['locationAlias'].'/:edit">'.$d['locationAlias'].'</a> 
+			<small>('.$d['locationUsersMax'].'-os, '.UFtpl_SruAdmin_Room::getRoomType($d['locationTypeId']).')</small></p>';
 		echo '<p><em>Dokwaterowany:</em> '.($d['overLimit'] ? 'tak' : 'nie').'</p>';
 		echo '<p><em>Login:</em> '.$d['login'].(!$d['active']?' <strong>(konto nieaktywne)</strong>':'').'</p>';
 		if(!is_null($d['registryNo']) && $d['registryNo'] != '') {
