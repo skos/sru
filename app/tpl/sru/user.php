@@ -760,9 +760,6 @@ $(document).ready(function()
 			echo '<p><em>Koniec skierowania:</em> '.date(self::TIME_YYMMDD, $d['referralEnd']).'</p>';
 		}
 		echo '<p><em>Język:</em> '.self::$languages[$d['lang']];
-		if ($acl->sruAdmin('service', 'edit', $d['id'])) {
-			echo '<p><em>Dostępność PUU:</em> '.($d['servicesAvailable'] ? 'tak' : 'nie');
-		}
 		echo '<p class="displayOnHover"><em>Znajdź na:</em>';
 		echo ' <a href="http://www.google.pl/search?q='.urlencode($d['name'].' '.$d['surname']).'">google</a>';
 		echo ' <a href="http://nk.pl/search?query='.urlencode($d['name'].' '.$d['surname']).'">nasza-klasa</a>';
@@ -784,7 +781,6 @@ $(document).ready(function()
 			echo '&bull; <a href="'. $url.'/penalties/:add/user:'.$d['id'].'">Ukarz</a> ';
 		}
 		echo 	'&bull; <a href="'.$urlUser.'/history">Historia profilu</a>
-		  	&bull; <a href="'.$urlUser.'/servicehistory">Historia usług</a>
 		 	&bull; <a href="'.$urlUser.'/:edit">Edycja</a>
 		  	&bull; <span id="userMoreSwitch"></span>'; 
 	
@@ -955,9 +951,6 @@ changeVisibility();
 				'labels' => $form->_labelize($tmp),
 			));
 			echo $form->locationAlias('Pokój');
-		}
-		if ($acl->sruAdmin('service', 'edit', $d['id'])) {
-			echo $form->servicesAvailable('Dostępność PUU', array('type'=>$form->CHECKBOX));
 		}
 		echo $form->commentSkos('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
 		if ($acl->sruAdmin('user', 'fullEdit', $d['id']) && $acl->sruAdmin('user', 'add')) {

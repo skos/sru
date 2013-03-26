@@ -717,24 +717,6 @@ extends UFbox {
 		return $this->render(__FUNCTION__, $d);
 	}
 
-	public function serviceHistory() {
-		try {
-			$bean = $this->_getUserFromGet();
-			$d['user'] = $bean;
-		} catch (UFex_Dao_NotFound $e) {
-			return '';
-		}
-
-		$history = UFra::factory('UFbean_SruAdmin_ServiceHistoryList');
-		try {
-			$history->listByUserId($bean->id);
-		} catch (UFex_Dao_NotFound $e) {
-		}
-		$d['servicehistory'] = $history;
-
-		return $this->render(__FUNCTION__, $d);
-	}
-
 	public function adminBar() {
 		try {
 			$bean = UFra::factory('UFbean_SruAdmin_Admin');
@@ -1954,99 +1936,6 @@ extends UFbox {
 		}
 	}
 
-	public function servicesEdit() {
-		$d[''] = null;
-		try {
-			$allServices = UFra::factory('UFbean_Sru_ServiceList');	
-			$allServices->listAllServices();
-			$d['allServices'] = $allServices;
-		} catch (UFex_Dao_NotFound $e) {
-			return $this->render('userServicesNotFound');
-		}
-
-		$serviceType = null;
-		if ($this->_srv->get('req')->post->is('serviceSelect')) {
-			$get = $this->_srv->get('req')->post->serviceSelect;
-			if (isset($get['serviceId']) && $get['serviceId'] > 0) {
-				$serviceType = $get['serviceId'];
-			}
-		}
-		try 
-		{		
-			$bean = UFra::factory('UFbean_SruAdmin_UserServiceList');	
-			$bean->listToActivate($serviceType);
-			$d['toActivate'] = $bean;
-		}
-		catch (UFex_Dao_NotFound $e) {}
-
-		try 
-		{		
-			$bean = UFra::factory('UFbean_SruAdmin_UserServiceList');	
-			$bean->listToDeactivate($serviceType);
-			$d['toDeactivate'] = $bean;
-		}
-		catch (UFex_Dao_NotFound $e) {}
-
-		return $this->render(__FUNCTION__, $d);
-	}
-
-	public function servicesList() {
-		$d[''] = null;
-		try {
-			$allServices = UFra::factory('UFbean_Sru_ServiceList');	
-			$allServices->listAllServices();
-			$d['allServices'] = $allServices;
-		} catch (UFex_Dao_NotFound $e) {
-			return $this->render('userServicesNotFound');
-		}
-
-		$serviceType = null;
-		if ($this->_srv->get('req')->post->is('serviceSelect')) {
-			$get = $this->_srv->get('req')->post->serviceSelect;
-			if (isset($get['serviceId']) && $get['serviceId'] > 0) {
-				$serviceType = $get['serviceId'];
-			}
-		}
-
-		try {
-			$bean = UFra::factory('UFbean_SruAdmin_UserServiceList');
-			$bean->listActive($serviceType);
-			$d['active'] = $bean;
-		} catch (UFex_Dao_NotFound $e) {}
-		
-		return $this->render(__FUNCTION__, $d);
-	}
-
-	public function userServicesEdit() {
-		$acl = $this->_srv->get('acl');
-
-		try {
-			$user = $this->_getUserFromGet();
-			$d['user'] = $user;
-
-			if (!$acl->sruAdmin('service', 'edit', $user->id)) {
-				return '';
-			}
-			
-			try {
-				$bean = UFra::factory('UFbean_Sru_UserServiceList');	
-				$bean->listAllByUserId($user->id);
-				$d['userServices'] = $bean;
-			}
-			catch (UFex_Dao_NotFound $e) {
-				$d['userServices'] = null;
-			}
-
-			$bean = UFra::factory('UFbean_Sru_ServiceList');	
-			$bean->listAllServices();
-			$d['allServices'] = $bean;
-			
-			return $this->render(__FUNCTION__, $d);
-		} catch (UFex_Dao_NotFound $e) {
-			return $this->render('userServicesNotFound');
-		}
-	}
-
 	public function ips() {
 		try {
 			$bean = UFra::factory('UFbean_SruAdmin_Ips');
@@ -2225,42 +2114,6 @@ extends UFbox {
 			$modified = UFra::factory('UFbean_Sru_ComputerList');
 			$modified->listLastModified($bean->id);
 			$d['modifiedComputers'] = $modified;
-			
-			return $this->render(__FUNCTION__, $d);
-		}catch(UFex_Dao_NotFound $e){
-			return '';
-		}	
-	}
-	
-	/**
-	 * Ostatnio modyfikowane usługi (poziom administratora)
-	 *
-	 */
-	public function adminUserServicesModified() {
-		try{
-			$bean = $this->_getAdminFromGet();
-			
-			$modified = UFra::factory('UFbean_Sru_UserServiceList');
-			$modified->listLastModified($bean->id, 1);
-			$d['modifiedUserServices'] = $modified;
-			
-			return $this->render(__FUNCTION__, $d);
-		}catch(UFex_Dao_NotFound $e){
-			return '';
-		}	
-	}
-	
-	/**
-	 * Ostatnio modyfikowane usługi (poziom użytkownika)
-	 *
-	 */
-	public function adminUserServicesRequested() {
-		try{
-			$bean = $this->_getAdminFromGet();
-			
-			$modified = UFra::factory('UFbean_Sru_UserServiceList');
-			$modified->listLastModified($bean->id, 2);
-			$d['requestedUserServices'] = $modified;
 			
 			return $this->render(__FUNCTION__, $d);
 		}catch(UFex_Dao_NotFound $e){

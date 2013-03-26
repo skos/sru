@@ -39,10 +39,6 @@ extends UFctl {
 					$ctl = UFra::factory('UFctl_SruAdmin_Ips');
 					$ctl->go();
 					return false;
-				case 'services':
-					$ctl = UFra::factory('UFctl_SruAdmin_Services');
-					$ctl->go();
-					return false;
 				case 'stats':
 					$ctl = UFra::factory('UFctl_SruAdmin_Stats');
 					$ctl->go();

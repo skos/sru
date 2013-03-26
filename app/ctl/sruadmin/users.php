@@ -70,9 +70,6 @@ extends UFctl {
 							case 'history':
 								$get->view = 'users/user/history';
 								break;
-							case 'servicehistory':
-								$get->view = 'users/user/servicehistory';
-								break;
 							case 'penalties':
 								$get->view = 'users/user/penalties';
 								break;
@@ -116,8 +113,6 @@ extends UFctl {
 			$act = 'User_Edit';
 		} elseif ('users/user/edit' == $get->view && $post->is('userDel') && $acl->sruAdmin('user', 'del')) {
 			$act = 'User_Del';
-		} elseif ('users/user' == $get->view && $post->is('serviceEdit') && $acl->sruAdmin('service', 'edit', $get->userId)) {
-			$act = 'Service_Edit';
 		}
 
 
@@ -147,8 +142,6 @@ extends UFctl {
 				return 'SruAdmin_User';
 			case 'users/user/history':
 				return 'SruAdmin_UserHistory';
-			case 'users/user/servicehistory':
-				return 'SruAdmin_ServiceHistory';
 			case 'users/user/add':
 				if ($msg->get('userAdd/ok')) {
 					return 'SruAdmin_User';

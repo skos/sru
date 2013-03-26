@@ -95,27 +95,6 @@ extends UFbox {
 		return $this->render(__FUNCTION__, $d);
 	}
 
-	public function servicesInfo() {
-		$user = UFra::factory('UFbean_Sru_User');
-		$user->getFromSession();
-		$d['user'] = $user;
-
-		try {
-			$bean = UFra::factory('UFbean_Sru_UserServiceList');
-			$bean->listAllByUserId($user->id);
-			$d['userServices'] = $bean;
-		}
-		catch (UFex_Dao_NotFound $e) {
-			$d['userServices'] = null;
-		}
-
-		$bean = UFra::factory('UFbean_Sru_ServiceList');
-		$bean->listAllServices();
-		$d['allServices'] = $bean;
-
-		return $this->render(__FUNCTION__, $d);
-	}
-
 	public function contact() {
 		$user = UFra::factory('UFbean_Sru_User');
 		$user->getFromSession();
@@ -393,33 +372,6 @@ extends UFbox {
 		catch (UFex_Dao_NotFound $e) 
 		{
 			return $this->render('userPenaltiesNotFound');
-		}
-	}
-
-	public function userServicesEdit() {
-		try {
-			$user = UFra::factory('UFbean_Sru_User');
-			$user->getFromSession();
-			$d['user'] = $user;
-			
-			try {
-				$bean = UFra::factory('UFbean_Sru_UserServiceList');	
-				$bean->listAllByUserId($user->id);
-				$d['userServices'] = $bean;
-			}
-			catch (UFex_Dao_NotFound $e) {
-				$d['userServices'] = null;
-			}
-
-			$bean = UFra::factory('UFbean_Sru_ServiceList');	
-			$bean->listAllServices();
-			$d['allServices'] = $bean;
-			
-			return $this->render(__FUNCTION__, $d);
-		} 
-		catch (UFex_Dao_NotFound $e) 
-		{
-			return $this->render('userServicesNotFound');
 		}
 	}
 

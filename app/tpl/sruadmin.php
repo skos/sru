@@ -290,7 +290,6 @@ extends UFtpl_Common {
 		$acl = $this->_srv->get('acl');
 
 		echo '<h2>Szukaj | <a href="'.$this->url(0).'/ips/vlan/'.UFbean_SruAdmin_Vlan::DEFAULT_VLAN.'">VLANy</a></h2>';
-		//| <a href="'.$this->url(0).'/services">Usługi</a></h2>';
 
 		echo '<div class="userSearch">';
 		echo $form->_start($this->url(0).'/users/search');
@@ -371,23 +370,6 @@ extends UFtpl_Common {
 		
 	}
 
-	public function userServicesEdit(array $d) {
-		$form = UFra::factory('UFlib_Form');
-		echo '<h2>Usługi użytkownika</h2>';
-		echo $form->_start();
-
-		if ($this->_srv->get('msg')->get('serviceEdit/ok')) {
-			echo $this->OK('Zmiany zostały zapisane');
-		}
-
-		echo $d['allServices']->write('formEdit', $d['userServices'], $d['user'], true);
-		echo $form->_end(true);
-	}
-
-	public function userServicesNotFound() {
-		echo $this->ERR('Nie znaleziono usług');
-	}
-
 	public function userComputersNotFound(array $d) {
 		$url = $this->url(0).'/users/'.$d['user']->id.'/computers/';
 		echo '<h2>Komputery użytkownika</h2>';
@@ -447,15 +429,6 @@ extends UFtpl_Common {
 		echo '<h2>Historia profilu</h2>';
 		echo '<ol class="history">';
 		$d['history']->write('table', $d['user']);
-		echo '</ol>';
-		echo '</div>';
-	}
-
-	public function serviceHistory(array $d) {
-		echo '<div class="user">';
-		echo '<h2>Historia usług</h2>';
-		echo '<ol class="history">';
-		$d['servicehistory']->write('table', $d['user']);
 		echo '</ol>';
 		echo '</div>';
 	}
@@ -1369,103 +1342,6 @@ extends UFtpl_Common {
 	public function adminComputersModified(array $d) {
 		echo '<h3>Komputery ostatnio modyfikowane/dodane</h3>';
 		$d['modifiedComputers']->write('computerLastModified');
-	}
-	
-	/**
-	 * Tytuł do sekcji ostatnio modyfikowanych usług
-	 *
-	 */
-	public function adminUserServicesModified(array $d) {
-		echo '<h3>Usługi aktywowane/dezaktywowane (poziom admina)</h3>';
-		$d['modifiedUserServices']->write('userServiceLastModified');
-	}
-	
-	/**
-	 * Tytuł do sekcji ostatnich próśb o aktywację/dezaktywację usług
-	 *
-	 */
-	public function adminUserServicesRequested(array $d) {
-		echo '<h3>Usługi aktywowane/dezaktywowane (poziom usera)</h3>';
-		$d['requestedUserServices']->write('userServiceLastRequested');
-	}
-
-	public function servicesEdit(array $d) {
-		$form = UFra::factory('UFlib_Form');
-		echo '<h2><a href="'.$this->url(0).'/">Szukaj</a> | Usługi</h2>';
-		echo '<h3>Zadania &bull; <a href="'.$this->url(0).'/services/list">Aktywne</a></h3>';
-		
-		$form = UFra::factory('UFlib_Form', 'serviceSelect', $d);
-		echo $form->_start();
-		echo $form->_fieldset();
-		$tmp = array();
-		$tmp['0'] = 'Wszystkie';
-		foreach ($d['allServices'] as $srv) {
-			$tmp[$srv['id']] = $srv['name'];
-		}
-		echo $form->serviceId('Wyświetl usługi: ', array(
-			'type' => $form->SELECT,
-			'labels' => $form->_labelize($tmp),
-		));
-		echo $form->_submit('Wyświetl');
-		echo $form->_end();
-
-		if ($this->_srv->get('msg')->get('serviceEdit/ok')) {
-			echo $this->OK('Zmiany zostały zapisane');
-		}
-
-		echo $form->_start();
-		if (isset($d['toActivate']))
-		{
-			echo '<h3>Do aktywacji:</h3>';
-			echo $d['toActivate']->write('formToActivate');
-		}
-		echo $form->_end(true);
-		
-		echo $form->_start();
-		if (isset($d['toDeactivate']))
-		{
-			echo '<h3>Do dezaktywacji:</h3>';
-			echo $d['toDeactivate']->write('formToDeactivate');
-		}
-		echo $form->_end(true);
-	}
-
-	public function servicesList(array $d) {
-		$form = UFra::factory('UFlib_Form');
-		echo '<h2><a href="'.$this->url(0).'/">Szukaj</a> | Usługi</h2>';
-		echo '<h3><a href="'.$this->url(0).'/services">Zadania</a> &bull; Aktywne</h3>';
-		
-		$form = UFra::factory('UFlib_Form', 'serviceSelect', $d);
-		echo $form->_start();
-		echo $form->_fieldset();
-		$tmp = array();
-		$tmp['0'] = 'Wszystkie';
-		foreach ($d['allServices'] as $srv) {
-			$tmp[$srv['id']] = $srv['name'];
-		}
-		echo $form->serviceId('Wyświetl usługi: ', array(
-			'type' => $form->SELECT,
-			'labels' => $form->_labelize($tmp),
-		));
-		echo $form->_submit('Wyświetl');
-		echo $form->_end();
-
-		if ($this->_srv->get('msg')->get('serviceEdit/ok')) {
-			echo $this->OK('Zmiany zostały zapisane');
-		}
-
-		echo $form->_start();
-		if (isset($d['active']))
-		{
-			echo '<h3>Istniejące:</h3>';
-			echo $d['active']->write('formToDeactivate');
-		}
-		echo $form->_end(true);
-	}
-
-
-	public function titleServices() {
-		echo 'Panel Usług Użytkowników';
 	}
 	
 	public function penaltyAddMailTitle(array $d) {

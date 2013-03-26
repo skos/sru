@@ -283,8 +283,6 @@ extends UFctl {
 				}
 			case 'users/user/history':
 				return 'SruWalet_UserHistory';
-			case 'users/user/servicehistory':
-				return 'SruWalet_ServiceHistory';
 			case 'users/user/edit':
 				$user = UFra::factory('UFbean_Sru_User');
 				$user->getByPK($get->userId);

@@ -22,7 +22,6 @@ extends UFtpl_Common {
 		'referralStart' => 'Początek skierowania',
 		'referralEnd' => 'Koniec skierowania',
 		'registryNo' => 'Nr indeksu',
-		'servicesAvailable' => 'Dostępność PUU',
 		'updateNeeded' => 'Konieczna aktualizacja profilu',
 		'changePasswordNeeded' => 'Konieczna zmiana hasła',
 		'passwordChanged' => 'Zmieniono hasło',
@@ -57,7 +56,6 @@ extends UFtpl_Common {
 		'referralStart' => 'Referral start',
 		'referralEnd' => 'Refferal end',
 		'registryNo' => 'Registry No.',
-		'servicesAvailable' => 'PUU availability',
 		'updateNeeded' => 'Profile update needed',
 		'changePasswordNeeded' => 'Password change needed',
 		'passwordChanged' => 'Password changed',
@@ -105,7 +103,6 @@ extends UFtpl_Common {
 				case 'referralStart': $changes[] = $names[$key].': <q>'.($val == 0 ? 'brak' : date(self::TIME_YYMMDD, $val)).'</q>'.$arr.'<q>'.($new[$key] == 0 ? 'brak' : date(self::TIME_YYMMDD, $new[$key])).'</q>'; break;
 				case 'referralEnd': $changes[] = $names[$key].': <q>'.($val == 0 ? 'brak' : date(self::TIME_YYMMDD, $val)).'</q>'.$arr.'<q>'.($new[$key] == 0 ? 'brak' : date(self::TIME_YYMMDD, $new[$key])).'</q>'; break;
 				case 'lastLocationChange': $changes[] = $names[$key].': <q>'.($val == 0 ? 'brak' : date(self::TIME_YYMMDD, $val)).'</q>'.$arr.'<q>'.($new[$key] == 0 ? 'brak' : date(self::TIME_YYMMDD, $new[$key])).'</q>'; break;
-				case 'servicesAvailable': $changes[] = $names[$key].': '.($val?'tak':'nie').$arr.($new[$key]?'tak':'nie'); break;
 				case 'updateNeeded': $changes[] = $names[$key].': '.($val?'tak':'nie').$arr.($new[$key]?'tak':'nie'); break;
 				case 'changePasswordNeeded': $changes[] = $names[$key].': '.($val?'tak':'nie').$arr.($new[$key]?'tak':'nie'); break;
 				case 'passwordChanged': $val > 0 ? ($changes[] = $names[$key]) : ''; break;
@@ -162,7 +159,6 @@ extends UFtpl_Common {
 			'referralStart' => $current->referralStart,
 			'referralEnd' => $current->referralEnd,
 			'registryNo' => $current->registryNo,
-			'servicesAvailable' => $current->servicesAvailable,
 			'updateNeeded' => $current->updateNeeded,
 			'changePasswordNeeded' => $current->changePasswordNeeded,
 			'passwordChanged' => '0',

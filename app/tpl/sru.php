@@ -97,22 +97,6 @@ extends UFtpl_Common {
 		// leftColumn will continue...
 	}
 
-	public function servicesInfo(array $d) {
-		// leftColumn continues...
-		$acl = $this->_srv->get('acl');
-		if ($acl->sru('service', 'view')) {
-			$form = UFra::factory('UFlib_Form');
-
-			echo $form->_start($this->url(0).'/');
-			echo $form->_fieldset('Twoje usługi');
-			echo $d['allServices']->write('formEdit', $d['userServices'], $d['user'], false, false);
-			echo '<p><a class="userAction" href="'.$this->url(0).'/services">Edytuj</a>';
-			echo $form->_end();
-			echo $form->_end(true);
-		}
-		echo '</div>';
-	}
-
 	public function contact(array $d) {
 		echo '<div class="rightColumn">';
 		$form = UFra::factory('UFlib_Form');
@@ -170,28 +154,6 @@ extends UFtpl_Common {
 		echo "<h3>Hurra! Brak kar i ostrzeżeń! ;)</h3>";
 	}
 
-	public function userServicesEdit(array $d) {
-		$form = UFra::factory('UFlib_Form');
-		echo '<h1>Dostępne usługi</h1>';
-		echo $form->_start();
-
-		if ($this->_srv->get('msg')->get('serviceEdit/ok')) {
-			echo $this->OK('Zmiany zostały zapisane');
-		}
-
-		echo $d['allServices']->write('formEdit', $d['userServices'], $d['user']);
-		echo $form->_end(true);
-	}
-
-
-	public function titleServices() {
-		echo 'Panel Usług Użytkownika';
-	}
-
-	public function userServicesNotFound() {
-		echo "<h3>Nie znaleziono usług</h3>";
-	}
-
 	public function userMainMenu() {
 		$acl = $this->_srv->get('acl');
 		
@@ -200,9 +162,6 @@ extends UFtpl_Common {
 		echo '<li><a href="'.$this->url(0).'/profile">Profil</a></li>';
 		echo '<li><a href="'.$this->url(0).'/computers">Komputery</a></li>';
 		echo '<li><a href="'.$this->url(0).'/penalties">Kary</a></li>';
-		if ($acl->sru('service', 'view')) {
-			echo '<li><a href="'.$this->url(0).'/services">Usługi</a></li>';
-		}
 		echo '</ul></div>';
 	}
 

@@ -13,6 +13,5 @@ extends UFview_SruAdmin {
 		$this->append('body', $box->userComputers());
 		$this->append('body', $box->roomSwitchPorts());
 		$this->append('body', $box->userInactiveComputers());
-		$this->append('body', $box->userServicesEdit());
 	}
 }
