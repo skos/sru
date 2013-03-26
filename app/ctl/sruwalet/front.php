@@ -286,14 +286,11 @@ extends UFctl {
 			case 'users/user/edit':
 				$user = UFra::factory('UFbean_Sru_User');
 				$user->getByPK($get->userId);
-				if($user->documentNumber == '' || $user->nationality == '' ||
-					$user->address == '' || ($user->nationality == 1 && $user->pesel == '') || 
-					(in_array($user->typeId, UFra::shared('UFconf_Sru')->mustBeRegistryNo) && $user->registryNo == ''))
-					{
-						$msg->del('userEdit/ok');
-						$msg->set('userEdit/warn');
-						$msg = $this->_srv->get('msg');
-					}
+				if(!$this->validateUserDataCompleteness($user)) {
+					$msg->del('userEdit/ok');
+					$msg->set('userEdit/warn');
+					$msg = $this->_srv->get('msg');
+				}
 				if ($msg->get('userEdit/ok')) {
 					return 'SruWalet_User';
 				} else if($msg->get('userEdit/warn') && !$msg->get('userEdit/ok') && isset($_POST['submit']) // isset($post->submit) zawsze zwraca false O.O 
@@ -319,14 +316,11 @@ extends UFctl {
 				$user = UFra::factory('UFbean_Sru_User');
 				try{
 					$user->getByPK($get->userId);
-					if($user->documentNumber == '' || $user->nationality == '' ||
-						$user->address == '' || ($user->nationality == 1 && $user->pesel == '') || 
-						(in_array($user->typeId, UFra::shared('UFconf_Sru')->mustBeRegistryNo) && $user->registryNo == ''))
-						{
-							$msg->del('userEdit/ok');
-							$msg->set('userEdit/warn');
-							$msg = $this->_srv->get('msg');
-						}
+					if(!$this->validateUserDataCompleteness($user)) {
+						$msg->del('userEdit/ok');
+						$msg->set('userEdit/warn');
+						$msg = $this->_srv->get('msg');
+					}
 				}catch(Exception $e){}
 				if ($msg->get('userAdd/ok')) {
 					return 'SruWalet_User';
@@ -390,6 +384,16 @@ extends UFctl {
 				}
 			default:
 				return 'Sru_Error404';
+		}
+	}
+	
+	private function validateUserDataCompleteness($user) {
+		if (($user->documentNumber == '' && $user->documentType != UFbean_Sru_User::DOC_TYPE_NONE) || $user->nationality == '' ||
+			$user->address == '' || ($user->nationality == 1 && $user->pesel == '') || 
+			(in_array($user->typeId, UFra::shared('UFconf_Sru')->mustBeRegistryNo) && $user->registryNo == '')) {
+			return false;
+		} else {
+			return true;
 		}
 	}
 }

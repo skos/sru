@@ -93,7 +93,7 @@ extends UFmap {
 		'login' => array('textMin'=>1, 'textMax'=>100, 'regexp'=>'^[-a-zA-Z0-9\.@_]+$'),
 		'password' => array('textMin'=>6),
 		'name' => array('textMin'=>1, 'textMax'=>100, 'regexp'=>'^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ ]+$'),
-		'surname' => array('textMin'=>1, 'textMax'=>100, 'regexp'=>'^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ ]+$'),
+		'surname' => array('textMin'=>1, 'textMax'=>100, 'regexp'=>'^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ -]+$'),
 		'email' => array('email'=>true, 'textMax'=>100),
 		'gg' => array('regexp'=>'^(|[0-9]{3,50})$|[0]'),
 		'facultyId' => array('textMin'=>1, 'regexp'=>'^(1|2|3|4|5|6|7|8|9|0)+$'),
