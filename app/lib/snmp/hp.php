@@ -277,8 +277,9 @@ extends UFlib_Snmp {
 		} else {
 			$statusInt = 1;
 		}
-		if ($this->getPortStatus($port) == $status) {
-			return true;
+		$portStatus = $this->getPortStatus($port);
+		if (($status == self::DISABLED && $portStatus == self::DISABLED) || ($status != self::DISABLED && $portStatus != self::DISABLED)) {
+			return false;
 		}
 		return snmpset($this->ip, $this->communityW, $this->OIDs['portStatuses'].'.'.$this->translateSwitchPort($port), 'i', $statusInt, $this->timeout);
 	}

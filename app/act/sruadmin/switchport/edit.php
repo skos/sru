@@ -83,6 +83,7 @@ extends UFact {
 				}
 			}
 
+			$sendMail = false;
 			if (!is_null($switch->ip)) {
 				$hp = UFra::factory('UFlib_Snmp_Hp', $switch->ip, $switch);
 				if ($post['portEnabled']) {
@@ -91,19 +92,20 @@ extends UFact {
 					$status = UFlib_Snmp_Hp::DISABLED;
 				}
 				$result = $hp->setPortStatus($bean->ordinalNo, $status);
+				if ($result) $sendMail = true;
 				// zawsze przy edycji opuszczamy flagę, jesli jest podniesiona
 				$flag = $hp->getIntrusionFlag($bean->ordinalNo);
 				if ($flag == UFlib_Snmp_Hp::UP) {
 					$result = $result && $hp->setIntrusionFlag($bean->ordinalNo, UFlib_Snmp_Hp::DOWN);
 				}
 				if (!$result) {
-					throw UFra::factory('UFex_Dao_DataNotValid', 'Writing to switch error', 0, E_WARNING, array('switch' => 'writingError'));
+					throw UFra::factory('UFex_Dao_DataNotValid', 'Writing to switch error or port status not changed', 0, E_WARNING, array('switch' => 'writingError'));
 				}
 			}
 
 			$bean->save();
 
-			if (isset($post['portStatus']) && $post['portStatus'] != $post['portEnabled'] && $conf->sendEmail) {
+			if ($sendMail &&  $conf->sendEmail) {
 				$box = UFra::factory('UFbox_SruAdmin');
 				$sender = UFra::factory('UFlib_Sender');
 				$admin = UFra::factory('UFbean_SruAdmin_Admin');

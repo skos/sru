@@ -96,7 +96,7 @@ $( "#tabs" ).tabs();
 		$url = $this->url(0).'/switches/';
 
 		if ($this->_srv->get('msg')->get('switchPortEdit/errors/switch/writingError')) {
-			echo $this->ERR('Nie udało się zapisać danych na switcha');
+			echo $this->ERR('Nie udało się zapisać danych na switcha (niektóre dane mogły zostać zapisane)');
 		}
 
 		$tmp = array();
