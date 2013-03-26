@@ -14,6 +14,16 @@ extends UFtpl_Common {
 		6 => 'Sobota',
 		7 => 'Niedziela',
 	);
+	
+	protected static $dayNamesEn = array(
+		1 => 'Monday',
+		2 => 'Tuesday',
+		3 => 'Wednesday',
+		4 => 'Thursday',
+		5 => 'Friday',
+		6 => 'Saturday',
+		7 => 'Sunday',
+	);
 
 	public function listDutyHours(array $d) {
 		echo '<ul>';
@@ -92,7 +102,7 @@ extends UFtpl_Common {
 		}
 	}
 
-	public function apiUpcomingDutyHours(array $d, $days, $dormitories, $html = true) {
+	public function apiUpcomingDutyHours(array $d, $days, $dormitories, $html = true, $en = false) {
 		$currentDay = date('N');
 		$lastDay = $currentDay + $days;
 		$thisWeek = '';
@@ -121,11 +131,23 @@ extends UFtpl_Common {
 				if ($c['day'] == $currentDay && $days == 0) {
 					$dayName = '';
 				} else if ($c['day'] == $currentDay) {
-					$dayName = 'dziś ';
+					if ($en) {
+						$dayName = 'today ';
+					} else {
+						$dayName = 'dziś ';
+					}
 				} else if ($c['day'] == $currentDay + 1) {
-					$dayName = 'jutro ';
+					if ($en) {
+						$dayName = 'tomorrow ';
+					} else {
+						$dayName = 'jutro ';
+					}
 				} else {
-					$dayName = self::$dayNames[$c['day']].' ';
+					if ($en) {
+						$dayName = self::$dayNamesEn[$c['day']].' ';
+					} else {
+						$dayName = self::$dayNames[$c['day']].' ';
+					}
 				}
 				if ($html) {
 					$thisWeek .=  '<tr><td>'.$c['adminName'].'</td><td>'.$c['adminAddress'].'</td>';
@@ -143,9 +165,17 @@ extends UFtpl_Common {
 					$comments[$lastComment] = $c['comment'];
 				}
 				if ($c['day'] == $currentDay - 7 + 1) { // minus tydzień plus jeden dzień
-					$dayName = 'jutro ';
+					if ($en) {
+						$dayName = 'tomorrow ';
+					} else {
+						$dayName = 'jutro ';
+					}
 				} else {
-					$dayName = self::$dayNames[$c['day']].' ';
+					if ($en) {
+						$dayName = self::$dayNamesEn[$c['day']].' ';
+					} else {
+						$dayName = self::$dayNames[$c['day']].' ';
+					}
 				}
 				if ($html) {
 					$nextWeek .=  '<tr><td>'.$c['adminName'].'</td><td>'.$c['adminAddress'].'</td>';
@@ -178,9 +208,17 @@ extends UFtpl_Common {
 				}
 			} else {
 				if ($days > 0 ) {
-					echo '<div class="sruDutyHoursNoHours">Żaden administrator nie ma dyżurów w ciągu nadchodzących '.$days.' dni.</div>';
+					if ($en) {
+						echo '<div class="sruDutyHoursNoHours">No administrator has duty hours in next '.$days.' days.</div>';
+					} else {
+						echo '<div class="sruDutyHoursNoHours">Żaden administrator nie ma dyżurów w ciągu nadchodzących '.$days.' dni.</div>';
+					}
 				} else {
-					echo '<div class="sruDutyHoursNoHours">Żaden administrator nie ma dziś dyżurów.</div>';
+					if ($en) {
+						echo '<div class="sruDutyHoursNoHours">No administrator has duty hours today.</div>';
+					} else {
+						echo '<div class="sruDutyHoursNoHours">Żaden administrator nie ma dziś dyżurów.</div>';
+					}
 				}
 			}
 		} else {
@@ -194,9 +232,17 @@ extends UFtpl_Common {
 				}
 			} else {
 				if ($days > 0 ) {
-					echo 'Żaden administrator nie ma dyżurów w ciągu nadchodzących '.$days.' dni.';
+					if ($en) {
+						echo 'No administrator has duty hours in next '.$days.' days.';
+					} else {
+						echo 'Żaden administrator nie ma dyżurów w ciągu nadchodzących '.$days.' dni.';
+					}
 				} else {
-					echo 'Żaden administrator nie ma dziś dyżurów.';
+					if ($en) {
+						echo 'Żaden administrator nie ma dziś dyżurów.';
+					} else {
+						echo 'Żaden administrator nie ma dziś dyżurów.';
+					}
 				}
 			}
 		}
@@ -216,7 +262,7 @@ extends UFtpl_Common {
 	public function upcomingDutyHoursToEmailEnglish(array $d, $user, $days) {
 		echo 'The e-mail address to all administrators in your dormitory: admin-'.(is_array($user) ? $user['dormitoryAlias'] : $user->dormitoryAlias).'@ds.pg.gda.pl'."\n";
 		echo 'The next duty hours of your SKOS administrators:'."\n";
-		$this->apiUpcomingDutyHours($d, $days, null, false);
+		$this->apiUpcomingDutyHours($d, $days, null, false, true);
 	}
 
 	private function formatHour($hour) {
