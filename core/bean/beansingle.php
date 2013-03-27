@@ -206,13 +206,7 @@ extends UFbean {
 				}
 			}
 			foreach ($post as &$data) {
-				if (is_array($data)) {
-					foreach ($data as &$data2) {
-						$data2 = stripslashes($data2);
-					}
-				} else {
-					$data = stripslashes($data);
-				}
+				$data = stripslashes($data);
 			}
 			$this->fill($post);
 			return true;

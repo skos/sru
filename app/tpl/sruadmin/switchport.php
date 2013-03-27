@@ -291,7 +291,7 @@ $( "#tabs" ).tabs();
 		$post = $this->_srv->get('req')->post;
 		$url = $this->url(0);
 
-		$form = UFra::factory('UFlib_Form', 'switchPortsEdit', $d, $this->errors);
+		$form = UFra::factory('UFlib_Form', null, $d, $this->errors);
 		$tmp = array();
 		foreach ($enabledSwitches as $sw) {
 			if ($sw['id'] == $switch->id) continue;
@@ -316,7 +316,7 @@ $( "#tabs" ).tabs();
 			echo $form->_submit('Skopiuj aliasy ze switcha', array('name'=>'copyAliasesFromSwitch', 'id'=>'copyAliasesFromSwitch'));
 			echo '</td><td><a href="'.$url.'/switches/'.$switch->serialNo.'">Powrót</a></td></tr></table>';
 		}
-		$copyAliases = (isset($this->_srv->get('msg')->info['copyAliasesFromSwitch']) && !is_null($portAliases));
+		$copyAliases = (isset($this->_srv->get('msg')->info) && $this->_srv->get('msg')->info == 'copyFromSwitch' && !is_null($portAliases));
 
 		$conf = UFra::shared('UFconf_Sru');
 		$switchRegex = $conf->switchRegex;
