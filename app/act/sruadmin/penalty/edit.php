@@ -92,8 +92,7 @@ extends UFact {
 						$switch->getByPK($port['switchId']);
 						$hp = UFra::factory('UFlib_Snmp_Hp', $switch->ip, $switch);
 						$result = $hp->setPortStatus($port['ordinalNo'], UFlib_Snmp_Hp::ENABLED);
-						$name = $hp->getPortAlias($port['ordinalNo']);
-						$name = str_replace($conf->penaltyPrefix, '', $name);
+						$name = UFlib_Helper::formatPortName($port['locationAlias'], null, false, $hp->removeSpecialChars($port['comment']));
 						$result = $result && $hp->setPortAlias($port['ordinalNo'], $name);
 						$swPorts->updatePenaltyIdByPortId($port['id'], null);
 					}

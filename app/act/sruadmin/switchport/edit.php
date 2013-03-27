@@ -6,7 +6,6 @@ class UFact_SruAdmin_SwitchPort_Edit
 extends UFact {
 
 	const PREFIX = 'switchPortEdit';
-	const MAX_PORT_NAME = 64;
 
 	public function go() {
 		try {
@@ -51,39 +50,29 @@ extends UFact {
 			if ($post['copyToSwitch'] && !is_null($switch->ip)) {
 				$hp = UFra::factory('UFlib_Snmp_Hp', $switch->ip, $switch);
 				$result = false;
-				if ($post['locationAlias'] != '') {
-					$name = $post['locationAlias'];
-					$ban = false;
-					if (key_exists('penaltyId', $post) && $post['penaltyId'] != '') {
-						$name .= ': ' .$conf->penaltyPrefix;
-						$ban = true;
-					}
-					if ($post['comment'] != '') {
-						$name .= ($ban ? '' : ': ').$hp->removeSpecialChars($post['comment']);
-					}
-					$name = substr($name, 0, self::MAX_PORT_NAME);
-					$result = $hp->setPortAlias($bean->ordinalNo, $name);
-				} else if ($post['connectedSwitchId'] != '') {
+				$connectedSwitch = null;
+				if ($post['connectedSwitchId'] != '') {
 					$connectedSwitch = UFra::factory('UFbean_SruAdmin_Switch');
 					$connectedSwitch->getByPK($post['connectedSwitchId']);
-					if ($post['comment'] != '') {
-						$name = $connectedSwitch->dormitoryAlias.'-hp'.$connectedSwitch->hierarchyNo . ': ' . $hp->removeSpecialChars($post['comment']);
-						$name = substr($name, 0, self::MAX_PORT_NAME);
-						$result = $hp->setPortAlias($bean->ordinalNo, $name);
-					} else {
-						$result = $hp->setPortAlias($bean->ordinalNo, $connectedSwitch->dormitoryAlias.'-hp'.$connectedSwitch->hierarchyNo);
-					}
-				} else if ($post['comment'] != '') {
-					$result = $hp->setPortAlias($bean->ordinalNo, $hp->removeSpecialChars($post['comment']));
-				} else {
-					$result = $hp->setPortAlias($bean->ordinalNo, '');
 				}
+				$ban = false;
+				if (key_exists('penaltyId', $post) && $post['penaltyId'] != '') {
+					$ban = true;
+				}
+				$comment = '';
+				if ($post['comment'] != '') {
+					$comment = $hp->removeSpecialChars($post['comment']);
+				}
+				$name = UFlib_Helper::formatPortName($post['locationAlias'], $connectedSwitch, $ban, $comment);
+				$result = $hp->setPortAlias($bean->ordinalNo, $name);
+					
 				if (!$result) {
 					throw UFra::factory('UFex_Dao_DataNotValid', 'Writing to switch error', 0, E_WARNING, array('switch' => 'writingError'));
 				}
 			}
 
 			$sendMail = false;
+			$result = true;
 			if (!is_null($switch->ip)) {
 				$hp = UFra::factory('UFlib_Snmp_Hp', $switch->ip, $switch);
 				if ($post['portEnabled']) {
@@ -91,8 +80,10 @@ extends UFact {
 				} else {
 					$status = UFlib_Snmp_Hp::DISABLED;
 				}
-				$result = $hp->setPortStatus($bean->ordinalNo, $status);
-				if ($result) $sendMail = true;
+				if (isset($post['portStatus']) && $post['portStatus'] != $post['portEnabled']) {
+					$result = $hp->setPortStatus($bean->ordinalNo, $status);
+					if ($result) $sendMail = true;
+				}
 				// zawsze przy edycji opuszczamy flagę, jesli jest podniesiona
 				$flag = $hp->getIntrusionFlag($bean->ordinalNo);
 				if ($flag == UFlib_Snmp_Hp::UP) {

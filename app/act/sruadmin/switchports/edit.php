@@ -20,7 +20,6 @@ extends UFact {
 
 			$this->begin();
 			$post = $this->_srv->get('req')->post->{self::PREFIX};
-			$conf = UFra::shared('UFconf_Sru');
 
 			while ($port = current($post)) {
 				$bean = UFra::factory('UFbean_SruAdmin_SwitchPort');
@@ -57,37 +56,23 @@ extends UFact {
 				if (!is_null($switch->ip)) {
 					$hp = UFra::factory('UFlib_Snmp_Hp', $switch->ip, $switch);
 					$result = false;
-					if ($port['locationAlias'] != '') {
-						if ($port['comment'] != '') {
-							$name = $port['locationAlias'];
-							$ban = false;
-							if ($bean->penaltyId != '') {
-								$name .= ': ' .$conf->penaltyPrefix;
-								$ban = true;
-							}
-							if ($port['comment'] != '') {
-								$name .= ($ban ? '' : ': ').$hp->removeSpecialChars($port['comment']);
-							}
-							$name = substr($name, 0, UFact_SruAdmin_SwitchPort_Edit::MAX_PORT_NAME);
-							$result = $hp->setPortAlias($bean->ordinalNo, $name);
-						} else {
-							$result = $hp->setPortAlias($bean->ordinalNo, $port['locationAlias']);
-						}
-					} else if ($port['connectedSwitchId'] != '') {
+					
+					$connectedSwitch = null;
+					if ($port['connectedSwitchId'] != '') {
 						$connectedSwitch = UFra::factory('UFbean_SruAdmin_Switch');
 						$connectedSwitch->getByPK($port['connectedSwitchId']);
-						if ($port['comment'] != '') {
-							$name = $connectedSwitch->dormitoryAlias.'-hp'.$connectedSwitch->hierarchyNo . ': ' . $hp->removeSpecialChars($port['comment']);
-							$name = substr($name, 0, UFact_SruAdmin_SwitchPort_Edit::MAX_PORT_NAME);
-							$result = $hp->setPortAlias($bean->ordinalNo, $name);
-						} else {
-							$result = $hp->setPortAlias($bean->ordinalNo, $connectedSwitch->dormitoryAlias.'-hp'.$connectedSwitch->hierarchyNo);
-						}
-					} else if ($port['comment'] != '') {
-						$result = $hp->setPortAlias($bean->ordinalNo, $hp->removeSpecialChars($port['comment']));
-					} else {
-						$result = $hp->setPortAlias($bean->ordinalNo, '');
 					}
+					$ban = false;
+					if ($bean->penaltyId != '') {
+						$ban = true;
+					}
+					$comment = '';
+					if ($port['comment'] != '') {
+						$comment = $hp->removeSpecialChars($port['comment']);
+					}
+					$name = UFlib_Helper::formatPortName($port['locationAlias'], $connectedSwitch, $ban, $comment);
+					$result = $hp->setPortAlias($bean->ordinalNo, $name);
+
 					if (!$result) {
 						throw UFra::factory('UFex_Dao_DataNotValid', 'Writing to switch error', 0, E_WARNING, array('switch' => 'writingError'));
 					}

@@ -16,6 +16,8 @@ extends UFlib_Snmp {
 	const DISABLED = "disabled";
 	const ENABLED = "enabled";
 	
+	const MAX_PORT_NAME = 64;
+	
 	static public $learnModes = array(
 		1 => 'learnContinuous',
 		2 => 'learnFirstN',
