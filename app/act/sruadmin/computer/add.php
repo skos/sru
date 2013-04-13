@@ -65,11 +65,15 @@ extends UFact {
 				}
 			}
 
-			$bean->fillFromPost(self::PREFIX, null, array('mac', 'host', 'typeId', 'carerId', 'masterHostId'));
+			$bean->fillFromPost(self::PREFIX, null, array('mac', 'host', 'typeId', 'masterHostId'));
 			if ($bean->masterHostId == 0) {
 				$bean->masterHostId = null;
 			}
-			if ($bean->carerId == 0) {
+			if (!is_null($post['skosCarerId']) && $post['skosCarerId'] != 0) {
+				$bean->carerId = $post['skosCarerId'];
+			} else if (!is_null($post['waletCarerId']) && $post['waletCarerId'] != 0) {
+				$bean->carerId = $post['waletCarerId'];
+			} else {
 				$bean->carerId = null;
 			}
 			if ($bean->typeId == UFbean_Sru_Computer::TYPE_STUDENT_AP || $bean->typeId == UFbean_Sru_Computer::TYPE_STUDENT_OTHER) {

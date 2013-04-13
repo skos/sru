@@ -201,7 +201,7 @@ extends UFdao {
 		return $this->doSelect($query);
 	}
 
-		public function listAllPhysicalServers() {
+	public function listAllPhysicalServers() {
 		$mapping = $this->mapping('list');
 
 		$query = $this->prepareSelect($mapping);
@@ -671,7 +671,12 @@ extends UFdao {
 		$query->where($mapping->dormitoryId, $id);
 		$query->where($mapping->active, true);
 		$query->where($mapping->carerId, null);
-		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_ADMINISTRATION);
+		$query->where(
+			'('.$mapping->column('typeId').'='.UFbean_Sru_Computer::TYPE_SERVER.' 
+				OR '.$mapping->column('typeId').'='.UFbean_Sru_Computer::TYPE_SERVER_VIRT.' 
+				OR '.$mapping->column('typeId').'='.UFbean_Sru_Computer::TYPE_ADMINISTRATION.')',
+			null, $query->SQL
+		);
 		$query->order($mapping->host, $query->ASC);
 
 		return $this->doSelect($query);

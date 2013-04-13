@@ -246,6 +246,13 @@ extends UFbox {
 				$d['servers'] = null;
 			}
 			try {
+				$waletAdmins = UFra::factory('UFbean_SruAdmin_AdminList');
+				$waletAdmins->listAll();
+				$d['skosAdmins'] = $waletAdmins;
+			} catch (UFex $e) {
+				$d['skosAdmins'] = null;
+			}
+			try {
 				$waletAdmins = UFra::factory('UFbean_SruWalet_AdminList');
 				$waletAdmins->listAll();
 				$d['waletAdmins'] = $waletAdmins;
@@ -1519,6 +1526,13 @@ extends UFbox {
 			$d['servers'] = $servers;
 		} catch (UFex $e) {
 			$d['servers'] = null;
+		}
+		try {
+			$waletAdmins = UFra::factory('UFbean_SruAdmin_AdminList');
+			$waletAdmins->listAll();
+			$d['skosAdmins'] = $waletAdmins;
+		} catch (UFex $e) {
+			$d['skosAdmins'] = null;
 		}
 		try {
 			$waletAdmins = UFra::factory('UFbean_SruWalet_AdminList');

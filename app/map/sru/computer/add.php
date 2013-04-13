@@ -32,7 +32,9 @@ extends UFmap {
 		'modifiedAt'     => self::TS,
 		'comment'        => self::TEXT,
 		'typeId'         => self::INT,
-		'carerId'		 => self::NULL_INT,
+		'carerId'	 => self::NULL_INT,
+		'skosCarerId'	 => self::NULL_INT,	// kolumna tylko do walidacji
+		'waletCarerId'	 => self::NULL_INT,	// kolumna tylko do walidacji
 		'masterHostId'	 => self::NULL_INT,
 		'autoDeactivation' => self::BOOL,
 	);

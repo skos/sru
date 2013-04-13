@@ -41,9 +41,11 @@ extends UFmap_Sru_Computer_Add {
 		'typeId'         => self::INT,
 		'canAdmin'       => self::BOOL,
 		'exAdmin'        => self::BOOL,
-		'lastSeen'		 => self::TS,
+		'lastSeen'	 => self::TS,
 		'lastActivated'	 => self::TS,
-		'carerId'		 => self::NULL_INT,
+		'carerId'	 => self::NULL_INT,
+		'skosCarerId'	 => self::NULL_INT,	// kolumna tylko do walidacji
+		'waletCarerId'	 => self::NULL_INT,	// kolumna tylko do walidacji
 		'masterHostId'	 => self::NULL_INT,
 		'autoDeactivation' => self::BOOL,
 	);

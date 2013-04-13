@@ -56,6 +56,13 @@ extends UFact {
 			}
 
 			$bean->fillFromPost(self::PREFIX, array('availableTo')); // zgodnie z ticketem #176 filtr wyłączony
+			if (!is_null($post['skosCarerId']) && $post['skosCarerId'] != 0) {
+				$bean->carerId = $post['skosCarerId'];
+			} else if (!is_null($post['waletCarerId']) && $post['waletCarerId'] != 0) {
+				$bean->carerId = $post['waletCarerId'];
+			} else {
+				$bean->carerId = null;
+			}
 			if ($bean->canAdmin && $bean->exAdmin) {
 					$this->rollback();
 					$this->markErrors(self::PREFIX, array('exAdmin'=>'notWithAdmin'));

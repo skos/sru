@@ -346,7 +346,7 @@ extends UFtpl_Common {
 		if (is_null($users)) {
 			echo $this->OK('Brak zadań!');
 		} else {
-			echo '<h3>Komputery administracji bez przypisanego opiekuna:</h3>';
+			echo '<h3>Hosty bez przypisanego opiekuna:</h3>';
 			echo '<ul>';
 			foreach ($users as $dorm) {
 				if (!is_null($dorm)) {

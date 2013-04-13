@@ -167,38 +167,65 @@ extends UFbean_Common {
 		}
 		return UFbean_SruAdmin_Vlan::DEFAULT_VLAN;
 	}
-
-	protected function validateCarerId($val, $change) {
-			try {
-				$post = $this->_srv->get('req')->post->{self::EDIT_PREFIX};
-				if (isset($post['typeId']) && $post['typeId'] == UFbean_Sru_Computer::TYPE_ADMINISTRATION && (is_null($val) || (int)$val == 0)) {
-					return 'null';
-				}
-			} catch (UFex $e) {
+	
+	protected function validateSkosCarerId($val, $change) {
+		try {
+			$post = $this->_srv->get('req')->post->{self::EDIT_PREFIX};
+			if (isset($post['typeId']) && 
+				($post['typeId'] == UFbean_Sru_Computer::TYPE_SERVER || 
+				$post['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT) && 
+				(is_null($val) || (int)$val == 0)) {
+				return 'null';
 			}
-			try {
-				$post = $this->_srv->get('req')->post->{self::ADD_PREFIX};
-				if (isset($post['typeId']) && $post['typeId'] == UFbean_Sru_Computer::TYPE_ADMINISTRATION && (is_null($val) || (int)$val == 0)) {
-					return 'null';
-				}
-			} catch (UFex $e) {
+		} catch (UFex $e) {
+		}
+		try {
+			$post = $this->_srv->get('req')->post->{self::ADD_PREFIX};
+			if (isset($post['typeId']) && 
+				($post['typeId'] == UFbean_Sru_Computer::TYPE_SERVER || 
+				$post['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT) && 
+				(is_null($val) || (int)$val == 0)) {
+				return 'null';
 			}
+		} catch (UFex $e) {
+		}
+	}
+	
+	protected function validateWaletCarerId($val, $change) {
+		try {
+			$post = $this->_srv->get('req')->post->{self::EDIT_PREFIX};
+			if (isset($post['typeId']) && 
+				($post['typeId'] == UFbean_Sru_Computer::TYPE_ADMINISTRATION) && 
+				(is_null($val) || (int)$val == 0)) {
+				return 'null';
+			}
+		} catch (UFex $e) {
+		}
+		try {
+			$post = $this->_srv->get('req')->post->{self::ADD_PREFIX};
+			if (isset($post['typeId']) && 
+				($post['typeId'] == UFbean_Sru_Computer::TYPE_ADMINISTRATION) && 
+				(is_null($val) || (int)$val == 0)) {
+				return 'null';
+			}
+		} catch (UFex $e) {
+		}
 	}
 
 	protected function validateMasterHostId($val, $change) {
-			try {
-				$post = $this->_srv->get('req')->post->{self::EDIT_PREFIX};
-				if (isset($post['typeId']) && $post['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT && (is_null($val) || (int)$val == 0)) {
-					return 'null';
-				}
-			} catch (UFex $e) {
+		try {
+			$post = $this->_srv->get('req')->post->{self::EDIT_PREFIX};
+			if (isset($post['typeId']) && $post['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT && (is_null($val) || (int)$val == 0)) {
+				return 'null';
 			}
-			try {
-				$post = $this->_srv->get('req')->post->{self::ADD_PREFIX};
-				if (isset($post['typeId']) && $post['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT && (is_null($val) || (int)$val == 0)) {
-					return 'null';
-				}
-			} catch (UFex $e) {
+		} catch (UFex $e) {
+		}
+		try {
+			$post = $this->_srv->get('req')->post->{self::ADD_PREFIX};
+			if (isset($post['typeId']) && $post['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT && (is_null($val) || (int)$val == 0)) {
+				return 'null';
 			}
+		} catch (UFex $e) {
+		}
 	}
 }

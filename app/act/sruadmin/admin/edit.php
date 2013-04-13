@@ -117,6 +117,14 @@ extends UFact {
 					}
 				}
 			}
+			
+			if (!$bean->active) {
+				try {
+					$hosts = UFra::factory('UFbean_Sru_ComputerList');
+					$hosts->updateCarerByCarerId($bean->id, null, $this->_srv->get('session')->authAdmin);
+				} catch (UFex $e) {
+				}
+			}
 
 			$this->postDel(self::PREFIX);
 			$this->markOk(self::PREFIX);
