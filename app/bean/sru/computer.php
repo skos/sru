@@ -228,4 +228,18 @@ extends UFbean_Common {
 		} catch (UFex $e) {
 		}
 	}
+	
+	protected function validateTypeId($val, $change) {
+		if ($val == UFbean_Sru_Computer::TYPE_SERVER) {
+			try {
+				$user = UFra::factory('UFbean_Sru_User');
+				$user->getByPK($this->data['userId']);
+				if ($user->typeId != UFbean_Sru_User::TYPE_SKOS) {
+					return 'notSkos';
+				}
+			} catch (UFex_Dao_NotFound $e) {
+				// musi być user :)
+			}
+		}
+	}
 }

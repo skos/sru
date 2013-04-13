@@ -65,8 +65,9 @@ extends UFtpl_Common {
 		'locationAlias/noRoom' => 'Pokój nie istnieje',
 		'exAdmin/notWithAdmin' => 'Nie można ustawić jednocześnie uprawnień admina i ex-admina',
 		'masterHostId/null' => 'Maszyna wirtualna musi mieć ustawiony serwer fizyczny',
-		'skosCarerId/null' => 'Host SKOSu musi posiadać opiekuna',
+		'skosCarerId/null' => 'Serwer musi posiadać opiekuna',
 		'waletCarerId/null' => 'Host administracji musi posiadać opiekuna',
+		'typeId/notSkos' => 'Właścicielem serwera fizycznego może być wyłącznie SKOS',
 	);
 	
 	/**
