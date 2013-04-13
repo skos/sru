@@ -21,7 +21,7 @@ extends UFtpl_Common {
 			}
 			switch ($key) {
 				case 'comment':
-					$changes[] = $names[$key].': <q>'.nl2br($val).'</q>'.$arr.'<q>'.nl2br($new[$key]).'</q>';
+					$changes[] = $names[$key].':<br/>'.UFlib_Diff::toHTML(UFlib_Diff::compare($this->_escape($val), $this->_escape($new[$key])));
 					break;
 				case 'typeId':
 					$changes[] = $names[$key].': <q>'.UFtpl_SruAdmin_Room::getRoomType($val).'</q>'.$arr.'<q>'.UFtpl_SruAdmin_Room::getRoomType($new[$key]).'</q>';

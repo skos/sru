@@ -57,7 +57,7 @@ extends UFtpl_Common {
 					$changes[] = $names[$key].': '.(is_null($val) ? 'brak limitu' : date(self::TIME_YYMMDD, $val)).$arr.(is_null($new[$key]) ? 'brak limitu' : date(self::TIME_YYMMDD, $new[$key]));
 					break;
 				case 'comment':
-					$changes[] = $names[$key].': <q>'.nl2br($val).'</q>'.$arr.'<q>'.nl2br($new[$key]).'</q>';
+					$changes[] = $names[$key].':<br/>'.UFlib_Diff::toHTML(UFlib_Diff::compare($this->_escape($val), $this->_escape($new[$key])));
 					break;
 				case 'canAdmin':
 				case 'exAdmin':

@@ -98,7 +98,7 @@ extends UFtpl_Common {
 					break;
 				case 'locationId': $changes[] = $names[$key].': '.$old['locationAlias'].'<small>&nbsp;('.$old['dormitoryAlias'].')</small>'.$arr.$new['locationAlias'].'<small>&nbsp;('.$new['dormitoryAlias'].')</small>'; break;
 				case 'studyYearId': $changes[] = $names[$key].': '. (is_null($val) ? '' : UFtpl_Sru_User::$studyYears[$val]).$arr.UFtpl_Sru_User::$studyYears[$new[$key]]; break;
-				case 'comment': $changes[] = $names[$key] . ($walet ? ': <q>'.nl2br($this->_escape($val)).'</q>'.$arr.'<q>'.nl2br($this->_escape($new[$key])).'</q>' : ' dla administratorów Waleta: zmieniono'); break;
+				case 'comment': $changes[] = $names[$key] . ($walet ? ':<br/>'.UFlib_Diff::toHTML(UFlib_Diff::compare($this->_escape($val), $this->_escape($new[$key]))) : ' dla administratorów Waleta: zmieniono'); break;
 				case 'active': $changes[] = $names[$key].': '.($val?'tak':'nie').$arr.($new[$key]?'tak':'nie'); break;
 				case 'referralStart': $changes[] = $names[$key].': <q>'.($val == 0 ? 'brak' : date(self::TIME_YYMMDD, $val)).'</q>'.$arr.'<q>'.($new[$key] == 0 ? 'brak' : date(self::TIME_YYMMDD, $new[$key])).'</q>'; break;
 				case 'referralEnd': $changes[] = $names[$key].': <q>'.($val == 0 ? 'brak' : date(self::TIME_YYMMDD, $val)).'</q>'.$arr.'<q>'.($new[$key] == 0 ? 'brak' : date(self::TIME_YYMMDD, $new[$key])).'</q>'; break;
@@ -120,7 +120,7 @@ extends UFtpl_Common {
 				case 'birthPlace': $changes[] = $names[$key] . ': '.($walet ? ('<q>'.($val =='' ? 'brak' : $this->_escape($old[$key])).'</q>'.$arr.'<q>'.$this->_escape($new[$key])) : 'zmieniono').'</q>'; break;
 				case 'userPhoneNumber': $changes[] = $names[$key] . ': '.($walet ? ($val == '' ? 'brak' : $old[$key]).$arr.$new[$key] : 'zmieniono'); break;
 				case 'guardianPhoneNumber': $changes[] = $names[$key] . ': '.($walet ? ($val == '' ? 'brak' : $old[$key]).$arr.$new[$key] : 'zmieniono'); break;
-				case 'commentSkos': $changes[] = $names[$key] . ($walet ? ' dla administratorów SKOS: zmieniono' : ': <q>'.nl2br($this->_escape($val)).'</q>'.$arr.'<q>'.nl2br($this->_escape($new[$key])).'</q>'); break;
+				case 'commentSkos': $changes[] = $names[$key] . ($walet ? ' dla administratorów SKOS: zmieniono' : ':<br/>'.UFlib_Diff::toHTML(UFlib_Diff::compare($this->_escape($val), $this->_escape($new[$key])))); break;
 				case 'overLimit': $changes[] = $names[$key].': '.($val?'tak':'nie').$arr.($new[$key]?'tak':'nie'); break;
 				default: continue;
 			}

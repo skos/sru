@@ -19,7 +19,7 @@ protected function _diff(array $old, array $new, $current) {
 					$changes[] = 'Powód: <q>'.$val.'</q>'.$arr.'<q>'.$new[$key].'</q>';
 					break;
 				case 'comment':
-					$changes[] = 'Komentarz:<br/> <q>'.nl2br($val).'</q> <br/>'.$arr.' <br/><q>'.nl2br($new[$key]).'</q>';
+					$changes[] = 'Komentarz:<br/>'.UFlib_Diff::toHTML(UFlib_Diff::compare($this->_escape($val), $this->_escape($new[$key])));
 					break;
 				case 'amnestyAfter':
 					$changes[] = 'Minimalna długość (dni): <q>'.(($val - $current->startAt) / 24 / 3600).'</q>'.$arr.'<q>'.(($new[$key] - $current->startAt) / 24 / 3600).'</q>';
