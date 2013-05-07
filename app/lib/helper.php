@@ -86,13 +86,15 @@ class UFlib_Helper {
 			$port = UFra::factory('UFbean_SruAdmin_SwitchPort');
 			$portData = $port->getByPenaltyUserId($penalty['id'], $userId);
 
-			if ($portData[0]['switchId'] > 0 && $portData[0]['ordinalNo'] > 0 && $portData[0]['portId'] > 0) {
-				$switch = UFra::factory('UFbean_SruAdmin_Switch');
-				$switch->getByPK($portData[0]['switchId']);
-				$hp = UFra::factory('UFlib_Snmp_Hp', $switch->ip, $switch);
-				$hp->setPortStatus($portData[0]['ordinalNo'], UFlib_Snmp_Hp::ENABLED);
-				$name = UFlib_Helper::formatPortName($port->locationAlias, null, false, $hp->removeSpecialChars($port->comment));
-				$hp->setPortAlias($portData[0]['ordinalNo'], $name);
+			foreach ($portData as $swPort) {
+				if ($swPort['switchId'] > 0 && $swPort['ordinalNo'] > 0 && $swPort['portId'] > 0) {
+					$switch = UFra::factory('UFbean_SruAdmin_Switch');
+					$switch->getByPK($swPort['switchId']);
+					$hp = UFra::factory('UFlib_Snmp_Hp', $switch->ip, $switch);
+					$hp->setPortStatus($swPort['ordinalNo'], UFlib_Snmp_Hp::ENABLED);
+					$name = UFlib_Helper::formatPortName($swPort['locationAlias'], null, false, $hp->removeSpecialChars($swPort['comment']));
+					$hp->setPortAlias($swPort['ordinalNo'], $name);
+				}
 			}
 
 			try {

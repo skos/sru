@@ -8,7 +8,8 @@ extends UFmap {
 		'userId' => 'u.id',
 		'switchId' => 'p.switch',
 		'ordinalNo' => 'p.ordinal_no',
-		'locationAlias' => 'l.alias'
+		'locationAlias' => 'l.alias',
+		'comment' => 'p.comment',
 	);
 	
 	protected $columnTypes = array(
@@ -17,7 +18,8 @@ extends UFmap {
 		'userId' => self::INT,
 		'switchId' => self::INT,
 		'ordinalNo' => self::INT,
-		'locationAlias' => self::NULL_TEXT
+		'locationAlias' => self::NULL_TEXT,
+		'comment' => self::TEXT,
 	);
 	
 	protected $tables = array(
