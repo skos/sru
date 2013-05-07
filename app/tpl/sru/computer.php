@@ -591,18 +591,22 @@ if (input) {
 	form = document.getElementById('computerAdd_typeId');
 	function changeVisibility() {
 		<? if (!is_null($waletAdmins)) { ?>
-		var skosCarer = document.getElementById("skosCrers");
+		var skosCarer = document.getElementById("skosCarers");
 		var waletCarer = document.getElementById("waletCarers");
-		var skosCarerId = document.getElementById("computerEdit_skosCarerId");
-		var waletCarerId = document.getElementById("computerEdit_waletCarerId");
+		var skosCarerId = document.getElementById("computerAdd_skosCarerId");
+		var waletCarerId = document.getElementById("computerAdd_waletCarerId");
 		if (form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER; ?> || form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER_VIRT; ?>) {
-			skosCarerId.value = initialSKosCarerId;
+			skosCarerId.value = '';
 			skosCarer.style.display = "block";
 			skosCarer.style.visibility = "visible";
+			waletCarer.style.display = "none";
+			waletCarer.style.visibility = "hidden";
 		} else if (form.value == <? echo UFbean_Sru_Computer::TYPE_ADMINISTRATION; ?>) {
-			waletCarerId.value = initialWaletCarerId;
+			waletCarerId.value = '';
 			waletCarer.style.display = "block";
 			waletCarer.style.visibility = "visible";
+			skosCarer.style.display = "none";
+			skosCarer.style.visibility = "hidden";
 		} else {
 			skosCarer.style.display = "none";
 			skosCarer.style.visibility = "hidden";
