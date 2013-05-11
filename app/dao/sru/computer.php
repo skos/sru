@@ -368,6 +368,10 @@ extends UFdao {
 		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_ORGANIZATION, $query->NOT_EQ);
 		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_STUDENT_OTHER, $query->NOT_EQ);
 		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_STUDENT_AP, $query->NOT_EQ);
+		$query->where(
+			'('.$mapping->column('typeId').'!='.$typeId.' OR '.$mapping->column('locationId').'!='.$location.')',
+			null, $query->SQL
+		);
 
 		$return = $this->doUpdate($query);
 
