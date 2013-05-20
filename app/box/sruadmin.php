@@ -2216,4 +2216,15 @@ extends UFbox {
 		$d['admin'] = $admin;
 		return $this->render(__FUNCTION__, $d);
 	}
+	
+	public function carerChangedToYouMailTitle($host) {
+		$d['host'] = $host;
+		return $this->render(__FUNCTION__, $d);
+	}
+
+	public function carerChangedToYouMailBody($host, $admin) {
+		$d['host'] = $host;
+		$d['admin'] = $admin;
+		return $this->render(__FUNCTION__, $d);
+	}
 }

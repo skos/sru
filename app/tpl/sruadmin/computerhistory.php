@@ -150,7 +150,6 @@ extends UFtpl_Common {
 		if (is_null($names)) {
 			$names = self::$names;
 		}
-		$changes = array();
 		$arr = ' => ';
 		foreach ($old as $key=>$val) {
 			switch ($key) {
@@ -172,6 +171,15 @@ extends UFtpl_Common {
 						echo $arr.(is_null($new[$key]) ? 'brak limitu' : date(self::TIME_YYMMDD, $new[$key]));
 					}
 					echo "\n";
+					break;
+				case 'carerId':
+					if ($new['typeId'] == UFbean_Sru_Computer::TYPE_SERVER || $new['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT) {
+						echo $names[$key].': '.(is_null($val) ? 'nikt' : $old['carerName']);
+						if ($val!==$new[$key]) {
+							echo $arr.(is_null($new[$key]) ? 'nikt' : $new['carerName']);
+						}
+						echo "\n";
+					}
 					break;
 				default: continue;
 			}

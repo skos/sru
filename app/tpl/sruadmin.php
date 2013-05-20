@@ -1476,4 +1476,12 @@ extends UFtpl_Common {
 	public function hostAliasesChangedMailBody(array $d) {
 		echo $d['host']->write('hostAliasesChangedMailBody', $d['deleted'], $d['added'], $d['admin']);
 	}
+	
+	public function carerChangedToYouMailTitle(array $d) {
+		echo 'Zostałes opiekunem hosta '.$d['host']->host;
+	}
+	
+	public function carerChangedToYouMailBody(array $d) {
+		echo $d['host']->write('carerChangedToYouMailBody', $d['admin']);
+	}
 }

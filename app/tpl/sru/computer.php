@@ -975,4 +975,9 @@ div.style.display = 'none';
 		}
 		echo "\n".'Admin modyfikujący: '.$admin->name."\n";
 	}
+	
+	public function carerChangedToYouMailBody(array $d, $admin) {
+		echo 'Zostałeś opiekunem hosta: '.$d['host']."\n";
+		echo "\n".'Admin modyfikujący: '.$admin->name."\n";
+	}
 }

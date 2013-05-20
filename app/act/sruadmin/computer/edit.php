@@ -17,6 +17,8 @@ extends UFact {
 			
 			$user = UFra::factory('UFbean_Sru_User');
 			$user->getByPK($bean->userId);
+			
+			$carer = $bean->carerId;
 
 			// w przypadku, gdy pole IP jest puste, pobieramy pierwszy wolny
 			// IP w danym DS
@@ -99,6 +101,15 @@ extends UFact {
 				if ($bean->typeId == UFbean_Sru_Computer::TYPE_SERVER || $bean->typeId == UFbean_Sru_Computer::TYPE_SERVER_VIRT) {
 					$admin = UFra::factory('UFbean_SruAdmin_Admin');
 					$admin->getByPK($this->_srv->get('session')->authAdmin);
+					
+					// admin, który został opiekunem, powinien dostać maila
+					if ($carer != $bean->carerId) {
+						$title = $box->carerChangedToYouMailTitle($bean);
+						$body = $box->carerChangedToYouMailBody($bean, $admin);
+						$newCarer = UFra::factory('UFbean_SruAdmin_Admin');
+						$newCarer->getByPK($bean->carerId);
+						$sender->send($newCarer, $title, $body, self::PREFIX);
+					}
 				}
 				$title = $box->hostChangedMailTitle($bean, $user);
 				$body = $box->hostChangedMailBody($bean, self::PREFIX, $user, $history, $admin);

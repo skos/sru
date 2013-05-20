@@ -16,7 +16,7 @@ class UFlib_Sender {
 
 	// wysyłanie wszystkich powiadomień
 	public function send($user, $title, $body, $action = null) {
-		$this->sendMail($user->email, $title, $body, $action, $user->lang);
+		$this->sendMail($user->email, $title, $body, $action, isset($user->lang) ? $user->lang : null);
 		if ($user->gg != '') {
 			$this->sendGG($user->gg, $body, $user->lang);
 		}
