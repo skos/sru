@@ -18,7 +18,7 @@ class UFlib_Sender {
 	public function send($user, $title, $body, $action = null) {
 		$this->sendMail($user->email, $title, $body, $action, isset($user->lang) ? $user->lang : null);
 		if ($user->gg != '') {
-			$this->sendGG($user->gg, $body, $user->lang);
+			$this->sendGG($user->gg, $body, isset($user->lang) ? $user->lang : null);
 		}
 	}
 
