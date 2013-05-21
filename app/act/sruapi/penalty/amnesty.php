@@ -22,6 +22,8 @@ extends UFact {
 			$bean->amnestyById = $admin->id;
 			$bean->amnestyAt = NOW;
 			$bean->active = false;
+			$bean->modifiedById = $admin->id;
+			$bean->modifiedAt = NOW;
 			
 			$bean->save();
 
