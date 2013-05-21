@@ -84,6 +84,10 @@ extends UFtpl_Common {
 	public function myLanstats(array $d) {
 		$d['transfer']->write('myTransferStats', $d['upload'], $d['host']);
 	}
+	
+	public function firewallExceptions(array $d) {
+		$d['admins']->write('apiFirewallExceptions', $d['exadmins']);
+	}
 
 	public function apiPenaltiesTimelineMailTitle(array $d) {
 		echo date(self::TIME_YYMMDD).': Podsumowanie nałożonych/modyfikowanych kar';

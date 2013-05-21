@@ -404,6 +404,22 @@ extends UFbox {
 		}
 	}
 	
+	public function firewallExceptions() {
+		try {
+			$admins = UFra::factory('UFbean_Sru_ComputerList');
+			$admins->listAdmins();
+			$d['admins'] = $admins;
+			
+			$exadmins = UFra::factory('UFbean_Sru_ComputerList');
+			$exadmins->listExAdmins();
+			$d['exadmins'] = $exadmins;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return '';
+		}
+	}
+	
 	public function hostDeactivatedMailTitle($host, $user) {
 		$d['host'] = $host;
 		$d['user'] = $user;

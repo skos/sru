@@ -879,6 +879,17 @@ div.style.display = 'none';
 			echo $c['host']."\n";
 		}
 	}
+	
+	public function apiFirewallExceptions(array $d, $exadmins) {
+		$hosts = array();
+		foreach ($d as $c) {
+			$hosts[] = array("host" => $c['ip'], "port" => "0");
+		}
+		foreach ($exadmins as $c) {
+			$hosts[] = array("host" => $c['ip'], "port" => "0");
+		}
+		echo json_encode($hosts);
+	}
 
 	public function hostChangedMailTitlePolish(array $d) {
 		echo 'Dane Twojego hosta zostały zmienione';

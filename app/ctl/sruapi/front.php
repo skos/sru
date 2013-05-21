@@ -169,6 +169,9 @@ extends UFctl {
 						}
 					}
 					break;
+				case 'firewallexceptions':
+					$get->view = 'firewallexceptions';
+					break;
 			}
 		}
 	}
@@ -321,6 +324,8 @@ extends UFctl {
 				} else {
 					return 'SruApi_Error403';
 				}*/
+			case 'firewallexceptions':
+				return 'SruApi_FirewallExceptions';
 			default:
 				return 'SruApi_Error404';
 		}
