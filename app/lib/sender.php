@@ -78,7 +78,7 @@ class UFlib_Sender {
 		$footer .= 'Regards,'."\n";
 		$footer .= 'SKOS PG Administrators'."\n";
 		$footer .= 'SRU: https://sru.ds.pg.gda.pl/'."\n";
-		$footer .= 'Home Page: http://skos.ds.pg.gda.pl/'."\n";
+		$footer .= 'Home Page: http://skos.ds.pg.gda.pl/en/'."\n";
 		$footer .= '[this message was generated automatically]'."\n";
 		return $footer;
 	}
