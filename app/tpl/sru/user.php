@@ -783,6 +783,9 @@ $(document).ready(function()
 		echo 	'&bull; <a href="'.$urlUser.'/history">Historia profilu</a>
 		 	&bull; <a href="'.$urlUser.'/:edit">Edycja</a>
 		  	&bull; <span id="userMoreSwitch"></span>'; 
+		if (!$acl->sruAdmin('computer', 'addForUser', $d['id'])) {
+			echo UFlib_Helper::displayHint("Komputer można dodać tylko aktywnemu użytkownikowi, który ma uzupełnione dane.");
+		}
 	
 		if (strlen($d['commentSkos'])) echo ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$d['commentSkos'].'" />';
 		echo '<p>';
