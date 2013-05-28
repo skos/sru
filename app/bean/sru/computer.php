@@ -186,7 +186,6 @@ extends UFbean_Common {
 				($post['typeId'] == UFbean_Sru_Computer::TYPE_SERVER || 
 				$post['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT) && 
 				(is_null($val) || (int)$val == 0)) {
-				return 'null';
 			}
 		} catch (UFex $e) {
 		}
@@ -233,8 +232,8 @@ extends UFbean_Common {
 	protected function validateTypeId($val, $change) {
 		if ($val == UFbean_Sru_Computer::TYPE_SERVER) {
 			try {
-				$user = UFra::factory('UFbean_Sru_User');
-				$user->getByPK($this->data['userId']);
+				$user = UFra::factory('UFbean_Sru_User'); 
+				$user->getByPK((int)$this->_srv->get('req')->get->userId);
 				if ($user->typeId != UFbean_Sru_User::TYPE_SKOS) {
 					return 'notSkos';
 				}

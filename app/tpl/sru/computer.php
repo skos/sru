@@ -946,6 +946,9 @@ div.style.display = 'none';
 			echo 'Ważny do: '.(is_null($d['availableTo']) ? 'brak limitu' : date(self::TIME_YYMMDD,$d['availableTo']))."\n";
 			echo 'IP: '.$d['ip']."\n";
 			echo 'Adres MAC: '.$d['mac']."\n";
+			if ($d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER || $d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT) {
+				echo 'Opiekun: '.$d['carerName']."\n";
+			}
 		}
 		if (!is_null($admin)) {
 			echo 'Admin modyfikujący: '.$admin->name."\n";
@@ -970,6 +973,9 @@ div.style.display = 'none';
 			echo 'Available to: '.(is_null($d['availableTo']) ? 'no limit' : date(self::TIME_YYMMDD,$d['availableTo']))."\n";
 			echo 'IP: '.$d['ip']."\n";
 			echo 'MAC address: '.$d['mac']."\n";
+			if ($d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER || $d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT) {
+				echo 'Carer: '.$d['carerName']."\n";
+			}
 		}
 		if (!is_null($admin)) {
 			echo 'Admin: '.$admin->name."\n";

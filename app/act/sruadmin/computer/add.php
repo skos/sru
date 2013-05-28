@@ -86,12 +86,26 @@ extends UFact {
 			$bean->ip = $ip->ip;
 			$conf = UFra::shared('UFconf_Sru');
 			$bean->availableTo = $conf->computerAvailableTo;
-			$bean->save();
+			$id = $bean->save();
 
 			if ($conf->sendEmail) {
+				$bean->getByPK($id);	// pobranie nowych danych, np. aliasu ds-u
 				// wyslanie maila do usera
 				$box = UFra::factory('UFbox_SruAdmin');
 				$sender = UFra::factory('UFlib_Sender');
+
+				if ($bean->typeId == UFbean_Sru_Computer::TYPE_SERVER || $bean->typeId == UFbean_Sru_Computer::TYPE_SERVER_VIRT) {
+					$admin = UFra::factory('UFbean_SruAdmin_Admin');
+					$admin->getByPK($this->_srv->get('session')->authAdmin);
+					
+					// admin, który został opiekunem, powinien dostać maila
+					$title = $box->carerChangedToYouMailTitle($bean);
+					$body = $box->carerChangedToYouMailBody($bean, $admin);
+					$newCarer = UFra::factory('UFbean_SruAdmin_Admin');
+					$newCarer->getByPK($bean->carerId);
+					$sender->send($newCarer, $title, $body, self::PREFIX);
+				}
+				
 				$title = $box->hostChangedMailTitle($bean, $user);
 				$body = $box->hostChangedMailBody($bean, self::PREFIX, $user);
 				$sender->send($user, $title, $body, self::PREFIX);
