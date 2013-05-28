@@ -2162,9 +2162,10 @@ extends UFbox {
 		return $this->render(__FUNCTION__, $d);
 	}
 
-	public function penaltyEditMailTitle($penalty, $user) {
+	public function penaltyEditMailTitle($penalty, $oldPenalty, $user) {
 		$d['user'] = $user;
 		$d['penalty'] = $penalty;
+		$d['oldPenalty'] = $oldPenalty;
 		return $this->render(__FUNCTION__, $d);
 	}
 	

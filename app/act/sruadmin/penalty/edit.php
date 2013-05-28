@@ -115,7 +115,7 @@ extends UFact {
 				// wyslanie maila do admina
 				$box = UFra::factory('UFbox_SruAdmin');
 				$sender = UFra::factory('UFlib_Sender');
-				$title = $box->penaltyEditMailTitle($bean, $user);
+				$title = $box->penaltyEditMailTitle($bean, $oldBean, $user);
 				$body = $box->penaltyEditMailBody($bean, $oldBean, $tplTitle, $user, $admin);
 				$sender->sendMail("admin-".$user->dormitoryAlias."@ds.pg.gda.pl", $title, $body, self::PREFIX);
 			}
