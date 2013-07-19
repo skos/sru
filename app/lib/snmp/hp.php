@@ -70,6 +70,10 @@ extends UFlib_Snmp {
 		'J8697A',
 	);
 
+	public $movedTrunksNumbers = array(
+		'J9147A',
+	);
+
 	public $movedPortsNumbers = array(
 		'J9452A',
 	);
@@ -383,6 +387,7 @@ extends UFlib_Snmp {
 							$name = $portUser - 288;
 						}
 						if ($name < 0) $name = $name + 2;
+						if (in_array($this->switch->modelNo, $this->movedTrunksNumbers)) $name = $name - 2;
 						$trunks = snmpwalk($switchIp, $this->communityR, $this->OIDs['trunk'], $this->timeout);
 						for ($i = 0; $i < count($trunks); $i++) {
 							if ($trunks[$i] == $name) {
