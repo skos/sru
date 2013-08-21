@@ -288,39 +288,6 @@ extends UFbox {
 		}
 	}
 
-	public function computerStats() {
-		try {
-			$get = $this->_srv->get('req')->get;
-
-			$bean = $this->_getComputerFromGetByCurrentUser();
-			$d['computer'] = $bean;
-
-			$d['statHour'] = $get->statHour;
-			$hour = explode(':', $d['statHour']);
-			$d['statDate'] = $get->statDate;
-			if (strlen($d['statHour']) != 5 || strpos($d['statHour'], ':') !== 2 || !is_numeric($hour[0]) || !is_numeric($hour[1]) || $hour[0] > 24 || $hour[0] < 0 || $hour[1] > 59 || $hour[1] < 0) {
-				$d['statHour'] = date('H:i');
-			}
-			if ((int)$d['statDate'] <= 0 || strlen($d['statDate']) != 8) {
-				$d['statDate'] = date('Ymd');
-			}
-		} catch (UFex_Dao_NotFound $e) {
-			return '';
-		}
-
-		$mac = str_replace(':', '', $bean->mac);
-		$rrd = UFra::factory('UFlib_Rrd');
-		$file = $rrd->generatePng($mac, $bean->host, $d['statHour'], $d['statDate']);
-
-		if (!file_exists(UFURL_BASE.'i/stats-img/'.$file.'.png')) {
-			return $this->render(__FUNCTION__.'NotFound');
-		} else {
-			$d['file'] = $file;
-		}
-
-		return $this->render(__FUNCTION__, $d);
-	}
-
 	public function userBar() {
 		try {
 			$bean = UFra::factory('UFbean_Sru_User');

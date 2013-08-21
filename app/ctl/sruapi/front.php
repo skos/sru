@@ -146,18 +146,6 @@ extends UFctl {
 						}
 					}
 					break;
-				case 'uploaders':
-					$get->view = 'uploaders';
-					break;
-				case 'myapi':
-					if ($segCount > 1) {
-						switch ($req->segment(2)) {
-							case 'lanstats':
-								$get->view = 'myapi/lanstats';
-								break;
-						}
-					}
-					break;
 				case 'dutyhours':
 					$get->view = 'dutyhours/all';
 					if ($segCount > 2) {
@@ -297,10 +285,6 @@ extends UFctl {
 				} else {
 					return 'SruApi_Error403';
 				}*/
-			case 'uploaders':
-				return 'SruApi_Uploaders';
-			case 'myapi/lanstats':
-				return 'SruApi_MyLanstats';
 			case 'admins/delete':
 				if($acl->sruApi('admin', 'delete')){
 					if($msg->get('adminsDelete/ok')) {

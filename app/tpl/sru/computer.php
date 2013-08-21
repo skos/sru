@@ -247,7 +247,6 @@ extends UFtpl_Common {
 		if($d['active'] && ($d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER || $d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT)) {
 			echo '<a href="'.$urlNav.'/:aliases"> Aliasy</a> &bull; ';
 		}
-		echo '<a href="'.$urlNav.'/stats"> Statystyki transferu</a> &bull; ';
 		if($d['active']) {
 			echo '<a href="'.$urlNav.'/:del"> Wyrejestruj</a> &bull; ';
 		}
@@ -380,8 +379,8 @@ changeVisibility();
 			echo '</div>';
 		}
 		echo $form->_fieldset('Uprawnienia');
-		echo $form->canAdmin('Komputer administratora '.UFlib_Helper::displayHint("Oznacza komputer na liście uploaderów oraz umozliwia dostęp do części webaplikacji SKOS."), array('type'=>$form->CHECKBOX));
-		echo $form->exAdmin('Komputer ex-administratora'.UFlib_Helper::displayHint("Oznacza komputer na liście uploaderów."), array('type'=>$form->CHECKBOX));
+		echo $form->canAdmin('Komputer administratora '.UFlib_Helper::displayHint("Umożliwia dostęp do części webaplikacji SKOS dla adminów."), array('type'=>$form->CHECKBOX));
+		echo $form->exAdmin('Komputer ex-administratora'.UFlib_Helper::displayHint("Umożliwia dostęp do części webaplikacji SKOS dla ex-adminów."), array('type'=>$form->CHECKBOX));
 		echo $form->_end();
 		echo $form->_fieldset('Inne');
 		$conf = UFra::shared('UFconf_Sru');
@@ -835,28 +834,6 @@ div.style.display = 'none';
 			'labelClass' => 'radio',
 			'class' => 'radio',
 		));
-	}
-
-	public function transferStats(array $d, $file, $hour, $date) {
-		$form = UFra::factory('UFlib_Form', 'transferStats');
-		echo $form->_start();
-		echo $form->_fieldset();
-		echo $form->statHour('Godzina (HH:MM)', array('value'=>$hour));
-		echo $form->statDate('Data (YYYYMMDD)', array('value'=>$date));
-		echo $form->_submit('Zobacz', array('after'=>UFlib_Helper::displayHint("Podgląd danych z przeszłości, gdzie data jest końcem wyświetlanych okresów. Uwaga, im starsze dane, tym mniej precyzyjne!")));
-		echo $form->_end();
-		echo $form->_end(true);
-
-		echo '<h3>Upload przez ostatnie 3 godziny</h3>';
-		echo '<p><img src="'.UFURL_BASE.'/i/stats-img/'.$file.'.png" alt="Statystyki transferów: 3h" /></p>';
-		echo '<h3>Upload przez ostatnie 24h godziny</h3>';
-		echo '<p><img src="'.UFURL_BASE.'/i/stats-img/'.$file.'.day.png" alt="Statystyki transferów: 24h" /></p>';
-		echo '<h3>Upload przez ostatni tydzień</h3>';
-		echo '<p><img src="'.UFURL_BASE.'/i/stats-img/'.$file.'.week.png" alt="Statystyki transferów: tydzień" /></p>';
-		echo '<h3>Upload przez ostatni miesiąc</h3>';
-		echo '<p><img src="'.UFURL_BASE.'/i/stats-img/'.$file.'.month.png" alt="Statystyki transferów: miesiąc" /></p>';
-		echo '<h3>Upload przez ostatni rok</h3>';
-		echo '<p><img src="'.UFURL_BASE.'/i/stats-img/'.$file.'.year.png" alt="Statystyki transferów: rok" /></p>';
 	}
 
 	public function apiComputersLocations(array $d) {

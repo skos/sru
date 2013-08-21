@@ -76,14 +76,6 @@ extends UFtpl_Common {
 	public function dormitoryFreeIps(array $d) {
 		$d['sum']->write('apiDormitoryFreeIps', $d['used']);
 	}
-
-	public function uploaders(array $d) {
-		$d['transfer']->write('apiTransferStats');
-	}
-	
-	public function myLanstats(array $d) {
-		$d['transfer']->write('myTransferStats', $d['upload'], $d['host']);
-	}
 	
 	public function firewallExceptions(array $d) {
 		$d['admins']->write('apiFirewallExceptions', $d['exadmins']);

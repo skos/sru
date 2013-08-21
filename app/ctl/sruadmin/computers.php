@@ -54,9 +54,6 @@ extends UFctl {
 							case 'history':
 								$get->view = 'computers/computer/history';
 								break;
-							case 'stats':
-								$get->view = 'computers/computer/stats';
-								break;
 							case ':edit':
 								$get->view = 'computers/computer/edit';
 								if ($segCount > 3) {
@@ -132,15 +129,6 @@ extends UFctl {
 				return 'SruAdmin_Computer';
 			case 'computers/computer/history':
 				return 'SruAdmin_ComputerHistory';
-			case 'computers/computer/stats':
-				try {
-					$get->statHour = $post->transferStats['statHour'];
-					$get->statDate = $post->transferStats['statDate'];
-				} catch (UFex_Core_DataNotFound $ex) {
-					$get->statHour = date('H:i');
-					$get->statDate = date('Ymd');
-				}
-				return 'SruAdmin_ComputerStats';
 			case 'computers/computer/delete':
 				if ($msg->get('computerDel/ok')) {
 					return 'SruAdmin_Computer';

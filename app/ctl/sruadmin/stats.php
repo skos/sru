@@ -15,7 +15,7 @@ extends UFctl {
 
 		// wyzsze segmenty sprawdzane sa w front'ie
 		if (1 == $segCount) {
-			$get->view = 'stats/transfer';
+			$get->view = 'stats/users';
 		} else {
 			switch ($req->segment(2)) {
 				case 'users':
@@ -63,8 +63,6 @@ extends UFctl {
 		}
 		
 		switch ($get->view) {
-			case 'stats/transfer':
-				return 'SruAdmin_StatsTransfer';
 			case 'stats/users':
 				return 'SruAdmin_StatsUsers';
 			case 'stats/penalties':

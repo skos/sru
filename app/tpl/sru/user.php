@@ -1424,7 +1424,7 @@ $(function() {
 	}
         
         public function userAddByAdminMailBody(array $d, $password) {
-		echo 'Potwierdzamy, że Twoje zostało utworzone.'."\n\n";
+		echo 'Potwierdzamy, że Twoje konto zostało utworzone.'."\n\n";
 		echo 'Login: '.$d['login']."\n";
                 echo 'Hasło: '.$password."\n";
 		echo 'Imię: '.$d['name']."\n";
