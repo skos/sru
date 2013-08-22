@@ -158,6 +158,7 @@ extends UFtpl_Common {
 
 	public function techDetails(array $d, $info, $gbics) {
 		$url = $this->url(0);
+		$vlanUrl = $url.'/ips/vlan/';
 
 		echo '<h3>Dane techniczne urządzenia</h3>';
 		if (!is_null($info)) {
@@ -170,20 +171,39 @@ extends UFtpl_Common {
 			echo '<p><em>VLANy:</em> ';
 			$vlans = '';
 			foreach ($info['vlans'] as $id=>$vlan) {
-				$vlans .= $vlan.' ('.substr($id, strrpos($id, '.') + 1).'), ';
+				$vlans .= '<a href="'.$vlanUrl.substr($id, strrpos($id, '.') + 1).'">'.$vlan.' ('.substr($id, strrpos($id, '.') + 1).')</a>, ';
 			}
 			if (strlen($vlans) > 0) {
 				$vlans = substr($vlans, 0, -2);
 			}
 			echo $vlans.'</p>';
-			echo '<table style="text-align: center;"><tr>';
-			echo '<td><em>CPU:</em> '.$info['cpu'].'%</td>';
-			$mem = round(($info['memAll']-$info['memFree'])/$info['memAll']*100,2);
-			echo '<td><em>Pamięć zużyta:</em> '.$mem.'%</td>';
-			echo '</tr><tr>';
-			echo '<td><img src="http://chart.apis.google.com/chart?chs=300x150&cht=gom&chd=t:'.$info['cpu'].'&chco=00FF00,FFFF00,FF8040,FF0000&chxt=x,y&chxl=0:||1:|0%|100%" alt=""/></td>';
-			echo '<td><img src="http://chart.apis.google.com/chart?chs=300x150&cht=gom&chd=t:'.$mem.'&chco=00FF00,FFFF00,FF8040,FF0000&chxt=x,y&chxl=0:||1:|0%|100%" alt=""/></td>';
-			echo '</tr></table>';
+			$mem = round(($info['memAll']-$info['memFree'])/$info['memAll']*100,2);;
+			
+			echo '
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+      google.load("visualization", "1", {packages:["gauge"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ["Label", "Value"],
+          ["CPU", '.$info['cpu'].'],
+	  ["Zużyta pamięć", '.$mem.']
+        ]);
+
+        var options = {
+          width: 800, height: 200,
+          redFrom: 90, redTo: 100,
+          yellowFrom:75, yellowTo: 90,
+          minorTicks: 5
+        };
+
+        var chart = new google.visualization.Gauge(document.getElementById("chart_div"));
+        chart.draw(data, options);
+      }
+</script>';
+
+			echo '<div id="chart_div"></div>';
 		} else {
 			echo $this->ERR('Nie udało się pobrać informacji.');
 		}
