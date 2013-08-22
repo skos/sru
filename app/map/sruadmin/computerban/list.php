@@ -10,7 +10,7 @@ extends UFmap {
 		'penaltyId'    => 'b.penalty_id',
 		'active'       => 'b.active',
 		'computerHost' => 'c.host',
-		
+		'computerIp'   => 'c.ipv4',
 		'id'           => 'p.id',
 		'userId'       => 'p.user_id',
 		'typeId'       => 'p.type_id',
@@ -23,6 +23,7 @@ extends UFmap {
 		'active'       => 'b.active',
 		'templateId'   => 'p.template_id',
 		'templateTitle' => 't.title',
+		'reason'	=> 'p.reason',
 	);
 
 	protected $columnTypes = array(
@@ -30,7 +31,7 @@ extends UFmap {
 		'penaltyId'    => self::INT,
 		'active'       => self::BOOL,
 		'computerHost' => self::TEXT,
-		
+		'computerIp'   => self::TEXT,
 		'id'           => self::INT,
 		'userId'       => self::INT,
 		'typeId'       => self::INT,
@@ -43,6 +44,7 @@ extends UFmap {
 		'active'       => self::BOOL,
 		'templateId'   => self::INT,
 		'templateTitle' => self::TEXT,
+		'reason'	=> self::TEXT,
 	);
 
 	protected $tables = array(

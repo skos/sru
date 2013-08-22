@@ -374,12 +374,37 @@ changeVisibility();
 		echo 'Komputer ukarany odcięciem od Internetu';
 	}
 
-	public function userBanned() {
-		echo '<h1>Twój komputer został ukarany odcięciem od Internetu</h1>
-<p>Zaloguj się, aby sprawdzić powód kary. Możesz się także skontaktować z administratorami w <a href="http://dyzury.ds.pg.gda.pl/">godzianch dyżurów</a>.</p>
+	public function userBanned(array $d) {
+		echo '<h1>Twój komputer został ukarany odcięciem od Internetu</h1>';
+		if (is_null($d['penalties'])) {
+			echo '<p>Zaloguj się, aby sprawdzić powód kary.</p>';
+		} else if (count($d['penalties']) == 1) {
+			echo 'Twój komputer został odcięty z następującego powodu: '.$d['penalties'][0]['reason'];
+		} else {
+			echo 'Twój komputer został odcięty z następujących powodów:';
+			echo '<ul>';
+			foreach ($d['penalties'] as $penalty) {
+				echo '<li>'.$penalty['reason'].'</li>';
+			}
+			echo '</ul>';
+		}
+		
+		echo '<p>Możesz skontaktować się z administratorami w <a href="http://dyzury.ds.pg.gda.pl/">godzianch dyżurów</a>.</p>
 <p>Zobacz także: <a href="http://skos.ds.pg.gda.pl">Strona SKOS</a> &bull; <a href="http://kary.ds.pg.gda.pl">Polityka kar</a></p>
-<h1>Your computer has been punished by cutting off Internet</h1>
-<p>Log in to check the reason of your penalty. You can also contact us during <a href="http://dyzury.ds.pg.gda.pl/">our duty hours</a>.</p>
+<h1>Your computer has been punished by cutting off Internet</h1>';
+		if (is_null($d['penalties'])) {
+			echo '<p>Log in to check the reason of your penalty.</p>';
+		} else if (count($d['penalties']) == 1) {
+			echo 'Reason for your penalty: '.$d['penalties'][0]['reason'];
+		} else {
+			echo 'Reason for your penalties:';
+			echo '<ul>';
+			foreach ($d['penalties'] as $penalty) {
+				echo '<li>'.$penalty['reason'].'</li>';
+			}
+			echo '</ul>';
+		}
+		echo '<p> You can contact us during <a href="http://dyzury.ds.pg.gda.pl/">our duty hours</a>.</p>
 <p>See also: <a href="http://skos.ds.pg.gda.pl">SKOS web page</a> &bull; <a href="http://kary.ds.pg.gda.pl">Penalties politic</a></p>';
 	}
 

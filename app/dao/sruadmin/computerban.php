@@ -34,4 +34,15 @@ extends UFdao {
 
 		return $this->doSelect($query);
 	}
+	
+	public function listByComputerIp($ip) {
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->computerIp, $ip);
+		$query->where($mapping->active, true); 
+		$query->order($mapping->endAt,  $query->DESC);
+		
+		return $this->doSelect($query);
+	}
 }

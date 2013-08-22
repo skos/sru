@@ -16,9 +16,9 @@ extends UFbox {
 					$computers->listByPenaltyId($penalty['id']);
 					foreach($computers as $computer){
 						$result[$penalty['id']][] = array(
-																'name' => $computer['computerHost'],
-																'id' => $computer['computerId']
-																);
+							'name' => $computer['computerHost'],
+							'id' => $computer['computerId']
+						);
 					}
 				} catch (UFex_Dao_NotFound $e) {
 					$result[$penalty['id']] = null;
@@ -319,6 +319,32 @@ extends UFbox {
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
 			return '';
+		}
+	}
+	
+	public function userBanned() {
+		$d['penalties'] = null;
+			
+		$serv = $this->_srv->get('req')->server;
+		if($serv->is('HTTP_X_FORWARDED_FOR') && $serv->HTTP_X_FORWARDED_FOR != '' ) {
+			$ip = $serv->HTTP_X_FORWARDED_FOR;
+		} else {
+			$ip =  $serv->REMOTE_ADDR;
+		}
+		$ip = '172.16.214.0';
+		if (strlen($ip) < 7 || substr($ip, 0, 7) != '172.16.') {
+			return $this->render(__FUNCTION__, $d);
+		}
+		$ip = str_replace('172.16.', '153.19.', $ip);
+
+		try {
+			$bean = UFra::factory('UFbean_SruAdmin_ComputerBanList');
+			$bean->listByComputerIp($ip);
+			$d['penalties'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__, $d);
 		}
 	}
 

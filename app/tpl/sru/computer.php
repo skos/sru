@@ -78,7 +78,7 @@ extends UFtpl_Common {
 		$url = $this->url(0);
 
 		echo '<ul>';
-		foreach($d as $c){;
+		foreach($d as $c){
 			if ($c['banned'] == true) {
 				echo '<li class="ban">';
 			} else {
@@ -229,7 +229,7 @@ extends UFtpl_Common {
 		if (is_null($d['modifiedBy'])) {
 			$changed = 'UŻYTKOWNIK';
 		} else {
-			$changed = '<a href="'.$url.'/admins/'.$d['modifiedById'].'">'.$this->_escape($d['modifiedBy']).'</a>';;
+			$changed = '<a href="'.$url.'/admins/'.$d['modifiedById'].'">'.$this->_escape($d['modifiedBy']).'</a>';
 		}
 		echo '<p><em>Zmiana:</em> '.date(self::TIME_YYMMDD_HHMM, $d['modifiedAt']).'<small> ('.$changed.')</small></p>';
 		echo '<div id="computerMore">';
