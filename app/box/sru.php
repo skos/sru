@@ -331,7 +331,7 @@ extends UFbox {
 		} else {
 			$ip =  $serv->REMOTE_ADDR;
 		}
-		$ip = '172.16.214.0';
+
 		if (strlen($ip) < 7 || substr($ip, 0, 7) != '172.16.') {
 			return $this->render(__FUNCTION__, $d);
 		}
