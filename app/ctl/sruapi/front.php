@@ -102,6 +102,18 @@ extends UFctl {
 									$get->dormAlias = $req->segment(3);
 								}
 								break;
+							case 'modelips':
+								if ($segCount > 2) {
+									$get->view = 'switches/modelips';
+									$get->model = $req->segment(3);
+								}
+								break;
+							case 'models':
+								$get->view = 'switches/models';
+								if ($segCount > 2) {
+									$get->ds = $req->segment(3);
+								}
+								break;
 						}
 					}
 					break;
@@ -252,6 +264,10 @@ extends UFctl {
 				return 'SruApi_FindMac';
 			case 'switches/structure':
 				return 'SruApi_SwitchesStructure';
+			case 'switches/modelips':
+				return 'SruApi_SwitchesModelIps';
+			case 'switches/models':
+				return 'SruApi_SwitchesModels';
 			case 'dormitory/computers':
 				if ($acl->sruApi('computer', 'showLocations')) {
 					return 'SruApi_ComputersLocations';

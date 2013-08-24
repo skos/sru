@@ -44,6 +44,14 @@ extends UFtpl_Common {
 	public function switchesStructure(array $d) {
 		$d['switchPorts']->write('apiStructure', $d['dormitory']);
 	}
+	
+	public function switchesModelIps(array $d) {
+		$d['switches']->write('apiList');
+	}
+	
+	public function switchesModels(array $d) {
+		$d['switches']->write('apiModelList');
+	}
 
 	public function error404() {
 		header('HTTP/1.0 404 Not Found');

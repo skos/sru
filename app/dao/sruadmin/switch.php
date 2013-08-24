@@ -40,7 +40,34 @@ extends UFdao {
 
 		return $this->doSelect($query);
 	}
+	
+	public function listEnabledByModelNo($model) {
+		$mapping = $this->mapping('list');
 
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->hierarchyNo, null, UFlib_Db_Query::NOT_EQ);
+		$query->where($mapping->ip, null, UFlib_Db_Query::NOT_EQ);
+		$query->where($mapping->modelNo, $model);
+		$query->order($mapping->dormitoryId);
+		$query->order($mapping->lab);
+		$query->order($mapping->hierarchyNo);
+
+		return $this->doSelect($query);
+	}
+
+	public function listEnabledByDormAlias($dorm) {
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->hierarchyNo, null, UFlib_Db_Query::NOT_EQ);
+		$query->where($mapping->ip, null, UFlib_Db_Query::NOT_EQ);
+		$query->where($mapping->dormitoryAlias, $dorm);
+		$query->order($mapping->lab);
+		$query->order($mapping->hierarchyNo);
+
+		return $this->doSelect($query);
+	}
+	
 	public function getBySerialNo($no) {
 		$mapping = $this->mapping('get');
 

@@ -375,4 +375,10 @@ function fillData() {
 			echo $c['ip']."\n";
 		}
 	}
+	
+	public function apiModelList(array $d) {
+		foreach ($d as $c) {
+			echo $c['ip']."/".$c['modelNo']."\n";
+		}
+	}
 }

@@ -193,6 +193,44 @@ extends UFbox {
 			return '';
 		}
 	}
+	
+	public function switchesModelIps() {
+		try {
+			$model = $this->_srv->get('req')->get->model;
+			
+			$bean = UFra::factory('UFbean_SruAdmin_SwitchList');
+			$bean->listEnabledByModelNo($model);
+
+			$d['switches'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return '';
+		}
+	}
+	
+	public function switchesModels() {
+		try {
+			try {
+				$ds = $this->_srv->get('req')->get->ds;
+			} catch (UFex_Core_DataNotFound $e) {
+				$ds = null;
+			}
+
+			$bean = UFra::factory('UFbean_SruAdmin_SwitchList');
+			if (is_null($ds)) {
+				$bean->listEnabled();
+			} else {
+				$bean->listEnabledByDormAlias($ds);
+			}
+
+			$d['switches'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return '';
+		}
+	}
 
 	public function penaltiesPast() {
 		try {
