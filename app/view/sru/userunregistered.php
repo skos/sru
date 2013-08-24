@@ -12,5 +12,6 @@ extends UFview {
 		$this->append('body', $box->userUnregistered());
 		$this->append('body', $box->login());
 		$this->append('body', $box->recoverPassword());
+		$this->append('body', $box->userUnregisteredMore());
 	}
 }
