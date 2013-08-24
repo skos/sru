@@ -11,6 +11,7 @@ extends UFtpl_Common {
 		'serialNo/duplicated' => 'Numer seryjny jest już zajęty',
 		'inventoryNo/duplicated' => 'Numer inwentarzowy jest już zajęty',
 		'hierarchyNo/duplicated' => 'Numer w hierarchii jest już zajęty',
+		'ip/notFound' => 'Niedozwolony adres IP',
 		'ip/duplicated' => 'Numer IP jest już zajęty',
 		'ip/noHierachyNo' => 'Numer IP może być przydzielony jedynie switchowi z numerem hierarchii',
 		'ip/regexp' => 'Błędny format numeru IP',

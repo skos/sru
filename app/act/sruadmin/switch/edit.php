@@ -37,6 +37,18 @@ extends UFact {
 			if ($modelId != $bean->modelId && (!array_key_exists('ignoreModelChange', $post) || 0 == $post['ignoreModelChange'])) {
 				throw UFra::factory('UFex_Dao_DataNotValid', 'Change of switch model', 0, E_WARNING,  array('model' => 'change'));
 			}
+			
+			try {
+				$ip = UFra::factory('UFbean_Sru_Ipv4');
+				$ip->getByIp($post['ip']);
+			} catch (UFex_Dao_NotFound $e) {
+				$this->markErrors(self::PREFIX, array('ip'=>'notFound'));
+				return;
+			} catch (UFex_Db_QueryFailed $e) {
+				$this->markErrors(self::PREFIX, array('ip'=>''));
+				return;
+			}
+			
 			$bean->save();
 
 			if ($modelId != $bean->modelId) {
