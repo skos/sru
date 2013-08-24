@@ -342,10 +342,15 @@ extends UFtpl_Common {
 
 	public function toDoList(array $d, $users) {
 		$url = $this->url(0);
+		echo '<h3>Otwarte tickety w OTRS:</h3>';
+		echo '<div id="otrstickets"><img class="loadingImg" src="'.UFURL_BASE.'/i/img/ladowanie.gif" alt="Trwa ładowanie ticketów..." /></div>';
 
-		if (is_null($users)) {
-			echo $this->OK('Brak zadań!');
-		} else {
+?>
+<script>
+$("#otrstickets").load('<?=UFURL_BASE?>/admin/apis/otrstickets');
+</script>
+<?
+		if (!is_null($users)) {
 			echo '<h3>Hosty bez przypisanego opiekuna:</h3>';
 			echo '<ul>';
 			foreach ($users as $dorm) {

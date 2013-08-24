@@ -41,6 +41,10 @@ extends UFconf {
 	protected $jabberDomain = '';
 	protected $ggGate = '';
 
+	protected $otrsUrl = '';
+	protected $otrsUser = '';
+	protected $otrsPass = '';
+
 	protected $userPrintWaletText = '';
 	protected $touristPrintWaletText = '';
 	protected $userPrintSkosText = '';

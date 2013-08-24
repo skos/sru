@@ -2085,6 +2085,14 @@ extends UFbox {
 		}	
 	}
 	
+	public function apisOtrsTickets() {
+		$otrs = UFra::factory('UFlib_Otrs');
+		$tickets = $otrs->getOpenTickets();
+		$d['tickets'] = $tickets;
+		
+		return $this->render(__FUNCTION__, $d);
+	}
+	
 	public function penaltyAddMailTitle($penalty, $user) {
 		$d['user'] = $user;
 		$d['penalty'] = $penalty;

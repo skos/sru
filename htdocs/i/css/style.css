@@ -244,3 +244,9 @@ border-top: 1px solid;
     position: relative;
     width: 43px;
 }
+
+#main img.loadingImg {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}

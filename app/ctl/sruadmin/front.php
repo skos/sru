@@ -47,6 +47,10 @@ extends UFctl {
 					$ctl = UFra::factory('UFctl_SruAdmin_Switches');
 					$ctl->go();
 					return false;
+				case 'apis':
+					$ctl = UFra::factory('UFctl_SruAdmin_Apis');
+					$ctl->go();
+					return false;
 				default:
 					$get->view = 'error404';
 					break;

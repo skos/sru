@@ -369,7 +369,7 @@ changeVisibility();
 	}
 	
 	public function userUnregisteredMore() {
-		echo '<div style="clear:both"><a id="more" /><img src="'.UFURL_BASE.'/i/img/unregistered_info.png" alt="Szczegółowa instrukcja podłączenia się do Internetu"></div>';
+		echo '<div style="clear:both"><a id="more" /><img src="'.UFURL_BASE.'/i/img/niezarejestrowani_info.png" alt="Szczegółowa instrukcja podłączenia się do Internetu"></div>';
 	}
 
 	public function titleUserBanned() {

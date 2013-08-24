@@ -42,7 +42,7 @@ extends UFtpl_Common {
 
 	public function menuAdmin() {
 		echo '<ul id="nav">';
-		echo '<li><a href="'.UFURL_BASE.'/admin/">Użytkownicy</a></li>';
+		echo '<li><a href="'.UFURL_BASE.'/admin/">Pulpit</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/penalties/">Kary</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/dormitories/">Akademiki</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/stats/">Statystyki</a></li>';
@@ -277,7 +277,7 @@ extends UFtpl_Common {
 		$form = UFra::factory('UFlib_Form');
 		$acl = $this->_srv->get('acl');
 
-		echo '<h2>Szukaj | <a href="'.$this->url(0).'/ips/vlan/'.UFbean_SruAdmin_Vlan::DEFAULT_VLAN.'">VLANy</a></h2>';
+		echo '<h2>Szukaj</h2>';
 
 		echo '<div class="userSearch">';
 		echo $form->_start($this->url(0).'/users/search');
@@ -1315,6 +1315,19 @@ extends UFtpl_Common {
 	public function adminComputersModified(array $d) {
 		echo '<h3>Komputery ostatnio modyfikowane/dodane</h3>';
 		$d['modifiedComputers']->write('computerLastModified');
+	}
+	
+	public function apisOtrsTickets(array $d) {
+		if (is_null($d['tickets']) || count($d['tickets']) == 0) {
+			echo $this->OK('Brak otwartych ticketów');
+			return;
+		}
+		echo '<ul>';
+		foreach ($d['tickets'] as $ticket) {
+			$ticketId = $ticket["TicketID"];
+			echo '<li><a href="https://otrs.ds.pg.gda.pl/otrs/index.pl?Action=AgentTicketZoom;TicketID='.$ticketId.'">'.$ticket['Title'].'</a> <small>(z '.$ticket['Created'].' od '.$ticket['CustomerUserID'].')</small></li>';
+		}
+		echo '</ul>';
 	}
 	
 	public function penaltyAddMailTitle(array $d) {
