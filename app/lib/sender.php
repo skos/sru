@@ -7,25 +7,45 @@ class UFlib_Sender {
 		$mailHeaders = 'MIME-Version: 1.0'."\n";
 		$mailHeaders .= 'Content-Type: text/plain; charset=UTF-8'."\n";
 		$mailHeaders .=  'Content-Transfer-Encoding: 8bit'."\n";
-		$mailHeaders .=  'From: Administratorzy SKOS <adnet@ds.pg.gda.pl>'."\n";
+		$mailHeaders .=  'From: Administratorzy SKOS <admin@ds.pg.gda.pl>'."\n";
 		foreach ($headers as $header => $value) {
 			$mailHeaders .=  $header.': '.$value."\n";
 		}
 		return $mailHeaders;
 	}
 
-	// wysyłanie wszystkich powiadomień
-	public function send($user, $title, $body, $action = null) {
-		$this->sendMail($user->email, $title, $body, $action, isset($user->lang) ? $user->lang : null);
+	/**
+	 * wysyłanie wszystkich powiadomień
+	 * @param type $user użytkownik
+	 * @param type $title tytuł
+	 * @param type $body treść
+	 * @param type $action ew. akcja wywołująca maila
+	 * @param type $dormitoryAlias akademik, do którego powinna pójść ew. odpowiedź na maila
+	 */
+	public function send($user, $title, $body, $action = null, $dormitoryAlias = null) {
+		$this->sendMail($user->email, $title, $body, $action, isset($user->lang) ? $user->lang : null, $dormitoryAlias);
 		if ($user->gg != '') {
 			$this->sendGG($user->gg, $body, isset($user->lang) ? $user->lang : null);
 		}
 	}
 
-	// wysyłanie maili
-	public function sendMail($email, $title, $body, $action = null, $lang = null) {
+	/**
+	 * Wysyłanie maili
+	 * @param type $email adresat
+	 * @param string $title tytuł
+	 * @param type $body treść
+	 * @param type $action ew. akcja wywołująca maila
+	 * @param type $lang język
+	 * @param type $dormitoryAlias akademik, do którego powinna pójść ew. odpowiedź na maila
+	 */
+	public function sendMail($email, $title, $body, $action = null, $lang = null, $dormitoryAlias = null) {
 		if ($action != null) {
-			$headers = $this->mailHeaders(array('X-SRU'=>$action));
+			$additionalHeaders = array();
+			$additionalHeaders['X-SRU'] = $action;
+			if ($action == UFact_SruWalet_User_Del::PREFIX && !is_null($dormitoryAlias)) {
+				$additionalHeaders['Reply-to'] = 'admin@ds.pg.gda.pl; '.$dormitoryAlias.'@pg.gda.pl';
+			}
+			$headers = $this->mailHeaders($additionalHeaders);
 		} else {
 			$headers = $this->mailHeaders();
 		}

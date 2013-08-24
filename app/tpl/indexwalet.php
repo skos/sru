@@ -32,7 +32,7 @@ extends UFtpl_Common {
 <?=$d['body'];?>
 </div><!-- main -->
 <div id="foot">
-&copy;&nbsp;<a href="mailto:adnet@ds.pg.gda.pl">SKOS PG</a>
+&copy;&nbsp;<a href="http://skos.ds.pg.gda.pl">SKOS PG</a>
 </div><!-- foot -->
 </div><!-- body -->
 <script type="text/javascript">

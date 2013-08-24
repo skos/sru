@@ -37,7 +37,7 @@ extends UFact {
 				$box = UFra::factory('UFbox_SruAdmin');
 				$title = $box->dataChangedMailTitle($bean);
 				$body = $box->dataChangedMailBody($bean, $history);
-				$sender->send($bean, $title, $body, self::PREFIX);
+				$sender->send($bean, $title, $body, self::PREFIX, $bean->dormitoryAlias);
 			}
 
 			$this->postDel(self::PREFIX);

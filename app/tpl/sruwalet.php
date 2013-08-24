@@ -100,7 +100,7 @@ extends UFtpl_Common {
 	}
 
 	public function mainPageInfo() {
-		echo '<div><br/>Wszlekie znalezione błędy prosimy zgłaszać na adres <a href="mailto:adnet@ds.pg.gda.pl">adnet@ds.pg.gda.pl</a>.</div>';
+		echo '<div><br/>Wszlekie znalezione błędy prosimy zgłaszać na adres <a href="mailto:admin@ds.pg.gda.pl">admin@ds.pg.gda.pl</a>.</div>';
 	}
 
 	private function generateNewUserLink(array $searched) {
