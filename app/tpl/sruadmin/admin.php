@@ -17,7 +17,7 @@ extends UFtpl_Common {
 		'login/regexp' => 'Login zawiera niedozwolone znaki',
 		'login/duplicated' => 'Login jest zajęty',
 		'login/textMax' => 'Login jest za długi',
-		'password' => 'Hasło musi mieć co najmniej 8 znaków, zawierać co najmniej 1 dużą literę, 1 małą literę, 1 cyfrę i 1 znak specjalny',
+		'password' => 'Nieprawidłowy format hasła',
 		'password/mismatch' => 'Hasła różnią się',
 		'password/same' => 'Hasło jest identyczne z poprzednim',
 		'password/sameAsInner' => 'Hasło jest identyczne zhasłem wewnętrznym',
@@ -106,7 +106,6 @@ extends UFtpl_Common {
 		echo $this->_escape($d['name']);
 	}	
 	public function details(array $d) {
-		$url = $this->url(0);
 		if (array_key_exists($d['typeId'], UFtpl_SruAdmin_Admin::$adminTypes)) {
 			$type = UFtpl_SruAdmin_Admin::$adminTypes[$d['typeId']];
 		} else {
@@ -160,12 +159,13 @@ extends UFtpl_Common {
 
 		echo $form->_fieldset();
 		echo $form->login('Login');
-		echo $form->password('Hasło', array('type'=>$form->PASSWORD));
+		echo $form->password('Hasło', array('type'=>$form->PASSWORD, 'after'=> UFlib_Helper::displayHint("Hasło do logowania się do SRU. Musi mieć co najmniej 8 znaków, zawierać co najmniej 1 dużą literę, 1 małą literę, 1 cyfrę i 1 znak specjalny.")));
 		echo $form->password2('Powtórz hasło', array('type'=>$form->PASSWORD));
 		echo $form->name('Nazwa', array('after'=>UFlib_Helper::displayHint("Imię i nazwisko administratora lub inne oznaczenie.")));
 		
-		if($this->_srv->get('acl')->sruAdmin('admin', 'addChangeActiveDate'))
+		if($this->_srv->get('acl')->sruAdmin('admin', 'addChangeActiveDate')) {
 			 echo $form->activeTo('Aktywny do', array('after'=> UFlib_Helper::displayHint($this->instrukcjaObslugiPolaAktywnyDo)));
+		}
 		echo $form->typeId('Uprawnienia', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(UFtpl_SruAdmin_Admin::$adminTypes),
@@ -203,9 +203,9 @@ extends UFtpl_Common {
 		
 		echo $form->name('Nazwa', array('after'=> UFlib_Helper::displayHint("Imię i nazwisko administratora lub inne oznaczenie.")));
 		
-		echo $form->password('Hasło', array('type'=>$form->PASSWORD, 'after'=> UFlib_Helper::displayHint("Hasło do logowania się do SRU.")));
+		echo $form->password('Hasło', array('type'=>$form->PASSWORD, 'after'=> UFlib_Helper::displayHint("Hasło do logowania się do SRU. Musi mieć co najmniej 8 znaków, zawierać co najmniej 1 dużą literę, 1 małą literę, 1 cyfrę i 1 znak specjalny.")));
 		echo $form->password2('Powtórz hasło', array('type'=>$form->PASSWORD));
-		echo $form->passwordInner('Hasło wewnętrzne', array('type'=>$form->PASSWORD, 'after'=> UFlib_Helper::displayHint("Hasło do logowania się do systemów SKOS.")));
+		echo $form->passwordInner('Hasło wewnętrzne', array('type'=>$form->PASSWORD, 'after'=> UFlib_Helper::displayHint("Hasło do logowania się do systemów SKOS. Musi mieć co najmniej 8 znaków, zawierać co najmniej 1 dużą literę, 1 małą literę, 1 cyfrę i 1 znak specjalny.")));
 		echo $form->passwordInner2('Powtórz hasło wewnętrzne', array('type'=>$form->PASSWORD));
 
 		if($this->_srv->get('acl')->sruAdmin('admin', 'addChangeActiveDate'))

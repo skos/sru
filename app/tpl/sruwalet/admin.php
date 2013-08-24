@@ -16,7 +16,7 @@ extends UFtpl_Common {
 		'login/regexp' => 'Login zawiera niedozwolone znaki',
 		'login/duplicated' => 'Login jest zajęty',
 		'login/textMax' => 'Login jest za długi',
-		'password' => 'Hasło musi mieć co najmniej 8 znaków, zawierać co najmniej 1 dużą literę, 1 małą literę, 1 cyfrę i 1 znak specjalny',
+		'password' => 'Nieprawidłowy format hasła',
 		'password/mismatch' => 'Hasła różnią się',
 	    	'password/same' => 'Hasło jest identyczne z poprzednim',
 		'name' => 'Podaj nazwę',
@@ -148,7 +148,7 @@ $(document).ready(function()
 
 		echo $form->_fieldset();
 		echo $form->login('Login', array('class'=>'required'));
-		echo $form->password('Hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
+		echo $form->password('Hasło', array('type'=>$form->PASSWORD, 'class'=>'required', 'after'=>UFlib_Helper::displayHint("Hasło musi mieć co najmniej 8 znaków, zawierać co najmniej 1 dużą literę, 1 małą literę, 1 cyfrę i 1 znak specjalny")));
 		echo $form->password2('Powtórz hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
 		echo $form->name('Imię i nazwisko', array('after'=>UFlib_Helper::displayHint("Imię i nazwisko administratora lub inne oznaczenie."), 'class'=>'required')); 
 		echo $form->typeId('Uprawnienia', array( 
@@ -200,7 +200,7 @@ $(document).ready(function()
 
 		echo $form->_fieldset();
 		echo $form->name('Imię i nazwisko', array('after'=>UFlib_Helper::displayHint("Imię i nazwisko administratora lub inne oznaczenie."), 'class'=>'required'));
-		echo $form->password('Hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
+		echo $form->password('Hasło', array('type'=>$form->PASSWORD, 'class'=>'required', 'after'=>UFlib_Helper::displayHint("Hasło musi mieć co najmniej 8 znaków, zawierać co najmniej 1 dużą literę, 1 małą literę, 1 cyfrę i 1 znak specjalny")));
 		echo $form->password2('Powtórz hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
 		if($advanced) {
 			echo $form->typeId('Uprawnienia', array( 
