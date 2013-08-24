@@ -186,6 +186,7 @@ extends UFbean_Common {
 				($post['typeId'] == UFbean_Sru_Computer::TYPE_SERVER || 
 				$post['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT) && 
 				(is_null($val) || (int)$val == 0)) {
+				return 'null';
 			}
 		} catch (UFex $e) {
 		}
