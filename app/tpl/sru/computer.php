@@ -458,7 +458,7 @@ initialAutoDeactivation = document.getElementById("computerEdit_autoDeactivation
 			autoDeactivationDiv.style.display = "none";
 			autoDeactivationDiv.style.visibility = "hidden";
 			autoDeactivation.checked = false;
-		} else if (form.value == <? echo UFbean_Sru_Computer::TYPE_STUDENT_AP; ?> || form.value == <? echo UFbean_Sru_Computer::TYPE_STUDENT_OTHER; ?>) {
+		} else if (form.value == <? echo UFbean_Sru_Computer::TYPE_STUDENT_OTHER; ?>) {
 			autoDeactivationDiv.style.display = "block";
 			autoDeactivationDiv.style.visibility = "visible";
 			if (typeId != initialTypeId) {
