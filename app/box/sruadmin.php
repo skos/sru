@@ -883,11 +883,6 @@ extends UFbox {
 			$bean = $this->_getAdminFromGet();
 			$d['admin'] = $bean;
 
-			// tylko admini Waleta opiekują się hostami
-			if ($bean->typeId != UFacl_SruWalet_Admin::DORM && $bean->typeId != UFacl_SruWalet_Admin::OFFICE && $bean->typeId != UFacl_SruWalet_Admin::HEAD) {
-				return '';
-			}
-
 			$hosts = UFra::factory('UFbean_Sru_ComputerList');
 			$hosts->listCaredByAdminId($bean->id);
 			$d['hosts'] = $hosts;
