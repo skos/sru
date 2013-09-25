@@ -61,6 +61,9 @@ extends UFtpl_Common {
 		if ($this->_srv->get('msg')->get('userEdit/ok')) {
 			echo $this->OK('Dane zostały zmienione. Pamiętaj, aby zaktualizować dane, gdy ponownie ulegną zmianie.');
 		}
+		if ($this->_srv->get('msg')->get('sendMessage/ok')) {
+			echo $this->OK('Wiadomość została wysłana. Odpowiemy na nią najszybciej, jak to będzie możliwe na adres e-mail podany w SRU.');
+		}
 		
 		$form = UFra::factory('UFlib_Form');
 
@@ -100,10 +103,12 @@ extends UFtpl_Common {
 	public function contact(array $d) {
 		echo '<div class="rightColumn">';
 		$form = UFra::factory('UFlib_Form');
-
+		echo $form->_start();
+		
 		echo $form->_fieldset('Kontakt');
-		echo '<h3>Adres e-mail do wszystkich administratorów w DSie:<br/><a href="mailto:admin-'.$d['user']->dormitoryAlias.'@ds.pg.gda.pl">admin-'.$d['user']->dormitoryAlias.'@ds.pg.gda.pl</a>.</h3>';
+		echo $d['user']->write('contactForm');
 		echo $form->_end();
+		echo $form->_end(true);
 
 		echo $form->_fieldset('Najbliższe dyżury');
 		if (!is_null($d['dutyHours'])) {

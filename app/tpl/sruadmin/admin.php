@@ -342,6 +342,14 @@ extends UFtpl_Common {
 
 	public function toDoList(array $d, $users) {
 		$url = $this->url(0);
+		echo '<h3>Problemy w Zabbiksie:</h3>';
+		echo '<div id="zabbixproblems"><img class="loadingImg" src="'.UFURL_BASE.'/i/img/ladowanie.gif" alt="Trwa ładowanie problemów..." /></div>';
+
+?>
+<script>
+$("#zabbixproblems").load('<?=UFURL_BASE?>/admin/apis/zabbixproblems');
+</script>
+<?
 		echo '<h3>Otwarte tickety w OTRS:</h3>';
 		echo '<div id="otrstickets"><img class="loadingImg" src="'.UFURL_BASE.'/i/img/ladowanie.gif" alt="Trwa ładowanie ticketów..." /></div>';
 

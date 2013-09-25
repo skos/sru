@@ -133,6 +133,7 @@ extends UFtpl_Common {
 		'pesel/duplicated' => 'PESEL przypisany do innego mieszkańca',
 		'typeId/noTypeId' => 'Określ typ',
 		'birthDate/105' => 'Nieprawidłowy format daty',
+		'message/notEmpty' => 'Wiadomość nie może być pusta',
 	);
 
 	/*
@@ -1292,6 +1293,14 @@ $(function() {
 		foreach ($d as $c) {
 			echo '<li'.($c['banned']?' class="ban"':'').'>'.(!$c['active']?'<del>':'').'<a href="'.$url.$c['id'].'">'.$this->_escape($c['name']).' '.$this->_escape($c['surname']).'</a>'.(!$c['active']?'</del>':'').(strlen($c['commentSkos']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['commentSkos'].'" />':'').'</li>';
 		}
+	}
+	
+	public function contactForm(array $d) {
+		$form = UFra::factory('UFlib_Form', 'sendMessage', $d, $this->errors);
+		echo 'Wiadomość do administratora SKOS:';
+		echo $form->message('', array('type'=>$form->TEXTAREA, 'rows'=>5));
+		echo $form->_submit('Wyślij');
+		echo '<br/>Odpowiedź otrzymasz na maila zarejestrowanego w SRU.';
 	}
 
 	public function userBar(array $d, $ip, $time, $invIp, $invTime) {

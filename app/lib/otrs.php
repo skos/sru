@@ -7,10 +7,10 @@ class UFlib_Otrs {
 
 	public function getOpenTickets() {
 		$conf = UFra::shared('UFconf_Sru');
-		$url = $conf->otrsUrl;
+		$url = $conf->otrsUrl . '/rpc.pl';
 		$username = $conf->otrsUser;
 		$password = $conf->otrsPass;
-		
+
 		$client = new SoapClient(null, array(
 		    'location' => $url,
 		    'uri' => "Core",
@@ -49,6 +49,65 @@ class UFlib_Otrs {
 		}
 
 		return $allTickets;
+	}
+
+	public function sendMessage($user, $message) {
+		$conf = UFra::shared('UFconf_Sru');
+		$url = $conf->otrsUrl . '/rpc.pl';
+		$username = $conf->otrsUser;
+		$password = $conf->otrsPass;
+		$title = "Zgłoszenie wysłane przez SRU";
+
+		$client = new SoapClient(null, array(
+		    'location' => $url,
+		    'uri' => "Core",
+		    'trace' => 1,
+		    'login' => $username,
+		    'password' => $password,
+		    'style' => SOAP_RPC,
+		    'use' => SOAP_ENCODED));
+
+		// pobieramy nr ticketa
+		$ticketnumber = $client->__soapCall("Dispatch", array($username, $password, "TicketObject", "TicketCreateNumber"));
+
+		// tworzymy ticketa
+		$TicketID = $client->__soapCall("Dispatch", array($username, $password, "TicketObject", "TicketCreate",
+		    "TN", $ticketnumber,
+		    "Title", $title,
+		    "Queue", 'Raw',
+		    "Lock", 'unlock',
+		    "Priority", '3 normal',
+		    "State", 'new',
+		    "Type", 'default',
+		    "CustomerUser", $user->email,
+		    "CustomerID", $user->email,
+		    "OwnerID", 1,
+		    "ResponsibleID", 1,
+		    "UserID", 1
+		));
+
+		// tworzymy treść ticketa
+		$client->__soapCall("Dispatch", array($username, $password,
+		    "TicketObject", "ArticleCreate",
+		    "TicketID", $TicketID,
+		    "ArticleType", "webrequest",
+		    "SenderType", "customer",
+		    "HistoryType", "WebRequestCustomer",
+		    "HistoryComment", "created from PHP",
+		    "From", $user->email,
+		    "Subject", $title,
+		    "ContentType", "text/plain; charset=ISO-8859-2",
+		    "Body", $message,
+		    "UserID", 1,
+		    "Loop", 0,
+		    "AutoResponseType", 'auto reply',
+		    "OrigHeader", array(
+			'From' => $user->email,
+			'To' => 'admin@ds.pg.gda.pl',
+			'Subject' => $title,
+			'Body' => $message
+		    ),
+		));
 	}
 
 }

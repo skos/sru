@@ -24,6 +24,13 @@ extends UFctl {
 						$get->view = 'otrs/tickets';
 					}
 					break;
+				case 'zabbixproblems':
+					if ($segCount > 2) {
+						$get->view = 'error404';
+					} else {  
+						$get->view = 'zabbix/problems';
+					}
+					break;
 				default:
 					$get->view = 'error404';
 					break;
@@ -60,7 +67,9 @@ extends UFctl {
 		switch ($get->view) 
 		{
 			case 'otrs/tickets':
-				return 'SruAdmin_ApisOtrsTickets';								
+				return 'SruAdmin_ApisOtrsTickets';
+			case 'zabbix/problems':
+				return 'SruAdmin_ApisZabbixProblems';
 			default:
 				return 'Sru_Error404';
 		}

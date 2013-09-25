@@ -27,6 +27,9 @@ extends UFctl {
 				case 'active':
 					$get->view = 'admins/active';
 					break;
+				case 'tasks':
+					$get->view = 'admins/tasks';
+					break;
 				default:
 					$get->view = 'admins/admin';
 					$id = (int)$req->segment(2);
@@ -117,6 +120,8 @@ extends UFctl {
 					$get->activeOn = 0;
 				}
 				return 'SruAdmin_AdminsActive';
+			case 'admins/tasks':
+				return 'SruAdmin_AdminTasks';
 			default:
 				return 'Sru_Error404';
 		}

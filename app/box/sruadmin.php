@@ -2093,6 +2093,14 @@ extends UFbox {
 		return $this->render(__FUNCTION__, $d);
 	}
 	
+	public function apisZabbixProblems() {
+		$zabbix = UFra::factory('UFlib_Zabbix');
+		$problems = $zabbix->getAllActiveProblems();
+		$d['problems'] = $problems;
+		
+		return $this->render(__FUNCTION__, $d);
+	}
+	
 	public function penaltyAddMailTitle($penalty, $user) {
 		$d['user'] = $user;
 		$d['penalty'] = $penalty;

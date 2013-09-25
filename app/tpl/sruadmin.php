@@ -42,7 +42,8 @@ extends UFtpl_Common {
 
 	public function menuAdmin() {
 		echo '<ul id="nav">';
-		echo '<li><a href="'.UFURL_BASE.'/admin/">Pulpit</a></li>';
+		echo '<li><a href="'.UFURL_BASE.'/admin/">Wyszukiwanie</a></li>';
+		echo '<li><a href="'.UFURL_BASE.'/admin/admins/tasks">Zadania</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/penalties/">Kary</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/dormitories/">Akademiki</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/stats/">Statystyki</a></li>';
@@ -302,6 +303,10 @@ extends UFtpl_Common {
 	public function userSearchResultsNotFound() {
 		echo '<h2>Znalezieni użytkownicy:</h2>';
 		echo $this->ERR('Nie znaleziono');
+	}
+	
+	public function titleTasks() {
+		echo 'Lista zadań';
 	}
 
 	public function toDoList(array $d) {
@@ -1318,6 +1323,9 @@ extends UFtpl_Common {
 	}
 	
 	public function apisOtrsTickets(array $d) {
+		$conf = UFra::shared('UFconf_Sru');
+		$url = $conf->otrsUrl;
+		
 		if (is_null($d['tickets']) || count($d['tickets']) == 0) {
 			echo $this->OK('Brak otwartych ticketów');
 			return;
@@ -1325,7 +1333,22 @@ extends UFtpl_Common {
 		echo '<ul>';
 		foreach ($d['tickets'] as $ticket) {
 			$ticketId = $ticket["TicketID"];
-			echo '<li><a href="https://otrs.ds.pg.gda.pl/otrs/index.pl?Action=AgentTicketZoom;TicketID='.$ticketId.'">'.$ticket['Title'].'</a> <small>(z '.$ticket['Created'].' od '.$ticket['CustomerUserID'].')</small></li>';
+			echo '<li><a href="'.$url.'index.pl?Action=AgentTicketZoom;TicketID='.$ticketId.'">'.$ticket['Title'].'</a> <small>(z '.$ticket['Created'].' od '.$ticket['CustomerUserID'].')</small></li>';
+		}
+		echo '</ul>';
+	}
+	
+	public function apisZabbixProblems(array $d) {
+		$conf = UFra::shared('UFconf_Sru');
+		$url = $conf->zabbixUrl;
+		
+		if (is_null($d['problems']) || count($d['problems']) == 0) {
+			echo $this->OK('Brak aktywnych problemów');
+			return;
+		}
+		echo '<ul>';
+		foreach ($d['problems'] as $problem) {
+			echo '<li><a href="'.$url.'tr_status.php?hostid='.$problem->hostid.'">'.$problem->hostname.': '.$problem->description.'</a> <small>(z '.date(self::TIME_YYMMDD_HHMMSS, $problem->lastchange).')</small></li>';
 		}
 		echo '</ul>';
 	}
