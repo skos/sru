@@ -23,6 +23,7 @@ class UFlib_Zabbix {
 			    'withUnacknowledgedEvents' => 1,
 			    'skipDependent' => 1,
 			    'expandData' => 1,
+			    'expandDescription' => 1,
 			    'active' => TRUE,
 			    'only_true' => TRUE,
 			    'sortfield' => 'priority',

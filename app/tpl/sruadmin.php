@@ -1333,7 +1333,9 @@ extends UFtpl_Common {
 		echo '<ul>';
 		foreach ($d['tickets'] as $ticket) {
 			$ticketId = $ticket["TicketID"];
-			echo '<li><a href="'.$url.'index.pl?Action=AgentTicketZoom;TicketID='.$ticketId.'">'.$ticket['Title'].'</a> <small>(z '.$ticket['Created'].' od '.$ticket['CustomerUserID'].')</small></li>';
+			echo '<li><a href="'.$url.'index.pl?Action=AgentTicketZoom;TicketID='.$ticketId.'">'.
+				((isset($ticket['Title']) && $ticket['Title'] != '') ? $ticket['Title'] : '<i>bez tematu</i>').
+				'</a> <small>(z '.$ticket['Created'].' od '.$ticket['CustomerUserID'].')</small></li>';
 		}
 		echo '</ul>';
 	}
