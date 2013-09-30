@@ -132,7 +132,7 @@ extends UFact {
 				$box = UFra::factory('UFbox_SruAdmin');
 				$title = $box->penaltyAddMailTitle($bean, $user);
 				$body = $box->penaltyAddMailBody($bean, $user, $computers, $admin);
-				$sender->sendMail("admin-".$user->dormitoryAlias."@ds.pg.gda.pl", $title, $body, self::PREFIX);
+				$sender->sendMail("adnet@ds.pg.gda.pl", $title, $body, self::PREFIX);
 			}
 
 			$this->postDel(self::PREFIX);

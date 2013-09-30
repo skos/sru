@@ -103,7 +103,7 @@ extends UFact {
 				$admin->getByPK($this->_srv->get('session')->authAdmin);
 				$title = $box->switchPortModifiedMailTitle($bean);
 				$body = $box->switchPortModifiedMailBody($bean, $admin, $post['portEnabled']);
-				$sender->sendMail("admin-".$bean->dormitoryAlias."@ds.pg.gda.pl", $title, $body, self::PREFIX);
+				$sender->sendMail("adnet@ds.pg.gda.pl", $title, $body, self::PREFIX);
 			}
 
  			$this->markOk(self::PREFIX);
