@@ -1198,7 +1198,7 @@ extends UFtpl_Common {
 			if($d['leftRight'][2] != null){
 				echo ' <a href="'.$urlIp.$d['leftRight'][2]['alias'].'" >></a>';
 			}
-			echo '<br/><small>(<a href="'.$url.$d['dorm']->alias.'">pokoje</a> &bull; zajętość puli (VLAN '.UFbean_SruAdmin_Vlan::DEFAULT_VLAN.'): '.$d['used']->getIpCount().'/'.$d['sum']->getIpCount().' ~> '.($d['sum']->getIpCount() > 0 ? round($d['used']->getIpCount()/$d['sum']->getIpCount()*100) : 0).'% &bull; <a href="'.$urlSw.$d['dorm']->alias.'">switche</a>&bull; <a href="'.$urlIpAll.'">wszystkie IP</a>)</small></h2>';
+			echo '<br/><small>(<a href="'.$url.$d['dorm']->alias.'">pokoje</a> &bull; zajętość puli (VLAN '.UFbean_SruAdmin_Vlan::DEFAULT_VLAN.'): '.$d['used']->getIpCount().'/'.$d['sum']->getIpCount().' ~> '.($d['sum']->getIpCount() > 0 ? round($d['used']->getIpCount()/$d['sum']->getIpCount()*100) : 0).'% &bull; <a href="'.$urlSw.$d['dorm']->alias.'">switche</a> &bull; <a href="'.$urlIpAll.'">wszystkie IP</a>)</small></h2>';
 		} else if (!is_null($d['vlan'])) {
 			echo '<h2>';
 			if($d['leftRight'][0] != null){
