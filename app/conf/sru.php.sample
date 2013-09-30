@@ -44,6 +44,7 @@ extends UFconf {
 	protected $otrsUrl = ''; // z ukośnikiem na końcu
 	protected $otrsUser = '';
 	protected $otrsPass = '';
+	protected $otrsQueue = '';
 
 	protected $zabbixUrl = ''; // z ukośnikiem na końcu
 	protected $zabbixUser = '';

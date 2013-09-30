@@ -56,6 +56,7 @@ class UFlib_Otrs {
 		$url = $conf->otrsUrl . '/rpc.pl';
 		$username = $conf->otrsUser;
 		$password = $conf->otrsPass;
+		$queue = $conf->otrsQueue;
 		$title = "Zgłoszenie wysłane przez SRU";
 
 		$client = new SoapClient(null, array(
@@ -74,7 +75,7 @@ class UFlib_Otrs {
 		$TicketID = $client->__soapCall("Dispatch", array($username, $password, "TicketObject", "TicketCreate",
 		    "TN", $ticketnumber,
 		    "Title", $title,
-		    "Queue", 'Raw',
+		    "Queue", $queue,
 		    "Lock", 'unlock',
 		    "Priority", '3 normal',
 		    "State", 'new',
@@ -85,6 +86,10 @@ class UFlib_Otrs {
 		    "ResponsibleID", 1,
 		    "UserID", 1
 		));
+		
+		$message = $message."\n\n".'-- '."\n".'Imię i nazwisko: '.$user->name.' '.$user->surname."\n".'Adres: '.
+			$user->dormitoryName.', '.$user->locationAlias."\n".'Zbanowany: '.($user->banned ? 'tak' : 'nie').
+			"\n".$conf->sruUrl.'/admin/users/'.$user->id;
 
 		// tworzymy treść ticketa
 		$client->__soapCall("Dispatch", array($username, $password,
