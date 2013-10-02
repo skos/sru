@@ -87,7 +87,7 @@ class UFlib_Otrs {
 		    "UserID", 1
 		));
 		
-		$message = $message."\n\n".'-- '."\n".'Imię i nazwisko: '.$user->name.' '.$user->surname."\n".'Adres: '.
+		$message = $message."\n\n".'---------------'."\n".'Imię i nazwisko: '.$user->name.' '.$user->surname."\n".'Adres: '.
 			$user->dormitoryName.', '.$user->locationAlias."\n".'Zbanowany: '.($user->banned ? 'tak' : 'nie').
 			"\n".$conf->sruUrl.'/admin/users/'.$user->id;
 

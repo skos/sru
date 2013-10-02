@@ -1335,7 +1335,8 @@ extends UFtpl_Common {
 			$ticketId = $ticket["TicketID"];
 			echo '<li><a href="'.$url.'index.pl?Action=AgentTicketZoom;TicketID='.$ticketId.'">'.
 				((isset($ticket['Title']) && $ticket['Title'] != '') ? $ticket['Title'] : '<i>bez tematu</i>').
-				'</a> <small>(z '.$ticket['Created'].' od '.$ticket['CustomerUserID'].')</small></li>';
+				'</a> <small>(z '.$ticket['Created'].' od '.$ticket['CustomerUserID'].'; '.
+				($ticket['LockID'] == '2' ? 'obsługiwany przez '.$ticket['Owner'] : 'nieprzydzielony').')</small></li>';
 		}
 		echo '</ul>';
 	}
