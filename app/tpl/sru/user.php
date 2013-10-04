@@ -1054,7 +1054,9 @@ changeVisibility();
 		echo $form->locationAlias('Pokój', array('class'=>'required'));
 		if ($d['active']) {
 			try {
-				$change = $post->userEdit['lastLocationChangeActive'];
+				if (array_key_exists('lastLocationChangeActive', $post->userEdit)) {
+					$change = $post->userEdit['lastLocationChangeActive'];
+				}
 			} catch (UFex_Core_DataNotFound $e) {
 				$change = date(self::TIME_YYMMDD, time());
 			}
@@ -1109,7 +1111,9 @@ changeVisibility();
 		));
 		if ($d['active']) {
 			try {
-				$checkIn = $post->userEdit['lastLocationChange'];
+				if (array_key_exists('lastLocationChange', $post->userEdit)) {
+					$checkIn = $post->userEdit['lastLocationChange'];
+				}
 			} catch (UFex_Core_DataNotFound $e) {
 				$checkIn = date(self::TIME_YYMMDD, $d['lastLocationChange']);
 				if ((is_null($d['lastLocationChange']) || $d['lastLocationChange'] == 0) && $d['active'] == false) {

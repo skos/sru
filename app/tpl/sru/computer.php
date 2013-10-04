@@ -512,7 +512,9 @@ activateChkB.onclick = function() {
 		}
 		$typeId = null;
 		try {
-			$typeId = $post->computerAdd['typeId']; //jeśli jest w poście, to przypisz
+			if (array_key_exists('typeId', $post->computerAdd)) {
+				$typeId = $post->computerAdd['typeId']; //jeśli jest w poście, to przypisz
+			}
 		} catch (UFex_Core_DataNotFound $e) {
 		}
 		$form = UFra::factory('UFlib_Form', 'computerAdd', $d, $this->errors);

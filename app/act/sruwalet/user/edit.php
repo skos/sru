@@ -37,7 +37,7 @@ extends UFact {
 				$bean->lastLocationChange = $bean->referralStart;
 			}
 			if ($active && $bean->active && $locationAlias != $bean->locationAlias) {
-				if (!UFbean_Sru_User::isDate($post['lastLocationChangeActive'])) {
+				if (array_key_exists($post, lastLocationChangeActive) && !UFbean_Sru_User::isDate($post['lastLocationChangeActive'])) {
 					throw UFra::factory('UFex_Dao_DataNotValid', 'Move active user', 0, E_WARNING, array('lastLocationChangeActive' => 'invalid'));
 				}
 				$bean->lastLocationChange = $post['lastLocationChangeActive'];
