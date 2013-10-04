@@ -24,7 +24,7 @@ class UFact_Sru_User_SendMessage extends UFact {
 		} catch (UFex_Dao_DataNotValid $e) {
 			$this->markErrors(self::PREFIX, $e->getData());
 		} catch (UFex $e) {
-			UFra::error($e);
+			$this->markErrors(self::PREFIX, array());
 		}
 	}
 

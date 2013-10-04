@@ -1326,7 +1326,10 @@ extends UFtpl_Common {
 		$conf = UFra::shared('UFconf_Sru');
 		$url = $conf->otrsUrl;
 		
-		if (is_null($d['tickets']) || count($d['tickets']) == 0) {
+		if (is_null($d['tickets'])) {
+			echo $this->ERR('Błąd pobierania ticketów');
+			return;
+		} else if (count($d['tickets']) == 0) {
 			echo $this->OK('Brak otwartych ticketów');
 			return;
 		}
@@ -1345,7 +1348,10 @@ extends UFtpl_Common {
 		$conf = UFra::shared('UFconf_Sru');
 		$url = $conf->zabbixUrl;
 		
-		if (is_null($d['problems']) || count($d['problems']) == 0) {
+		if (is_null($d['problems'])) {
+			echo $this->ERR('Błąd pobierania problemów');
+			return;
+		} else if (count($d['problems']) == 0) {
 			echo $this->OK('Brak aktywnych problemów');
 			return;
 		}
