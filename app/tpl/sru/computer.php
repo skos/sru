@@ -385,7 +385,7 @@ changeVisibility();
 		echo $form->_fieldset('Inne');
 		$conf = UFra::shared('UFconf_Sru');
 		echo '<div id="autoDeactivation">';
-		echo $form->autoDeactivation('Autodezaktywacja'.UFlib_Helper::displayHint("Komputery, które nie były widziane dłużej niż '.$conf->computersMaxNotSeen.' dni, zostaną dezaktywowane. Hosty typu serwerowego nigdy nie są dezaktywowane z powodu braku widzialności."), array('type'=>$form->CHECKBOX));
+		echo $form->autoDeactivation('Autodezaktywacja'.UFlib_Helper::displayHint("Komputery, które nie były widziane dłużej niż ".$conf->computersMaxNotSeen." dni, zostaną dezaktywowane. Hosty typu serwerowego nigdy nie są dezaktywowane z powodu braku widzialności."), array('type'=>$form->CHECKBOX));
 		echo '<br/></div>';
 		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
 		echo $form->_end();
