@@ -253,8 +253,15 @@ extends UFbean_Common {
 				if ($user->typeId != UFbean_Sru_User::TYPE_SKOS) {
 					return 'notSkos';
 				}
+			} catch (UFex_Core_DataNotFound $e) {
+				$computer = UFra::factory('UFbean_Sru_Computer'); 
+				$computer->getByPK((int)$this->_srv->get('req')->get->computerId);
+				$user = UFra::factory('UFbean_Sru_User'); 
+				$user->getByPK($computer->userId);
+				if ($user->typeId != UFbean_Sru_User::TYPE_SKOS) {
+					return 'notSkos';
+				}
 			} catch (UFex_Dao_NotFound $e) {
-				// musi być user :)
 			}
 		}
 	}

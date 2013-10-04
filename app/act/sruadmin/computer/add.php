@@ -88,6 +88,10 @@ extends UFact {
 			$bean->availableTo = $conf->computerAvailableTo;
 			$id = $bean->save();
 
+			if ($id == 1) { // przy rejestracji hosta, który istniał
+				$id = $bean->id;
+			}
+
 			if ($conf->sendEmail) {
 				$bean->getByPK($id);	// pobranie nowych danych, np. aliasu ds-u
 				// wyslanie maila do usera
