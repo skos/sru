@@ -177,6 +177,14 @@ extends UFbean_Common {
 				$post['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT) && 
 				(is_null($val) || (int)$val == 0)) {
 				return 'null';
+			} else {
+				$computer = UFra::factory('UFbean_Sru_Computer');
+				$computer->getByPK((int)$this->_srv->get('req')->get->computerId);
+				if (($computer->typeId == UFbean_Sru_Computer::TYPE_SERVER || 
+					$computer->typeId == UFbean_Sru_Computer::TYPE_SERVER_VIRT) && 
+					(is_null($val) || (int)$val == 0)) {
+					return 'null';
+				}
 			}
 		} catch (UFex $e) {
 		}
@@ -208,6 +216,13 @@ extends UFbean_Common {
 				($post['typeId'] == UFbean_Sru_Computer::TYPE_ADMINISTRATION) && 
 				(is_null($val) || (int)$val == 0)) {
 				return 'null';
+			} else {
+				$computer = UFra::factory('UFbean_Sru_Computer');
+				$computer->getByPK((int)$this->_srv->get('req')->get->computerId);
+				if (($computer->typeId == UFbean_Sru_Computer::TYPE_ADMINISTRATION)  && 
+					(is_null($val) || (int)$val == 0)) {
+					return 'null';
+				}
 			}
 		} catch (UFex $e) {
 		}
