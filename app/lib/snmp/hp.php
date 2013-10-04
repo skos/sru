@@ -160,7 +160,7 @@ extends UFlib_Snmp {
 			return null;
 		}
 		$vlanName = snmpget($this->ip, $this->communityR, $this->OIDs['vlans'].'.'.$vlan, $this->timeout);
-		return $vlanName.' ('.$vlan.')';
+		return array($vlan => $vlanName);
 	}
 	
 	public function getIntrusionFlag($port) {

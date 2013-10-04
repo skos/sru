@@ -15,6 +15,7 @@ extends UFtpl_Common {
 
 	public function details(array $d, $switch, $alias, $speed, $vlan, $flag, $learnMode, $addrLimit, $alarmState, $loopProtect, $trunk) {
 		$url = $this->url(0).'/switches/';
+		$vlanUrl = $this->url(0).'/ips/vlan/'; 
 		$conf = UFra::shared('UFconf_Sru');
 		$swstatsLink = str_replace($conf->swstatsSwitchRegex, UFtpl_SruAdmin_Switch::displaySwitchName($switch->dormitoryAlias, $switch->hierarchyNo, $switch->lab), $conf->swstatsLinkPort);
 		$swstatsLink = str_replace($conf->swstatsPortRegex, $d['ordinalNo'], $swstatsLink);
@@ -36,7 +37,7 @@ extends UFtpl_Common {
 		if (!is_null($speed)) {
 			echo '<p><em>Przepustowość:</em> '.$speed.' Mb/s</p>';
 		}
-		echo '<p><em>Nietagowany VLAN:</em> '.(is_null($vlan) ? 'brak' : $vlan).'</p>';
+		echo '<p><em>Nietagowany VLAN:</em> '.(is_null($vlan) ? 'brak' : '<a href="'.$vlanUrl.key($vlan).'">'.current($vlan).' ('.key($vlan).')</a>').'</p>';
 		echo '<p><em>Port admina:</em> '.($d['admin'] ? 'tak' : 'nie').'</p>';
 		if (!is_null($d['penaltyId'])) {
 			echo '<p><em>Przypisana kara: </em><a href="'.$this->url(0).'/penalties/'.$d['penaltyId'].'">'.$d['userName'].' "'.$d['userLogin'].'" '.$d['userSurname'].': '.$d['templateTitle'].' ('.$d['penaltyId'].')</a></p>';
