@@ -21,7 +21,7 @@ extends UFtpl_Common {
 		'password/mismatch' => 'Hasła różnią się',
 		'password/same' => 'Hasło jest identyczne z poprzednim',
 		'password/sameAsInner' => 'Hasło jest identyczne zhasłem wewnętrznym',
-		'passwordInner' => 'Hasło musi mieć co najmniej 8 znaków, zawierać co najmniej 1 dużą literę, 1 małą literę, 1 cyfrę i 1 znak specjalny',
+		'passwordInner' => 'Nieprawidłowy format hasła',
 		'passwordInner/mismatch' => 'Hasła różnią się',
 		'passwordInner/same' => 'Hasło jest identyczne z poprzednim',
 		'passwordInner/sameAsMain' => 'Hasło jest identyczne z hasłem do SRU',
