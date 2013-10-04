@@ -1,6 +1,11 @@
 RewriteEngine On
 RewriteBase /
 
+RewriteCond %{DOCUMENT_ROOT}/.maintenance -f
+RewriteCond %{REQUEST_URI} !api [NC]
+RewriteCond %{QUERY_STRING} !api [NC]
+RewriteRule ^(.*)$ maintenance.html [L]
+
 RewriteCond %{REQUEST_URI} !^/i/
 RewriteCond %{REQUEST_URI} !^/index.php
 RewriteCond %{REQUEST_URI} !^/test.php
