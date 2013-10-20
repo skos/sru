@@ -38,15 +38,17 @@ extends UFact {
 				throw UFra::factory('UFex_Dao_DataNotValid', 'Change of switch model', 0, E_WARNING,  array('model' => 'change'));
 			}
 			
-			try {
-				$ip = UFra::factory('UFbean_Sru_Ipv4');
-				$ip->getByIp($post['ip']);
-			} catch (UFex_Dao_NotFound $e) {
-				$this->markErrors(self::PREFIX, array('ip'=>'notFound'));
-				return;
-			} catch (UFex_Db_QueryFailed $e) {
-				$this->markErrors(self::PREFIX, array('ip'=>''));
-				return;
+			if (isset($post['ip']) && $post['ip'] != '') {
+				try {
+					$ip = UFra::factory('UFbean_Sru_Ipv4');
+					$ip->getByIp($post['ip']);
+				} catch (UFex_Dao_NotFound $e) {
+					$this->markErrors(self::PREFIX, array('ip'=>'notFound'));
+					return;
+				} catch (UFex_Db_QueryFailed $e) {
+					$this->markErrors(self::PREFIX, array('ip'=>''));
+					return;
+				}
 			}
 			
 			$bean->save();
