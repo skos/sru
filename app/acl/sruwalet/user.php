@@ -29,6 +29,9 @@ extends UFlib_ClassWithService {
 		if ($sess->typeIdWalet == UFacl_SruWalet_Admin::HEAD) {
 			return true;
 		}
+		if ($sess->typeIdWalet == UFacl_SruWalet_Admin::PORTIER) {
+			return false;
+		}
 
 		if (!$user->active || is_null($user->referralStart) || $user->referralStart == 0) {
 			return true;
@@ -49,10 +52,24 @@ extends UFlib_ClassWithService {
 	}
 
 	public function add() {
-		return $this->_loggedIn();
+		if (!$this->_loggedIn()) {
+			return false;
+		}
+		$sess = $this->_srv->get('session');
+		if ($sess->typeIdWalet == UFacl_SruWalet_Admin::PORTIER) {
+			return false;
+		}
+		return true;
 	}
 
 	public function del($userId) {
+		if (!$this->_loggedIn()) {
+			return false;
+		}
+		$sess = $this->_srv->get('session');
+		if ($sess->typeIdWalet == UFacl_SruWalet_Admin::PORTIER) {
+			return false;
+		}
 		try {
 			$user = UFra::factory('UFbean_Sru_User');
 			$user->getByPK($userId);
@@ -71,6 +88,13 @@ extends UFlib_ClassWithService {
 	}
 
 	public function view($userId) {
+		if (!$this->_loggedIn()) {
+			return false;
+		}
+		$sess = $this->_srv->get('session');
+		if ($sess->typeIdWalet == UFacl_SruWalet_Admin::PORTIER) {
+			return false;
+		}
 		try {
 			$user = UFra::factory('UFbean_Sru_User');
 			$user->getByPK($userId);

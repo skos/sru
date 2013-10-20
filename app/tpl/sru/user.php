@@ -647,16 +647,13 @@ $(function() {
 		echo '<table id="resultsT" class="bordered"><thead><tr>';
 		echo '<th>Imię</th>';
 		echo '<th>Nazwisko</th>';
-		echo '<th>Dom studencki</th>';
+		echo '<th>Dom Studencki</th>';
 		echo '<th>Pokój</th>';
 		echo '<th>Nr indeksu</th>';
 		echo '<th>Edycja</th>';
 		echo '<th>Wymeld.</th>';
 		echo '</tr></thead><tbody>';
 
-		$usersMax = 0;
-		$userCount = 0;
-		$usersFree = 0;
 		foreach ($d as $c) {
 			$canEdit = $acl->sruWalet('user', 'edit', $c['id']);
 			$canDel = $acl->sruWalet('user', 'del', $c['id']);
@@ -667,8 +664,8 @@ $(function() {
 			} else {
 				echo '<tr class="registeredOther">';
 			}
-			echo '<td><a href="'.$url.'/users/'.$c['id'].'">'.$this->_escape($c['name']).'</a></td>';
-			echo '<td><a href="'.$url.'/users/'.$c['id'].'">'.$this->_escape($c['surname']).'</a></td>';
+			echo '<td>'.($acl->sruWalet('user','view',$c['id']) ? '<a href="'.$url.'/users/'.$c['id'].'">' : '').$this->_escape($c['name']).($acl->sruWalet('user','view',$c['id']) ? '</a>' : '').'</td>';
+			echo '<td>'.($acl->sruWalet('user','view',$c['id']) ? '<a href="'.$url.'/users/'.$c['id'].'">' : '').$this->_escape($c['surname']).($acl->sruWalet('user','view',$c['id']) ? '</a>' : '').'</td>';
 			echo '<td><a href="'.$url.'/dormitories/'.$c['dormitoryAlias'].'">'.strtoupper($c['dormitoryAlias']).'</a></td>';
 			echo '<td>'.$c['locationAlias'].'</td>';
 			echo '<td>'.$c['registryNo'].'</td>';
@@ -816,71 +813,73 @@ changeVisibility();
 		$urlUser = $url.'/users/'.$d['id'];
 
 		echo '<h1>'.$this->_escape($d['name']).' '.$this->_escape($d['surname']).'</h1>';
-		echo '<p><em>Miejsce:</em> <a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'">'.strtoupper($d['dormitoryAlias']).'</a>, 
-			<a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'/'.$d['locationAlias'].'/:edit">'.$d['locationAlias'].'</a> 
-			<small>('.$d['locationUsersMax'].'-os, '.UFtpl_SruAdmin_Room::getRoomType($d['locationTypeId']).')</small></p>';
-		echo '<p><em>Dokwaterowany:</em> '.($d['overLimit'] ? 'tak' : 'nie').'</p>';
-		echo '<p><em>Login:</em> '.$d['login'].(!$d['active']?' <strong>(konto nieaktywne)</strong>':'').'</p>';
-		if(!is_null($d['registryNo']) && $d['registryNo'] != '') {
-			echo '<p><em>Nr indeksu:</em> '.$d['registryNo'].'</p>';
-		}
-		if(!is_null($d['typeId']) && $d['typeId'] != '') {
-			echo '<p><em>Typ:</em> '.self::getUserType($d['typeId']);
-		}
-		if(!is_null($d['email']) && $d['email'] != '') {
-			echo '<p><em>E-mail:</em> <a href="mailto:'.$d['email'].'">'.$d['email'].'</a></p>';
-		}
-		if($d['typeId'] != UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL && $d['typeId'] <= 50) {
-			echo '<p><em>Wydział:</em> '.(!is_null($d['facultyName'])?$d['facultyName']:'').'</p>';
-			if($d['facultyId'] != 0) {
-				echo '<p><em>Rok studiów:</em> '.(!is_null($d['studyYearId'])?self::$studyYears[$d['studyYearId']]:'').'</p>';
+		echo '<p><em>Miejsce:</em> <a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'">'.strtoupper($d['dormitoryAlias']).'</a>, '; 
+		echo ($acl->sruWalet('room', 'edit') ? '<a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'/'.$d['locationAlias'].'/:edit">' : '').$d['locationAlias'].($acl->sruWalet('room', 'edit') ?'</a>' : ''); 
+		echo ' <small>('.$d['locationUsersMax'].'-os, '.UFtpl_SruAdmin_Room::getRoomType($d['locationTypeId']).')</small></p>';
+		if ($acl->sruWalet('user', 'view', $d['id'])) {
+			echo '<p><em>Dokwaterowany:</em> '.($d['overLimit'] ? 'tak' : 'nie').'</p>';
+			echo '<p><em>Login:</em> '.$d['login'].(!$d['active']?' <strong>(konto nieaktywne)</strong>':'').'</p>';
+			if(!is_null($d['registryNo']) && $d['registryNo'] != '') {
+				echo '<p><em>Nr indeksu:</em> '.$d['registryNo'].'</p>';
 			}
-		}
-		echo '<p><em>Adres:</em>'.nl2br($this->_escape($d['address'])).'</p>';
-		echo '<p><em>Typ dokumentu:</em>'.self::$documentTypes[$d['documentType']].'</p>';
-		echo '<p><em>Nr dokumentu:</em>'.nl2br($this->_escape($d['documentNumber'])).'</p>';
-		echo '<p><em>Narodowość:</em>'.nl2br($this->_escape($d['nationalityName'])).'</p>';
-		if(!is_null($d['pesel']) && $d['pesel'] != '') {
-			echo '<p><em>PESEL:</em>'.nl2br($this->_escape($d['pesel'])).'</p>';
-		}
-		if(!is_null($d['birthDate']) && $d['birthDate'] != '') {
-			echo '<p><em>Data urodzenia:</em>'.date(self::TIME_YYMMDD,$d['birthDate']).'</p>';
-		}
-		if(!is_null($d['birthPlace']) && $d['birthPlace'] != '') {
-			echo '<p><em>Miejsce urodzenia:</em>'.nl2br($this->_escape($d['birthPlace'])).'</p>';
-		}
-		if(!is_null($d['userPhoneNumber']) && $d['userPhoneNumber'] != '') {
-			echo '<p><em>Tel. mieszkańca:</em>'.nl2br($this->_escape($d['userPhoneNumber'])).'</p>';
-		}
-		if(!is_null($d['guardianPhoneNumber']) && $d['guardianPhoneNumber'] != '') {
-			echo '<p><em>Tel. opiekuna:</em>'.nl2br($this->_escape($d['guardianPhoneNumber'])).'</p>';
-		}
-		echo '<p><em>Płeć:</em>'.(!$d['sex'] ? 'Mężczyzna' : 'Kobieta').'</p>';
-		if (is_null($d['modifiedBy'])) {
-			$changed = 'UŻYTKOWNIK';
-		} else {
-			$changed = '<a href="'.$url.'/admins/'.$d['modifiedById'].'">'.$this->_escape($d['modifiedBy']).'</a>';;
-		}
-		echo '<p><em>Zmiana:</em> '.date(self::TIME_YYMMDD_HHMM, $d['modifiedAt']).'<small> ('.$changed.')</small></p>';
-		if (!is_null($d['referralStart']) && $d['referralStart'] != 0) {
-			echo '<p><em>Początek skierowania:</em> '.date(self::TIME_YYMMDD, $d['referralStart']).'</p>';
-		}
-		if (!is_null($d['referralEnd']) && $d['referralEnd'] != 0) {
-			echo '<p><em>Koniec skierowania:</em> '.date(self::TIME_YYMMDD, $d['referralEnd']).'</p>';
-		}
-		if (!is_null($d['lastLocationChange']) && $d['lastLocationChange'] != 0) {
-			echo '<p><em>'.($d['active']? 'Zameldowany od' : 'Wymeldowany').':</em> '.date(self::TIME_YYMMDD, $d['lastLocationChange']).'</p>';
-		}
-		if (strlen($d['comment'])) {
-			echo '<p><em>Komentarz:</em></p><p class="comment">'.nl2br($this->_escape($d['comment'])).'</p>';
-		}
-		echo '<p class="nav"><a href="'.$urlUser.'">Dane</a> ';
-		echo 	'&bull; <a href="'.$urlUser.'/history">Historia profilu</a>';
-		if ($acl->sruWalet('user', 'edit', $d['id'])) {
-			echo ' &bull; <a href="'.$urlUser.'/:edit">'.($d['active'] ? 'Edycja' : 'Meldowanie').'</a>';
-		}
-		if ($acl->sruWalet('user', 'del', $d['id'])) {
-			echo ' &bull; <a href="'.$urlUser.'/:del">Wymeldowanie</a>';
+			if(!is_null($d['typeId']) && $d['typeId'] != '') {
+				echo '<p><em>Typ:</em> '.self::getUserType($d['typeId']);
+			}
+			if(!is_null($d['email']) && $d['email'] != '') {
+				echo '<p><em>E-mail:</em> <a href="mailto:'.$d['email'].'">'.$d['email'].'</a></p>';
+			}
+			if($d['typeId'] != UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL && $d['typeId'] <= 50) {
+				echo '<p><em>Wydział:</em> '.(!is_null($d['facultyName'])?$d['facultyName']:'').'</p>';
+				if($d['facultyId'] != 0) {
+					echo '<p><em>Rok studiów:</em> '.(!is_null($d['studyYearId'])?self::$studyYears[$d['studyYearId']]:'').'</p>';
+				}
+			}
+			echo '<p><em>Adres:</em>'.nl2br($this->_escape($d['address'])).'</p>';
+			echo '<p><em>Typ dokumentu:</em>'.self::$documentTypes[$d['documentType']].'</p>';
+			echo '<p><em>Nr dokumentu:</em>'.nl2br($this->_escape($d['documentNumber'])).'</p>';
+			echo '<p><em>Narodowość:</em>'.nl2br($this->_escape($d['nationalityName'])).'</p>';
+			if(!is_null($d['pesel']) && $d['pesel'] != '') {
+				echo '<p><em>PESEL:</em>'.nl2br($this->_escape($d['pesel'])).'</p>';
+			}
+			if(!is_null($d['birthDate']) && $d['birthDate'] != '') {
+				echo '<p><em>Data urodzenia:</em>'.date(self::TIME_YYMMDD,$d['birthDate']).'</p>';
+			}
+			if(!is_null($d['birthPlace']) && $d['birthPlace'] != '') {
+				echo '<p><em>Miejsce urodzenia:</em>'.nl2br($this->_escape($d['birthPlace'])).'</p>';
+			}
+			if(!is_null($d['userPhoneNumber']) && $d['userPhoneNumber'] != '') {
+				echo '<p><em>Tel. mieszkańca:</em>'.nl2br($this->_escape($d['userPhoneNumber'])).'</p>';
+			}
+			if(!is_null($d['guardianPhoneNumber']) && $d['guardianPhoneNumber'] != '') {
+				echo '<p><em>Tel. opiekuna:</em>'.nl2br($this->_escape($d['guardianPhoneNumber'])).'</p>';
+			}
+			echo '<p><em>Płeć:</em>'.(!$d['sex'] ? 'Mężczyzna' : 'Kobieta').'</p>';
+			if (is_null($d['modifiedBy'])) {
+				$changed = 'UŻYTKOWNIK';
+			} else {
+				$changed = '<a href="'.$url.'/admins/'.$d['modifiedById'].'">'.$this->_escape($d['modifiedBy']).'</a>';;
+			}
+			echo '<p><em>Zmiana:</em> '.date(self::TIME_YYMMDD_HHMM, $d['modifiedAt']).'<small> ('.$changed.')</small></p>';
+			if (!is_null($d['referralStart']) && $d['referralStart'] != 0) {
+				echo '<p><em>Początek skierowania:</em> '.date(self::TIME_YYMMDD, $d['referralStart']).'</p>';
+			}
+			if (!is_null($d['referralEnd']) && $d['referralEnd'] != 0) {
+				echo '<p><em>Koniec skierowania:</em> '.date(self::TIME_YYMMDD, $d['referralEnd']).'</p>';
+			}
+			if (!is_null($d['lastLocationChange']) && $d['lastLocationChange'] != 0) {
+				echo '<p><em>'.($d['active']? 'Zameldowany od' : 'Wymeldowany').':</em> '.date(self::TIME_YYMMDD, $d['lastLocationChange']).'</p>';
+			}
+			if (strlen($d['comment'])) {
+				echo '<p><em>Komentarz:</em></p><p class="comment">'.nl2br($this->_escape($d['comment'])).'</p>';
+			}
+			echo '<p class="nav"><a href="'.$urlUser.'">Dane</a> ';
+			echo 	'&bull; <a href="'.$urlUser.'/history">Historia profilu</a>';
+			if ($acl->sruWalet('user', 'edit', $d['id'])) {
+				echo ' &bull; <a href="'.$urlUser.'/:edit">'.($d['active'] ? 'Edycja' : 'Meldowanie').'</a>';
+			}
+			if ($acl->sruWalet('user', 'del', $d['id'])) {
+				echo ' &bull; <a href="'.$urlUser.'/:del">Wymeldowanie</a>';
+			}
 		}
 	}
 

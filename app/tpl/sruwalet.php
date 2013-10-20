@@ -44,12 +44,16 @@ extends UFtpl_Common {
 	}
 
 	public function menuWalet() {
+		$acl = $this->_srv->get('acl');
+		
 		echo '<ul id="nav">';
 		echo '<li><a href="'.UFURL_BASE.'/walet/">Wyszukiwanie</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/walet/inhabitants/">Obsadzenie</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/walet/stats/">Statystyki</a></li>';
-		echo '<li><a href="'.UFURL_BASE.'/walet/nations/">Narodowości</a></li>';
-		echo '<li><a href="'.UFURL_BASE.'/walet/admins/">Administratorzy</a></li>';
+		if ($acl->sruWalet('admin', 'fullMenuView')) {
+			echo '<li><a href="'.UFURL_BASE.'/walet/nations/">Narodowości</a></li>';
+			echo '<li><a href="'.UFURL_BASE.'/walet/admins/">Administratorzy</a></li>';
+		}
 		echo '</ul>';
 	}
 
@@ -93,10 +97,14 @@ extends UFtpl_Common {
 	}
 
 	public function toDoList(array $d) {
-		$form = UFra::factory('UFlib_Form');
-		echo $form->_fieldset('<img src="'.UFURL_BASE.'/i/img/todo.png" alt="" /> Lista zadań');
-		echo $d['admin']->write('toDoList', $d['users']);
-		echo $form->_end();
+		$acl = $this->_srv->get('acl');
+		
+		if ($acl->sruWalet('admin', 'fullMenuView')) {
+			$form = UFra::factory('UFlib_Form');
+			echo $form->_fieldset('<img src="'.UFURL_BASE.'/i/img/todo.png" alt="" /> Lista zadań');
+			echo $d['admin']->write('toDoList', $d['users']);
+			echo $form->_end();
+		}
 	}
 
 	public function mainPageInfo() {
@@ -104,6 +112,11 @@ extends UFtpl_Common {
 	}
 
 	private function generateNewUserLink(array $searched) {
+		$acl = $this->_srv->get('acl');
+		if (!$acl->sruWalet('user', 'add')) {
+			return '';
+		}
+			
 		$search = '';
 		isset($searched['surname']) ? $search = '/surname:'.$searched['surname'] : '';
 		if (isset($searched['registryNo'])) {

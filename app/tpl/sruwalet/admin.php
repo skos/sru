@@ -9,6 +9,7 @@ extends UFtpl_Common {
 		UFacl_SruWalet_Admin::DORM 	=> 'Pracownik OS',
 		UFacl_SruWalet_Admin::OFFICE 	=> 'Starszy Pracownik OS',
 		UFacl_SruWalet_Admin::HEAD 	=> 'Kierownik OS',
+	    	UFacl_SruWalet_Admin::PORTIER 	=> 'Portier',
 	);
 	
 	protected $errors = array(
@@ -60,11 +61,14 @@ extends UFtpl_Common {
 				case UFacl_SruWalet_Admin::DORM:
 						echo $this->_escape($c['name']).'</a>';
 						break;
+				case UFacl_SruWalet_Admin::PORTIER:
+						echo '<u>'.$this->_escape($c['name']).'</u></a>';
+						break;
 			}
 			echo '</td><td>'.($c['lastLoginAt'] == 0 ? 'nigdy' : date(self::TIME_YYMMDD_HHMM, $c['lastLoginAt'])).'</td>';
 			if($c['typeId'] == UFacl_SruWalet_Admin::HEAD){
 				echo '<td>wszystkie</td></tr>';
-			}else if(is_null($dorms[$c['id']])){
+			}else if(is_null($dorms[$c['id']]) || $c['typeId'] == UFacl_SruWalet_Admin::PORTIER){
 				echo '<td>żaden</td></tr>';
 			}else{
 				echo '<td>';
@@ -175,7 +179,7 @@ $(document).ready(function()
 	form = document.getElementById('adminAdd_typeId');
 	function changeVisibility() { 
 		var div = document.getElementById("dorms"); 
-		if (form.value == <? echo UFacl_SruWalet_Admin::HEAD; ?>) { 
+		if (form.value == <? echo UFacl_SruWalet_Admin::HEAD; ?> || form.value == <? echo UFacl_SruWalet_Admin::PORTIER; ?>) { 
 			div.style.display = "none"; 
 			div.style.visibility = "hidden"; 
 		} else { 
@@ -238,7 +242,7 @@ $(document).ready(function()
 	form = document.getElementById('adminEdit_typeId');
 	function changeVisibility() { 
 		var div = document.getElementById("dorms"); 
-		if (form.value == <? echo UFacl_SruWalet_Admin::HEAD; ?>) { 
+		if (form.value == <? echo UFacl_SruWalet_Admin::HEAD; ?> || form.value == <? echo UFacl_SruWalet_Admin::PORTIER; ?>) { 
 			div.style.display = "none"; 
 			div.style.visibility = "hidden"; 
 		} else { 
@@ -294,7 +298,7 @@ $(document).ready(function()
 			echo '<th>L.p.</th>';
 			echo '<th>Imię</th>';
 			echo '<th>Nazwisko</th>';
-			echo '<th>Dom studencki</th>';
+			echo '<th>Dom Studencki</th>';
 			echo '<th>Akcja</th>';
 			echo '</tr></thead><tbody>';
 			foreach ($users as $dorm) {

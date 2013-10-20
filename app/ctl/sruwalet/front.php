@@ -237,7 +237,7 @@ extends UFctl {
 			$act = 'Admin_Edit';
 		} elseif ('dormitories/dorm' == $get->view && $post->is('docExport') && $acl->sruWalet('dorm', 'view', $get->dormAlias)) {
 			$act = 'Doc_Export';
-		} elseif ('dormitories/room/edit' == $get->view && $post->is('roomEdit') && $acl->sruWalet('dorm', 'view', $get->dormAlias)) {
+		} elseif ('dormitories/room/edit' == $get->view && $post->is('roomEdit') && $acl->sruWalet('room', 'edit')) {
 			$act = 'Room_Edit';
 		}
 
@@ -313,22 +313,26 @@ extends UFctl {
 			case 'users/user/print':
 				return 'SruWalet_UserPrint';
 			case 'users/user/add':
-				$user = UFra::factory('UFbean_Sru_User');
-				try{
-					$user->getByPK($get->userId);
-					if(!$this->validateUserDataCompleteness($user)) {
-						$msg->del('userEdit/ok');
-						$msg->set('userEdit/warn');
-						$msg = $this->_srv->get('msg');
+				if ($acl->sruWalet('user', 'add')) {
+					$user = UFra::factory('UFbean_Sru_User');
+					try{
+						$user->getByPK($get->userId);
+						if(!$this->validateUserDataCompleteness($user)) {
+							$msg->del('userEdit/ok');
+							$msg->set('userEdit/warn');
+							$msg = $this->_srv->get('msg');
+						}
+					}catch(Exception $e){}
+					if ($msg->get('userAdd/ok')) {
+						return 'SruWalet_User';
+					} else if($msg->get('userEdit/warn') && !$msg->get('userEdit/ok') && isset($_POST['submit']) // isset($post->submit) zawsze zwraca false O.O 
+								&& !$msg->get('userEdit/errors')) {
+						return 'SruWalet_User';
+					} else {
+						return 'SruWalet_UserAdd';
 					}
-				}catch(Exception $e){}
-				if ($msg->get('userAdd/ok')) {
-					return 'SruWalet_User';
-				} else if($msg->get('userEdit/warn') && !$msg->get('userEdit/ok') && isset($_POST['submit']) // isset($post->submit) zawsze zwraca false O.O 
-							&& !$msg->get('userEdit/errors')) {
-					return 'SruWalet_User';
 				} else {
-					return 'SruWalet_UserAdd';
+					return 'Sru_Error403';
 				}
 			case 'nations/main':
 				return 'SruWalet_Nations';
@@ -347,7 +351,7 @@ extends UFctl {
 			case 'dormitories/room/edit':
 				if ($msg->get('roomEdit/ok')) {
 					return 'SruWalet_Dorm';
-				} else if ($acl->sruWalet('dorm', 'view', $get->dormAlias)) {
+				} else if ($acl->sruWalet('room', 'edit')) {
 					return 'SruWalet_RoomEdit';
 				} else {
 					return 'Sru_Error403';

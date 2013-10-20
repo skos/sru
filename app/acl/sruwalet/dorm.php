@@ -15,7 +15,7 @@ extends UFlib_ClassWithService {
 		}
 
 		$sess = $this->_srv->get('session');
-		if ($sess->typeIdWalet == UFacl_SruWalet_Admin::HEAD || $sess->typeIdWalet == UFacl_SruWalet_Admin::OFFICE) {
+		if ($sess->typeIdWalet == UFacl_SruWalet_Admin::HEAD || $sess->typeIdWalet == UFacl_SruWalet_Admin::OFFICE || $sess->typeIdWalet == UFacl_SruWalet_Admin::PORTIER) {
 			return true;
 		}
 

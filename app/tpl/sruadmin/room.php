@@ -142,7 +142,7 @@ function fullList() {
 	}
 
 	public function dormInhabitants(array $d, $dorm, $users, $export = false) {
-		$url = $this->url(0).'/dormitories/';
+		$acl = $this->_srv->get('acl');
 		
 		$dorm = isset($d[0]['dormitoryAlias']) ? $d[0]['dormitoryAlias'] : '';
 		$aliases = array();
@@ -189,7 +189,7 @@ function fullList() {
 			} else {
 				foreach ($rooms as $room) {
 					$roomNumber = ($connector == 0 ? '' : $connector).$room->getExt();
-					$dispRoom = '<a href="'.$this->url(2).'/'.$roomNumber.'/:edit">'.$roomNumber.'</a> <small>('.$room->getLimit().'-os'.($room->getType() == UFbean_SruAdmin_Room::TYPE_GUEST ? ', gościnny' : '').')</small>';
+					$dispRoom = ($acl->sruWalet('room', 'edit') ? '<a href="'.$this->url(2).'/'.$roomNumber.'/:edit">' : '').$roomNumber.($acl->sruWalet('room', 'edit') ? '</a>' : '').' <small>('.$room->getLimit().'-os'.($room->getType() == UFbean_SruAdmin_Room::TYPE_GUEST ? ', gościnny' : '').')</small>';
 					echo '<tr><td>'.$dispRoom.'</td>';
 					$i = 0;
 					foreach ($room->getUsers() as $user) {
@@ -204,7 +204,8 @@ function fullList() {
 						} else {
 							$class = 'man';
 						}
-						echo '<td class="'.$class.'"><a href="'.$this->url(0).'/users/'.$user['id'].'">'.$user['name'].' '.$user['surname'].'</a></td>';
+						echo '<td class="'.$class.'">';
+						echo ($acl->sruWalet('user', 'view', $user['id']) ? '<a href="'.$this->url(0).'/users/'.$user['id'].'">' : '').$user['name'].' '.$user['surname'].($acl->sruWalet('user', 'view', $user['id']) ? '</a>' : '').'</td>';
 					}
 					if ($i < $room->getLimit()) {
 						for (; $i < $room->getLimit(); $i++) {

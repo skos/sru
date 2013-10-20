@@ -8,6 +8,7 @@ extends UFlib_ClassWithService {
 	const DORM = 11;
 	const OFFICE = 12;
 	const HEAD = 13;
+	const PORTIER = 14;
 	
 	protected function _loggedIn() {
 		return $this->_srv->get('session')->is('authWaletAdmin');
@@ -37,10 +38,18 @@ extends UFlib_ClassWithService {
 		$bean = UFra::factory('UFbean_SruWalet_Admin');
 		$bean->getByPK($id);
 		if($this->_loggedIn() && $sess->is('typeIdWalet') && $sess->typeIdWalet == self::HEAD &&
-			($bean->typeId == self::DORM || $bean->typeId == self::OFFICE || $bean->typeId == self::HEAD)) {
+			($bean->typeId == self::DORM || $bean->typeId == self::OFFICE || $bean->typeId == self::HEAD || $bean->typeId == self::PORTIER)) {
 			return true;
 		}
 		return false;
+	}
+	
+	public function fullMenuView() {
+		$sess = $this->_srv->get('session');
+		if ($sess->typeIdWalet == UFacl_SruWalet_Admin::PORTIER) {
+			return false;
+		}
+		return true;
 	}
 
 	public function advancedEdit() {//do zmiany uprawnien i aktywnosci
