@@ -57,7 +57,7 @@ extends UFtpl_Common {
 				$admins[$lastAdmin] .= '</tr>';
 			}
 			if ($c['adminId'] != $lastAdmin) {
-				$admins[$c['adminId']] = '<tr><td>'.$c['adminName'].'</td><td>'.$c['adminAddress'].'</td><td><a href="mailto:'.$c['adminEmail'].'">'.$c['adminEmail'].'</a></td>';
+				$admins[$c['adminId']] = '<tr><td>'.$c['adminName'].'</td><td>'.$c['adminAddress'].'</td>';
 				$lastAdmin = $c['adminId'];
 				$lastDay = 0;
 			}
@@ -76,7 +76,7 @@ extends UFtpl_Common {
 		}
 		$admins[$lastAdmin] .= '</tr>';
 		
-		echo '<table class="sruDutyHours"><thead><tr><th>Administrator</th><th>Gdzie<br/>(Where)</th><th>E-mail</th><th>Poniedziałek<br/>(Monday)</th><th>Wtorek<br/>(Tuesday)</th><th>Środa<br/>(Wednesday)</th><th>Czwartek<br/>(Thursday)</th><th>Piątek<br/>(Friday)</th><th>Sobota<br/>(Saturday)</th><th>Niedziela<br/>(Sunday)</th></tr></thead><tbody>';
+		echo '<table class="sruDutyHours"><thead><tr><th>Administrator</th><th>Gdzie<br/>(Where)</th><th>Poniedziałek<br/>(Monday)</th><th>Wtorek<br/>(Tuesday)</th><th>Środa<br/>(Wednesday)</th><th>Czwartek<br/>(Thursday)</th><th>Piątek<br/>(Friday)</th><th>Sobota<br/>(Saturday)</th><th>Niedziela<br/>(Sunday)</th></tr></thead><tbody>';
 		foreach ($dormitories as $dorm) {
 			$dormAdmins = array();
 			foreach ($dorm as $admin) {
