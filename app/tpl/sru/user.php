@@ -828,12 +828,14 @@ changeVisibility();
 			if(!is_null($d['email']) && $d['email'] != '') {
 				echo '<p><em>E-mail:</em> <a href="mailto:'.$d['email'].'">'.$d['email'].'</a></p>';
 			}
-			if($d['typeId'] != UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL && $d['typeId'] <= 50) {
-				echo '<p><em>Wydział:</em> '.(!is_null($d['facultyName'])?$d['facultyName']:'').'</p>';
-				if($d['facultyId'] != 0) {
-					echo '<p><em>Rok studiów:</em> '.(!is_null($d['studyYearId'])?self::$studyYears[$d['studyYearId']]:'').'</p>';
-				}
+		}
+		if($d['typeId'] != UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL && $d['typeId'] <= 50) {
+			echo '<p><em>Wydział:</em> '.(!is_null($d['facultyName'])?$d['facultyName']:'').'</p>';
+			if($d['facultyId'] != 0) {
+				echo '<p><em>Rok studiów:</em> '.(!is_null($d['studyYearId'])?self::$studyYears[$d['studyYearId']]:'').'</p>';
 			}
+		}
+		if ($acl->sruWalet('user', 'view', $d['id'])) {
 			echo '<p><em>Adres:</em>'.nl2br($this->_escape($d['address'])).'</p>';
 			echo '<p><em>Typ dokumentu:</em>'.self::$documentTypes[$d['documentType']].'</p>';
 			echo '<p><em>Nr dokumentu:</em>'.nl2br($this->_escape($d['documentNumber'])).'</p>';

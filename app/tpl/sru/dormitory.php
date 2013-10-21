@@ -109,17 +109,26 @@ $(document).ready(function()
 	}
 	
 	public function exportPanel(array $d) {
+		$acl = $this->_srv->get('acl');
 		
 		echo '<h3><span id="exportMoreSwitch"></span></h3>';
 		echo '<div id="userMore">';
 		$form = UFra::factory('UFlib_Form', 'docExport', $d);
 		echo $form->_start();
 		echo $form->_fieldset('Dane eksportu');
-		$tmp = array(
-			'1' => 'Lista mieszkańców wg pokoi',
-			'2' => 'Lista mieszkańców alfabetycznie',
-			'3' => 'Książka meldunkowa',
-		);
+		
+		if ($acl->sruWalet('user', 'exportBook')) {
+			$tmp = array(
+				'1' => 'Lista mieszkańców wg pokoi',
+				'2' => 'Lista mieszkańców alfabetycznie',
+				'3' => 'Książka meldunkowa',
+			);
+		} else {
+			$tmp = array(
+				'1' => 'Lista mieszkańców wg pokoi',
+				'2' => 'Lista mieszkańców alfabetycznie',
+			);
+		}
 		echo $form->docTypeId('Dokument', array(
 			'type' => $form->RADIO,
 			'labels' => $form->_labelize($tmp),

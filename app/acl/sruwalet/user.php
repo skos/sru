@@ -107,4 +107,12 @@ extends UFlib_ClassWithService {
 		}
 		return true;
 	}
+	
+	public function exportBook() {
+		$sess = $this->_srv->get('session');
+		if ($sess->typeIdWalet == UFacl_SruWalet_Admin::PORTIER) {
+			return false;
+		}
+		return true;
+	}
 }
