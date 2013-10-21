@@ -31,7 +31,10 @@ extends UFlib_ClassWithService {
 	public function edit($id) {
 		$sess = $this->_srv->get('session');
 		
-		if($this->_loggedIn() && $id == $sess->authWaletAdmin) { //swoje konto kazdy moze edytowac
+		if($this->_loggedIn() && $id == $sess->authWaletAdmin) { //swoje konto kazdy moze edytowac za wyjątkiem portiera
+			if ($sess->typeIdWalet == self::PORTIER) {
+				return false;
+			}
 			return true;	
 		}
 
@@ -44,7 +47,15 @@ extends UFlib_ClassWithService {
 		return false;
 	}
 	
-	public function fullMenuView() {
+	public function view() {
+		$sess = $this->_srv->get('session');
+		if ($sess->typeIdWalet == UFacl_SruWalet_Admin::PORTIER) {
+			return false;
+		}
+		return true;
+	}
+	
+	public function toDoListView() {
 		$sess = $this->_srv->get('session');
 		if ($sess->typeIdWalet == UFacl_SruWalet_Admin::PORTIER) {
 			return false;

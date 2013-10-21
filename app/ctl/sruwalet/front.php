@@ -335,9 +335,17 @@ extends UFctl {
 					return 'Sru_Error403';
 				}
 			case 'nations/main':
-				return 'SruWalet_Nations';
+				if ($acl->sruWalet('country', 'view')) {
+					return 'SruWalet_Nations';
+				} else {
+					return 'Sru_Error403';
+				}
 			case 'nations/quicksave':
-				return 'SruWalet_NationQuickSave';
+				if ($acl->sruWalet('country', 'view')) {
+					return 'SruWalet_NationQuickSave';
+				} else {
+					return 'Sru_Error403';
+				}
 			case 'inhabitants/main':
 				return 'SruWalet_Inhabitants';
 			case 'dormitories/dorm':
@@ -365,13 +373,25 @@ extends UFctl {
 			case 'stats/docdormitoriesexport':
 				return 'SruWalet_StatsDormitoriesDocExport';
 			case 'admins/main':
-				return 'SruWalet_Admins';
+				if ($acl->sruWalet('country', 'view')) {
+					return 'SruWalet_Admins';
+				} else {
+					return 'Sru_Error404';
+				}
 			case 'admins/admin':
-				return 'SruWalet_Admin';
+				if ($acl->sruWalet('country', 'view')) {
+					return 'SruWalet_Admin';
+				} else {
+					return 'Sru_Error404';
+				}
 			case 'admins/admin/history':
-				return 'SruWalet_AdminHistory';
+				if ($acl->sruWalet('country', 'view')) {
+					return 'SruWalet_AdminHistory';
+				} else {
+					return 'Sru_Error404';
+				}
 			case 'admins/add':
-				if ($msg->get('adminAdd/ok')) {
+				if ($msg->get('adminAdd/ok') && $acl->sruWalet('country', 'view')) {
 					return 'SruWalet_Admins';
 				} elseif ($acl->sruWalet('admin', 'add')) {
 					return 'SruWalet_AdminAdd';
@@ -379,7 +399,7 @@ extends UFctl {
 					return 'Sru_Error404';
 				}
 			case 'admins/admin/edit':
-				if ($msg->get('adminEdit/ok')) { 
+				if ($msg->get('adminEdit/ok') && $acl->sruWalet('country', 'view')) { 
 					return 'SruWalet_Admin';
 				} elseif ($acl->sruWalet('admin', 'edit', $get->adminId)) {
 					return 'SruWalet_AdminEdit';

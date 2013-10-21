@@ -823,7 +823,7 @@ extends UFbox {
 			$d['admin'] = $bean;
 
 			// kierownik osiedla nie ma przypisanych DSów
-			if ($bean->typeId == UFacl_SruWalet_Admin::HEAD) {
+			if ($bean->typeId == UFacl_SruWalet_Admin::HEAD || $bean->typeId == UFacl_SruWalet_Admin::PORTIER) {
 				return '';
 			}
 

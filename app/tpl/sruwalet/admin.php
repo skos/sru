@@ -269,7 +269,16 @@ $(document).ready(function()
 	}
 
 	public function waletBar(array $d, $ip, $time, $invIp, $invTime) {
-		echo '<a href="'.$this->url(0).'/admins/'.$d['id'].'">'.$this->_escape($d['name']).'</a> ';
+		$acl = $this->_srv->get('acl');
+		
+		if ($acl->sruWalet('admin', 'view')) {
+			echo '<a href="'.$this->url(0).'/admins/'.$d['id'].'">';
+		}
+		echo $this->_escape($d['name']);
+		if ($acl->sruWalet('admin', 'view')) {
+			echo '</a> ';
+		}
+		
 		if (!is_null($time) && $time != 0 ) {
 			echo '<br/><small>Ostatnie&nbsp;udane&nbsp;logowanie: '.date(self::TIME_YYMMDD_HHMM, $time).'</small> ' ;
 			if (!is_null($ip)) {

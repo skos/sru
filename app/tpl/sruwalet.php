@@ -50,8 +50,10 @@ extends UFtpl_Common {
 		echo '<li><a href="'.UFURL_BASE.'/walet/">Wyszukiwanie</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/walet/inhabitants/">Obsadzenie</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/walet/stats/">Statystyki</a></li>';
-		if ($acl->sruWalet('admin', 'fullMenuView')) {
+		if ($acl->sruWalet('country', 'view')) {
 			echo '<li><a href="'.UFURL_BASE.'/walet/nations/">Narodowości</a></li>';
+		}
+		if ($acl->sruWalet('country', 'view')) {
 			echo '<li><a href="'.UFURL_BASE.'/walet/admins/">Administratorzy</a></li>';
 		}
 		echo '</ul>';
@@ -99,7 +101,7 @@ extends UFtpl_Common {
 	public function toDoList(array $d) {
 		$acl = $this->_srv->get('acl');
 		
-		if ($acl->sruWalet('admin', 'fullMenuView')) {
+		if ($acl->sruWalet('admin', 'toDoListView')) {
 			$form = UFra::factory('UFlib_Form');
 			echo $form->_fieldset('<img src="'.UFURL_BASE.'/i/img/todo.png" alt="" /> Lista zadań');
 			echo $d['admin']->write('toDoList', $d['users']);
