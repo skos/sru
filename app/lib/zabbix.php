@@ -28,6 +28,7 @@ class UFlib_Zabbix {
 			    'only_true' => TRUE,
 			    'sortfield' => 'priority',
 			    'sortorder' => 'DESC',
+			    'filter' => array('value' => 1),
 			));
 
 			return $triggers;
