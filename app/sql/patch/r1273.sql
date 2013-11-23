@@ -1,0 +1,1 @@
+﻿ALTER TABLE dormitories  ADD COLUMN display_order integer;
