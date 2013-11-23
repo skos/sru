@@ -14,7 +14,7 @@ extends UFmap {
 		'usersMax'     => 'users_max',
 		'computersMax' => 'computers_max',
 		'vlan'		=> 'vlan',
-        'display_order' => 'display_order',
+		'display_order' => 'display_order',
 	);
 	protected $columnTypes = array(
 		'id'           => self::INT,
@@ -25,7 +25,7 @@ extends UFmap {
 		'usersMax'     => self::INT,
 		'computersMax' => self::INT,
 		'vlan'		=> self::INT,
-        'display_order' => self::INT,
+		'display_order' => self::INT,
 	);
 	protected $tables = array(
 		'' => 'dormitories',

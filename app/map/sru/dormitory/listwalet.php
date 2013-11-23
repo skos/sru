@@ -9,13 +9,13 @@ extends UFmap {
 		'dormitoryId'		=> 'id',
 		'dormitoryName'		=> 'name',
 		'dormitoryAlias'	=> 'alias',
-        'display_order'     => 'display_order',
+		'display_order'		=> 'display_order',
 	);
 	protected $columnTypes = array(
 		'dormitoryId'		=> self::INT,
 		'dormitoryName'		=> self::TEXT,
 		'dormitoryAlias'	=> self::TEXT,
-        'display_order'     => self::INT,
+		'display_order'		=> self::INT,
 	);
 	protected $tables = array(
 		'' => 'dormitories',
