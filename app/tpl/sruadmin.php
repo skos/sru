@@ -86,7 +86,7 @@ extends UFtpl_Common {
 		}
 		$url = $this->url(0).'/computers/'.$d['computer']->id;
 		echo '<div class="computer">';
-		$d['computer']->write('details', $d['switchPort'], $d['aliases'], $d['virtuals']);
+		$d['computer']->write('details', $d['switchPort'], $d['aliases'], $d['virtuals'], $d['macVendor']);
 		echo '</div>';
 	}
 

@@ -145,6 +145,15 @@ extends UFbox {
 			} else {
 				$d['virtuals'] = null;
 			}
+			
+			// osobny bean, nie łączony z komputerem, ponieważ rzutowanie i jonowanie długo trwa
+			try {
+				$macVendor = UFra::factory('UFbean_SruAdmin_MacVendor');
+				$macVendor->getByMac($bean->mac);
+				$d['macVendor'] = $macVendor;
+			} catch (UFex $e) {
+				$d['macVendor'] = null;
+			}
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {

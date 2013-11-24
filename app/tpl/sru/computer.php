@@ -149,11 +149,11 @@ extends UFtpl_Common {
 		echo '<p><em>Widziany:</em> '.($d['lastSeen'] == 0 ? 'nigdy' : date(self::TIME_YYMMDD_HHMM, $d['lastSeen'])).'</p>';
 	}
 
-	public function details(array $d, $switchPort, $aliases, $virtuals) {
+	public function details(array $d, $switchPort, $aliases, $virtuals, $macVendor) {
 		$url = $this->url(0);
 		$urlNav = $this->url(0).'/computers/'.$d['id'];
 		$acl = $this->_srv->get('acl');
-		
+
 		echo '<h1>'.$d['host'].'</h1>';
 		if (is_null($d['userId'])) {
 			$user = 'BRAK';
@@ -173,7 +173,7 @@ extends UFtpl_Common {
 		} else {
 			echo $d['mac'];
 		}
-		echo '</p>';
+		echo (!is_null($macVendor) ? ' ('.$macVendor->vendor.')' : '').'</p>';
 		echo '<p><em>IP:</em> '.$d['ip'].'</p>';
 		echo '<p><em>VLAN:</em> '.$d['vlanName'].' ('.$d['vlanId'].')</p>';
 		if (!$d['active']) {
