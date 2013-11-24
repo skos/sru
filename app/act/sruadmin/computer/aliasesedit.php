@@ -13,9 +13,7 @@ extends UFact {
 			$this->begin();
 			$computer = UFra::factory('UFbean_Sru_Computer');
 			$computer->getByPK((int)$this->_srv->get('req')->get->computerId);
-			if ($computer->typeId != UFbean_Sru_Computer::TYPE_SERVER && $computer->typeId != UFbean_Sru_Computer::TYPE_SERVER_VIRT) { // tylko serwery mogą mieć aliasy
-				throw UFra::factory('UFex_Dao_DataNotValid', 'Only server can have aliases', 0, E_WARNING, array('alias' => 'error'));
-			}
+			
 			$user = UFra::factory('UFbean_Sru_User');
 			$user->getByPK($computer->userId);
 

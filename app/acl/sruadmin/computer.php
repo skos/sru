@@ -34,17 +34,23 @@ extends UFlib_ClassWithService {
 		return true;
 	}
 	
-	public function editServer() {
-		if (!$this->_loggedIn()) {
+	public function editAliases() {
+		try {
+			if (!$this->_loggedIn()) {
+				return false;
+			}
+			$bean = UFra::factory('UFbean_Sru_Computer');
+			$bean->getByPK($this->_srv->get('req')->get->computerId);
+
+			if ($bean->active && ($bean->typeId == UFbean_Sru_Computer::TYPE_SERVER || $bean->typeId == UFbean_Sru_Computer::TYPE_SERVER_VIRT || 
+				$bean->typeId == UFbean_Sru_Computer::TYPE_ADMINISTRATION  || $bean->typeId == UFbean_Sru_Computer::TYPE_ORGANIZATION ||
+				$bean->canAdmin || $bean->exAdmin)) {
+			    return true;
+			}
+			return false;
+		} catch (Exception $e) {
 			return false;
 		}
-		$bean = UFra::factory('UFbean_Sru_Computer');
-		$bean->getByPK($this->_srv->get('req')->get->computerId);
-		
-		if ($bean->active && ($bean->typeId == UFbean_Sru_Computer::TYPE_SERVER || $bean->typeId == UFbean_Sru_Computer::TYPE_SERVER_VIRT)) {
-		    return true;
-		}
-		return false;
 	}
 
 	public function del() {

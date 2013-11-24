@@ -152,6 +152,8 @@ extends UFtpl_Common {
 	public function details(array $d, $switchPort, $aliases, $virtuals) {
 		$url = $this->url(0);
 		$urlNav = $this->url(0).'/computers/'.$d['id'];
+		$acl = $this->_srv->get('acl');
+		
 		echo '<h1>'.$d['host'].'</h1>';
 		if (is_null($d['userId'])) {
 			$user = 'BRAK';
@@ -238,13 +240,12 @@ extends UFtpl_Common {
 		}
 		echo '</div>';
 		echo '<p class="nav"><a href="'.$urlNav.'">Dane</a> &bull; ';
-		$acl = $this->_srv->get('acl');
 		if ($acl->sruAdmin('penalty', 'addForComputer', $d['id'])) {
 			echo '<a href="'.$url.'/penalties/:add/computer:'.$d['id'].'">Ukarz</a> &bull; ';
 		}
 		echo '<a href="'.$urlNav.'/history">Historia zmian</a> &bull;
 			<a href="'.$urlNav.'/:edit">Edycja</a> &bull; ';
-		if($d['active'] && ($d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER || $d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT)) {
+		if ($acl->sruAdmin('computer', 'editAliases')) {
 			echo '<a href="'.$urlNav.'/:aliases"> Aliasy</a> &bull; ';
 		}
 		if($d['active']) {

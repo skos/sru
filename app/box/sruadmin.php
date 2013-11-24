@@ -110,6 +110,7 @@ extends UFbox {
 
 	public function computer() {
 		try {
+			$acl = $this->_srv->get('acl');
 			$bean = $this->_getComputerFromGet();
 			$d['computer'] = $bean;
 
@@ -121,7 +122,7 @@ extends UFbox {
 				$d['switchPort'] = null;
 			}
 
-			if ($bean->typeId == UFbean_Sru_Computer::TYPE_SERVER || $bean->typeId == UFbean_Sru_Computer::TYPE_SERVER_VIRT) {
+			if ($acl->sruAdmin('computer', 'editAliases')) {
 				try {
 					$aliases = UFra::factory('UFbean_SruAdmin_ComputerAliasList');
 					$aliases->listByComputerId($bean->id);
