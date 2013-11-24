@@ -10,6 +10,7 @@ extends UFtpl_Common {
 		'serialNo' => 'Podaj numer seryjny',
 		'serialNo/duplicated' => 'Numer seryjny jest już zajęty',
 		'inventoryNo/duplicated' => 'Numer inwentarzowy jest już zajęty',
+		'hierarchyNo' => 'Numer w hierarchii jest niewłaściwy',
 		'hierarchyNo/duplicated' => 'Numer w hierarchii jest już zajęty',
 		'ip/notFound' => 'Niedozwolony adres IP',
 		'ip/duplicated' => 'Numer IP jest już zajęty',
@@ -250,7 +251,7 @@ extends UFtpl_Common {
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize($tmp, '', ''),
 		));
-		echo $form->hierarchyNo('Nr w hierarchii', array('after'=>UFlib_Helper::displayHint("Nr kolejny switcha w akademiku, np. dla pierwszego dsX-hp0. Brak nr oznacza, że switch jest nieużywany.")));
+		echo $form->hierarchyNo('Nr w hierarchii', array('after'=>UFlib_Helper::displayHint("Nr kolejny switcha w akademiku, np. dla pierwszego switcha (dsX-hp0) wpisujemy 0. Brak nr oznacza, że switch jest nieużywany.")));
 		echo $form->localization('Lokalizacja', array('after'=>UFlib_Helper::displayHint("Pomieszczenie w akademiku, gdzie znajduje się switch.")));
 		echo $form->inventoryNo('Nr inwentarzowy');
 		echo $form->received('Na stanie od');
@@ -343,7 +344,7 @@ function fillData() {
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize($tmp, '', ''),
 		));
-		echo $form->hierarchyNo('Nr w hierarchii', array('after'=>UFlib_Helper::displayHint("Nr kolejny switcha w akademiku, np. dla pierwszego dsX-hp0. Brak nr oznacza, że switch jest nieużywany.")));
+		echo $form->hierarchyNo('Nr w hierarchii', array('after'=>UFlib_Helper::displayHint("Nr kolejny switcha w akademiku, np. dla pierwszego switcha (dsX-hp0) wpisujemy 0. Brak nr oznacza, że switch jest nieużywany.")));
 		echo $form->localization('Lokalizacja', array('after'=>UFlib_Helper::displayHint("Pomieszczenie w akademiku, gdzie znajduje się switch.")));
 		echo $form->inventoryNo('Nr inwentarzowy');
 		echo $form->received('Na stanie od');
