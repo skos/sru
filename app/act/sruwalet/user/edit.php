@@ -98,6 +98,7 @@ extends UFact {
 			
 			/* outside transaction - computers operations, they aren't critical - no problems if fail */
 			try {
+				$this->begin();
 				$comps = UFra::factory('UFbean_Sru_ComputerList');
 				$waletAdmin = $this->_srv->get('session')->authWaletAdmin;
 				if(!$active && $bean->active){
@@ -113,8 +114,13 @@ extends UFact {
 				}
 				$typeId = (array_key_exists($bean->typeId, UFtpl_Sru_Computer::$userToComputerType) ? UFtpl_Sru_Computer::$userToComputerType[$bean->typeId] : UFbean_Sru_Computer::TYPE_STUDENT);
 				$comps->updateLocationAndTypeByUserId($bean->id, $bean->locationId, $typeId, $waletAdmin);
+				$this->commit();
 			} catch (UFex_Dao_NotFound $e) {
 				// uzytkownik nie ma komputerow
+			} catch (UFex_Dao_DataNotValid $e) {
+				$this->rollback();
+			} catch (UFex_Db_QueryFailed $e) {
+				$this->rollback();
 			}
 			
 			if($dormitoryId != $bean->dormitoryId || $locationAlias != $bean->locationAlias){
