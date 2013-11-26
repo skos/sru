@@ -145,15 +145,6 @@ extends UFbox {
 			} else {
 				$d['virtuals'] = null;
 			}
-			
-			// osobny bean, nie łączony z komputerem, ponieważ rzutowanie i jonowanie długo trwa
-			try {
-				$macVendor = UFra::factory('UFbean_SruAdmin_MacVendor');
-				$macVendor->getByMac($bean->mac);
-				$d['macVendor'] = $macVendor;
-			} catch (UFex $e) {
-				$d['macVendor'] = null;
-			}
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
@@ -372,10 +363,12 @@ extends UFbox {
 		} catch (UFex_Dao_NotFound $e) {
 			// sprawdźmy, czy chodzi o niezarejestrowanego MACa
 			try {
+				$get = $this->_srv->get('req')->get;
 				$hp = UFra::factory('UFlib_Snmp_Hp');
 				$switchPort = $hp->findMac($get->searchedMac);
 				if (!is_null($switchPort)) {
 					$d['switchPort'] = $switchPort;
+					$d['searchedMac'] = $get->searchedMac;
 					return $this->render(__FUNCTION__.'Unregistered', $d);
 				}
 			} catch (UFex_Core_DataNotFound $e) {
@@ -2107,6 +2100,16 @@ extends UFbox {
 		$zabbix = UFra::factory('UFlib_Zabbix');
 		$problems = $zabbix->getAllActiveProblems();
 		$d['problems'] = $problems;
+		
+		return $this->render(__FUNCTION__, $d);
+	}
+	
+	public function apisGetMacVendor() {
+		$get = $this->_srv->get('req')->get;
+		
+		$mvl = UFra::factory('UFlib_MacVendorLookup');
+		$vendor = $mvl->getVendor($get->mac);
+		$d['vendor'] = $vendor;
 		
 		return $this->render(__FUNCTION__, $d);
 	}

@@ -31,6 +31,14 @@ extends UFctl {
 						$get->view = 'zabbix/problems';
 					}
 					break;
+				case 'getmacvendor':
+					if ($segCount > 2) {
+						$get->mac = urldecode($req->segment(3));
+						$get->view = 'macVendors/getVendor';
+					} else {
+						$get->view = 'error404';
+					}
+					break;
 				default:
 					$get->view = 'error404';
 					break;
@@ -70,6 +78,8 @@ extends UFctl {
 				return 'SruAdmin_ApisOtrsTickets';
 			case 'zabbix/problems':
 				return 'SruAdmin_ApisZabbixProblems';
+			case 'macVendors/getVendor':
+				return 'SruAdmin_ApisGetMacVendor';
 			default:
 				return 'Sru_Error404';
 		}

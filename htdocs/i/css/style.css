@@ -146,6 +146,8 @@ img { border-style: none; }
 #main .bordered td, .sruDutyHoursUpcoming td { border-width: 1px; border-style: solid; border-color: black; }
 #main .sruDutyHoursUpcoming { width: 100%; text-align: center; font-size: 0.8em; margin-top: 5px; }
 
+#main #macvendor { font-style: italic; }
+
 .tooltip {
 	display:none;
 	background:transparent url('../img/chmurka.png');

@@ -149,7 +149,7 @@ extends UFtpl_Common {
 		echo '<p><em>Widziany:</em> '.($d['lastSeen'] == 0 ? 'nigdy' : date(self::TIME_YYMMDD_HHMM, $d['lastSeen'])).'</p>';
 	}
 
-	public function details(array $d, $switchPort, $aliases, $virtuals, $macVendor) {
+	public function details(array $d, $switchPort, $aliases, $virtuals) {
 		$url = $this->url(0);
 		$urlNav = $this->url(0).'/computers/'.$d['id'];
 		$acl = $this->_srv->get('acl');
@@ -173,7 +173,12 @@ extends UFtpl_Common {
 		} else {
 			echo $d['mac'];
 		}
-		echo (!is_null($macVendor) ? ' ('.$macVendor->vendor.')' : '').'</p>';
+		echo ' <small><span id="macvendor">wczytywanie dostawcy MACa...</span></small></p>';
+?>
+<script>
+$("#macvendor").load('<?=UFURL_BASE?>/admin/apis/getmacvendor/<?=$d['mac']?>');
+</script>
+<?
 		echo '<p><em>IP:</em> '.$d['ip'].'</p>';
 		echo '<p><em>VLAN:</em> '.$d['vlanName'].' ('.$d['vlanId'].')</p>';
 		if (!$d['active']) {
@@ -756,11 +761,16 @@ div.style.display = 'none';
 		}
 	}
 
-	public function searchResultsUnregistered(array $d, $switchPort) {
-		$url = $this->url(0);
+	public function searchResultsUnregistered(array $d, $switchPort, $searchedMac) {
 		echo '<h1>Komputer niezarejestrowany</h1>';
 		echo '<p><em>Switch i port:</em> <a href="'.$this->url(0).'/switches/'.$switchPort->switchSn.'">'.UFtpl_SruAdmin_Switch::displaySwitchName($switchPort->dormitoryAlias, $switchPort->switchNo, $switchPort->switchLab).'</a>, ';
-		echo '<a href="'.$this->url(0).'/switches/'.$switchPort->switchSn.'/port/'.$switchPort->ordinalNo.'">port '.$switchPort->ordinalNo.'</a></p>';
+		echo '<a href="'.$this->url(0).'/switches/'.$switchPort->switchSn.'/port/'.$switchPort->ordinalNo.'">port '.$switchPort->ordinalNo.'</a>';
+		echo ' <small><span id="macvendor">wczytywanie dostawcy MACa...</span></small></p>';
+?>
+<script>
+$("#macvendor").load('<?=UFURL_BASE?>/admin/apis/getmacvendor/<?=$searchedMac?>');
+</script>
+<?
 	}
 
 	private function showMacHint() {

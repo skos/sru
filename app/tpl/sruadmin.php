@@ -86,7 +86,7 @@ extends UFtpl_Common {
 		}
 		$url = $this->url(0).'/computers/'.$d['computer']->id;
 		echo '<div class="computer">';
-		$d['computer']->write('details', $d['switchPort'], $d['aliases'], $d['virtuals'], $d['macVendor']);
+		$d['computer']->write('details', $d['switchPort'], $d['aliases'], $d['virtuals']);
 		echo '</div>';
 	}
 
@@ -255,7 +255,7 @@ extends UFtpl_Common {
 
 	public function computerSearchResultsUnregistered(array $d) {
 		echo '<div class="computer">';
-		echo $d['computers']->write('searchResultsUnregistered', $d['switchPort']);
+		echo $d['computers']->write('searchResultsUnregistered', $d['switchPort'], $d['searchedMac']);
 		echo '</div>';
 	}
 
@@ -1360,6 +1360,12 @@ extends UFtpl_Common {
 			echo '<li><a href="'.$url.'tr_status.php?hostid='.$problem->hostid.'">'.$problem->hostname.': '.$problem->description.'</a> <small>(z '.date(self::TIME_YYMMDD_HHMMSS, $problem->lastchange).')</small></li>';
 		}
 		echo '</ul>';
+	}
+	
+	public function apisGetMacVendor(array $d) {
+		if (!is_null($d['vendor'])) {
+			echo $d['vendor'][0]['company'];
+		}
 	}
 	
 	public function penaltyAddMailTitle(array $d) {
