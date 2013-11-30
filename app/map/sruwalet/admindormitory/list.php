@@ -14,6 +14,7 @@ extends UFmap {
 		'dormitoryName'  => 'd.name',
 		'dormitoryAlias' => 'd.alias',
 		'dormitoryId'	 => 'd.id',
+		'display_order'  => 'd.display_order'
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -24,6 +25,7 @@ extends UFmap {
 		'dormitoryName'  => self::TEXT,
 		'dormitoryAlias' => self::TEXT,
 		'dormitoryId'	 => self::INT,
+		'display_order'  => self::INT
 	);
 	protected $tables = array(
 		'a' => 'admins_dormitories',
