@@ -258,6 +258,23 @@ extends UFdao {
 
 		return $this->doSelect($query);
 	}
+	
+	public function listSkosEthers() {
+		$mapping = $this->mapping('skosethers');
+		
+		$conf = UFra::factory('UFconf_Sru');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->column('mac').' IS NOT NULL', // bo z jakiegos powodu ufra sama nie potrafi dla MACa
+			null, $query->SQL
+		);
+		$query->where($mapping->ip, $conf->noEthers, $query->NOT_IN);
+		$query->where($mapping->taskExport, true);
+		$query->distinct();
+		$query->order($mapping->ip, $query->ASC);
+
+		return $this->doSelect($query);
+	}
 
 	public function listAdmins() {
 		$mapping = $this->mapping('list');

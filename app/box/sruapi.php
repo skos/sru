@@ -102,6 +102,19 @@ extends UFbox {
 			return '';
 		}
 	}
+	
+	public function skosEthers() {
+		try {
+			$bean = UFra::factory('UFbean_Sru_ComputerList');
+			$bean->listSkosEthers();
+
+			$d['computers'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return '';
+		}
+	}
 
 	public function admins() {
 		try {

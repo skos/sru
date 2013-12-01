@@ -65,6 +65,9 @@ extends UFctl {
 				case 'ethers':
 					$get->view = 'ethers';
 					break;
+				case 'skosethers':
+					$get->view = 'skosethers';
+					break;
 				case 'admins':
 					$get->view = 'admins';
 						if($segCount > 1) {
@@ -252,6 +255,8 @@ extends UFctl {
 				return 'SruApi_DnsRev';
 			case 'ethers':
 				return 'SruApi_Ethers';
+			case 'skosethers':
+				return 'SruApi_SkosEthers';
 			case 'admins':
 				return 'SruApi_Admins';
 			case 'admins/exadmins':

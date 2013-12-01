@@ -24,6 +24,10 @@ extends UFtpl_Common {
 	public function ethers(array $d) {
 		$d['computers']->write('configEthers');
 	}
+	
+	public function skosEthers(array $d) {
+		$d['computers']->write('configSkosEthers');
+	}
 
 	public function admins(array $d) {
 		$d['computers']->write('configAdmins');

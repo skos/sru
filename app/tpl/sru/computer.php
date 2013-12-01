@@ -802,6 +802,14 @@ $("#macvendor").load('<?=UFURL_BASE?>/admin/apis/getmacvendor/<?=$searchedMac?>'
 			echo $c['mac']."\t".$c['ip']."\n";
 		}
 	}
+	
+	public function configSkosEthers(array $d) {
+		$ethers = array();
+		foreach ($d as $c) {
+			$ethers[] = array('vlan' => $c['vlanId'], 'mac' => $c['mac'], 'ip' => $c['ip']);
+		}
+		echo json_encode($ethers);
+	}
 
 	public function configDns(array $d, $aliases) {
 		foreach ($d as $c) {
