@@ -83,15 +83,17 @@ extends UFbean_Common {
 					return 'regexp';
 				}
 			}
-			$bean->getByMac($val);
-			if ($change && $this->data['id'] == $bean->id) {
-				return;
-			}
 			try {
 				// sprawdzamy, czy mamy do czynienia z serwerem
 				$post = $this->_srv->get('req')->post->{self::EDIT_PREFIX};
 				if (isset($post['typeId']) && ($post['typeId'] == self::TYPE_SERVER || $post['typeId'] == self::TYPE_SERVER_VIRT)) {
 					return;
+				} else if (!isset($post['typeId'])) {
+					$computer = UFra::factory('UFbean_Sru_Computer');
+					$computer->getByPK((int)$this->_srv->get('req')->get->computerId);
+					if ($computer->typeId == self::TYPE_SERVER || $computer->typeId == self::TYPE_SERVER_VIRT) {
+						return;
+					}
 				}
 			} catch (UFex $e) {
 			}
