@@ -15,7 +15,7 @@ extends UFact {
 			$post = $this->_srv->get('req')->post->{self::PREFIX};
 			$acl = $this->_srv->get('acl');
 			$login = $bean->login;
-			$bean->fillFromPost(self::PREFIX, array('password', 'login', 'typeId', 'active'));
+			$bean->fillFromPost(self::PREFIX, array('password', 'login', 'typeId', 'active', 'dorm'));
 				
 			if(isset($post['password']) && $post['password'] != '' ) {
 				$bean->password = $post['password'];

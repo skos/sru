@@ -58,7 +58,13 @@ extends UFlib_ClassWithService {
 				$post = $this->_srv->get('req')->post->$postPrefix;
 				if (is_array($post)) {
 					foreach ($post as &$d) {
-						$d = stripslashes($d);
+						if (is_array($d)) {
+							foreach ($d as &$c) {
+								$c = stripslashes($c);
+							}
+						} else {
+							$d = stripslashes($d);
+						}
 					}
 					$data = $post + $data;
 				}
