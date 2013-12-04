@@ -60,22 +60,7 @@ $.tablesorter.addParser({
 	},
 	type: 'numeric'
 });
-$( document ).ready(function() {
-	$(function () {
-		$( "input[type='Calender']" ).each( function(index){
-			var datepicker_default_val = $(this).val();
-			$(this).datepicker({
-				constrainInput: true,
-				showOn: 'button',
-				buttonImage: "<?=UFURL_BASE;?>/i/img/calendar.png",
-				buttonImageOnly: true,
-				dateFormat: 'yy-mm-dd'
-			});
-			$( this ).datepicker("setDate", datepicker_default_val );
-		});
-		$(".ui-datepicker-trigger").removeAttr("title");
-	});
-});
+
 </script>
 <?
 $stop = microtime(true);
