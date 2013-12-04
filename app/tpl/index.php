@@ -16,6 +16,8 @@ extends UFtpl_Common {
 <link rel="shortcut icon" href="<?=UFURL_BASE;?>/i/img/favicon.ico" type="image/x-icon" />
 <script type="text/javascript" src="<?=UFURL_BASE;?>/i/jquery/jquery.js"></script>
 <script type="text/javascript" src="<?=UFURL_BASE;?>/i/jquery/jquery-ui.custom.min.js"></script>
+<script type="text/javascript" src="<?=UFURL_BASE;?>/i/jquery/development-bundle/ui/i18n/jquery.ui.datepicker-pl.js"></script>
+<script type="text/javascript" src="<?=UFURL_BASE;?>/i/js/datepickerInit.js"></script>
 <title><?=$d['title'];?></title>
 </head>
 <body>
@@ -43,6 +45,7 @@ $boot = $this->_srv->get('msg')->get('timeBoot');
 echo '<!-- boot: '.number_format(1000*($boot-$start), 1).'ms, total: '.number_format(1000*($stop-$start), 1).'ms -->';
 //echo '<pre>'.print_r(UFra::logs(), true).'</pre>';
 ?>
+
 </body>
 </html><?
 	}

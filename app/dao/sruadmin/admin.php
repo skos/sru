@@ -94,7 +94,7 @@ extends UFdao {
 		$query->where($mapping->active, true); 
 		$query->where($mapping->typeId, UFacl_SruAdmin_Admin::BOT, UFlib_Db_Query::LT);
 		
-		$query->order($mapping->display_order, $query->ASC);	// @todo: kijowe rozwiazanie, ale jak bylo po aliasie, to "10" bylo przed "2" (sortowanie powinno byc później jakims array_walkiem czy czyms takim - dop. Eshelion)
+		$query->order($mapping->display_order, $query->ASC);
 		$query->order($mapping->typeId, $query->ASC);
 		$query->order($mapping->name, $query->ASC);
 		
@@ -109,7 +109,7 @@ extends UFdao {
 		$query->where($mapping->active, false);
 		$query->where($mapping->typeId, UFacl_SruAdmin_Admin::BOT, UFlib_Db_Query::LT);
 		
-		$query->order($mapping->display_order, $query->ASC);	// @todo: kijowe rozwiazanie, ale jak bylo po aliasie, to "10" bylo przed "2" (sortowanie powinno byc później jakims array_walkiem czy czyms takim - dop. Eshelion)
+		$query->order($mapping->display_order, $query->ASC);
 		$query->order($mapping->typeId, $query->ASC); //to czemus wadzi hrynek? wydaje mi sie ze najpierw wazniejsi powinny byc chociaz jak wolisz:P
 		$query->order($mapping->name, $query->ASC);
 		

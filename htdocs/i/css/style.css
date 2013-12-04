@@ -253,3 +253,9 @@ border-top: 1px solid;
 	margin-left: auto;
 	margin-right: auto;
 }
+
+.ui-datepicker-trigger{
+    margin-left: 6px;
+    position: relative;
+    top: 1px;
+}

@@ -283,7 +283,7 @@ extends UFtpl_Common {
 		echo $form->pesel('PESEL', array('value'=>$pesel,
 			'after'=>'<span id="peselValidationResult"></span><br/>'));
 
-		echo $form->birthDate('Data urodzenia', array('after'=>UFlib_Helper::displayHint("Data w formacie RRRR-MM-DD, np. 1988-10-06")));
+		echo $form->birthDate('Data urodzenia', array('type' => $form->CALENDER,'after'=>UFlib_Helper::displayHint("Data w formacie RRRR-MM-DD, np. 1988-10-06")));
 		echo $form->birthPlace('Miejsce urodzenia');
 		echo $form->userPhoneNumber('Nr telefonu mieszkańca');
 		echo $form->guardianPhoneNumber('Nr telefonu opiekuna');
@@ -317,6 +317,7 @@ extends UFtpl_Common {
 			$referralStart = date(self::TIME_YYMMDD, time());
 		}
 		echo $form->referralStart('Początek skierowania', array(
+			'type' => $form->CALENDER,
 			'value'=>$referralStart,
 			'class'=>'required',
 			'after'=>UFlib_Helper::displayHint("Data początku pobytu."),
@@ -327,6 +328,7 @@ extends UFtpl_Common {
 			$referralEnd = $conf->usersAvailableTo;
 		}
 		echo $form->referralEnd('Koniec skierowania', array(
+			'type' => $form->CALENDER,
 			'value'=>$referralEnd,
 			'class'=>'required',
 			'after'=>UFlib_Helper::displayHint("Data końca pobytu."),
@@ -1033,7 +1035,7 @@ changeVisibility();
 														'after'=>UFlib_Helper::displayHint("Np. &quot;polska&quot;, &quot;niemiecka&quot;, &quot;angielska&quot;,")));
 		echo $form->pesel("PESEL", array('after'=>'<span id="peselValidationResult"></span><br/>'));
 
-		echo $form->birthDate('Data urodzenia', array('after'=>UFlib_Helper::displayHint("Data w formacie RRRR-MM-DD, np. 1988-10-06")));
+		echo $form->birthDate('Data urodzenia', array('type' => $form->CALENDER,'after'=>UFlib_Helper::displayHint("Data w formacie RRRR-MM-DD, np. 1988-10-06")));
 		echo $form->birthPlace("Miejsce urodzenia");
 		echo $form->userPhoneNumber("Nr telefonu mieszkańca");
 		echo $form->guardianPhoneNumber("Nr telefonu opiekuna");
@@ -1092,6 +1094,7 @@ changeVisibility();
 			}
 		}
 		echo $form->referralStart('Początek skierowania', array(
+			'type' => $form->CALENDER,
 			'value'=>$referralStart,
 			'class'=>'required',
 			'after'=>UFlib_Helper::displayHint("Data początku pobytu."),
@@ -1107,6 +1110,7 @@ changeVisibility();
 			}
 		}
 		echo $form->referralEnd('Koniec skierowania', array('value'=>$referralEnd,
+			'type' => $form->CALENDER,
 			'class'=>'required',
 			'after'=>UFlib_Helper::displayHint("Data końca pobytu."),
 		));
@@ -1125,6 +1129,7 @@ changeVisibility();
 			}
 			echo '<div id="checkInMore">';
 			echo $form->lastLocationChange('Data zameldowania', array(
+				'type' => $form->CALENDER,
 				'value'=>$checkIn,
 				'class'=>'required',
 				'after'=>UFlib_Helper::displayHint("Data, kiedy mieszkaniec wprowadził się do DSu."),

@@ -39,6 +39,7 @@ extends UFlib_ClassWithService {
 		'RADIO'    => 'Radio',
 		'FILE'     => 'File',
 		'HIDDEN'   => 'Hidden',
+		'CALENDER' => 'Calender'
 	);
 
 	/**

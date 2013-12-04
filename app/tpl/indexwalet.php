@@ -18,7 +18,8 @@ extends UFtpl_Common {
 <script type="text/javascript" src="<?=UFURL_BASE;?>/i/jquery/jquery.js"></script>
 <script type="text/javascript" src="<?=UFURL_BASE;?>/i/jquery/jquery-ui.custom.min.js"></script>
 <script type="text/javascript" src="<?=UFURL_BASE;?>/i/jquery/jquery.tablesorter.min.js"></script>
-
+<script type="text/javascript" src="<?=UFURL_BASE;?>/i/jquery/development-bundle/ui/i18n/jquery.ui.datepicker-pl.js"></script>
+<script type="text/javascript" src="<?=UFURL_BASE;?>/i/js/datepickerInit.js"></script>
 <title><?=$d['title'];?></title>
 </head>
 <body>
@@ -58,6 +59,22 @@ $.tablesorter.addParser({
 		return s.substr(17);
 	},
 	type: 'numeric'
+});
+$( document ).ready(function() {
+	$(function () {
+		$( "input[type='Calender']" ).each( function(index){
+			var datepicker_default_val = $(this).val();
+			$(this).datepicker({
+				constrainInput: true,
+				showOn: 'button',
+				buttonImage: "<?=UFURL_BASE;?>/i/img/calendar.png",
+				buttonImageOnly: true,
+				dateFormat: 'yy-mm-dd'
+			});
+			$( this ).datepicker("setDate", datepicker_default_val );
+		});
+		$(".ui-datepicker-trigger").removeAttr("title");
+	});
 });
 </script>
 <?
