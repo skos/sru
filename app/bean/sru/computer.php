@@ -104,7 +104,13 @@ extends UFbean_Common {
 					return;
 				}
 			} catch (UFex $e) {
-			}			
+			}
+
+			// skoro nie serwer, to sprawdzamy, czy MAC sie powtarza
+			$bean->getByMac($val);
+			if ($change && $this->data['id'] == $bean->id) {
+				return;
+			} 			
 
 			return 'duplicated';
 		} catch (UFex_Db_QueryFailed $e) {
