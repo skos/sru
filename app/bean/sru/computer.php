@@ -66,7 +66,7 @@ extends UFbean_Common {
 			'3333xxxxxxxx'
 		);
 		try {
-			$bean = UFra::factory('UFbean_Sru_Computer');
+			$bean = UFra::factory('UFbean_Sru_ComputerList');
 			$val2 = strtoupper($val);
 			$val2 = str_replace(':', '', $val2);
 			$val2 = str_replace('-', '', $val2);
@@ -107,8 +107,8 @@ extends UFbean_Common {
 			}
 
 			// skoro nie serwer, to sprawdzamy, czy MAC sie powtarza
-			$bean->getByMac($val);
-			if ($change && $this->data['id'] == $bean->id) {
+			$bean->listByMac($val);
+			if (($change && count($bean) <= 1) || count($bean) == 0) {
 				return;
 			} 			
 

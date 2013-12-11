@@ -61,9 +61,9 @@ extends UFact {
 			}
 
 			$bean->fillFromPost(self::PREFIX, array('availableTo')); // zgodnie z ticketem #176 filtr wyłączony
-			if (!is_null($post['skosCarerId']) && $post['skosCarerId'] != 0) {
+			if (($bean->typeId == UFbean_Sru_Computer::TYPE_SERVER || $bean->typeId == UFbean_Sru_Computer::TYPE_SERVER_VIRT) && !is_null($post['skosCarerId']) && $post['skosCarerId'] != 0) {
 				$bean->carerId = $post['skosCarerId'];
-			} else if (!is_null($post['waletCarerId']) && $post['waletCarerId'] != 0) {
+			} else if ($bean->typeId == UFbean_Sru_Computer::TYPE_ADMINISTRATION && !is_null($post['waletCarerId']) && $post['waletCarerId'] != 0) {
 				$bean->carerId = $post['waletCarerId'];
 			} else {
 				$bean->carerId = null;

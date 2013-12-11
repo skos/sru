@@ -53,6 +53,17 @@ extends UFdao {
 		return $this->doSelectFirst($query);
 	}
 	
+	public function listByMac($mac) {
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->mac, $mac);
+		$query->where($mapping->active, true);
+		$query->order($mapping->host, $query->ASC);
+
+		return $this->doSelect($query);
+	}
+	
 	public function listByUserId($id) {
 		$mapping = $this->mapping('list');
 
