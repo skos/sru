@@ -52,13 +52,15 @@ extends UFtpl_Common {
 	}
 
 	public function adminBar(array $d) {
-		$form = UFra::factory('UFlib_Form');
+		$form = UFra::factory('UFlib_Form', 'adminLogout');
 
 		echo $form->_start($this->url(0).'/', array('class'=>'userBar'));
 		echo $form->_fieldset();
-		if($d['admin']->active == true && $d['admin']->activeTo - time() <= UFra::shared('UFconf_Sru')->adminDeactivateAfter && $d['admin']->activeTo - time() >= 0)
+		if($d['admin']->active == true && $d['admin']->activeTo - time() <= UFra::shared('UFconf_Sru')->adminDeactivateAfter && $d['admin']->activeTo - time() >= 0) {
 			echo '<img src="'.UFURL_BASE.'/i/img/wykrzyknik.png" alt="Wykrzyknik" title="Zbliża się czas dezaktywacji konta" />&nbsp;';
+		}
 		echo $d['admin']->write(__FUNCTION__, $d['lastLoginIp'], $d['lastLoginAt'], $d['lastInvLoginIp'], $d['lastInvLoginAt']);
+		echo $form->logout('', array('type'=>$form->HIDDEN, 'value'=>true));
 		echo $form->_submit('Wyloguj', array('name'=>'adminLogout'));
 		echo $form->_end();
 		echo $form->_end(true);

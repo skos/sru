@@ -38,6 +38,11 @@ extends UFtpl_Common {
 &copy;&nbsp;<a href="http://skos.ds.pg.gda.pl">SKOS PG</a>
 </div><!-- foot -->
 </div><!-- body -->
+<script type="text/javascript">
+$('form').submit(function(){
+	$('input[type=submit]', this).attr('disabled', 'disabled');
+});
+</script>
 <?
 $stop = microtime(true);
 $start = $this->_srv->get('msg')->get('timeStart');

@@ -60,11 +60,12 @@ extends UFtpl_Common {
 	}
 
 	public function waletBar(array $d) {
-		$form = UFra::factory('UFlib_Form');
+		$form = UFra::factory('UFlib_Form', 'adminLogout');
 
 		echo $form->_start($this->url(0).'/', array('class'=>'userBar'));
 		echo $form->_fieldset();
 		echo $d['admin']->write(__FUNCTION__, $d['lastLoginIp'], $d['lastLoginAt'], $d['lastInvLoginIp'], $d['lastInvLoginAt']);
+		echo $form->logout('', array('type'=>$form->HIDDEN, 'value'=>true));
 		echo $form->_submit('Wyloguj', array('name'=>'adminLogout'));
 		echo $form->_end();
 		echo $form->_end(true);

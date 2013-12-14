@@ -670,12 +670,12 @@ div.style.display = 'none';
 
 	public function formDel(array $d) {
 		$d['confirm'] = false;
-		$form = UFra::factory('UFlib_Form', $d);
+		$form = UFra::factory('UFlib_Form', 'computerDel', $d);
 		echo $form->confirm('Tak, chcę wyrejestrować ten komputer', array('type'=>$form->CHECKBOX, 'name'=>'computerDel[confirm]'));
 	}
 
 	public function formDelAdmin(array $d) {
-		$form = UFra::factory('UFlib_Form');
+		$form = UFra::factory('UFlib_Form', 'computerDel', $d);
 		echo $form->confirm('Tak, wyrejestruj ten komputer', array('type'=>$form->CHECKBOX, 'name'=>'computerDel[confirm]', 'value'=>'1'));
 	}
 

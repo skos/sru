@@ -49,6 +49,9 @@ extends UFtpl_Common {
 $(function() {
 	$( document ).tooltip();
 });
+$('form').submit(function(){
+	$('input[type=submit]', this).attr('disabled', 'disabled');
+});
 </script>
 <?
 $stop = microtime(true);
