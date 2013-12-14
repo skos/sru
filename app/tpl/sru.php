@@ -61,9 +61,6 @@ extends UFtpl_Common {
 		if ($this->_srv->get('msg')->get('userEdit/ok')) {
 			echo $this->OK('Dane zostały zmienione. Pamiętaj, aby zaktualizować dane, gdy ponownie ulegną zmianie.');
 		}
-		if ($this->_srv->get('msg')->get('sendMessage/ok')) {
-			echo $this->OK('Wiadomość została wysłana. Odpowiemy na nią najszybciej, jak to będzie możliwe na adres e-mail podany w SRU.');
-		}
 		if ($this->_srv->get('msg')->get('sendMessage/errors')) {
 			echo $this->ERR('Nie udało się wysłać wiadomości. Prosimy spróbować później lub wysłać wiadomość e-mail na adres admin@ds.pg.gda.pl');
 		}
@@ -109,7 +106,11 @@ extends UFtpl_Common {
 		echo $form->_start();
 		
 		echo $form->_fieldset('Kontakt');
-		echo $d['user']->write('contactForm');
+		if ($this->_srv->get('msg')->get('sendMessage/ok')) {
+			echo $this->OK('Wiadomość została wysłana. Odpowiemy na nią najszybciej, jak to będzie możliwe na adres e-mail podany w SRU.');
+		} else {
+			echo $d['user']->write('contactForm');
+		}
 		echo $form->_end();
 		echo $form->_end(true);
 
