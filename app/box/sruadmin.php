@@ -774,7 +774,7 @@ extends UFbox {
 			return $this->render(__FUNCTION__, $d);
 		} 
 		catch (UFex_Dao_NotFound $e) {
-			return $this->render('adminsNotFound');
+			return $this->render(__FUNCTION__.'NotFound');
 		}
 	}
 
@@ -1589,9 +1589,13 @@ extends UFbox {
 					$tpl = UFra::factory('UFbean_SruAdmin_PenaltyTemplate');
 					$tpl->getByPK($this->_srv->get('req')->get->templateId);
 					if ($user->lang == 'en' && $tpl->reasonEn != '') {
-						$bean->reason = $tpl->reasonEn;
+						if (!is_null($tpl->reasonEn) && $tpl->reasonEn != '') {
+							$bean->reason = $tpl->reasonEn;
+						}
 					} else {
-						$bean->reason = $tpl->reason;
+						if (!is_null($tpl->reason) && $tpl->reason != '') {
+							$bean->reason = $tpl->reason;
+						}
 					}
 					$bean->duration = $tpl->duration;
 					$bean->after = $tpl->amnesty;

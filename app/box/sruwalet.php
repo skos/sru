@@ -772,7 +772,7 @@ extends UFbox {
 			return $this->render(__FUNCTION__, $d);
 		} 
 		catch (UFex_Dao_NotFound $e) {
-			return $this->render('adminsNotFound');
+			return $this->render(__FUNCTION__.'adminsNotFound');
 		}
 	}
 

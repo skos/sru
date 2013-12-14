@@ -510,8 +510,6 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 	}
 
 	public function inactiveAdmins(array $d) {
-		$url = $this->url(0).'/admins/';
-		
 		echo '<div class="admins inactive">';
 		echo '<h2>Nieaktywni Administratorzy OS ('.count($d['admins']).')</h2>';
 
@@ -520,9 +518,7 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 		echo '</div>';
 	}
 
-	public function sruAdmins(array $d) {
-		$url = $this->url(0).'/admins/';
-		
+	public function sruAdmins(array $d) {		
 		echo '<div class="admins inactive">';
 		echo '<h2>Administratorzy SKOS ('.count($d['admins']).') | <a href="http://dyzury.ds.pg.gda.pl">Dyżury</a></h2>';
 
@@ -577,12 +573,20 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 	}
 
 	public function adminsNotFound() {
+		$acl = $this->_srv->get('acl');
+		$url = $this->url(0).'/admins/';
+		
 		echo '<h2>Administratorzy OS</h2>';
 		echo $this->ERR('Nie znaleziono administratorów');
 		
 		if($acl->sruWalet('admin', 'add')) {
 			echo '<p class="nav"><a href="'.$url.':add">Dodaj nowego administratora</a></p>';
 		}
+	}
+	
+	public function sruAdminsNotFound() {
+		echo '<h2>Administratorzy SKOS | <a href="http://dyzury.ds.pg.gda.pl">Dyżury</a></h2>';
+		echo $this->ERR('Nie znaleziono administratorów SKOS');		
 	}
 
 	public function inactiveAdminsNotFound() {

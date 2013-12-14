@@ -493,9 +493,7 @@ extends UFtpl_Common {
 		echo $form->_end(true);
 	}
 
-	public function inactiveAdmins(array $d) {
-		$url = $this->url(0).'/admins/';
-		
+	public function inactiveAdmins(array $d) {	
 		echo '<div class="admins inactive">';
 		echo '<h2>Nieaktywni Administratorzy ('.count($d['admins']).')</h2>';
 
@@ -505,8 +503,6 @@ extends UFtpl_Common {
 	}
 
 	public function bots(array $d) {
-		$url = $this->url(0).'/admins/';
-		
 		echo '<div class="admins">';
 		echo '<h2>Boty ('.count($d['admins']).')</h2>';
 
@@ -515,9 +511,7 @@ extends UFtpl_Common {
 		echo '</div>';
 	}
 
-	public function waletAdmins(array $d) {
-		$url = $this->url(0).'/admins/';
-		
+	public function waletAdmins(array $d) {		
 		echo '<div class="admins">';
 		echo '<h2>Pracownicy Osiedla ('.count($d['admins']).')</h2>';
 
@@ -531,6 +525,9 @@ extends UFtpl_Common {
 	}
 
 	public function adminsNotFound() {
+		$acl = $this->_srv->get('acl');
+		$url = $this->url(0).'/admins/';
+		
 		echo '<h2>Administratorzy</h2>';
 		echo $this->ERR('Nie znaleziono administratorów');
 		
@@ -539,6 +536,12 @@ extends UFtpl_Common {
 		}
 		
 	}
+	
+	public function waletAdminsNotFound() {
+		echo '<h2>Pracownicy Osiedla</h2>';
+		echo $this->ERR('Nie znaleziono pracowników Osiedla');		
+	}
+	
 	public function botsNotFound() {
 		echo '<h2>Boty</h2>';
 		echo $this->ERR('Nie znaleziono botów');
@@ -636,6 +639,10 @@ extends UFtpl_Common {
 		$d['templates']->write('choose');
 		echo '</ul>';
 	}
+	
+	public function penaltyTemplateChooseNotFound(array $d) {
+		echo $this->ERR('Błąd pobierania szablonów kar - nie można nałożyć kary.');
+	}
 
 	public function penaltyTemplateChange(array $d) {
 		echo '<h2>Edycja typu kary dla '.$d['penalty']->userName.' '.$d['penalty']->userSurname.' ('.$d['penalty']->userLogin.')</h2>';
@@ -664,6 +671,10 @@ extends UFtpl_Common {
 	public function titlePenaltyTemplateEdit(array $d) {
 		echo 'Edycja szablonu '.$d['template']->title;
 	}
+	
+	public function titlePenaltyTemplateEditNotFound(array $d) {
+		echo 'Błąd edycji szablonu kary';
+	}
 
 	public function penaltyTemplateEdit(array $d) {
 		$url = $this->url(2);
@@ -676,6 +687,10 @@ extends UFtpl_Common {
 		echo ' <a href="'.$url.'/">Powrót</a>';
 		echo $form->_end();
 		echo $form->_end(true);
+	}
+	
+	public function penaltyTemplateEditNotFound() {
+		echo $this->ERR('Nie znaleziono szablonu kary');
 	}
 
 	public function penaltyTemplatesNotFound() {
