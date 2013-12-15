@@ -17,6 +17,9 @@ extends UFtpl_Common {
 		'ip/noHierachyNo' => 'Numer IP może być przydzielony jedynie switchowi z numerem hierarchii',
 		'ip/regexp' => 'Błędny format numeru IP',
 		'dormitoryId' => 'Podaj akademik',
+		'locationAlias' => 'Podaj pokój',
+		'locationAlias/noDormitory' => 'Wybierz akademik',
+		'locationAlias/noRoom' => 'Pokój nie istnieje',
 		'mac/wrongFormat' => 'Błędny format adresu MAC',
 	);
 
@@ -140,8 +143,7 @@ extends UFtpl_Common {
 		echo ' <span id="switchMoreSwitch"></span></p>';
 		echo '<div id="switchMore">';
 		echo '<p><em>Nr seryjny:</em> '.$d['serialNo'].'</p>';
-		echo '<p><em>Akademik:</em> <a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'">'.$d['dormitoryName'].'</a></p>';
-		echo '<p><em>Lokalizacja:</em> '.$d['localization'].'</p>';
+		echo '<p><em>Lokalizacja:</em> <a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'/'.$d['locationAlias'].'">'.$d['locationAlias'].'</a> <small>(<a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'">'.$d['dormitoryAlias'].'</a>)</small>'.(strlen($d['locationComment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$d['locationComment'].'" />':'').'</p>';
 		echo '<p'.($d['inoperational'] ? ' class="inoperational"' : '').'><em>Uszkodzony:</em> '.($d['inoperational'] ? 'tak' : 'nie').'</p>';
 		echo '<p><em>Nr inwentarzowy:</em> '.$d['inventoryNo'].'</p>';
 		echo '<p><em>Na stanie od:</em> '.(is_null($d['received']) ? '' : date(self::TIME_YYMMDD, $d['received'])).'</p>';
@@ -225,6 +227,8 @@ extends UFtpl_Common {
 	}
 	
 	public function formAdd(array $d, $dormitories, $models) {
+		echo $this->ERR('Tymaczasowo niemożliwe');
+		return;
 		$d['inoperational'] = false;
 		$form = UFra::factory('UFlib_Form', 'switchAdd', $d, $this->errors);
 
@@ -239,6 +243,7 @@ extends UFtpl_Common {
 			'labels' => $form->_labelize($tmp, '', ''),
 		));
 		echo $form->serialNo('Numer seryjny');
+		echo $form->hierarchyNo('Nr w hierarchii', array('after'=>UFlib_Helper::displayHint("Nr kolejny switcha w akademiku, np. dla pierwszego switcha (dsX-hp0) wpisujemy 0. Brak nr oznacza, że switch jest nieużywany.")));
 		$tmp = array();
 		foreach ($dormitories as $dorm) {
 			$temp = explode("ds", $dorm['alias']);
@@ -247,12 +252,11 @@ extends UFtpl_Common {
 			}
 			$tmp[$dorm['id']] = $temp[1] . ' ' . $dorm['name'];
 		}
-		echo $form->dormitoryId('Akademik', array(
+		echo $form->dormitory('Akademik', array(
 			'type' => $form->SELECT,
-			'labels' => $form->_labelize($tmp, '', ''),
+			'labels' => $form->_labelize($tmp),
 		));
-		echo $form->hierarchyNo('Nr w hierarchii', array('after'=>UFlib_Helper::displayHint("Nr kolejny switcha w akademiku, np. dla pierwszego switcha (dsX-hp0) wpisujemy 0. Brak nr oznacza, że switch jest nieużywany.")));
-		echo $form->localization('Lokalizacja', array('after'=>UFlib_Helper::displayHint("Pomieszczenie w akademiku, gdzie znajduje się switch.")));
+		echo $form->locationAlias('Lokalizacja', array('after'=>UFlib_Helper::displayHint("Pomieszczenie w akademiku, gdzie znajduje się switch.")));
 		echo $form->inventoryNo('Nr inwentarzowy');
 		echo $form->received('Na stanie od');
 		echo $form->inoperational('Uszkodzony', array('type'=>$form->CHECKBOX));
@@ -332,6 +336,7 @@ function fillData() {
 			'labels' => $form->_labelize($tmp, '', ''),
 		));
 		echo $form->serialNo('Numer seryjny');
+		echo $form->hierarchyNo('Nr w hierarchii', array('after'=>UFlib_Helper::displayHint("Nr kolejny switcha w akademiku, np. dla pierwszego switcha (dsX-hp0) wpisujemy 0. Brak nr oznacza, że switch jest nieużywany.")));
 		$tmp = array();
 		foreach ($dormitories as $dorm) {
 			$temp = explode("ds", $dorm['alias']);
@@ -340,12 +345,11 @@ function fillData() {
 			}
 			$tmp[$dorm['id']] = $temp[1] . ' ' . $dorm['name'];
 		}
-		echo $form->dormitoryId('Akademik', array(
+		echo $form->dormitory('Akademik', array(
 			'type' => $form->SELECT,
-			'labels' => $form->_labelize($tmp, '', ''),
+			'labels' => $form->_labelize($tmp),
 		));
-		echo $form->hierarchyNo('Nr w hierarchii', array('after'=>UFlib_Helper::displayHint("Nr kolejny switcha w akademiku, np. dla pierwszego switcha (dsX-hp0) wpisujemy 0. Brak nr oznacza, że switch jest nieużywany.")));
-		echo $form->localization('Lokalizacja', array('after'=>UFlib_Helper::displayHint("Pomieszczenie w akademiku, gdzie znajduje się switch.")));
+		echo $form->locationAlias('Lokalizacja', array('after'=>UFlib_Helper::displayHint("Pomieszczenie w akademiku, gdzie znajduje się switch.")));
 		echo $form->inventoryNo('Nr inwentarzowy');
 		echo $form->received('Na stanie od');
 		echo $form->inoperational('Uszkodzony', array('type'=>$form->CHECKBOX));
