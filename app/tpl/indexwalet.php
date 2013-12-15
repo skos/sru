@@ -20,6 +20,7 @@ extends UFtpl_Common {
 <script type="text/javascript" src="<?=UFURL_BASE;?>/i/jquery/jquery.tablesorter.min.js"></script>
 <script type="text/javascript" src="<?=UFURL_BASE;?>/i/jquery/development-bundle/ui/i18n/jquery.ui.datepicker-pl.js"></script>
 <script type="text/javascript" src="<?=UFURL_BASE;?>/i/js/datepickerInit.js"></script>
+<script type="text/javascript" src="<?=UFURL_BASE;?>/i/jquery/jquery-ui-timepicker-addon.js"></script>
 <title><?=$d['title'];?></title>
 </head>
 <body>

@@ -162,7 +162,6 @@ extends UFtpl_Common {
 		echo $form->password('Hasło', array('type'=>$form->PASSWORD, 'after'=> UFlib_Helper::displayHint("Hasło do logowania się do SRU. Musi mieć co najmniej 8 znaków, zawierać co najmniej 1 dużą literę, 1 małą literę, 1 cyfrę i 1 znak specjalny.")));
 		echo $form->password2('Powtórz hasło', array('type'=>$form->PASSWORD));
 		echo $form->name('Nazwa', array('after'=>UFlib_Helper::displayHint("Imię i nazwisko administratora lub inne oznaczenie.")));
-		$d['hello'] = "Hello World";
 		if($this->_srv->get('acl')->sruAdmin('admin', 'addChangeActiveDate')) {
 			 echo $form->activeTo('Aktywny do', array('type' => $form->CALENDER, 'after'=> UFlib_Helper::displayHint($this->instrukcjaObslugiPolaAktywnyDo)));
 		}

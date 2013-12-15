@@ -233,7 +233,12 @@ changeVisibility();
 		echo $form->_start();
 		echo $form->_fieldset('Edycja kary');
 		if($acl->sruAdmin('penalty', 'editOne', $d['id'])){
-			echo $form->endAt('Od '.date(self::TIME_YYMMDD, $d['startAt']).' do');
+			echo $form->endAt('Od '.date(self::TIME_YYMMDD, $d['startAt']).' do',
+				array(
+					'type' => $form->TIMECALENDER
+				)
+			);
+
 		}
 		echo '<p><em>Typ:</em> '.$this->_escape(UFtpl_SruAdmin_Penalty::$penaltyTypes[$d['typeId']]).'</p>';
 

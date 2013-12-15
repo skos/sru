@@ -13,10 +13,10 @@
 		"transition",
 		"easing"
 	],
-	"version": "1.9.2",
+	"version": "1.10.3",
 	"author": {
 		"name": "jQuery Foundation and other contributors",
-		"url": "https://github.com/jquery/jquery-ui/blob/1.9.2/AUTHORS.txt"
+		"url": "https://github.com/jquery/jquery-ui/blob/1.10.3/AUTHORS.txt"
 	},
 	"maintainers": [
 		{
@@ -38,17 +38,27 @@
 			"name": "Corey Frang",
 			"email": "gnarf37@gmail.com",
 			"url": "http://gnarf.net"
+		},
+		{
+			"name": "Mike Sherov",
+			"email": "mike.sherov@gmail.com",
+			"url": "http://mike.sherov.com"
+		},
+		{
+			"name": "TJ VanToll",
+			"email": "tj.vantoll@gmail.com",
+			"url": "http://tjvantoll.com"
 		}
 	],
 	"licenses": [
 		{
 			"type": "MIT",
-			"url": "https://github.com/jquery/jquery-ui/blob/1.9.2/MIT-LICENSE.txt"
+			"url": "https://github.com/jquery/jquery-ui/blob/1.10.3/MIT-LICENSE.txt"
 		}
 	],
 	"bugs": "http://bugs.jqueryui.com/",
 	"homepage": "http://jqueryui.com/",
-	"demo": "http://jqueryui.com/effects/",
+	"demo": "http://jqueryui.com/effect/",
 	"docs": "http://api.jqueryui.com/category/effects-core/",
 	"download": "http://jqueryui.com/download/",
 	"dependencies": {

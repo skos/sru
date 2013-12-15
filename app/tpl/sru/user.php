@@ -1292,6 +1292,7 @@ $(function() {
 		}
 		$form = UFra::factory('UFlib_Form', 'userDel', $d, $this->errors);
 		echo $form->lastLocationChange('Data wymeldowania', array(
+			'type' => $form->CALENDER,
 			'value'=>$checkOut,
 			'class'=>'required',
 			'after'=>UFlib_Helper::displayHint("Data, kiedy mieszkaniec wyprowadził się z DSu."),

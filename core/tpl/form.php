@@ -281,7 +281,13 @@ class UFtpl_Form {
 		$params['labelClass'] = "datepicker" . (!empty($params['labelClass'])? " ".$params['labelClass'] : "");
 		return self::input($params);
 	}
-
+	/**
+	 * input z kalendarzem
+	 */
+	public static function inputTimeCalender($params=array()) {
+		$params['labelClass'] = "datepicker" . (!empty($params['labelClass'])? " ".$params['labelClass'] : "");
+		return self::input($params);
+	}
 	/**
 	 * input tekstowy
 	 */
