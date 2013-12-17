@@ -5,6 +5,8 @@ $( document ).ready(function() {
             showOn: 'button',
             buttonImage: "/i/img/calendar.png",
             buttonImageOnly: true,
+            changeMonth: true,
+            changeYear: true,
             dateFormat: 'yy-mm-dd'
         });
         $("input[type='TimeCalender']").datetimepicker({
@@ -12,6 +14,8 @@ $( document ).ready(function() {
             showOn: 'button',
             buttonImage: "/i/img/calendar.png",
             buttonImageOnly: true,
+            changeMonth: true,
+            changeYear: true,
             dateFormat: 'yy-mm-dd'
         });
         $(".ui-datepicker-trigger").removeAttr("title");
