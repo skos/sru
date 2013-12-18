@@ -321,6 +321,7 @@ function fillData() {
 
 	public function formEdit(array $d, $dormitories, $models) {
 		$d['received'] = is_null($d['received']) ? '' : date(self::TIME_YYMMDD, $d['received']);
+		$d['dormitory'] = $d['dormitoryId'];
 		$form = UFra::factory('UFlib_Form', 'switchEdit', $d, $this->errors);
 		echo $form->_fieldset();
 		if ($this->_srv->get('msg')->get('switchEdit/errors/model/change')) {
