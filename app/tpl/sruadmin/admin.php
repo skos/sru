@@ -7,7 +7,7 @@ extends UFtpl_Common {
 
 	public static $adminTypes = array(
 		UFacl_SruAdmin_Admin::CENTRAL 	=> 'Administrator Centralny',
-		UFacl_SruAdmin_Admin::CAMPUS 	=> 'Administrator Osiedlowy',
+		UFacl_SruAdmin_Admin::CAMPUS 	=> 'Administrator Lokalny (team leader)',
 		UFacl_SruAdmin_Admin::LOCAL	=> 'Administrator Lokalny',
 		UFacl_SruAdmin_Admin::BOT	=> 'BOT',
 	);
