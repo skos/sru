@@ -1451,6 +1451,19 @@ extends UFbox {
 			return $this->render(__FUNCTION__.'NotFound');
 		}
 	}
+	
+	public function roomSwitches() {
+		try {
+			$room = $this->_getRoomFromGet();
+			$bean = UFra::factory('UFbean_SruAdmin_SwitchList');
+			$bean->listByRoom($room->id);
+			$d['switches'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}
+	}
 
 	public function roomEdit() {
 		try {

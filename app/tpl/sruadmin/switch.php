@@ -227,8 +227,6 @@ extends UFtpl_Common {
 	}
 	
 	public function formAdd(array $d, $dormitories, $models) {
-		echo $this->ERR('Tymaczasowo niemożliwe');
-		return;
 		$d['inoperational'] = false;
 		$form = UFra::factory('UFlib_Form', 'switchAdd', $d, $this->errors);
 
@@ -377,6 +375,33 @@ function fillData() {
 		echo $form->mac('Zablokuj adres MAC');
 	}
 
+	public function shortList(array $d) {
+		$url = $this->url(0).'/switches/';
+		$conf = UFra::shared('UFconf_Sru');
+
+		foreach ($d as $c) {		
+			echo '<li>';
+			echo is_null($c['ip']) ? '<del>' : '';
+			echo $c['inoperational'] ? '<span class="inoperational">' : '';
+			echo '<a href="'.$url.$c['serialNo'].'">';
+			echo $this->displaySwitchName($c['dormitoryAlias'], $c['hierarchyNo'], $c['lab']);
+			echo ' ('.$this->_escape($c['model']).')';
+			echo '</a>';
+			echo $c['inoperational'] ? '</span>' : '';
+			echo is_null($c['ip']) ? '</del>' : '';
+			echo ' - <small><a href="'.$url.''.$c['serialNo'].'/:edit">Edytuj</a>';
+			$swstatsLink = str_replace($conf->swstatsSwitchRegex, UFtpl_SruAdmin_Switch::displaySwitchName($c['dormitoryAlias'], $c['hierarchyNo'], $c['lab']), $conf->swstatsLinkSwitch);
+			if (!is_null($c['ip'])) {
+				echo ' &bull; <a href="'.$url.''.$c['serialNo'].'/:lockoutsedit">Lockout-MAC</a>';
+				echo ' &bull; <a href="'.$url.$c['serialNo'].'/tech">Technikalia</a>';
+				echo ' &bull; <a href="'.$swstatsLink.'">SWStats</a>';
+			}
+			echo '</small></li>';
+			
+		}
+		echo '</ul>';
+	}
+	
 	public function apiList(array $d) {
 		foreach ($d as $c) {
 			echo $c['ip']."\n";

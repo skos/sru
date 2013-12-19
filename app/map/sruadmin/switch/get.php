@@ -13,8 +13,7 @@ extends UFmap {
 		'modelNo'	=> 'm.model_no',
 		'modelPorts'	=> 'm.ports_no',
 		'modelSfpPorts'	=> 'm.sfp_ports_no',
-		'dormitoryId'	=> 's.dormitory',
-		//'dormitoryId'	=> 'l.dormitory_id',
+		'dormitoryId'	=> 'l.dormitory_id',
 		'dormitoryName'	=> 'd.name',
 		'dormitoryAlias'=> 'd.alias',
 		'locationId'     => 's.location_id',
@@ -63,8 +62,7 @@ extends UFmap {
 	protected $joinOns = array(
 		'm' => 's.model=m.id',
 		'l' => 's.location_id=l.id',
-		//'d' => 'l.dormitory_id=d.id',
-		'd' => 's.dormitory=d.id',
+		'd' => 'l.dormitory_id=d.id',
 	);
 	protected $pk = 'id';
 }

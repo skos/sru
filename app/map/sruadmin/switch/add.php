@@ -14,7 +14,6 @@ extends UFmap {
 		'received'	=> 'received',
 		'inoperational'	=> 'inoperational',
 		'locationId'    => 'location_id',
-		'localization'	=> 'localization',
 		'comment'	=> 'comment',
 		'ip'		=> 'ipv4',
 		'lab'		=> 'lab',
@@ -29,7 +28,6 @@ extends UFmap {
 		'inoperational'	=> self::BOOL,
 		'locationId'     => self::INT,
 		'locationAlias'  => self::TEXT,	// kolumna tylko do walidacji
-		'localization'	=> self::NULL_TEXT,
 		'comment'	=> self::NULL_TEXT,
 		'ip'		=> self::NULL_TEXT,
 		'lab'		=> self::BOOL,

@@ -984,6 +984,16 @@ extends UFtpl_Common {
 		echo '<h3>Komputery</h3>';
 		echo $this->ERR('Brak komputerów');
 	}
+	
+	public function roomSwitches(array $d) {
+		echo '<h3>Switche</h3><ul>';
+		$d['switches']->write('shortList');
+		echo '</ul>';
+	}
+
+	public function roomSwitchesNotFound() {
+		// jeśli nie ma switchy, to nci nie piszemy
+	}
 
 	public function titleRoomNotFound() {
 		echo 'Nie znaleziono pokoju';
