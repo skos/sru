@@ -286,15 +286,11 @@ extends UFctl {
 			case 'users/user/edit':
 				$user = UFra::factory('UFbean_Sru_User');
 				$user->getByPK($get->userId);
-				if(!$this->validateUserDataCompleteness($user)) {
-					$msg->del('userEdit/ok');
+				if(!$this->validateUserDataCompleteness($user) && $msg->get('userEdit/ok')) {
 					$msg->set('userEdit/warn');
 					$msg = $this->_srv->get('msg');
 				}
 				if ($msg->get('userEdit/ok')) {
-					return 'SruWalet_User';
-				} else if($msg->get('userEdit/warn') && !$msg->get('userEdit/ok') && isset($_POST['submit']) // isset($post->submit) zawsze zwraca false O.O 
-							&& !$msg->get('userEdit/errors')) {
 					return 'SruWalet_User';
 				} else if ($acl->sruWalet('user', 'edit', $get->userId)) {
 					$msg->del('userEdit/warn');
@@ -315,18 +311,14 @@ extends UFctl {
 			case 'users/user/add':
 				if ($acl->sruWalet('user', 'add')) {
 					$user = UFra::factory('UFbean_Sru_User');
-					try{
+					try {
 						$user->getByPK($get->userId);
-						if(!$this->validateUserDataCompleteness($user)) {
-							$msg->del('userEdit/ok');
-							$msg->set('userEdit/warn');
+						if(!$this->validateUserDataCompleteness($user) && $msg->get('userAdd/ok')) {
+							$msg->set('userAdd/warn');
 							$msg = $this->_srv->get('msg');
 						}
-					}catch(Exception $e){}
+					} catch(Exception $e) {}
 					if ($msg->get('userAdd/ok')) {
-						return 'SruWalet_User';
-					} else if($msg->get('userEdit/warn') && !$msg->get('userEdit/ok') && isset($_POST['submit']) // isset($post->submit) zawsze zwraca false O.O 
-								&& !$msg->get('userEdit/errors')) {
 						return 'SruWalet_User';
 					} else {
 						return 'SruWalet_UserAdd';

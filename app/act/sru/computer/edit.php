@@ -35,11 +35,8 @@ extends UFact {
 				$bean->typeId = (array_key_exists($user->typeId, UFtpl_Sru_Computer::$userToComputerType) ? UFtpl_Sru_Computer::$userToComputerType[$user->typeId] : UFbean_Sru_Computer::TYPE_STUDENT);
 				// przypisanie nowego IP
 				try {
-					$dormitory = UFra::factory('UFbean_Sru_Dormitory');
-					$dormitory->getByPK($user->dormitoryId);
-					$vlan = $dormitory->vlan;
 					$ip = UFra::factory('UFbean_Sru_Ipv4');
-					$ip->getFreeByDormitoryIdAndVlan($user->dormitoryId, $vlan, true);
+					$ip->getFreeByDormitoryIdAndVlan($user->dormitoryId, null);
 					$bean->ip = $ip->ip;
 				} catch (UFex_Dao_NotFound $e) {
 					$this->rollback();

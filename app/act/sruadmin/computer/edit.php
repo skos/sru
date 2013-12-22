@@ -26,16 +26,16 @@ extends UFact {
 			if($post['ip'] == '') {
 				try {
 					$ip = UFra::factory('UFbean_Sru_Ipv4');
-					$dormitory = null;
-					$vlan = $bean->getVlanByComputerType($post['typeId']);
-					$useDorm = false;
-					if ($vlan == UFbean_SruAdmin_Vlan::DEFAULT_VLAN) {
+					$dormitoryId = null;
+					$vlan = null;
+					if ($post['typeId'] <= UFbean_Sru_Computer::LIMIT_STUDENT) {
 						$dormitory = UFra::factory('UFbean_Sru_Dormitory');
 						$dormitory->getByPK($post['dormitory']);
-						$vlan = $dormitory->vlan;
-						$useDorm = true;
+						$dormitoryId = $dormitory->id;
+					} else {
+						$vlan = $bean->getVlanByComputerType($post['typeId']);
 					}
-					$ip->getFreeByDormitoryIdAndVlan($dormitory->id, $vlan, $useDorm);
+					$ip->getFreeByDormitoryIdAndVlan($dormitoryId, $vlan);
 					$post['ip'] = $ip->ip;
 					$this->_srv->get('req')->post->{self::PREFIX} = $post;
 				} catch (UFex_Dao_NotFound $e) {

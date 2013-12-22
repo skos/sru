@@ -13,7 +13,6 @@ extends UFmap {
 		'computerCount' => 'computers_count',
 		'usersMax'     => 'users_max',
 		'computersMax' => 'computers_max',
-		'vlan'		=> 'vlan',
 		'display_order' => 'display_order',
 	);
 	protected $columnTypes = array(
@@ -24,7 +23,6 @@ extends UFmap {
 		'computerCount' => self::INT,
 		'usersMax'     => self::INT,
 		'computersMax' => self::INT,
-		'vlan'		=> self::INT,
 		'display_order' => self::INT,
 	);
 	protected $tables = array(

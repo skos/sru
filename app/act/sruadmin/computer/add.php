@@ -24,17 +24,16 @@ extends UFact {
 			if($post['ip'] == '') {
 				try {
 					$ip = UFra::factory('UFbean_Sru_Ipv4');
-					$dormitory = null;
-					$vlan = $bean->getVlanByComputerType($post['typeId']);
-					$useDorm = false;
-					if ($vlan == UFbean_SruAdmin_Vlan::DEFAULT_VLAN) {
+					$dormitoryId = null;
+					$vlan = null;
+					if ($post['typeId'] <= UFbean_Sru_Computer::LIMIT_STUDENT) {
 						$dormitory = UFra::factory('UFbean_Sru_Dormitory');
-						$dormitory->getByPK($user->dormitoryId);
-						$vlan = $dormitory->vlan;
-						$useDorm = true;
+						$dormitory->getByPK($post['dormitory']);
+						$dormitoryId = $dormitory->id;
+					} else {
+						$vlan = $bean->getVlanByComputerType($post['typeId']);
 					}
-					$dormId = $useDorm ? $dormitory->id : null;
-					$ip->getFreeByDormitoryIdAndVlan($dormId, $vlan, $useDorm);
+					$ip->getFreeByDormitoryIdAndVlan($dormitoryId, $vlan);
 				} catch (UFex_Dao_NotFound $e) {
 					$this->markErrors(self::PREFIX, array('ip'=>'noFreeAdmin'));
 					return;

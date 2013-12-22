@@ -1082,6 +1082,8 @@ changeVisibility();
 		echo '<legend>Meldunek</legend>';
 		if (!$d['active']) {
 			echo $form->active('Zamelduj (aktywuj konto)', array('type'=>$form->CHECKBOX));
+		} else {
+			echo $form->printConfirmation('Wydrukuj nowe potwierdzenie zamledowania (zmień hasło)', array('type'=>$form->CHECKBOX));
 		}
 		try {
 			$referralStart = $post->userEdit['referralStart'];

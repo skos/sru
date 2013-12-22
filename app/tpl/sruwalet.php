@@ -173,7 +173,6 @@ extends UFtpl_Common {
 			$yearEndStr = substr($d['pesel'], 0, 2);
 			$monthStr = substr($d['pesel'], 2, 2);
 			$dayStr = substr($d['pesel'], 4,2);
-			$day = intval($dayStr);
 			$month = intval($monthStr);
 			$yearStartStr = '19';
 			if ($month >= 80) {
@@ -190,10 +189,10 @@ extends UFtpl_Common {
 				$month = $month - 20;
 			}
 			$yearStr = $yearStartStr.$yearEndStr;
-			$year = intval($yearStr);
 			$monthStr = $month;
-			if (strlen($monthStr) < 2)
-			$monthStr = '0'.$monthStr;
+			if (strlen($monthStr) < 2) {
+				$monthStr = '0'.$monthStr;
+			}
 			$date = $yearStr.'-'.$monthStr.'-'.$dayStr;
 
 			echo json_encode($date);
@@ -207,17 +206,25 @@ extends UFtpl_Common {
 
 	public function user(array $d) {
 		$url = $this->url(0).'/users/'.$d['user']->id;
+		$msg = '';
 		if ($this->_srv->get('msg')->get('userAdd/ok')) {
 ?>
 <script type="text/javascript">
 window.open("<? echo $url; ?>/:print/<? echo $this->_srv->get('req')->get->password; ?>", "Wydruk potwierdzenia zameldowania",'width=800,height=600');
 </script>
 <?
-			echo $this->OK('Konto zostało założone.<br/><a href="'.$url.'/:print/'.$this->_srv->get('req')->get->password.'" target="_blank">Wydrukuj potwierdzenie założenia konta</a>.');
+			$msg = '<br/>Konto zostało założone.<br/><a href="'.$url.'/:print/'.$this->_srv->get('req')->get->password.'" target="_blank">Wydrukuj potwierdzenie założenia konta</a>.';
 		}
-		if ($this->_srv->get('msg')->get('userEdit/ok') || $this->_srv->get('msg')->get('userEdit/warn')) {
-			$msg = '';
+		if ($this->_srv->get('msg')->get('userEdit/ok')) {
 			try {
+				if ($this->_srv->get('req')->get->printConfirmation) {
+?>
+<script type="text/javascript">
+window.open("<? echo $url; ?>/:print/<? echo $this->_srv->get('req')->get->password; ?>", "Wydruk potwierdzenia zameldowania",'width=800,height=600');
+</script>
+<?
+					$msg = '<br/><a href="'.$url.'/:print" target="_blank">Wydrukuj potwierdzenie zameldowania</a>.';
+				}
 				if ($this->_srv->get('req')->get->activated) {
 ?>
 <script type="text/javascript">
@@ -228,11 +235,11 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 				}
 			} catch (UFex_Core_DataNotFound $e) {
 			}
-			if($this->_srv->get('msg')->get('userEdit/ok')) {
-				echo $this->OK('Dane zostały zapisane.'.$msg);
-			} else if ($this->_srv->get('msg')->get('userEdit/warn')) {
-				echo $this->OK('Dane zostały zapisane, ale są <b>niekompletne</b>.'.$msg);
-			}
+		}
+		if ($this->_srv->get('msg')->get('userAdd/warn') || $this->_srv->get('msg')->get('userEdit/warn')) {
+			echo $this->OK('Dane zostały zapisane, ale są <b>niekompletne</b>.'.$msg);
+		} else if($this->_srv->get('msg')->get('userEdit/ok')) {
+			echo $this->OK('Dane zostały zapisane.'.$msg);
 		}
 
 		echo '<div class="user">';

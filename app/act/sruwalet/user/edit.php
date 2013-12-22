@@ -62,6 +62,17 @@ extends UFact {
 				$countryId = null;
 			}
 			$bean->nationality = $countryId;
+			
+			if ($post['printConfirmation']) {
+				// wygenerowanie hasla
+				$password = md5($bean->login.NOW);
+				$password = base_convert($password, 16, 35);
+				$password = substr($password, 0, 8);
+				$bean->password = $bean->generatePassword($bean->login, $password);
+				$req = $this->_srv->get('req');
+				$req->get->password = $password;
+				$req->get->printConfirmation = true;
+			}
 
 			$bean->save();
 
