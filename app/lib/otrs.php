@@ -26,6 +26,10 @@ class UFlib_Otrs {
 			    "UserID", "1", "Result", "ARRAY", "StateType", array("new", "open")
 			));
 
+			if (is_null($tickets) || !is_array($tickets)) {
+				return null;
+			}
+
 			$allTickets = array();
 			foreach ($tickets as $ticketId) {
 				$ticketDetails = $client->__soapCall("Dispatch", array($username, $password,
