@@ -190,6 +190,7 @@ extends UFdao {
 		$query = $this->prepareSelect($mapping);
 		$query->where($mapping->dormitoryId, $id);
 		$query->where($mapping->active, true);
+		$query->order($mapping->overLimit);
 		$query->order($mapping->surname);
 		$query->order($mapping->name);
 
