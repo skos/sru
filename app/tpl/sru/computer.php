@@ -718,6 +718,7 @@ div.style.display = 'none';
 	public function formSearch(array $d, array $searched) {
 		$d = $searched + $d;
 		$form = UFra::factory('UFlib_Form', 'computerSearch', $d, $this->errors);
+		$cookieDisplay = UFlib_Request::getCookie('SRUDisplayUsers');
 
 		echo $form->typeId('Typ', array('type' => $form->SELECT,'labels' => $form->_labelize($this->computerSearchTypes),));
 		echo $form->host('Host');
@@ -736,7 +737,7 @@ div.style.display = 'none';
 				'checked' => true
 			));
 		}
-		else if(isset($_COOKIE['SRUDisplayUsers']) && $_COOKIE['SRUDisplayUsers'] == "1" || !isset($_COOKIE['SRUDisplayUsers'])) {
+		else if($cookieDisplay == '1' || $cookieDisplay === false) {
 			echo $form->computersActive('Tylko aktywne', array(
 				'type' => $form->CHECKBOX,
 				'checked' => true,

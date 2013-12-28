@@ -311,7 +311,7 @@ extends UFtpl_Common {
 			echo $form->_fieldset('Ustawienia');
 
 			$textDisplayUsers = 'Widok pokoju: użytkownicy i hosty - tylko aktywne; wyszukiwanie użytkowników: tylko aktywni';
-			if(isset($_COOKIE['SRUDisplayUsers']) && $_COOKIE['SRUDisplayUsers'] == "1")
+			if(UFlib_Request::getCookie('SRUDisplayUsers') == '1')
 				echo $form->displayUsers($textDisplayUsers, array('type'=>$form->CHECKBOX, 'value'=>'1'));
 			else
 				echo $form->displayUsers($textDisplayUsers, array('type'=>$form->CHECKBOX, 'value'=>'0'));

@@ -555,6 +555,7 @@ $(function() {
 	public function formSearch(array $d, array $searched) {
 		$d = $searched + $d;
 		$form = UFra::factory('UFlib_Form', 'userSearch', $d, $this->errors);
+		$cookieDisplay = UFlib_Request::getCookie('SRUDisplayUsers');
 
 		echo $form->login('Login');
 		echo $form->name('Imię');
@@ -595,7 +596,7 @@ $(function() {
 				'checked' => false
 			));
 		} 
-		else if(isset($_COOKIE['SRUDisplayUsers']) && $_COOKIE['SRUDisplayUsers'] == "1" || !isset($_COOKIE['SRUDisplayUsers'])) {
+		else if($cookieDisplay == '1' || $cookieDisplay === false) {
 			echo $form->active('Tylko aktywni', array(
 				'type' => $form->CHECKBOX,
 				'checked' => true,

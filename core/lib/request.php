@@ -148,4 +148,12 @@ extends UFlib_DataStorage {
 	public function delS() {
 		throw UFra::factory('UFex_Core_NoMethod', '__set');
 	}
+	
+	public static function getCookie($name){
+		if(array_key_exists($name, $_COOKIE)){
+			return $_COOKIE[$name];
+		}
+		
+		return false;
+	}
 } 

@@ -72,6 +72,8 @@ extends UFtpl_Common {
 	public function details(array $d, $left = null, $right = null) {
 		$url = $this->url(0);
 		$urlRoom = $url.'/dormitories/'.$d['dormitoryAlias'].'/';
+		$cookieDisplay = UFlib_Request::getCookie('SRUDisplayUsers');
+		$cookieChanged = UFlib_Request::getCookie('SRUDisplayUsersChanged');
 
 		echo '<h2>';
 		if($left != null){
@@ -93,9 +95,9 @@ extends UFtpl_Common {
 		echo ' &bull; <a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'/'.$d['alias'].'/history">Historia zmian</a>';
 		echo '</p>';
 
-		if(isset($_COOKIE['SRUDisplayUsers']) && $_COOKIE['SRUDisplayUsers'] == '1' && !isset($_COOKIE['SRUDisplayUsersChanged'])){
+		if($cookieDisplay == '1' && $cookieChanged === false){
 			echo '<p class="nav"><a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'/'.$d['alias'].'" onClick="fullList()">Wyświetl pełną listę użytkowników i hostów</a></p>';
-		}else if(isset($_COOKIE['SRUDisplayUsers']) && $_COOKIE['SRUDisplayUsers'] == '1'){
+		}else if($cookieDisplay == '1'){
 			echo '<p class="nav"><a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'/'.$d['alias'].'">Wyświetl skróconą listę użytkowników i hostów</a></p>';
 		}
 ?>
