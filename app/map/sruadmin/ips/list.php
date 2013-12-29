@@ -51,6 +51,7 @@ extends UFmap {
 		'cd' => 'dormitories',
 		's' => 'switches',
 		'sm' => 'switches_model',
+		'sl' => 'locations',
 		'sd' => 'dormitories',
 	);
 	protected $joinOns = array(
@@ -60,7 +61,8 @@ extends UFmap {
 		'cd' => 'cl.dormitory_id = cd.id',
 		's' => 'i.ip=s.ipv4',
 		'sm' => 's.model = sm.id',
-		'sd' => 's.dormitory = sd.id',
+		'sl' => 's.location_id = sl.id',
+		'sd' => 'sl.dormitory_id = sd.id',
 	);
 	protected $pk = 'i.id';
 }

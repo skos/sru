@@ -28,7 +28,7 @@ extends UFact {
 					$vlan = null;
 					if ($post['typeId'] <= UFbean_Sru_Computer::LIMIT_STUDENT) {
 						$dormitory = UFra::factory('UFbean_Sru_Dormitory');
-						$dormitory->getByPK($post['dormitory']);
+						$dormitory->getByPK($user->dormitoryId);
 						$dormitoryId = $dormitory->id;
 					} else {
 						$vlan = $bean->getVlanByComputerType($post['typeId']);
