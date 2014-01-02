@@ -223,7 +223,7 @@ window.open("<? echo $url; ?>/:print/<? echo $this->_srv->get('req')->get->passw
 window.open("<? echo $url; ?>/:print/<? echo $this->_srv->get('req')->get->password; ?>", "Wydruk potwierdzenia zameldowania",'width=800,height=600');
 </script>
 <?
-					$msg = '<br/><a href="'.$url.'/:print" target="_blank">Wydrukuj potwierdzenie zameldowania</a>.';
+					$msg = '<br/><a href="'.$url.'/:print/'.$this->_srv->get('req')->get->password.'" target="_blank">Wydrukuj potwierdzenie zameldowania</a>.';
 				}
 				if ($this->_srv->get('req')->get->activated) {
 ?>
