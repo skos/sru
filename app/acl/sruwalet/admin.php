@@ -49,7 +49,7 @@ extends UFlib_ClassWithService {
 	
 	public function view() {
 		$sess = $this->_srv->get('session');
-		if ($sess->typeIdWalet == UFacl_SruWalet_Admin::PORTIER) {
+		if ($sess->is('typeIdWalet') && $sess->typeIdWalet == UFacl_SruWalet_Admin::PORTIER) {
 			return false;
 		}
 		return true;

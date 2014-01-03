@@ -60,6 +60,11 @@ extends UFdao {
 			$query->order($mapping->surnameSearch, $query->ASC);
 			$query->order($mapping->nameSearch, $query->ASC);
 			$query->order($mapping->active, $query->DESC);
+                        
+                        $acl = UFra::factory('UFacl_SruWalet_Admin');
+                        if(!$acl->view()) {
+                             $query->where($mapping->active,TRUE);
+                        }
 			if ($studentsOnly) {
 				$query->where($mapping->typeId, UFtpl_Sru_User::$userTypesLimit, $query->LTE); //sami studenci i turyści
 			}
