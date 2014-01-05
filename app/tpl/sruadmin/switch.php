@@ -277,7 +277,7 @@ function fillData() {
 	var dormitory = ip.substring(ip.indexOf(".") + 1, ip.lastIndexOf("."));
 	dormitory = dormitory.substring(ip.indexOf("."), dormitory.length);
 	var hierarchyNo = ip.substring(ip.lastIndexOf(".")+1, ip.length);
-	document.getElementById("switchAdd_dormitoryId").selectedIndex = dormitory;
+	document.getElementById("switchAdd_dormitory").selectedIndex = dormitory -1 ;
 	document.getElementById("switchAdd_hierarchyNo").value = hierarchyNo;
 	if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
 		xmlhttp = new XMLHttpRequest();

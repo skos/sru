@@ -427,6 +427,9 @@ extends UFlib_Snmp {
 				return $port+70;
 			}
 		}
+		if ($this->switch->modelNo == 'J8697A' && $port > 46) { // dirty hack na obsługę 3 modułu w HP5406
+			$port = $port + 2;
+		}
 		return $port;
 	}
 
@@ -434,6 +437,7 @@ extends UFlib_Snmp {
 		if (is_null($this->switch)) {
 			return $port;
 		}
+		var_dump("r",$port);
 		if (in_array($this->switch->modelNo, $this->movedPortsNumbers)) {
 			if ($port <= 48) {
 				return $port-24;
@@ -442,6 +446,9 @@ extends UFlib_Snmp {
 			} else {
 				return $port-70;
 			}
+		}
+		if ($this->switch->modelNo == 'J8697A' && $port > 46) { // dirty hack na obsługę 3 modułu w HP5406
+			$port = $port - 2;
 		}
 		return $port;
 	}
