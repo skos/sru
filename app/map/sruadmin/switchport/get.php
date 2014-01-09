@@ -61,22 +61,22 @@ extends UFmap {
 		'p' => 'switches_port',
 	);
 	protected $joins = array(
-		'l' => 'locations',
 		'c' => 'switches',
 		'o' => 'locations',
 		'd' => 'dormitories',
 		's' => 'switches',
+	    	'l' => 'locations',
 		'a' => 'dormitories',
 		'e' => 'penalties',
 		'u' => 'users',
 		't' => 'penalty_templates',
 	);
 	protected $joinOns = array(
-		'l' => 'p.location=l.id',
 		'c' => 'p.connected_switch=c.id',
 		'o' => 'c.location_id=o.id',
 		'd' => 'o.dormitory_id=d.id',
 		's' => 'p.switch=s.id',
+	    	'l' => 's.location_id=l.id',
 		'a' => 'l.dormitory_id=a.id',
 		'e' => 'p.penalty_id=e.id',
 		'u' => 'e.user_id=u.id',

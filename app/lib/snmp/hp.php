@@ -437,7 +437,7 @@ extends UFlib_Snmp {
 		if (is_null($this->switch)) {
 			return $port;
 		}
-		var_dump("r",$port);
+
 		if (in_array($this->switch->modelNo, $this->movedPortsNumbers)) {
 			if ($port <= 48) {
 				return $port-24;
