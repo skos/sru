@@ -105,10 +105,9 @@ extends UFbean_Common {
 				}
 			} catch (UFex $e) {
 			}
-
 			// skoro nie serwer, to sprawdzamy, czy MAC sie powtarza
 			$bean->listByMac($val);
-			if (($change && count($bean) <= 1) || count($bean) == 0) {
+			if (($change && count($bean) == 1 && $bean[0]['id'] == $this->data['id']) || count($bean) == 0) {
 				return;
 			} 			
 
