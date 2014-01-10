@@ -68,10 +68,13 @@ extends UFlib_Snmp {
 		'J9147A',
 		'J9452A',
 		'J8697A',
+		'J9728A',
 	);
 
 	public $movedTrunksNumbers = array(
+		'J9145A',
 		'J9147A',
+		'J9728A',
 	);
 
 	public $movedPortsNumbers = array(
