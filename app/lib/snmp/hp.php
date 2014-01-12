@@ -40,6 +40,7 @@ extends UFlib_Snmp {
 		'memAll' => '1.3.6.1.4.1.11.2.14.11.5.1.1.2.1.1.1.5.1',
 		'memFree' => '1.3.6.1.4.1.11.2.14.11.5.1.1.2.1.1.1.6.1',
 		'serialNo' => 'SNMPv2-SMI::mib-2.47.1.1.1.1.11.1',
+		'serialNo2' => '1.3.6.1.2.1.47.1.1.1.1.11.1001', //HP2920
 		'model' => '1.3.6.1.4.1.11.2.36.1.1.2.5.0',
 		'portAliases' => '.1.3.6.1.2.1.31.1.1.1.18',
 		'portActivities' => '.1.3.6.1.2.1.2.2.1.8',
@@ -69,12 +70,14 @@ extends UFlib_Snmp {
 		'J9452A',
 		'J8697A',
 		'J9728A',
+		'J9727A',
 	);
 
 	public $movedTrunksNumbers = array(
 		'J9145A',
 		'J9147A',
 		'J9728A',
+		'J9727A',
 	);
 
 	public $movedPortsNumbers = array(
@@ -104,6 +107,9 @@ extends UFlib_Snmp {
 		$info['memAll'] = snmpget($this->ip, $this->communityR, $this->OIDs['memAll'], $this->timeout);
 		$info['memFree'] = snmpget($this->ip, $this->communityR, $this->OIDs['memFree'], $this->timeout);
 		$info['serialNo'] = trim(snmpget($this->ip, $this->communityR, $this->OIDs['serialNo'], $this->timeout));
+		if ($info['serialNo'] == '') {
+			$info['serialNo'] = trim(snmpget($this->ip, $this->communityR, $this->OIDs['serialNo2'], $this->timeout));
+		}
 		$info['vlans'] = snmprealwalk($this->ip, $this->communityR, $this->OIDs['vlans'], $this->timeout);
 		return $info;
 	}
@@ -116,6 +122,9 @@ extends UFlib_Snmp {
 		}
 		$info['ios'] = $ios[0];
 		$info['serialNo'] = trim(snmpget($this->ip, $this->communityR, $this->OIDs['serialNo'], $this->timeout));
+		if ($info['serialNo'] == '') {
+			$info['serialNo'] = trim(snmpget($this->ip, $this->communityR, $this->OIDs['serialNo2'], $this->timeout));
+		}
 		return $info;
 	}
 
@@ -127,6 +136,9 @@ extends UFlib_Snmp {
 		}
 		$info['model'] = $model;
 		$info['serialNo'] = trim(snmpget($this->ip, $this->communityR, $this->OIDs['serialNo'], $this->timeout));
+		if ($info['serialNo'] == '') {
+			$info['serialNo'] = trim(snmpget($this->ip, $this->communityR, $this->OIDs['serialNo2'], $this->timeout));
+		}
 		return $info;
 	}
 
