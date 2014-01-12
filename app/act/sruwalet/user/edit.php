@@ -49,9 +49,9 @@ extends UFact {
 			
 			// zapis narodowości
 			if($post['nationalityName'] != '') {
+				$country = UFra::factory('UFbean_SruWalet_Country');
+				$nationality = mb_convert_case(trim($post['nationalityName']), MB_CASE_LOWER, "UTF-8");
 				try {
-					$country = UFra::factory('UFbean_SruWalet_Country');
-					$nationality = mb_convert_case(trim($post['nationalityName']), MB_CASE_LOWER, "UTF-8");
 					$country->getByName($nationality);
 					$countryId = $country->id;
 				} catch (UFex_Dao_NotFound $e) {
@@ -63,7 +63,7 @@ extends UFact {
 			}
 			$bean->nationality = $countryId;
 			
-			if ($post['printConfirmation']) {
+			if (isset($post['printConfirmation']) && $post['printConfirmation']) {
 				// wygenerowanie hasla
 				$password = md5($bean->login.NOW);
 				$password = base_convert($password, 16, 35);
