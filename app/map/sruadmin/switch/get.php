@@ -13,6 +13,7 @@ extends UFmap {
 		'modelNo'	=> 'm.model_no',
 		'modelPorts'	=> 'm.ports_no',
 		'modelSfpPorts'	=> 'm.sfp_ports_no',
+		'modelFirmware' => 'f.firmware',
 		'dormitoryId'	=> 'l.dormitory_id',
 		'dormitoryName'	=> 'd.name',
 		'dormitoryAlias'=> 'd.alias',
@@ -36,6 +37,7 @@ extends UFmap {
 		'modelNo'	=> self::TEXT,
 		'modelPorts'	=> self::INT,
 		'modelSfpPorts'	=> self::INT,
+		'modelFirmware' => self::TEXT,
 		'dormitoryId'	=> self::INT,
 		'dormitoryName'	=> self::TEXT,
 		'dormitoryAlias'=> self::TEXT,
@@ -56,11 +58,13 @@ extends UFmap {
 	);
 	protected $joins = array(
 		'm' => 'switches_model',
+		'f' => 'switches_firmware',
 		'l' => 'locations',
 		'd' => 'dormitories',
 	);	
 	protected $joinOns = array(
 		'm' => 's.model=m.id',
+		'f' => 'm.firmware_id=f.id',
 		'l' => 's.location_id=l.id',
 		'd' => 'l.dormitory_id=d.id',
 	);

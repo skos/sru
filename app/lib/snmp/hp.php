@@ -330,11 +330,13 @@ extends UFlib_Snmp {
 		$gbics = array();
 		$serials = snmprealwalk($this->ip , $this->communityR, $this->OIDs['gbicSerial'], $this->timeout);
 		$models = snmpwalk($this->ip , $this->communityR, $this->OIDs['gbicModel'], $this->timeout);
-		foreach ($serials as $portOid => $serial) {
-			$oid = explode(".", $portOid);
-			$port = array_pop($oid);
-			$gbics[$port][0] = $serial;
-			$gbics[$port][1] = $models[$port + 10];
+		if (is_array($serials)) {
+			foreach ($serials as $portOid => $serial) {
+				$oid = explode(".", $portOid);
+				$port = array_pop($oid);
+				$gbics[$port][0] = $serial;
+				$gbics[$port][1] = $models[$port + 10];
+			}
 		}
 		return $gbics;
 	}

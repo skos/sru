@@ -122,8 +122,8 @@ extends UFtpl_Common {
 			if ($info['serialNo'] != $d['serialNo']) {
 				echo $this->ERR('Zapisany w bazie danych numer seryjny switcha jest inny, niż podany przez switcha: '.$info['serialNo']);
 			}
-			if (array_key_exists($d['modelNo'], $conf->switchFirmware) && !stripos($info['ios'], $conf->switchFirmware[$d['modelNo']])) {
-				echo $this->ERR('Oprogramowanie na switchu jest nieaktualne');
+			if (!stripos($info['ios'], $d['modelFirmware'])) {
+				echo $this->ERR('Oprogramowanie na switchu jest nieaktualne (aktualne to: '.$d['modelFirmware'].'(...))');
 			}
 		}
 		echo '<h3>Dane urządzenia</h3>';
