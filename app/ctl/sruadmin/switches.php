@@ -74,6 +74,10 @@ extends UFctl {
 							case ':portsedit':
 								$get->view = 'switches/portsedit';
 								break;
+							case ':copyAliases':
+								$get->view = 'switches/portsedit';
+								$get->copyFromSwitch = true;
+								break;
 							case 'port':
 								if (3 == $segCount) {
 									$get->view = 'error404';

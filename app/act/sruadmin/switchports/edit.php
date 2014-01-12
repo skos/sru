@@ -10,14 +10,6 @@ extends UFact {
 
 	public function go() {
 		try {
-			try {
-				if (!is_null($this->_srv->get('req')->post->{self::PREFIX_COPY})) {
-					$this->_srv->get('msg')->info = 'copyFromSwitch';
-					return;
-				}
-			} catch (UFex $e) {
-			}
-
 			$this->begin();
 			$post = $this->_srv->get('req')->post->{self::PREFIX};
 

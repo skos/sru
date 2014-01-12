@@ -290,6 +290,7 @@ $( "#tabs" ).tabs();
 
 	public function formEdit(array $d, $switch, $enabledSwitches, $portAliases) {
 		$post = $this->_srv->get('req')->post;
+		$get = $this->_srv->get('req')->get;
 		$url = $this->url(0);
 
 		$form = UFra::factory('UFlib_Form', null, $d, $this->errors);
@@ -314,10 +315,10 @@ $( "#tabs" ).tabs();
 			echo '<table style="margin-left:auto; margin-right:auto;"><tr><td>';
 			echo $form->_submit('Zapisz');
 			echo '</td><td>';
-			echo $form->_submit('Skopiuj aliasy ze switcha', array('name'=>'copyAliasesFromSwitch', 'id'=>'copyAliasesFromSwitch'));
-			echo '</td><td><a href="'.$url.'/switches/'.$switch->serialNo.'">Powrót</a></td></tr></table>';
+			echo '<a href="'.$url.'/switches/'.$switch->serialNo.'/:copyAliases">Skopiuj aliasy ze switcha</a> &bull; ';
+			echo '<a href="'.$url.'/switches/'.$switch->serialNo.'">Powrót</a></td></tr></table>';
 		}
-		$copyAliases = (isset($this->_srv->get('msg')->info) && $this->_srv->get('msg')->info == 'copyFromSwitch' && !is_null($portAliases));
+		$copyAliases = ($get->is('copyFromSwitch') && !is_null($portAliases));
 
 		$conf = UFra::shared('UFconf_Sru');
 		$switchRegex = $conf->switchRegex;
@@ -343,22 +344,22 @@ $( "#tabs" ).tabs();
 				if ($copyAliases && preg_match($roomRegex, $portAliases[$c['ordinalNo'] - 1]) > 0) {
 					$locationAlias = $portAliases[$c['ordinalNo'] - 1];
 					$copied = true;
-				} else if (isset($post->switchPortsEdit[$c['id']]['locationAlias'])) {
+				} else if (isset($post->switchPortsEdit) && isset($post->switchPortsEdit[$c['id']]['locationAlias'])) {
 					$locationAlias = $post->switchPortsEdit[$c['id']]['locationAlias'];
 				}
 				if ($copyAliases && preg_match($switchRegex, $portAliases[$c['ordinalNo'] - 1]) > 0) {
 					$connectedSwitchId = array_search($portAliases[$c['ordinalNo'] - 1], $tmp);
 					$copied = true;
-				} else if (isset($post->switchPortsEdit[$c['id']]['connectedSwitchId'])) {
+				} else if (isset($post->switchPortsEdit) && isset($post->switchPortsEdit[$c['id']]['connectedSwitchId'])) {
 					$connectedSwitchId = $post->switchPortsEdit[$c['id']]['connectedSwitchId'];
 				}
 				if ($copyAliases && !$copied) {
-					if (isset($post->switchPortsEdit[$c['id']]['locationAlias'])) {
+					if (isset($post->switchPortsEdit) && isset($post->switchPortsEdit[$c['id']]['locationAlias'])) {
 						$comment = trim(str_replace($conf->penaltyPrefix, '', str_replace($post->switchPortsEdit[$c['id']]['locationAlias'].':', '', $portAliases[$c['ordinalNo'] - 1])));
 					} else {
 						$comment = $portAliases[$c['ordinalNo'] - 1];
 					}
-				} else if (isset($post->switchPortsEdit[$c['id']]['comment'])) {
+				} else if (isset($post->switchPortsEdit) && isset($post->switchPortsEdit[$c['id']]['comment'])) {
 					$comment = trim(str_replace($conf->penaltyPrefix, '', $post->switchPortsEdit[$c['id']]['comment']));
 				}
 			} catch (UFex_Core_DataNotFound $e) {
@@ -394,11 +395,8 @@ $( "#tabs" ).tabs();
 			echo '<br/><strong>Zapisanie danych spowoduje zapisanie danych także na switch.</strong>';
 			echo '<table style="margin-left:auto; margin-right:auto;"><tr><td>';
 			echo $form->_submit('Zapisz');
-			echo '</td><td>';
-			echo $form->_submit('Skopiuj aliasy ze switcha', array('name'=>'copyAliasesFromSwitch', 'id'=>'copyAliasesFromSwitch'));
 			echo '</td><td><a href="'.$url.'/switches/'.$switch->serialNo.'">Powrót</a></td></tr></table>';
 		}
-		$copyAliases = (isset($this->_srv->get('msg')->info['copyAliasesFromSwitch']) && !is_null($portAliases));
 		echo '</div>';
 	}
 
