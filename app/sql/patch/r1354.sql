@@ -10,7 +10,7 @@ CREATE TABLE switches_firmware
    id serial, 
    firmware character varying NOT NULL, 
    CONSTRAINT switches_firmware_pkey PRIMARY KEY (id),
-   CONSTRAINT switches_firmware_firmware_key UNIQUE (firmware);
+   CONSTRAINT switches_firmware_firmware_key UNIQUE (firmware)
 )
 WITH (
   OIDS=FALSE
