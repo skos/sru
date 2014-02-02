@@ -26,7 +26,7 @@ extends UFact {
 			$admin->getFromSession();
 
 			if($acl->sruAdmin('penalty', 'editOneFull', $bean->id)) {
-				if ('' === $post['endAt']) {
+				if ($post['endAt'] == '') {
 					$bean->endAt = NOW;
 				} else if (date(UFtpl_Common::TIME_YYMMDD_HHMM, $bean->endAt) !== $post['endAt']) {
 					$bean->fillFromPost(self::PREFIX, null, array('endAt'));
@@ -43,9 +43,9 @@ extends UFact {
 				} catch (UFex_Dao_NotFound $e) {
 				}
 			} else if($acl->sruAdmin('penalty', 'editOnePartly', $bean->id)){
-				if ('' === $post['endAt']) {
+				if (array_key_exists('endAt', $post) && $post['endAt'] === '') {
 					$bean->endAt = $bean->amnestyAfter;
-				} else if (date(UFtpl_Common::TIME_YYMMDD_HHMM, $bean->endAt) !== $post['endAt']) {
+				} else if (array_key_exists('endAt', $post) && date(UFtpl_Common::TIME_YYMMDD_HHMM, $bean->endAt) !== $post['endAt']) {
 					$bean->fillFromPost(self::PREFIX, null, array('endAt'));
 					if ($bean->endAt < $bean->amnestyAfter) {
 						throw UFra::factory('UFex_Dao_DataNotValid', 'Modification before amnesty date', 0, E_WARNING, array('endAt' => 'tooShort'));
@@ -58,7 +58,7 @@ extends UFact {
 					return;
 				}
 
-				if ('' === $post['endAt']) {
+				if ($post['endAt'] === '') {
 					$bean->endAt = $bean->amnestyAfter;
 				} else if (date(UFtpl_Common::TIME_YYMMDD_HHMM, $bean->endAt) !== $post['endAt']) {
 					$bean->fillFromPost(self::PREFIX, null, array('endAt'));

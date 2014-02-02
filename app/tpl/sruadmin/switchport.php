@@ -309,7 +309,7 @@ $( "#tabs" ).tabs();
 		echo $form->_fieldset();
 		echo '<div class="switchPortsEdit">';
 		if (is_null($portAliases)) {
-			echo $this->ERR('Nie jest możliwe podłączenie się do switcha. <a href="'.$url.'/switches/'.$d['switch']->serialNo.'">Powrót</a>');
+			echo $this->ERR('Nie jest możliwe podłączenie się do switcha. <a href="'.$url.'/switches/'.$switch->serialNo.'">Powrót</a>');	
 		} else {
 			echo '<br/><strong>Zapisanie danych spowoduje zapisanie danych także na switch.</strong>';
 			echo '<table style="margin-left:auto; margin-right:auto;"><tr><td>';

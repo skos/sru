@@ -47,7 +47,7 @@ extends UFact {
 				$bean->locationId = NULL;
 			}
 
-			if ($post['copyToSwitch'] && !is_null($switch->ip)) {
+			if (array_key_exists('copyToSwitch', $post) && $post['copyToSwitch'] && !is_null($switch->ip)) {
 				$hp = UFra::factory('UFlib_Snmp_Hp', $switch->ip, $switch);
 				$result = false;
 				$connectedSwitch = null;

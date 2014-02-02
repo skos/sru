@@ -14,7 +14,6 @@ extends UFact {
 			$bean->getByPK((int)$this->_srv->get('req')->get->adminId);
 			$post = $this->_srv->get('req')->post->{self::PREFIX};
 			$acl = $this->_srv->get('acl');
-			$login = $bean->login;
 			$bean->fillFromPost(self::PREFIX, array('password', 'login', 'typeId', 'active', 'dorm'));
 				
 			if(isset($post['password']) && $post['password'] != '' ) {
@@ -33,25 +32,27 @@ extends UFact {
 			$bean->modifiedAt = NOW;
 			$bean->save();
 
-			while (!is_null(key($post['dorm'])) && $acl->sruWalet('admin', 'advancedEdit')) {
-				if (current($post['dorm'])) {
-					try {
+			if (array_key_exists('dorm', $post)) {
+				while (!is_null(key($post['dorm'])) && $acl->sruWalet('admin', 'advancedEdit')) {
+					if (current($post['dorm'])) {
 						$admDorm = UFra::factory('UFbean_SruWalet_AdminDormitory');
-						$admDorm->getByAdminAndDorm($bean->id, key($post['dorm']));
-					} catch (UFex $e) {
-						$admDorm->admin = $bean->id;
-						$admDorm->dormitory = key($post['dorm']);
-						$admDorm->save();
+						try {
+							$admDorm->getByAdminAndDorm($bean->id, key($post['dorm']));
+						} catch (UFex $e) {
+							$admDorm->admin = $bean->id;
+							$admDorm->dormitory = key($post['dorm']);
+							$admDorm->save();
+						}
+					} else {
+						try {
+							$admDorm = UFra::factory('UFbean_SruWalet_AdminDormitory');
+							$admDorm->getByAdminAndDorm($bean->id, key($post['dorm']));
+							$admDorm->del();
+						} catch (UFex $e) {
+						}
 					}
-				} else {
-					try {
-						$admDorm = UFra::factory('UFbean_SruWalet_AdminDormitory');
-						$admDorm->getByAdminAndDorm($bean->id, key($post['dorm']));
-						$admDorm->del();
-					} catch (UFex $e) {
-					}
+					next($post['dorm']);
 				}
-				next($post['dorm']);
 			}
 
 			if (!$bean->active) {
