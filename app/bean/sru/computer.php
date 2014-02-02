@@ -16,6 +16,7 @@ extends UFbean_Common {
 	const LIMIT_SERVER = 41;
 	const TYPE_SERVER = 41;
 	const TYPE_SERVER_VIRT = 42;
+	const TYPE_MACHINE = 43;
 
 	const EDIT_PREFIX = 'computerEdit';
 	const ADD_PREFIX = 'computerAdd';
@@ -84,7 +85,7 @@ extends UFbean_Common {
 				}
 			}
 			try {
-				// sprawdzamy, czy mamy do czynienia z serwerem
+				// sprawdzamy, czy mamy do czynienia z serwerem (urządzenia się nie liczą)
 				$post = $this->_srv->get('req')->post->{self::EDIT_PREFIX};
 				if (isset($post['typeId']) && ($post['typeId'] == self::TYPE_SERVER || $post['typeId'] == self::TYPE_SERVER_VIRT)) {
 					return;
@@ -181,7 +182,8 @@ extends UFbean_Common {
 			$post = $this->_srv->get('req')->post->{self::EDIT_PREFIX};
 			if (isset($post['typeId']) && 
 				($post['typeId'] == UFbean_Sru_Computer::TYPE_SERVER || 
-				$post['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT) && 
+				$post['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT ||
+				$post['typeId'] == UFbean_Sru_Computer::TYPE_MACHINE) && 
 				(is_null($val) || (int)$val == 0)) {
 				return 'null';
 			} else if (!isset($post['typeId'])) {
@@ -199,7 +201,8 @@ extends UFbean_Common {
 			$post = $this->_srv->get('req')->post->{self::ADD_PREFIX};
 			if (isset($post['typeId']) && 
 				($post['typeId'] == UFbean_Sru_Computer::TYPE_SERVER || 
-				$post['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT) && 
+				$post['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT ||
+				$post['typeId'] == UFbean_Sru_Computer::TYPE_MACHINE) && 
 				(is_null($val) || (int)$val == 0)) {
 				return 'null';
 			}
@@ -253,7 +256,7 @@ extends UFbean_Common {
 	}
 	
 	protected function validateTypeId($val, $change) {
-		if ($val == UFbean_Sru_Computer::TYPE_SERVER) {
+		if ($val == UFbean_Sru_Computer::TYPE_SERVER || $val == UFbean_Sru_Computer::TYPE_MACHINE) {
 			try {
 				$user = UFra::factory('UFbean_Sru_User'); 
 				$user->getByPK((int)$this->_srv->get('req')->get->userId);

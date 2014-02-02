@@ -14,6 +14,7 @@ extends UFtpl_Common {
 		31 => 'Administracja',
 		41 => 'Serwer fizyczny',
 		42 => 'Serwer wirtualny',
+		43 => 'Urządzenie (kamera IP, itd.)',
 	);
 
 	protected static $computerTypesForHistory = array(
@@ -67,7 +68,7 @@ extends UFtpl_Common {
 		'masterHostId/null' => 'Maszyna wirtualna musi mieć ustawiony serwer fizyczny',
 		'skosCarerId/null' => 'Serwer musi posiadać opiekuna',
 		'waletCarerId/null' => 'Host administracji musi posiadać opiekuna',
-		'typeId/notSkos' => 'Właścicielem serwera fizycznego może być wyłącznie SKOS',
+		'typeId/notSkos' => 'Właścicielem serwera fizycznego / urządzenia może być wyłącznie SKOS',
 	);
 	
 	/**
@@ -229,7 +230,8 @@ $("#macvendor").load('<?=UFURL_BASE?>/admin/apis/getmacvendor/<?=$d['mac']?>');
 		if (count($acls)) {
 			echo '<p><em>Uprawnienia:</em> '.implode(', ', $acls).'</p>';
 		}
-		if ($d['typeId'] != UFbean_Sru_Computer::TYPE_SERVER && $d['typeId'] != UFbean_Sru_Computer::TYPE_SERVER_VIRT) {
+		if ($d['typeId'] != UFbean_Sru_Computer::TYPE_SERVER && $d['typeId'] != UFbean_Sru_Computer::TYPE_SERVER_VIRT &&
+			$d['typeId'] != UFbean_Sru_Computer::TYPE_MACHINE) {
 			echo '<p><em>Widziany:</em> '.($d['lastSeen'] == 0 ? 'nigdy' : date(self::TIME_YYMMDD_HHMM, $d['lastSeen'])).'</p>';
 			echo '<p><em>Autodezaktywacja:</em> '.($d['autoDeactivation'] ? 'tak' : 'nie').'</p>';
 		}
@@ -305,7 +307,8 @@ changeVisibility();
 		}
 		$d['availableTo'] = is_null($d['availableTo']) ? '' : date(self::TIME_YYMMDD, $d['availableTo']);
 		$d['dormitory'] = $d['dormitoryId'];
-		if ($d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER || $d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT) {
+		if ($d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER || $d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT &&
+			$d['typeId'] != UFbean_Sru_Computer::TYPE_MACHINE) {
 			$d['skosCarerId'] = $d['carerId'];
 		}
 		if ($d['typeId'] == UFbean_Sru_Computer::TYPE_ADMINISTRATION) {
@@ -424,7 +427,7 @@ initialAutoDeactivation = document.getElementById("computerEdit_autoDeactivation
 		var waletCarer = document.getElementById("waletCarers");
 		var skosCarerId = document.getElementById("computerEdit_skosCarerId");
 		var waletCarerId = document.getElementById("computerEdit_waletCarerId");
-		if (form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER; ?> || form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER_VIRT; ?>) {
+		if (form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER; ?> || form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER_VIRT; ?> || form.value == <? echo UFbean_Sru_Computer::TYPE_MACHINE; ?>) {
 			skosCarerId.value = initialSkosCarerId;
 			skosCarer.style.display = "block";
 			skosCarer.style.visibility = "visible";
@@ -460,7 +463,7 @@ initialAutoDeactivation = document.getElementById("computerEdit_autoDeactivation
 		var autoDeactivationDiv = document.getElementById("autoDeactivation");
 		var autoDeactivation = document.getElementById("computerEdit_autoDeactivation");
 		var typeId = document.getElementById("computerEdit_typeId").value;
-		if (form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER; ?> || form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER_VIRT; ?>) {
+		if (form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER; ?> || form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER_VIRT; ?> || form.value == <? echo UFbean_Sru_Computer::TYPE_MACHINE; ?>) {
 			autoDeactivationDiv.style.display = "none";
 			autoDeactivationDiv.style.visibility = "hidden";
 			autoDeactivation.checked = false;
@@ -602,7 +605,7 @@ if (input) {
 		var waletCarer = document.getElementById("waletCarers");
 		var skosCarerId = document.getElementById("computerAdd_skosCarerId");
 		var waletCarerId = document.getElementById("computerAdd_waletCarerId");
-		if (form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER; ?> || form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER_VIRT; ?>) {
+		if (form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER; ?> || form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER_VIRT; ?> || form.value == <? echo UFbean_Sru_Computer::TYPE_MACHINE; ?>) {
 			skosCarerId.value = '';
 			skosCarer.style.display = "block";
 			skosCarer.style.visibility = "visible";
@@ -945,7 +948,8 @@ $("#macvendor").load('<?=UFURL_BASE?>/admin/apis/getmacvendor/<?=$searchedMac?>'
 			echo 'Ważny do: '.(is_null($d['availableTo']) ? 'brak limitu' : date(self::TIME_YYMMDD,$d['availableTo']))."\n";
 			echo 'IP: '.$d['ip']."\n";
 			echo 'Adres MAC: '.$d['mac']."\n";
-			if ($d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER || $d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT) {
+			if ($d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER || $d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT ||
+				$d['typeId'] == UFbean_Sru_Computer::TYPE_MACHINE) {
 				echo 'Opiekun: '.$d['carerName']."\n";
 			}
 		}
@@ -972,7 +976,8 @@ $("#macvendor").load('<?=UFURL_BASE?>/admin/apis/getmacvendor/<?=$searchedMac?>'
 			echo 'Available to: '.(is_null($d['availableTo']) ? 'no limit' : date(self::TIME_YYMMDD,$d['availableTo']))."\n";
 			echo 'IP: '.$d['ip']."\n";
 			echo 'MAC address: '.$d['mac']."\n";
-			if ($d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER || $d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT) {
+			if ($d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER || $d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT ||
+				$d['typeId'] == UFbean_Sru_Computer::TYPE_MACHINE) {
 				echo 'Carer: '.$d['carerName']."\n";
 			}
 		}

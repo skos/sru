@@ -392,6 +392,7 @@ extends UFdao {
 		$query->where($mapping->active, true);
 		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_SERVER, $query->NOT_EQ);
 		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_SERVER_VIRT, $query->NOT_EQ);
+		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_MACHINE, $query->NOT_EQ);
 		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_ADMINISTRATION, $query->NOT_EQ);
 		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_ORGANIZATION, $query->NOT_EQ);
 		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_STUDENT_OTHER, $query->NOT_EQ);
@@ -415,7 +416,7 @@ extends UFdao {
 		$query->where($mapping->userId, $userId);
 		$query->where($mapping->active, true);
 		$query->where(
-			'('.$mapping->column('typeId').'!='.UFbean_Sru_Computer::TYPE_SERVER.' OR '.$mapping->column('typeId').'!='.UFbean_Sru_Computer::TYPE_SERVER_VIRT.')',
+			'('.$mapping->column('typeId').'!='.UFbean_Sru_Computer::TYPE_SERVER.' OR '.$mapping->column('typeId').'!='.UFbean_Sru_Computer::TYPE_SERVER_VIRT.' OR '.$mapping->column('typeId').'!='.UFbean_Sru_Computer::TYPE_MACHINE.')',
 			null, $query->SQL
 		);
 		$query->where($mapping->locationId, $location, $query->NOT_EQ);
@@ -498,6 +499,7 @@ extends UFdao {
 		$query->where($mapping->active, true);
 		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_SERVER, $query->NOT_EQ);
 		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_SERVER_VIRT, $query->NOT_EQ);
+		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_MACHINE, $query->NOT_EQ);
 		$query->where($mapping->autoDeactivation, true);
 		$query->where($mapping->lastActivated, time() - $days*24*60*60, $query->LT);
 		$query->where(
@@ -703,6 +705,7 @@ extends UFdao {
 		$query->where($mapping->carerId, null);
 		$query->where(
 			'('.$mapping->column('typeId').'='.UFbean_Sru_Computer::TYPE_SERVER.' 
+				OR '.$mapping->column('typeId').'='.UFbean_Sru_Computer::TYPE_MACHINE.' 
 				OR '.$mapping->column('typeId').'='.UFbean_Sru_Computer::TYPE_SERVER_VIRT.' 
 				OR '.$mapping->column('typeId').'='.UFbean_Sru_Computer::TYPE_ADMINISTRATION.')',
 			null, $query->SQL

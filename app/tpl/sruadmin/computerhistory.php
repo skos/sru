@@ -173,7 +173,8 @@ extends UFtpl_Common {
 					echo "\n";
 					break;
 				case 'carerId':
-					if ($new['typeId'] == UFbean_Sru_Computer::TYPE_SERVER || $new['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT) {
+					if ($new['typeId'] == UFbean_Sru_Computer::TYPE_SERVER || $new['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT ||
+						$new['typeId'] == UFbean_Sru_Computer::TYPE_MACHINE) {
 						echo $names[$key].': '.(is_null($val) ? 'nikt' : $old['carerName']);
 						if ($val!==$new[$key]) {
 							echo $arr.(is_null($new[$key]) ? 'nikt' : $new['carerName']);

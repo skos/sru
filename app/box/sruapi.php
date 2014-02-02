@@ -32,7 +32,7 @@ extends UFbox {
 	}
 
 	public function dhcpServ() {
-		return $this->configDhcp(UFbean_Sru_Computer::TYPE_SERVER);
+		return $this->configDhcp(array(UFbean_Sru_Computer::TYPE_SERVER, UFbean_Sru_Computer::TYPE_SERVER));
 	}
 
 	public function dnsRev() {
@@ -58,7 +58,8 @@ extends UFbox {
 				UFbean_Sru_Computer::TYPE_TOURIST,
 				UFbean_Sru_Computer::TYPE_ORGANIZATION,
 				UFbean_Sru_Computer::TYPE_SERVER,
-				UFbean_Sru_Computer::TYPE_SERVER_VIRT
+				UFbean_Sru_Computer::TYPE_SERVER_VIRT,
+				UFbean_Sru_Computer::TYPE_SERVER
 			));
 
 			$d['computers'] = $bean;

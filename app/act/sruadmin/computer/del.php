@@ -41,7 +41,8 @@ extends UFact {
 					// uzytkownik nie ma komputerow
 				}
 			}
-			if ($bean->typeId == UFbean_Sru_Computer::TYPE_SERVER || $bean->typeId == UFbean_Sru_Computer::TYPE_SERVER_VIRT) {
+			if ($bean->typeId == UFbean_Sru_Computer::TYPE_SERVER || $bean->typeId == UFbean_Sru_Computer::TYPE_SERVER_VIRT ||
+				$bean->typeId == UFbean_Sru_Computer::TYPE_MACHINE) {
 				// jeśli usuwamy serwer, to musimy mu też usunąć przypisane aliasy
 				try {
 					$aliases = UFra::factory('UFbean_SruAdmin_ComputerAliasList');

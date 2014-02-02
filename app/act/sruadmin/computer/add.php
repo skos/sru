@@ -97,7 +97,8 @@ extends UFact {
 				$box = UFra::factory('UFbox_SruAdmin');
 				$sender = UFra::factory('UFlib_Sender');
 
-				if ($bean->typeId == UFbean_Sru_Computer::TYPE_SERVER || $bean->typeId == UFbean_Sru_Computer::TYPE_SERVER_VIRT) {
+				if ($bean->typeId == UFbean_Sru_Computer::TYPE_SERVER || $bean->typeId == UFbean_Sru_Computer::TYPE_SERVER_VIRT || 
+					$bean->typeId == UFbean_Sru_Computer::TYPE_MACHINE) {
 					$admin = UFra::factory('UFbean_SruAdmin_Admin');
 					$admin->getByPK($this->_srv->get('session')->authAdmin);
 					
