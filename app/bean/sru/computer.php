@@ -99,7 +99,7 @@ extends UFbean_Common {
 			} catch (UFex $e) {
 			}
 			try {
-				// sprawdzamy, czy mamy do czynienia z serwerem
+				// sprawdzamy, czy mamy do czynienia z serwerem (urządzenia się nie liczą)
 				$post = $this->_srv->get('req')->post->{self::ADD_PREFIX};
 				if (isset($post['typeId']) && ($post['typeId'] == self::TYPE_SERVER || $post['typeId'] == self::TYPE_SERVER_VIRT)) {
 					return;
@@ -190,7 +190,8 @@ extends UFbean_Common {
 				$computer = UFra::factory('UFbean_Sru_Computer');
 				$computer->getByPK((int)$this->_srv->get('req')->get->computerId);
 				if (($computer->typeId == UFbean_Sru_Computer::TYPE_SERVER || 
-					$computer->typeId == UFbean_Sru_Computer::TYPE_SERVER_VIRT) && 
+					$computer->typeId == UFbean_Sru_Computer::TYPE_SERVER_VIRT ||
+					$computer->typeId == UFbean_Sru_Computer::TYPE_MACHINE) && 
 					(is_null($val) || (int)$val == 0)) {
 					return 'null';
 				}

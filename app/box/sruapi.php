@@ -59,7 +59,7 @@ extends UFbox {
 				UFbean_Sru_Computer::TYPE_ORGANIZATION,
 				UFbean_Sru_Computer::TYPE_SERVER,
 				UFbean_Sru_Computer::TYPE_SERVER_VIRT,
-				UFbean_Sru_Computer::TYPE_SERVER
+				UFbean_Sru_Computer::TYPE_MACHINE
 			));
 
 			$d['computers'] = $bean;

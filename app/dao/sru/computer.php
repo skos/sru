@@ -705,8 +705,8 @@ extends UFdao {
 		$query->where($mapping->carerId, null);
 		$query->where(
 			'('.$mapping->column('typeId').'='.UFbean_Sru_Computer::TYPE_SERVER.' 
-				OR '.$mapping->column('typeId').'='.UFbean_Sru_Computer::TYPE_MACHINE.' 
 				OR '.$mapping->column('typeId').'='.UFbean_Sru_Computer::TYPE_SERVER_VIRT.' 
+				OR '.$mapping->column('typeId').'='.UFbean_Sru_Computer::TYPE_MACHINE.' 
 				OR '.$mapping->column('typeId').'='.UFbean_Sru_Computer::TYPE_ADMINISTRATION.')',
 			null, $query->SQL
 		);
