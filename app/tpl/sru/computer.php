@@ -36,6 +36,7 @@ extends UFtpl_Common {
 		31 => 'Administracja',
 		41 => 'Serwer fizyczny',
 		42 => 'Serwer wirtualny',
+		43 => 'Urządzenie (kamera IP, itd.)',
 	);
 
 	static public $userToComputerType = array(
