@@ -158,7 +158,13 @@ extends UFbox {
 				$tmp['pesel'] = $get->searchedPesel;
 			} catch (UFex_Core_DataNotFound $e) {
 			}
-			$bean->search($tmp, true);
+			
+			$acl = UFra::factory('UFacl_SruWalet_Admin');
+			$activeOnly = false;
+			if(!$acl->view()) {
+				$activeOnly = true;
+			}
+			$bean->search($tmp, true, $activeOnly);
 			if (1 == count($bean)) {
 				$get->userId = $bean[0]['id'];
 				return $this->user();

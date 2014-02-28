@@ -47,7 +47,7 @@ extends UFdao {
 		return $this->getByPK($this->_srv->get('session')->auth);
 	}
 
-	public function search($params, $studentsOnly = false) {
+	public function search($params, $studentsOnly = false, $activeOnly = false) {
 		$key = $this->cachePrefix.'/'.__FUNCTION__.'/'.print_r($params, true);
 		try {
 			return $this->cacheGet($key);
