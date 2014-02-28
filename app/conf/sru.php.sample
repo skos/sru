@@ -17,6 +17,9 @@ extends UFconf {
 		'153.19.208.22',
 	);
 
+	protected $invalidHostNames = array(
+	);
+
 	protected $sendEmail = true;	// wysylac maile dot. kar, edycji danych i danych kompow?
 	protected $emailPrefix = '[SRU]';	// prefix maili wysyłanych ze SRU
 

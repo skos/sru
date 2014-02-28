@@ -49,6 +49,9 @@ extends UFbean_Common {
 			} catch (UFex_Dao_NotFound $e) {
 			}
 		}
+		if (in_array($val, UFra::shared('UFconf_Sru')->invalidHostNames)) {
+			return 'duplicated';
+		}
 	}
 
 	protected function normalizeHost($val, $change) {
