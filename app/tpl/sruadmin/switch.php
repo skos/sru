@@ -324,7 +324,8 @@ function fillData() {
 		$form = UFra::factory('UFlib_Form', 'switchEdit', $d, $this->errors);
 		echo $form->_fieldset();
 		if ($this->_srv->get('msg')->get('switchEdit/errors/model/change')) {
-			echo $this->ERR('Zmiana modelu switcha spowoduje skasowanie wszystkich przypisanych do niego portów. '.$form->ignoreModelChange('Kontnuuj', array('type'=>$form->CHECKBOX)));
+			echo $this->ERR('Zmień model tylko gdy otrzymany z wymiany gwarancyjnej switch ma inny model niż reklamowany.<br/>Jeśli otrzymałeś nowy switch z przetargu, dodaj go jako nowe urządzenie.');
+			echo $this->ERR('Zmiana modelu switcha spowoduje skasowanie wszystkich przypisanych do niego portów.<br/>'.$form->ignoreModelChange('Kontnuuj', array('type'=>$form->CHECKBOX)));
 		}
 		echo $form->ip('IP', array('after'=>UFlib_Helper::displayHint("IP switcha. Brak IP oznacza, że switch został wyłączony (czasowo). Jeżeli switch jest nieużywany całkowicie, należy usunąć mu nr w hierarchii.")));
 		$tmp = array();
