@@ -21,6 +21,7 @@ extends UFtpl_Common {
 		'locationAlias/noDormitory' => 'Wybierz akademik',
 		'locationAlias/noRoom' => 'Pokój nie istnieje',
 		'mac/wrongFormat' => 'Błędny format adresu MAC',
+		'received' => 'Błędny format daty',
 	);
 
 	public static function displaySwitchName($dormitoryAlias, $hierarchyNo, $lab = false) {
@@ -256,7 +257,7 @@ extends UFtpl_Common {
 		));
 		echo $form->locationAlias('Lokalizacja', array('after'=>UFlib_Helper::displayHint("Pomieszczenie w akademiku, gdzie znajduje się switch.")));
 		echo $form->inventoryNo('Nr inwentarzowy');
-		echo $form->received('Na stanie od');
+		echo $form->received('Na stanie od', array('type' => $form->CALENDER));
 		echo $form->inoperational('Uszkodzony', array('type'=>$form->CHECKBOX));
 		echo $form->lab('SKOSlab', array('type'=>$form->CHECKBOX), array('after'=>UFlib_Helper::displayHint("Czy switch znajduje się w SKOSlabie (służy do testów).")));
 		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
@@ -350,7 +351,7 @@ function fillData() {
 		));
 		echo $form->locationAlias('Lokalizacja', array('after'=>UFlib_Helper::displayHint("Pomieszczenie w akademiku, gdzie znajduje się switch.")));
 		echo $form->inventoryNo('Nr inwentarzowy');
-		echo $form->received('Na stanie od');
+		echo $form->received('Na stanie od', array('type' => $form->CALENDER));
 		echo $form->inoperational('Uszkodzony', array('type'=>$form->CHECKBOX));
 		echo $form->lab('SKOSlab', array('type'=>$form->CHECKBOX), array('after'=>UFlib_Helper::displayHint("Czy switch znajduje się w SKOSlabie (służy do testów).")));
 		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
