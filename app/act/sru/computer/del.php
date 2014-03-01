@@ -26,6 +26,18 @@ extends UFact {
 			$bean->modifiedById = null;
 			$bean->modifiedAt = NOW;
 			$bean->save();
+			
+			// usuwamy przypisane aliasy
+			try {
+				$aliases = UFra::factory('UFbean_SruAdmin_ComputerAliasList');
+				$aliases->listByComputerId($bean->id);
+				foreach ($aliases as $alias) {
+					$aliasBean = UFra::factory('UFbean_SruAdmin_ComputerAlias');
+					$aliasBean->getByPK($alias['id']);
+					$aliasBean->del();
+				}
+			} catch (UFex_Dao_NotFound $e) {
+			}
 
 			$user = UFra::factory('UFbean_Sru_User');
 			$user->getFromSession();

@@ -41,19 +41,17 @@ extends UFact {
 					// uzytkownik nie ma komputerow
 				}
 			}
-			if ($bean->typeId == UFbean_Sru_Computer::TYPE_SERVER || $bean->typeId == UFbean_Sru_Computer::TYPE_SERVER_VIRT ||
-				$bean->typeId == UFbean_Sru_Computer::TYPE_MACHINE) {
-				// jeśli usuwamy serwer, to musimy mu też usunąć przypisane aliasy
-				try {
-					$aliases = UFra::factory('UFbean_SruAdmin_ComputerAliasList');
-					$aliases->listByComputerId($bean->id);
-					foreach ($aliases as $alias) {
-						$aliasBean = UFra::factory('UFbean_SruAdmin_ComputerAlias');
-						$aliasBean->getByPK($alias['id']);
-						$aliasBean->del();
-					}
-				} catch (UFex_Dao_NotFound $e) {
+
+			// usuwamy przypisane aliasy
+			try {
+				$aliases = UFra::factory('UFbean_SruAdmin_ComputerAliasList');
+				$aliases->listByComputerId($bean->id);
+				foreach ($aliases as $alias) {
+					$aliasBean = UFra::factory('UFbean_SruAdmin_ComputerAlias');
+					$aliasBean->getByPK($alias['id']);
+					$aliasBean->del();
 				}
+			} catch (UFex_Dao_NotFound $e) {
 			}
 
 			$user = UFra::factory('UFbean_Sru_User');

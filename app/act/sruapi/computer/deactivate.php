@@ -23,6 +23,18 @@ extends UFact {
 			$bean->exAdmin = false;
 			
 			$bean->save();
+			
+			// usuwamy przypisane aliasy
+			try {
+				$aliases = UFra::factory('UFbean_SruAdmin_ComputerAliasList');
+				$aliases->listByComputerId($bean->id);
+				foreach ($aliases as $alias) {
+					$aliasBean = UFra::factory('UFbean_SruAdmin_ComputerAlias');
+					$aliasBean->getByPK($alias['id']);
+					$aliasBean->del();
+				}
+			} catch (UFex_Dao_NotFound $e) {
+			}
 
 			$conf = UFra::shared('UFconf_Sru');
 			if ($conf->sendEmail) {
