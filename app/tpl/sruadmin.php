@@ -1144,28 +1144,36 @@ extends UFtpl_Common {
 		echo 'Lista kar i ostrzeżeń dla hosta '.$d['computer']->host;
 	}	
 
-	public function computerPenalties(array $d)
-	{
+	public function computerPenalties(array $d) {
 		$acl = $this->_srv->get('acl');		
 		echo '<h2>Lista kar dla hosta <a href="'.$this->url(1).'/'.$d['computer']->id.'">'.$d['computer']->host.'</a></h2>';
 
 		$d['penalties']->write('listComputerPenalty');
 	}
 
-	public function penaltyActions(array $d)
-	{
+	public function penaltyActions(array $d) {
 		$url = $this->url(0).'/penalties/';
-		$acl = $this->_srv->get('acl');		
 		
 		echo '<h2>Ostatnie akcje | <a href="'.$url.'active">Aktywne kary</a> | <a href="'.$url.'templates">Szablony</a></h2>';
 		
 		echo '<h3>Modyfikacje kar</h3>';
-		$d['modifiedPenalties']->write('penaltyLastModified');
+		if (!is_null($d['modifiedPenalties'])) {
+			$d['modifiedPenalties']->write('penaltyLastModified');
+		} else {
+			$this->penaltiesNotFound();
+		}
 		echo '<h3>Nowe kary</h3>';
-		$d['addedPenalties']->write('penaltyLastAdded');
+		if (!is_null($d['addedPenalties'])) {
+			$d['addedPenalties']->write('penaltyLastAdded');
+		} else {
+			$this->penaltiesNotFound();
+		}
 		echo '<h3>Nowe ostrzeżenia</h3>';
-		$d['addedWarnings']->write('penaltyLastAdded');
-
+		if (!is_null($d['addedWarnings'])) {
+			$d['addedWarnings']->write('penaltyLastAdded');
+		} else {
+			$this->penaltiesNotFound();
+		}
 	}
 
 	public function titlePenaltyActions() {

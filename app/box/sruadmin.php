@@ -1587,18 +1587,15 @@ extends UFbox {
 			return $this->render(__FUNCTION__.'NotFound');
 		}
 	}
-	public function penalties() 
-	{
-		try 
-		{
+	public function penalties() {
+		try {
 			$bean = UFra::factory('UFbean_SruAdmin_PenaltyList');	
 			$bean->listAll();
 			$d['penalties'] = $bean;
 
 			return $this->render(__FUNCTION__, $d);
 		} 
-		catch (UFex_Dao_NotFound $e) 
-		{
+		catch (UFex_Dao_NotFound $e) {
 			return $this->render('penaltiesNotFound');
 		}
 	}
@@ -1923,26 +1920,28 @@ extends UFbox {
 	}
 
 	public function penaltyActions() {
-		try 
-		{
+		try {
 			$bean = UFra::factory('UFbean_SruAdmin_PenaltyList');
-			$bean->listLastAdded(2);
+			$bean->listLastAdded(UFbean_SruAdmin_Penalty::TYPE_COMPUTERS);
 			$d['addedPenalties'] = $bean;
-
-			$bean = UFra::factory('UFbean_SruAdmin_PenaltyList');
-			$bean->listLastAdded(1);
-			$d['addedWarnings'] = $bean;
-
-			$bean = UFra::factory('UFbean_SruAdmin_PenaltyList');
-			$bean->listLastModified(2);
-			$d['modifiedPenalties'] = $bean;
-
-			return $this->render(__FUNCTION__, $d);
-		} 
-		catch (UFex_Dao_NotFound $e) 
-		{
-			return $this->render('penaltiesNotFound');
+		} catch (UFex_Dao_NotFound $e) {
+			$d['addedPenalties'] = null;
 		}
+		try {
+			$bean = UFra::factory('UFbean_SruAdmin_PenaltyList');
+			$bean->listLastAdded(UFbean_SruAdmin_Penalty::TYPE_WARNING);
+			$d['addedWarnings'] = $bean;
+		} catch (UFex_Dao_NotFound $e) {
+			$d['addedWarnings'] = null;
+		}
+		try {
+			$bean = UFra::factory('UFbean_SruAdmin_PenaltyList');
+			$bean->listLastModified(UFbean_SruAdmin_Penalty::TYPE_COMPUTERS);
+			$d['modifiedPenalties'] = $bean;
+		} catch (UFex_Dao_NotFound $e) {
+			$d['modifiedPenalties'] = null;
+		}
+		return $this->render(__FUNCTION__, $d);
 	}
 
 	public function ips() {

@@ -43,10 +43,10 @@ extends UFdao {
 
 		$query = $this->prepareSelect($mapping);
 		if (isset($type)) {
-			if ($type == 1) {
-				$query->where($mapping->typeId, 1);
+			if ($type == UFbean_SruAdmin_Penalty::TYPE_WARNING) {
+				$query->where($mapping->typeId, UFbean_SruAdmin_Penalty::TYPE_WARNING);
 			} else {
-				$query->where($mapping->typeId, 1, $query->NOT_EQ);
+				$query->where($mapping->typeId, UFbean_SruAdmin_Penalty::TYPE_WARNING, $query->NOT_EQ);
 			}
 		}
 		if (isset($id)) {
@@ -59,7 +59,7 @@ extends UFdao {
 			$query->order($mapping->startAt,  $query->DESC);
 		}
 		if (isset($limit)) {
-			$query->limit(10);
+			$query->limit($limit);
 		}
 		
 		return $this->doSelect($query);
