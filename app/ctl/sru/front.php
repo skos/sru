@@ -100,7 +100,7 @@ extends UFctl {
 		}
 		
 		// jeśli user nie wysyła wiadomości, zerujemy znacznik wysłania (F5 issue, #757)
-		if ($act != 'User_SendMessage') {
+		if (!isset($act) || (isset($act) && $act != 'User_SendMessage')) {
 			$sess->otrsMsgSend = 0;
 		}
 		
