@@ -75,6 +75,7 @@ extends UFctl {
 		$get = $req->get;
 		$post = $req->post;
 		$acl = $this->_srv->get('acl');
+		$sess = $this->_srv->get('session');
 
 		if ($post->is('userLogout') && $acl->sru('user', 'logout')) {
 			$act = 'User_Logout';
@@ -97,6 +98,12 @@ extends UFctl {
 		} elseif ('user/main' == $get->view && $post->is('sendMessage') && $acl->sru('user', 'edit')) {
 			$act = 'User_SendMessage';
 		}
+		
+		// jeśli user nie wysyła wiadomości, zerujemy znacznik wysłania (F5 issue, #757)
+		if ($act != 'User_SendMessage') {
+			$sess->otrsMsgSend = 0;
+		}
+		
 
 		if (isset($act)) {
 			$action = 'Sru_'.$act;
