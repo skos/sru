@@ -171,7 +171,7 @@ extends UFtpl_Common {
 			echo '<p><em>Szablon:</em> '.$this->_escape($d['templateTitle']).'</p>';
 		}
 
-		$amnestyDays = ($d['amnestyAfter'] - $d['startAt']) / 24 / 3600;
+		$amnestyDays = intval(($d['amnestyAfter'] - $d['startAt']) / 24 / 3600);
 		echo '<p><em>Min. długość:</em> '.$amnestyDays.' dni</p>';
 		echo '<p><em>Powód:</em> '.nl2br($this->_escape($d['reason'])).'</p>';
 
@@ -221,6 +221,8 @@ changeVisibility();
 	}
 
 	public function formEdit(array $d, $computers, $templateTitle = null) {
+		$post = $this->_srv->get('req')->post;
+		
 		$d['endAt'] = date(self::TIME_YYMMDD_HHMM, $d['endAt']);
 		$url = $this->url(0);
 		echo '<p><em>Ukarany:</em> <a href="'.$url.'/users/'.$d['userId'].'">'.$this->_escape($d['userName']).' '.$this->_escape($d['userSurname']).' ('.$d['userLogin'].')</a></p>';
@@ -246,7 +248,7 @@ changeVisibility();
 			$computers->write('computerList');
 		}
 
-		$amnestyDays = (!isset($_POST['penaltyEdit']['after'])) ? (($d['amnestyAfter'] - $d['startAt']) / 24 / 3600) : (intval($_POST['penaltyEdit']['after']));
+		$amnestyDays = (!$post->is('penaltyEdit') || !isset($post->penaltyEdit['after'])) ? (intval(($d['amnestyAfter'] - $d['startAt']) / 24 / 3600)) : (intval($post->penaltyEdit['after']));
 		$urlPenalty = $url.'/penalties/'.$d['id'];
 		echo '<p><em>Szablon:</em> ';
 		if (isset($templateTitle)) {

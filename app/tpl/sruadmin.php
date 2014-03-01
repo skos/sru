@@ -1425,7 +1425,7 @@ extends UFtpl_Common {
 		echo 'Użytkownik: '.$d['user']->name.' "'.$d['user']->login.'" '.$d['user']->surname."\n";
 		echo 'Admin: '.$d['admin']->name."\n";
 		echo 'Szablon: '.$d['penalty']->templateTitle."\n";
-		echo 'Min. długość (dni): '.(($d['penalty']->amnestyAfter - $d['penalty']->startAt) / 24 / 3600)."\n";
+		echo 'Min. długość (dni): '.(intval(($d['penalty']->amnestyAfter - $d['penalty']->startAt) / 24 / 3600))."\n";
 		echo 'Powód: '.$d['penalty']->reason."\n";
 		echo 'Komentarz: '.$d['penalty']->comment."\n";
 		echo 'Link: https://'.$d['host'].'/admin/penalties/'.$d['penalty']->id."\n";
@@ -1462,7 +1462,7 @@ extends UFtpl_Common {
 		echo 'Szablon: '.$d['newTpl'];
 		echo ($d['penalty']->templateTitle != $d['newTpl']) ? ' (było: '.$d['oldPenalty']->templateTitle.')' : '';
 		echo "\n";
-		echo 'Min. długość (dni): '.(($d['penalty']->amnestyAfter - $d['penalty']->startAt) / 24 / 3600);
+		echo 'Min. długość (dni): '.(intval(($d['penalty']->amnestyAfter - $d['penalty']->startAt) / 24 / 3600));
 		echo ($d['penalty']->amnestyAfter != $d['oldPenalty']->amnestyAfter) ? ' (było: '.(($d['oldPenalty']->amnestyAfter - $d['oldPenalty']->startAt) / 24 / 3600).')' : '';
 		echo "\n";
 		echo 'Powód: '.$d['penalty']->reason;
