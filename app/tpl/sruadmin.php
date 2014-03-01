@@ -1437,8 +1437,10 @@ extends UFtpl_Common {
 		} else {
 			if ($d['penalty']->endAt <= NOW) {
 				echo 'Zdjęto karę w DS'.substr($d['user']->dormitoryAlias, 2);
-			} else if ($d['penalty']->endAt != $d['oldPenalty']->endAt) {
+			} else if ($d['penalty']->endAt < $d['oldPenalty']->endAt) {
 				echo 'Skrócono karę w DS'.substr($d['user']->dormitoryAlias, 2);
+			} else if ($d['penalty']->endAt > $d['oldPenalty']->endAt) {
+				echo 'Wydłużono karę w DS'.substr($d['user']->dormitoryAlias, 2);
 			} else {
 				echo 'Zmodyfikowano karę w DS'.substr($d['user']->dormitoryAlias, 2);
 			}
