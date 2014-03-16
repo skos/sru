@@ -11,5 +11,7 @@ extends UFview_SruAdmin {
 		$this->append('title', $box->titleMain());
 		$this->append('body', $box->userSearch());
 		$this->append('body', $box->computerSearch());
+		$this->append('body', $box->inventoryCardSearch());
+		$this->append('body', $box->adminLists());
 	}
 }

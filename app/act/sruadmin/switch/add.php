@@ -10,9 +10,18 @@ extends UFact {
 	public function go() {
 		try {
 			$this->begin();
-			$bean = UFra::factory('UFbean_SruAdmin_Switch');
-			$bean->fillFromPost(self::PREFIX);
 			$post = $this->_srv->get('req')->post->{self::PREFIX};
+			
+			$inventoryCard = UFra::factory('UFbean_SruAdmin_InventoryCard');
+			$inventoryCard->fillFromPost(self::PREFIX, null, array('serialNo', 'inventoryNo', 'received'));
+			$inventoryCard->dormitoryId = $post['invCardDormitory'];
+			$inventoryCard->modifiedById = $this->_srv->get('session')->authAdmin;
+			$inventoryCard->modifiedAt = NOW;
+			$inventoryCardId = $inventoryCard->save();
+			
+			$bean = UFra::factory('UFbean_SruAdmin_Switch');
+			$bean->fillFromPost(self::PREFIX, array('serialNo', 'inventoryNo', 'received','invCardDormitory'));
+
 
 			if (!is_null($bean->hierarchyNo)) {
 				$switch = UFra::factory('UFdao_SruAdmin_Switch');
@@ -40,7 +49,9 @@ extends UFact {
 				}
 			}
 			
-			
+			$bean->inventoryCardId = $inventoryCardId;
+			$bean->modifiedById = $this->_srv->get('session')->authAdmin;
+			$bean->modifiedAt = NOW;
 			$id = $bean->save();
 
 			$model = UFra::factory('UFbean_SruAdmin_SwitchModel');

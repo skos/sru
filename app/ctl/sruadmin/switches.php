@@ -68,6 +68,15 @@ extends UFctl {
 							case ':edit':
 								$get->view = 'switches/edit';
 								break;
+							case 'history':
+								$get->view = 'switches/history';
+								break;
+							case 'inventorycardhistory':
+								$get->view = 'inventorycard/history';
+								break;
+							case ':inventorycardedit':
+								$get->view = 'inventorycard/edit';
+								break;
 							case ':lockoutsedit':
 								$get->view = 'switches/lockoutsedit';
 								break;
@@ -136,6 +145,8 @@ extends UFctl {
 			$act = 'SwitchPorts_Edit';
 		} elseif ('port/edit' == $get->view && $post->is('switchPortEdit') && $acl->sruAdmin('switch', 'edit', $get->switchSn)) {
 			$act = 'SwitchPort_Edit';
+		} elseif ('inventorycard/edit' == $get->view && $post->is('inventoryCardEdit') && $acl->sruAdmin('switch', 'edit', $get->switchSn)) {
+			$act = 'InventoryCard_Edit';
 		}
 
 		if (isset($act)) {
@@ -180,6 +191,8 @@ extends UFctl {
 				} else {
 					return 'Sru_Error403';
 				}
+			case 'switches/history':
+				return 'SruAdmin_SwitchHistory';
 			case 'switches/lockoutsedit':
 				if ($msg->get('switchLockoutsEdit/ok')) { 
 					return 'SruAdmin_Switch';
@@ -207,6 +220,16 @@ extends UFctl {
 					return 'SruAdmin_SwitchPort';
 				} elseif ($acl->sruAdmin('switch', 'edit', $get->switchSn)) {
 					return 'SruAdmin_SwitchPortEdit';
+				} else {
+					return 'Sru_Error403';
+				}
+			case 'inventorycard/history':
+				return 'SruAdmin_SwitchInventoryCardHistory';
+			case 'inventorycard/edit':
+				if ($msg->get('inventoryCardEdit/ok')) { 
+					return 'SruAdmin_Switch';
+				} elseif ($acl->sruAdmin('switch', 'edit', $get->switchSn)) {
+					return 'SruAdmin_SwitchInventoryCardEdit';
 				} else {
 					return 'Sru_Error403';
 				}

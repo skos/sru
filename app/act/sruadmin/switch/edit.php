@@ -15,7 +15,7 @@ extends UFact {
 			$modelId = $bean->modelId;
 
 			try {
-				$bean->fillFromPost(self::PREFIX);
+				$bean->fillFromPost(self::PREFIX, array('serialNo', 'inventoryNo', 'received','invCardDormitory'));
 			} catch (UFex_Db_QueryFailed $e) {
 				$this->rollback();
 				$this->markErrors(self::PREFIX, array('ip'=>'regexp'));
@@ -51,7 +51,17 @@ extends UFact {
 				}
 			}
 			
+			$bean->modifiedById = $this->_srv->get('session')->authAdmin;
+			$bean->modifiedAt = NOW;
 			$bean->save();
+			
+			$inventoryCard = UFra::factory('UFbean_SruAdmin_InventoryCard');
+			$inventoryCard->getByPk($bean->inventoryCardId);
+			$inventoryCard->fillFromPost(self::PREFIX, null, array('serialNo', 'inventoryNo', 'received'));
+			$inventoryCard->dormitoryId = $post['invCardDormitory'];
+			$inventoryCard->modifiedById = $this->_srv->get('session')->authAdmin;
+			$inventoryCard->modifiedAt = NOW;
+			$inventoryCard->save();
 
 			if ($modelId != $bean->modelId) {
 				try {
@@ -74,7 +84,8 @@ extends UFact {
 				}
 			}
 
-			$this->_srv->get('req')->get->newSwitchSn = $bean->serialNo; // jeśli się zmienił, to musimy się odwołać po nowym
+			//TODO do usuniecia w ramach #434
+			$this->_srv->get('req')->get->newSwitchSn = $inventoryCard->serialNo; // jeśli się zmienił, to musimy się odwołać po nowym
 			$this->postDel(self::PREFIX);
 			$this->markOk(self::PREFIX);
 			$this->commit();

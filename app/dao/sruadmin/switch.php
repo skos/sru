@@ -78,21 +78,13 @@ extends UFdao {
 
 		return $this->doSelect($query);
 	}
-	
+
+	//TODO do usunięcia w ramach #343
 	public function getBySerialNo($no) {
 		$mapping = $this->mapping('get');
 
 		$query = $this->prepareSelect($mapping);
 		$query->where($mapping->serialNo, $no);
-
-		return $this->doSelectFirst($query);
-	}
-
-	public function getByInventoryNo($no) {
-		$mapping = $this->mapping('get');
-
-		$query = $this->prepareSelect($mapping);
-		$query->where($mapping->inventoryNo, $no);
 
 		return $this->doSelectFirst($query);
 	}

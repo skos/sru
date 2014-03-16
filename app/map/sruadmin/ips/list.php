@@ -14,7 +14,7 @@ extends UFmap {
 		'computerHost' => 'c.host',
 		'switchId'   => 's.id',
 		'switchModel'   => 'sm.model_name',
-		'switchSerialNo'   => 's.serial_no',
+		'switchSerialNo'   => 'si.serial_no',
 		'inoperational' => 's.inoperational',
 		'admin' => 'c.can_admin',
 		'exAdmin' => 'c.exadmin',
@@ -53,6 +53,7 @@ extends UFmap {
 		'sm' => 'switches_model',
 		'sl' => 'locations',
 		'sd' => 'dormitories',
+		'si' => 'inventory_cards',
 	);
 	protected $joinOns = array(
 		'id' => 'i.dormitory_id = id.id',
@@ -63,6 +64,7 @@ extends UFmap {
 		'sm' => 's.model = sm.id',
 		'sl' => 's.location_id = sl.id',
 		'sd' => 'sl.dormitory_id = sd.id',
+		'si' => 's.inventory_card_id = si.id',
 	);
 	protected $pk = 'i.id';
 }

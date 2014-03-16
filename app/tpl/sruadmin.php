@@ -220,7 +220,6 @@ extends UFtpl_Common {
 		echo $form->_fieldset('<img src="'.UFURL_BASE.'/i/img/lupa.png" alt="" /> Znajdź komputer');
 		echo $d['computer']->write('formSearch', $d['searched']);
 		echo $form->_submit('Znajdź');
-		echo ' <a href="'.UFURL_BASE.'/admin/computers/">Serwery, administracja, organizacje</a>';
 		echo $form->_end();
 		echo $form->_end(true);
 		echo '</div>';
@@ -305,6 +304,45 @@ extends UFtpl_Common {
 	public function userSearchResultsNotFound() {
 		echo '<h2>Znalezieni użytkownicy:</h2>';
 		echo $this->ERR('Nie znaleziono');
+	}
+	
+	public function titleInventoryCardSearch() {
+		echo 'Znajdź urządzenie';
+	}
+
+	public function inventoryCardSearch(array $d) {
+		$form = UFra::factory('UFlib_Form');	
+		echo '<div class="deviceSearch">';
+		echo $form->_start($this->url(0).'/devices/search');
+		echo $form->_fieldset('<img src="'.UFURL_BASE.'/i/img/lupa.png" alt="" /> Znajdź urządzenie');
+		echo $d['inventoryCard']->write('formSearch', $d['searched']);
+		echo $form->_submit('Znajdź');
+		
+		echo $form->_end();
+		echo $form->_end(true);
+		echo '</div>';
+	}
+
+	public function inventoryCardSearchResults(array $d) {
+		echo '<h2>Znalezione urządzenia ('.count($d['inventoryCards']).'):</h2>';
+		echo '<div class="userSearchResults"><ul>';
+		echo $d['inventoryCards']->write('searchResults');
+		echo '</ul></div>';
+	}
+
+	public function inventoryCardSearchResultsNotFound() {
+		echo '<h2>Znalezione urządzenia:</h2>';
+		echo $this->ERR('Nie znaleziono');
+	}
+	
+	public function adminLists(array $d) {
+		$form = UFra::factory('UFlib_Form');
+		echo $form->_fieldset('<img src="'.UFURL_BASE.'/i/img/todo.png" alt="" /> Zestawienia');
+		echo '<ul>';
+		echo '<li><a href="'.UFURL_BASE.'/admin/computers/">Serwery, administracja, organizacje</a></li>';
+		echo '<li><a href="'.UFURL_BASE.'/admin/ips/">IP i VLANy</a></li>';
+		echo '</ul>';
+		echo $form->_end();
 	}
 	
 	public function titleTasks() {
@@ -831,8 +869,15 @@ extends UFtpl_Common {
 		if ($this->_srv->get('msg')->get('switchLockoutsEdit/ok')) {
 			echo $this->OK('Zablokowane adresy MAC na switchu zostały zmienione');
 		}
+		if ($this->_srv->get('msg')->get('inventoryCardEdit/ok')) {
+			echo $this->OK('Karta wyposażenia została zmieniona');
+		}
 		$d['switch']->write('headerDetails', $d['leftRight'][0], $d['leftRight'][2]);
 		$d['switch']->write('details', $d['info'], $d['lockouts']);
+	}
+	
+	public function switchHistory(array $d) {
+		$d['history']->write('history', $d['switch']);
 	}
 
 	public function switchData(array $d) {
@@ -943,6 +988,46 @@ extends UFtpl_Common {
 		echo $d['switch']->write('formEditLockouts', $d['lockouts']);
 		echo $form->_submit('Zapisz');
 		echo ' <a href="'.$url.'/switches/'.$d['switch']->serialNo.'">Powrót</a>';
+		echo $form->_end();
+		echo $form->_end(true);
+	}
+	
+	public function inventoryCard(array $d) {
+		echo '<h3>Karta wyposażenia</h3>';
+		$d['inventoryCard']->write('details', $d['device']);
+	}
+	
+	public function inventoryCardNotFound(array $d) {
+		echo '<h3>Karta wyposażenia</h3>';
+		echo $this->ERR('Nie przypisano karty wyposażenia');
+	}
+	
+	public function inventoryCardHistory(array $d) {
+		$d['history']->write('history', $d['inventoryCard']);
+	}
+	
+	public function titleInventoryCardAdd(array $d) {
+		echo 'Dodawanie karty wyposażenia';
+	}
+	
+	public function inventoryCardAdd(array $d) {
+		echo $this->ERR('Not implemented');
+	}
+	
+	public function titleInventoryCardEdit(array $d) {
+		echo 'Edycja karty wyposażenia';
+	}
+	
+	public function inventoryCardEdit(array $d) {
+		$form = UFra::factory('UFlib_Form');
+		$url = $this->url(0);
+		$urlDevice = UFtpl_SruAdmin_InventoryCard::getDeviceUrl($d['device'], $url);
+		
+		echo '<h2>Edycja karty wyposażenia urządzenia S/N '.$d['inventoryCard']->serialNo.'</h2>'; 
+		echo $form->_start();
+		echo $d['inventoryCard']->write('formEdit', $d['dormitories']);
+		echo $form->_submit('Zapisz');
+		echo ' <a href="'.$urlDevice.'">Powrót</a>';
 		echo $form->_end();
 		echo $form->_end(true);
 	}

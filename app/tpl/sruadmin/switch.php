@@ -1,6 +1,6 @@
 <?php
 /**
- * szablon beana switcha
+ * switcha
  */
 class UFtpl_SruAdmin_Switch
 extends UFtpl_Common {
@@ -132,6 +132,7 @@ extends UFtpl_Common {
 		echo '<p><em>IP:</em> '.$d['ip'].' '.($d['lab'] ? '(SKOSlab)' : '').'</p>';
 		echo '<p class="nav"><a href="'.$url.'/switches/dorm/'.$d['dormitoryAlias'].'">Wróć do listy</a> &bull; 
 			 <a href="'.$url.'/switches/">Pokaż wszystkie</a> &bull; 
+			 <a href="'.$url.'/switches/'.$d['serialNo'].'/history">Historia</a> &bull;
 			 <a href="'.$url.'/switches/'.$d['serialNo'].'/:edit">Edytuj</a> &bull; ';
 		if (!is_null($info)) {
 			echo '<a href="'.$url.'/switches/'.$d['serialNo'].'/:lockoutsedit">Lockout-MAC</a> &bull; ';
@@ -143,11 +144,8 @@ extends UFtpl_Common {
 		}
 		echo ' <span id="switchMoreSwitch"></span></p>';
 		echo '<div id="switchMore">';
-		echo '<p><em>Nr seryjny:</em> '.$d['serialNo'].'</p>';
 		echo '<p><em>Lokalizacja:</em> <a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'/'.$d['locationAlias'].'">'.$d['locationAlias'].'</a> <small>(<a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'">'.$d['dormitoryAlias'].'</a>)</small>'.(strlen($d['locationComment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$d['locationComment'].'" />':'').'</p>';
 		echo '<p'.($d['inoperational'] ? ' class="inoperational"' : '').'><em>Uszkodzony:</em> '.($d['inoperational'] ? 'tak' : 'nie').'</p>';
-		echo '<p><em>Nr inwentarzowy:</em> '.$d['inventoryNo'].'</p>';
-		echo '<p><em>Na stanie od:</em> '.(is_null($d['received']) ? '' : date(self::TIME_YYMMDD, $d['received'])).'</p>';
 		echo '<p><em>Zablokowane adresy MAC:</em><br/>';
 		if (!is_null($lockouts)) {
 			foreach ($lockouts as $lockout) {
@@ -232,6 +230,7 @@ extends UFtpl_Common {
 		$form = UFra::factory('UFlib_Form', 'switchAdd', $d, $this->errors);
 
 		echo $form->_fieldset();
+		echo '<h3>Switch</h3>';
 		$tmp = array();
 		echo $form->ip('IP', array('after'=>UFlib_Helper::displayHint("IP switcha. Brak IP oznacza, że switch został wyłączony (czasowo). Jeżeli switch jest nieużywany całkowicie, należy usunąć mu nr w hierarchii.", false).' <button type="button" onclick=fillData()>Pobierz dane</button><br/>'));
 		foreach ($models as $model) {
@@ -241,7 +240,6 @@ extends UFtpl_Common {
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize($tmp, '', ''),
 		));
-		echo $form->serialNo('Numer seryjny');
 		echo $form->hierarchyNo('Nr w hierarchii', array('after'=>UFlib_Helper::displayHint("Nr kolejny switcha w akademiku, np. dla pierwszego switcha (dsX-hp0) wpisujemy 0. Brak nr oznacza, że switch jest nieużywany.")));
 		$tmp = array();
 		foreach ($dormitories as $dorm) {
@@ -256,11 +254,17 @@ extends UFtpl_Common {
 			'labels' => $form->_labelize($tmp),
 		));
 		echo $form->locationAlias('Lokalizacja', array('after'=>UFlib_Helper::displayHint("Pomieszczenie w akademiku, gdzie znajduje się switch.")));
-		echo $form->inventoryNo('Nr inwentarzowy');
-		echo $form->received('Na stanie od', array('type' => $form->CALENDER));
 		echo $form->inoperational('Uszkodzony', array('type'=>$form->CHECKBOX));
 		echo $form->lab('SKOSlab', array('type'=>$form->CHECKBOX), array('after'=>UFlib_Helper::displayHint("Czy switch znajduje się w SKOSlabie (służy do testów).")));
 		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
+		echo '<h3>Karta wyposażenia</h3>';
+		echo $form->serialNo('Numer seryjny');
+		echo $form->invCardDormitory('Na stanie', array(
+			'type' => $form->SELECT,
+			'labels' => $form->_labelize($tmp),
+		));
+		echo $form->inventoryNo('Nr inwentarzowy');
+		echo $form->received('Na stanie od', array('type' => $form->CALENDER));
 ?>
 <script>
 function fillData() {
@@ -319,7 +323,6 @@ function fillData() {
 	}
 
 	public function formEdit(array $d, $dormitories, $models) {
-		$d['received'] = is_null($d['received']) ? '' : date(self::TIME_YYMMDD, $d['received']);
 		$d['dormitory'] = $d['dormitoryId'];
 		$form = UFra::factory('UFlib_Form', 'switchEdit', $d, $this->errors);
 		echo $form->_fieldset();
@@ -336,7 +339,6 @@ function fillData() {
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize($tmp, '', ''),
 		));
-		echo $form->serialNo('Numer seryjny');
 		echo $form->hierarchyNo('Nr w hierarchii', array('after'=>UFlib_Helper::displayHint("Nr kolejny switcha w akademiku, np. dla pierwszego switcha (dsX-hp0) wpisujemy 0. Brak nr oznacza, że switch jest nieużywany.")));
 		$tmp = array();
 		foreach ($dormitories as $dorm) {
@@ -351,8 +353,6 @@ function fillData() {
 			'labels' => $form->_labelize($tmp),
 		));
 		echo $form->locationAlias('Lokalizacja', array('after'=>UFlib_Helper::displayHint("Pomieszczenie w akademiku, gdzie znajduje się switch.")));
-		echo $form->inventoryNo('Nr inwentarzowy');
-		echo $form->received('Na stanie od', array('type' => $form->CALENDER));
 		echo $form->inoperational('Uszkodzony', array('type'=>$form->CHECKBOX));
 		echo $form->lab('SKOSlab', array('type'=>$form->CHECKBOX), array('after'=>UFlib_Helper::displayHint("Czy switch znajduje się w SKOSlabie (służy do testów).")));
 		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));

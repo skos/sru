@@ -7,6 +7,9 @@ extends UFmap {
 
 	protected $columns = array(
 		'id'		=> 's.id',
+	    	'modifiedById'   => 's.modified_by',
+		'modifiedBy'     => 'a.name',
+		'modifiedAt'     => 's.modified_at',
 		'hierarchyNo'	=> 's.hierarchy_no',
 		'modelId'	=> 's.model',
 		'model'		=> 'm.model_name',
@@ -21,16 +24,18 @@ extends UFmap {
 		'locationAlias'  => 'l.alias',
 		'locationComment'=> 'l.comment',
 		'displayOrder' =>  'd.display_order',
-		'serialNo'	=> 's.serial_no',
-		'inventoryNo'	=> 's.inventory_no',
-		'received'	=> 's.received',
+		'serialNo'	=> 'i.serial_no',
 		'inoperational'	=> 's.inoperational',
 		'comment'	=> 's.comment',
 		'ip'		=> 's.ipv4',
 		'lab'		=> 's.lab',
+		'inventoryCardId'=> 's.inventory_card_id',
 	);
 	protected $columnTypes = array(
 		'id'		=> self::INT,
+	    	'modifiedById'   => self::NULL_INT,
+		'modifiedBy'     => self::TEXT,
+		'modifiedAt'     => self::TS,
 		'hierarchyNo'	=> self::NULL_INT,
 		'modelId'	=> self::INT,
 		'model'		=> self::TEXT,
@@ -46,12 +51,11 @@ extends UFmap {
 		'locationComment'=> self::TEXT,
 		'displayOrder'	=> self::INT,
 		'serialNo'	=> self::TEXT,
-		'inventoryNo'	=> self::NULL_TEXT,
-		'received'	=> self::NULL_TS,
 		'inoperational'	=> self::BOOL,
 		'comment'	=> self::NULL_TEXT,
 		'ip'		=> self::NULL_TEXT,
 		'lab'		=> self::BOOL,
+		'inventoryCardId'=> self::INT,
 	);
 	protected $tables = array(
 		's' => 'switches',
@@ -61,12 +65,18 @@ extends UFmap {
 		'f' => 'switches_firmware',
 		'l' => 'locations',
 		'd' => 'dormitories',
+		'i' => 'inventory_cards',
+		'a' => 'admins',
+		'id' => 'dormitories',
 	);	
 	protected $joinOns = array(
 		'm' => 's.model=m.id',
 		'f' => 'm.firmware_id=f.id',
 		'l' => 's.location_id=l.id',
 		'd' => 'l.dormitory_id=d.id',
+		'i' => 's.inventory_card_id=i.id',
+		'a' => 's.modified_by=a.id',
+		'id' => 'i.dormitory_id=id.id',
 	);
 	protected $pk = 'id';
 }

@@ -1,5 +1,5 @@
 <?php
-class UFview_SruAdmin_Switch
+class UFview_SruAdmin_SwitchInventoryCardHistory
 extends UFview_SruAdmin {
 
 	public function fillData() {
@@ -7,7 +7,6 @@ extends UFview_SruAdmin {
 
 		$this->append('title', $box->titleSwitch());
 		$this->append('body', $box->switchDetails());
-		$this->append('body', $box->switchPorts());
-		$this->append('body', $box->inventoryCard());
+		$this->append('body', $box->inventoryCardHistory());
 	}
 }

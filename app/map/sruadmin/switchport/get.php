@@ -11,7 +11,7 @@ extends UFmap {
 		'switchId'		=> 'p.switch',
 		'switchIp'		=> 's.ipv4',
 		'switchNo'		=> 's.hierarchy_no',
-		'switchSn'		=> 's.serial_no',
+		'switchSn'		=> 'i.serial_no', //TODO prawdopodobnie do usunięcia w ramach #434
 		'switchLab'		=> 's.lab',
 		'locationId'		=> 'p.location',
 		'locationAlias'		=> 'l.alias',
@@ -21,7 +21,7 @@ extends UFmap {
 		'connectedSwitchDorm'	=> 'd.alias',
 		'connectedSwitchNo'	=> 'c.hierarchy_no',
 		'connectedSwitchIp'	=> 'c.ipv4',
-		'connectedSwitchSn'	=> 'c.serial_no',
+		'connectedSwitchSn'	=> 'ic.serial_no', //TODO prawdopodobnie do usunięcia w ramach #434
 		'connectedSwitchLab'=> 'c.lab',
 		'admin'			=> 'p.is_admin',
 		'penaltyId'			=> 'p.penalty_id',
@@ -71,6 +71,8 @@ extends UFmap {
 		'e' => 'penalties',
 		'u' => 'users',
 		't' => 'penalty_templates',
+		'i' => 'inventory_cards',
+		'ic' => 'inventory_cards',
 	);
 	protected $joinOns = array(
 		'l' => 'p.location=l.id',
@@ -83,6 +85,8 @@ extends UFmap {
 		'e' => 'p.penalty_id=e.id',
 		'u' => 'e.user_id=u.id',
 		't' => 'e.template_id=t.id',
+		'i' => 's.inventory_card_id=i.id',
+		'ic' => 'c.inventory_card_id=i.id',
 	);
 	protected $pk = 'id';
 }

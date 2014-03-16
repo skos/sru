@@ -1,14 +1,26 @@
-<?php
+<?
 /**
- * switch
+ * karta wyposazenia
  */
-class UFbean_SruAdmin_Switch
+class UFbean_SruAdmin_InventoryCard
 extends UFbeanSingle {
-	protected function validateIp($val, $change) {
+
+	protected function validateSerialNo($val, $change) {
 		try {
-			if ($val == '') return;
-			$bean = UFra::factory('UFbean_SruAdmin_Switch');
-			$bean->getByIp($val);
+			$bean = UFra::factory('UFbean_SruAdmin_InventoryCard');
+			$bean->getBySerialNo($val);
+			if ($change && $this->data['id'] == $bean->id) {
+				return;
+			}
+			return 'duplicated';
+		} catch (UFex_Dao_NotFound $e) {
+		}
+	}
+
+	protected function validateInventoryNo($val, $change) {
+		try {
+			$bean = UFra::factory('UFbean_SruAdmin_InventoryCard');
+			$bean->getByInventoryNo($val);
 			if ($change && $this->data['id'] == $bean->id) {
 				return;
 			}
@@ -18,7 +30,7 @@ extends UFbeanSingle {
 	}
 	
 	protected function validateLocationAlias($val, $change) {
-		$post = $this->_srv->get('req')->post->{$change?'switchEdit':'switchAdd'};
+		$post = $this->_srv->get('req')->post->{$change?'inventoryCardEdit':'inventoryCardAdd'};
 		try {
 			$dorm = UFra::factory('UFbean_Sru_Dormitory');
 			$dorm->getByPK((int)$post['dormitory']);
