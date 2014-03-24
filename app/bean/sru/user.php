@@ -201,7 +201,7 @@ extends UFbean_Common {
 	}
 	
 	protected function validateRegistryNo($val, $change) {
-		$post = $this->_srv->get('req')->post->{$change?'userEdit':'userAdd'};
+                $post = $this->_srv->get('req')->post->{$change?'userEdit':'userAdd'};
 		$user = UFra::factory('UFbean_Sru_User');
 		try {
 			if(isset($this->data['id'])){
@@ -216,11 +216,11 @@ extends UFbean_Common {
 			}
 		} catch (UFex $e) {
 		}
-		
+                
 		try {
 			if(is_null($val) || $val == '') {
-				return;
-			}
+                return;
+	}
 			$user->getByRegistryNo($val);
 			if ($change && $this->data['id'] == $user->id) {
 					return;
@@ -228,9 +228,24 @@ extends UFbean_Common {
 				return 'duplicated';
 			} catch (UFex_Dao_NotFound $e) {
 		}
-				
+	
 		return;
 	}
+        
+        public function checkRegistryNo($val) {
+                if (!preg_match('/^[0-9]{5,6}$/', $val)) {  //sprawdzenie poprawnosci formatu nr indeksu
+                        $user='invalid';
+                } else {
+                        $user = UFra::factory('UFbean_Sru_User');
+                        try{
+                                $user->getByRegistryNo($val);   //odczytanie danych usera o takim samym nr indeksu
+                                return $user;
+                        } catch(UFex_Dao_NotFound $e){  //unikalny nr indeksu
+                                $user='ok';
+                        }
+                }
+        return $user;
+        }
 	
 	protected function validateTypeId($val, $change) {
 		if($val == 0 || $val == 20 || is_null($val) || $val == '')

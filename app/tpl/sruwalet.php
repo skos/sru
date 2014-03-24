@@ -200,6 +200,17 @@ extends UFtpl_Common {
 		}
 	}
 
+        public function checkRegistryNoResults(array $d) {
+                $user = UFbean_Sru_User::checkRegistryNo($d['registryNo']);
+                if($user == 'ok') { //nr indeksu unikalny
+                        echo 'ok';
+                } else if($user == 'invalid') { //niepoprawny format
+                        echo 'invalid';
+                } else { //utworzenie linku do usera o takim samym nr indeksu
+                        echo "<strong class=\"msgError\"><a href=\"", $this->url(0), "/users/", $user->id, "\">", $user->name, " ", $user->surname, "</a> posiada ten sam numer indeksu</strong>" ;
+                }
+        }
+                
 	public function userSearchResultsNotFound(array $d) {
 		echo $this->ERR('Nie znaleziono.');
 	}

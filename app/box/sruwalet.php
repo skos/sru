@@ -223,6 +223,12 @@ extends UFbox {
 		$d['pesel'] = $get->peselToValidate;
 		return $this->render(__FUNCTION__, $d);
 	}
+        
+        public function checkRegistryNoResults() {
+        	$get = $this->_srv->get('req')->get;
+                $d['registryNo'] = $get->registryNoToCheck;
+                return $this->render(__FUNCTION__, $d);
+	}
 
 	public function toDoList() {
 		try {
