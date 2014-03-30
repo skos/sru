@@ -484,7 +484,7 @@ $(function() {
                         echo '<p><label>' . _("Typ konta:") . '</label><span class="userData"> ' . self::getUserType($d['typeId']) . '</span></p>';
                 }
                 if (!is_null($d['locationAlias']) && $d['locationAlias'] != '') {
-                        echo '<p><label>' . _("Zameldowanie:") . '</label><span class="userData"> ' . $d['dormitoryName'] . ', pok. ' . $d['locationAlias'] . '</span></p>';
+                        echo '<p><label>' . _("Zameldowanie:") . '</label><span class="userData"> ' . $d['dormitoryName'] . _(', pok. ') . $d['locationAlias'] . '</span></p>';
                 }
                 if ($acl->sru('user', 'viewPersonalData')) {
                         if (!is_null($d['address']) && $d['address'] != '') {

@@ -23,11 +23,11 @@ extends UFtpl_Common {
 			echo '<small>Typ: ';
 
 			if (UFbean_SruAdmin_Penalty::TYPE_WARNING == $c['typeId']) {
-				echo 'Ostrzeżenie';
+				echo _('Ostrzeżenie');
 			} else {
-				echo '<strong>Kara</strong>';
+				echo '<strong>'._("Kara").'</strong>';
 				if(empty($computers[$c['id']]) == false){
-					echo '<br />Komputery: ';
+					echo '<br />'._("Komputery").': ';
 					$url = $this->url(0).'/computers/';
 					foreach($computers[$c['id']] as $computer){
 						echo '<b><a href="' . $url . $computer['id'] . '">' . $computer['name'] . '</a></b>&nbsp;&nbsp;';
@@ -35,8 +35,8 @@ extends UFtpl_Common {
 				}
 			}
 
-			echo '<br/>Ważna do: '.date(self::TIME_YYMMDD_HHMM, $c['endAt']);
-			echo '<br/>Powód: '.nl2br($this->_escape($c['reason']));
+			echo '<br/>'._("Ważna do").': '.date(self::TIME_YYMMDD_HHMM, $c['endAt']);
+			echo '<br/>'._("Powód").': '.nl2br($this->_escape($c['reason']));
 			echo '</small></div>';
 			echo '<br/>';
 		}
@@ -47,7 +47,7 @@ extends UFtpl_Common {
 		$form = UFra::factory('UFlib_Form');
 		echo $form->_start();
 		echo $form->_fieldset();
-		echo '<h1>Archiwum kar i ostrzeżeń</h1>';
+		echo '<h1>'._("Archiwum kar i ostrzeżeń").'</h1>';
 		
 		foreach ($d as $c) {
 			if ($c['endAt'] > time()) {	
@@ -59,23 +59,23 @@ extends UFtpl_Common {
 			} else {
 				echo '<div class="userWithoutBan">';
 			}
-			echo '<small>Typ: ';
+			echo '<small>'._("Typ").': ';
 
 
 			if (UFbean_SruAdmin_Penalty::TYPE_WARNING == $c['typeId']) {
-				echo '<span class="userData">Ostrzeżenie</span>';
+				echo '<span class="userData">'._("Ostrzeżenie").'</span>';
 			} else {
-				echo '<span class="userData">Kara</span>';
+				echo '<span class="userData">'._("Kara").'</span>';
 				if(empty($computers[$c['id']]) == false){
-					echo '<br />Komputery: ';
+					echo '<br />'._("Komputery").': ';
 					$url = $this->url(0).'/computers/';
 					foreach($computers[$c['id']] as $computer){
 						echo '<b><a href="' . $url . $computer['id'] . '">' . $computer['name'] . '</a></b>&nbsp;&nbsp;';
 					}
 				}
 			}
-			echo '<br/>Ważna do: <span class="userData">'.date(self::TIME_YYMMDD, $c['endAt']).'</span>';
-			echo '<br/>Powód: '.nl2br($this->_escape($c['reason']));
+			echo '<br/>'._("Ważna do").': <span class="userData">'.date(self::TIME_YYMMDD, $c['endAt']).'</span>';
+			echo '<br/>'._("Powód").': '.nl2br($this->_escape($c['reason']));
 			echo '</small></div>';
 			echo '<hr/>';
 		}

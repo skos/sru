@@ -293,13 +293,13 @@ changeVisibility();
 			echo $this->ERR($this->errors['comp/second']);
 		}
 		if ($this->_srv->get('msg')->get('computerEdit/errors/host/duplicated')) {
-			echo $this->ERR('Nazwa jest już zajęta. Skorzystaj z <a href="'.$this->url(0).'/computers/:add">formularza dodawania nowego komputera</a>.');
+			echo $this->ERR(_('Nazwa jest już zajęta. Skorzystaj z').' <a href="'.$this->url(0).'/computers/:add">'._('formularza dodawania nowego komputera').'</a>.');
 		}
 		$form = UFra::factory('UFlib_Form', 'computerEdit', $d, $this->errors);
 
 		echo '<h1>'.$d['host'].'.ds.pg.gda.pl</h1>';
-                echo $form->host('Nazwa');
-		echo $form->mac('MAC', array('after'=>UFlib_Helper::displayHint("Adres fizyczny karty sieciowej komputera.").$this->showMacHint().'<br/>'));
+                echo $form->host(_('Nazwa'));
+		echo $form->mac('MAC', array('after'=>UFlib_Helper::displayHint(_("Adres fizyczny karty sieciowej komputera.")).$this->showMacHint().'<br/>'));
 	}
 
 	public function formEditAdmin(array $d, $dormitories, $user = null, $history = null, $servers = null, $skosAdmins = null, $waletAdmins = null, $virtuals = null) {
@@ -580,7 +580,7 @@ activateChkB.onclick = function() {
 				echo '</div>';
 			}
 		}
-		echo $form->host('Nazwa', array('after'=>UFlib_Helper::displayHint("Nazwa komputera w sieci - nie musi być zgodna z nazwą w systemie Windows/Linux. Możesz podać inną nazwę niż propozycja SRU - jest ona prawie dowolna, ale może zawierać tylko litery, cyfry oraz myślnik.")));
+		echo $form->host('Nazwa', array('after'=>UFlib_Helper::displayHint(_("Nazwa komputera w sieci - nie musi być zgodna z nazwą w systemie Windows/Linux. Możesz podać inną nazwę niż propozycja SRU - jest ona prawie dowolna, ale może zawierać tylko litery, cyfry oraz myślnik."))));
 		if ($admin) {
 			echo $form->ip('IP');
 ?><script type="text/javascript">

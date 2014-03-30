@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: sru 0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-03-03 17:51+0100\n"
-"PO-Revision-Date: 2014-03-11 00:34+0100\n"
+"PO-Revision-Date: 2014-03-30 23:14+0100\n"
 "Last-Translator: Piotr Dołowy <triop@ds.pg.gda.pl>\n"
 "Language-Team: sru-team <adnet@ds.pg.gda.pl>\n"
 "Language: \n"
@@ -50,7 +50,7 @@ msgstr "Address:"
 
 #: sru3/app/tpl/sru/user.php:477
 msgid "Typ dokumentu:"
-msgstr "Document number:"
+msgstr "Document type:"
 
 #: sru3/app/tpl/sru/user.php:481
 msgid "Nr dokumentu:"
@@ -530,4 +530,28 @@ msgstr "Info"
 
 msgid "Zaloguj"
 msgstr "Login"
+
+msgid "nigdy"
+msgstr "never"
+
+msgid ", pok. "
+msgstr ", room "
+
+msgid "Nazwa jest już zajęta. Skorzystaj z"
+msgstr "The name is already taken."
+
+msgid "Nazwa komputera w sieci - nie musi być zgodna z nazwą w systemie Windows/Linux. Możesz podać inną nazwę niż propozycja SRU - jest ona prawie dowolna, ale może zawierać tylko litery, cyfry oraz myślnik."
+msgstr "Name of the computer on the network - not necessarily match the name on Windows / Linux. You can specify a different name than the SRU proposal - it is almost arbitrary, but can only contain letters, digits and a hyphen."
+
+msgid "Ważna do"
+msgstr "Continues to"
+
+msgid "Powód"
+msgstr "Reason"
+
+msgid "Typ"
+msgstr "Type"
+
+msgid "Aktywne kary i ostrzeżenia"
+msgstr "Current penalties and warnings"
 
