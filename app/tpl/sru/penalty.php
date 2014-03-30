@@ -20,7 +20,7 @@ extends UFtpl_Common {
 			} else {
 				echo '<div class="userBan">';
 			}
-			echo '<small>Typ: ';
+			echo '<small>'._("Typ").': ';
 
 			if (UFbean_SruAdmin_Penalty::TYPE_WARNING == $c['typeId']) {
 				echo _('Ostrzeżenie');

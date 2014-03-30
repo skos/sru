@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: sru 0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-03-03 17:51+0100\n"
-"PO-Revision-Date: 2014-03-30 23:14+0100\n"
+"PO-Revision-Date: 2014-03-31 01:03+0100\n"
 "Last-Translator: Piotr Dołowy <triop@ds.pg.gda.pl>\n"
 "Language-Team: sru-team <adnet@ds.pg.gda.pl>\n"
 "Language: \n"
@@ -389,7 +389,7 @@ msgstr "Warning"
 #: penalty.php:28
 #: penalty.php:68
 msgid "Kara"
-msgstr "Penatly"
+msgstr "Penalty"
 
 #: penalty.php:30
 #: penalty.php:70
@@ -514,7 +514,7 @@ msgid "Komputer ukarany odcięciem od Internetu"
 msgstr "Computer punished cut off from the Internet"
 
 msgid "Twój komputer został ukarany odcięciem od Internetu"
-msgstr "Your computer has been booked for a cut from the Internet"
+msgstr "Your computer has been punished cut off from the Internet"
 
 msgid "Twój komputer został odcięty z następujących powodów:"
 msgstr "Your computer has been shut off for the following reasons:"
