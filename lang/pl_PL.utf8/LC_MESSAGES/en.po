@@ -1,0 +1,533 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: sru 0.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-03-03 17:51+0100\n"
+"PO-Revision-Date: 2014-03-11 00:34+0100\n"
+"Last-Translator: Piotr Dołowy <triop@ds.pg.gda.pl>\n"
+"Language-Team: sru-team <adnet@ds.pg.gda.pl>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: English\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: sru3/app/tpl/sru/user.php:453
+msgid "Dane na Twoim koncie wymagają aktualizacji. Prosimy o wypełnienie prawidłowymi danymi wszystkich wymaganych pól (oznaczonych czerwoną obwódką). W celu ułatwienia kontaktu ze SKOS, możesz wypełnić także pola niewymagane."
+msgstr "Data in your account needs to be updated. Please fill in the correct information in all required fields (marked with a red border). In order to facilitate contact with SKOS, you can fill in the fields not required."
+
+#: sru3/app/tpl/sru/user.php:456
+msgid "Twoje hasło ze względów bezpieczeństwa musi zostać zmienione."
+msgstr "Your password for security reasons must be change"
+
+#: sru3/app/tpl/sru/user.php:459
+msgid "Twoje konto zostało dopiero założone. Wymagana jest zmiana hasła."
+msgstr "Your account has just set up. You have to change password"
+
+#: sru3/app/tpl/sru/user.php:461
+msgid "Login:"
+msgstr "Login:"
+
+#: sru3/app/tpl/sru/user.php:464
+#: sru3/app/tpl/sru/user.php:903
+msgid "Typ konta:"
+msgstr "Account type:"
+
+#: sru3/app/tpl/sru/user.php:468
+#: sru3/app/tpl/sru/user.php:908
+msgid "Zameldowanie:"
+msgstr "Dormitory:"
+
+#: sru3/app/tpl/sru/user.php:473
+msgid "Adres:"
+msgstr "Address:"
+
+#: sru3/app/tpl/sru/user.php:477
+msgid "Typ dokumentu:"
+msgstr "Document number:"
+
+#: sru3/app/tpl/sru/user.php:481
+msgid "Nr dokumentu:"
+msgstr "Document number:"
+
+#: sru3/app/tpl/sru/user.php:485
+msgid "Narodowość:"
+msgstr "Nationality:"
+
+#: sru3/app/tpl/sru/user.php:489
+msgid "PESEL:"
+msgstr "PESEL:"
+
+#: sru3/app/tpl/sru/user.php:493
+msgid "Data urodzenia:"
+msgstr "Birth date:"
+
+#: sru3/app/tpl/sru/user.php:497
+msgid "Miejsce urodzenia:"
+msgstr "Birth place:"
+
+#: sru3/app/tpl/sru/user.php:501
+msgid "Tel. mieszkańca:"
+msgstr "Your phone:"
+
+#: sru3/app/tpl/sru/user.php:505
+msgid "Tel. opiekuna:"
+msgstr "Guardian phone:"
+
+#: sru3/app/tpl/sru/user.php:509
+msgid "Płeć:"
+msgstr "Sex:"
+
+#: sru3/app/tpl/sru/user.php:512
+msgid "Łączysz się przez niezabezpieczone połączenie - ze względów bezpieczeństwa Twoje dane osobowe nie są wyświetlane."
+msgstr "Are you connecting through an unsecured connection - for safety reasons Your personal details are not displayed."
+
+#: sru3/app/tpl/sru/user.php:514
+msgid "Gadu-Gadu"
+msgstr "GG numer"
+
+#: sru3/app/tpl/sru/user.php:514
+msgid "Jeżeli podasz nr GG, będą na niego przesyłane informacje o zmianie statusu konta i Twoich komputerów."
+msgstr "If you specify GG number, it will be sent information about changing the status of your account and your computer."
+
+#: sru3/app/tpl/sru/user.php:515
+msgid "Język"
+msgstr "Language:"
+
+#: sru3/app/tpl/sru/user.php:518
+msgid "Wiadomości e-mail i GG będa przychodziły w wybranym języku."
+msgstr "You will receive e-mails and gg messages in the chosen language."
+
+#: sru3/app/tpl/sru/user.php:523
+msgid "Dane dotyczące studiów"
+msgstr "Data on studies"
+
+#: sru3/app/tpl/sru/user.php:526
+msgid "Nr indeksu:"
+msgstr "Index number:"
+
+#: sru3/app/tpl/sru/user.php:536
+#: sru3/app/tpl/sru/user.php:910
+msgid "Wydział:"
+msgstr "Faculty:"
+
+#: sru3/app/tpl/sru/user.php:539
+msgid "Rok studiów"
+msgstr "Year of study"
+
+#: sru3/app/tpl/sru/user.php:549
+msgid "Zmiana chronionych danych - konieczne podanie aktualnego hasła"
+msgstr "Changing protected data - necessary to provide current password"
+
+#: sru3/app/tpl/sru/user.php:551
+#: sru3/app/tpl/sru/user.php:556
+msgid "Aktualne hasło"
+msgstr "Current password"
+
+#: sru3/app/tpl/sru/user.php:552
+#: sru3/app/tpl/sru/user.php:557
+msgid "E-mail"
+msgstr "E-mail"
+
+#: sru3/app/tpl/sru/user.php:553
+#: sru3/app/tpl/sru/user.php:558
+msgid "Nowe hasło"
+msgstr "New password"
+
+#: sru3/app/tpl/sru/user.php:554
+#: sru3/app/tpl/sru/user.php:559
+msgid "Potwierdź hasło"
+msgstr "Retype password"
+
+#: sru3/app/tpl/sru/user.php:902
+msgid "Imię i nazwisko:"
+msgstr "Name and surname:"
+
+#: sru3/app/tpl/sru/user.php:904
+msgid "E-mail:"
+msgstr "E-mail:"
+
+#: sru3/app/tpl/sru/user.php:906
+msgid "Gadu-Gadu:"
+msgstr "GG number:"
+
+#: sru3/app/tpl/sru/user.php:912
+msgid "Rok studiów:"
+msgstr "Year of study:"
+
+#: sru3/app/tpl/sru/user.php:915
+msgid "Edytuj/Szczegóły"
+msgstr "Edit/details"
+
+#: sru3/app/tpl/sru/user.php:1324
+msgid "Wiadomość do administratora SKOS:"
+msgstr "Message to SKOS admin:"
+
+#: sru3/app/tpl/sru/user.php:1326
+msgid "Wyślij"
+msgstr "Send"
+
+#: sru3/app/tpl/sru/user.php:1327
+msgid "Odpowiedź otrzymasz na maila zarejestrowanego w SRU."
+msgstr "We will answer on your e-mail specified in SRU "
+
+#: sru3/app/tpl/sru/user.php:1331
+msgid "Witaj, "
+msgstr "Welcome, "
+
+#: sru3/app/tpl/sru/user.php:1334
+msgid "Ostatnie udane logowanie: "
+msgstr "Last successful login: "
+
+#: sru3/app/tpl/sru/user.php:1336
+#: sru3/app/tpl/sru/user.php:1343
+msgid "z IP: "
+msgstr "from IP: "
+
+#: sru3/app/tpl/sru/user.php:1341
+msgid "Ostatnie nieudane logowanie: "
+msgstr "Last unsuccessful login: "
+
+#: sru3/app/tpl/sru.php:64
+msgid "Dane zostały zmienione. Pamiętaj, aby zaktualizować dane, gdy ponownie ulegną zmianie."
+msgstr "The data has been changed. Remember to update the data when re-change."
+
+#: sru3/app/tpl/sru.php:70
+#: sru3/app/tpl/sru.php:201
+msgid "Twoje dane"
+msgstr "Your data"
+
+#: sru3/app/tpl/sru.php:82
+#: sru3/app/tpl/sru.php:209
+#: sru3/app/tpl/sru.php:213
+#: sru3/app/tpl/sru.php:227
+msgid "Twoje komputery"
+msgstr "Your computers"
+
+#: sru3/app/tpl/sru.php:85
+#: sru3/app/tpl/sru.php:90
+#: sru3/app/tpl/sru.php:232
+#: sru3/app/tpl/sru.php:237
+msgid "Nie posiadasz komputerów."
+msgstr "You don't have registered computers"
+
+#: sru3/app/tpl/sru.php:86
+#: sru3/app/tpl/sru.php:233
+msgid "Przywróć komputer:"
+msgstr "Restore computer"
+
+#: sru3/app/tpl/sru.php:88
+#: sru3/app/tpl/sru.php:235
+msgid "lub dodaj nowy komputer"
+msgstr "or add new one"
+
+#: sru3/app/tpl/sru.php:90
+#: sru3/app/tpl/sru.php:237
+#: sru3/app/tpl/sru.php:282
+#: sru3/app/tpl/sru.php:289
+msgid "Dodaj komputer"
+msgstr "Add computer"
+
+#: sru3/app/tpl/sru.php:107
+msgid "Kontakt"
+msgstr "Contact"
+
+#: sru3/app/tpl/sru.php:109
+msgid "Nie udało się wysłać wiadomości. Prosimy spróbować później lub wysłać wiadomość e-mail na adres admin@ds.pg.gda.pl"
+msgstr "Failed to send the message. Please try again later or send an e-mail to admin@ds.pg.gda.pl"
+
+#: sru3/app/tpl/sru.php:112
+msgid "Wiadomość została wysłana. Odpowiemy na nią najszybciej, jak to będzie możliwe na adres e-mail podany w SRU."
+msgstr "This message was sent. We will answer it as soon as possible to your e-mail address specified in SRU."
+
+#: sru3/app/tpl/sru.php:119
+msgid "Najbliższe dyżury"
+msgstr "The nearest duty hours"
+
+#: sru3/app/tpl/sru.php:123
+msgid "Pełna lista dyżurów"
+msgstr "Full list of duties"
+
+#: sru3/app/tpl/sru.php:165
+msgid "Hurra! Brak kar i ostrzeżeń! ;)"
+msgstr "Hurrah! No penalties and warnings! ;)"
+
+#: sru3/app/tpl/sru.php:170
+msgid "Główna"
+msgstr "Main page"
+
+#: sru3/app/tpl/sru.php:171
+msgid "Profil"
+msgstr "Profile"
+
+#: sru3/app/tpl/sru.php:172
+msgid "Komputery"
+msgstr "Computers"
+
+#: sru3/app/tpl/sru.php:173
+msgid "Kary"
+msgstr "Penalties"
+
+#: sru3/app/tpl/sru.php:178
+msgid "Nie znaleziono strony"
+msgstr "Page not found"
+
+#: sru3/app/tpl/sru.php:182
+msgid "Nie masz uprawnień do oglądania tej strony. Wróć do "
+msgstr "You don't have permissions to access this page. Back to"
+
+#: sru3/app/tpl/sru.php:182
+#: sru3/app/tpl/sru.php:190
+msgid "System Rejestracji Użytkowników"
+msgstr "Users Registration System (SRU)"
+
+#: sru3/app/tpl/sru.php:186
+msgid "Brak uprawnień"
+msgstr "No permissions"
+
+#: sru3/app/tpl/sru.php:190
+msgid "Nie znaleziono strony. Wróć do "
+msgstr "Page not found. Back to"
+
+#: sru3/app/tpl/sru.php:194
+msgid "Edycja Twoich danych"
+msgstr "Edit your data"
+
+#: sru3/app/tpl/sru.php:203
+#: sru3/app/tpl/sru.php:271
+msgid "Zapisz"
+msgstr "Save"
+
+#: sru3/app/tpl/sru.php:215
+msgid "Dane zostały zmienione."
+msgstr "Data has been changed."
+
+#: sru3/app/tpl/sru.php:217
+msgid "Komputer został dodany. Poczekaj cierpliwie, aż sieć zacznie działać. Może to potrwać nawet godzinę."
+msgstr "The computer has been added. Wait patiently until the network starts. This may take up to an hour."
+
+#: sru3/app/tpl/sru.php:219
+msgid "Komputer został wyrejestrowany."
+msgstr "The computer has been checked out."
+
+#: sru3/app/tpl/sru.php:223
+msgid "Samodzielnie możesz dodać tylko jeden komputer. Jeżeli chcesz zarejestrować kolejny, zgłoś się do administratora lokalnego."
+msgstr "Yourself, you can add only one computer. If you want to register another, report to the local administrator."
+
+#: sru3/app/tpl/sru.php:229
+msgid "Dane zostały zmienione"
+msgstr "Data has been changed"
+
+#: sru3/app/tpl/sru.php:246
+#: sru3/app/tpl/sru.php:262
+msgid "Nie znaleziono komputera"
+msgstr "Computer not found"
+
+#: sru3/app/tpl/sru.php:254
+msgid "Powrót do listy"
+msgstr "Back to list"
+
+#: sru3/app/tpl/sru.php:256
+msgid "Edytuj"
+msgstr "Edit"
+
+#: sru3/app/tpl/sru.php:269
+msgid "Zmień dane komputera"
+msgstr "Change your computer data"
+
+#: sru3/app/tpl/sru.php:275
+#: sru3/app/tpl/sru.php:277
+msgid "Powrót"
+msgstr "Back"
+
+#: sru3/app/tpl/sru.php:291
+msgid "Dodaj"
+msgstr "Add"
+
+#: sru3/app/tpl/sru.php:300
+msgid "Wyrejestruj komputer"
+msgstr "Unregister computer"
+
+#: sru3/app/tpl/sru.php:302
+msgid "Wyrejestruj"
+msgstr "Unregister"
+
+#: sru3/app/tpl/sru.php:314
+msgid "Wyloguj"
+msgstr "Sign out"
+
+#: sru3/app/tpl/sru.php:322
+msgid "Kliknij link, który został wysłany na maila."
+msgstr "Click the link that has been sent to email."
+
+#: sru3/app/tpl/sru.php:324
+msgid "Nowe hasło zostało wysłane na maila."
+msgstr "New password has been send to email"
+
+#: sru3/app/tpl/sru.php:326
+msgid "Podany email jest przypisany do kilku kont - proszę zgłosić się do administratora lokalnego w celu zmiany hasła."
+msgstr "Your email is assigned to multiple accounts - please go to the local administrator to change the password."
+
+#: sru3/app/tpl/sru.php:328
+msgid "Nie znaleziono aktywnego konta z podanym mailem. Czy aktywowałeś swoje konto w Biurze DS?"
+msgstr "There are no active account with the specified e-mail. Do you have activated your account in the dormitory office?"
+
+msgid "Szczegóły"
+msgstr "Details"
+
+#: penalty.php:26
+#: penalty.php:66
+msgid "Ostrzeżenie"
+msgstr "Warning"
+
+#: penalty.php:28
+#: penalty.php:68
+msgid "Kara"
+msgstr "Penatly"
+
+#: penalty.php:30
+#: penalty.php:70
+msgid "Komputery: "
+msgstr "Computer:"
+
+#: penalty.php:39
+#: penalty.php:78
+msgid "Powód: "
+msgstr "Cause:"
+
+#: penalty.php:50
+msgid "Archiwum kar i ostrzeżeń"
+msgstr "Archive"
+
+#: penalty.php:62
+msgid "Typ: "
+msgstr "Type:"
+
+#: computer.php:296
+msgid "Nazwa jest już zajęta. Skorzystaj z "
+msgstr "The name is already taken. Use"
+
+#: computer.php:296
+msgid "formularza dodawania nowego komputera"
+msgstr "form for adding a new computer"
+
+#: computer.php:302
+msgid "Adres fizyczny karty sieciowej komputera."
+msgstr "The physical address of the computer's network interface"
+
+#: computer.php:678
+msgid "Tak, chcę wyrejestrować ten komputer"
+msgstr "Yes, I want to unregister this computer"
+
+#: computer.php:683
+msgid "Tak, wyrejestruj ten komputer"
+msgstr "Yes, unregister this computer"
+
+#: computer.php:690
+msgid "Usuń aliasy komputera:"
+msgstr "Delete aliases computer:"
+
+#: computer.php:696
+msgid "Dodaj alias:"
+msgstr "Add alias"
+
+#: computer.php:703
+msgid "Alias"
+msgstr "Alias"
+
+#: computer.php:704
+msgid "Wpis CNAME "
+msgstr "CNAME entry"
+
+#: computer.php:704
+msgid "Aliasy są domyślnie wpisami CNAME."
+msgstr "Aliases are default CNAME entries."
+
+#: computer.php:782
+msgid "Skąd wziąć MAC?"
+msgstr "Where I can get the MAC address?"
+
+msgid "Widziany:"
+msgstr "Seen:"
+
+msgid "Liczba kar:"
+msgstr "Number of penalties"
+
+msgid "Miejsce:"
+msgstr "Room:"
+
+msgid "brak limitu"
+msgstr "no limit"
+
+msgid "MAC:"
+msgstr "MAC:"
+
+msgid "Typ:"
+msgstr "Type:"
+
+msgid "Rejestracja do:"
+msgstr "Registered to:"
+
+msgid "Ważne linki"
+msgstr "Useful links"
+
+msgid "MAC"
+msgstr "MAC"
+
+msgid "Nazwa"
+msgstr "Name"
+
+msgid "Istnieje możliwość zmiany loginu u Administratora SKOS."
+msgstr "You can change your login by visiting any SKOS Admin."
+
+msgid "Znajdź nas na Facebooku"
+msgstr "Find us on Facebook"
+
+msgid "Zaloguj się"
+msgstr "Login"
+
+msgid "Nieprawidłowy login lub hasło. Czy aktywowałeś swoje konto w Biurze DS?"
+msgstr "Invalid username or password. Do you have activated your account in the Office of the DS?"
+
+msgid "Przypomnij login i hasło"
+msgstr "Recover login and password"
+
+msgid "Hasło"
+msgstr "Password"
+
+msgid "Login"
+msgstr "Login"
+
+msgid "Zapomniałem loginu lub hasła!"
+msgstr "I forgot login or password!"
+
+msgid "Komputer niezarejestrowany w SKOS PG"
+msgstr "Unregistered computer in SKOS PG network"
+
+msgid "Komputer ukarany odcięciem od Internetu"
+msgstr "Computer punished cut off from the Internet"
+
+msgid "Twój komputer został ukarany odcięciem od Internetu"
+msgstr "Your computer has been booked for a cut from the Internet"
+
+msgid "Twój komputer został odcięty z następujących powodów:"
+msgstr "Your computer has been shut off for the following reasons:"
+
+msgid "Twój komputer został odcięty z następującego powodu: "
+msgstr "Your computer has been shut off for the following reason:"
+
+msgid "Na swoje konto możesz zalogować się dopiero po zameldowaniu Cię przez Biuro DSu."
+msgstr "On your account you can login after you check-in for Office DSu."
+
+msgid "Informacja"
+msgstr "Info"
+
+msgid "Zaloguj"
+msgstr "Login"
+
