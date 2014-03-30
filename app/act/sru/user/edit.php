@@ -1,7 +1,7 @@
 <?
 
 /**
- * edycja danych uzytkownika
+ * edycja daych uzytkownika
  */
 class UFact_Sru_User_Edit
 extends UFact {
