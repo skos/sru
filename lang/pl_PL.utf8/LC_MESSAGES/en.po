@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: sru 0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-03-03 17:51+0100\n"
-"PO-Revision-Date: 2014-03-31 01:03+0100\n"
+"PO-Revision-Date: 2014-03-31 01:24+0100\n"
 "Last-Translator: Piotr Dołowy <triop@ds.pg.gda.pl>\n"
 "Language-Team: sru-team <adnet@ds.pg.gda.pl>\n"
 "Language: \n"
@@ -554,4 +554,13 @@ msgstr "Type"
 
 msgid "Aktywne kary i ostrzeżenia"
 msgstr "Current penalties and warnings"
+
+msgid "Gdzie"
+msgstr "Where"
+
+msgid "Kiedy"
+msgstr "When"
+
+msgid "Akademiki"
+msgstr "Dormitories"
 

@@ -102,7 +102,7 @@ extends UFtpl_Common {
 		}
 	}
 
-	public function apiUpcomingDutyHours(array $d, $days, $dormitories, $html = true, $en = false) {
+	public function apiUpcomingDutyHours(array $d, $days, $dormitories, $html = true) {
 		$currentDay = date('N');
 		$lastDay = $currentDay + $days;
 		$thisWeek = '';
@@ -110,6 +110,11 @@ extends UFtpl_Common {
 		$comments = array();
 		$lastComment = 0;
 		$allDormAdmins = array();
+                if($d['user']->lang == 'en')
+                        $en=true;
+                else
+                        $en=false;
+
 		if (!is_null($dormitories)) {
 			foreach ($dormitories as $dorm) {
 				if (is_null($dorm)) continue;
@@ -191,11 +196,11 @@ extends UFtpl_Common {
 
 		if ($html) {
 			if (strlen($thisWeek) || strlen($nextWeek)) {
-				echo '<table class="sruDutyHoursUpcoming"><thead><tr><th>Administrator</th><th>Gdzie<br/>(Where)</th>';
+				echo '<table class="sruDutyHoursUpcoming"><thead><tr><th>Administrator</th><th>'._("Gdzie").'</th>';
 				if (!is_null($dormitories)) {
-					echo '<th>Akademiki<br/>(Dorms)</th>';
+					echo '<th>'.("Akademiki").'</th>';
 				}
-				echo '<th>Kiedy<br/>(When)</th></tr></thead><tbody>';
+				echo '<th>'._("Kiedy").'</th></tr></thead><tbody>';
 				echo $thisWeek;
 				echo $nextWeek;
 				echo '</tbody></table>';
