@@ -165,11 +165,11 @@ extends UFtpl_Common {
 	}
 	
 	public function formLogin(array $d) {
-		$form = UFra::factory('UFlib_Form', 'userLogin', $d);
+                $form = UFra::factory('UFlib_Form', 'userLogin', $d);
 
-		echo $form->login('Login');
-		echo $form->password('Hasło', array('type'=>$form->PASSWORD));
-	}
+                echo $form->login(_("Login"));
+                echo $form->password(_("Hasło"), array('type' => $form->PASSWORD));
+        }
 
 	public function formInfo(array $d) {
 		echo '<p>'.$d['name'].' '.$d['surname'].'</p>';
@@ -470,117 +470,105 @@ $(function() {
 
 		echo '<h1>'.$d['name'].' '.$d['surname'].'</h1>';
 
-		if ($d['updateNeeded']) {
-			echo $this->ERR('Dane na Twoim koncie wymagają aktualizacji. Prosimy o wypełnienie prawidłowymi danymi wszystkich wymaganych pól (oznaczonych czerwoną obwódką). W celu ułatwienia kontaktu ze SKOS, możesz wypełnić także pola niewymagane.');
-		}
-		if ($d['changePasswordNeeded'] && !is_null($d['email'])) {
-			echo $this->ERR('Twoje hasło ze względów bezpieczeństwa musi zostać zmienione.');
-		}
-		if (is_null($d['email'])) {
-			echo $this->ERR('Twoje konto zostało dopiero założone. Wymagana jest zmiana hasła.');
-		}
-		echo '<p><label>Login:</label><span class="userData"> '.$d['login'].'</span>'.UFlib_Helper::displayHint('Istnieje możliwość zmiany loginu u Administratora SKOS.<br/><br/>You can change your login by visiting any SKOS Admin.').'</p>';
-		if(!is_null($d['typeId']) && $d['typeId'] != '')
-		{
-			echo '<p><label>Typ konta:</label><span class="userData"> '.self::getUserType($d['typeId']).'</span></p>';
-		}
-		if(!is_null($d['locationAlias']) && $d['locationAlias'] != '')
-		{
-			echo '<p><label>Zameldowanie:</label><span class="userData"> '.$d['dormitoryName'].', pok. '.$d['locationAlias'].'</span></p>';
-		}
-		if ($acl->sru('user', 'viewPersonalData')) {
-			if(!is_null($d['address']) && $d['address'] != '')
-			{
-				echo '<p><label>Adres:</label><span class="userData"> '.nl2br($this->_escape($d['address'])).'</span></p>';
-			}
-			if(!is_null($d['documentType']) && self::$documentTypes[$d['documentType']] != '')
-			{
-				echo '<p><label>Typ dokumentu:</label><span class="userData"> '.self::$documentTypes[$d['documentType']].'</span></p>';
-			}
-			if(!is_null($d['documentNumber']) && $d['documentNumber'] != '')
-			{
-				echo '<p><label>Nr dokumentu:</label><span class="userData"> '.nl2br($this->_escape($d['documentNumber'])).'</span></p>';
-			}
-			if(!is_null($d['nationality']) && $d['nationality'] != '')
-			{
-				echo '<p><label>Narodowość:</label><span class="userData"> '.nl2br($this->_escape($d['nationalityName'])).'</span></p>';
-			}
-			if(!is_null($d['pesel']) && $d['pesel'] != '')
-			{
-				echo '<p><label>PESEL:</label><span class="userData">'.$d['pesel'].'</span></p>';
-			}
-			if(!is_null($d['birthDate']) && $d['birthDate'] != '')
-			{
-				echo '<p><label>Data urodzenia:</label><span class="userData"> '.date(self::TIME_YYMMDD, $d['birthDate']).'</span></p>';
-			}
-			if(!is_null($d['birthPlace']) && $d['birthPlace'] != '')
-			{
-				echo '<p><label>Miejsce urodzenia:</label><span class="userData"> '.nl2br($this->_escape($d['birthPlace'])).'</span></p>';
-			}
-			if(!is_null($d['userPhoneNumber']) && $d['userPhoneNumber'] != '')
-			{
-				echo '<p><label>Tel. mieszkańca:</label><span class="userData"> '.nl2br($this->_escape($d['userPhoneNumber'])).'</span></p>';
-			}
-			if(!is_null($d['guardianPhoneNumber']) && $d['guardianPhoneNumber'] != '')
-			{
-				echo '<p><label>Tel. opiekuna:</label><span class="userData"> '.nl2br($this->_escape($d['guardianPhoneNumber'])).'</span></p>';
-			}
-			if(!is_null($d['sex']) && $d['sex'] != '')
-			{
-				echo '<p><label>Płeć:</label><span class="userData"> '.(!$d['sex'] ? 'Mężczyzna' : 'Kobieta').'</span></p>';
-			}
-		} else {
-			echo $this->ERR('Łączysz się przez niezabezpieczone połączenie - ze względów bezpieczeństwa Twoje dane osobowe nie są wyświetlane.');
-		}
-		echo $form->gg('Gadu-Gadu', array('after'=> UFlib_Helper::displayHint("Jeżeli podasz nr GG, będą na niego przesyłane informacje o zmianie statusu konta i Twoich komputerów.")));
-		echo $form->lang('Język', array(
-			'type' => $form->SELECT,
-			'labels' => $form->_labelize(self::$languages),
-			'after'=> UFlib_Helper::displayHint("Wiadomości e-mail i GG będa przychodziły w wybranym języku.<br/><br/>You will receive e-mails and gg messages in the chosen language."),
-		));
-		echo '<br />';
+                if ($d['updateNeeded']) {
+                        echo $this->ERR(_("Dane na Twoim koncie wymagają aktualizacji. Prosimy o wypełnienie prawidłowymi danymi wszystkich wymaganych pól (oznaczonych czerwoną obwódką). W celu ułatwienia kontaktu ze SKOS, możesz wypełnić także pola niewymagane."));
+                }
+                if ($d['changePasswordNeeded'] && !is_null($d['email'])) {
+                        echo $this->ERR(_("Twoje hasło ze względów bezpieczeństwa musi zostać zmienione."));
+                }
+                if (is_null($d['email'])) {
+                        echo $this->ERR(_("Twoje konto zostało dopiero założone. Wymagana jest zmiana hasła."));
+                }
+                echo '<p><label>' . _("Login:") . '</label><span class="userData"> ' . $d['login'] . '</span>' . UFlib_Helper::displayHint(_("Istnieje możliwość zmiany loginu u Administratora SKOS.")) . '</p>';
+                if (!is_null($d['typeId']) && $d['typeId'] != '') {
+                        echo '<p><label>' . _("Typ konta:") . '</label><span class="userData"> ' . self::getUserType($d['typeId']) . '</span></p>';
+                }
+                if (!is_null($d['locationAlias']) && $d['locationAlias'] != '') {
+                        echo '<p><label>' . _("Zameldowanie:") . '</label><span class="userData"> ' . $d['dormitoryName'] . ', pok. ' . $d['locationAlias'] . '</span></p>';
+                }
+                if ($acl->sru('user', 'viewPersonalData')) {
+                        if (!is_null($d['address']) && $d['address'] != '') {
+                                echo '<p><label>' . _("Adres:") . '</label><span class="userData"> ' . nl2br($this->_escape($d['address'])) . '</span></p>';
+                        }
+                        if (!is_null($d['documentType']) && self::$documentTypes[$d['documentType']] != '') {
+                                echo '<p><label>' . _("Typ dokumentu:") . '</label><span class="userData"> ' . self::$documentTypes[$d['documentType']] . '</span></p>';
+                        }
+                        if (!is_null($d['documentNumber']) && $d['documentNumber'] != '') {
+                                echo '<p><label>' . _("Nr dokumentu:") . '</label><span class="userData"> ' . nl2br($this->_escape($d['documentNumber'])) . '</span></p>';
+                        }
+                        if (!is_null($d['nationality']) && $d['nationality'] != '') {
+                                echo '<p><label>' . _("Narodowość:") . '</label><span class="userData"> ' . nl2br($this->_escape($d['nationalityName'])) . '</span></p>';
+                        }
+                        if (!is_null($d['pesel']) && $d['pesel'] != '') {
+                                echo '<p><label>' . _("PESEL:") . '</label><span class="userData">' . $d['pesel'] . '</span></p>';
+                        }
+                        if (!is_null($d['birthDate']) && $d['birthDate'] != '') {
+                                echo '<p><label>' . _("Data urodzenia:") . '</label><span class="userData"> ' . date(self::TIME_YYMMDD, $d['birthDate']) . '</span></p>';
+                        }
+                        if (!is_null($d['birthPlace']) && $d['birthPlace'] != '') {
+                                echo '<p><label>' . _("Miejsce urodzenia:") . '</label><span class="userData"> ' . nl2br($this->_escape($d['birthPlace'])) . '</span></p>';
+                        }
+                        if (!is_null($d['userPhoneNumber']) && $d['userPhoneNumber'] != '') {
+                                echo '<p><label>' . _("Tel. mieszkańca:") . '</label><span class="userData"> ' . nl2br($this->_escape($d['userPhoneNumber'])) . '</span></p>';
+                        }
+                        if (!is_null($d['guardianPhoneNumber']) && $d['guardianPhoneNumber'] != '') {
+                                echo '<p><label>' . _("Tel. opiekuna:") . '</label><span class="userData"> ' . nl2br($this->_escape($d['guardianPhoneNumber'])) . '</span></p>';
+                        }
+                        if (!is_null($d['sex']) && $d['sex'] != '') {
+                                echo '<p><label>' . _("Płeć:") . '</label><span class="userData"> ' . (!$d['sex'] ? 'Mężczyzna' : 'Kobieta') . '</span></p>';
+                        }
+                } else {
+                        echo $this->ERR(_("Łączysz się przez niezabezpieczone połączenie - ze względów bezpieczeństwa Twoje dane osobowe nie są wyświetlane."));
+                }
+                echo $form->gg(_("Gadu-Gadu"), array('after' => UFlib_Helper::displayHint(_("Jeżeli podasz nr GG, będą na niego przesyłane informacje o zmianie statusu konta i Twoich komputerów."))));
+                echo $form->lang(_("Język"), array(
+                        'type' => $form->SELECT,
+                        'labels' => $form->_labelize(self::$languages),
+                        'after' => UFlib_Helper::displayHint(_("Wiadomości e-mail i GG będa przychodziły w wybranym języku.")),
+                ));
+                echo '<br />';
 
-		if($d['typeId'] <= 50) {
-			echo $form->_fieldset('Dane dotyczące studiów');
+                if ($d['typeId'] <= 50) {
+                        echo $form->_fieldset(_("Dane dotyczące studiów"));
 
-			if (!is_null($d['registryNo']) && $d['registryNo'] != '' && $acl->sru('user', 'viewPersonalData')) {
-				echo '<p><label>Nr indeksu:</label><span class="userData"> '.$d['registryNo'].'</span></p>';
-			}
-			if($d['typeId'] != UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL && $d['typeId'] <= 50 && !is_null($d['facultyId'])) {
-				$tmp = array();
-				foreach ($faculties as $fac) {
-					if ($fac['id'] == 0) continue; // N/D powinno być na końcu
-					$tmp[$fac['id']] = $fac['name'];
-				}
+                        if (!is_null($d['registryNo']) && $d['registryNo'] != '' && $acl->sru('user', 'viewPersonalData')) {
+                                echo '<p><label>' . _("Nr indeksu:") . '</label><span class="userData"> ' . $d['registryNo'] . '</span></p>';
+                        }
+                        if ($d['typeId'] != UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL && $d['typeId'] <= 50 && !is_null($d['facultyId'])) {
+                                $tmp = array();
+                                foreach ($faculties as $fac) {
+                                        if ($fac['id'] == 0) continue; // N/D powinno być na końcu
+                                        $tmp[$fac['id']] = $fac['name'];
+                                }
 
-				$tmp['0'] = 'N/D';
-				echo '<p><label>Wydział:</label><span class="userData"> '.($tmp[$d['facultyId']]).'</span></p>';
+                                $tmp['0'] = 'N/D';
+                                echo '<p><label>' . _("Wydział:") . '</label><span class="userData"> ' . ($tmp[$d['facultyId']]) . '</span></p>';
 
-				if($d['facultyId'] != $tmp['0']) {
-					echo $form->studyYearId('Rok studiów', array(
-						'type' => $form->SELECT,
-						'labels' => $form->_labelize(self::$studyYears),
-						'class'=>'required',
-					));
-				}
-			}
-		}
+                                if ($d['facultyId'] != $tmp['0']) {
+                                        echo $form->studyYearId(_("Rok studiów"), array(
+                                                'type' => $form->SELECT,
+                                                'labels' => $form->_labelize(self::$studyYears),
+                                                'class' => 'required',
+                                        ));
+                                }
+                        }
+                }
 
-		echo '<br/>';
-		echo $form->_fieldset('Zmiana chronionych danych - konieczne podanie aktualnego hasła');
-		if (is_null($d['email']) || $d['changePasswordNeeded']) {
-			echo $form->password3('Aktualne hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
-			echo $form->email('E-mail', array('class'=>'required'));
-			echo $form->password('Nowe hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
-			echo $form->password2('Potwierdź hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
-		} else {
-			echo $form->password3('Aktualne hasło', array('type'=>$form->PASSWORD));
-			echo $form->email('E-mail', array('class'=>'required'));
-			echo $form->password('Nowe hasło', array('type'=>$form->PASSWORD));
-			echo $form->password2('Potwierdź hasło', array('type'=>$form->PASSWORD));
-		}
-		echo $form->_end();	
-	}
+                echo '<br/>';
+                echo $form->_fieldset(_("Zmiana chronionych danych - konieczne podanie aktualnego hasła"));
+                if (is_null($d['email']) || $d['changePasswordNeeded']) {
+                        echo $form->password3(_("Aktualne hasło"), array('type' => $form->PASSWORD, 'class' => 'required'));
+                        echo $form->email(_("E-mail"), array('class' => 'required'));
+                        echo $form->password(_("Nowe hasło"), array('type' => $form->PASSWORD, 'class' => 'required'));
+                        echo $form->password2(_("Potwierdź hasło"), array('type' => $form->PASSWORD, 'class' => 'required'));
+                } else {
+                        echo $form->password3(_("Aktualne hasło"), array('type' => $form->PASSWORD));
+                        echo $form->email(_("E-mail"), array('class' => 'required'));
+                        echo $form->password(_("Nowe hasło"), array('type' => $form->PASSWORD));
+                        echo $form->password2(_("Potwierdź hasło"), array('type' => $form->PASSWORD));
+                }
+                echo $form->_end();
+        }
 
 	public function formSearch(array $d, array $searched) {
 		$d = $searched + $d;
@@ -919,21 +907,21 @@ changeVisibility();
 	}
 
 	public function detailsUser(array $d) {
-		echo '<p><em>Imię i nazwisko:</em><span class="userData"> '.$this->_escape($d['name']).' '.$this->_escape($d['surname']).'</span></p>';
-		echo '<p><em>Typ konta:</em><span class="userData"> '.self::getUserType($d['typeId']).'</span>';
-		echo '<p><em>E-mail:</em><span class="userData"> <a href="mailto:'.$d['email'].'">'.$d['email'].'</a></span></p>';
-		if ($d['gg']) {
-			echo '<p><em>Gadu-Gadu:</em><span class="userData"> <a href="gg:'.$d['gg'].'">'.$d['gg'].'</a></span></p>';
-		}
-		echo '<p><em>Zameldowanie:</em><span class="userData"> '.$d['dormitoryName'].', pok. '.$d['locationAlias'].'</span></p>';
-		if ($d['typeId'] != UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL && $d['typeId'] <= 50) {
-			echo '<p><em>Wydział:</em><span class="userData"> '.(!is_null($d['facultyName'])?$d['facultyName']:'').'</span></p>';
-			if($d['facultyId'] != 0) {
-				echo '<p><em>Rok studiów:</em><span class="userData"> '.(!is_null($d['studyYearId'])?self::$studyYears[$d['studyYearId']]:'').'</span></p>';
-			}
-		}
-		echo '<p"><a class="userAction" href="'.$this->url(0).'/profile">Edytuj/Szczegóły</a>';
-	}
+                echo '<p><em>' . _("Imię i nazwisko:") . '</em><span class="userData"> ' . $this->_escape($d['name']) . ' ' . $this->_escape($d['surname']) . '</span></p>';
+                echo '<p><em>' . _("Typ konta:") . '</em><span class="userData"> ' . self::getUserType($d['typeId']) . '</span>';
+                echo '<p><em>' . _("E-mail:") . '</em><span class="userData"> <a href="mailto:' . $d['email'] . '">' . $d['email'] . '</a></span></p>';
+                if ($d['gg']) {
+                        echo '<p><em>' . _("Gadu-Gadu:") . '</em><span class="userData"> <a href="gg:' . $d['gg'] . '">' . $d['gg'] . '</a></span></p>';
+                }
+                echo '<p><em>' . _("Zameldowanie:") . '</em><span class="userData"> ' . $d['dormitoryName'] . ', pok. ' . $d['locationAlias'] . '</span></p>';
+                if ($d['typeId'] != UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL && $d['typeId'] <= 50) {
+                        echo '<p><em>' . _("Wydział:") . '</em><span class="userData"> ' . (!is_null($d['facultyName']) ? $d['facultyName'] : '') . '</span></p>';
+                        if ($d['facultyId'] != 0) {
+                                echo '<p><em>' . _("Rok studiów:") . '</em><span class="userData"> ' . (!is_null($d['studyYearId']) ? self::$studyYears[$d['studyYearId']] : '') . '</span></p>';
+                        }
+                }
+                echo '<p"><a class="userAction" href="' . $this->url(0) . '/profile">' . _("Edytuj/Szczegóły") . '</a>';
+        }
 
 	public function titleDetails(array $d) {
 		echo $this->_escape($d['name']).' '.$this->_escape($d['surname']).' ('.$d['login'].')';
@@ -1340,31 +1328,31 @@ $(function() {
 	}
 	
 	public function contactForm(array $d) {
-		$form = UFra::factory('UFlib_Form', 'sendMessage', $d, $this->errors);
-		echo 'Wiadomość do administratora SKOS:';
-		echo $form->message('', array('type'=>$form->TEXTAREA, 'rows'=>5));
-		echo $form->_submit('Wyślij');
-		echo '<br/>Odpowiedź otrzymasz na maila zarejestrowanego w SRU.';
-	}
+                $form = UFra::factory('UFlib_Form', 'sendMessage', $d, $this->errors);
+                echo _("Wiadomość do administratora SKOS:");
+                echo $form->message('', array('type' => $form->TEXTAREA, 'rows' => 5));
+                echo $form->_submit(_("Wyślij"));
+                echo '<br/>' . _("Odpowiedź otrzymasz na maila zarejestrowanego w SRU.");
+        }
 
 	public function userBar(array $d, $ip, $time, $invIp, $invTime) {
-		echo 'Witaj, '.$this->_escape($d['name']) .' &quot;'. $this->_escape($d['login']) .'&quot; '. $this->_escape($d['surname']) . '!<br/>';
-		
-		if (!is_null($time) && $time != 0 ) {
-			echo '<small>Ostatnie&nbsp;udane&nbsp;logowanie: '.date(self::TIME_YYMMDD_HHMM, $time).'</small>' ;
-			if (!is_null($ip)) {
-				echo '<small>, z IP: '.$ip.'</small>' ;
-			}
-			echo '<br/>';
-		}
-		if (!is_null($invTime) && $invTime != 0 ) {
-			echo '<small>Ostatnie&nbsp;nieudane&nbsp;logowanie: '.date(self::TIME_YYMMDD_HHMM, $invTime).'</small>' ;
-			if (!is_null($invIp)) {
-				echo '<small>, z IP: '.$invIp.'</small>' ;
-			}
-			echo '<br/>';
-		}
-	}
+                echo _("Witaj, ") . $this->_escape($d['name']) . ' &quot;' . $this->_escape($d['login']) . '&quot; ' . $this->_escape($d['surname']) . '!<br/>';
+
+                if (!is_null($time) && $time != 0) {
+                        echo '<small>' . _("Ostatnie udane logowanie: ") . date(self::TIME_YYMMDD_HHMM, $time) . '</small>';
+                        if (!is_null($ip)) {
+                                echo '<small>, ' . _("z IP: ") . $ip . '</small>';
+                        }
+                        echo '<br/>';
+                }
+                if (!is_null($invTime) && $invTime != 0) {
+                        echo '<small>' . _("Ostatnie nieudane logowanie: ") . date(self::TIME_YYMMDD_HHMM, $invTime) . '</small>';
+                        if (!is_null($invIp)) {
+                                echo '<small>, ' . _("z IP: ") . $invIp . '</small>';
+                        }
+                        echo '<br/>';
+                }
+        }
 
 	public function userAddMailTitlePolish(array $d) {
 		echo 'Witamy w sieci SKOS';
