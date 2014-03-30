@@ -45,7 +45,7 @@ extends UFtpl_Common {
 		UFbean_Sru_User::TYPE_ADMINISTRATION => UFbean_Sru_Computer::TYPE_ADMINISTRATION,
 		UFbean_Sru_User::TYPE_ORGANIZATION => UFbean_Sru_Computer::TYPE_ORGANIZATION,
 	);
-	
+
 	protected $errors = array(
 		'host' => 'Nieprawidłowa nazwa',
 		'host/duplicated' => 'Nazwa jest już zajęta',
@@ -71,10 +71,10 @@ extends UFtpl_Common {
 		'waletCarerId/null' => 'Host administracji musi posiadać opiekuna',
 		'typeId/notSkos' => 'Właścicielem serwera fizycznego / urządzenia może być wyłącznie SKOS',
 	);
-	
+
 	/**
 	 * Szablon wyświetlania ostatnio modyfikowanych użytkowników
-	 * 
+	 *
 	 */
 	public function computerLastModified(array $d){
 		$url = $this->url(0);
@@ -105,19 +105,19 @@ extends UFtpl_Common {
 		}
 		echo '</ul>';
 	}
-	
-	public function listOwn(array $d) {
-		$url = $this->url(0).'/computers/';
-		$acl = $this->_srv->get('acl');
-		foreach ($d as $c) {
-			echo '<li><span class="userData">'.$c['host'].'</span><small>&nbsp;&nbsp;IP: '.$c['ip'].'&nbsp;&nbsp;MAC: '.$c['mac'].'</small>
-				<span>'.(is_null($c['availableTo']) ? '' : date(self::TIME_YYMMDD, $c['availableTo'])).'</span>
-				<a class="userAction" href="'.$url.$c['id'].'">Szczegóły</a>';
-				if ($acl->sru('computer', 'edit')) {
-					echo ' &bull; <a class="userAction" href="'.$url.$c['id'].'/:edit">Edytuj</a></li>';
-				}
-		}
-	}
+
+        public function listOwn(array $d){
+                $url = $this->url(0) . '/computers/';
+                $acl = $this->_srv->get('acl');
+                foreach ($d as $c) {
+                        echo '<li><span class="userData">' . $c['host'] . '</span><small>&nbsp;&nbsp;IP: ' . $c['ip'] . '&nbsp;&nbsp;MAC: ' . $c['mac'] . '</small>
+				<span>' . (is_null($c['availableTo']) ? '' : date(self::TIME_YYMMDD, $c['availableTo'])) . '</span>
+				<a class="userAction" href="' . $url . $c['id'] . '">' . _("Szczegóły") . '</a>';
+                        if ($acl->sru('computer', 'edit')) {
+                                echo ' &bull; <a class="userAction" href="' . $url . $c['id'] . '/:edit">' . _("Edytuj") . '</a></li>';
+                        }
+                }
+        }
 
 	public function listToActivate(array $d) {
 		$url = $this->url(0).'/computers/';
@@ -139,17 +139,17 @@ extends UFtpl_Common {
 	public function titleAliasesEdit(array $d) {
 		echo 'Edycja aliasów komputera "'.$d['host'].'"';
 	}
-	
-	public function detailsOwn(array $d) {
-		echo '<h1>'.$d['host'].'.ds.pg.gda.pl</h1>';
-		echo '<p><em>Typ:</em> '.self::$computerTypes[$d['typeId']].'</p>';
-		echo '<p><em>MAC:</em> '.$d['mac'].'</p>';
-		echo '<p><em>IP:</em> '.$d['ip'].'</p>';
-		echo '<p><em>Rejestracja do:</em> '.(is_null($d['availableTo']) ? 'brak limitu' : date(self::TIME_YYMMDD, $d['availableTo'])).'</p>';
-		echo '<p><em>Miejsce:</em> '.$d['locationAlias'].' ('.$d['dormitoryName'].')</p>';
-		echo '<p><em>Liczba kar:</em> '.$d['bans'].'</p>';
-		echo '<p><em>Widziany:</em> '.($d['lastSeen'] == 0 ? 'nigdy' : date(self::TIME_YYMMDD_HHMM, $d['lastSeen'])).'</p>';
-	}
+
+        public function detailsOwn(array $d){
+                echo '<h1>' . $d['host'] . '.ds.pg.gda.pl</h1>';
+                echo '<p><em>' . _("Typ:") . '</em> ' . self::$computerTypes[$d['typeId']] . '</p>';
+                echo '<p><em>' . _("MAC:") . '</em> ' . $d['mac'] . '</p>';
+                echo '<p><em>' . _("IP:") . '</em> ' . $d['ip'] . '</p>';
+                echo '<p><em>' . _("Rejestracja do:") . '</em> ' . (is_null($d['availableTo']) ? _("brak limitu") : date(self::TIME_YYMMDD, $d['availableTo'])) . '</p>';
+                echo '<p><em>' . _("Miejsce:") . '</em> ' . $d['locationAlias'] . ' (' . $d['dormitoryName'] . ')</p>';
+                echo '<p><em>' . _("Liczba kar:") . '</em> ' . $d['bans'] . '</p>';
+                echo '<p><em>' . _("Widziany:") . '</em> ' . ($d['lastSeen'] == 0 ? _("nigdy") : date(self::TIME_YYMMDD_HHMM, $d['lastSeen'])) . '</p>';
+        }
 
 	public function details(array $d, $switchPort, $aliases, $virtuals) {
 		$url = $this->url(0);
@@ -422,7 +422,7 @@ initialTypeId = document.getElementById("computerEdit_typeId").value;
 initialAutoDeactivation = document.getElementById("computerEdit_autoDeactivation").checked;
 (function (){
 	form = document.getElementById('computerEdit_typeId');
-	function changeVisibility() {	
+	function changeVisibility() {
 		<? if (!is_null($skosAdmins) && !is_null($waletAdmins)) { ?>
 		var skosCarer = document.getElementById("skosCarers");
 		var waletCarer = document.getElementById("waletCarers");
@@ -672,39 +672,39 @@ div.style.display = 'none';
 ?></script><?
 	}
 
-	public function formDel(array $d) {
-		$d['confirm'] = false;
-		$form = UFra::factory('UFlib_Form', 'computerDel', $d);
-		echo $form->confirm('Tak, chcę wyrejestrować ten komputer', array('type'=>$form->CHECKBOX, 'name'=>'computerDel[confirm]'));
-	}
+        public function formDel(array $d){
+                $d['confirm'] = false;
+                $form = UFra::factory('UFlib_Form', 'computerDel', $d);
+                echo $form->confirm(_("Tak, chcę wyrejestrować ten komputer"), array('type' => $form->CHECKBOX, 'name' => 'computerDel[confirm]'));
+        }
 
 	public function formDelAdmin(array $d) {
 		$form = UFra::factory('UFlib_Form', 'computerDel', $d);
 		echo $form->confirm('Tak, wyrejestruj ten komputer', array('type'=>$form->CHECKBOX, 'name'=>'computerDel[confirm]', 'value'=>'1'));
 	}
 
-	public function formAliasesEdit(array $d, $aliases) {
-		$form = UFra::factory('UFlib_Form', 'computerAliasesEdit', $d, $this->errors);
-		$url = $this->url(0).'/computers/';
-		if (!is_null($aliases)) {
-			echo $form->_fieldset('Usuń aliasy komputera:');
-			foreach ($aliases as $alias) {
-				echo $form->aliasesChk($alias['host'], array('type'=>$form->CHECKBOX, 'name'=>'computerAliasesEdit[aliases]['.$alias['id'].']', 'id'=>'computerAliasesEdit[aliases]['.$alias['id'].']'));
-			}
-			echo $form->_end();
-		}
-		echo $form->_fieldset('Dodaj alias:');
-		if ($this->_srv->get('msg')->get('computerAliasesEdit/errors/host/duplicated')) {
-			echo $this->ERR($this->errors['host/duplicated']);
-		}
-		if ($this->_srv->get('msg')->get('computerAliasesEdit/errors/host/regexp')) {
-			echo $this->ERR($this->errors['host/regexp']);
-		}
-		echo $form->alias('Alias');
-		echo $form->isCname('Wpis CNAME '.UFlib_Helper::displayHint("Aliasy są domyślnie wpisami CNAME."), array('type'=>$form->CHECKBOX, 'value'=>'1'));
-		echo $form->_end();
-	}
-	
+        public function formAliasesEdit(array $d, $aliases){
+                $form = UFra::factory('UFlib_Form', 'computerAliasesEdit', $d, $this->errors);
+                $url = $this->url(0) . '/computers/';
+                if (!is_null($aliases)) {
+                        echo $form->_fieldset(_("Usuń aliasy komputera:"));
+                        foreach ($aliases as $alias) {
+                                echo $form->aliasesChk($alias['host'], array('type' => $form->CHECKBOX, 'name' => 'computerAliasesEdit[aliases][' . $alias['id'] . ']', 'id' => 'computerAliasesEdit[aliases][' . $alias['id'] . ']'));
+                        }
+                        echo $form->_end();
+                }
+                echo $form->_fieldset(_("Dodaj alias:"));
+                if ($this->_srv->get('msg')->get('computerAliasesEdit/errors/host/duplicated')) {
+                        echo $this->ERR($this->errors['host/duplicated']);
+                }
+                if ($this->_srv->get('msg')->get('computerAliasesEdit/errors/host/regexp')) {
+                        echo $this->ERR($this->errors['host/regexp']);
+                }
+                echo $form->alias(_("Alias"));
+                echo $form->isCname(_("Wpis CNAME ") . UFlib_Helper::displayHint(_("Aliasy są domyślnie wpisami CNAME.")), array('type' => $form->CHECKBOX, 'value' => '1'));
+                echo $form->_end();
+        }
+
 	public function listAdmin(array $d) {
 		$url = $this->url(0).'/computers/';
 		foreach ($d as $c) {
@@ -728,7 +728,7 @@ div.style.display = 'none';
 		echo $form->host('Host');
 		echo $form->ip('IP (153.19.)');
 		echo $form->mac('MAC');
-		
+
 		$url = explode('/', $this->url());
 		if(!in_array('computersActive:1', $url) && in_array('search', $url)) {
 			echo $form->computersActive('Tylko aktywne', array(
@@ -778,9 +778,9 @@ $("#macvendor").load('<?=UFURL_BASE?>/admin/apis/getmacvendor/<?=$searchedMac?>'
 <?
 	}
 
-	private function showMacHint() {
-		return '<a href="http://faq.ds.pg.gda.pl/"><small>Skąd wziąć MAC?</small></a>';
-	}
+        private function showMacHint(){
+                return '<a href="http://faq.ds.pg.gda.pl/"><small>' . _("Skąd wziąć MAC?") . '</small></a>';
+        }
 
 	public function configDhcp(array $d) {
 		foreach ($d as $c) {
@@ -807,7 +807,7 @@ $("#macvendor").load('<?=UFURL_BASE?>/admin/apis/getmacvendor/<?=$searchedMac?>'
 			echo $c['mac']."\t".$c['ip']."\n";
 		}
 	}
-	
+
 	public function configSkosEthers(array $d) {
 		$ethers = array();
 		foreach ($d as $c) {
@@ -876,13 +876,13 @@ $("#macvendor").load('<?=UFURL_BASE?>/admin/apis/getmacvendor/<?=$searchedMac?>'
 			echo $c['host']."\n";
 		}
 	}
-	
+
 	public function apiComputersNotSeen(array $d) {
 		foreach ($d as $c) {
 			echo $c['host']."\n";
 		}
 	}
-	
+
 	public function apiFirewallExceptions(array $d, $exadmins) {
 		$hosts = array();
 		foreach ($d as $c) {
@@ -914,9 +914,9 @@ $("#macvendor").load('<?=UFURL_BASE?>/admin/apis/getmacvendor/<?=$searchedMac?>'
 		echo 'Ważny do: '.(is_null($d['availableTo']) ? 'brak limitu' : date(self::TIME_YYMMDD,$d['availableTo']))."\n";
 		echo 'IP: '.$d['ip']."\n";
 		echo 'Adres MAC: '.$d['mac']."\n";
-		
+
 	}
-	
+
 	public function hostChangedMailBodyEnglish(array $d, $action) {
 		if ($action == UFact_Sru_Computer_Add::PREFIX) {
 			echo 'We confirm, that a new host has been added to your SKOS PG account.'."\n\n";
@@ -997,7 +997,7 @@ $("#macvendor").load('<?=UFURL_BASE?>/admin/apis/getmacvendor/<?=$searchedMac?>'
 		}
 		echo "\n".'Admin modyfikujący: '.$admin->name."\n";
 	}
-	
+
 	public function carerChangedToYouMailBody(array $d, $admin) {
 		echo 'Zostałeś opiekunem hosta: '.$d['host']."\n";
 		echo "\n".'Admin modyfikujący: '.$admin->name."\n";

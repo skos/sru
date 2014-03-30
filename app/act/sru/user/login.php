@@ -25,6 +25,7 @@ extends UFact {
 			$sess->lastLoginAt  = $bean->lastLoginAt;
 			$sess->lastInvLoginIp  = $bean->lastInvLoginIp;
 			$sess->lastInvLoginAt  = $bean->lastInvLoginAt;
+                        $sess->lang=$bean->lang;
 			if ($_SERVER['SERVER_PORT'] != '443') {
 				$sess->secureConnection  = false;
 			} else {

@@ -26,23 +26,29 @@ extends UFlib_ClassWithService {
 	 * @return UFlib
 	 */
 	protected function _chooseLocale() {
-		$className = strtolower(get_class($this));
-		$className = trim(strstr($className, '_'), '_');
-		$domain = str_replace('_', '/', $className);
-		return UFra::factory('UFlib_Locale', $domain);
-	}
-
-	/**
-	 * tlumaczy tekst
-	 * 
-	 * @param string $txt - tekst do przetlumaczenia
-	 * @param int $number - krotnosc elementu liczbowego
-	 * @return string - przetlumaczny tekst
-	 */
-	protected function _($txt, $number=null) {
-		return $this->locale->_($txt, $number);
-	}
-
+                $session = $this->_srv->get('session');
+                if ($session->is('auth') == 1) {
+                        setlocale(LC_ALL, 'pl_PL.utf8');
+                        putenv("LANG=" . 'pl_PL.utf8');
+                        $lang = $session->lang;
+                        bindtextdomain($lang, $_SERVER['DOCUMENT_ROOT'] . '/../lang');
+                        textdomain($lang);
+                } else {
+                        $lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+                        switch ($lang) {
+                                case "pl":
+                                        $lang = 'pl';
+                                        break;
+                                default:
+                                        $lang = 'en';
+                                        break;
+                        }
+                        setlocale(LC_ALL, 'pl_PL.utf8');
+                        putenv("LANG=" . 'pl_PL.utf8');
+                        bindtextdomain($lang, $_SERVER['DOCUMENT_ROOT'] . '/../lang');
+                        textdomain($lang);
+                }
+        }
 
 	/**
 	 * wypisuje adres url
