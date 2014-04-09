@@ -47,10 +47,11 @@ img { border-style: none; }
 #main p { text-align: justify; margin-top: 0.6em; margin-bottom: 0.6em; }
 #main input, #main select, #main textarea { margin-bottom: 0.2em; }
 #main input.checkbox { margin-bottom: 0.0em; }
-#main p.msgOk, #main p.msgError, #main .sruDutyHoursNoHours { border: 2px solid red; color: red; padding: 1em; text-align: center; margin: 1em; }
-#main p.msgOk input, #main p.msgOk label, #main p.msgError input, #main p.msgError label { display: inline; margin: 0; float: none; clear: none; }
+#main p.msgOk, #main p.msgError, #main p.msgInfo, #main .sruDutyHoursNoHours { border: 2px solid red; color: red; padding: 1em; text-align: center; margin: 1em; }
+#main p.msgOk input, #main p.msgOk label, #main p.msgError input, #main p.msgError label, #main p.msgInfo input, #main p.msgInfo label { display: inline; margin: 0; float: none; clear: none; }
 #main p.msgOk { color: #009a00; border-color: #009a00; }
 #main strong.msgError { background-image: url('../img/wykrzyknik.png'); background-position:left center; background-repeat: no-repeat; padding-left: 20px; }
+#main p.msgInfo { color: #000080; border-color: #000080; }
 #main q { background-color: #eee; }
 #main blockquote { border-left: 3px solid #eee; margin-left: 1em; padding-left: 1em; }
 #main fieldset { margin-top: 1em; border-style: none; background-color: #eee; padding: 0.5em; }

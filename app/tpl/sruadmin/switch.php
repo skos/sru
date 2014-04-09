@@ -230,6 +230,7 @@ extends UFtpl_Common {
 		$form = UFra::factory('UFlib_Form', 'switchAdd', $d, $this->errors);
 
 		echo $form->_fieldset();
+		echo $this->INFO('Dodaj nowego switcha tylko gdy otrzymałeś go właśnie z przetargu.<br/>Jeśli otrzymałeś go w ramach wymiany gwarancyjnej, edytuj switcha już dodanego do SRU.');
 		echo '<h3>Switch</h3>';
 		$tmp = array();
 		echo $form->ip('IP', array('after'=>UFlib_Helper::displayHint("IP switcha. Brak IP oznacza, że switch został wyłączony (czasowo). Jeżeli switch jest nieużywany całkowicie, należy usunąć mu nr w hierarchii.", false).' <button type="button" onclick=fillData()>Pobierz dane</button><br/>'));
@@ -327,7 +328,7 @@ function fillData() {
 		$form = UFra::factory('UFlib_Form', 'switchEdit', $d, $this->errors);
 		echo $form->_fieldset();
 		if ($this->_srv->get('msg')->get('switchEdit/errors/model/change')) {
-			echo $this->ERR('Zmień model tylko gdy otrzymany z wymiany gwarancyjnej switch ma inny model niż reklamowany.<br/>Jeśli otrzymałeś nowy switch z przetargu, dodaj go jako nowe urządzenie.');
+			echo $this->INFO('Zmień model tylko gdy otrzymany z wymiany gwarancyjnej switch ma inny model niż reklamowany.<br/>Jeśli otrzymałeś nowy switch z przetargu, dodaj go jako nowe urządzenie.');
 			echo $this->ERR('Zmiana modelu switcha spowoduje skasowanie wszystkich przypisanych do niego portów.<br/>'.$form->ignoreModelChange('Kontnuuj', array('type'=>$form->CHECKBOX)));
 		}
 		echo $form->ip('IP', array('after'=>UFlib_Helper::displayHint("IP switcha. Brak IP oznacza, że switch został wyłączony (czasowo). Jeżeli switch jest nieużywany całkowicie, należy usunąć mu nr w hierarchii.")));

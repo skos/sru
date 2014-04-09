@@ -12,6 +12,16 @@ extends UFtpl {
 	public function OK($txt) {
 		return '<p class="msgOk">'.$txt.'</p>';
 	}
+	
+	/**
+	 * informacja
+	 * 
+	 * @param string $txt - tresc komunikatu
+	 * @return string
+	 */
+	public function INFO($txt) {
+		return '<p class="msgInfo">'.$txt.'</p>';
+	}
 
 	/**
 	 * komunikat, ze nastapiil blad
