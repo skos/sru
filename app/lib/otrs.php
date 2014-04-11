@@ -88,7 +88,6 @@ class UFlib_Otrs {
 		    "Lock", 'unlock',
 		    "Priority", '3 normal',
 		    "State", 'new',
-		    "Type", 'default',
 		    "CustomerUser", $user->email,
 		    "CustomerID", $user->email,
 		    "OwnerID", 1,
