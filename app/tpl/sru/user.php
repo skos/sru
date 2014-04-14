@@ -1022,7 +1022,8 @@ changeVisibility();
 			'id' => 'userTypeSelector'
 		));
 
-		echo $form->registryNo('Nr indeksu');
+		echo $form->registryNo('Nr indeksu', array('value'=>$registryNo,
+                    'after'=>'<span id="registryNoCheckResult"></span><br/>'));
 		
 		$tmp = array();
 		foreach ($faculties as $fac) {
@@ -1220,7 +1221,7 @@ $('#userTypeSelector').change(function(){
 		}
 	}
 	name.onchange = changeSex;
-
+        
 <?
 	if (!$d['active']) {
 ?>
@@ -1291,6 +1292,40 @@ $('#userTypeSelector').change(function(){
 		xmlhttp.send();
 	}
 	pesel.onchange = validatePesel;
+        
+        
+        var registryNo = document.getElementById('userEdit_registryNo');
+	function registryNoCheck() {
+                
+                        if (registryNo.value == '' || registryNo.value == '<?echo $d['registryNo'];?>') {
+                                document.getElementById('registryNoCheckResult').innerHTML = '';
+                        }
+                        if(registryNo.value != '<?echo $d['registryNo'];?>'){
+                                if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+                                        xmlhttp = new XMLHttpRequest();
+                                } else { // code for IE6, IE5
+                                        xmlhttp = new ActiveXObject('Microsoft.XMLHTTP');
+                                }
+                                xmlhttp.onreadystatechange = function() {
+                                        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                                                if (xmlhttp.responseText == 'ok') {
+                                                        document.getElementById('registryNoCheckResult').innerHTML = ' <img src="<?=UFURL_BASE?>/i/img/ok.png" alt="OK"/>';
+                                                } else if (xmlhttp.responseText == 'invalid') {
+                                                        document.getElementById('registryNoCheckResult').innerHTML = ' <img src="<?=UFURL_BASE?>/i/img/wykrzyknik.png" alt="Błąd"/>';
+                                                } else {
+                                                        document.getElementById('registryNoCheckResult').innerHTML = xmlhttp.responseText;
+                                                }
+                                        }
+                                }
+                                xmlhttp.open('GET',"<? echo $this->url(0); ?>/users/checkregistryno/"+ encodeURIComponent(registryNo.value), true);
+                                xmlhttp.send();
+                        } else {
+                                document.getElementById('registryNoCheckResult').innerHTML = '';
+                        }
+        }
+	
+        registryNo.onchange = registryNoCheck;
+        window.onload = registryNoCheck;
 })()
 $(function() {
 	$( "#userEdit_nationalityName" ).autocomplete({
