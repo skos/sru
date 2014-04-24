@@ -24,6 +24,7 @@ extends UFmap_Sru_Computer_Add {
 		'carerId'		 => 'carer_id',
 		'masterHostId'	 => 'master_host_id',
 		'autoDeactivation' => 'auto_deactivation',
+		'inventoryCardId'=> 'inventory_card_id',
 	);
 	protected $columnTypes = array(
 		'host'           => self::TEXT,
@@ -48,6 +49,7 @@ extends UFmap_Sru_Computer_Add {
 		'waletCarerId'	 => self::NULL_INT,	// kolumna tylko do walidacji
 		'masterHostId'	 => self::NULL_INT,
 		'autoDeactivation' => self::BOOL,
+		'inventoryCardId'=> self::NULL_INT,
 	);
 	protected $tables = array(
 		'' => 'computers',

@@ -52,6 +52,56 @@ extends UFlib_ClassWithService {
 			return false;
 		}
 	}
+	
+	public function inventoryCardAdd() {
+		try {
+			if (!$this->_loggedIn()) {
+				return false;
+			}
+			$bean = UFra::factory('UFbean_Sru_Computer');
+			$bean->getByPK($this->_srv->get('req')->get->computerId);
+
+			if ($bean->typeId == UFbean_Sru_Computer::TYPE_SERVER || $bean->typeId == UFbean_Sru_Computer::TYPE_MACHINE) {
+				try {
+					$ic = UFra::factory('UFbean_SruAdmin_InventoryCard');
+					$ic->getByDeviceIdAndDeviceTable($bean->id, UFbean_SruAdmin_InventoryCard::TABLE_COMPUTER);
+					return false;
+				} catch (UFex_Dao_NotFound $e) {
+					return true;
+				}
+			}
+			return false;
+		} catch (Exception $e) {
+			return false;
+		}
+	}
+	
+	public function inventoryCardEdit() {
+		try {
+			if (!$this->_loggedIn()) {
+				return false;
+			}
+			$bean = UFra::factory('UFbean_Sru_Computer');
+			$bean->getByPK($this->_srv->get('req')->get->computerId);
+
+			if ($bean->typeId == UFbean_Sru_Computer::TYPE_SERVER || $bean->typeId == UFbean_Sru_Computer::TYPE_MACHINE) {
+				try {
+					$ic = UFra::factory('UFbean_SruAdmin_InventoryCard');
+					$ic->getByDeviceIdAndDeviceTable($bean->id, UFbean_SruAdmin_InventoryCard::TABLE_COMPUTER);
+					return true;
+				} catch (UFex_Dao_NotFound $e) {
+					return false;
+				}
+			}
+			return false;
+		} catch (Exception $e) {
+			return false;
+		}
+	}
+	
+	public function inventoryCardView() {
+		return $this->inventoryCardEdit();
+	}
 
 	public function del() {
 		return $this->_loggedIn();

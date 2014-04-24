@@ -4,6 +4,10 @@
  */
 class UFbean_SruAdmin_InventoryCard
 extends UFbeanSingle {
+	
+	const TABLE_COMPUTER = 1;
+	const TABLE_SWITCH = 2;
+	const TABLE_DEVICE = 3;
 
 	protected function validateSerialNo($val, $change) {
 		try {

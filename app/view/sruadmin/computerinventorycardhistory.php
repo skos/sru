@@ -1,8 +1,5 @@
-<?
-/**
- * dane komputera
- */
-class UFview_SruAdmin_Computer
+<?php
+class UFview_SruAdmin_ComputerInventoryCardHistory
 extends UFview_SruAdmin {
 
 	public function fillData() {
@@ -10,6 +7,6 @@ extends UFview_SruAdmin {
 
 		$this->append('title', $box->titleComputer());
 		$this->append('body', $box->computer());
-		$this->append('body', $box->inventoryCard());
+		$this->append('body', $box->inventoryCardHistory());
 	}
 }

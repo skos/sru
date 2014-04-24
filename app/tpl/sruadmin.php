@@ -86,6 +86,12 @@ extends UFtpl_Common {
 		if ($this->_srv->get('msg')->get('computerAliasesEdit/ok')) {
 			echo $this->OK('Zmodyfikowano aliasy komputera');
 		}
+		if ($this->_srv->get('msg')->get('inventoryCardAdd/ok')) {
+			echo $this->OK('Karta wyposażenia została dodana');
+		}
+		if ($this->_srv->get('msg')->get('inventoryCardEdit/ok')) {
+			echo $this->OK('Karta wyposażenia została zmieniona');
+		}
 		$url = $this->url(0).'/computers/'.$d['computer']->id;
 		echo '<div class="computer">';
 		$d['computer']->write('details', $d['switchPort'], $d['aliases'], $d['virtuals']);
@@ -998,8 +1004,12 @@ extends UFtpl_Common {
 	}
 	
 	public function inventoryCardNotFound(array $d) {
-		echo '<h3>Karta wyposażenia</h3>';
-		echo $this->ERR('Nie przypisano karty wyposażenia');
+		$acl = $this->_srv->get('acl');
+		
+		if($acl->sruAdmin('computer', 'inventoryCardAdd')) {
+			echo '<h3>Karta wyposażenia</h3>';
+			echo $this->ERR('Nie przypisano karty wyposażenia');
+		}
 	}
 	
 	public function inventoryCardHistory(array $d) {
@@ -1011,7 +1021,17 @@ extends UFtpl_Common {
 	}
 	
 	public function inventoryCardAdd(array $d) {
-		echo $this->ERR('Not implemented');
+		$form = UFra::factory('UFlib_Form');
+		$url = $this->url(0);
+		$urlDevice = UFtpl_SruAdmin_InventoryCard::getDeviceUrl($d['device'], $url);
+		
+		echo '<h2>Nowa karta wyposażenia</h2>'; 
+		echo $form->_start();
+		echo $d['inventoryCard']->write('formAdd', $d['dormitories']);
+		echo $form->_submit('Zapisz');
+		echo ' <a href="'.$urlDevice.'">Powrót</a>';
+		echo $form->_end();
+		echo $form->_end(true);
 	}
 	
 	public function titleInventoryCardEdit(array $d) {
@@ -1113,10 +1133,8 @@ extends UFtpl_Common {
 		echo 'Aktywne kary';
 	}	
 
-	public function penalties(array $d)
-	{
+	public function penalties(array $d) {
 		$url = $this->url(0).'/penalties/';
-		$acl = $this->_srv->get('acl');
 		
 		echo '<h2><a href="'.$url.'">Ostatnie akcje</a>| Aktywne kary | <a href="'.$url.'templates">Szablony</a></h2>';
 
@@ -1134,7 +1152,6 @@ extends UFtpl_Common {
 	public function penaltyAdd(array $d) {
 		$url = $this->url(0).'/penalties/';
 		$urlUser = $this->url(0).'/users/'.$d['user']->id;
-		$acl = $this->_srv->get('acl');
 		
 		echo '<h2>Kara dla <a href="'.$urlUser.'">'.$d['user']->name.' '.$d['user']->surname.' ('.$d['user']->login.')</a></h2>';
 		
@@ -1150,8 +1167,7 @@ extends UFtpl_Common {
 		echo $form->_end();
 		echo $form->_end(true);		
 
-		echo '</div>';
-					
+		echo '</div>';		
 	}
 
 	public function titlePenalty(array $d) {
@@ -1216,10 +1232,7 @@ extends UFtpl_Common {
 		echo 'Lista kar i ostrzeżeń dla '.$d['user']->name.' '.$d['user']->surname.' ('.$d['user']->login.')';
 	}	
 
-	public function userPenalties(array $d)
-	{
-		$acl = $this->_srv->get('acl');		
-		
+	public function userPenalties(array $d)	{	
 		echo '<h2>Lista kar dla <a href="'.$this->url(1).'/'.$d['user']->id.'">'.$d['user']->name.' '.$d['user']->surname.' ('.$d['user']->login.')</a></h2>';
 
 		$d['penalties']->write('listUserPenalty');
@@ -1229,8 +1242,7 @@ extends UFtpl_Common {
 		echo 'Lista kar i ostrzeżeń dla hosta '.$d['computer']->host;
 	}	
 
-	public function computerPenalties(array $d) {
-		$acl = $this->_srv->get('acl');		
+	public function computerPenalties(array $d) {	
 		echo '<h2>Lista kar dla hosta <a href="'.$this->url(1).'/'.$d['computer']->id.'">'.$d['computer']->host.'</a></h2>';
 
 		$d['penalties']->write('listComputerPenalty');

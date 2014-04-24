@@ -18,7 +18,7 @@ extends UFtpl_Common {
 	
 	public static function getDeviceUrl($device, $url) {		
 		if (get_class($device) == 'UFbean_Sru_Computer') {
-			$urlDevice = $url.'/computers'.$device->id;
+			$urlDevice = $url.'/computers/'.$device->id;
 		} else if (get_class($device) == 'UFbean_SruAdmin_Switch') {
 			$urlDevice = $url.'/switches/'.$device->serialNo;
 		} else {
@@ -38,7 +38,7 @@ extends UFtpl_Common {
 		echo '<p><em>Komentarz:</em> '.nl2br($this->_escape($d['comment'])).'</p>';
 		
 		$urlDevice = UFtpl_SruAdmin_InventoryCard::getDeviceUrl($device, $url);
-		echo '<p class="nav"><a href="'.$urlDevice.'/inventorycardhistory">Historia</a> &bull;
+		echo '<p class="nav"><a href="'.$urlDevice.'/inventorycardhistory">Historia zmian</a> &bull;
 			 <a href="'.$urlDevice.'/:inventorycardedit">Edytuj</a></p>';
 	}
 	

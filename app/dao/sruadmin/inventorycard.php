@@ -54,4 +54,14 @@ extends UFdao {
 
 		return $this->doSelectFirst($query);
 	}
+	
+	public function getByDeviceIdAndDeviceTable($deviceId, $deviceTable) {
+		$mapping = $this->mapping('inventorylist');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->deviceId, $deviceId);
+		$query->where($mapping->deviceTableId, $deviceTable);
+
+		return $this->doSelectFirst($query);
+	}
 }

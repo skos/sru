@@ -1462,7 +1462,7 @@ extends UFbox {
 		}
 	}
 	
-	private function getInventoryCardDevice() {		
+	private function getInventoryCardDevice($getInventoryCard = true) {
 		try {
 			$computer = $this->_getComputerFromGet();	
 		} catch (UFex_Core_DataNotFound $e) {
@@ -1481,16 +1481,22 @@ extends UFbox {
 		
 		$bean = UFra::factory('UFbean_SruAdmin_InventoryCard');
 		if (!is_null($computer)) {
-			$bean->getByPK($computer->inventoryCardId);
-			$d['inventoryCard'] = $bean;
+			if ($getInventoryCard) {
+				$bean->getByPK($computer->inventoryCardId);
+				$d['inventoryCard'] = $bean;
+			}
 			$d['device'] = $computer;
 		} else if (!is_null($switch)) {
-			$bean->getByPK($switch->inventoryCardId);
-			$d['inventoryCard'] = $bean;
+			if ($getInventoryCard) {
+				$bean->getByPK($switch->inventoryCardId);
+				$d['inventoryCard'] = $bean;
+			}
 			$d['device'] = $switch;
 		} else if (!is_null($device)) {
-			$bean->getByPK($device->inventoryCardId);
-			$d['inventoryCard'] = $bean;
+			if ($getInventoryCard) {
+				$bean->getByPK($device->inventoryCardId);
+				$d['inventoryCard'] = $bean;
+			}
 			$d['device'] = $device;
 		} else {
 			throw new UFex_Dao_NotFound();
@@ -1519,6 +1525,21 @@ extends UFbox {
 			} catch (UFex_Dao_NotFound $e) {
 			}
 			$d['history'] = $history;
+			
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}
+	}
+	
+	public function inventoryCardAdd() {
+		try {
+			$d = $this->getInventoryCardDevice(false);
+			$d['inventoryCard'] = UFra::factory('UFbean_SruAdmin_InventoryCard');
+			
+			$dorms = UFra::factory('UFbean_Sru_DormitoryList');
+			$dorms->listAll();
+			$d['dormitories'] = $dorms;
 			
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {

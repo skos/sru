@@ -15,7 +15,12 @@ extends UFact {
 			$bean->fillFromPost(self::PREFIX);
 			$bean->modifiedById = $this->_srv->get('session')->authAdmin;
 			$bean->modifiedAt = NOW;
-			$bean->save();
+			$id = $bean->save();
+			
+			$comp = UFra::factory('UFbean_Sru_Computer');
+			$comp->getByPK((int)$this->_srv->get('req')->get->computerId);
+			$comp->inventoryCardId = $id;
+			$comp->save();
 
 			$this->postDel(self::PREFIX);
 			$this->markOk(self::PREFIX);

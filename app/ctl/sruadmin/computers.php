@@ -76,7 +76,16 @@ extends UFctl {
 								break;	
 							case 'penalties':
 								$get->view = 'computers/computer/penalties';
-								break;				
+								break;
+							case 'inventorycardhistory':
+								$get->view = 'inventorycard/history';
+								break;
+							case ':inventorycardadd':
+								$get->view = 'inventorycard/add';
+								break;
+							case ':inventorycardedit':
+								$get->view = 'inventorycard/edit';
+								break;
 							default:
 								$get->view = 'error404';
 								break;
@@ -105,6 +114,10 @@ extends UFctl {
 			$act = 'Computer_AliasesEdit';
 		} elseif ('computers/computer/delete' == $get->view && $post->is('computerDel') ) {
 			$act = 'Computer_Del';
+		} elseif ('inventorycard/add' == $get->view && $post->is('inventoryCardAdd') && $acl->sruAdmin('computer', 'inventoryCardAdd')) {
+			$act = 'InventoryCard_Add';
+		} elseif ('inventorycard/edit' == $get->view && $post->is('inventoryCardEdit') && $acl->sruAdmin('computer', 'inventoryCardEdit')) {
+			$act = 'InventoryCard_Edit';
 		}
 
 		if (isset($act)) {
@@ -155,6 +168,28 @@ extends UFctl {
 				return 'SruAdmin_ComputerRestore';
 			case 'computers/computer/penalties':
 				return 'SruAdmin_ComputerPenalties';
+			case 'inventorycard/history':
+				if ($acl->sruAdmin('computer', 'inventoryCardView')) {
+					return 'SruAdmin_ComputerInventoryCardHistory';
+				} else {
+					return 'Sru_Error403';
+				}
+			case 'inventorycard/add':
+				if ($msg->get('inventoryCardAdd/ok')) { 
+					return 'SruAdmin_Computer';
+				} elseif ($acl->sruAdmin('computer', 'inventoryCardAdd')) {
+					return 'SruAdmin_ComputerInventoryCardAdd';
+				} else {
+					return 'Sru_Error403';
+				}
+			case 'inventorycard/edit':
+				if ($msg->get('inventoryCardEdit/ok')) { 
+					return 'SruAdmin_Computer';
+				} elseif ($acl->sruAdmin('computer', 'inventoryCardEdit')) {
+					return 'SruAdmin_ComputerInventoryCardEdit';
+				} else {
+					return 'Sru_Error403';
+				}
 			default:
 				return 'Sru_Error404';
 		}

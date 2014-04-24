@@ -254,10 +254,13 @@ $("#macvendor").load('<?=UFURL_BASE?>/admin/apis/getmacvendor/<?=$d['mac']?>');
 		echo '<a href="'.$urlNav.'/history">Historia zmian</a> &bull;
 			<a href="'.$urlNav.'/:edit">Edycja</a> &bull; ';
 		if ($acl->sruAdmin('computer', 'editAliases')) {
-			echo '<a href="'.$urlNav.'/:aliases"> Aliasy</a> &bull; ';
+			echo ' <a href="'.$urlNav.'/:aliases">Aliasy</a> &bull; ';
+		}
+		if ($acl->sruAdmin('computer', 'inventoryCardAdd')) {
+			echo ' <a href="'.$urlNav.'/:inventorycardadd">Dodaj kartę wyposażenia</a> &bull; ';
 		}
 		if($d['active']) {
-			echo '<a href="'.$urlNav.'/:del"> Wyrejestruj</a> &bull; ';
+			echo ' <a href="'.$urlNav.'/:del">Wyrejestruj</a> &bull; ';
 		}
 		echo '<span id="computerMoreSwitch"></span>';
 		if (strlen($d['comment'])) echo ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$d['comment'].'" />';
