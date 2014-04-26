@@ -74,6 +74,12 @@ extends UFact {
 					$this->markErrors(self::PREFIX, array('exAdmin'=>'notWithAdmin'));
 					return;
 			}
+			if (($bean->typeId == UFbean_Sru_Computer::TYPE_SERVER || $bean->typeId == UFbean_Sru_Computer::TYPE_MACHINE) &&
+				(is_null($post['deviceModelId']) || $post['deviceModelId'] == 0)) {
+					$this->rollback();
+					$this->markErrors(self::PREFIX, array('deviceModelId'=>'empty'));
+					return;
+			}
 			if (array_key_exists('activateHost', $post) && $post['activateHost'] && !$bean->active && $user->active) {
 				// przywrocenie aktywnosci komputera jeśli daty są ok
 				$bean->active = true;

@@ -184,7 +184,7 @@ extends UFtpl_Common {
 		} elseif ($this->_srv->get('msg')->get('computerEdit/ok')) {
 			echo $this->OK('Dane zostały zmienione');
 		}
-		echo $d['computer']->write('formEditAdmin', $d['dormitories'], $d['user'], $d['history'], $d['servers'], $d['skosAdmins'], $d['waletAdmins'], $d['virtuals']);
+		echo $d['computer']->write('formEditAdmin', $d['dormitories'], $d['user'], $d['history'], $d['servers'], $d['skosAdmins'], $d['waletAdmins'], $d['virtuals'], $d['deviceModels']);
 		echo $form->_submit('Zapisz');
 		echo $form->_end();
 		echo $form->_end(true);
@@ -1122,7 +1122,7 @@ extends UFtpl_Common {
 
 		echo $form->_start();
 		echo $form->_fieldset('Dodaj komputer');
-		echo $d['computer']->write('formAdd', $d['user'], true, null, $d['servers'], $d['skosAdmins'], $d['waletAdmins']);
+		echo $d['computer']->write('formAdd', $d['user'], true, null, $d['servers'], $d['skosAdmins'], $d['waletAdmins'], $d['deviceModels']);
 		echo $form->_submit('Dodaj');
 		echo $form->_end();
 		echo $form->_end(true);

@@ -70,6 +70,7 @@ extends UFtpl_Common {
 		'skosCarerId/null' => 'Serwer musi posiadać opiekuna',
 		'waletCarerId/null' => 'Host administracji musi posiadać opiekuna',
 		'typeId/notSkos' => 'Właścicielem serwera fizycznego / urządzenia może być wyłącznie SKOS',
+		'deviceModelId' => 'Serwer fizyczny i urządzenie muszą mieć wybrany model',
 	);
 
 	/**
@@ -163,6 +164,9 @@ extends UFtpl_Common {
 			$user = '<a href="'.$url.'/users/'.$d['userId'].'">'.$this->_escape($d['userName']).' '.$this->_escape($d['userSurname']).'</a>'.(strlen($d['userCommentSkos']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$d['userCommentSkos'].'" />':'');
 		}
 		echo '<p><em>Typ komputera:</em> '.self::$computerTypes[$d['typeId']].'</p>';
+		if ($d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER || $d['typeId'] == UFbean_Sru_Computer::TYPE_MACHINE) {
+			echo '<p><em>Model urządzenia:</em> '.$d['deviceModelName'].'</p>';
+		}
 		if (!is_null($d['carerName'])) {
 			echo '<p><em>Opiekun:</em> <a href="'.$url.'/admins/'.$d['carerId'].'">'.$d['carerName'].'</a></p>';
 		}
@@ -305,14 +309,14 @@ changeVisibility();
 		echo $form->mac('MAC', array('after'=>UFlib_Helper::displayHint(_("Adres fizyczny karty sieciowej komputera.")).$this->showMacHint().'<br/>'));
 	}
 
-	public function formEditAdmin(array $d, $dormitories, $user = null, $history = null, $servers = null, $skosAdmins = null, $waletAdmins = null, $virtuals = null) {
+	public function formEditAdmin(array $d, $dormitories, $user = null, $history = null, $servers = null, $skosAdmins = null, $waletAdmins = null, $virtuals = null, $deviceModels = null) {
 		if (is_array($history)) {
 			$d = $history + $d;
 		}
 		$d['availableTo'] = is_null($d['availableTo']) ? '' : date(self::TIME_YYMMDD, $d['availableTo']);
 		$d['dormitory'] = $d['dormitoryId'];
-		if ($d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER || $d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT &&
-			$d['typeId'] != UFbean_Sru_Computer::TYPE_MACHINE) {
+		if ($d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER || $d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT ||
+			$d['typeId'] == UFbean_Sru_Computer::TYPE_MACHINE) {
 			$d['skosCarerId'] = $d['carerId'];
 		}
 		if ($d['typeId'] == UFbean_Sru_Computer::TYPE_ADMINISTRATION) {
@@ -349,6 +353,19 @@ changeVisibility();
 			'disabled' => ((is_null($virtuals)) ? false : true),
 			'after' => ((is_null($virtuals)) ? '<br/>' : UFlib_Helper::displayHint("Nie można zmienić typu serwerowi, do którego przypisane są serwery wirtualne.")),
 		));
+		if (!is_null($deviceModels)) {
+			$tmp = array();
+			foreach ($deviceModels as $dm) {
+				$tmp[''] = '';
+				$tmp[$dm['id']] = $dm['name'];
+			}
+			echo '<div id="deviceModel">';
+			echo $form->deviceModelId('Model', array(
+				'type' => $form->SELECT,
+				'labels' => $form->_labelize($tmp),
+			));
+			echo '</div>';
+		}
 		if (!is_null($skosAdmins)) {
 			$tmp = array();
 			foreach ($skosAdmins as $w) {
@@ -421,6 +438,7 @@ if (input) {
 initialSkosCarerId = document.getElementById("computerEdit_skosCarerId").value;
 initialWaletCarerId = document.getElementById("computerEdit_waletCarerId").value;
 initialMasterHostId = document.getElementById("computerEdit_masterHostId").value;
+initialDeviceModelId = document.getElementById("computerEdit_deviceModelId").value;
 initialTypeId = document.getElementById("computerEdit_typeId").value;
 initialAutoDeactivation = document.getElementById("computerEdit_autoDeactivation").checked;
 (function (){
@@ -462,6 +480,18 @@ initialAutoDeactivation = document.getElementById("computerEdit_autoDeactivation
 			masterHost.style.display = "none";
 			masterHost.style.visibility = "hidden";
 			masterHostId.value = '';
+		}
+		<? } if (!is_null($deviceModels)) { ?>
+		var deviceModel = document.getElementById("deviceModel");
+		var deviceModelId = document.getElementById("computerEdit_deviceModelId");
+		if (form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER; ?> || form.value == <? echo UFbean_Sru_Computer::TYPE_MACHINE; ?>) {
+			deviceModelId.value = initialDeviceModelId;
+			deviceModel.style.display = "block";
+			deviceModel.style.visibility = "visible";
+		} else {
+			deviceModelId.value = '';
+			deviceModel.style.display = "none";
+			deviceModel.style.visibility = "hidden";
 		}
 		<? } ?>
 		var autoDeactivationDiv = document.getElementById("autoDeactivation");
@@ -516,7 +546,7 @@ activateChkB.onclick = function() {
 		<?
 	}
 
-	public function formAdd(array $d, $user, $admin = false, $macAddress = null, $servers = null, $skosAdmins = null, $waletAdmins = null) {
+	public function formAdd(array $d, $user, $admin = false, $macAddress = null, $servers = null, $skosAdmins = null, $waletAdmins = null, $deviceModels = null) {
 		$post = $this->_srv->get('req')->post;
 		$mac = $macAddress;
 		try {
@@ -543,6 +573,19 @@ activateChkB.onclick = function() {
 				'labels' => $form->_labelize(self::$computerTypes),
 				'value' => !is_null($typeId) ? $typeId : (array_key_exists($user->typeId, self::$userToComputerType) ? self::$userToComputerType[$user->typeId] : UFbean_Sru_Computer::TYPE_STUDENT),
 			));
+			if (!is_null($deviceModels)) {
+				$tmp = array();
+				foreach ($deviceModels as $dm) {
+					$tmp[''] = '';
+					$tmp[$dm['id']] = $dm['name'];
+				}
+				echo '<div id="deviceModel">';
+				echo $form->deviceModelId('Model', array(
+					'type' => $form->SELECT,
+					'labels' => $form->_labelize($tmp),
+				));
+				echo '</div>';
+			}
 			if (!is_null($skosAdmins)) {
 				$tmp = array();
 				foreach ($skosAdmins as $w) {
@@ -639,6 +682,16 @@ if (input) {
 			masterHost.style.display = "none";
 			masterHost.style.visibility = "hidden";
 			masterHostId.value = '';
+		}
+		<? } if (!is_null($deviceModels)) { ?>
+		var deviceModel = document.getElementById("deviceModel");
+		var deviceModelId = document.getElementById("computerAdd_deviceModelId");
+		if (form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER; ?> || form.value == <? echo UFbean_Sru_Computer::TYPE_MACHINE; ?>) {
+			deviceModel.style.display = "block";
+			deviceModel.style.visibility = "visible";
+		} else {
+			deviceModel.style.display = "none";
+			deviceModel.style.visibility = "hidden";
 		}
 		<? } ?>
 	}

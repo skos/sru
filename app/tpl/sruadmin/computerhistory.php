@@ -18,6 +18,7 @@ extends UFtpl_Common {
 		'carerId' => 'Opiekun',
 		'masterHostId' => 'Serwer fizyczny',
 		'autoDeactivation' => 'Autodezaktywacja',
+		'deviceModelId' => 'Model urządzenia',
 	);
 
 	static protected $namesEn = array(
@@ -34,6 +35,7 @@ extends UFtpl_Common {
 		'carerId' => 'Carer',
 		'masterHostId' => 'Physical server',
 		'autoDeactivation' => 'Autodeactivation',
+		'deviceModelId' => 'Device model',
 	);
 
 	protected function _diff(array $old, array $new) {
@@ -78,6 +80,9 @@ extends UFtpl_Common {
 				case 'autoDeactivation':
 					$changes[] = $names[$key].': '.($val?'tak':'nie').$arr.($new[$key]?'tak':'nie');
 					break;
+				case 'deviceModelId':
+					$changes[] = $names[$key].': '.(is_null($val) ? 'brak' : $old['deviceModelName']).$arr.(is_null($new[$key]) ? 'brak' : $new['deviceModelName']);
+					break;
 				default: continue;
 			}
 		}
@@ -116,6 +121,8 @@ extends UFtpl_Common {
 			'masterHostId' => ($current->masterHostId == 0) ? null : $current->masterHostId,
 			'masterHostName' => $current->masterHostName,
 			'autoDeactivation' => $current->autoDeactivation,
+			'deviceModelId' => $current->deviceModelId,
+			'deviceModelName' => $current->deviceModelName,
 		);
 		$url = $this->url(0).'/computers/'.$current->id;
 		$urlAdmin = $this->url(0).'/admins/';

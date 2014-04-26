@@ -211,25 +211,24 @@ CREATE TRIGGER switches_update
   EXECUTE PROCEDURE switch_update();
 COMMENT ON TRIGGER switches_update ON switches IS 'kopiuje dane do historii';
 
-CREATE TABLE device_types (
+CREATE TABLE device_models (
 id bigserial NOT NULL,
 name character varying(32),
-CONSTRAINT device_types_pkey PRIMARY KEY (id),
-CONSTRAINT device_types_name_unique UNIQUE (name)
+CONSTRAINT device_models_pkey PRIMARY KEY (id),
+CONSTRAINT device_models_name_unique UNIQUE (name)
 );
-COMMENT ON TABLE device_types IS 'typy urzadzen';
+COMMENT ON TABLE device_models IS 'modele urzadzen';
 
-INSERT INTO device_types (name) VALUES ('Serwer');
+INSERT INTO device_models (name) VALUES ('Serwer X 0000');
 
-ALTER TABLE computers ADD COLUMN inventory_card_id bigint;
-ALTER TABLE computers ADD COLUMN device_type_id bigint;
-ALTER TABLE computers_history ADD COLUMN device_type_id bigint;
+ALTER TABLE computers ADD COLUMN device_model_id bigint;
+ALTER TABLE computers_history ADD COLUMN device_model_id bigint;
 
-UPDATE computers SET device_type_id = 1 WHERE type_id = 41 OR type_id = 43;
+-- poprawić id aktualizującego
+UPDATE computers SET device_model_id = 1, modified_at=now(), modified_by=23 WHERE type_id = 41 OR type_id = 43;
 
-ALTER TABLE computers ADD CONSTRAINT computers_inventory_card_no_fkey FOREIGN KEY (inventory_card_id) REFERENCES inventory_cards (id) ON UPDATE CASCADE ON DELETE RESTRICT;
-ALTER TABLE computers ADD CONSTRAINT computers_device_type_id_fkey FOREIGN KEY (device_type_id) REFERENCES device_types (id) ON UPDATE CASCADE ON DELETE RESTRICT;
-ALTER TABLE computers ADD CONSTRAINT computers_device_type_id_chk CHECK ((type_id <> 41 AND type_id <> 43) OR device_type_id IS NOT NULL);
+ALTER TABLE computers ADD CONSTRAINT computers_device_model_id_fkey FOREIGN KEY (device_model_id) REFERENCES device_models (id) ON UPDATE CASCADE ON DELETE RESTRICT;
+ALTER TABLE computers ADD CONSTRAINT computers_device_model_id_chk CHECK ((type_id <> 41 AND type_id <> 43) OR device_model_id IS NOT NULL);
 
 -- Function: computer_update()
 
@@ -259,7 +258,7 @@ if
 	(OLD.master_host_id IS NULL AND NEW.master_host_id IS NOT NULL) OR
 	(OLD.master_host_id IS NOT NULL AND NEW.master_host_id IS NULL) OR
 	OLD.auto_deactivation!=NEW.auto_deactivation OR
-	OLD.device_type_id!=NEW.device_type_id
+	OLD.device_model_id!=NEW.device_model_id
 then
 	INSERT INTO computers_history (
 		computer_id,
@@ -279,7 +278,7 @@ then
 		carer_id,
 		master_host_id,
 		auto_deactivation,
-		device_type_id
+		device_model_id
 	) VALUES (
 		OLD.id,
 		OLD.host,
@@ -298,7 +297,7 @@ then
 		OLD.carer_id,
 		OLD.master_host_id,
 		OLD.auto_deactivation,
-		OLD.device_type_id
+		OLD.device_model_id
 	);
 end if;
 return NEW;
@@ -307,7 +306,8 @@ END;$BODY$
 
 CREATE TABLE devices (
 id bigserial NOT NULL,
-device_type_id bigint NOT NULL,
+device_model_id bigint NOT NULL,
+inoperational boolean NOT NULL,
 modified_by bigint,
 modified_at timestamp with time zone NOT NULL DEFAULT now(),
 location_id bigint NOT NULL,
@@ -320,8 +320,8 @@ ON UPDATE CASCADE ON DELETE RESTRICT,
 CONSTRAINT devices_location_id_fkey FOREIGN KEY (location_id)
 REFERENCES locations (id)
 ON UPDATE CASCADE ON DELETE RESTRICT,
-CONSTRAINT devices_device_type_id_fkey FOREIGN KEY (device_type_id)
-REFERENCES device_types (id)
+CONSTRAINT devices_device_model_id_fkey FOREIGN KEY (device_model_id)
+REFERENCES device_models (id)
 ON UPDATE CASCADE ON DELETE RESTRICT,
 CONSTRAINT devices_inventory_card_no_fkey FOREIGN KEY (inventory_card_id)
 REFERENCES inventory_cards (id)
@@ -333,7 +333,8 @@ COMMENT ON TABLE devices IS 'pozostale urzadzenia i sprzety';
 CREATE TABLE devices_history (
 id bigserial NOT NULL,
 device_id bigint NOT NULL,
-device_type_id bigint NOT NULL,
+device_model_id bigint NOT NULL,
+inoperational boolean NOT NULL,
 modified_by bigint,
 modified_at timestamp with time zone NOT NULL DEFAULT now(),
 location_id bigint NOT NULL,
@@ -348,8 +349,8 @@ ON UPDATE CASCADE ON DELETE RESTRICT,
 CONSTRAINT devices_history_location_id_fkey FOREIGN KEY (location_id)
 REFERENCES locations (id)
 ON UPDATE CASCADE ON DELETE RESTRICT,
-CONSTRAINT devices_history_device_type_id_fkey FOREIGN KEY (device_type_id)
-REFERENCES device_types (id)
+CONSTRAINT devices_history_device_model_id_fkey FOREIGN KEY (device_model_id)
+REFERENCES device_models (id)
 ON UPDATE CASCADE ON DELETE RESTRICT
 );
 COMMENT ON TABLE devices_history IS 'historia pozostalych urzadzen i sprzetow';
@@ -365,7 +366,8 @@ if
 	NEW.modified_by!=OLD.modified_by OR
 	NEW.modified_at!=OLD.modified_at OR
 	NEW.location_id!=OLD.location_id OR
-	NEW.device_type_id!=OLD.device_type_id OR
+	NEW.device_model_id!=OLD.device_model_id OR
+	NEW.inoperational!=OLD.inoperational OR
 	NEW.comment!=OLD.comment OR
 	(OLD.comment IS NOT NULL AND NEW.comment IS NULL) OR
 	(OLD.comment IS NULL AND NEW.comment IS NOT NULL)
@@ -375,14 +377,16 @@ then
 		modified_by,
 		modified_at,
 		location_id,
-		device_type_id,
+		device_model_id,
+		inoperational,
 		comment
 	) VALUES (
 		OLD.id,
 		OLD.modified_by,
 		OLD.modified_at,
 		OLD.location_id,
-		OLD.device_type_id,
+		OLD.device_model_id,
+		OLD.inoperational,
 		OLD.comment
 	);
 end if;
@@ -404,8 +408,8 @@ CREATE TRIGGER devices_update
 COMMENT ON TRIGGER devices_update ON devices IS 'kopiuje dane do historii';
 
 CREATE VIEW v_inventory_list AS
-SELECT ic.id as card_id, c.id, ic.dormitory_id, c.location_id, ic.serial_no, ic.inventory_no, ic.received, c.device_type_id, 1 as table_id FROM computers c, inventory_cards ic WHERE c.inventory_card_id=ic.id
+SELECT ic.id as card_id, c.id, ic.dormitory_id, c.location_id, ic.serial_no, ic.inventory_no, ic.received, c.device_model_id, 1 as table_id FROM computers c, inventory_cards ic WHERE c.inventory_card_id=ic.id
 UNION
 SELECT ic.id as card_id, s.id, ic.dormitory_id, s.location_id, ic.serial_no, ic.inventory_no, ic.received, 0, 2 as table_id FROM switches s, inventory_cards ic WHERE s.inventory_card_id=ic.id
 UNION
-SELECT ic.id as card_id, d.id, ic.dormitory_id, d.location_id, ic.serial_no, ic.inventory_no, ic.received, d.device_type_id, 3 as table_id FROM devices d, inventory_cards ic WHERE d.inventory_card_id=ic.id;
+SELECT ic.id as card_id, d.id, ic.dormitory_id, d.location_id, ic.serial_no, ic.inventory_no, ic.received, d.device_model_id, 3 as table_id FROM devices d, inventory_cards ic WHERE d.inventory_card_id=ic.id;

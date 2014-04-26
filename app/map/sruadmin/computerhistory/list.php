@@ -31,6 +31,8 @@ extends UFmap {
 		'masterHostId'	 => 'h.master_host_id',
 		'masterHostName' => 'c.host',
 		'autoDeactivation' => 'h.auto_deactivation',
+		'deviceModelId' => 'h.device_model_id',
+		'deviceModelName' => 'm.name',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -58,6 +60,8 @@ extends UFmap {
 		'masterHostId'	 => self::NULL_INT,
 		'masterHostName' => self::TEXT,
 		'autoDeactivation' => self::BOOL,
+	    	'deviceModelId' => self::NULL_INT,
+		'deviceModelName' => self::TEXT,
 	);
 	protected $tables = array(
 		'h' => 'computers_history',
@@ -68,6 +72,7 @@ extends UFmap {
 		'l' => 'locations',
 		'd' => 'dormitories',
 		'c' => 'computers',
+		'm' => 'device_models',
 	);
 	protected $joinOns = array(
 		'a' => 'h.modified_by=a.id',
@@ -75,6 +80,7 @@ extends UFmap {
 		'l' => 'h.location_id=l.id',
 		'd' => 'l.dormitory_id=d.id',
 		'c' => 'h.master_host_id=c.id',
+		'm' => 'h.device_model_id=m.id',
 	);
 	protected $pk = 'h.id';
 }

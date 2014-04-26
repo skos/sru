@@ -75,6 +75,11 @@ extends UFact {
 			} else {
 				$bean->carerId = null;
 			}
+			if (($bean->typeId == UFbean_Sru_Computer::TYPE_SERVER || $bean->typeId == UFbean_Sru_Computer::TYPE_MACHINE) &&
+				(is_null($post['deviceModelId']) || $post['deviceModelId'] == 0)) {
+					$this->markErrors(self::PREFIX, array('deviceModelId'=>'empty'));
+					return;
+			}
 			if ($bean->typeId == UFbean_Sru_Computer::TYPE_STUDENT_OTHER) {
 				$bean->autoDeactivation = false;
 			}

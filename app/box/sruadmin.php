@@ -245,6 +245,13 @@ extends UFbox {
 			} else {
 				$d['virtuals'] = null;
 			}
+			try {
+				$deviceModels = UFra::factory('UFbean_SruAdmin_DeviceModelsList');
+				$deviceModels->listAll();
+				$d['deviceModels'] = $deviceModels;
+			} catch (UFex $e) {
+				$d['deviceModels'] = null;
+			}
 
 			$d['computer'] = $bean;
 			$d['dormitories'] = $dorms;
@@ -1701,6 +1708,13 @@ extends UFbox {
 			$d['waletAdmins'] = $waletAdmins;
 		} catch (UFex $e) {
 			$d['waletAdmins'] = null;
+		}
+		try {
+			$deviceModels = UFra::factory('UFbean_SruAdmin_DeviceModelsList');
+			$deviceModels->listAll();
+			$d['deviceModels'] = $deviceModels;
+		} catch (UFex $e) {
+			$d['deviceModels'] = null;
 		}
 
 		$d['computer'] = $bean;

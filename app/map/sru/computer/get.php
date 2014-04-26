@@ -42,6 +42,8 @@ class UFmap_Sru_Computer_Get extends UFmap {
 	    'vlanId' => 'i.vlan',
 	    'vlanName' => 'v.name',
 	    'inventoryCardId' => 'c.inventory_card_id',
+	    'deviceModelId' => 'c.device_model_id',
+	    'deviceModelName' => 'm.name',
 	);
 	protected $columnTypes = array(
 	    'id' => self::INT,
@@ -80,6 +82,8 @@ class UFmap_Sru_Computer_Get extends UFmap {
 	    'vlanId' => self::INT,
 	    'vlanName' => self::TEXT,
 	    'inventoryCardId' => self::INT,
+	    'deviceModelId' => self::NULL_INT,
+	    'deviceModelName' => self::TEXT,
 	);
 	protected $tables = array(
 	    'c' => 'computers',
@@ -93,6 +97,7 @@ class UFmap_Sru_Computer_Get extends UFmap {
 	    's' => 'computers',
 	    'i' => 'ipv4s',
 	    'v' => 'vlans',
+	    'm' => 'device_models',
 	);
 	protected $joinOns = array(
 	    'u' => 'c.user_id=u.id',
@@ -103,6 +108,7 @@ class UFmap_Sru_Computer_Get extends UFmap {
 	    's' => 'c.master_host_id=s.id',
 	    'i' => 'c.ipv4=i.ip',
 	    'v' => 'i.vlan=v.id',
+	    'm' => 'c.device_model_id=m.id',
 	);
 	protected $valids = array(
 	    'host' => array('textMin' => 1, 'textMax' => 50, 'regexp' => '^[a-z][-a-z0-9]*$'),
