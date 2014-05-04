@@ -102,7 +102,7 @@ extends UFtpl_Common {
 		}
 	}
 
-	public function apiUpcomingDutyHours(array $d, $days, $dormitories, $html = true) {
+	public function apiUpcomingDutyHours(array $d, $days, $dormitories, $en=false, $html = true) {
 		$currentDay = date('N');
 		$lastDay = $currentDay + $days;
 		$thisWeek = '';
@@ -110,10 +110,7 @@ extends UFtpl_Common {
 		$comments = array();
 		$lastComment = 0;
 		$allDormAdmins = array();
-                if($d['user']->lang == 'en')
-                        $en=true;
-                else
-                        $en=false;
+
 
 		if (!is_null($dormitories)) {
 			foreach ($dormitories as $dorm) {

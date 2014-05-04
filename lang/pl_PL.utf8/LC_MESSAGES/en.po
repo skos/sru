@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: sru 0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-03-03 17:51+0100\n"
-"PO-Revision-Date: 2014-03-31 01:24+0100\n"
+"PO-Revision-Date: 2014-05-04 22:56+0100\n"
 "Last-Translator: Piotr Dołowy <triop@ds.pg.gda.pl>\n"
 "Language-Team: sru-team <adnet@ds.pg.gda.pl>\n"
 "Language: \n"
@@ -110,7 +110,7 @@ msgstr "Data on studies"
 
 #: sru3/app/tpl/sru/user.php:526
 msgid "Nr indeksu:"
-msgstr "Index number:"
+msgstr "Student book:"
 
 #: sru3/app/tpl/sru/user.php:536
 #: sru3/app/tpl/sru/user.php:910
@@ -563,4 +563,148 @@ msgstr "When"
 
 msgid "Akademiki"
 msgstr "Dormitories"
+
+msgid "Doktoranckie 1"
+msgstr "PhD 1"
+
+msgid "Doktoranckie 2"
+msgstr "PhD 2"
+
+msgid "Doktoranckie 3"
+msgstr "PhD 3"
+
+msgid "Doktoranckie 4"
+msgstr "PhD 4"
+
+msgid "Uzupełniające 1"
+msgstr "Complementary 1"
+
+msgid "Uzupełniające 2"
+msgstr "Complementary 2"
+
+msgid "N/D"
+msgstr "N/A"
+
+msgid "polski"
+msgstr "Polish"
+
+msgid "algielski"
+msgstr "English"
+
+msgid "Dowód osobisty"
+msgstr "Identity card	"
+
+msgid "Paszport"
+msgstr "Passport"
+
+msgid "Inny"
+msgstr "Other"
+
+msgid "Brak (dziecko)"
+msgstr "None(child)"
+
+msgid "Student studiów dziennych"
+msgstr "Full time student"
+
+msgid "Doktorant"
+msgstr "PhD student"
+
+msgid "Erasmus"
+msgstr "Erasmus"
+
+msgid "Student - obcokrajowiec"
+msgstr "Student - foreigner"
+
+msgid "Student studiów wieczorowych/zaocznych"
+msgstr "Part-time student"
+
+msgid "Student innej uczelni"
+msgstr "Another university student"
+
+msgid "Nie student"
+msgstr "Not student"
+
+msgid "Student-turysta"
+msgstr "Student-tourist"
+
+msgid "Dydaktyka"
+msgstr "Teaching"
+
+msgid "Turysta indywidualny"
+msgstr "Individual tourist"
+
+msgid "nieznany"
+msgstr "unknown"
+
+msgid "Hasło musi mieć co najmniej 6 znaków"
+msgstr "Password must be at least 6 characters"
+
+msgid "Hasła się różnią"
+msgstr "Passwords are different"
+
+msgid "Musisz zdefiniować nowe hasło"
+msgstr "You need to set up a new password"
+
+msgid "Podaj prawidłowy email"
+msgstr "Please enter a valid email"
+
+msgid "Podaj prawidłowy numer"
+msgstr "Please enter a valid number"
+
+msgid "Numer zbyt krótki"
+msgstr "Number is too short"
+
+msgid "Wybierz rok studiów"
+msgstr "Select year of study"
+
+msgid "Podałeś nieprawidłowe hasło"
+msgstr "You enter a wrong password"
+
+msgid "Wiadomość nie może być pusta"
+msgstr "Message can not be empty"
+
+msgid "SKOS"
+msgstr "SKOS"
+
+msgid "Administracja"
+msgstr "Administration"
+
+msgid "Organizacja"
+msgstr "Organization"
+
+msgid "Ex-admin"
+msgstr "Ex-admin"
+
+msgid "polska"
+msgstr "Polish"
+
+msgid "angielska"
+msgstr "English"
+
+msgid "Elektroniki, Telekomunikacji i Informatyki"
+msgstr "Electronics, Telecommunications and Informatics"
+
+msgid "Mechaniczny"
+msgstr "Mechanical Engineering"
+
+msgid "Chemiczny"
+msgstr "Chemical Faculty"
+
+msgid "Zarządzania i Ekonomii"
+msgstr "Management and Economics"
+
+msgid "Architektury"
+msgstr "Architecture"
+
+msgid "Inżynierii Lądowej i Środowiska"
+msgstr "Civil and Environmental Engineering"
+
+msgid "Elektrotechniki i Automatyki"
+msgstr "Electrical and Control Engineering"
+
+msgid "Fizyki Technicznej i Matematyki Stosowanej"
+msgstr "Applied Physics and Mathematics"
+
+msgid "Oceanotechniki i Okrętownictwa"
+msgstr "Ocean Engineering and Ship Technology"
 

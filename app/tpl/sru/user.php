@@ -23,7 +23,7 @@ extends UFtpl_Common {
 
 	static public $languages = array(
 		'pl' => 'polski',
-		'en' => 'English',
+		'en' => 'algielski',
 	);
 
 	static public $documentTypes = array(
@@ -31,11 +31,6 @@ extends UFtpl_Common {
 		'1' => 'Paszport',
 		'2' => 'Inny',
 		'3' => 'Brak (dziecko)',
-	);
-	static public $documentTypesShort = array(
-		'0' => 'D.O.',
-		'1' => 'Pa.',
-		'2' => 'In.',
 	);
 
 	protected static $userTypesForWaletAcademic = array(
@@ -481,7 +476,7 @@ $(function() {
                 }
                 echo '<p><label>' . _("Login:") . '</label><span class="userData"> ' . $d['login'] . '</span>' . UFlib_Helper::displayHint(_("Istnieje możliwość zmiany loginu u Administratora SKOS.")) . '</p>';
                 if (!is_null($d['typeId']) && $d['typeId'] != '') {
-                        echo '<p><label>' . _("Typ konta:") . '</label><span class="userData"> ' . self::getUserType($d['typeId']) . '</span></p>';
+                        echo '<p><label>' . _("Typ konta:") . '</label><span class="userData"> ' . _(self::getUserType($d['typeId'])) . '</span></p>';
                 }
                 if (!is_null($d['locationAlias']) && $d['locationAlias'] != '') {
                         echo '<p><label>' . _("Zameldowanie:") . '</label><span class="userData"> ' . $d['dormitoryName'] . _(', pok. ') . $d['locationAlias'] . '</span></p>';
@@ -491,13 +486,13 @@ $(function() {
                                 echo '<p><label>' . _("Adres:") . '</label><span class="userData"> ' . nl2br($this->_escape($d['address'])) . '</span></p>';
                         }
                         if (!is_null($d['documentType']) && self::$documentTypes[$d['documentType']] != '') {
-                                echo '<p><label>' . _("Typ dokumentu:") . '</label><span class="userData"> ' . self::$documentTypes[$d['documentType']] . '</span></p>';
+                                echo '<p><label>' . _("Typ dokumentu:") . '</label><span class="userData"> ' . _(self::$documentTypes[$d['documentType']]) . '</span></p>';
                         }
                         if (!is_null($d['documentNumber']) && $d['documentNumber'] != '') {
                                 echo '<p><label>' . _("Nr dokumentu:") . '</label><span class="userData"> ' . nl2br($this->_escape($d['documentNumber'])) . '</span></p>';
                         }
                         if (!is_null($d['nationality']) && $d['nationality'] != '') {
-                                echo '<p><label>' . _("Narodowość:") . '</label><span class="userData"> ' . nl2br($this->_escape($d['nationalityName'])) . '</span></p>';
+                                echo '<p><label>' . _("Narodowość:") . '</label><span class="userData"> ' . nl2br($this->_escape(_($d['nationalityName']))) . '</span></p>';
                         }
                         if (!is_null($d['pesel']) && $d['pesel'] != '') {
                                 echo '<p><label>' . _("PESEL:") . '</label><span class="userData">' . $d['pesel'] . '</span></p>';
@@ -542,12 +537,12 @@ $(function() {
                                 }
 
                                 $tmp['0'] = 'N/D';
-                                echo '<p><label>' . _("Wydział:") . '</label><span class="userData"> ' . ($tmp[$d['facultyId']]) . '</span></p>';
+                                echo '<p><label>' . _("Wydział:") . '</label><span class="userData"> ' . _($tmp[$d['facultyId']]) . '</span></p>';
 
                                 if ($d['facultyId'] != $tmp['0']) {
                                         echo $form->studyYearId(_("Rok studiów"), array(
                                                 'type' => $form->SELECT,
-                                                'labels' => $form->_labelize(self::$studyYears),
+                                                'labels' => $form->_labelize(_(self::$studyYears)),
                                                 'class' => 'required',
                                         ));
                                 }
@@ -908,14 +903,14 @@ changeVisibility();
 
 	public function detailsUser(array $d) {
                 echo '<p><em>' . _("Imię i nazwisko:") . '</em><span class="userData"> ' . $this->_escape($d['name']) . ' ' . $this->_escape($d['surname']) . '</span></p>';
-                echo '<p><em>' . _("Typ konta:") . '</em><span class="userData"> ' . self::getUserType($d['typeId']) . '</span>';
+                echo '<p><em>' . _("Typ konta:") . '</em><span class="userData"> ' . _(self::getUserType($d['typeId'])) . '</span>';
                 echo '<p><em>' . _("E-mail:") . '</em><span class="userData"> <a href="mailto:' . $d['email'] . '">' . $d['email'] . '</a></span></p>';
                 if ($d['gg']) {
                         echo '<p><em>' . _("Gadu-Gadu:") . '</em><span class="userData"> <a href="gg:' . $d['gg'] . '">' . $d['gg'] . '</a></span></p>';
                 }
-                echo '<p><em>' . _("Zameldowanie:") . '</em><span class="userData"> ' . $d['dormitoryName'] . ', pok. ' . $d['locationAlias'] . '</span></p>';
+                echo '<p><em>' . _("Zameldowanie:") . '</em><span class="userData"> ' . $d['dormitoryName'] . _(', pok. '). $d['locationAlias'] . '</span></p>';
                 if ($d['typeId'] != UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL && $d['typeId'] <= 50) {
-                        echo '<p><em>' . _("Wydział:") . '</em><span class="userData"> ' . (!is_null($d['facultyName']) ? $d['facultyName'] : '') . '</span></p>';
+                        echo '<p><em>' . _("Wydział:") . '</em><span class="userData"> ' . (!is_null($d['facultyName']) ? _($d['facultyName']) : '') . '</span></p>';
                         if ($d['facultyId'] != 0) {
                                 echo '<p><em>' . _("Rok studiów:") . '</em><span class="userData"> ' . (!is_null($d['studyYearId']) ? self::$studyYears[$d['studyYearId']] : '') . '</span></p>';
                         }
