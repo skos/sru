@@ -23,7 +23,7 @@ extends UFtpl_Common {
 
 	static public $languages = array(
 		'pl' => 'polski',
-		'en' => 'algielski',
+		'en' => 'english',
 	);
 
 	static public $documentTypes = array(
