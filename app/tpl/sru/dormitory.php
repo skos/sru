@@ -9,10 +9,12 @@ extends UFtpl_Common {
 		$url = $this->url(0).'/dormitories/';
 		$urlIp = $this->url(0).'/ips/ds/';
 		$urlSw = $this->url(0).'/switches/dorm/';
+		$urlDev = $this->url(0).'/devices/dorm/';
 		
 		echo '<ul>';
 		foreach ($d as $c) {
-			echo '<li>'.$c['name'].': <a href="'.$url.$c['alias'].'">pokoje</a> &bull; <a href="'.$urlIp.$c['alias'].'">komputery</a> &bull; <a href="'.$urlSw.$c['alias'].'">switche</a></li>';
+			echo '<li>'.$c['name'].': <a href="'.$url.$c['alias'].'">pokoje</a> &bull; <a href="'.$urlIp.$c['alias'].'">komputery</a> &bull; '
+				. '<a href="'.$urlSw.$c['alias'].'">switche</a> &bull; <a href="'.$urlDev.$c['alias'].'">urządzenia</a></li>';
 		}
 		echo '</ul>';
 	}
@@ -23,6 +25,7 @@ extends UFtpl_Common {
 	public function details(array $d, $admin = false, $left = null, $right = null) {
 		$url = $this->url(0).'/';
 		$urlDorm = $url.'dormitories/'; 
+		$urlDev = $this->url(0).'/devices/dorm/';
 		echo '<h2>';
 		if($admin){
 			if($left != null){
@@ -36,7 +39,10 @@ extends UFtpl_Common {
 			echo $d['name'];
 		}
 
-		echo '<br/><small>(liczba użytkowników: '.$d['userCount'].' &bull; <a href="'.$url.'ips/ds/'.$d['alias'].'">liczba komputerów: '.$d['computerCount'].'</a> &bull; <a href="'.$url.'switches/dorm/'.$d['alias'].'">switche</a>)</small></h2>';
+		echo '<br/><small>(liczba użytkowników: '.$d['userCount'].' &bull; '
+			. '<a href="'.$url.'ips/ds/'.$d['alias'].'">liczba komputerów: '.$d['computerCount'].'</a> &bull; '
+			. '<a href="'.$url.'switches/dorm/'.$d['alias'].'">switche</a>) &bull; '
+			. '<a href="'.$urlDev.$d['alias'].'">urządzenia</a>)</small></h2>';
 	}
 
 	public function inhabitants(array $d, $rooms) {

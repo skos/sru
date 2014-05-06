@@ -347,6 +347,8 @@ extends UFtpl_Common {
 		echo '<ul>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/computers/">Serwery, administracja, organizacje</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/ips/">IP i VLANy</a></li>';
+		echo '<li><a href="'.UFURL_BASE.'/admin/switches/">Switche</a></li>';
+		echo '<li><a href="'.UFURL_BASE.'/admin/devices/">Urządzenia</a></li>';
 		echo '</ul>';
 		echo $form->_end();
 	}
@@ -819,6 +821,7 @@ extends UFtpl_Common {
 		$url = $this->url(0).'/dormitories/';
 		$urlIp = $this->url(0).'/ips/ds/';
 		$urlSw = $this->url(0).'/switches/dorm/';
+		$urlDev = $this->url(0).'/devices/dorm/';		
 		if (!is_null($d['dorm'])) {
 			echo '<h2>';
 			if($d['leftRight'][0] != null){
@@ -829,7 +832,10 @@ extends UFtpl_Common {
 				echo ' <a href="'.$urlSw.$d['leftRight'][2]['alias'].'" >></a>';
 			}
 
-			echo '<br/><small>(<a href="'.$url.$d['dorm']->alias.'">pokoje</a> &bull; <a href="'.$urlIp.$d['dorm']->alias.'">komputery</a> &bull; liczba switchy: '.count($d['switches']).')</small></h2>';
+			echo '<br/><small>(<a href="'.$url.$d['dorm']->alias.'">pokoje</a> &bull; '
+				. '<a href="'.$urlIp.$d['dorm']->alias.'">komputery</a> &bull; '
+				. 'liczba switchy: '.count($d['switches']).') &bull; '
+				. '<a href="'.$urlDev.$d['dorm']->alias.'">urządzenia</a></small></h2>';
 		} else {
 			echo '<h2>Switche</h2>';
 		}
@@ -998,6 +1004,128 @@ extends UFtpl_Common {
 		echo $form->_end(true);
 	}
 	
+	public function titleDevices() {
+		echo 'Urządzenia';
+	}	
+	public function devices(array $d) {
+		$url = $this->url(0).'/dormitories/';
+		$urlIp = $this->url(0).'/ips/ds/';
+		$urlSw = $this->url(0).'/switches/dorm/';
+		$urlDev = $this->url(0).'/devices/dorm/';
+		if (!is_null($d['dorm'])) {
+			echo '<h2>';
+			if($d['leftRight'][0] != null){
+				echo '<a href="'.$urlDev.$d['leftRight'][0]['alias'].'" ><</a> ';
+			}
+			echo $d['dorm']->name;
+			if($d['leftRight'][2] != null){
+				echo ' <a href="'.$urlDev.$d['leftRight'][2]['alias'].'" >></a>';
+			}
+
+			echo '<br/><small>(<a href="'.$url.$d['dorm']->alias.'">pokoje</a> &bull; '
+				. '<a href="'.$urlIp.$d['dorm']->alias.'">komputery</a> &bull; '
+				. '<a href="'.$urlSw.$d['dorm']->alias.'">switche</a> &bull; '
+				. 'liczba urządzeń: '.count($d['devices']).')</small></h2>';
+		} else {
+			echo '<h2>Urządzenia</h2>';
+		}
+
+		if ($this->_srv->get('msg')->get('deviceAdd/ok')) {
+			echo $this->OK('Urządzenie zostało dodane');
+		}
+
+		$d['devices']->write('listDevices', $d['dorm']);
+		echo '</div>';
+	}
+	public function devicesNotFound($d) {
+		if (!is_null($d)) {
+			$url = $this->url(0).'/dormitories/';
+			$urlAdd = $this->url(0).'/devices/';
+			$urlIp = $this->url(0).'/ips/ds/';
+			$urlSw = $this->url(0).'/switches/dorm/';
+			$urlDev = $this->url(0).'/devices/dorm/';
+			if (count($d) > 0) {
+				echo '<h2>';
+				if($d['leftRight'][0] != null){
+					echo '<a href="'.$urlDev.$d['leftRight'][0]['alias'].'" ><</a> ';
+				}
+				echo $d['dorm']->name;
+				if($d['leftRight'][2] != null){
+					echo ' <a href="'.$urlDev.$d['leftRight'][2]['alias'].'" >></a>';
+				}
+				echo '<br/><small>(<a href="'.$url.$d['dorm']->alias.'">pokoje</a> &bull; '
+					. '<a href="'.$urlIp.$d['dorm']->alias.'">komputery</a> &bull; '
+					. '<a href="'.$urlSw.$d['dorm']->alias.'">switche</a> &bull; '
+					. 'liczba urządzeń: 0)</small></h2>';
+			}
+		}
+		
+		echo $this->ERR('Nie znaleziono urządzeń<br/><a href="'.$urlAdd.':add">Dodaj nowe urządzenie</a>');
+	}
+
+	public function titleDevice(array $d) {
+		echo $d['device']->write('titleDetails');
+	}
+
+	public function deviceDetails(array $d) {
+		if ($this->_srv->get('msg')->get('deviceEdit/ok')) {
+			echo $this->OK('Dane urządzenia zostały zmienione');
+		}
+		if ($this->_srv->get('msg')->get('inventoryCardAdd/ok')) {
+			echo $this->OK('Karta wyposażenia została dodana');
+		}
+		if ($this->_srv->get('msg')->get('inventoryCardEdit/ok')) {
+			echo $this->OK('Karta wyposażenia została zmieniona');
+		}
+		$d['device']->write('headerDetails', $d['leftRight'][0], $d['leftRight'][2]);
+		$d['device']->write('details');
+	}
+	
+	public function deviceHistory(array $d) {
+		$d['history']->write('history', $d['device']);
+	}
+	
+	public function deviceNotFound() {
+		echo $this->ERR('Nie znaleziono urządzenia');
+	}
+
+	public function titleDeviceNotFound() {
+		echo 'Nie znaleziono urządzenia';
+	}
+	
+	public function deviceAdd(array $d) {
+		$form = UFra::factory('UFlib_Form');
+		$url = $this->url(0);
+
+		echo '<h2>Dodawanie nowego urządzenia</h2>';
+		echo $form->_start();
+		echo $d['device']->write('formAdd', $d['dormitories'], $d['devModels']);
+		echo $form->_submit('Dodaj');
+		echo ' <a href="'.$url.'/devices/">Powrót</a>';
+		echo $form->_end();
+		echo $form->_end(true);
+	}
+
+	public function titleDeviceAdd(array $d) {
+		echo 'Dodawanie nowego urządzenia';
+	}
+
+	public function deviceEdit(array $d) {
+		$form = UFra::factory('UFlib_Form');
+		$url = $this->url(0);
+		echo '<h2>Edycja urządzenia <a href="'.$this->url(0).'/devices/'.$d['device']->id.'">'.$d['device']->deviceModelName.'</a></h2>'; 
+		echo $form->_start();
+		echo $d['device']->write('formEdit', $d['dormitories'], $d['devModels']);
+		echo $form->_submit('Zapisz');
+		echo ' <a href="'.$url.'/devices/'.$d['device']->id.'">Powrót</a>';
+		echo $form->_end();
+		echo $form->_end(true);
+	}
+
+	public function titleDeviceEdit(array $d) {
+		echo $d['device']->write('titleEditDetails');
+	}
+
 	public function inventoryCard(array $d) {
 		echo '<h3>Karta wyposażenia</h3>';
 		$d['inventoryCard']->write('details', $d['device']);
@@ -1006,7 +1134,7 @@ extends UFtpl_Common {
 	public function inventoryCardNotFound(array $d) {
 		$acl = $this->_srv->get('acl');
 		
-		if($acl->sruAdmin('computer', 'inventoryCardAdd')) {
+		if($acl->sruAdmin('computer', 'inventoryCardAdd') || $acl->sruAdmin('device', 'inventoryCardAdd')) {
 			echo '<h3>Karta wyposażenia</h3>';
 			echo $this->ERR('Nie przypisano karty wyposażenia');
 		}
@@ -1320,6 +1448,7 @@ extends UFtpl_Common {
 		$urlSw = $this->url(0).'/switches/dorm/';
 		$urlIpAll = $this->url(0).'/ips/';
 		$urlIp = $this->url(0).'/ips/ds/';
+		$urlDev = $this->url(0).'/devices/dorm/';
 		$urlVlan = $this->url(0).'/ips/vlan/';
 		if (!is_null($d['dorm'])) {
 			echo '<h2>';
@@ -1330,7 +1459,11 @@ extends UFtpl_Common {
 			if($d['leftRight'][2] != null){
 				echo ' <a href="'.$urlIp.$d['leftRight'][2]['alias'].'" >></a>';
 			}
-			echo '<br/><small>(<a href="'.$url.$d['dorm']->alias.'">pokoje</a> &bull; zajętość puli (VLAN '.UFbean_SruAdmin_Vlan::DEFAULT_VLAN.'): '.$d['used']->getIpCount().'/'.$d['sum']->getIpCount().' ~> '.($d['sum']->getIpCount() > 0 ? round($d['used']->getIpCount()/$d['sum']->getIpCount()*100) : 0).'% &bull; <a href="'.$urlSw.$d['dorm']->alias.'">switche</a> &bull; <a href="'.$urlIpAll.'">wszystkie IP</a>)</small></h2>';
+			echo '<br/><small>(<a href="'.$url.$d['dorm']->alias.'">pokoje</a> &bull; '
+				. 'zajętość puli (VLAN '.UFbean_SruAdmin_Vlan::DEFAULT_VLAN.'): '.$d['used']->getIpCount().'/'.$d['sum']->getIpCount().' ~> '.($d['sum']->getIpCount() > 0 ? round($d['used']->getIpCount()/$d['sum']->getIpCount()*100) : 0).'% &bull; '
+				. '<a href="'.$urlSw.$d['dorm']->alias.'">switche</a> &bull; '
+				. '<a href="'.$urlDev.$d['dorm']->alias.'">urządzenia</a> &bull; '
+				. '<a href="'.$urlIpAll.'">wszystkie IP</a>)</small></h2>';
 		} else if (!is_null($d['vlan'])) {
 			echo '<h2>';
 			if($d['leftRight'][0] != null){

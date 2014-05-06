@@ -1103,8 +1103,8 @@ extends UFbox {
 				$dormitories->listAll();
 				$leftRight = UFlib_Helper::getLeftRight($dormitories, $dorm->id);
 				$d['leftRight'] = $leftRight;
-			} catch (UFex_Dao_NotFound $e) {
-				return $this->render('switchesNotFound', null);
+			} catch (UFex $e) {
+				return $this->render('switchesNotFound', array());
 			}
 			return $this->render('switchesNotFound', $d);
 		}
@@ -1467,6 +1467,136 @@ extends UFbox {
 		} catch (UFex_Dao_NotFound $e) {
 			return $this->render('switchPortsNotFound');
 		}
+	}
+	
+	public function devices() {
+		try {
+			$bean = UFra::factory('UFbean_SruAdmin_DeviceList');
+			$dorm = null;
+			try {
+				$dorm = $this->_getDormFromGet();
+				$bean->listByDormitoryId($dorm->id);
+			} catch (UFex_Core_DataNotFound $e) {
+				$bean->listAll();
+			}
+			$d['devices'] = $bean;
+			$d['dorm'] = $dorm;
+			
+			$dormitories = UFra::factory('UFbean_Sru_DormitoryList');
+			$dormitories->listAll();
+			if (!is_null($dorm)) {
+				$leftRight = UFlib_Helper::getLeftRight($dormitories, $dorm->id);
+			} else {
+				$leftRight = null;
+			}
+			$d['leftRight'] = $leftRight;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			try {
+				$dorm = $this->_getDormFromGet();
+				$d['dorm'] = $dorm;
+				$dormitories = UFra::factory('UFbean_Sru_DormitoryList');
+				$dormitories->listAll();
+				$leftRight = UFlib_Helper::getLeftRight($dormitories, $dorm->id);
+				$d['leftRight'] = $leftRight;
+			} catch (UFex $e) {
+				return $this->render('devicesNotFound', array());
+			}
+			return $this->render('devicesNotFound', $d);
+		}
+	}
+	
+	public function deviceDetails() {
+		try {
+			$bean = $this->_getDeviceFromGet();
+			$d['device'] = $bean;
+			
+			$devices = UFra::factory('UFbean_SruAdmin_DeviceList');
+			$devices->listByDormitoryId($bean->dormitoryId);
+			$leftRight = UFlib_Helper::getLeftRight($devices, $bean->id);
+			$d['leftRight'] = $leftRight;
+			
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render('deviceNotFound');
+		}
+	}
+
+	public function titleDevice() {
+		try {
+			$bean = $this->_getDeviceFromGet();
+			$d['device'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render('titleDeviceNotFound');
+		}
+	}
+
+	public function deviceAdd() {
+		$dorms = UFra::factory('UFbean_Sru_DormitoryList');
+		$dorms->listAll();
+
+		$devModels = UFra::factory('UFbean_SruAdmin_DeviceModelsList');
+		$devModels->listAll();
+		
+		$bean = UFra::factory('UFbean_SruAdmin_Device');
+
+		$d['device'] = $bean;
+		$d['devModels'] = $devModels;
+		$d['dormitories'] = $dorms;
+
+
+		return $this->render(__FUNCTION__, $d);
+	}
+	public function titleDeviceEdit() {
+		try {
+			$bean = $this->_getDeviceFromGet();
+			$d['device'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render('deviceNotFound');
+		}
+	}
+
+	public function deviceEdit() {
+		try {
+			$dorms = UFra::factory('UFbean_Sru_DormitoryList');
+			$dorms->listAll();
+
+			$devModels = UFra::factory('UFbean_SruAdmin_DeviceModelsList');
+			$devModels->listAll();
+			
+			$bean = $this->_getDeviceFromGet();
+	
+			$d['device'] = $bean;
+			$d['devModels'] = $devModels;
+			$d['dormitories'] = $dorms;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render('deviceNotFound');
+		}
+	}
+	
+	public function deviceHistory() {
+		try {
+			$bean = $this->_getDeviceFromGet();
+			$d['device'] = $bean;
+		} catch (UFex_Dao_NotFound $e) {
+			return '';
+		}
+
+		$history = UFra::factory('UFbean_SruAdmin_DeviceHistoryList');
+		try {
+			$history->listByDeviceId($bean->id);
+		} catch (UFex_Dao_NotFound $e) {
+		}
+		$d['history'] = $history;
+
+		return $this->render(__FUNCTION__, $d);
 	}
 	
 	private function getInventoryCardDevice($getInventoryCard = true) {

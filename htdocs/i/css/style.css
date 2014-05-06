@@ -132,6 +132,8 @@ img { border-style: none; }
 #main .legend { font-size: 0.8em; }
 #main .switchports td.selectedPort { border: 2px solid red; }
 
+#main .unused { background-color: #d1d0ce; }
+
 #main .required { border: solid 1px red; }
 #main .necessary { border: solid 1px orange; }
 #main .waletImg { position: relative; margin-right: 230px; float: right; top: -130px; width: 100px; }

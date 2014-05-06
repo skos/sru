@@ -16,7 +16,7 @@ extends UFmap {
 		'serialNo'	=> 'i.serial_no',
 		'inventoryNo'	=> 'i.inventory_no',
 		'received'	=> 'i.received',
-		'deviceTypeId'	=> 'i.device_type_id',
+		'deviceModelId'	=> 'i.device_model_id',
 		'deviceTableId'	=> 'i.table_id',
 	);
 	protected $columnTypes = array(
@@ -30,7 +30,7 @@ extends UFmap {
 		'serialNo'	=> self::TEXT,
 		'inventoryNo'	=> self::NULL_TEXT,
 		'received'	=> self::NULL_TS,
-		'deviceTypeId'	=> self::INT,
+		'deviceModelId'	=> self::INT,
 		'deviceTableId'	=> self::INT,
 	);
 	protected $tables = array(

@@ -1,12 +1,13 @@
 <?php
 
 /**
- * wyciagniecie pojedynczego urzadzenia
+ * wyciagniecie historii urzadzenia
  */
-class UFmap_SruAdmin_Device_Get extends UFmap {
+class UFmap_SruAdmin_DeviceHistory_List extends UFmap {
 
 	protected $columns = array(
 	    'id' => 'd.id',
+	    'deviceId' => 'device_id',
 	    'inoperational' => 'd.inoperational',
 	    'modifiedById' => 'd.modified_by',
 	    'modifiedBy' => 'a.name',
@@ -20,10 +21,10 @@ class UFmap_SruAdmin_Device_Get extends UFmap {
 	    'locationAlias' => 'l.alias',
 	    'locationComment' => 'l.comment',
 	    'comment' => 'd.comment',
-	    'inventoryCardId' => 'd.inventory_card_id',
 	);
 	protected $columnTypes = array(
 	    'id' => self::INT,
+	    'deviceId' => self::INT,
 	    'inoperational' => self::BOOL,
 	    'modifiedById' => self::NULL_INT,
 	    'modifiedBy' => self::TEXT,
@@ -37,10 +38,9 @@ class UFmap_SruAdmin_Device_Get extends UFmap {
 	    'locationAlias' => self::TEXT,
 	    'locationComment' => self::TEXT,
 	    'comment' => self::NULL_TEXT,
-	    'inventoryCardId' => self::INT,
 	);
 	protected $tables = array(
-	    'd' => 'devices',
+	    'd' => 'devices_history',
 	);
 	protected $joins = array(
 	    'l' => 'locations',

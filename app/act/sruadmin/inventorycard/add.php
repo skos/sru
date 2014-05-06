@@ -17,10 +17,17 @@ extends UFact {
 			$bean->modifiedAt = NOW;
 			$id = $bean->save();
 			
-			$comp = UFra::factory('UFbean_Sru_Computer');
-			$comp->getByPK((int)$this->_srv->get('req')->get->computerId);
-			$comp->inventoryCardId = $id;
-			$comp->save();
+			try {
+				$comp = UFra::factory('UFbean_Sru_Computer');
+				$comp->getByPK((int)$this->_srv->get('req')->get->computerId);
+				$comp->inventoryCardId = $id;
+				$comp->save();
+			} catch (UFex_Core_DataNotFound $e) {
+				$dev = UFra::factory('UFbean_SruAdmin_Device');
+				$dev->getByPK((int)$this->_srv->get('req')->get->deviceId);
+				$dev->inventoryCardId = $id;
+				$dev->save();
+			}
 
 			$this->postDel(self::PREFIX);
 			$this->markOk(self::PREFIX);
