@@ -1697,6 +1697,18 @@ extends UFbox {
 			return $this->render(__FUNCTION__.'NotFound');
 		}
 	}
+	
+	public function inventory() {
+		try {
+			$bean = UFra::factory('UFbean_SruAdmin_InventoryCardList');
+			$bean->listInventory();
+			$d['inventory'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound', $d);
+		}
+	}
 
 	public function titleRoom() {
 		try {

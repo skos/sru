@@ -5,8 +5,7 @@
 class UFctl_SruAdmin_Devices
 extends UFctl {
 
-	protected function parseParameters() 
-	{
+	protected function parseParameters() {
 		$req = $this->_srv->get('req');
 		$get = $req->get;
 		

@@ -17,6 +17,7 @@ extends UFtpl_Common {
 <link rel="shortcut icon" href="<?=UFURL_BASE;?>/i/img/favicon.ico" type="image/x-icon" />
 <script type="text/javascript" src="<?=UFURL_BASE;?>/i/jquery/jquery.js"></script>
 <script type="text/javascript" src="<?=UFURL_BASE;?>/i/jquery/jquery-ui.custom.min.js"></script>
+<script type="text/javascript" src="<?=UFURL_BASE;?>/i/jquery/jquery.tablesorter.min.js"></script>
 <script type="text/javascript" src="<?=UFURL_BASE;?>/i/jquery/jquery.contextMenu.js"></script>
 <script type="text/javascript" src="<?=UFURL_BASE;?>/i/jquery/development-bundle/ui/i18n/jquery.ui.datepicker-pl.js"></script>
 <script type="text/javascript" src="<?=UFURL_BASE;?>/i/js/datepickerInit.js"></script>

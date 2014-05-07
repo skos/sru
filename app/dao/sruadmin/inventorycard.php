@@ -61,7 +61,22 @@ extends UFdao {
 		$query = $this->prepareSelect($mapping);
 		$query->where($mapping->deviceId, $deviceId);
 		$query->where($mapping->deviceTableId, $deviceTable);
+		$query->where($mapping->cardId, null, UFlib_Db_Query::NOT_EQ);
 
 		return $this->doSelectFirst($query);
+	}
+	
+	public function listInventory($dorms = null) {
+		$mapping = $this->mapping('inventorylist');
+
+		$query = $this->prepareSelect($mapping);
+		if (!is_null($dorms)) {
+			$query->where($mapping->cardDormitoryId, $dorms, UFlib_Db_Query::IN);
+		}
+		$query->order($mapping->cardDormitoryId);
+		$query->order($mapping->deviceModelName);
+		$query->order($mapping->serialNo);
+
+		return $this->doSelect($query);
 	}
 }

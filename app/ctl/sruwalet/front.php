@@ -136,6 +136,9 @@ extends UFctl {
 				case 'inhabitants':
 					$get->view = 'inhabitants/main';
 					break;
+				case 'inventory':
+					$get->view = 'inventory/main';
+					break;
 				case 'dormitories':
 					if ($segCount == 1) {
 						$get->view = 'error404';
@@ -348,6 +351,8 @@ extends UFctl {
 				}
 			case 'inhabitants/main':
 				return 'SruWalet_Inhabitants';
+			case 'inventory/main':
+				return 'SruWalet_Inventory';
 			case 'dormitories/dorm':
 				if ($msg->get('docExport/ok') && (!is_null($get->docCode))) {
 					return 'SruWalet_'.$get->docCode.'Export';

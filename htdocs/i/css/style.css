@@ -121,6 +121,8 @@ img { border-style: none; }
 #main .editable { background-color: #ffffd3; }
 #main .printable { font-size: 0.8em; }
 #main .credentials { font-family: 'Courier New',Courier,monospace; font-size: 1.2em; }
+#main .noInventoryCard { background: #d1d0ce; }
+#main .wrongInvCardData { background: #f22; }
 
 #main .switchports table { width: 100%; border-collapse: collapse;  }
 #main .switchports td { text-align: center; width: 12%; border: 1px solid #eee; }

@@ -55,6 +55,10 @@ extends UFctl {
 					$ctl = UFra::factory('UFctl_SruAdmin_Devices');
 					$ctl->go();
 					return false;
+				case 'inventory':
+					$ctl = UFra::factory('UFctl_SruAdmin_Inventory');
+					$ctl->go();
+					return false;
 				default:
 					$get->view = 'error404';
 					break;

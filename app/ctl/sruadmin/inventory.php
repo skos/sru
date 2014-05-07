@@ -1,19 +1,22 @@
 <?php
 /**
- * front controller czesci administracyjnej sru dotyczacej kart wyposażenia
+ * front controller czesci administracyjnej sru dotyczacej wyposażenia
  */
-class UFctl_SruAdmin_InventoryCards
+class UFctl_SruAdmin_Inventory
 extends UFctl {
 
-	protected function parseParameters() 
-	{
+	protected function parseParameters() {
 		$req = $this->_srv->get('req');
 		$get = $req->get;
 		
 		$segCount = $req->segmentsCount();
 
 		// wyzsze segmenty sprawdzane sa w front'ie
-		$get->view = 'error404';
+		if (1 == $segCount) {
+			$get->view = 'inventory/main';
+		} else {
+			$get->view = 'error404';
+		}
 	}
 	protected function chooseAction($action = null) {
 		$req = $this->_srv->get('req');
@@ -42,7 +45,9 @@ extends UFctl {
 			return 'SruAdmin_Login';
 		}
 		
-		switch ($get->view) {							
+		switch ($get->view) {
+			case 'inventory/main':
+				return 'SruAdmin_Inventory';
 			default:
 				return 'Sru_Error404';
 		}

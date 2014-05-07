@@ -116,6 +116,83 @@ extends UFtpl_Common {
 		));
 	}
 	
+	private function createInventoryCardLink($device) {
+		$url = $this->url(0);
+		if ($device['deviceTableId'] == UFbean_SruAdmin_InventoryCard::TABLE_SWITCH) {
+			$url = $url.'/switches/'.$device['serialNo'];
+		} else if ($device['deviceTableId'] == UFbean_SruAdmin_InventoryCard::TABLE_COMPUTER) {
+			$url = $url.'/computers/'.$device['deviceId'];
+		} else if ($device['deviceTableId'] == UFbean_SruAdmin_InventoryCard::TABLE_DEVICE) {
+			$url = $url.'/devices/'.$device['deviceId'];
+		}
+		
+		return $url;
+	}
+	
+	public function inventoryList(array $d) {
+		echo '<label for="filter">Filtruj:</label> <input type="text" name="filter" value="" id="filter" />';
+		echo '<div class="legend">';
+		echo '<table><tr><td class="noInventoryCard">Brak karty wyposażenia</td><td class="wrongInvCardData">Niezgodność lokalizacji urządzenia</td></tr></table>';
+		echo '</div><br/>';
+		
+		echo '<table id="inventoryT" class="bordered"><thead><tr>';
+		echo '<th>Urządzenie</th>';
+		echo '<th>Na stanie DS</th>';
+		echo '<th>Lokalizacja</th>';
+		echo '<th>S/N</th>';
+		echo '<th>Nr inw.</th>';
+		echo '<th>Na stanie od</th>';
+		echo '</tr></thead><tbody>';
+		foreach ($d as $c) {
+			echo '<tr'.((is_null($c['cardId']) || $c['cardId'] == '') ? ' class="noInventoryCard"' : '').'>';
+			echo '<td><a href="'.$this->createInventoryCardLink($c).'">'.($c['deviceTableId'] == UFbean_SruAdmin_InventoryCard::TABLE_SWITCH ? 'Switch ' : '').$c['deviceModelName'].'</a></td>';
+			echo '<td>'.strtoupper($c['cardDormitoryAlias']).'</td>';
+			echo '<td'.((!is_null($c['cardId']) && $c['cardId'] != '' && $c['cardDormitoryId'] != $c['dormitoryId']) ? ' class="wrongInvCardData"' : '').'>'.strtoupper($c['dormitoryAlias']).', '.$c['locationAlias'].'</td>';
+			echo '<td>'.$c['serialNo'].'</td>';
+			echo '<td>'.$c['inventoryNo'].'</td>';
+			echo '<td>'.($c['received'] == null ? '' : date(self::TIME_YYMMDD, $c['received'])).is_null($c['cardId']).'</td></tr>';
+		}
+		echo '</tbody>';
+		echo '</table>';
+?>
+<script type="text/javascript">
+$(document).ready(function() {
+	//default each row to visible
+	$('tbody tr').addClass('visible');
+	
+	$('#filter').keyup(function(event) {
+		//if esc is pressed or nothing is entered
+		if (event.keyCode == 27 || $(this).val() == '') {
+			//if esc is pressed we want to clear the value of search box
+			$(this).val('');
+			
+			//we want each row to be visible because if nothing
+			//is entered then all rows are matched.
+			$('tbody tr').removeClass('visible').show().addClass('visible');
+		} else { //if there is text, lets filter
+			filter('tbody tr', $(this).val());
+		}
+	});
+});
+
+//filter results based on query
+function filter(selector, query) {
+	query = $.trim(query); //trim white space
+	query = query.replace(/ /gi, '|'); //add OR for regex
+  
+	$(selector).each(function() {
+		($(this).text().search(new RegExp(query, "i")) < 0) ? $(this).hide().removeClass('visible') : $(this).show().addClass('visible');
+	});
+}
+$(document).ready(function() 
+    { 
+        $("#inventoryT").tablesorter();
+    } 
+);
+</script>
+<?
+	}
+	
 	public function searchResults(array $d) {
 		$url = $this->url(0);
 		foreach ($d as $c) {

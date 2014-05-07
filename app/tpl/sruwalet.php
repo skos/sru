@@ -49,11 +49,14 @@ extends UFtpl_Common {
 		echo '<ul id="nav">';
 		echo '<li><a href="'.UFURL_BASE.'/walet/">Wyszukiwanie</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/walet/inhabitants/">Obsadzenie</a></li>';
+		if ($acl->sruWalet('inventory', 'view')) {
+			echo '<li><a href="'.UFURL_BASE.'/walet/inventory/">Sprzęt</a></li>';
+		}
 		echo '<li><a href="'.UFURL_BASE.'/walet/stats/">Statystyki</a></li>';
 		if ($acl->sruWalet('country', 'view')) {
 			echo '<li><a href="'.UFURL_BASE.'/walet/nations/">Narodowości</a></li>';
 		}
-		if ($acl->sruWalet('country', 'view')) {
+		if ($acl->sruWalet('admin', 'view')) {
 			echo '<li><a href="'.UFURL_BASE.'/walet/admins/">Administratorzy</a></li>';
 		}
 		echo '</ul>';
@@ -354,6 +357,21 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 
 	public function userPrintError() {
 		echo 'Błąd generowania wydruku';
+	}
+	
+	/* Sprzet */
+	
+	public function titleInventory(array $d) {
+		echo 'Lista sprzętu SKOS';
+	}
+	
+	public function inventory(array $d) {
+		echo '<h2>Lista sprzętu SKOS</h2>';
+		$d['inventory']->write('inventoryList');
+	}
+	
+	public function inventoryNotFound(array $d) {
+		echo $this->ERR('Brak sprzętu na stanie.');
 	}
 
 	/* Narodowości */

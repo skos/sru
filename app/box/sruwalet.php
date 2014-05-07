@@ -677,6 +677,40 @@ extends UFbox {
 			return $this->render('roomNotFound');
 		}
 	}
+	
+	/* Sprzet */
+	
+	public function inventory() {
+		try {
+			$admin = UFra::factory('UFbean_SruWalet_Admin');
+			$admin->getFromSession();
+			
+			if ($admin->typeId != UFacl_SruWalet_Admin::HEAD) {
+				try {
+					$dorms = UFra::factory('UFbean_SruWalet_AdminDormitoryList');
+					$dorms->listAllById($admin->id);
+				} catch (UFex_Dao_NotFound $e) {
+					return $this->render(__FUNCTION__.'NotFound', array());
+				}
+				
+				$queryDorms = array();
+				foreach ($dorms as $dorm) {
+					$queryDorms[] = $dorm['dormitoryId'];
+				}
+				$bean = UFra::factory('UFbean_SruAdmin_InventoryCardList');
+				$bean->listInventory($queryDorms);
+				$d['inventory'] = $bean;
+			} else {
+				$bean = UFra::factory('UFbean_SruAdmin_InventoryCardList');
+				$bean->listInventory();
+				$d['inventory'] = $bean;
+			}
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound', array());
+		}
+	}
 
 	/* Statystyki */
 

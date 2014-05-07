@@ -349,6 +349,7 @@ extends UFtpl_Common {
 		echo '<li><a href="'.UFURL_BASE.'/admin/ips/">IP i VLANy</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/switches/">Switche</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/devices/">Urządzenia</a></li>';
+		echo '<li><a href="'.UFURL_BASE.'/admin/inventory/">Inwentaryzacja</a></li>';
 		echo '</ul>';
 		echo $form->_end();
 	}
@@ -1178,6 +1179,19 @@ extends UFtpl_Common {
 		echo ' <a href="'.$urlDevice.'">Powrót</a>';
 		echo $form->_end();
 		echo $form->_end(true);
+	}
+	
+	public function titleInventory(array $d) {
+		echo 'Lista wyposażenia';
+	}
+	
+	public function inventory(array $d) {
+		echo '<h2>Lista wyposażenia SKOS</h2>';
+		$d['inventory']->write('inventoryList');
+	}
+	
+	public function inventoryNotFound(array $d) {
+		echo $this->ERR('Błąd pobierania listy wyposażenia');
 	}
 
 	public function titleRoom(array $d) {
