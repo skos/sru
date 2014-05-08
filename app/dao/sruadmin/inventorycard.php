@@ -79,4 +79,35 @@ extends UFdao {
 
 		return $this->doSelect($query);
 	}
+	
+	public function search($params) {
+		$key = $this->cachePrefix.'/'.__FUNCTION__.'/'.print_r($params, true);
+		try {
+			return $this->cacheGet($key);
+		} catch (UFex_Core_DataNotFound $e) {
+			$mapping = $this->mapping('search');
+
+			$query = $this->prepareSelect($mapping);
+			$query->order($mapping->serialNo, $query->ASC);
+			$query->order($mapping->inventoryNo, $query->ASC);
+                        
+			foreach ($params as $var=>$val) {
+				switch ($var) {
+					case 'serialNo':
+					case 'inventoryNo':
+						$val = str_replace('%', '', $val);
+						$val = str_replace('*', '', $val);
+						$query->where($var.'Search', '%'.$val.'%', UFlib_Db_Query::LIKE);
+						break;
+					case 'dormitory':
+					default:
+						$query->where($var, $val);
+				}
+			}
+
+			$return = $this->doSelect($query);
+			$this->cacheSet($key, $return);
+			return $return;
+		}
+	}
 }

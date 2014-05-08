@@ -15,7 +15,29 @@ extends UFctl {
 		if (1 == $segCount) {
 			$get->view = 'inventory/main';
 		} else {
-			$get->view = 'error404';
+			switch ($req->segment(2)) {
+				case 'search':
+					$get->view = 'inventory/search';
+					for ($i=3; $i<=$segCount; ++$i) {
+						
+						$tmp = explode(':', $req->segment($i), 2);
+						switch ($tmp[0]) {
+							case 'serialNo':
+								$get->searchedSerialNo = urldecode($tmp[1]);
+								break;
+							case 'inventoryNo':
+								$get->searchedInventoryNo = urldecode($tmp[1]);
+								break;
+							case 'dormitory':
+								$get->searchedDormitory = urldecode($tmp[1]);
+								break;
+						}
+					}
+					break;
+				default:
+					$get->view = 'error404';
+					break;
+			}
 		}
 	}
 	protected function chooseAction($action = null) {
@@ -27,6 +49,8 @@ extends UFctl {
 			$act = 'Admin_Logout';
 		} elseif ($post->is('adminLogin') && $acl->sruAdmin('admin', 'login')) {
 			$act = 'Admin_Login';
+		} elseif ($post->is('inventoryCardSearch')) {
+			$act = 'InventoryCard_Search';
 		}
 		
 		if (isset($act)) {
@@ -48,6 +72,8 @@ extends UFctl {
 		switch ($get->view) {
 			case 'inventory/main':
 				return 'SruAdmin_Inventory';
+			case 'inventory/search':
+				return 'SruAdmin_InventoryCardSearchResults';
 			default:
 				return 'Sru_Error404';
 		}

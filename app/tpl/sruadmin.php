@@ -318,8 +318,8 @@ extends UFtpl_Common {
 
 	public function inventoryCardSearch(array $d) {
 		$form = UFra::factory('UFlib_Form');	
-		echo '<div class="deviceSearch">';
-		echo $form->_start($this->url(0).'/devices/search');
+		echo '<div class="inventoryCardSearch">';
+		echo $form->_start($this->url(0).'/inventory/search');
 		echo $form->_fieldset('<img src="'.UFURL_BASE.'/i/img/lupa.png" alt="" /> Znajdź urządzenie');
 		echo $d['inventoryCard']->write('formSearch', $d['searched']);
 		echo $form->_submit('Znajdź');
@@ -331,9 +331,9 @@ extends UFtpl_Common {
 
 	public function inventoryCardSearchResults(array $d) {
 		echo '<h2>Znalezione urządzenia ('.count($d['inventoryCards']).'):</h2>';
-		echo '<div class="userSearchResults"><ul>';
+		echo '<div class="inventoryCardSearchResults">';
 		echo $d['inventoryCards']->write('searchResults');
-		echo '</ul></div>';
+		echo '</div>';
 	}
 
 	public function inventoryCardSearchResultsNotFound() {

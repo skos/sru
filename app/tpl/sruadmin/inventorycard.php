@@ -98,7 +98,7 @@ extends UFtpl_Common {
 		$form = UFra::factory('UFlib_Form', 'inventoryCardSearch', $d, $this->errors);
 
 		echo $form->serialNo('Nr seryjny');
-		echo $form->name('Nr inwentarzowy');
+		echo $form->inventoryNo('Nr inwentarzowy');
 		$dorms = UFra::factory('UFbean_Sru_DormitoryList');                                         
 		$dorms->listAll();
 
@@ -116,6 +116,10 @@ extends UFtpl_Common {
 		));
 	}
 	
+	public function searchResults(array $d) {
+		$this->displayInventoryList($d, false);
+	}
+	
 	private function createInventoryCardLink($device) {
 		$url = $this->url(0);
 		if ($device['deviceTableId'] == UFbean_SruAdmin_InventoryCard::TABLE_SWITCH) {
@@ -130,7 +134,13 @@ extends UFtpl_Common {
 	}
 	
 	public function inventoryList(array $d) {
-		echo '<label for="filter">Filtruj:</label> <input type="text" name="filter" value="" id="filter" />';
+		$this->displayInventoryList($d, true);
+	}
+	
+	private function displayInventoryList(array $d, $filter) {
+		if ($filter) {
+			echo '<label for="filter">Filtruj:</label> <input type="text" name="filter" value="" id="filter" />';
+		}
 		echo '<div class="legend">';
 		echo '<table><tr><td class="noInventoryCard">Brak karty wyposażenia</td><td class="wrongInvCardData">Niezgodność lokalizacji urządzenia</td></tr></table>';
 		echo '</div><br/>';
@@ -156,6 +166,7 @@ extends UFtpl_Common {
 		echo '</table>';
 ?>
 <script type="text/javascript">
+<? if ($filter) { ?>
 $(document).ready(function() {
 	//default each row to visible
 	$('tbody tr').addClass('visible');
@@ -184,6 +195,8 @@ function filter(selector, query) {
 		($(this).text().search(new RegExp(query, "i")) < 0) ? $(this).hide().removeClass('visible') : $(this).show().addClass('visible');
 	});
 }
+<? } ?>
+
 $(document).ready(function() 
     { 
         $("#inventoryT").tablesorter();
@@ -191,12 +204,5 @@ $(document).ready(function()
 );
 </script>
 <?
-	}
-	
-	public function searchResults(array $d) {
-		$url = $this->url(0);
-		foreach ($d as $c) {
-			//TODO echo '<a href="'.$url.'/users/'.$c['id'].'">'.$this->_escape($c['name']).' "'.$this->_escape($c['login']).'" '.$this->_escape($c['surname']).'</a>'.(strlen($c['comment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['comment'].'" />':'').' <span><a href="'.$url.'/dormitories/'.$c['dormitoryAlias'].'/'.$c['locationAlias'].'">'.$c['locationAlias'].'</a> <small>(<a href="'.$url.'/dormitories/'.$c['dormitoryAlias'].'">'.$c['dormitoryAlias'].'</a>)</small></span>'.(!$c['active']?'</del>':'').(strlen($c['locationComment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['locationComment'].'" />':'').'</li>';
-		}
 	}
 }

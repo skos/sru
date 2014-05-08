@@ -542,6 +542,10 @@ extends UFbox {
 			$tmp['inventoryNo'] = $get->searchedInventoryNo;
 		} catch (UFex_Core_DataNotFound $e) {
 		}
+		try {
+			$tmp['dormitory'] = $get->searchedDormitory;
+		} catch (UFex_Core_DataNotFound $e) {
+		}
 		$d['searched'] = $tmp;
 
 		return $this->render(__FUNCTION__, $d);
@@ -561,13 +565,12 @@ extends UFbox {
 				$tmp['inventoryNo'] = $get->searchedInventoryNo;
 			} catch (UFex_Core_DataNotFound $e) {
 			}
+			try {
+				$tmp['dormitory'] = $get->searchedDormitory;
+			} catch (UFex_Core_DataNotFound $e) {
+			}
 			
 			$bean->search($tmp);
-			
-			if (count($bean) == 1) {
-				$get->inventoryCardId = $bean[0]['id'];
-				return $this->user().$this->userComputers().$this->roomSwitchPorts().$this->userInactiveComputers();
-			}
 
 			$d['inventoryCards'] = $bean;
 
