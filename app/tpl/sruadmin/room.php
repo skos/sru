@@ -161,13 +161,15 @@ function fullList() {
 		}
 		ksort($aliases);
 
-		foreach ($users as $user) {
-			$roomInt = (int)$user['locationAlias'];
-			if ((int)$user['locationAlias'] == 0) {
-				$roomInt = $user['locationAlias'];
-			}
-			if (array_key_exists($roomInt, $aliases)) {
-				$aliases[$roomInt]->addPerson($user['locationAlias'], $user);
+		if (!is_null($users)) {
+			foreach ($users as $user) {
+				$roomInt = (int)$user['locationAlias'];
+				if ((int)$user['locationAlias'] == 0) {
+					$roomInt = $user['locationAlias'];
+				}
+				if (array_key_exists($roomInt, $aliases)) {
+					$aliases[$roomInt]->addPerson($user['locationAlias'], $user);
+				}
 			}
 		}
 		
