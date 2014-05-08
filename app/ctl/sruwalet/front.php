@@ -352,7 +352,11 @@ extends UFctl {
 			case 'inhabitants/main':
 				return 'SruWalet_Inhabitants';
 			case 'inventory/main':
-				return 'SruWalet_Inventory';
+				if ($acl->sruWalet('inventory', 'view')) {
+					return 'SruWalet_Inventory';
+				} else {
+					return 'Sru_Error403';
+				}
 			case 'dormitories/dorm':
 				if ($msg->get('docExport/ok') && (!is_null($get->docCode))) {
 					return 'SruWalet_'.$get->docCode.'Export';
@@ -378,19 +382,19 @@ extends UFctl {
 			case 'stats/docdormitoriesexport':
 				return 'SruWalet_StatsDormitoriesDocExport';
 			case 'admins/main':
-				if ($acl->sruWalet('country', 'view')) {
+				if ($acl->sruWalet('admin', 'view')) {
 					return 'SruWalet_Admins';
 				} else {
 					return 'Sru_Error404';
 				}
 			case 'admins/admin':
-				if ($acl->sruWalet('country', 'view')) {
+				if ($acl->sruWalet('admin', 'view')) {
 					return 'SruWalet_Admin';
 				} else {
 					return 'Sru_Error404';
 				}
 			case 'admins/admin/history':
-				if ($acl->sruWalet('country', 'view')) {
+				if ($acl->sruWalet('admin', 'view')) {
 					return 'SruWalet_AdminHistory';
 				} else {
 					return 'Sru_Error404';

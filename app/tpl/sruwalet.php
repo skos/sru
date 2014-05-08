@@ -367,7 +367,7 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 	
 	public function inventory(array $d) {
 		echo '<h2>Lista sprzętu SKOS</h2>';
-		$d['inventory']->write('inventoryList');
+		$d['inventory']->write('inventoryList', false);
 	}
 	
 	public function inventoryNotFound(array $d) {

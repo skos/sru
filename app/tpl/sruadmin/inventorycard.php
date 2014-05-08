@@ -129,14 +129,14 @@ extends UFtpl_Common {
 	}
 	
 	public function searchResults(array $d) {
-		$this->displayInventoryList($d, false);
+		$this->displayInventoryList($d, false, true);
 	}
 	
-	public function inventoryList(array $d) {
-		$this->displayInventoryList($d, true);
+	public function inventoryList(array $d, $adminView = true) {
+		$this->displayInventoryList($d, true, $adminView);
 	}
 	
-	private function displayInventoryList(array $d, $filter) {
+	private function displayInventoryList(array $d, $filter, $adminView) {
 		$url = $this->url(0);
 		if ($filter) {
 			echo '<label for="filter">Filtruj:</label> <input type="text" name="filter" value="" id="filter" />';
@@ -155,7 +155,10 @@ extends UFtpl_Common {
 		echo '</tr></thead><tbody>';
 		foreach ($d as $c) {
 			echo '<tr'.((is_null($c['cardId']) || $c['cardId'] == '') ? ' class="noInventoryCard"' : '').'>';
-			echo '<td><a href="'.self::getDeviceUrlFromArray($c, $url).'">'.($c['deviceTableId'] == UFbean_SruAdmin_InventoryCard::TABLE_SWITCH ? 'Switch ' : '').$c['deviceModelName'].'</a></td>';
+			echo '<td>';
+			echo ($adminView ? '<a href="'.self::getDeviceUrlFromArray($c, $url).'">' : '');
+			echo ($c['deviceTableId'] == UFbean_SruAdmin_InventoryCard::TABLE_SWITCH ? 'Switch ' : '').$c['deviceModelName'];
+			echo ($adminView ? '</a>' : '').'</td>';
 			echo '<td>'.strtoupper($c['cardDormitoryAlias']).'</td>';
 			echo '<td'.((!is_null($c['cardId']) && $c['cardId'] != '' && $c['cardDormitoryId'] != $c['dormitoryId']) ? ' class="wrongInvCardData"' : '').'>'.strtoupper($c['dormitoryAlias']).', '.$c['locationAlias'].'</td>';
 			echo '<td>'.$c['serialNo'].'</td>';
