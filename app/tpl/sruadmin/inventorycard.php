@@ -27,6 +27,18 @@ extends UFtpl_Common {
 
 		return $urlDevice;
 	}
+	
+	public static function getDeviceUrlFromArray($device, $url) {
+		if ($device['deviceTableId'] == UFbean_SruAdmin_InventoryCard::TABLE_SWITCH) {
+			$url = $url.'/switches/'.$device['serialNo'];
+		} else if ($device['deviceTableId'] == UFbean_SruAdmin_InventoryCard::TABLE_COMPUTER) {
+			$url = $url.'/computers/'.$device['deviceId'];
+		} else if ($device['deviceTableId'] == UFbean_SruAdmin_InventoryCard::TABLE_DEVICE) {
+			$url = $url.'/devices/'.$device['deviceId'];
+		}
+		
+		return $url;
+	}
 
 	public function details(array $d, $device) {
 		$url = $this->url(0);
@@ -120,24 +132,12 @@ extends UFtpl_Common {
 		$this->displayInventoryList($d, false);
 	}
 	
-	private function createInventoryCardLink($device) {
-		$url = $this->url(0);
-		if ($device['deviceTableId'] == UFbean_SruAdmin_InventoryCard::TABLE_SWITCH) {
-			$url = $url.'/switches/'.$device['serialNo'];
-		} else if ($device['deviceTableId'] == UFbean_SruAdmin_InventoryCard::TABLE_COMPUTER) {
-			$url = $url.'/computers/'.$device['deviceId'];
-		} else if ($device['deviceTableId'] == UFbean_SruAdmin_InventoryCard::TABLE_DEVICE) {
-			$url = $url.'/devices/'.$device['deviceId'];
-		}
-		
-		return $url;
-	}
-	
 	public function inventoryList(array $d) {
 		$this->displayInventoryList($d, true);
 	}
 	
 	private function displayInventoryList(array $d, $filter) {
+		$url = $this->url(0);
 		if ($filter) {
 			echo '<label for="filter">Filtruj:</label> <input type="text" name="filter" value="" id="filter" />';
 		}
@@ -155,7 +155,7 @@ extends UFtpl_Common {
 		echo '</tr></thead><tbody>';
 		foreach ($d as $c) {
 			echo '<tr'.((is_null($c['cardId']) || $c['cardId'] == '') ? ' class="noInventoryCard"' : '').'>';
-			echo '<td><a href="'.$this->createInventoryCardLink($c).'">'.($c['deviceTableId'] == UFbean_SruAdmin_InventoryCard::TABLE_SWITCH ? 'Switch ' : '').$c['deviceModelName'].'</a></td>';
+			echo '<td><a href="'.self::getDeviceUrlFromArray($c, $url).'">'.($c['deviceTableId'] == UFbean_SruAdmin_InventoryCard::TABLE_SWITCH ? 'Switch ' : '').$c['deviceModelName'].'</a></td>';
 			echo '<td>'.strtoupper($c['cardDormitoryAlias']).'</td>';
 			echo '<td'.((!is_null($c['cardId']) && $c['cardId'] != '' && $c['cardDormitoryId'] != $c['dormitoryId']) ? ' class="wrongInvCardData"' : '').'>'.strtoupper($c['dormitoryAlias']).', '.$c['locationAlias'].'</td>';
 			echo '<td>'.$c['serialNo'].'</td>';

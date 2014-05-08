@@ -579,6 +579,23 @@ extends UFbox {
 			return $this->render(__FUNCTION__.'NotFound');
 		}
 	}
+	
+	public function inventoryCardSearchHistoryResults() {
+		try {
+			$get = $this->_srv->get('req')->get;
+			if (!$get->is('searchedSerialNo') || is_null($get->searchedSerialNo)) {
+				return '';
+			}
+			
+			$bean = UFra::factory('UFbean_SruAdmin_InventoryCardHistoryList');
+			$bean->listByInventoryCardSerialNo($get->searchedSerialNo);
+			$d['inventoryCards'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}
+	}
 
 	public function toDoList() {
 		try {

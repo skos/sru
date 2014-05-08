@@ -91,4 +91,23 @@ class UFtpl_SruAdmin_InventoryCardHistory extends UFtpl_Common {
 		echo '</div>';
 	}
 
+	public function searchResults(array $d) {
+		$url = $this->url(0);
+		$displayed = array();
+		foreach ($d as $c) {
+			if (in_array($c['inventoryCardId'], $displayed)) {
+				continue;
+			}
+			if ($c['serialNo'] == $c['currentSerialNo']) {
+				continue;
+			}
+			echo '<li><a href="'.UFtpl_SruAdmin_InventoryCard::getDeviceUrlFromArray($c, $url).'">'.
+				($c['deviceTableId'] == UFbean_SruAdmin_InventoryCard::TABLE_SWITCH ? 'Switch ' : '').
+				$c['deviceModelName'].'</a> <small>'.$c['serialNo'].' &rarr; '.$c['currentSerialNo'].'</small></li>';
+			$displayed[] = $c['inventoryCardId'];
+		}
+		if (count($displayed) == 0) {
+			echo 'Wszystkie urządzenia używające wcześniej tego S/N zostały wyświetlone na liście wyżej.';
+		}
+	}
 }

@@ -341,6 +341,16 @@ extends UFtpl_Common {
 		echo $this->ERR('Nie znaleziono');
 	}
 	
+	public function inventoryCardSearchHistoryResults(array $d) {
+		echo '<h2>Znalezione urządzenia z szukanym S/N w historii:</h2>';
+		echo '<ul>';
+		echo $d['inventoryCards']->write('searchResults');
+		echo '</ul></div>';
+	}
+	
+	public function inventoryCardSearchHistoryResultsNotFound(array $d) {
+	}
+	
 	public function adminLists(array $d) {
 		$form = UFra::factory('UFlib_Form');
 		echo $form->_fieldset('<img src="'.UFURL_BASE.'/i/img/todo.png" alt="" /> Zestawienia');
