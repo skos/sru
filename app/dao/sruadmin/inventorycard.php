@@ -66,6 +66,18 @@ extends UFdao {
 		return $this->doSelectFirst($query);
 	}
 	
+	public function listWithoutInventoryCard($dorms = null) {
+		$mapping = $this->mapping('inventorylist');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->cardId, null, UFlib_Db_Query::EQ);
+		if (!is_null($dorms)) {
+			$query->where($mapping->dormitoryId, $dorms, UFlib_Db_Query::IN);
+		}
+
+		return $this->doSelect($query);
+	}
+	
 	public function listInventory($dorms = null) {
 		$mapping = $this->mapping('inventorylist');
 

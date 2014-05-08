@@ -339,7 +339,7 @@ extends UFtpl_Common {
 		echo '<br/>';
 	}
 
-	public function toDoList(array $d, $users) {
+	public function toDoList(array $d, $users, $devices) {
 		$url = $this->url(0);
 		echo '<h3>Problemy w Zabbiksie:</h3>';
 		echo '<div id="zabbixproblems"><img class="loadingImg" src="'.UFURL_BASE.'/i/img/ladowanie.gif" alt="Trwa ładowanie problemów..." /></div>';
@@ -366,6 +366,17 @@ $("#otrstickets").load('<?=UFURL_BASE?>/admin/apis/otrstickets');
 						echo '<li'.($comp['banned']?' class="ban"' : '').'><a href="'.$url.'/dormitories/'.$comp['dormitoryAlias'].'">'.strtoupper($comp['dormitoryAlias']).'</a>: <a href="'.$url.'/computers/'.$comp['id'].'">'.$comp['host'].' <small>'.$comp['ip'].'/'.$comp['mac'].'</small></a> <span>'.(is_null($comp['availableTo']) ? '' : date(self::TIME_YYMMDD, $comp['availableTo'])).'</span>'.(strlen($comp['comment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$comp['comment'].'" />':'').'</li>';
 					}
 				}
+			}
+			echo '</ul>';
+		}
+		
+		if (!is_null($devices)) {
+			echo '<h3>Urządzenia bez przypisanej karty wyposażenia:</h3>';
+			echo '<ul>';
+			foreach ($devices as $dev) {
+				echo '<li><a href="'.UFtpl_SruAdmin_InventoryCard::getDeviceUrlFromArray($dev, $url).'">'.
+					($dev['deviceTableId'] == UFbean_SruAdmin_InventoryCard::TABLE_SWITCH ? 'Switch ' : '').
+					$dev['deviceModelName'].'</a></li>';
 			}
 			echo '</ul>';
 		}

@@ -371,7 +371,7 @@ extends UFtpl_Common {
 	public function toDoList(array $d) {
 		$form = UFra::factory('UFlib_Form');
 		echo $form->_fieldset('<img src="'.UFURL_BASE.'/i/img/todo.png" alt="" /> Lista zadań');
-		echo $d['admin']->write('toDoList', $d['computers']);
+		echo $d['admin']->write('toDoList', $d['computers'], $d['devices']);
 		echo $form->_end();
 	}
 

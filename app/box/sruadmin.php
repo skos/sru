@@ -603,7 +603,7 @@ extends UFbox {
 			$admin->getFromSession();
 			$d['admin'] = $admin;
 
-			if ($admin->typeId != UFacl_SruAdmin_Admin::CAMPUS && UFacl_SruAdmin_Admin::CENTRAL) {
+			if ($admin->typeId != UFacl_SruAdmin_Admin::CAMPUS && $admin->typeId != UFacl_SruAdmin_Admin::CENTRAL) {
 				try {
 					$dorms = UFra::factory('UFbean_SruWalet_AdminDormitoryList');
 					$dorms->listAllById($admin->id);
@@ -616,8 +616,10 @@ extends UFbox {
 			}
 
 			$d['computers'] = null;
+			$dormitories = array();
 			if (!is_null($dorms)) {
 				foreach ($dorms as $dorm) {
+					$dormitories[] = $dorm['dormitoryId'];
 					try {
 						$computers = UFra::factory('UFbean_Sru_ComputerList');
 						$computers->listActiveWithoutCarerByDorm($dorm['dormitoryId']);
@@ -635,6 +637,22 @@ extends UFbox {
 			}
 			if ($computerCount == 0) {
 				$d['computers'] = null;
+			}
+			
+			
+			try {
+				$devices = UFra::factory('UFbean_SruAdmin_InventoryCardList');
+				if ($admin->typeId == UFacl_SruAdmin_Admin::CAMPUS || $admin->typeId == UFacl_SruAdmin_Admin::CENTRAL) {
+					$devices->listWithoutInventoryCard();
+					$d['devices'] = $devices;
+				} else if (count($dormitories) > 0) {
+					$devices->listWithoutInventoryCard($dormitories);
+					$d['devices'] = $devices;
+				} else {
+					$d['devices'] = null;
+				}
+			} catch (UFex_Dao_NotFound $e) {
+				$d['devices'] = null;
 			}
 			
 			return $this->render(__FUNCTION__, $d);

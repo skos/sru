@@ -24,9 +24,9 @@ extends UFmap {
 		'deviceTableId'		=> 'i.table_id',
 	);
 	protected $columnTypes = array(
-		'cardId'		=> self::INT,
+		'cardId'		=> self::NULL_INT,
 		'deviceId'		=> self::INT,
-		'cardDormitoryId'	=> self::INT,
+		'cardDormitoryId'	=> self::NULL_INT,
 		'cardDormitoryName'	=> self::TEXT,
 		'cardDormitoryAlias'	=> self::TEXT,
 		'dormitoryId'		=> self::INT,
