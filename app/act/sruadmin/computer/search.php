@@ -16,6 +16,10 @@ extends UFact {
 			}
 
 			$bean = UFra::factory('UFbean_Sru_Computer');
+                        
+                        if(isset($post['mac'])) {
+                                $post['mac'] = str_replace(' ', '', $post['mac']);
+                        }
 
 			$finds = array();
 			if (isset($post['typeId']) && !empty($post['typeId']) && $post['typeId'] != "5") {
