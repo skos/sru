@@ -11,7 +11,7 @@ extends UFact {
 		try {
 			$this->begin();
 			$bean = UFra::factory('UFbean_SruWalet_Admin');
-			$bean->fillFromPost(self::PREFIX);
+			$bean->fillFromPost(self::PREFIX, array('dorm'));
 			$bean->modifiedById = $this->_srv->get('session')->authWaletAdmin;
 			$id = $bean->save();
 
