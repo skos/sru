@@ -27,7 +27,7 @@ class UFtpl_SruAdmin_InventoryCardHistory extends UFtpl_Common {
 					$changes[] = $names[$key] . ': ' . $val . $arr . $new[$key];
 					break;
 				case 'dormitoryId':
-					$changes[] = $names[$key] . ': ' . $old['dormitoryAlias'] . $arr . $new['dormitoryAlias'];
+					$changes[] = $names[$key] . ': ' . $old['dormitoryName'] . $arr . $new['dormitoryName'];
 					break;
 				case 'received':
 					$changes[] = $names[$key].': '.(is_null($val) ? 'brak' : date(self::TIME_YYMMDD, $val)).$arr.(is_null($new[$key]) ? 'brak' : date(self::TIME_YYMMDD, $new[$key]));
@@ -59,6 +59,7 @@ class UFtpl_SruAdmin_InventoryCardHistory extends UFtpl_Common {
 		    'received' => $current->received,
 		    'dormitoryId' => $current->dormitoryId,
 		    'dormitoryAlias' => $current->dormitoryAlias,
+		    'dormitoryName' => $current->dormitoryName,
 		    'modifiedById' => $current->modifiedById,
 		    'modifiedBy' => $current->modifiedBy,
 		    'modifiedAt' => $current->modifiedAt,

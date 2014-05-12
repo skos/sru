@@ -221,12 +221,14 @@ COMMENT ON TABLE device_models IS 'modele urzadzen';
 
 INSERT INTO device_models (name) VALUES ('Serwer X 0000');
 
+ALTER TABLE computers ADD COLUMN inventory_card_id bigint;
 ALTER TABLE computers ADD COLUMN device_model_id bigint;
 ALTER TABLE computers_history ADD COLUMN device_model_id bigint;
 
 -- poprawić id aktualizującego
 UPDATE computers SET device_model_id = 1, modified_at=now(), modified_by=23 WHERE type_id = 41 OR type_id = 43;
 
+ALTER TABLE computers ADD CONSTRAINT computers_inventory_card_id_fkey FOREIGN KEY (inventory_card_id) REFERENCES inventory_cards (id) ON UPDATE CASCADE ON DELETE RESTRICT;
 ALTER TABLE computers ADD CONSTRAINT computers_device_model_id_fkey FOREIGN KEY (device_model_id) REFERENCES device_models (id) ON UPDATE CASCADE ON DELETE RESTRICT;
 ALTER TABLE computers ADD CONSTRAINT computers_device_model_id_chk CHECK ((type_id <> 41 AND type_id <> 43) OR device_model_id IS NOT NULL);
 

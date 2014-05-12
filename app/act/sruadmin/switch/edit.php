@@ -76,10 +76,6 @@ extends UFact {
 				}
 			}
 
-			//TODO do usuniecia w ramach #434
-			$inventoryCard = UFra::factory('UFbean_SruAdmin_InventoryCard');
-			$inventoryCard->getByPk($bean->inventoryCardId);
-			$this->_srv->get('req')->get->newSwitchSn = $inventoryCard->serialNo; // jeśli się zmienił, to musimy się odwołać po nowym
 			$this->postDel(self::PREFIX);
 			$this->markOk(self::PREFIX);
 			$this->commit();

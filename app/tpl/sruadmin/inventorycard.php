@@ -67,7 +67,7 @@ extends UFtpl_Common {
 			}
 			$tmp[$dorm['id']] = $temp[1] . ' ' . $dorm['name'];
 		}
-		echo $form->dormitory('Na stanie', array(
+		echo $form->dormitoryId('Na stanie', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize($tmp),
 		));
@@ -95,7 +95,7 @@ extends UFtpl_Common {
 			}
 			$tmp[$dorm['id']] = $temp[1] . ' ' . $dorm['name'];
 		}
-		echo $form->dormitory('Na stanie', array(
+		echo $form->dormitoryId('Na stanie', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize($tmp),
 		));

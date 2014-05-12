@@ -18,6 +18,9 @@ extends UFact {
 			$bean->modifiedById = $this->_srv->get('session')->authAdmin;
 			$bean->modifiedAt = NOW;
 			$bean->save();
+			
+			//TODO do usuniecia w ramach #434
+			$this->_srv->get('req')->get->newSwitchSn = $bean->serialNo; // jeśli się zmienił, to musimy się odwołać po nowym
 
 			$this->postDel(self::PREFIX);
 			$this->markOk(self::PREFIX);
