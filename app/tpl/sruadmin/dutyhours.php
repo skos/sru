@@ -102,7 +102,7 @@ extends UFtpl_Common {
 		}
 	}
 
-	public function apiUpcomingDutyHours(array $d, $days, $dormitories, $en=false, $html = true) {
+	public function apiUpcomingDutyHours(array $d, $days, $dormitories,  $html = true, $en=false) {
 		$currentDay = date('N');
 		$lastDay = $currentDay + $days;
 		$thisWeek = '';

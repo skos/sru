@@ -31,10 +31,12 @@ extends UFlib_ClassWithService {
                         setlocale(LC_ALL, 'pl_PL.utf8');
                         putenv("LANG=" . 'pl_PL.utf8');
                         $lang = $session->lang;
-                        bindtextdomain($lang, $_SERVER['DOCUMENT_ROOT'] . '/../lang');
+                        bindtextdomain($lang,  './../lang');
                         textdomain($lang);
                 } else {
-                        $lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+                        $lang='';
+                        if(array_key_exists('HTTP_ACCEPT_LANGUAGE',$_SERVER))
+                                $lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
                         switch ($lang) {
                                 case "pl":
                                         $lang = 'pl';
@@ -45,7 +47,7 @@ extends UFlib_ClassWithService {
                         }
                         setlocale(LC_ALL, 'pl_PL.utf8');
                         putenv("LANG=" . 'pl_PL.utf8');
-                        bindtextdomain($lang, $_SERVER['DOCUMENT_ROOT'] . '/../lang');
+                        bindtextdomain($lang, './../lang');
                         textdomain($lang);
                 }
         }

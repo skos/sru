@@ -118,7 +118,7 @@ extends UFtpl_Common {
                 echo $form->_fieldset(_("Najbliższe dyżury"));
 
                 if (!is_null($d['dutyHours'])) {
-                        echo $d['dutyHours']->write('apiUpcomingDutyHours', 3, null, (($d['user']->lang=='pl')?false:true));
+                        echo $d['dutyHours']->write('apiUpcomingDutyHours', 3, null, true, (($d['user']->lang=='pl')?false:true));
                 }
                 echo '<p><a class="userAction" href="http://dyzury.ds.pg.gda.pl/">' . _("Pełna lista dyżurów") . '</a>';
                 echo $form->_end();
