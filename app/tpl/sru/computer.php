@@ -143,7 +143,7 @@ extends UFtpl_Common {
 
         public function detailsOwn(array $d){
                 echo '<h1>' . $d['host'] . '.ds.pg.gda.pl</h1>';
-                echo '<p><em>' . _("Typ:") . '</em> ' . self::$computerTypes[$d['typeId']] . '</p>';
+                echo '<p><em>' . _("Typ:") . '</em> ' . _(self::$computerTypes[$d['typeId']]) . '</p>';
                 echo '<p><em>' . _("MAC:") . '</em> ' . $d['mac'] . '</p>';
                 echo '<p><em>' . _("IP:") . '</em> ' . $d['ip'] . '</p>';
                 echo '<p><em>' . _("Rejestracja do:") . '</em> ' . (is_null($d['availableTo']) ? _("brak limitu") : date(self::TIME_YYMMDD, $d['availableTo'])) . '</p>';

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: sru 0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-03-03 17:51+0100\n"
-"PO-Revision-Date: 2014-05-04 22:56+0100\n"
+"PO-Revision-Date: 2014-05-13 20:13+0100\n"
 "Last-Translator: Piotr Dołowy <triop@ds.pg.gda.pl>\n"
 "Language-Team: sru-team <adnet@ds.pg.gda.pl>\n"
 "Language: \n"
@@ -707,4 +707,16 @@ msgstr "Applied Physics and Mathematics"
 
 msgid "Oceanotechniki i Okrętownictwa"
 msgstr "Ocean Engineering and Ship Technology"
+
+msgid "Student - komp/tel"
+msgstr "Student - computer/phone"
+
+msgid "Student - AP"
+msgstr "Student - AP"
+
+msgid "Student - inne"
+msgstr "Student - other"
+
+msgid "Turysta"
+msgstr "Tourist"
 
