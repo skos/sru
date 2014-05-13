@@ -22,7 +22,7 @@ extends UFdao {
 		$mapping = $this->mapping('listhistory');
 
 		$query = $this->prepareSelect($mapping);
-		$query->where($mapping->serialNo,'%'.$serialNo.'%', UFlib_Db_Query::LIKE);
+		$query->where($mapping->serialNoLower,'%'.$serialNo.'%', UFlib_Db_Query::LIKE);
 		$query->order($mapping->pkName(), $query->DESC);
 		if (is_int($count)) {
 			$query->limit($count);
