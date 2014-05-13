@@ -626,7 +626,7 @@ activateChkB.onclick = function() {
 				echo '</div>';
 			}
 		}
-		echo $form->host('Nazwa', array('after'=>UFlib_Helper::displayHint(_("Nazwa komputera w sieci - nie musi być zgodna z nazwą w systemie Windows/Linux. Możesz podać inną nazwę niż propozycja SRU - jest ona prawie dowolna, ale może zawierać tylko litery, cyfry oraz myślnik."))));
+		echo $form->host(_('Nazwa'), array('after'=>UFlib_Helper::displayHint(_("Nazwa komputera w sieci - nie musi być zgodna z nazwą w systemie Windows/Linux. Możesz podać inną nazwę niż propozycja SRU - jest ona prawie dowolna, ale może zawierać tylko litery, cyfry oraz myślnik."))));
 		if ($admin) {
 			echo $form->ip('IP');
 ?><script type="text/javascript">
