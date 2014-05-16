@@ -542,7 +542,7 @@ $(function() {
                                 if ($d['facultyId'] != $tmp['0']) {
                                         echo $form->studyYearId(_("Rok studiów"), array(
                                                 'type' => $form->SELECT,
-                                                'labels' => $form->_labelize(_(self::$studyYears)),
+                                                'labels' => $form->_labelize(self::$studyYears),
                                                 'class' => 'required',
                                         ));
                                 }

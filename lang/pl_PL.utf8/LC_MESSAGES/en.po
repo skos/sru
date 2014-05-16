@@ -1,22 +1,13 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
 msgid ""
 msgstr ""
-"Project-Id-Version: sru 0.1\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-03 17:51+0100\n"
-"PO-Revision-Date: 2014-05-13 20:13+0100\n"
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
 "Last-Translator: Piotr Dołowy <triop@ds.pg.gda.pl>\n"
 "Language-Team: sru-team <adnet@ds.pg.gda.pl>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: English\n"
-"X-Poedit-SourceCharset: utf-8\n"
 
 #: sru3/app/tpl/sru/user.php:453
 msgid "Dane na Twoim koncie wymagają aktualizacji. Prosimy o wypełnienie prawidłowymi danymi wszystkich wymaganych pól (oznaczonych czerwoną obwódką). W celu ułatwienia kontaktu ze SKOS, możesz wypełnić także pola niewymagane."
@@ -719,4 +710,28 @@ msgstr "Student - other"
 
 msgid "Turysta"
 msgstr "Tourist"
+
+msgid "Witamy w Osiedlu Studenckim Politechniki Gdańskiej!"
+msgstr "Welcome to Gdansk University of Technology Student Housing Estate!"
+
+msgid "imię i nazwisko"
+msgstr "name and surname"
+
+msgid "zameldowanie"
+msgstr "check-in"
+
+msgid "Aby mieć Internet, zaloguj się na swoje konto w Systemie Rejestracji Użytkowników (http://sru.ds.pg.gda.pl) skorzystaj z następujących danych"
+msgstr "To have the Internet, log in to your account User Registration Scheme (http://sru.ds.pg.gda.pl) from the following data"
+
+msgid "login"
+msgstr "login"
+
+msgid "Użyj tego samego hasła, jakiego używał(a/e)ś poprzednio. Jeśli nie pamiętasz go, skorzystaj z przypomnienia hasła na SRU lub odwiedź administratora w godzinach dyżuru. Nie zapomnij wejściówki! Aby mieć Internet, po zalogowaniu się przywróć swoje komputery i odczekaj ok godzinę"
+msgstr "Use the same password you used previously. If you do not remember it, please use the password reminder on the SRU or visit the administrator on-call hours. Do not forget capita card! To have the Internet, after logging in, restore yours computers and wait about an hour."
+
+msgid "hasło"
+msgstr "password"
+
+msgid "Zaraz po zalogowaniu zostaniesz poproszon(a/y) o zmianę hasła oraz uzupełnienie swoich danych kontaktowych i statystycznych. Następnie dodaj komputer i w przeciągu godziny ciesz się Internetem!"
+msgstr "After logging you will be asked to change your password and complete yours contact and statistics details. Then add your computer and within hours enjoy the Internet!"
 
