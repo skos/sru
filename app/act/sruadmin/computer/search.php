@@ -18,7 +18,7 @@ extends UFact {
 			$bean = UFra::factory('UFbean_Sru_Computer');
                         
                         if(isset($post['mac'])) {
-                                $post['mac'] = preg_replace('/\s/', '', $post['mac']);
+                                $post['mac'] = preg_replace('/[^a-zA-Z0-9:-]/', '', $post['mac']);
                         }
 
 			$finds = array();
