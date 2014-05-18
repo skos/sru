@@ -1,5 +1,6 @@
 msgid ""
 msgstr ""
+"Language: English\n"
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
@@ -448,7 +449,7 @@ msgid "Widziany:"
 msgstr "Seen:"
 
 msgid "Liczba kar:"
-msgstr "Number of penalties"
+msgstr "Number of penalties:"
 
 msgid "Miejsce:"
 msgstr "Room:"

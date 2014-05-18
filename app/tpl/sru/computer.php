@@ -141,13 +141,13 @@ extends UFtpl_Common {
 		echo 'Edycja aliasów komputera "'.$d['host'].'"';
 	}
 
-        public function detailsOwn(array $d){
+        public function detailsOwn(array $d, $user){
                 echo '<h1>' . $d['host'] . '.ds.pg.gda.pl</h1>';
                 echo '<p><em>' . _("Typ:") . '</em> ' . _(self::$computerTypes[$d['typeId']]) . '</p>';
                 echo '<p><em>' . _("MAC:") . '</em> ' . $d['mac'] . '</p>';
                 echo '<p><em>' . _("IP:") . '</em> ' . $d['ip'] . '</p>';
                 echo '<p><em>' . _("Rejestracja do:") . '</em> ' . (is_null($d['availableTo']) ? _("brak limitu") : date(self::TIME_YYMMDD, $d['availableTo'])) . '</p>';
-                echo '<p><em>' . _("Miejsce:") . '</em> ' . $d['locationAlias'] . ' (' . $d['dormitoryName'] . ')</p>';
+                echo '<p><em>' . _("Miejsce:") . '</em> ' . $d['locationAlias'] . ' (' . (($user->lang == 'pl') ? $d['dormitoryName'] : $d['dormitoryNameEn']). ')</p>';
                 echo '<p><em>' . _("Liczba kar:") . '</em> ' . $d['bans'] . '</p>';
                 echo '<p><em>' . _("Widziany:") . '</em> ' . ($d['lastSeen'] == 0 ? _("nigdy") : date(self::TIME_YYMMDD_HHMM, $d['lastSeen'])) . '</p>';
         }

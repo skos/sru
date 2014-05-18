@@ -206,7 +206,6 @@ extends UFbox {
 	public function titleUserComputer() {
 		try {
 			$bean = $this->_getComputerFromGetByCurrentUser();
-
 			$d['computer'] = $bean;
 
 			return $this->render(__FUNCTION__, $d);
@@ -218,8 +217,11 @@ extends UFbox {
 	public function userComputer() {
 		try {
 			$bean = $this->_getComputerFromGetByCurrentUser();
-
 			$d['computer'] = $bean;
+			
+			$user = UFra::factory('UFbean_Sru_User');
+			$user->getFromSession();
+			$d['user'] = $user;
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {

@@ -250,7 +250,7 @@ extends UFtpl_Common {
 		$acl = $this->_srv->get('acl');
 
 		echo '<div class="computer">';
-		$d['computer']->write('detailsOwn');
+		$d['computer']->write('detailsOwn', $d['user']);
                 echo '<p><a class="userAction" href="' . $this->url(1) . '">' . _("Powrót do listy") . '</a>';
                 if ($acl->sru('computer', 'edit')) {
                         echo ' &bull; <a class="userAction" href="' . $this->url(2) . '/:edit">' . _("Edytuj") . '</a>';

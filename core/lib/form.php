@@ -195,7 +195,11 @@ extends UFlib_ClassWithService {
 	public function _labelize(array $src, $value=null, $label=null) {
 		$tmp = array();
 		if (is_string($label) && (is_int($value) || is_string($value))) {
-			$tmp[] = array('value'=>$value, 'label'=>_($label));
+			if ($label == '') {
+				$tmp[] = array('value'=>$value, 'label'=> $label);
+			} else {
+				$tmp[] = array('value'=>$value, 'label'=>_($label));
+			}
 		}
 		foreach ($src as $id=>$t) {
                         if($t==null)
