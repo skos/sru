@@ -210,7 +210,11 @@ extends UFtpl_Common {
 	}
 
 	public function userComputers(array $d) {
-                echo '<h1>' . _("Twoje komputery") . '</h1><ul>';
+		$form = UFra::factory('UFlib_Form');
+		
+		echo $form->_start();
+                echo $form->_fieldset(_("Twoje komputery"));
+                echo '<ul>';
                 if ($this->_srv->get('msg')->get('computerEdit/ok')) {
                         echo $this->OK(_("Dane zostały zmienione."));
                 } else if ($this->_srv->get('msg')->get('computerAdd/ok')) {
@@ -220,7 +224,9 @@ extends UFtpl_Common {
                 }
                 $d['computers']->write('listOwn');
                 echo '</ul>';
-                echo '<p>' . _("Samodzielnie możesz dodać tylko jeden komputer. Jeżeli chcesz zarejestrować kolejny, zgłoś się do administratora lokalnego.") . '</p>';
+                echo '<p><br/>' . _("Samodzielnie możesz dodać tylko jeden komputer. Jeżeli chcesz zarejestrować kolejny, zgłoś się do administratora lokalnego.") . '</p>';
+		echo $form->_end();
+		echo $form->_end(true);
         }
 
 	public function userComputersNotFound(array $d) {
@@ -248,7 +254,10 @@ extends UFtpl_Common {
 
 	public function userComputer(array $d) {
 		$acl = $this->_srv->get('acl');
+		$form = UFra::factory('UFlib_Form');
 
+		echo $form->_start();
+		echo $form->_fieldset(_('Dane hosta'));
 		echo '<div class="computer">';
 		$d['computer']->write('detailsOwn', $d['user']);
                 echo '<p><a class="userAction" href="' . $this->url(1) . '">' . _("Powrót do listy") . '</a>';
@@ -256,6 +265,8 @@ extends UFtpl_Common {
                         echo ' &bull; <a class="userAction" href="' . $this->url(2) . '/:edit">' . _("Edytuj") . '</a>';
                 }
 		echo '</p></div>';
+		echo $form->_end();
+		echo $form->_end(true);
 	}
 
 	public function userComputerNotFound() {

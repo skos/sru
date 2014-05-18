@@ -46,8 +46,7 @@ extends UFtpl_Common {
 		$url = $this->url(0);
 		$form = UFra::factory('UFlib_Form');
 		echo $form->_start();
-		echo $form->_fieldset();
-		echo '<h1>'._("Archiwum kar i ostrzeżeń").'</h1>';
+		echo $form->_fieldset(_("Archiwum kar i ostrzeżeń"));
 		
 		foreach ($d as $c) {
 			if ($c['endAt'] > time()) {	
