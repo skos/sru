@@ -163,7 +163,7 @@ extends UFtpl_Common {
 			echo '<td'.((!is_null($c['cardId']) && $c['cardId'] != '' && $c['cardDormitoryId'] != $c['dormitoryId']) ? ' class="wrongInvCardData"' : '').'>'.strtoupper($c['dormitoryAlias']).', '.$c['locationAlias'].'</td>';
 			echo '<td>'.$c['serialNo'].'</td>';
 			echo '<td>'.$c['inventoryNo'].'</td>';
-			echo '<td>'.($c['received'] == null ? '' : date(self::TIME_YYMMDD, $c['received'])).is_null($c['cardId']).'</td></tr>';
+			echo '<td>'.($c['received'] == null ? '' : date(self::TIME_YYMMDD, $c['received'])).'</td></tr>';
 		}
 		echo '</tbody>';
 		echo '</table>';
