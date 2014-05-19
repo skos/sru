@@ -782,4 +782,4 @@ msgstr ""
 "enjoy the Internet!"
 
 msgid "Dane hosta"
-msgstr "Host dat"
+msgstr "Host data"
