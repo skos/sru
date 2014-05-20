@@ -64,7 +64,7 @@ extends UFact {
 				}
 			}
 
-			$bean->fillFromPost(self::PREFIX, null, array('mac', 'host', 'typeId', 'masterHostId', 'skosCarerId', 'waletCarerId'));
+			$bean->fillFromPost(self::PREFIX, null, array('mac', 'host', 'typeId', 'masterHostId', 'skosCarerId', 'waletCarerId', 'deviceModelId'));
 			if (is_null($bean->masterHostId) || $bean->masterHostId == 0) {
 				$bean->masterHostId = null;
 			}
