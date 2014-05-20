@@ -60,7 +60,7 @@ extends UFact {
 				}
 			}
 
-			$bean->fillFromPost(self::PREFIX, array('availableTo')); // zgodnie z ticketem #176 filtr wyłączony
+			$bean->fillFromPost(self::PREFIX, array('availableTo', 'skosCarerId', 'waletCarerId')); // zgodnie z ticketem #176 filtr wyłączony
 			if (($bean->typeId == UFbean_Sru_Computer::TYPE_SERVER || $bean->typeId == UFbean_Sru_Computer::TYPE_SERVER_VIRT || 
 				$bean->typeId == UFbean_Sru_Computer::TYPE_MACHINE) && !is_null($post['skosCarerId']) && $post['skosCarerId'] != 0) {
 				$bean->carerId = $post['skosCarerId'];

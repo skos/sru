@@ -34,10 +34,14 @@ extends UFbean_Common {
 	);
 
 	protected function validateHost($val, $change) {
+		$post = $this->_srv->get('req')->post->{$change?'computerEdit':'computerAdd'};
 		try {
 			$bean = UFra::factory('UFbean_Sru_Computer');
 			$bean->getByHost($val);
 			if ($change && $this->data['id'] == $bean->id) {
+				return;
+			}
+			if (!$this->data['active'] && !$post['activateHost'] && $this->data['host'] == $post['host']) {
 				return;
 			}
 			return 'duplicated';
@@ -149,6 +153,7 @@ extends UFbean_Common {
 	}
 
 	protected function validateIp($val, $change) {
+		$post = $this->_srv->get('req')->post->{$change?'computerEdit':'computerAdd'};
 		$ips = explode('.', $val);
 		foreach ($ips as $ip) {
 			if ($ip < 0 || $ip >255) {
@@ -159,6 +164,9 @@ extends UFbean_Common {
 			$bean = UFra::factory('UFbean_Sru_Computer');
 			$bean->getByIp($val);
 			if ($change && $this->data['id'] == $bean->id) {
+				return;
+			}
+			if (!$this->data['active'] && !$post['activateHost'] && $this->data['ip'] == $post['ip']) {
 				return;
 			}
 			return 'duplicated';
