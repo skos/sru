@@ -64,9 +64,14 @@ extends UFtpl_Common {
 
 	public function waletBar(array $d) {
 		$form = UFra::factory('UFlib_Form', 'adminLogout');
+		$sruConf = UFra::shared('UFconf_Sru');
+		$timeToInvalidatePassword = $d['admin']->lastPswChange + $sruConf->passwordValidTime - time();
 
 		echo $form->_start($this->url(0).'/', array('class'=>'userBar'));
 		echo $form->_fieldset();
+		if($d['admin']->type != UFacl_SruWalet_Admin::PORTIER && $timeToInvalidatePassword < $sruConf->passwordOutdatedWarning){
+		    echo '<img src="'.UFURL_BASE.'/i/img/padlock.jpg" alt="Padlock" title="Zbliża się czas wygaśnięcia hasła" />&nbsp;';
+		}
 		echo $d['admin']->write(__FUNCTION__, $d['lastLoginIp'], $d['lastLoginAt'], $d['lastInvLoginIp'], $d['lastInvLoginAt']);
 		echo $form->logout('', array('type'=>$form->HIDDEN, 'value'=>true));
 		echo $form->_submit('Wyloguj', array('name'=>'adminLogout'));

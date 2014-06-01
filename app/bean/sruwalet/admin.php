@@ -25,26 +25,36 @@ extends UFbean_Common {
 	}
 
 	protected function validatePassword($val, $change) {
-		$post = $this->_srv->get('req')->post->{$change?'adminEdit':'adminAdd'};
-		$admin = UFra::factory('UFbean_SruWalet_Admin');
-		if ($change) {
-			try {
-				$admin->getByPK($this->data['id']);
-				if (self::validateBlowfishPassword($val, $admin->password)) {
-					return 'same';
-				}
-			} catch (UFex $e) {
-				return 'unknown';
-			}
+	    $post = '';
+	    if($change == true){
+		if($this->_srv->get('req')->post->is('adminEdit')){
+		    $post = $this->_srv->get('req')->post->adminEdit;
+		}else{
+		    $post = $this->_srv->get('req')->post->adminOwnPswEdit;
 		}
-		
-		try {
-			if ($post['password2'] !== $val) {
-				return 'mismatch';
-			}
-		} catch (UFex $e) {
-			return 'unknown';
-		}
+	    }else{
+		$post = $this->_srv->get('req')->post->adminAdd;
+	    }
+
+	    $admin = UFra::factory('UFbean_SruWalet_Admin');
+	    if ($change) {
+		    try {
+			    $admin->getByPK($this->data['id']);
+			    if (self::validateBlowfishPassword($val, $admin->password)) {
+				    return 'same';
+			    }
+		    } catch (UFex $e) {
+			    return 'unknown';
+		    }
+	    }
+
+	    try {
+		    if ($post['password2'] !== $val) {
+			    return 'mismatch';
+		    }
+	    } catch (UFex $e) {
+		    return 'unknown';
+	    }
 	}
 
 	protected function normalizePassword($val, $change) {

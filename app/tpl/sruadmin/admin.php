@@ -106,6 +106,8 @@ extends UFtpl_Common {
 		echo $this->_escape($d['name']);
 	}	
 	public function details(array $d) {
+		$session = $this->_srv->get('session');
+		$sruConf = UFra::shared('UFconf_Sru');
 		if (array_key_exists($d['typeId'], UFtpl_SruAdmin_Admin::$adminTypes)) {
 			$type = UFtpl_SruAdmin_Admin::$adminTypes[$d['typeId']];
 		} else {
@@ -126,12 +128,17 @@ extends UFtpl_Common {
 		}else{
 			echo '<p><em>Data dezaktywacji:</em>Data dezaktywacji nie została podana</p>';
 		}
+		$timeToInvalidatePassword = $d['lastPswChange'] + $sruConf->passwordValidTime - time();
+		if(($d['id'] == $session->authAdmin || ($session->is('typeId') && ($session->typeId == UFacl_SruAdmin_Admin::CENTRAL
+			|| $session->typeId == UFacl_SruAdmin_Admin::CAMPUS))) && $d['active'] == true 
+			&& ($timeToInvalidatePassword < $sruConf->passwordOutdatedWarning)) {
+		    echo $this->ERR("<br />Hasło niedługo (za " . UFlib_Helper::secondsToTime($timeToInvalidatePassword) . ") straci ważność, należy je zmienić!<br />&nbsp;");
+		}
 		echo '<p><em>Ostatnia zmiana hasła:</em> '.((is_null($d['lastPswChange']) || $d['lastPswChange'] == 0) ? 'brak' : date(self::TIME_YYMMDD_HHMM, $d['lastPswChange'])).'</p>';
 		echo '<p><em>Ostatnia zmiana hasła wew.:</em> '.((is_null($d['lastPswInnerChange']) || $d['lastPswInnerChange'] == 0) ? 'brak' : date(self::TIME_YYMMDD_HHMM, $d['lastPswInnerChange'])).'</p>';
-		if(($d['id'] == $this->_srv->get('session')->authAdmin || ($this->_srv->get('session')->is('typeId') 
-					&& ($this->_srv->get('session')->typeId == UFacl_SruAdmin_Admin::CENTRAL 
-						|| $this->_srv->get('session')->typeId == UFacl_SruAdmin_Admin::CAMPUS)))
-					&& $d['active'] == true && $d['activeTo'] - time() <= UFra::shared('UFconf_Sru')->adminDeactivateAfter && $d['activeTo'] - time() >= 0){
+		if(($d['id'] == $session->authAdmin || ($session->is('typeId') && ($session->typeId == UFacl_SruAdmin_Admin::CENTRAL 
+			|| $session->typeId == UFacl_SruAdmin_Admin::CAMPUS)))
+			&& $d['active'] == true && $d['activeTo'] - time() <= $sruConf->adminDeactivateAfter && $d['activeTo'] - time() >= 0){
 			echo $this->ERR("<br />Konto niedługo ulegnie dezaktywacji, należy przedłużyć jego ważność w CUI!<br />&nbsp;");
 		}
 	}
@@ -320,6 +327,15 @@ extends UFtpl_Common {
 			echo ' <a href="'.$this->url(0).'/admins/'.$d['id'].'">Powrót</a>';
 			echo $form->_end();
 		}
+	}
+	
+	public function ownPswEdit(array $d){
+	    $form = UFra::factory('UFlib_Form', 'adminOwnPswEdit', $d, $this->errors);
+	    echo $form->_fieldset('Okresowa zmiana hasła');
+	    echo $form->password('Hasło', array('type'=>$form->PASSWORD, 'after'=> UFlib_Helper::displayHint("Hasło do logowania się do SRU. Musi mieć co najmniej 8 znaków, zawierać co najmniej 1 dużą literę, 1 małą literę, 1 cyfrę i 1 znak specjalny.")));
+	    echo $form->password2('Powtórz hasło', array('type'=>$form->PASSWORD));
+	    echo $form->_submit('Zapisz');
+	    echo $form->_end();
 	}
 
 	public function adminBar(array $d, $ip, $time, $invIp, $invTime) {

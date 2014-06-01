@@ -1056,6 +1056,20 @@ extends UFbox {
 			return $this->render('adminNotFound');
 		}
 	}
+	
+	public function OwnPswEdit(){
+	    try{
+		$bean = UFra::factory('UFbean_SruAdmin_Admin');
+		$bean->getFromSession();
+		
+		$d['admin'] = $bean;
+		
+		return $this->render(__FUNCTION__, $d);
+	    } catch (UFex_Dao_NotFound $e) {
+		return  $this->render('adminNotFound');
+	    }
+	}
+	
 	public function dorms() 
 	{
 		try 

@@ -140,4 +140,37 @@ class UFlib_Helper {
 		return $name;
 	}
 
+	/**
+	 * Funkcja konwertująca sekundy do bardziej czytelnej formy
+	 * 
+	 * @param uint $seconds licza sekund do konwersji
+	 * @return mixed 
+	 */
+	public static function secondsToTime($seconds){
+	    $minute = 60;
+	    $hour = $minute * 60;
+	    $day = $hour * 24;
+	    
+	    if ($seconds < 0){
+		return 0;
+	    }
+	    
+	    $tmp = $seconds;
+	    $days = floor($seconds / $day);
+	    $tmp %= $day;
+	    $hours = floor($tmp / $hour);
+	    $tmp %= $hour;
+	    $minutes = floor($tmp / $minute);
+	    $secs = $tmp % $minute;
+	    
+	    $time = $hours . ":" . $minutes . ":" . $secs;
+	    
+	    $fullTime = $days . ":" . $time;
+	    
+	    if($seconds < $day){
+		return $time;
+	    }else{
+		return $fullTime;
+	    }
+	}
 }

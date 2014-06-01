@@ -4,12 +4,26 @@
  */
 class UFctl_SruWalet_Front
 extends UFctl {
-
+	const PORTIER = 14;
+	
 	protected function parseParameters() {
 		$req = $this->_srv->get('req');
 		$get = $req->get;
 		$acl = $this->_srv->get('acl');
 
+		try{
+		    $admin = UFra::factory('UFbean_SruWalet_Admin');
+		    $admin->getFromSession();
+		    
+//		    if($this->_srv->get('session')->typeIdWalet != self::PORTIER
+//			 && (is_null($admin->lastPswChange) == true || time() - $admin->lastPswChange > UFra::shared('UFconf_Sru')->passwordValidTime)){
+//			$get->view = 'adminOwnPswEdit';
+//			$get->adminId = $admin->id;
+//			return ;
+//		    }
+		} catch (UFex_Core_DataNotFound $ex) {
+		}
+		
 		$segCount = $req->segmentsCount();
 		if (0 == $segCount) {
 			$get->view = 'main';
@@ -248,6 +262,8 @@ extends UFctl {
 			$act = 'Doc_Export';
 		} elseif ('dormitories/room/edit' == $get->view && $post->is('roomEdit') && $acl->sruWalet('room', 'edit')) {
 			$act = 'Room_Edit';
+		} elseif('adminOwnPswEdit' == $get->view /*&& $post->is('adminOwnPswEdit')*/ && $acl->sruWalet('admin', 'edit', $get->adminId)){
+			$act = 'Admin_OwnPswEdit';
 		}
 
 		if (isset($act)) {
@@ -415,6 +431,8 @@ extends UFctl {
 				} else {
 					return 'Sru_Error403';
 				}
+			case  'adminOwnPswEdit':
+			    return 'SruAdmin_OwnPswEdit';
 			default:
 				return 'Sru_Error404';
 		}

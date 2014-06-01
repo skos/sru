@@ -990,4 +990,17 @@ extends UFbox {
 			return '';
 		}	
 	}
+	
+	public function OwnPswEdit(){
+	    try{
+		$bean = UFra::factory('UFbean_SruWalet_Admin');
+		$bean->getFromSession();
+		
+		$d['admin'] = $bean;
+		
+		return $this->render(__FUNCTION__, $d);
+	    } catch (UFex_Dao_NotFound $e) {
+		return  $this->render('adminNotFound');
+	    }
+	}
 }

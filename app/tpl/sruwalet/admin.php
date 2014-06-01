@@ -110,6 +110,8 @@ $(document).ready(function()
 	}
 
 	public function details(array $d) {
+		$session = $this->_srv->get('session');
+		$sruConf = UFra::shared('UFconf_Sru');
 		$url = $this->url(0);
 		if (array_key_exists($d['typeId'], UFtpl_SruWalet_Admin::$adminTypes)) {
 			$type = UFtpl_SruWalet_Admin::$adminTypes[$d['typeId']];
@@ -371,5 +373,14 @@ function filter(selector, query) {
 }
 </script>
 <?
-	}	
+	}
+	
+//	public function ownPswEdit(array $d){
+//	    $form = UFra::factory('UFlib_Form', 'adminOwnPswEdit', $d, $this->errors);
+//	    echo $form->_fieldset('Okresowa zmiana hasła');
+//	    echo $form->password('Hasło', array('type'=>$form->PASSWORD, 'after'=> UFlib_Helper::displayHint("Hasło do logowania się do SRU. Musi mieć co najmniej 8 znaków, zawierać co najmniej 1 dużą literę, 1 małą literę, 1 cyfrę i 1 znak specjalny.")));
+//	    echo $form->password2('Powtórz hasło', array('type'=>$form->PASSWORD));
+//	    echo $form->_submit('Zapisz');
+//	    echo $form->_end();
+//	}
 }

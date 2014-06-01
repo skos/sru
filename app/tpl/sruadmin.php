@@ -53,11 +53,16 @@ extends UFtpl_Common {
 
 	public function adminBar(array $d) {
 		$form = UFra::factory('UFlib_Form', 'adminLogout');
+		$sruConf = UFra::shared('UFconf_Sru');
+		$timeToInvalidatePassword = $d['admin']->lastPswChange + $sruConf->passwordValidTime - time();
 
 		echo $form->_start($this->url(0).'/', array('class'=>'userBar'));
 		echo $form->_fieldset();
-		if($d['admin']->active == true && $d['admin']->activeTo - time() <= UFra::shared('UFconf_Sru')->adminDeactivateAfter && $d['admin']->activeTo - time() >= 0) {
-			echo '<img src="'.UFURL_BASE.'/i/img/wykrzyknik.png" alt="Wykrzyknik" title="Zbliża się czas dezaktywacji konta" />&nbsp;';
+		if($timeToInvalidatePassword < $sruConf->passwordOutdatedWarning){
+		    echo '<img src="'.UFURL_BASE.'/i/img/padlock.jpg" alt="Padlock" title="Zbliża się czas wygaśnięcia hasła" />&nbsp;';
+		}
+		if($d['admin']->active == true && $d['admin']->activeTo - time() <= $sruConf->adminDeactivateAfter && $d['admin']->activeTo - time() >= 0) {
+		    echo '<img src="'.UFURL_BASE.'/i/img/wykrzyknik.png" alt="Wykrzyknik" title="Zbliża się czas dezaktywacji konta" />&nbsp;';
 		}
 		echo $d['admin']->write(__FUNCTION__, $d['lastLoginIp'], $d['lastLoginAt'], $d['lastInvLoginIp'], $d['lastInvLoginAt']);
 		echo $form->logout('', array('type'=>$form->HIDDEN, 'value'=>true));
@@ -785,6 +790,16 @@ extends UFtpl_Common {
 		echo $form->_start();
 		echo $d['admin']->write('formEdit', $d['dormitories'], $d['dutyHours'], $d['dormList'], $d['advanced']);
 		echo $form->_end(true);
+	}
+	public function titleOwnPswEdit(array $d){
+	    echo 'Konieczna zmiana hasła';
+	}
+	public function ownPswEdit(array $d){
+	    $form = UFra::factory('UFlib_Form');
+	    echo '<h2>Konieczna zmiana hasła</h2>';
+	    echo $form->_start();
+	    echo $d['admin']->write('ownPswEdit');
+	    echo $form->_end(true);
 	}
 	public function titleDormitories() {
 		echo 'Akademiki';
