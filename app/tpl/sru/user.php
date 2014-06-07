@@ -1018,8 +1018,7 @@ changeVisibility();
 			'id' => 'userTypeSelector'
 		));
 
-		echo $form->registryNo('Nr indeksu', array('value'=>$registryNo,
-                    'after'=>'<span id="registryNoCheckResult"></span><br/>'));
+		echo $form->registryNo('Nr indeksu', array('after'=>'<span id="registryNoCheckResult"></span><br/>'));
 		
 		$tmp = array();
 		foreach ($faculties as $fac) {

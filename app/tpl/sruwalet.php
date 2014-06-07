@@ -215,9 +215,13 @@ extends UFtpl_Common {
                 } else if($user == 'invalid') { //niepoprawny format
                         echo 'invalid';
                 } else { //utworzenie linku do usera o takim samym nr indeksu
-                        echo "<strong class=\"msgError\"><a href=\"", $this->url(0), "/users/", $user->id, "\">", $user->name, " ", $user->surname, "</a> posiada ten sam numer indeksu</strong>" ;
+                        echo " <strong class=\"msgError\"><a href=\"", $this->url(0), "/users/", $user->id, "\">", $user->name, " ", $user->surname, "</a> posiada ten sam numer indeksu</strong>" ;
                 }
         }
+	
+	public function checkRegistryNoResultsNotFound(array $d) {
+		return;
+	}
                 
 	public function userSearchResultsNotFound(array $d) {
 		echo $this->ERR('Nie znaleziono.');

@@ -232,7 +232,7 @@ extends UFbean_Common {
 		return;
 	}
         
-        public function checkRegistryNo($val) {
+        public static function checkRegistryNo($val) {
                 if (!preg_match('/^[0-9]{5,6}$/', $val)) {  //sprawdzenie poprawnosci formatu nr indeksu
                         $user='invalid';
                 } else {
@@ -244,7 +244,7 @@ extends UFbean_Common {
                                 $user='ok';
                         }
                 }
-        return $user;
+		return $user;
         }
 	
 	protected function validateTypeId($val, $change) {

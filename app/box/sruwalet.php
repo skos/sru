@@ -225,9 +225,12 @@ extends UFbox {
 	}
         
         public function checkRegistryNoResults() {
-        	$get = $this->_srv->get('req')->get;
-                $d['registryNo'] = $get->registryNoToCheck;
-                return $this->render(__FUNCTION__, $d);
+		if ($this->_srv->get('req')->get->is('registryNoToCheck')) {
+			$get = $this->_srv->get('req')->get;
+			$d['registryNo'] = $get->registryNoToCheck;
+			return $this->render(__FUNCTION__, $d);
+		}
+		return $this->render(__FUNCTION__.'NotFound', array());
 	}
 
 	public function toDoList() {
