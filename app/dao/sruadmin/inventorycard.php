@@ -112,6 +112,11 @@ extends UFdao {
 						$query->where($var.'Search', '%'.$val.'%', UFlib_Db_Query::LIKE);
 						break;
 					case 'dormitory':
+						$query->where(
+							'('.$mapping->column('dormitory').'=\''.$val.'\' OR '.$mapping->column('dormitoryAlias').'=\''.$val.'\')',
+							null, $query->SQL
+						);
+						break;
 					default:
 						$query->where($var, $val);
 				}
