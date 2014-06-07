@@ -1009,6 +1009,9 @@ $("#macvendor").load('<?=UFURL_BASE?>/admin/apis/getmacvendor/<?=$searchedMac?>'
 				$d['typeId'] == UFbean_Sru_Computer::TYPE_MACHINE) {
 				echo 'Opiekun: '.$d['carerName']."\n";
 			}
+			if ($d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER || $d['typeId'] == UFbean_Sru_Computer::TYPE_MACHINE) {
+				echo 'Model '.$d['deviceModelName']."\n";
+			}
 		}
 		if (!is_null($admin)) {
 			echo 'Admin modyfikujący: '.$admin->name."\n";

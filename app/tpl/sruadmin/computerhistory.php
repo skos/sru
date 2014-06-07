@@ -189,6 +189,15 @@ extends UFtpl_Common {
 						echo "\n";
 					}
 					break;
+				case 'deviceModelId':
+					if ($new['typeId'] == UFbean_Sru_Computer::TYPE_SERVER || $new['typeId'] == UFbean_Sru_Computer::TYPE_MACHINE) {
+						echo $names[$key].': '.(is_null($val) ? 'brak' : $old['deviceModelName']);
+						if ($val!==$new[$key]) {
+							echo $arr.(is_null($new[$key]) ? 'brak' : $new['deviceModelName']);
+						}
+						echo "\n";
+					}
+					break;
 				default: continue;
 			}
 		}

@@ -26,6 +26,7 @@ extends UFbean_Common {
 		'mac',
 		'availableTo',
 		'carerId',
+		'deviceModelId',
 	);
 	
 	protected $typeToVLAN = array(
