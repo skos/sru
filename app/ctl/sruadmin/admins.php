@@ -13,12 +13,9 @@ extends UFctl {
 		$segCount = $req->segmentsCount();
 
 		// wyzsze segmenty sprawdzane sa w front'ie
-		if (1 == $segCount)	
-		{
+		if (1 == $segCount) {
 			$get->view = 'admins/main';
-		} 
-		else
-		{
+		} else {
 			switch ($req->segment(2)) 
 			{
 				case ':add':

@@ -9,19 +9,19 @@ extends UFctl {
 		$req = $this->_srv->get('req');
 		$get = $req->get;
 		$acl = $this->_srv->get('acl');
-		
-		try{
-		    $admin = UFra::factory('UFbean_SruAdmin_Admin');
-		    $admin->getFromSession();
-		    
-		    if((is_null($admin->lastPswChange) == true || time() - $admin->lastPswChange > UFra::shared('UFconf_Sru')->passwordValidTime)){
-			$get->view = 'adminOwnPswEdit';
-			$get->adminId = $admin->id;
-			return ;
-		    }
+
+		try {
+			$admin = UFra::factory('UFbean_SruAdmin_Admin');
+			$admin->getFromSession();
+
+			if ((is_null($admin->lastPswChange) == true || time() - $admin->lastPswChange > UFra::shared('UFconf_Sru')->passwordValidTime)) {
+				$get->view = 'adminOwnPswEdit';
+				$get->adminId = $admin->id;
+				return;
+			}
 		} catch (UFex_Core_DataNotFound $ex) {
 		}
-		
+
 		$segCount = $req->segmentsCount();
 		if (0 == $segCount) {
 			$get->view = 'main';
@@ -38,7 +38,7 @@ extends UFctl {
 				case 'admins':
 					$ctl = UFra::factory('UFctl_SruAdmin_Admins');
 					$ctl->go();
-					return false;	
+					return false;
 				case 'dormitories':
 					$ctl = UFra::factory('UFctl_SruAdmin_Places');
 					$ctl->go();
@@ -46,7 +46,7 @@ extends UFctl {
 				case 'penalties':
 					$ctl = UFra::factory('UFctl_SruAdmin_Penalties');
 					$ctl->go();
-					return false;	
+					return false;
 				case 'ips':
 					$ctl = UFra::factory('UFctl_SruAdmin_Ips');
 					$ctl->go();
@@ -88,10 +88,10 @@ extends UFctl {
 			$act = 'Admin_Logout';
 		} elseif ($post->is('adminLogin') && $acl->sruAdmin('admin', 'login')) {
 			$act = 'Admin_Login';
-		} elseif('adminOwnPswEdit' == $get->view && $post->is('adminOwnPswEdit') && $acl->sruAdmin('admin', 'edit', $get->adminId)){
+		} elseif ('adminOwnPswEdit' == $get->view && $post->is('adminOwnPswEdit') && $acl->sruAdmin('admin', 'edit', $get->adminId)) {
 			$act = 'Admin_OwnPswEdit';
 		}
-		
+
 		if (isset($act)) {
 			$action = 'SruAdmin_'.$act;
 		}
@@ -114,7 +114,7 @@ extends UFctl {
 					return 'SruAdmin_Login';
 				}
 			case 'adminOwnPswEdit':
-			    return 'SruAdmin_AdminOwnPswEdit';
+				return 'SruAdmin_AdminOwnPswEdit';
 			default:
 				return 'Sru_Error404';
 		}

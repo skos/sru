@@ -1,29 +1,29 @@
 <?
+
 /**
  * front controller modulu Walet
  */
 class UFctl_SruWalet_Front
 extends UFctl {
-	const PORTIER = 14;
 	
 	protected function parseParameters() {
 		$req = $this->_srv->get('req');
 		$get = $req->get;
 		$acl = $this->_srv->get('acl');
 
-		try{
-		    $admin = UFra::factory('UFbean_SruWalet_Admin');
-		    $admin->getFromSession();
-		    
-		    if($this->_srv->get('session')->typeIdWalet != self::PORTIER
-			 && (is_null($admin->lastPswChange) == true || time() - $admin->lastPswChange > UFra::shared('UFconf_Sru')->passwordValidTime)){
+		try {
+			$admin = UFra::factory('UFbean_SruWalet_Admin');
+			$admin->getFromSession();
+
+			if ($this->_srv->get('session')->typeIdWalet != UFacl_SruWalet_Admin::PORTIER
+				&& (is_null($admin->lastPswChange) == true || time() - $admin->lastPswChange > UFra::shared('UFconf_Sru')->passwordValidTime)) {
 				$get->view = 'adminOwnPswEdit';
 				$get->adminId = $admin->id;
-				return ;
-		    }
+				return;
+			}
 		} catch (UFex_Core_DataNotFound $ex) {
 		}
-		
+
 		$segCount = $req->segmentsCount();
 		if (0 == $segCount) {
 			$get->view = 'main';
@@ -69,12 +69,12 @@ extends UFctl {
 								}
 								$get->view = 'users/validatepesel';
 								break;
-                                                        case 'checkregistryno':
-                                                                if ($segCount > 2) {
-                                                                $get->registryNoToCheck = urldecode($req->segment(3));
-                                                                }
-                                                                $get->view = 'users/checkregistryno';
-                                                                break;
+							case 'checkregistryno':
+								if ($segCount > 2) {
+									$get->registryNoToCheck = urldecode($req->segment(3));
+								}
+								$get->view = 'users/checkregistryno';
+								break;
 							case ':add':
 								$get->view = 'users/user/add';
 								for ($i = 3; $i <= $segCount; ++$i) {
@@ -157,12 +157,12 @@ extends UFctl {
 					if ($segCount == 1) {
 						$get->view = 'error404';
 					} else {
-						$alias = $req->segment(2);  
+						$alias = $req->segment(2);
 						$get->dormAlias = $alias;
-						if($segCount == 2) {
+						if ($segCount == 2) {
 							$get->view = 'dormitories/dorm';
 						} else if ($segCount == 4) {
-							$alias = $req->segment(3);  
+							$alias = $req->segment(3);
 							$get->roomAlias = $alias;
 							if ($req->segment(4) == ':edit') {
 								$get->view = 'dormitories/room/edit';
@@ -262,7 +262,7 @@ extends UFctl {
 			$act = 'Doc_Export';
 		} elseif ('dormitories/room/edit' == $get->view && $post->is('roomEdit') && $acl->sruWalet('room', 'edit')) {
 			$act = 'Room_Edit';
-		} elseif('adminOwnPswEdit' == $get->view /*&& $post->is('adminOwnPswEdit')*/ && $acl->sruWalet('admin', 'edit', $get->adminId)){
+		} elseif ('adminOwnPswEdit' == $get->view && $post->is('adminOwnPswEdit') && $acl->sruWalet('admin', 'edit', $get->adminId)) {
 			$act = 'Admin_OwnPswEdit';
 		}
 
@@ -276,7 +276,7 @@ extends UFctl {
 	protected function chooseView($view = null) {
 		$req = $this->_srv->get('req');
 		$get = $req->get;
-		$post= $req->post;
+		$post = $req->post;
 		$msg = $this->_srv->get('msg');
 		$acl = $this->_srv->get('acl');
 
@@ -300,8 +300,8 @@ extends UFctl {
 				return 'SruWalet_CountryQuickSearch';
 			case 'users/validatepesel':
 				return 'SruWalet_UserValidatePesel';
-                        case 'users/checkregistryno':
-                                return 'SruWalet_UserCheckRegistryNo';
+			case 'users/checkregistryno':
+				return 'SruWalet_UserCheckRegistryNo';
 			case 'users/user':
 				if ($acl->sruWalet('user', 'view', $get->userId)) {
 					return 'SruWalet_User';
@@ -313,7 +313,7 @@ extends UFctl {
 			case 'users/user/edit':
 				$user = UFra::factory('UFbean_Sru_User');
 				$user->getByPK($get->userId);
-				if(!$this->validateUserDataCompleteness($user) && $msg->get('userEdit/ok')) {
+				if (!$this->validateUserDataCompleteness($user) && $msg->get('userEdit/ok')) {
 					$msg->set('userEdit/warn');
 					$msg = $this->_srv->get('msg');
 				}
@@ -340,7 +340,7 @@ extends UFctl {
 					$user = UFra::factory('UFbean_Sru_User');
 					try {
 						$user->getByPK($get->userId);
-						if(!$this->validateUserDataCompleteness($user) && $msg->get('userAdd/ok')) {
+						if (!$this->validateUserDataCompleteness($user) && $msg->get('userAdd/ok')) {
 							$msg->set('userAdd/warn');
 							$msg = $this->_srv->get('msg');
 						}
@@ -424,23 +424,23 @@ extends UFctl {
 					return 'Sru_Error404';
 				}
 			case 'admins/admin/edit':
-				if ($msg->get('adminEdit/ok') && $acl->sruWalet('country', 'view')) { 
+				if ($msg->get('adminEdit/ok') && $acl->sruWalet('country', 'view')) {
 					return 'SruWalet_Admin';
 				} elseif ($acl->sruWalet('admin', 'edit', $get->adminId)) {
 					return 'SruWalet_AdminEdit';
 				} else {
 					return 'Sru_Error403';
 				}
-			case  'adminOwnPswEdit':
-			    return 'SruAdmin_OwnPswEdit';
+			case 'adminOwnPswEdit':
+				return 'SruWalet_AdminOwnPswEdit';
 			default:
 				return 'Sru_Error404';
 		}
 	}
-	
+
 	private function validateUserDataCompleteness($user) {
 		if (($user->documentNumber == '' && $user->documentType != UFbean_Sru_User::DOC_TYPE_NONE) || $user->nationality == '' ||
-			$user->address == '' || ($user->nationality == 1 && $user->pesel == '') || 
+			$user->address == '' || ($user->nationality == 1 && $user->pesel == '') ||
 			(in_array($user->typeId, UFra::shared('UFconf_Sru')->mustBeRegistryNo) && $user->registryNo == '')) {
 			return false;
 		} else {
