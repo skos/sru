@@ -439,6 +439,7 @@ $('#userTypeSelector').change(function(){
 	
         registryNo.onchange = registryNoCheck;
         window.onload = registryNoCheck;
+	window.onload = registryChangeClass;
 
 })()
 $(function() {
