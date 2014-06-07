@@ -86,7 +86,7 @@ extends UFmap {
 		'u' => 'e.user_id=u.id',
 		't' => 'e.template_id=t.id',
 		'i' => 's.inventory_card_id=i.id',
-		'ic' => 'c.inventory_card_id=i.id',
+		'ic' => 'c.inventory_card_id=ic.id',
 	);
 	protected $pk = 'id';
 }
