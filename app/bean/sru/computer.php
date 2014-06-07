@@ -64,30 +64,26 @@ extends UFbean_Common {
 
 	protected function validateMac($val, $change) {
 		$invalidMac = array(
-			'FFFFFFFFFFFF',
-			'01000CCCCCCC',
-			'01000CCCCCCD',
-			'0180C2000000',
-			'0180C2000008',
-			'0180C2000002',
-			'01005Exxxxxx',
-			'3333xxxxxxxx'
+			'/^ffffffffffff/',
+			'/^01000ccccccc/',
+			'/^01000ccccccd/',
+			'/^0180c2000000/',
+			'/^0180c2000003/',
+			'/^0180c200000e/',
+			'/^0180c2000008/',
+			'/^0180c2000002/',
+			'/^01005e/',
+			'/^3333/'
 		);
 		try {
 			$bean = UFra::factory('UFbean_Sru_ComputerList');
-			$val2 = strtoupper($val);
+			$val2 = $this->normalizeMac($val, null);
 			$val2 = str_replace(':', '', $val2);
 			$val2 = str_replace('-', '', $val2);
 			$val2 = str_replace(' ', '', $val2);
 			foreach($invalidMac as $invalid){
-				$ok = false;
-				for($i=0; $i<12; $i++){
-					if($invalid{$i} !== $val2{$i} && $invalid{$i} !== 'x'){
-						$ok = true;
-						break;
-					}
-				}
-				if(!$ok){
+				$ok = preg_match($invalid, $val2);
+				if($ok){
 					return 'regexp';
 				}
 			}
