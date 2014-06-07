@@ -69,7 +69,7 @@ extends UFtpl_Common {
 
 		echo $form->_start($this->url(0).'/', array('class'=>'userBar'));
 		echo $form->_fieldset();
-		if($d['admin']->type != UFacl_SruWalet_Admin::PORTIER && $timeToInvalidatePassword < $sruConf->passwordOutdatedWarning){
+		if($d['admin']->typeId != UFacl_SruWalet_Admin::PORTIER && $timeToInvalidatePassword < $sruConf->passwordOutdatedWarning){
 		    echo '<img src="'.UFURL_BASE.'/i/img/padlock.jpg" alt="Padlock" title="Zbliża się czas wygaśnięcia hasła" />&nbsp;';
 		}
 		echo $d['admin']->write(__FUNCTION__, $d['lastLoginIp'], $d['lastLoginAt'], $d['lastInvLoginIp'], $d['lastInvLoginAt']);
@@ -608,6 +608,18 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 		echo ' <a href="'.$this->url(1).'">Powrót</a>';
 		echo $form->_end();
 		echo $form->_end(true);
+	}
+	
+	public function titleOwnPswEdit(array $d){
+	    echo 'Konieczna zmiana hasła';
+	}
+	
+	public function ownPswEdit(array $d){
+	    $form = UFra::factory('UFlib_Form');
+	    echo '<h2>Konieczna zmiana hasła</h2>';
+	    echo $form->_start();
+	    echo $d['admin']->write('ownPswEdit');
+	    echo $form->_end(true);
 	}
 
 	public function titleAdminEdit(array $d) {

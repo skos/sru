@@ -269,6 +269,15 @@ $(document).ready(function()
 		echo $form->jid('Jabber', array('after'=>UFlib_Helper::displayHint("Adres w komunikatorze sieci Jabber.")));
 		echo $form->address('Adres', array('after'=>UFlib_Helper::displayHint("Lokalizacja lub miejsce przebywania administratora.")));
 	}
+	
+	public function ownPswEdit(array $d){
+	    $form = UFra::factory('UFlib_Form', 'adminOwnPswEdit', $d, $this->errors);
+	    echo $form->_fieldset('Okresowa zmiana hasła');
+	    echo $form->password('Hasło', array('type'=>$form->PASSWORD, 'after'=> UFlib_Helper::displayHint("Hasło do logowania się do SRU. Musi mieć co najmniej 8 znaków, zawierać co najmniej 1 dużą literę, 1 małą literę, 1 cyfrę i 1 znak specjalny.")));
+	    echo $form->password2('Powtórz hasło', array('type'=>$form->PASSWORD));
+	    echo $form->_submit('Zapisz');
+	    echo $form->_end();
+	}
 
 	public function waletBar(array $d, $ip, $time, $invIp, $invTime) {
 		$acl = $this->_srv->get('acl');
@@ -374,13 +383,4 @@ function filter(selector, query) {
 </script>
 <?
 	}
-	
-//	public function ownPswEdit(array $d){
-//	    $form = UFra::factory('UFlib_Form', 'adminOwnPswEdit', $d, $this->errors);
-//	    echo $form->_fieldset('Okresowa zmiana hasła');
-//	    echo $form->password('Hasło', array('type'=>$form->PASSWORD, 'after'=> UFlib_Helper::displayHint("Hasło do logowania się do SRU. Musi mieć co najmniej 8 znaków, zawierać co najmniej 1 dużą literę, 1 małą literę, 1 cyfrę i 1 znak specjalny.")));
-//	    echo $form->password2('Powtórz hasło', array('type'=>$form->PASSWORD));
-//	    echo $form->_submit('Zapisz');
-//	    echo $form->_end();
-//	}
 }

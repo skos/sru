@@ -1057,7 +1057,7 @@ extends UFbox {
 		}
 	}
 	
-	public function OwnPswEdit(){
+	public function ownPswEdit(){
 	    try{
 		$bean = UFra::factory('UFbean_SruAdmin_Admin');
 		$bean->getFromSession();

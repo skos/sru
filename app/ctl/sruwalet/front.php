@@ -15,12 +15,12 @@ extends UFctl {
 		    $admin = UFra::factory('UFbean_SruWalet_Admin');
 		    $admin->getFromSession();
 		    
-//		    if($this->_srv->get('session')->typeIdWalet != self::PORTIER
-//			 && (is_null($admin->lastPswChange) == true || time() - $admin->lastPswChange > UFra::shared('UFconf_Sru')->passwordValidTime)){
-//			$get->view = 'adminOwnPswEdit';
-//			$get->adminId = $admin->id;
-//			return ;
-//		    }
+		    if($this->_srv->get('session')->typeIdWalet != self::PORTIER
+			 && (is_null($admin->lastPswChange) == true || time() - $admin->lastPswChange > UFra::shared('UFconf_Sru')->passwordValidTime)){
+				$get->view = 'adminOwnPswEdit';
+				$get->adminId = $admin->id;
+				return ;
+		    }
 		} catch (UFex_Core_DataNotFound $ex) {
 		}
 		
