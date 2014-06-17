@@ -127,6 +127,12 @@ $(document).ready(function()
 		echo '<p><em>Gadu-Gadu:</em> '.$d['gg'].'</p>';
 		echo '<p><em>Jabber:</em> '.$d['jid'].'</p>';
 		echo '<p><em>Adres:</em> '.$d['address'].'</p>';
+		
+		$timeToInvalidatePassword = $d['lastPswChange'] + $sruConf->passwordValidTime - time();
+		if(($d['id'] == $session->authWaletAdmin || ($session->is('typeIdWalet') && $session->typeIdWalet == UFacl_SruWalet_Admin::HEAD)) 
+			&& $d['active'] == true && ($timeToInvalidatePassword < $sruConf->passwordOutdatedWarning)) {
+		    echo $this->ERR("<br />Hasło niedługo (za " . UFlib_Helper::secondsToTime($timeToInvalidatePassword) . ") straci ważność, należy je zmienić!<br />&nbsp;");
+		}
 	}
 
 	public function listDorms(array $d, $dormList) {

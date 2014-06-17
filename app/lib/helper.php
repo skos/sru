@@ -163,7 +163,7 @@ class UFlib_Helper {
 	    $minutes = floor($tmp / $minute);
 	    $secs = $tmp % $minute;
 	    
-	    $time = $hours . ":" . $minutes . ":" . $secs;
+	    $time = sprintf("%02d", $hours) . ":" . sprintf("%02d", $minutes) . ":" . sprintf("%02d", $secs);
 	    
 	    $fullTime = $days . ":" . $time;
 	    
