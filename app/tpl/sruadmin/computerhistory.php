@@ -198,6 +198,13 @@ extends UFtpl_Common {
 						echo "\n";
 					}
 					break;
+				case 'typeId':
+					echo $names[$key].': '.(is_null($val) ? 'brak' : UFtpl_Sru_Computer::getComputerType($old['typeId']));
+					if ($val!==$new[$key]) {
+						echo $arr.(is_null($new[$key]) ? 'brak' : UFtpl_Sru_Computer::getComputerType($new['typeId']));
+					}
+					echo "\n";
+					break;
 				default: continue;
 			}
 		}
