@@ -29,7 +29,7 @@ extends UFmap {
 		'' => 'inventory_cards',
 	);
 	protected $valids = array(
-		'serialNo' => array('textMin'=>1, 'textMax'=>100, 'regexp'=>'^[-a-zA-Z0-9\.@_]+$'),
+		'serialNo' => array('textMin'=>1, 'textMax'=>100, 'regexp'=>'^[-a-zA-Z0-9\.@_\/]+$'),
 		'dormitoryId' => array('intMin'=>1),
 	);
 	protected $pk = 'id';
