@@ -35,14 +35,20 @@ extends UFbean_Common {
 	);
 
 	protected function validateHost($val, $change) {
-		$post = $this->_srv->get('req')->post->{$change?'computerEdit':'computerAdd'};
+		if ($change) {
+			$post = $this->_srv->get('req')->post->computerEdit;
+		} else if ($this->_srv->get('req')->post->is('computerAdd')) {
+			$post = $this->_srv->get('req')->post->computerAdd;
+		} else {
+			$post = null;
+		}
 		try {
 			$bean = UFra::factory('UFbean_Sru_Computer');
 			$bean->getByHost($val);
 			if ($change && $this->data['id'] == $bean->id) {
 				return;
 			}
-			if (!$this->data['active'] && !$post['activateHost'] && $this->data['host'] == $post['host']) {
+			if (!is_null($post) && !$this->data['active'] && !$post['activateHost'] && $this->data['host'] == $post['host']) {
 				return;
 			}
 			return 'duplicated';
