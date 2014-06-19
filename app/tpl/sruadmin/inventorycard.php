@@ -8,6 +8,7 @@ extends UFtpl_Common {
 	protected $errors = array(
 		'serialNo' => 'Podaj numer seryjny',
 		'serialNo/duplicated' => 'Numer seryjny jest już zajęty',
+		'serialNo/regexp' => 'Błędny format numeru seryjnego',
 		'inventoryNo/duplicated' => 'Numer inwentarzowy jest już zajęty',
 	    	'received' => 'Błędny format daty',
 		'dormitoryId' => 'Podaj akademik',
