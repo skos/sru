@@ -265,6 +265,9 @@ extends UFctl {
 		} elseif ('adminOwnPswEdit' == $get->view && $post->is('adminOwnPswEdit') && $acl->sruWalet('admin', 'edit', $get->adminId)) {
 			$act = 'Admin_OwnPswEdit';
 		}
+                  elseif ('dormitories/dorm' == $get->view && $post->is('allUsersDel') && $acl->sruWalet('dorm', 'view', $get->dormAlias)) {
+			$act = 'User_AllDel';
+                }
 
 		if (isset($act)) {
 			$action = 'SruWalet_'.$act;

@@ -227,6 +227,50 @@ container.appendChild(button);
 changeVisibility();
 </script><?
 	}
+        
+        public function allUsersDelPanel(array $d) {
+		$acl = $this->_srv->get('acl');
+                $sess = $this->_srv->get('session');
+                if($acl->sruWalet('dorm', 'view', $d['alias']) && $acl->sruWalet('admin', 'view')) {
+                        $form = UFra::factory('UFlib_Form','allUsersDel');
+                        $warn = UFra::factory('UFtpl_Html');
+                        		
+                        echo '<h3><span id="allUserDelSwitch"></span></h3>';
+                        echo '<div id="allUserDel">';
+                        echo $form->_start();
+                        echo $form->_fieldset('Wymeldowanie ręczne');
+                        echo $warn->msgErr('Ostrzeżenie: Naciśnięcie poniższego przycisku spowoduje wymeldowanie wszystkich mieszkańców ' .strtoupper($d['alias']) .'. Operacja ta jest nieodwracalna.');
+                        echo $form->confirm('Tak, wymelduj wszystkich mieszkańców ' .strtoupper($d['alias']) .'.', array(
+        			'type' =>$form->CHECKBOX,
+        			'class'=>'required'
+        		));
+                        echo $form->_submit('Wymelduj');
+                        echo $form->_end();
+        		echo $form->_end(true);
+        		echo '</div>';
+                }
+       		?><script type="text/javascript">    
+function changeVisibility2() {
+        var div = document.getElementById('allUserDel');
+        if (div.sruHidden != true) {
+                div.style.display = 'none';
+                div.sruHidden = true;
+        } else {
+                div.style.display = 'block';
+                div.sruHidden = false;
+        }
+}
+var container2 = document.getElementById('allUserDelSwitch');
+var button2 = document.createElement('a');
+button2.onclick = function() {
+	changeVisibility2();
+}
+var txt2 = document.createTextNode('Wymeldowanie wszystkich zamieszkałych osób');
+button2.appendChild(txt2);
+container2.appendChild(button2);
+changeVisibility2();
+</script><?
+        }
 
 	public function inhabitantsAlphabetically(array $d, $users, $settings) {
 		echo '<table><thead><tr>';
