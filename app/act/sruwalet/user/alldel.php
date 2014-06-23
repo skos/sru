@@ -27,31 +27,34 @@ extends UFact {
                                                 
                                                 $this->begin();
                                                 $bean = UFra::factory('UFbean_Sru_User');
-			
-                                                UFlib_Helper::removePenaltyFromPort($userId);
-			
+                                                
                                                 $bean->getByPK($userId);
-
-                                                $bean->modifiedById = $this->_srv->get('session')->authWaletAdmin;
-                                                $bean->modifiedAt = NOW;
-                                                $bean->active = false;
+                                                
+                                                if ($bean->typeId != UFbean_Sru_User::TYPE_SKOS && $bean->typeId != UFbean_Sru_User::TYPE_ADMINISTRATION && $bean->typeId != UFbean_Sru_User::TYPE_ORGANIZATION) {
+                                                    
+                                                        UFlib_Helper::removePenaltyFromPort($userId);
 			
-                                                $bean->save();
+                                                        $bean->modifiedById = $this->_srv->get('session')->authWaletAdmin;
+                                                        $bean->modifiedAt = NOW;
+                                                        $bean->active = false;
+                                                            
+                                                        $bean->save();
+                                                        
+                                                        $conf = UFra::shared('UFconf_Sru');
+                                                        if ($conf->sendEmail && $bean->notifyByEmail() && !is_null($bean->email) && $bean->email != '') {
+                                                                $sender = UFra::factory('UFlib_Sender');
+                                                                $history = UFra::factory('UFbean_SruAdmin_UserHistoryList');
+                                                                $history->listByUserId($bean->id, 1);
+                                                                $bean->getByPK($bean->id);	// pobranie nowych danych, np. aliasu ds-u
+                                                                // wyslanie maila do usera
+                                                                $box = UFra::factory('UFbox_SruAdmin');
+                                                                $title = $box->dataChangedMailTitle($bean);
+                                                                $body = $box->dataChangedMailBody($bean, $history);
+                                                                $sender->send($bean, $title, $body, self::PREFIX, $bean->dormitoryAlias);
+                                                        }
 
-                                                $conf = UFra::shared('UFconf_Sru');
-                                                if ($conf->sendEmail && $bean->notifyByEmail() && !is_null($bean->email) && $bean->email != '') {
-                                                        $sender = UFra::factory('UFlib_Sender');
-                                                        $history = UFra::factory('UFbean_SruAdmin_UserHistoryList');
-                                                        $history->listByUserId($bean->id, 1);
-                                                        $bean->getByPK($bean->id);	// pobranie nowych danych, np. aliasu ds-u
-                                                        // wyslanie maila do usera
-                                                        $box = UFra::factory('UFbox_SruAdmin');
-                                                        $title = $box->dataChangedMailTitle($bean);
-                                                        $body = $box->dataChangedMailBody($bean, $history);
-                                                        $sender->send($bean, $title, $body, self::PREFIX, $bean->dormitoryAlias);
+                                                        $this->commit();
                                                 }
-
-                                                $this->commit();
                                         }
                                 }
                         
