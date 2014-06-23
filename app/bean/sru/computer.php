@@ -36,7 +36,7 @@ extends UFbean_Common {
 	);
 
 	protected function validateHost($val, $change) {
-		if ($change) {
+		if ($change && $this->_srv->get('req')->post->is('computerEdit')) {
 			$post = $this->_srv->get('req')->post->computerEdit;
 		} else if ($this->_srv->get('req')->post->is('computerAdd')) {
 			$post = $this->_srv->get('req')->post->computerAdd;
@@ -158,7 +158,13 @@ extends UFbean_Common {
 	}
 
 	protected function validateIp($val, $change) {
-		$post = $this->_srv->get('req')->post->{$change?'computerEdit':'computerAdd'};
+		if ($change && $this->_srv->get('req')->post->is('computerEdit')) {
+			$post = $this->_srv->get('req')->post->computerEdit;
+		} else if ($this->_srv->get('req')->post->is('computerAdd')) {
+			$post = $this->_srv->get('req')->post->computerAdd;
+		} else {
+			$post = null;
+		}
 		$ips = explode('.', $val);
 		foreach ($ips as $ip) {
 			if ($ip < 0 || $ip >255) {
@@ -171,7 +177,7 @@ extends UFbean_Common {
 			if ($change && $this->data['id'] == $bean->id) {
 				return;
 			}
-			if (!$this->data['active'] && !$post['activateHost'] && $this->data['ip'] == $post['ip']) {
+			if (!is_null($post) && !$this->data['active'] && !$post['activateHost'] && $this->data['ip'] == $post['ip']) {
 				return;
 			}
 			return 'duplicated';
