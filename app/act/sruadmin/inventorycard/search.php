@@ -20,7 +20,7 @@ extends UFact {
 				$finds[] = 'inventoryNo:'.strtolower(urlencode($post['inventoryNo']));
 			}
 			if (isset($post['serialNo']) && !empty($post['serialNo'])) {
-				$finds[] = 'serialNo:'.strtolower(urlencode($post['serialNo']));
+				$finds[] = 'serialNo:'.strtolower(urlencode(str_replace('/', '\\', $post['serialNo'])));
 			}
 			if (isset($post['dormitory']) && !empty($post['dormitory'])) {
 				$finds[] = 'dormitory:'.urlencode(mb_strtolower($post['dormitory'], 'UTF-8'));

@@ -23,7 +23,7 @@ extends UFctl {
 						$tmp = explode(':', $req->segment($i), 2);
 						switch ($tmp[0]) {
 							case 'serialNo':
-								$get->searchedSerialNo = urldecode($tmp[1]);
+								$get->searchedSerialNo = str_replace('\\', '/', urldecode($tmp[1]));
 								break;
 							case 'inventoryNo':
 								$get->searchedInventoryNo = urldecode($tmp[1]);
