@@ -32,4 +32,12 @@ extends UFlib_ClassWithService {
 		}
 		return false;
 	}
+                
+        public function checkOut() {//uprawnienie do wymeldowania wszystkich userow
+                $sess = $this->_srv->get('session');
+		if ($sess->typeIdWalet == UFacl_SruWalet_Admin::HEAD || $sess->typeIdWalet == UFacl_SruWalet_Admin::DORM) {
+			return true;
+		}
+		return false;
+	}
 }

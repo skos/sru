@@ -30,7 +30,7 @@ extends UFact {
                                                 
                                                 $bean->getByPK($userId);
                                                 
-                                                if ($bean->typeId != UFbean_Sru_User::TYPE_SKOS && $bean->typeId != UFbean_Sru_User::TYPE_ADMINISTRATION && $bean->typeId != UFbean_Sru_User::TYPE_ORGANIZATION) {
+                                                if ($bean->typeId != UFbean_Sru_User::TYPE_SKOS && $bean->typeId != UFbean_Sru_User::TYPE_ADMINISTRATION && $bean->typeId != UFbean_Sru_User::TYPE_ORGANIZATION && $bean->typeId != UFbean_Sru_User::TYPE_EXADMIN) {
                                                     
                                                         UFlib_Helper::removePenaltyFromPort($userId);
 			
