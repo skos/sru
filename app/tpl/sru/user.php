@@ -413,33 +413,50 @@ $('#userTypeSelector').change(function(){
 	}
         
         var registryNo = document.getElementById('userAdd_registryNo');
+        var registryNoErr = document.getElementById('userAdd_registryNoErr');
 	function registryNoCheck() {
-                        if (registryNo.value == '') {
-                                document.getElementById('registryNoCheckResult').innerHTML = '';
-                        }
-                        if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
-                                xmlhttp = new XMLHttpRequest();
-                        } else { // code for IE6, IE5
-                                xmlhttp = new ActiveXObject('Microsoft.XMLHTTP');
-                        }
-                        xmlhttp.onreadystatechange = function() {
-                                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                                        if (xmlhttp.responseText == 'ok') {
-                                                document.getElementById('registryNoCheckResult').innerHTML = ' <img src="<?=UFURL_BASE?>/i/img/ok.png" alt="OK"/>';
-                                        } else if (xmlhttp.responseText == 'invalid') {
-                                                document.getElementById('registryNoCheckResult').innerHTML = ' <img src="<?=UFURL_BASE?>/i/img/wykrzyknik.png" alt="Błąd"/>';
-                                        } else {
-                                                document.getElementById('registryNoCheckResult').innerHTML = xmlhttp.responseText;
-                                        }
+                if(registryNoErr) {
+                        registryNoErr.innerHTML = '';
+                        registryNoErr.setAttribute('class', '');
+                }
+                
+                if (registryNo.value == '') {
+                        document.getElementById('registryNoCheckResult').innerHTML = '';
+                }
+                
+                if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+                        xmlhttp = new XMLHttpRequest();
+                } else { // code for IE6, IE5
+                        xmlhttp = new ActiveXObject('Microsoft.XMLHTTP');
+                }
+                xmlhttp.onreadystatechange = function() {
+                        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                                if (xmlhttp.responseText == 'ok') {
+                                        document.getElementById('registryNoCheckResult').innerHTML = ' <img src="<?=UFURL_BASE?>/i/img/ok.png" alt="OK"/>';
+                                } else if (xmlhttp.responseText == 'invalid') {
+                                        document.getElementById('registryNoCheckResult').innerHTML = ' <img src="<?=UFURL_BASE?>/i/img/wykrzyknik.png" alt="Błąd"/>';
+                                } else {
+                                        document.getElementById('registryNoCheckResult').innerHTML = xmlhttp.responseText;
                                 }
                         }
-                        xmlhttp.open('GET',"<? echo $this->url(0); ?>/users/checkregistryno/"+ encodeURIComponent(registryNo.value), true);
-                        xmlhttp.send();
+                }
+                xmlhttp.open('GET',"<? echo $this->url(0); ?>/users/checkregistryno/"+ encodeURIComponent(registryNo.value), true);
+                xmlhttp.send();                
         }
 	
         registryNo.onchange = registryNoCheck;
         window.onload = registryNoCheck;
 	window.onload = registryChangeClass;
+                
+        function delRegistryNoError() {
+                if(registryNoErr.innerHTML == 'Nr indeksu przypisany do innego mieszkańca') {
+                        registryNoErr.innerHTML = '';
+                        registryNoErr.setAttribute('class', '');
+                        registryNoCheck();
+                }
+        }
+        
+        window.onload = delRegistryNoError;
 
 })()
 $(function() {
@@ -1288,39 +1305,55 @@ $('#userTypeSelector').change(function(){
 	}
 	pesel.onchange = validatePesel;
         
-        
+
         var registryNo = document.getElementById('userEdit_registryNo');
+        var registryNoErr = document.getElementById('userEdit_registryNoErr');
+        
 	function registryNoCheck() {
-                
-                        if (registryNo.value == '' || registryNo.value == '<?echo $d['registryNo'];?>') {
-                                document.getElementById('registryNoCheckResult').innerHTML = '';
+                if(registryNoErr) {
+                        registryNoErr.innerHTML = '';
+                        registryNoErr.setAttribute('class', '');
+                }
+                if (registryNo.value == '' || registryNo.value == '<?echo $d['registryNo'];?>') {
+                        document.getElementById('registryNoCheckResult').innerHTML = '';
+                }
+                if(registryNo.value != '<?echo $d['registryNo'];?>'){
+                        if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+                                xmlhttp = new XMLHttpRequest();
+                        } else { // code for IE6, IE5
+                                xmlhttp = new ActiveXObject('Microsoft.XMLHTTP');
                         }
-                        if(registryNo.value != '<?echo $d['registryNo'];?>'){
-                                if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
-                                        xmlhttp = new XMLHttpRequest();
-                                } else { // code for IE6, IE5
-                                        xmlhttp = new ActiveXObject('Microsoft.XMLHTTP');
-                                }
-                                xmlhttp.onreadystatechange = function() {
-                                        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                                                if (xmlhttp.responseText == 'ok') {
-                                                        document.getElementById('registryNoCheckResult').innerHTML = ' <img src="<?=UFURL_BASE?>/i/img/ok.png" alt="OK"/>';
-                                                } else if (xmlhttp.responseText == 'invalid') {
-                                                        document.getElementById('registryNoCheckResult').innerHTML = ' <img src="<?=UFURL_BASE?>/i/img/wykrzyknik.png" alt="Błąd"/>';
-                                                } else {
-                                                        document.getElementById('registryNoCheckResult').innerHTML = xmlhttp.responseText;
-                                                }
+                        xmlhttp.onreadystatechange = function() {
+                                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                                        if (xmlhttp.responseText == 'ok') {
+                                                document.getElementById('registryNoCheckResult').innerHTML = ' <img src="<?=UFURL_BASE?>/i/img/ok.png" alt="OK"/>';
+                                        } else if (xmlhttp.responseText == 'invalid') {
+                                                document.getElementById('registryNoCheckResult').innerHTML = ' <img src="<?=UFURL_BASE?>/i/img/wykrzyknik.png" alt="Błąd"/>';
+                                        } else {
+                                                document.getElementById('registryNoCheckResult').innerHTML = xmlhttp.responseText;
                                         }
                                 }
-                                xmlhttp.open('GET',"<? echo $this->url(0); ?>/users/checkregistryno/"+ encodeURIComponent(registryNo.value), true);
-                                xmlhttp.send();
-                        } else {
-                                document.getElementById('registryNoCheckResult').innerHTML = '';
                         }
+                        xmlhttp.open('GET',"<? echo $this->url(0); ?>/users/checkregistryno/"+ encodeURIComponent(registryNo.value), true);
+                        xmlhttp.send();
+                } else {
+                        document.getElementById('registryNoCheckResult').innerHTML = '';
+                }
         }
 	
         registryNo.onchange = registryNoCheck;
         window.onload = registryNoCheck;
+        
+        function delRegistryNoError() {
+                        if(registryNoErr.innerHTML == 'Nr indeksu przypisany do innego mieszkańca') {
+                                registryNoErr.innerHTML = '';
+                                registryNoErr.setAttribute('class', '');
+                                registryNoCheck();
+                        }
+        }
+        
+        window.onload = delRegistryNoError;
+        
 })()
 $(function() {
 	$( "#userEdit_nationalityName" ).autocomplete({

@@ -260,7 +260,7 @@ class UFtpl_Form {
 		$noErrorable['submit'] = true;
 
 		if (!is_null($params['msgError']) && !isset($noErrorable[$params['type']])) {
-			$o .= ' <strong class="msgError">'.$params['msgError'].'</strong>';
+			$o .= ' <strong id="'.$params['id'].'Err" class="msgError">'.$params['msgError'].'</strong>';
 		}
 		return $params['before'].$o.$params['after'];
 	}
