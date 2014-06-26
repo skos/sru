@@ -39,7 +39,9 @@ extends UFlib_ClassWithService {
 		}
                 
                 $sess = $this->_srv->get('session');
-		if ($sess->typeIdWalet == UFacl_SruWalet_Admin::HEAD || $sess->typeIdWalet == UFacl_SruWalet_Admin::DORM) {
+		if ($sess->typeIdWalet == UFacl_SruWalet_Admin::HEAD) {
+                    return true;
+                } else if ($sess->typeIdWalet == UFacl_SruWalet_Admin::DORM) {
 			try {
                             $admDorm = UFra::factory('UFbean_SruWalet_AdminDormitoryList');
                             $admDorm->listAllById($sess->authWaletAdmin);
