@@ -231,7 +231,7 @@ changeVisibility();
         public function allUsersDelPanel(array $d) {
 		$acl = $this->_srv->get('acl');
                 $sess = $this->_srv->get('session');
-                if($acl->sruWalet('dorm', 'view', $d['alias']) && $acl->sruWalet('dorm', 'checkout')) {
+                if($acl->sruWalet('dorm', 'checkout', $d['alias'])) {
                         $form = UFra::factory('UFlib_Form','allUsersDel');
                         $warn = UFra::factory('UFtpl_Html');
                         		

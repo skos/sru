@@ -33,10 +33,24 @@ extends UFlib_ClassWithService {
 		return false;
 	}
                 
-        public function checkOut() {//uprawnienie do wymeldowania wszystkich userow
+        public function checkOut($dormitory) {//uprawnienie do wymeldowania wszystkich userow
+                if (!$this->_loggedIn()) {
+			return false;
+		}
+                
                 $sess = $this->_srv->get('session');
 		if ($sess->typeIdWalet == UFacl_SruWalet_Admin::HEAD || $sess->typeIdWalet == UFacl_SruWalet_Admin::DORM) {
-			return true;
+			try {
+                            $admDorm = UFra::factory('UFbean_SruWalet_AdminDormitoryList');
+                            $admDorm->listAllById($sess->authWaletAdmin);
+                        } catch (UFex_Dao_NotFound $e) {
+                            return false;
+                        }
+                        foreach ($admDorm as $dorm) {
+                            if ($dorm['dormitoryAlias'] == $dormitory) {
+				return true;
+                            }
+                        }
 		}
 		return false;
 	}
