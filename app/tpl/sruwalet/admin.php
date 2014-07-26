@@ -7,7 +7,7 @@ extends UFtpl_Common {
 
 	public static $adminTypes = array(
 		UFacl_SruWalet_Admin::DORM 	=> 'Pracownik OS',
-		UFacl_SruWalet_Admin::OFFICE 	=> 'Starszy Pracownik OS',
+		UFacl_SruWalet_Admin::OFFICE 	=> 'Pracownik OS - SF',
 		UFacl_SruWalet_Admin::HEAD 	=> 'Kierownik OS',
 	    	UFacl_SruWalet_Admin::PORTIER 	=> 'Portier',
 	);
@@ -166,7 +166,7 @@ $(document).ready(function()
 		echo $form->typeId('Uprawnienia', array( 
 			'type' => $form->SELECT, 
 			'labels' => $form->_labelize(UFtpl_SruWalet_Admin::$adminTypes), 
-			'after'=> UFlib_Helper::displayHint("Kierownik OS ma uprawnienia do wszystkich części Waleta, zaś Pracownik OS jedynie do wybranych Domów Studenckich. Starszy pracownik OS może także dostęp do obsadzenia każdego DSu."), 
+			'after'=> UFlib_Helper::displayHint("Kierownik OS ma uprawnienia do wszystkich części Waleta, zaś Pracownik OS jedynie do wybranych Domów Studenckich. Pracownik OS - SF ma dostęp do obsadzenia każdego DSu."), 
 		));
 		echo $form->_end();
 
@@ -218,7 +218,7 @@ $(document).ready(function()
 			echo $form->typeId('Uprawnienia', array( 
 				'type' => $form->SELECT, 
 				'labels' => $form->_labelize(UFtpl_SruWalet_Admin::$adminTypes), 
-				'after'=> UFlib_Helper::displayHint("Kierownik OS ma uprawnienia do wszystkich części Waleta, zaś Pracownik OS jedynie do wybranych Domów Studenckich. Starszy pracownik OS może także dostęp do obsadzenia każdego DSu."), 
+				'after'=> UFlib_Helper::displayHint("Kierownik OS ma uprawnienia do wszystkich części Waleta, zaś Pracownik OS jedynie do wybranych Domów Studenckich. Pracownik OS - SF ma dostęp do obsadzenia każdego DSu."), 
 			));
 			echo $form->active('Aktywny'.UFlib_Helper::displayHint("Tylko aktywni administratorzy mogą zalogować się do Waleta.").'', array('type'=>$form->CHECKBOX) );
 		}
