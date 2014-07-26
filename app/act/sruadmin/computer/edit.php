@@ -19,6 +19,7 @@ extends UFact {
 			$user->getByPK($bean->userId);
 			
 			$carer = $bean->carerId;
+			$active = $bean->active;
 
 			// w przypadku, gdy pole IP jest puste, pobieramy pierwszy wolny
 			// IP w danym DS
@@ -88,7 +89,7 @@ extends UFact {
 			if(strtotime($post['availableTo']) <= NOW && $bean->active) {
 				$conf = UFra::shared('UFconf_Sru');
 				$bean->availableTo = $conf->computerAvailableTo;
-			} else {
+			} else if ($active || $bean->active) {
 				$bean->availableTo = strtotime($post['availableTo']);
 			}
 			$bean->modifiedById = $this->_srv->get('session')->authAdmin;
