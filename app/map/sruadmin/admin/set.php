@@ -57,8 +57,8 @@ extends UFmap {
 	);
 	protected $valids = array(
 		'login' => array('textMin'=>1, 'textMax'=>100, 'regexp'=>'^[-a-zA-Z0-9\.@_]+$'),
-		'password' => array('textMin'=>8, 'regexp'=>'^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$'),
-		'passwordInner' => array('textMin'=>8, 'regexp'=>'^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$'), 
+		'password' => array('textMin'=>8, 'regexp'=>'^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\W_]).*$'),
+		'passwordInner' => array('textMin'=>8, 'regexp'=>'^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\W_]).*$'), 
 		'name' => array('textMin'=>1, 'textMax'=>100),
 		'email' => array('email'=>true),
 		'dormitory' => array('textMin'=>1),
