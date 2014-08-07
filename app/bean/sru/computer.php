@@ -49,7 +49,8 @@ extends UFbean_Common {
 			if ($change && $this->data['id'] == $bean->id) {
 				return;
 			}
-			if (!is_null($post) && !$this->data['active'] && !$post['activateHost'] && $this->data['host'] == $post['host']) {
+			if (array_key_exists('active', $this->data) && !$this->data['active'] && !is_null($post) && 
+				array_key_exists('activateHost', $post) && !$post['activateHost'] && $this->data['host'] == $post['host']) {
 				return;
 			}
 			return 'duplicated';
