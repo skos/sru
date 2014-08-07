@@ -8,6 +8,7 @@ extends UFdao {
 		$mapping = $this->mapping('list');
 
 		$query = $this->prepareSelect($mapping);
+		$query->order($mapping->dormitoryId, $query->ASC);
 		$query->order($mapping->deviceModelName);
 
 		return $this->doSelect($query);
