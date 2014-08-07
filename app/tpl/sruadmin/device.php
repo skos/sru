@@ -13,7 +13,7 @@ extends UFtpl_Common {
 	);
 	
 	public function listDevices(array $d, $dorm) {
-		$urlSw = $this->url(0).'/devices/';
+		$urlSw = $this->url(0).'/switches/';
 		$urlDs = $this->url(0).'/dormitories/';
 		$urlIp = $this->url(0).'/ips/ds/';
 		$urlDev = $this->url(0).'/devices/';
