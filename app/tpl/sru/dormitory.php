@@ -41,7 +41,7 @@ extends UFtpl_Common {
 
 		echo '<br/><small>(liczba użytkowników: '.$d['userCount'].' &bull; '
 			. '<a href="'.$url.'ips/ds/'.$d['alias'].'">liczba komputerów: '.$d['computerCount'].'</a> &bull; '
-			. '<a href="'.$url.'switches/dorm/'.$d['alias'].'">switche</a>) &bull; '
+			. '<a href="'.$url.'switches/dorm/'.$d['alias'].'">switche</a> &bull; '
 			. '<a href="'.$urlDev.$d['alias'].'">urządzenia</a>)</small></h2>';
 	}
 

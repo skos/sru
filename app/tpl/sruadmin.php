@@ -860,8 +860,8 @@ extends UFtpl_Common {
 
 			echo '<br/><small>(<a href="'.$url.$d['dorm']->alias.'">pokoje</a> &bull; '
 				. '<a href="'.$urlIp.$d['dorm']->alias.'">komputery</a> &bull; '
-				. 'liczba switchy: '.count($d['switches']).') &bull; '
-				. '<a href="'.$urlDev.$d['dorm']->alias.'">urządzenia</a></small></h2>';
+				. 'liczba switchy: '.count($d['switches']).' &bull; '
+				. '<a href="'.$urlDev.$d['dorm']->alias.'">urządzenia</a>)</small></h2>';
 		} else {
 			echo '<h2>Switche</h2>';
 		}
