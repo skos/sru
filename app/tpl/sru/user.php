@@ -509,10 +509,8 @@ $(function() {
                         if (!is_null($d['address']) && $d['address'] != '') {
                                 echo '<p><label>' . _("Adres:") . '</label><span class="userData"> ' . nl2br($this->_escape($d['address'])) . '</span></p>';
                         }
-                        if (!is_null($d['documentType']) && self::$documentTypes[$d['documentType']] != '') {
+                        if (!is_null($d['documentType']) && self::$documentTypes[$d['documentType']] != '' && !is_null($d['documentNumber']) && $d['documentNumber'] != '') {
                                 echo '<p><label>' . _("Typ dokumentu:") . '</label><span class="userData"> ' . _(self::$documentTypes[$d['documentType']]) . '</span></p>';
-                        }
-                        if (!is_null($d['documentNumber']) && $d['documentNumber'] != '') {
                                 echo '<p><label>' . _("Nr dokumentu:") . '</label><span class="userData"> ' . nl2br($this->_escape($d['documentNumber'])) . '</span></p>';
                         }
                         if (!is_null($d['nationality']) && $d['nationality'] != '') {
@@ -547,13 +545,13 @@ $(function() {
                 ));
                 echo '<br />';
 
-                if ($d['typeId'] <= 50) {
+                if ($d['typeId'] != UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL && $d['typeId'] <= UFbean_Sru_User::DB_TOURIST_MAX) {
                         echo $form->_fieldset(_("Dane dotyczące studiów"));
 
                         if (!is_null($d['registryNo']) && $d['registryNo'] != '' && $acl->sru('user', 'viewPersonalData')) {
                                 echo '<p><label>' . _("Nr indeksu:") . '</label><span class="userData"> ' . $d['registryNo'] . '</span></p>';
                         }
-                        if ($d['typeId'] != UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL && $d['typeId'] <= 50 && !is_null($d['facultyId'])) {
+                        if (!is_null($d['facultyId'])) {
                                 $tmp = array();
                                 foreach ($faculties as $fac) {
                                         if ($fac['id'] == 0) continue; // N/D powinno być na końcu
