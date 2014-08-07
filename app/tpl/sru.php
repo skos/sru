@@ -162,7 +162,12 @@ extends UFtpl_Common {
 	}
 
 	public function userPenaltiesNotFound() {
-                echo '<h3>' . _("Hurra! Brak kar i ostrzeżeń! ;)") . '</h3>';
+		$form = UFra::factory('UFlib_Form');
+		echo $form->_start();
+		echo $form->_fieldset(_("Archiwum kar i ostrzeżeń"));
+                echo $this->OK(_("Hurra! Brak kar i ostrzeżeń! ;)"));
+		echo $form->_end();
+		echo $form->_end(true);
 	}
 
 	public function userMainMenu() {		
@@ -214,7 +219,6 @@ extends UFtpl_Common {
 		
 		echo $form->_start();
                 echo $form->_fieldset(_("Twoje komputery"));
-                echo '<ul>';
                 if ($this->_srv->get('msg')->get('computerEdit/ok')) {
                         echo $this->OK(_("Dane zostały zmienione."));
                 } else if ($this->_srv->get('msg')->get('computerAdd/ok')) {
@@ -222,6 +226,7 @@ extends UFtpl_Common {
                 } elseif ($this->_srv->get('msg')->get('computerDel/ok')) {
                         echo $this->OK(_("Komputer został wyrejestrowany."));
                 }
+		echo '<ul>';
                 $d['computers']->write('listOwn');
                 echo '</ul>';
                 echo '<p><br/>' . _("Samodzielnie możesz dodać tylko jeden komputer. Jeżeli chcesz zarejestrować kolejny, zgłoś się do administratora lokalnego.") . '</p>';
@@ -230,7 +235,10 @@ extends UFtpl_Common {
         }
 
 	public function userComputersNotFound(array $d) {
-                echo '<h1>' . _("Twoje komputery") . '</h1>';
+                $form = UFra::factory('UFlib_Form');
+		
+		echo $form->_start();
+                echo $form->_fieldset(_("Twoje komputery"));
                 if ($this->_srv->get('msg')->get('computerEdit/ok')) {
                         echo $this->OK(_("Dane zostały zmienione"));
                 }
@@ -242,6 +250,8 @@ extends UFtpl_Common {
                 } else {
                         echo $this->ERR(_("Nie posiadasz komputerów.") . ' <a href="' . $this->url(1) . '/:add">' . _("Dodaj komputer") . '</a>.');
                 }
+		echo $form->_end();
+		echo $form->_end(true);
 	}
 
 	public function titleUserComputer(array $d) {

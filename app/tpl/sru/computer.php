@@ -300,13 +300,16 @@ changeVisibility();
 			echo $this->ERR($this->errors['comp/second']);
 		}
 		if ($this->_srv->get('msg')->get('computerEdit/errors/host/duplicated')) {
-			echo $this->ERR(_('Nazwa jest już zajęta. Skorzystaj z').' <a href="'.$this->url(0).'/computers/:add">'._('formularza dodawania nowego komputera').'</a>.');
+			echo $this->ERR(_('Nazwa jest już zajęta. Wpisz inną lub skorzystaj z').' <a href="'.$this->url(0).'/computers/:add">'._('formularza dodawania nowego komputera').'</a>.');
 		}
 		$form = UFra::factory('UFlib_Form', 'computerEdit', $d, $this->errors);
 
 		echo '<h1>'.$d['host'].'.ds.pg.gda.pl</h1>';
                 echo $form->host(_('Nazwa'));
 		echo $form->mac('MAC', array('after'=>UFlib_Helper::displayHint(_("Adres fizyczny karty sieciowej komputera.")).$this->showMacHint().'<br/>'));
+		if ($this->_srv->get('req')->get->view == 'user/computer/activate') {
+			echo $form->activateHost('', array('type'=>$form->HIDDEN, 'value'=>true));
+		}
 	}
 
 	public function formEditAdmin(array $d, $dormitories, $user = null, $history = null, $servers = null, $skosAdmins = null, $waletAdmins = null, $virtuals = null, $deviceModels = null) {
