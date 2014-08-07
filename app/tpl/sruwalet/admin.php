@@ -124,7 +124,6 @@ $(document).ready(function()
 		echo '<p><em>Login:</em> '.$d['login'].(!$d['active']?' <strong>(konto nieaktywne)</strong>':'').'</p>';
 		echo '<p><em>E-mail:</em> <a href="mailto:'.$d['email'].'">'.$d['email'].'</a></p>';
 		echo '<p><em>Telefon:</em> '.$d['phone'].'</p>';
-		echo '<p><em>Gadu-Gadu:</em> '.$d['gg'].'</p>';
 		echo '<p><em>Jabber:</em> '.$d['jid'].'</p>';
 		echo '<p><em>Adres:</em> '.$d['address'].'</p>';
 		
@@ -202,7 +201,6 @@ $(document).ready(function()
 		echo $form->_fieldset();
 		echo $form->email('E-mail', array('class'=>'required'));
 		echo $form->phone('Telefon');
-		echo $form->gg('GG', array('after'=>UFlib_Helper::displayHint("Numer w komunikatorze GG.")));
 		echo $form->jid('Jabber', array('after'=>UFlib_Helper::displayHint("Adres w komunikatorze sieci Jabber.")));
 		echo $form->address('Adres', array('after'=>UFlib_Helper::displayHint("Lokalizacja lub miejsce przebywania administratora.")));
 	}
@@ -271,7 +269,6 @@ $(document).ready(function()
 		echo $form->_fieldset();
 		echo $form->email('E-mail', array('class'=>'required'));
 		echo $form->phone('Telefon');
-		echo $form->gg('GG', array('after'=>UFlib_Helper::displayHint("Numer w komunikatorze GG.")));
 		echo $form->jid('Jabber', array('after'=>UFlib_Helper::displayHint("Adres w komunikatorze sieci Jabber.")));
 		echo $form->address('Adres', array('after'=>UFlib_Helper::displayHint("Lokalizacja lub miejsce przebywania administratora.")));
 	}

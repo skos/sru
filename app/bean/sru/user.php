@@ -31,7 +31,6 @@ extends UFbean_Common {
 		'name',
 		'surname',
 		'email',
-		'gg',
 		'facultyId',
 		'studyYearId',
 		'locationId',
@@ -55,11 +54,6 @@ extends UFbean_Common {
 	}
 
 	protected function normalizeSurname($val, $change) {
-		return trim($val);
-	}
-
-	protected function normalizeGg($val, $change) {
-		if ($val == 0) return '';
 		return trim($val);
 	}
 

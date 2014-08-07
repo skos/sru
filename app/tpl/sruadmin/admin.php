@@ -119,7 +119,6 @@ extends UFtpl_Common {
 		echo '<p><em>Login:</em> '.$d['login'].(!$d['active']?' <strong>(konto nieaktywne)</strong>':'').'</p>';
 		echo '<p><em>E-mail:</em> <a href="mailto:'.$d['email'].'">'.$d['email'].'</a></p>';
 		echo '<p><em>Telefon:</em> '.$d['phone'].'</p>';
-		echo '<p><em>Gadu-Gadu:</em> '.$d['gg'].'</p>';
 		echo '<p><em>Jabber:</em> '.$d['jid'].'</p>';
 		echo '<p><em>Adres:</em> '.$d['address'].'</p>';
 
@@ -178,7 +177,6 @@ extends UFtpl_Common {
 		));
 		echo $form->email('E-mail');
 		echo $form->phone('Telefon');
-		echo $form->gg('GG');
 		echo $form->jid('Jabber');
 		echo $form->address('Adres', array('after'=> UFlib_Helper::displayHint("Lokalizacja lub miejsce przebywania administratora. Zawartość tego pola pojawi się w tabeli dyżurów, więc powinna być zgodna z formatem wpisywanych tam danych.")));
 		
@@ -235,7 +233,6 @@ extends UFtpl_Common {
 		echo $form->_fieldset('Dane kontaktowe');
 		echo $form->email('E-mail');
 		echo $form->phone('Telefon');
-		echo $form->gg('GG');
 		echo $form->jid('Jabber');
 		echo $form->address('Adres', array('after'=>UFlib_Helper::displayHint("Lokalizacja lub miejsce przebywania administratora. Zawartość tego pola pojawi się w tabeli dyżurów, więc powinna być zgodna z formatem wpisywanych tam danych.")));
 

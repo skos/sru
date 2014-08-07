@@ -14,7 +14,6 @@ extends UFact {
 			$bean->fillFromPost(self::PREFIX, array('password'));
 
 			$bean->modifiedById = $this->_srv->get('session')->authAdmin;
-			$bean->gg = '';
 
 			$bean->updateNeeded = true;
 			$bean->changePasswordNeeded = true;

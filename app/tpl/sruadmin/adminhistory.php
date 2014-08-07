@@ -10,7 +10,6 @@ extends UFtpl_Common {
 		'name' => 'Nazwa',
 		'typeId' => 'Typ',
 		'phone' => 'Telefon',
-		'gg' => 'GG',
 		'jid' => 'JID',
 		'email' => 'E-mail',
 		'address' => 'Adres',
@@ -33,7 +32,6 @@ extends UFtpl_Common {
 				case 'login':
 				case 'name':
 				case 'phone':
-				case 'gg':
 				case 'jid':
 				case 'email':
 				case 'address':
@@ -76,7 +74,6 @@ extends UFtpl_Common {
 			'name' => $current->name,
 			'typeId' => $current->typeId,
 			'phone' => $current->phone,
-			'gg' => $current->gg,
 			'jid' => $current->jid,
 			'email' => $current->email,
 			'address' => $current->address,

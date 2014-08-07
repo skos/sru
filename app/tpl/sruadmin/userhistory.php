@@ -13,7 +13,6 @@ extends UFtpl_Common {
 		'name' => 'Imię',
 		'surname' => 'Nazwisko',
 		'email' => 'E-mail',
-		'gg' => 'Gadu-Gadu',
 		'facultyId' => 'Wydział',
 		'locationId' => 'Miejsce',
 		'studyYearId' => 'Rok studiów',
@@ -47,7 +46,6 @@ extends UFtpl_Common {
 		'name' => 'Name',
 		'surname' => 'Surname',
 		'email' => 'E-mail',
-		'gg' => 'Gadu-Gadu',
 		'facultyId' => 'Faculty',
 		'locationId' => 'Room',
 		'studyYearId' => 'Year of study',
@@ -90,7 +88,6 @@ extends UFtpl_Common {
 				case 'surname': $changes[] = $names[$key].': '.$this->_escape($val).$arr.$this->_escape($new[$key]); break;
 				case 'registryNo': $changes[] = $names[$key].': '.$val.$arr.$new[$key]; break;
 				case 'email': $changes[] = $names[$key].': '.$val.$arr.$new[$key]; break;
-				case 'gg': $changes[] = $names[$key].': '.$val.$arr.$new[$key]; break;
 				case 'facultyId':
 					$oldF = is_null($old['facultyName'])?'':$old['facultyName'];
 					$newF = $new['facultyName'];
@@ -141,7 +138,6 @@ extends UFtpl_Common {
 			'name' => $current->name,
 			'surname' => $current->surname,
 			'email' => $current->email,
-			'gg' => $current->gg,
 			'facultyId' => $current->facultyId,
 			'facultyName' => $current->facultyName,
 			'facultyAlias' => $current->facultyAlias,
@@ -252,7 +248,6 @@ extends UFtpl_Common {
 							."\n";
 					}
 					break;
-				case 'gg':
 				case 'email':
 					echo $names[$key].': '.$val
 						.($val!==$new[$key] ? $arr.$new[$key] : '')

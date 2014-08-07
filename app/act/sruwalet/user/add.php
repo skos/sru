@@ -13,7 +13,6 @@ extends UFact {
 			$bean = UFra::factory('UFbean_Sru_User');
 			$bean->fillFromPost(self::PREFIX, array('password'));
 			$bean->modifiedById = $this->_srv->get('session')->authWaletAdmin;
-			$bean->gg = '';
 
 			// tworzymy login
 			$user = UFra::factory('UFbean_Sru_User');

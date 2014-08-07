@@ -24,9 +24,6 @@ class UFlib_Sender {
 	 */
 	public function send($user, $title, $body, $action = null, $dormitoryAlias = null) {
 		$this->sendMail($user->email, $title, $body, $action, isset($user->lang) ? $user->lang : null, $dormitoryAlias);
-		if ($user->gg != '') {
-			$this->sendGG($user->gg, $body, isset($user->lang) ? $user->lang : null);
-		}
 	}
 
 	/**
@@ -60,28 +57,6 @@ class UFlib_Sender {
 		mail($email, '=?UTF-8?B?'.base64_encode($title).'?=', $body, $headers);
 	}
 
-	public function sendGG($gg, $text, $lang) {
-		require_once 'XMPPHP/XMPP.php';
-		$conf = UFra::shared('UFconf_Sru');
-		$conn = new XMPPHP_XMPP($conf->jabberServer, $conf->jabberPort, $conf->jabberUser, $conf->jabberPassword, $conf->jabberResource, $conf->jabberDomain, $printlog=false, $loglevel=XMPPHP_Log::LEVEL_INFO);
-		if ($lang == 'en') {
-			$text .= $this->getGgFooterEnglish();
-		} else {
-			$text .= $this->getGgFooterPolish();
-		}
-
-		try {
-			$conn->useEncryption(false);
-			$conn->connect();
-			$conn->processUntil('session_start');
-			$conn->presence();
-			$conn->message($gg.'@'.$conf->ggGate, $text);
-			$conn->disconnect();
-		} catch(XMPPHP_Exception $e) {
-			die($e->getMessage());
-		} 
-	}
-
 	// nagłówki
 	private function getMailFooterPolish() {
 		$footer = "\n".'-- '."\n";
@@ -99,26 +74,6 @@ class UFlib_Sender {
 		$footer .= 'SKOS PG Administrators'."\n";
 		$footer .= 'SRU: https://sru.ds.pg.gda.pl/'."\n";
 		$footer .= 'Home Page: http://skos.ds.pg.gda.pl/en/'."\n";
-		$footer .= '[this message was generated automatically]'."\n";
-		return $footer;
-	}
-
-	private function getGgFooterPolish() {
-		$footer = "\n".'-- '."\n";
-		$footer .= 'Pozdrawiamy,'."\n";
-		$footer .= 'Administratorzy SKOS PG'."\n";
-		$footer .= 'SRU: https://sru.ds.pg.gda.pl/'."\n";
-		$footer .= 'Strona domowa: http://skos.ds.pg.gda.pl/'."\n";
-		$footer .= '[wiadomość została wygenerowana automatycznie]'."\n";
-		return $footer;
-	}
-
-	private function getGgFooterEnglish() {
-		$footer = "\n".'-- '."\n";
-		$footer .= 'Regards,'."\n";
-		$footer .= 'SKOS PG Administrators'."\n";
-		$footer .= 'SRU: https://sru.ds.pg.gda.pl/'."\n";
-		$footer .= 'Home Page: http://skos.ds.pg.gda.pl/'."\n";
 		$footer .= '[this message was generated automatically]'."\n";
 		return $footer;
 	}

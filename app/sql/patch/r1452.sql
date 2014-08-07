@@ -1,0 +1,4 @@
+ALTER TABLE users_history DROP COLUMN gg;
+ALTER TABLE users DROP COLUMN gg;
+ALTER TABLE admins_history DROP COLUMN gg;
+ALTER TABLE admins DROP COLUMN gg;

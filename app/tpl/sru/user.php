@@ -104,8 +104,6 @@ extends UFtpl_Common {
 		'surname/textMax' => 'Nazwisko jest za długie',
 		'email' => 'Podaj prawidłowy email',
 		'email/notnull' => 'Podaj prawidłowy email',
-		'gg' => 'Podaj prawidłowy numer',
-		'gg/textMin' => 'Numer zbyt krótki',
 		'facultyId' => 'Wybierz wydział',
 		'studyYearId' => 'Wybierz rok studiów',
 		'dormitory' => 'Wybierz akademik',
@@ -204,7 +202,7 @@ extends UFtpl_Common {
 		echo $form->lang('Język', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$languages),
-			'after'=>UFlib_Helper::displayHint("Wiadomości e-mail i GG będa przychodziły w wybranym języku.<br/><br/>You will receive e-mails and gg messages in the chosen language."),
+			'after'=>UFlib_Helper::displayHint("Wiadomości e-mail będa przychodziły w wybranym języku.<br/><br/>You will receive e-mails in the chosen language."),
 		));
 		$referralStart = date(self::TIME_YYMMDD, time());
 		echo $form->commentSkos('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
@@ -309,7 +307,7 @@ extends UFtpl_Common {
 		echo $form->lang('Język', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$languages),
-			'after'=>UFlib_Helper::displayHint("Wiadomości e-mail i GG będa przychodziły w wybranym języku.<br/><br/>You will receive e-mails and gg messages in the chosen language."),
+			'after'=>UFlib_Helper::displayHint("Wiadomości e-mail będa przychodziły w wybranym języku.<br/><br/>You will receive e-mails in the chosen language."),
 		));
 		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
 		echo '<legend>Meldunek</legend>';
@@ -482,9 +480,6 @@ $(function() {
 		if (is_null($d['facultyId'])) {
 			$d['facultyId'] = null;
 		}
-		if (is_null($d['gg']) || $d['gg'] == '') {
-			$d['gg'] = '0';
-		}
 		$form = UFra::factory('UFlib_Form', 'userEdit', $d, $this->errors);
 
 		echo '<h1>'.$d['name'].' '.$d['surname'].'</h1>';
@@ -536,12 +531,11 @@ $(function() {
                         }
                 } else {
                         echo $this->ERR(_("Łączysz się przez niezabezpieczone połączenie - ze względów bezpieczeństwa Twoje dane osobowe nie są wyświetlane."));
-                }
-                echo $form->gg(_("Gadu-Gadu"), array('after' => UFlib_Helper::displayHint(_("Jeżeli podasz nr GG, będą na niego przesyłane informacje o zmianie statusu konta i Twoich komputerów."))));
+		}
                 echo $form->lang(_("Język"), array(
                         'type' => $form->SELECT,
                         'labels' => $form->_labelize(self::$languages),
-                        'after' => UFlib_Helper::displayHint(_("Wiadomości e-mail i GG będa przychodziły w wybranym języku.")),
+                        'after' => UFlib_Helper::displayHint(_("Wiadomości e-mail będa przychodziły w wybranym języku.")),
                 ));
                 echo '<br />';
 
@@ -747,9 +741,6 @@ $(document).ready(function()
 		echo '<p><em>Login:</em> '.$d['login'].(!$d['active']?' <strong>(konto nieaktywne)</strong>':'').'</p>';
 		echo '<p><em>Typ:</em> '.self::getUserType($d['typeId']);
 		echo '<p><em>E-mail:</em> <a href="mailto:'.$d['email'].'">'.$d['email'].'</a></p>';
-		if ($d['gg']) {
-			echo '<p><em>Gadu-Gadu:</em> <a href="gg:'.$d['gg'].'">'.$d['gg'].'</a></p>';
-		}
 		echo '<p><em>Miejsce:</em> <a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'/'.$d['locationAlias'].'">'.$d['locationAlias'].'</a> <small>(<a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'">'.$d['dormitoryAlias'].'</a>)</small>'.(strlen($d['locationComment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$d['locationComment'].'" />':'').'</p>';
 		if($d['typeId'] != UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL && $d['typeId'] <= 50) {
 			echo '<p><em>Wydział:</em> '.(!is_null($d['facultyName'])?$d['facultyName']:'').'</p>';
@@ -927,9 +918,6 @@ changeVisibility();
                 echo '<p><em>' . _("Imię i nazwisko:") . '</em><span class="userData"> ' . $this->_escape($d['name']) . ' ' . $this->_escape($d['surname']) . '</span></p>';
                 echo '<p><em>' . _("Typ konta:") . '</em><span class="userData"> ' . _(self::getUserType($d['typeId'])) . '</span>';
                 echo '<p><em>' . _("E-mail:") . '</em><span class="userData"> <a href="mailto:' . $d['email'] . '">' . $d['email'] . '</a></span></p>';
-                if ($d['gg']) {
-                        echo '<p><em>' . _("Gadu-Gadu:") . '</em><span class="userData"> <a href="gg:' . $d['gg'] . '">' . $d['gg'] . '</a></span></p>';
-                }
                 echo '<p><em>' . _("Zameldowanie:") . '</em><span class="userData"> ' . (($d['lang']=='pl')?$d['dormitoryName']:$d['dormitoryNameEn']) . _(', pok. '). $d['locationAlias'] . '</span></p>';
                 if ($d['typeId'] != UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL && $d['typeId'] <= 50) {
                         echo '<p><em>' . _("Wydział:") . '</em><span class="userData"> ' . (!is_null($d['facultyName']) ? _($d['facultyName']) : '') . '</span></p>';
@@ -953,9 +941,6 @@ changeVisibility();
 
 		$d['locationId'] = $d['locationAlias'];
 		$d['dormitory'] = $d['dormitoryId'];
-		if (is_null($d['gg']) || $d['gg'] == '') {
-			$d['gg'] = '0';
-		}
 		$form = UFra::factory('UFlib_Form', 'userEdit', $d, $this->errors);
 		if ($this->_srv->get('msg')->get('userEdit/errors/ip/noFreeAdmin')) {
 			echo $this->ERR('Nie ma wolnych IP w tym DS-ie');
@@ -968,7 +953,6 @@ changeVisibility();
 			));
 		}
 		echo $form->email('E-mail');
-		echo $form->gg('Gadu-Gadu');
 		echo $form->lang('Język', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$languages),
@@ -1112,7 +1096,7 @@ changeVisibility();
 		echo $form->lang('Język', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$languages),
-			'after'=>UFlib_Helper::displayHint("Wiadomości e-mail i GG będa przychodziły w wybranym języku.<br/><br/>You will receive e-mails and gg messages in the chosen language."),
+			'after'=>UFlib_Helper::displayHint("Wiadomości e-mail będa przychodziły w wybranym języku.<br/><br/>You will receive e-mails in the chosen language."),
 		));
 		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
 		echo '<legend>Meldunek</legend>';
@@ -1551,7 +1535,6 @@ $(function() {
 		echo 'Imię: '.$d['name']."\n";
 		echo 'Nazwisko: '.$d['surname']."\n";
 		echo 'E-mail: '.$d['email']."\n";
-		echo 'Gadu-Gadu: '.$d['gg']."\n";
 		echo 'Wydział: '.$d['facultyName']."\n";
 		echo 'Rok studiów: '.UFtpl_Sru_User::$studyYears[$d['studyYearId']]."\n";
 		echo $d['dormitoryName']."\n";
@@ -1564,7 +1547,6 @@ $(function() {
 		echo 'Name: '.$d['name']."\n";
 		echo 'Surname: '.$d['surname']."\n";
 		echo 'E-mail: '.$d['email']."\n";
-		echo 'Gadu-Gadu: '.$d['gg']."\n";
 		echo 'Faculty: '.$d['facultyNameEn']."\n";
 		echo 'Year of study: '.UFtpl_Sru_User::$studyYears[$d['studyYearId']]."\n";
 		echo $d['dormitoryNameEn']."\n";
@@ -1581,7 +1563,6 @@ $(function() {
 			echo 'Nazwisko: '.$d['surname']."\n";
 			echo 'Konto aktywne: '.($d['active'] ? 'tak' : 'nie')."\n";
 			echo 'E-mail: '.$d['email']."\n";
-			echo 'Gadu-Gadu: '.$d['gg']."\n";
 			echo 'Wydział: '.$d['facultyName']."\n";
 			echo 'Rok studiów: '.UFtpl_Sru_User::$studyYears[$d['studyYearId']]."\n";
 			echo $d['dormitoryName']."\n";
@@ -1599,7 +1580,6 @@ $(function() {
 			echo 'Surname: '.$d['surname']."\n";
 			echo 'Account: '.($d['active'] ? 'active' : 'not active')."\n";
 			echo 'E-mail: '.$d['email']."\n";
-			echo 'Gadu-Gadu: '.$d['gg']."\n";
 			echo 'Faculty: '.$d['facultyNameEn']."\n";
 			echo 'Year of study: '.UFtpl_Sru_User::$studyYears[$d['studyYearId']]."\n";
 			echo $d['dormitoryNameEn']."\n";

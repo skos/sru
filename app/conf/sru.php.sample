@@ -35,14 +35,6 @@ extends UFconf {
 	protected $swstatsLinkPort = '';
 	protected $penaltyPrefix = '';	// prefix do komentarza portu, na który nałożono karę
 
-	protected $jabberServer = '';
-	protected $jabberPort = 0;
-	protected $jabberUser = '';
-	protected $jabberPassword = '';
-	protected $jabberResource = '';
-	protected $jabberDomain = '';
-	protected $ggGate = '';
-
 	protected $otrsUrl = ''; // z ukośnikiem na końcu
 	protected $otrsUser = '';
 	protected $otrsPass = '';
