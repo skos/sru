@@ -38,9 +38,13 @@ extends UFbox {
 	public function dnsRev() {
 		try {
 			$bean = UFra::factory('UFbean_Sru_ComputerList');
-			$bean->listAllActiveByIpClass((int)$this->_srv->get('req')->get->ipClass);
-
-			$d['computers'] = $bean;
+			$ipClass = $this->_srv->get('req')->get->ipClass;
+			if (preg_match('/^[0-9]{1,3}(\.[0-9]{1,3}){2}$/', $ipClass)) {
+				$bean->listAllActiveByIpClass($this->_srv->get('req')->get->ipClass);
+				$d['computers'] = $bean;
+			} else {
+				return '';
+			}
 
 			return $this->render('configDnsRev', $d);
 		} catch (UFex_Dao_NotFound $e) {

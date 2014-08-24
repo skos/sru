@@ -57,7 +57,7 @@ extends UFctl {
 								break;
 							default:
 								$get->view = 'dns';
-								$get->ipClass = (int)$req->segment(2);
+								$get->ipClass = urldecode($req->segment(2));
 								break;
 						}
 					}
