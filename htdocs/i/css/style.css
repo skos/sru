@@ -12,8 +12,8 @@ img { border-style: none; }
 #body { width: 960px; margin-left: auto; margin-right: auto; }
 
 #head { text-align: left; margin-bottom: 0.3em; }
-#head a { color: #aaa; }
-#head a:hover, #head a:active, #head a:focus { text-decoration: none; color: #999; }
+#head a { color: #888; }
+#head a:hover, #head a:active, #head a:focus { text-decoration: none; color: #474747; }
 #head abbr { border-bottom: none; }
 #head h1 { font-size: 2.8em; }
 #head h1 img { width: 40px; }
