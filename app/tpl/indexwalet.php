@@ -21,15 +21,16 @@ extends UFtpl_Common {
 <script type="text/javascript" src="<?=UFURL_BASE;?>/i/jquery/development-bundle/ui/i18n/jquery.ui.datepicker-pl.js"></script>
 <script type="text/javascript" src="<?=UFURL_BASE;?>/i/js/datepickerInit.js"></script>
 <script type="text/javascript" src="<?=UFURL_BASE;?>/i/jquery/jquery-ui-timepicker-addon.js"></script>
+<script type="text/javascript" src="<?=UFURL_BASE;?>/i/js/jqsimplemenu.js"></script>
 <title><?=$d['title'];?></title>
 </head>
 <body>
 <div id="body">
 <div id="head">
-<h1><a href="<?=UFURL_BASE;?>/walet/"><img src="<?=UFURL_BASE;?>/i/img/skoslogo.png" alt="logo SKOS"/>&nbsp;Walet</a></h1>
+<div id="logoBar"><h1><a href="<?=UFURL_BASE;?>/walet/"><img src="<?=UFURL_BASE;?>/i/img/skoslogo.png" alt="logo SKOS"/>&nbsp;Walet</a></h1></div>
+<div class="userBar"><?=$d['waletBar'];?></div>
 </div><!-- head -->
 <?=$d['menuWalet'];?>
-<?=$d['waletBar'];?>
 <div id="main">
 <?=$d['body'];?>
 </div><!-- main -->

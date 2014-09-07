@@ -63,20 +63,7 @@ extends UFtpl_Common {
 	}
 
 	public function waletBar(array $d) {
-		$form = UFra::factory('UFlib_Form', 'adminLogout');
-		$sruConf = UFra::shared('UFconf_Sru');
-		$timeToInvalidatePassword = $d['admin']->lastPswChange + $sruConf->passwordValidTime - time();
-
-		echo $form->_start($this->url(0).'/', array('class'=>'userBar'));
-		echo $form->_fieldset();
-		if($d['admin']->typeId != UFacl_SruWalet_Admin::PORTIER && $timeToInvalidatePassword < $sruConf->passwordOutdatedWarning){
-		    echo '<img src="'.UFURL_BASE.'/i/img/padlock.jpg" alt="Padlock" title="Zbliża się czas wygaśnięcia hasła" />&nbsp;';
-		}
 		echo $d['admin']->write(__FUNCTION__, $d['lastLoginIp'], $d['lastLoginAt'], $d['lastInvLoginIp'], $d['lastInvLoginAt']);
-		echo $form->logout('', array('type'=>$form->HIDDEN, 'value'=>true));
-		echo $form->_submit('Wyloguj', array('name'=>'adminLogout'));
-		echo $form->_end();
-		echo $form->_end(true);
 	}
 
 	public function titleMain() {
@@ -99,7 +86,7 @@ extends UFtpl_Common {
 
 		echo '<div class="userSearch">';
 		echo $form->_start($this->url(0).'/users/search');
-		echo $form->_fieldset('<img src="'.UFURL_BASE.'/i/img/lupa.png" alt="" /> Znajdź mieszkańca');
+		echo $form->_fieldset('<span class="ui-icon ui-icon-search legend-icon"></span> Znajdź mieszkańca');
 		echo $d['user']->write('formSearchWalet', $d['searched']);
 		echo $form->_submit('Znajdź');
 		echo $form->_end();
@@ -112,7 +99,7 @@ extends UFtpl_Common {
 		
 		if ($acl->sruWalet('admin', 'toDoListView')) {
 			$form = UFra::factory('UFlib_Form');
-			echo $form->_fieldset('<img src="'.UFURL_BASE.'/i/img/todo.png" alt="" /> Lista zadań');
+			echo $form->_fieldset('<span class="ui-icon ui-icon-alert legend-icon"></span> Lista zadań');
 			echo $d['admin']->write('toDoList', $d['users']);
 			echo $form->_end();
 		}

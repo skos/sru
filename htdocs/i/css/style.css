@@ -11,13 +11,18 @@ img { border-style: none; }
 
 #body { width: 960px; margin-left: auto; margin-right: auto; }
 
-#head { text-align: left; letter-spacing: 0.3em; margin-bottom: 0.3em; }
+#head { text-align: left; margin-bottom: 0.3em; }
 #head a { color: #aaa; }
 #head a:hover, #head a:active, #head a:focus { text-decoration: none; color: #999; }
 #head abbr { border-bottom: none; }
-#head h1 { font-size: 4em; }
+#head h1 { font-size: 2.8em; }
+#head h1 img { width: 40px; }
 
-.userBar { position: absolute; width: 960px; margin-left: auto; margin-right: auto; top: 5px; font-size: 0.9em; text-align: right; }
+#head .head-icon { display: inline-block; padding: 5px;  background-color: red; }
+
+#logoBar { letter-spacing: 0.3em; width: 250px; }
+
+.userBar { position: absolute; width: 710px; margin-left: 250px; top: 5px; font-size: 0.9em; text-align: right; }
 .userBar fieldset { border-style: none; }
 
 #nav { list-style-type: none; border-bottom: 1px solid #999; border-top: 1px solid #999; background: #ddd; text-align: center; font-weight: bold; }
@@ -153,6 +158,11 @@ img { border-style: none; }
 
 #main #macvendor { font-style: italic; }
 
+#main .legend-icon {
+	display: inline-table;
+	margin-right: 7px;
+}
+
 .tooltip {
 	display:none;
 	background:transparent url('../img/chmurka.png');
@@ -276,3 +286,116 @@ border-top: 1px solid;
 .ui-timepicker-rtl dl { text-align: right; padding: 0 5px 0 0; }
 .ui-timepicker-rtl dl dt{ float: right; clear: right; }
 .ui-timepicker-rtl dl dd { margin: 0 40% 10px 10px; }
+
+.menu, .menu ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    position: relative;
+    line-height: 2.5em;
+    z-index: 20;
+}
+.menu a {
+    text-decoration: none;
+}
+.menu > li {
+    margin-left: 15px;
+}
+.menu > li:first {
+    margin-left:0px!important;
+    }
+.menu > li > a {
+    padding: 0px 10px;
+    margin: 0;
+    width: 100%;
+    text-decoration: none;
+    color: #636383;
+    font-weight: bold;
+}
+
+div.box {
+    position: absolute;
+    z-index: -1;
+    background-color: #ccc;
+    left: 0;
+    top: 0;
+    border-radius: 4px 4px 0px 4px;
+    -moz-border-radius: 4px 4px 0px 4px;
+    -webkit-border-radius: 4px 4px 0px 4px;
+}
+li.pull-down {
+    padding-right:6px;
+    }
+li.pull-down > a {
+    background-image: url('../img/darrow.png');
+    background-position: 99% 75%;
+    background-repeat: no-repeat;
+    padding-right: 20px;
+}
+li.right-menu > a {
+    background-image: url('../img/rarrow.png');
+    background-position: 97% 45%;
+    background-repeat: no-repeat;
+}
+.menu a.selected {
+    background-color: #75CDD2;
+    border-radius: 0px 4px 4px 4px;
+    -moz-border-radius: 0px 4px 4px 4px;
+    -webkit-border-radius: 0px 4px 4px 4px;
+}
+.menu li
+{
+    float: right;
+    position: relative;
+}
+
+.menu ul {
+    position: absolute;
+    right: 0px;
+    display: none;
+    width: 200px;
+    top: 2.5em; /*padding-right: 10px;*/
+    background-color: #ccc; /*-moz-opacity: .50;     filter: alpha(opacity=50);     opacity: .50;*/
+    border-radius: 0px 0px 4px 4px;
+    -moz-border-radius: 0px 0px 4px 4px;
+    -webkit-border-radius: 0px 0px 4px 4px;
+}
+
+.menu li ul a {
+    width: 180px;
+    height: auto;
+    float: left;
+    color: #003d9a !important;
+    padding: 0 10px;
+}
+.menu li ul li {
+    padding: 0;
+    margin: 0;
+}
+.menu ul ul {
+    top: auto;
+}
+
+.menu li ul ul {
+    left: 198px; /*margin: 0px 0 0 10px;*/
+}
+.menu-item-selected > a {
+    background-color: #FFFEFD;
+    -moz-opacity: .50;
+    filter: alpha(opacity=50);
+    opacity: .50;
+}
+.menu-item-selected > a:hover {
+    color: red !important;
+    font-weight: bold;
+}
+
+.mainMenuItem {
+	font-size: 1.5rem;
+}
+
+.menuLoginItem {
+	font-size: 0.7rem;
+	line-height: 1.8em;
+	padding: 0 10px !important;
+}

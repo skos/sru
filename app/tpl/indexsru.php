@@ -18,15 +18,16 @@ extends UFtpl_Common {
 <script type="text/javascript" src="<?=UFURL_BASE;?>/i/jquery/jquery.js"></script>
 <script type="text/javascript" src="<?=UFURL_BASE;?>/i/jquery/jquery-ui.custom.min.js"></script>
 <script type="text/javascript" src="<?=UFURL_BASE;?>/i/jquery/development-bundle/ui/i18n/jquery.ui.datepicker-pl.js"></script>
+<script type="text/javascript" src="<?=UFURL_BASE;?>/i/js/jqsimplemenu.js"></script>
 <title><?=$d['title'];?></title>
 </head>
 <body>
 <div id="body">
 <div id="head">
-<h1><a href="<?=UFURL_BASE;?>/sru/"><img src="<?=UFURL_BASE;?>/i/img/skoslogo.png" alt="logo SKOS"/>&nbsp;<abbr title="System Rejestracji Użytkowników">SRU</abbr></a></h1>
+<div id="logoBar"><h1><a href="<?=UFURL_BASE;?>/sru/"><img src="<?=UFURL_BASE;?>/i/img/skoslogo.png" alt="logo SKOS"/>&nbsp;<abbr title="System Rejestracji Użytkowników">SRU</abbr></a></h1></div>
+<div class="userBar"><?=$d['userBar'];?></div>
 </div><!-- head -->
 <?=$d['userMainMenu'];?>
-<?=$d['userBar'];?>
 <div id="socialBar">
 <ul id="socialSidebar">
 <li class="facebook">

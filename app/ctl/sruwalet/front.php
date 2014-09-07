@@ -229,6 +229,11 @@ extends UFctl {
 						}
 					}
 					break;
+				case 'logout':
+					$ctl = UFra::factory('UFact_SruWalet_Admin_Logout');
+					$ctl->go();
+					UFlib_Http::redirect(UFURL_BASE.'/'.implode('/', $this->_srv->get('req')->segments(0)));
+					return false;
 				default:
 					$get->view = 'error404';
 					break;

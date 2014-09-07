@@ -1387,22 +1387,33 @@ $(function() {
         }
 
 	public function userBar(array $d, $ip, $time, $invIp, $invTime) {
-                echo _("Witaj, ") . $this->_escape($d['name']) . ' &quot;' . $this->_escape($d['login']) . '&quot; ' . $this->_escape($d['surname']) . '!<br/>';
-
-                if (!is_null($time) && $time != 0) {
-                        echo '<small>' . _("Ostatnie udane logowanie: ") . date(self::TIME_YYMMDD_HHMM, $time) . '</small>';
-                        if (!is_null($ip)) {
-                                echo '<small>, ' . _("z IP: ") . $ip . '</small>';
-                        }
-                        echo '<br/>';
-                }
-                if (!is_null($invTime) && $invTime != 0) {
-                        echo '<small>' . _("Ostatnie nieudane logowanie: ") . date(self::TIME_YYMMDD_HHMM, $invTime) . '</small>';
-                        if (!is_null($invIp)) {
-                                echo '<small>, ' . _("z IP: ") . $invIp . '</small>';
-                        }
-                        echo '<br/>';
-                }
+		echo '<ul class="menu">';
+		echo '<li><a class="mainMenuItem" href="#">'.$this->_escape($d['name']).' &quot;'.$this->_escape($d['login']).'&quot; '.$this->_escape($d['surname']).'</a>';
+		echo '<ul>';
+		echo '<li><a href="'.$this->url(0).'/profile/">'._("Profil").'</a>';
+		if (!is_null($time) && $time != 0 ) {
+			echo '<li class="menuLoginItem">'._("Ostatnie udane logowanie: ").'<br/>'.date(self::TIME_YYMMDD_HHMM, $time);
+			if (!is_null($ip)) {
+				echo ' ('._("z IP: ").$ip.')';
+			}
+			echo '</li>';
+		}
+		if (!is_null($invTime) && $invTime != 0 ) {
+			echo '<li class="menuLoginItem">'._("Ostatnie nieudane logowanie: ").'<br/>'.date(self::TIME_YYMMDD_HHMM, $invTime);
+			if (!is_null($invIp)) {
+				echo ' ('._("z IP: ").$invIp.')';
+			}
+			echo '</li>';
+		}
+		echo '<li><a href="'.$this->url(0).'/logout">'._('Wyloguj').'</a></li>';
+		echo '</ul></li></ul>';
+?>
+<script type="text/javascript">
+	$(document).ready(function () {
+		$('.menu').jqsimplemenu();
+	});
+</script>
+<?
         }
 
 	public function userAddMailTitlePolish(array $d) {

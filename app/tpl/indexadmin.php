@@ -23,15 +23,16 @@ extends UFtpl_Common {
 <script type="text/javascript" src="<?=UFURL_BASE;?>/i/js/datepickerInit.js"></script>
 <script type="text/javascript" src="<?=UFURL_BASE;?>/i/jquery/jquery-ui-timepicker-addon.js"></script>
 <script type="text/javascript" src="<?=UFURL_BASE;?>/i/jquery/jquery.mb.browser.min.js"></script>
+<script type="text/javascript" src="<?=UFURL_BASE;?>/i/js/jqsimplemenu.js"></script>
 <title><?=$d['title'];?></title>
 </head>
 <body>
 <div id="body">
 <div id="head">
-<h1><a href="<?=UFURL_BASE;?>/admin/"><img src="<?=UFURL_BASE;?>/i/img/skoslogo.png" alt="logo SKOS"/>&nbsp;Admin</a></h1>
+<div id="logoBar"><h1><a href="<?=UFURL_BASE;?>/admin/"><img src="<?=UFURL_BASE;?>/i/img/skoslogo.png" alt="logo SKOS"/>&nbsp;Admin</a></h1></div>
+<div class="userBar"><?=$d['adminBar'];?></div>
 </div><!-- head -->
 <?=$d['menuAdmin'];?>
-<?=$d['adminBar'];?>
 <div id="main">
 <?=$d['body'];?>
 </div><!-- main -->

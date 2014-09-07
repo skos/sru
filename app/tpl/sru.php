@@ -326,15 +326,7 @@ extends UFtpl_Common {
 	}
 
 	public function userBar(array $d) {
-		$form = UFra::factory('UFlib_Form', 'userLogout');
-
-		echo $form->_start($this->url(0).'/', array('class'=>'userBar'));
-		echo $form->_fieldset();
 		echo $d['user']->write(__FUNCTION__, $d['lastLoginIp'], $d['lastLoginAt'], $d['lastInvLoginIp'], $d['lastInvLoginAt']);
-		echo $form->logout('', array('type'=>$form->HIDDEN, 'value'=>true));
-		echo $form->_submit(_('Wyloguj'), array('name'=>'userLogout'));
-		echo $form->_end();
-		echo $form->_end(true);
 	}
 
 	public function recoverPassword(array $d) {

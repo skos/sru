@@ -52,23 +52,7 @@ extends UFtpl_Common {
 	}
 
 	public function adminBar(array $d) {
-		$form = UFra::factory('UFlib_Form', 'adminLogout');
-		$sruConf = UFra::shared('UFconf_Sru');
-		$timeToInvalidatePassword = $d['admin']->lastPswChange + $sruConf->passwordValidTime - time();
-
-		echo $form->_start($this->url(0).'/', array('class'=>'userBar'));
-		echo $form->_fieldset();
-		if($timeToInvalidatePassword < $sruConf->passwordOutdatedWarning){
-		    echo '<img src="'.UFURL_BASE.'/i/img/padlock.jpg" alt="Padlock" title="Zbliża się czas wygaśnięcia hasła" />&nbsp;';
-		}
-		if($d['admin']->active == true && $d['admin']->activeTo - time() <= $sruConf->adminDeactivateAfter && $d['admin']->activeTo - time() >= 0) {
-		    echo '<img src="'.UFURL_BASE.'/i/img/wykrzyknik.png" alt="Wykrzyknik" title="Zbliża się czas dezaktywacji konta" />&nbsp;';
-		}
 		echo $d['admin']->write(__FUNCTION__, $d['lastLoginIp'], $d['lastLoginAt'], $d['lastInvLoginIp'], $d['lastInvLoginAt']);
-		echo $form->logout('', array('type'=>$form->HIDDEN, 'value'=>true));
-		echo $form->_submit('Wyloguj', array('name'=>'adminLogout'));
-		echo $form->_end();
-		echo $form->_end(true);
 	}
 	
 	public function titleComputer(array $d) {
@@ -228,7 +212,7 @@ extends UFtpl_Common {
 		$form = UFra::factory('UFlib_Form');	
 		echo '<div class="computerSearch">';
 		echo $form->_start($this->url(0).'/computers/search');
-		echo $form->_fieldset('<img src="'.UFURL_BASE.'/i/img/lupa.png" alt="" /> Znajdź komputer');
+		echo $form->_fieldset('<span class="ui-icon ui-icon-search legend-icon"></span> Znajdź komputer');
 		echo $d['computer']->write('formSearch', $d['searched']);
 		echo $form->_submit('Znajdź');
 		echo $form->_end();
@@ -294,7 +278,7 @@ extends UFtpl_Common {
 
 		echo '<div class="userSearch">';
 		echo $form->_start($this->url(0).'/users/search');
-		echo $form->_fieldset('<img src="'.UFURL_BASE.'/i/img/lupa.png" alt="" /> Znajdź użytkownika');
+		echo $form->_fieldset('<span class="ui-icon ui-icon-search legend-icon"></span> Znajdź użytkownika');
 		echo $d['user']->write('formSearch', $d['searched']);
 		echo $form->_submit('Znajdź');
 		if ($acl->sruAdmin('user', 'add')) {
@@ -325,7 +309,7 @@ extends UFtpl_Common {
 		$form = UFra::factory('UFlib_Form');	
 		echo '<div class="inventoryCardSearch">';
 		echo $form->_start($this->url(0).'/inventory/search');
-		echo $form->_fieldset('<img src="'.UFURL_BASE.'/i/img/lupa.png" alt="" /> Znajdź urządzenie');
+		echo $form->_fieldset('<span class="ui-icon ui-icon-search legend-icon"></span> Znajdź urządzenie');
 		echo $d['inventoryCard']->write('formSearch', $d['searched']);
 		echo $form->_submit('Znajdź');
 		
@@ -358,7 +342,7 @@ extends UFtpl_Common {
 	
 	public function adminLists(array $d) {
 		$form = UFra::factory('UFlib_Form');
-		echo $form->_fieldset('<img src="'.UFURL_BASE.'/i/img/todo.png" alt="" /> Zestawienia');
+		echo $form->_fieldset('<span class="ui-icon ui-icon-folder-collapsed legend-icon"></span> Zestawienia');
 		echo '<ul>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/computers/">Serwery, administracja, organizacje</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/ips/">IP i VLANy</a></li>';
@@ -375,7 +359,7 @@ extends UFtpl_Common {
 
 	public function toDoList(array $d) {
 		$form = UFra::factory('UFlib_Form');
-		echo $form->_fieldset('<img src="'.UFURL_BASE.'/i/img/todo.png" alt="" /> Lista zadań');
+		echo $form->_fieldset('Lista zadań');
 		echo $d['admin']->write('toDoList', $d['computers'], $d['devices']);
 		echo $form->_end();
 	}

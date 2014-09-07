@@ -71,6 +71,11 @@ extends UFctl {
 					$ctl = UFra::factory('UFctl_SruAdmin_Inventory');
 					$ctl->go();
 					return false;
+				case 'logout':
+					$ctl = UFra::factory('UFact_SruAdmin_Admin_Logout');
+					$ctl->go();
+					UFlib_Http::redirect(UFURL_BASE.'/'.implode('/', $this->_srv->get('req')->segments(0)));
+					return false;
 				default:
 					$get->view = 'error404';
 					break;

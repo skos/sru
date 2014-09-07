@@ -58,6 +58,11 @@ extends UFctl {
 				case 'banned':
 					$get->view = 'user/banned';
 					break;
+				case 'logout':
+					$ctl = UFra::factory('UFact_Sru_User_Logout');
+					$ctl->go();
+					UFlib_Http::redirect(UFURL_BASE.'/'.implode('/', $this->_srv->get('req')->segments(0)));
+					return false;
 				default:
 					if (UFlib_Valid::regexp($req->segment(1),'^[0-9a-f]{32}$')) {
 						$get->userToken = $req->segment(1);

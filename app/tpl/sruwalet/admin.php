@@ -284,28 +284,41 @@ $(document).ready(function()
 
 	public function waletBar(array $d, $ip, $time, $invIp, $invTime) {
 		$acl = $this->_srv->get('acl');
+		$sruConf = UFra::shared('UFconf_Sru');
+		$timeToInvalidatePassword = $d['lastPswChange'] + $sruConf->passwordValidTime - time();
 		
-		if ($acl->sruWalet('admin', 'view')) {
-			echo '<a href="'.$this->url(0).'/admins/'.$d['id'].'">';
+		echo '<ul class="menu">';
+		if($d['typeId'] != UFacl_SruWalet_Admin::PORTIER && $timeToInvalidatePassword < $sruConf->passwordOutdatedWarning){
+		    echo '<span class="head-icon" title="Zbliża się czas wygaśnięcia hasła"><span class="ui-icon ui-icon-key"></span></span>';
 		}
-		echo $this->_escape($d['name']);
+		echo '<li><a class="mainMenuItem" href="#">'.$this->_escape($d['name']).'</a>';
+		echo '<ul>';
 		if ($acl->sruWalet('admin', 'view')) {
-			echo '</a> ';
+			echo '<li><a href="'.$this->url(0).'/admins/'.$d['id'].'">Mój profil</a></li>';;
 		}
-		
 		if (!is_null($time) && $time != 0 ) {
-			echo '<br/><small>Ostatnie&nbsp;udane&nbsp;logowanie: '.date(self::TIME_YYMMDD_HHMM, $time).'</small> ' ;
+			echo '<li class="menuLoginItem">Ostatnie&nbsp;udane&nbsp;logowanie:<br/>'.date(self::TIME_YYMMDD_HHMM, $time);
 			if (!is_null($ip)) {
-				echo '<small>('.$ip.')</small> ';
+				echo ' ('.$ip.')';
 			}
+			echo '</li>';
 		}
 		if (!is_null($invTime) && $invTime != 0 ) {
-			echo '<br/><small>Ostatnie&nbsp;nieudane&nbsp;logowanie: '.date(self::TIME_YYMMDD_HHMM, $invTime).'</small> ' ;
+			echo '<li class="menuLoginItem">Ostatnie&nbsp;nieudane&nbsp;logowanie:<br/>'.date(self::TIME_YYMMDD_HHMM, $invTime);
 			if (!is_null($invIp)) {
-				echo '<small>('.$invIp.')</small> ';
+				echo ' ('.$invIp.')';
 			}
+			echo '</li>';
 		}
-		echo '<br/>';
+		echo '<li><a href="'.$this->url(0).'/logout">Wyloguj</a></li>';
+		echo '</ul></li></ul>';
+?>
+<script type="text/javascript">
+	$(document).ready(function () {
+		$('.menu').jqsimplemenu();
+	});
+</script>
+<?
 	}
 
 	public function toDoList(array $d, $users) {
