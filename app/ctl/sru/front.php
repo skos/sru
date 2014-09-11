@@ -8,20 +8,21 @@ extends UFctl {
 	protected function parseParameters() {
 		$req = $this->_srv->get('req');
 		$get = $req->get;
-		$acl = $this->_srv->get('acl');
-
-		try {
-			$user = UFra::factory('UFbean_Sru_User');
-			$user->getFromSession();
-
-			if ($user->updateNeeded || $user->changePasswordNeeded) {
-				$get->view = 'user/edit';
-				return;
-			}
-		} catch (UFex_Core_DataNotFound $e) {
-		}
-
 		$segCount = $req->segmentsCount();
+
+		if ($segCount < 1 || $req->segment(1) != 'logout') {
+			try {
+				$user = UFra::factory('UFbean_Sru_User');
+				$user->getFromSession();
+
+				if ($user->updateNeeded || $user->changePasswordNeeded) {
+					$get->view = 'user/edit';
+					return;
+				}
+			} catch (UFex_Core_DataNotFound $e) {
+			}
+		}
+;
 		if (0 == $segCount) {
 			$get->view = 'user/main';
 		} else {

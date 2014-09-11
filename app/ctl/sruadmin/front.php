@@ -8,21 +8,22 @@ extends UFctl {
 	protected function parseParameters() {
 		$req = $this->_srv->get('req');
 		$get = $req->get;
-		$acl = $this->_srv->get('acl');
+		$segCount = $req->segmentsCount();
 
-		try {
-			$admin = UFra::factory('UFbean_SruAdmin_Admin');
-			$admin->getFromSession();
+		if ($segCount < 1 || $req->segment(1) != 'logout') {
+			try {
+				$admin = UFra::factory('UFbean_SruAdmin_Admin');
+				$admin->getFromSession();
 
-			if ((is_null($admin->lastPswChange) == true || time() - $admin->lastPswChange > UFra::shared('UFconf_Sru')->passwordValidTime)) {
-				$get->view = 'adminOwnPswEdit';
-				$get->adminId = $admin->id;
-				return;
+				if ((is_null($admin->lastPswChange) == true || time() - $admin->lastPswChange > UFra::shared('UFconf_Sru')->passwordValidTime)) {
+					$get->view = 'adminOwnPswEdit';
+					$get->adminId = $admin->id;
+					return;
+				}
+			} catch (UFex_Core_DataNotFound $ex) {
 			}
-		} catch (UFex_Core_DataNotFound $ex) {
 		}
 
-		$segCount = $req->segmentsCount();
 		if (0 == $segCount) {
 			$get->view = 'main';
 		} else {
@@ -74,7 +75,7 @@ extends UFctl {
 				case 'logout':
 					$ctl = UFra::factory('UFact_SruAdmin_Admin_Logout');
 					$ctl->go();
-					UFlib_Http::redirect(UFURL_BASE.'/'.implode('/', $this->_srv->get('req')->segments(0)));
+					UFlib_Http::redirect(UFURL_BASE.'/'.implode('/', $req->segments(0)));
 					return false;
 				default:
 					$get->view = 'error404';
