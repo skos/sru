@@ -146,7 +146,9 @@ extends UFtpl_Common {
 			$swstatsLink = str_replace($conf->swstatsSwitchRegex, UFtpl_SruAdmin_Switch::displaySwitchName($d['dormitoryAlias'], $d['hierarchyNo'], $d['lab']), $conf->swstatsLinkSwitch);
 			echo ' <a href="'.$swstatsLink.'">SWStats</a> &bull;';
 		}
-		echo ' <span id="switchMoreSwitch"></span></p>';
+		echo ' <span id="switchMoreSwitch"></span>';
+		if (strlen($d['comment'])) echo ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$d['comment'].'" />';
+		echo '</p>';
 		echo '<div id="switchMore">';
 		echo '<p><em>Lokalizacja:</em> <a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'/'.$d['locationAlias'].'">'.$d['locationAlias'].'</a> <small>(<a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'">'.$d['dormitoryAlias'].'</a>)</small>'.(strlen($d['locationComment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$d['locationComment'].'" />':'').'</p>';
 		echo '<p'.($d['inoperational'] ? ' class="inoperational"' : '').'><em>Uszkodzony:</em> '.($d['inoperational'] ? 'tak' : 'nie').'</p>';

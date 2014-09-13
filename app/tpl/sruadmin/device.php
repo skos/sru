@@ -80,7 +80,9 @@ extends UFtpl_Common {
 		if ($acl->sruAdmin('device', 'inventoryCardAdd')) {
 			echo ' <a href="'.$url.'/devices/'.$d['id'].'/:inventorycardadd">Dodaj kartę wyposażenia</a> &bull; ';
 		}
-		echo ' <span id="switchMoreSwitch"></span></p>';
+		echo ' <span id="switchMoreSwitch"></span>';
+		if (strlen($d['comment'])) echo ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$d['comment'].'" />';
+		echo '</p>';
 		echo '<div id="switchMore">';
 		echo '<p><em>Komentarz:</em> '.nl2br($this->_escape($d['comment'])).'</p>';
 		echo '</div>';
