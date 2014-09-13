@@ -646,12 +646,23 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 	public function admin(array $d) {
 		$url = $this->url(0).'/admins/'.$d['admin']->id;
 		$acl = $this->_srv->get('acl');
+		$session = $this->_srv->get('session');
+		$sruConf = UFra::shared('UFconf_Sru');
 		
 		if ($this->_srv->get('msg')->get('adminEdit/ok')) {
 			echo $this->OK('Dane zostały zmienione');
 		}
 		if ($this->_srv->get('msg')->get('adminOwnPswEdit/ok')) {
 			echo $this->OK('Hasło zostało zmienione');
+		}
+		$timeToInvalidatePassword = $d['admin']->lastPswChange + $sruConf->passwordValidTime - time();
+		if(($d['admin']->id == $session->authWaletAdmin || ($session->is('typeIdWalet') && $session->typeIdWalet == UFacl_SruWalet_Admin::HEAD)) 
+			&& $d['admin']->active == true && ($timeToInvalidatePassword < $sruConf->passwordOutdatedWarning)) {
+			if ($timeToInvalidatePassword <= 0) {
+				echo $this->ERR('Hasło straciło ważność');
+			} else {
+				echo $this->ERR('Hasło niedługo (za '.UFlib_Helper::secondsToTime($timeToInvalidatePassword).') straci ważność, należy je zmienić!');
+			}
 		}
 		
 		echo '<div class="admin">';

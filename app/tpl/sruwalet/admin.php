@@ -110,9 +110,6 @@ $(document).ready(function()
 	}
 
 	public function details(array $d) {
-		$session = $this->_srv->get('session');
-		$sruConf = UFra::shared('UFconf_Sru');
-		$url = $this->url(0);
 		if (array_key_exists($d['typeId'], UFtpl_SruWalet_Admin::$adminTypes)) {
 			$type = UFtpl_SruWalet_Admin::$adminTypes[$d['typeId']];
 		} else {
@@ -121,11 +118,6 @@ $(document).ready(function()
 		echo '<h2>'.$this->_escape($d['name']).'<br/><small>('.$type.
 				' &bull; ostatnie logowanie: '.((is_null($d['lastLoginAt']) || $d['lastLoginAt'] == 0) ? 'nigdy' : date(self::TIME_YYMMDD_HHMM, $d['lastLoginAt'])).
 				' &bull; ostatnie nieudane logowanie: '.((is_null($d['lastInvLoginAt']) || $d['lastInvLoginAt'] == 0) ? 'nigdy' : date(self::TIME_YYMMDD_HHMM, $d['lastInvLoginAt'])).')</small></h2>';
-		$timeToInvalidatePassword = $d['lastPswChange'] + $sruConf->passwordValidTime - time();
-		if(($d['id'] == $session->authWaletAdmin || ($session->is('typeIdWalet') && $session->typeIdWalet == UFacl_SruWalet_Admin::HEAD)) 
-			&& $d['active'] == true && ($timeToInvalidatePassword < $sruConf->passwordOutdatedWarning)) {
-		    echo $this->ERR("<br />Hasło niedługo (za " . UFlib_Helper::secondsToTime($timeToInvalidatePassword) . ") straci ważność, należy je zmienić!<br />&nbsp;");
-		}
 		echo '<p><em>Login:</em> '.$d['login'].(!$d['active']?' <strong>(konto nieaktywne)</strong>':'').'</p>';
 		echo '<p><em>E-mail:</em> <a href="mailto:'.$d['email'].'">'.$d['email'].'</a></p>';
 		echo '<p><em>Telefon:</em> '.$d['phone'].'</p>';
