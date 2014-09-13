@@ -1241,6 +1241,17 @@ extends UFtpl_Common {
 		echo $this->ERR('Brak komputerów');
 	}
 	
+	public function roomDevices(array $d) {
+		echo '<h3>Urządzenia</h3><ul>';
+		$d['devices']->write('shortList');
+		echo '</ul>';
+	}
+
+	public function roomDevicesNotFound() {
+		echo '<h3>Urządzenia</h3>';
+		echo $this->ERR('Brak urządzeń');
+	}
+	
 	public function roomSwitches(array $d) {
 		echo '<h3>Switche</h3><ul>';
 		$d['switches']->write('shortList');

@@ -23,4 +23,14 @@ extends UFdao {
 
 		return $this->doSelect($query);
 	}
+	
+	public function listByRoom($room, $page=1, $perPage=10, $overFetch=0) {
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->locationId, $room);
+		$query->order($mapping->deviceModelName);
+
+		return $this->doSelect($query);
+	}
 }
