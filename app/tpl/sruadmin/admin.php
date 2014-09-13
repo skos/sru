@@ -20,7 +20,7 @@ extends UFtpl_Common {
 		'password' => 'Nieprawidłowy format hasła',
 		'password/mismatch' => 'Hasła różnią się',
 		'password/same' => 'Hasło jest identyczne z poprzednim',
-		'password/sameAsInner' => 'Hasło jest identyczne zhasłem wewnętrznym',
+		'password/sameAsInner' => 'Hasło jest identyczne z hasłem wewnętrznym',
 		'passwordInner' => 'Nieprawidłowy format hasła',
 		'passwordInner/mismatch' => 'Hasła różnią się',
 		'passwordInner/same' => 'Hasło jest identyczne z poprzednim',
@@ -116,6 +116,12 @@ extends UFtpl_Common {
 		echo '<h2>'.$this->_escape($d['name']).'<br/><small>('.$type.
 				' &bull; ostatnie logowanie: '.((is_null($d['lastLoginAt']) || $d['lastLoginAt'] == 0) ? 'nigdy' : date(self::TIME_YYMMDD_HHMM, $d['lastLoginAt'])).
 				' &bull; ostatnie nieudane logowanie: '.((is_null($d['lastInvLoginAt']) || $d['lastInvLoginAt'] == 0) ? 'nigdy' : date(self::TIME_YYMMDD_HHMM, $d['lastInvLoginAt'])).')</small></h2>';
+		$timeToInvalidatePassword = $d['lastPswChange'] + $sruConf->passwordValidTime - time();
+		if(($d['id'] == $session->authAdmin || ($session->is('typeId') && ($session->typeId == UFacl_SruAdmin_Admin::CENTRAL
+			|| $session->typeId == UFacl_SruAdmin_Admin::CAMPUS))) && $d['active'] == true 
+			&& ($timeToInvalidatePassword < $sruConf->passwordOutdatedWarning)) {
+		    echo $this->ERR("<br />Hasło niedługo (za " . UFlib_Helper::secondsToTime($timeToInvalidatePassword) . ") straci ważność, należy je zmienić!<br />&nbsp;");
+		}
 		echo '<p><em>Login:</em> '.$d['login'].(!$d['active']?' <strong>(konto nieaktywne)</strong>':'').'</p>';
 		echo '<p><em>E-mail:</em> <a href="mailto:'.$d['email'].'">'.$d['email'].'</a></p>';
 		echo '<p><em>Telefon:</em> '.$d['phone'].'</p>';
@@ -126,12 +132,6 @@ extends UFtpl_Common {
 			echo '<p><em>Data dezaktywacji:</em> '.date(self::TIME_YYMMDD, $d['activeTo']).'</p>';
 		}else{
 			echo '<p><em>Data dezaktywacji:</em>Data dezaktywacji nie została podana</p>';
-		}
-		$timeToInvalidatePassword = $d['lastPswChange'] + $sruConf->passwordValidTime - time();
-		if(($d['id'] == $session->authAdmin || ($session->is('typeId') && ($session->typeId == UFacl_SruAdmin_Admin::CENTRAL
-			|| $session->typeId == UFacl_SruAdmin_Admin::CAMPUS))) && $d['active'] == true 
-			&& ($timeToInvalidatePassword < $sruConf->passwordOutdatedWarning)) {
-		    echo $this->ERR("<br />Hasło niedługo (za " . UFlib_Helper::secondsToTime($timeToInvalidatePassword) . ") straci ważność, należy je zmienić!<br />&nbsp;");
 		}
 		echo '<p><em>Ostatnia zmiana hasła:</em> '.((is_null($d['lastPswChange']) || $d['lastPswChange'] == 0) ? 'brak' : date(self::TIME_YYMMDD_HHMM, $d['lastPswChange'])).'</p>';
 		echo '<p><em>Ostatnia zmiana hasła wew.:</em> '.((is_null($d['lastPswInnerChange']) || $d['lastPswInnerChange'] == 0) ? 'brak' : date(self::TIME_YYMMDD_HHMM, $d['lastPswInnerChange'])).'</p>';
@@ -337,11 +337,13 @@ extends UFtpl_Common {
 
 	public function adminBar(array $d, $ip, $time, $invIp, $invTime) {
 		$sruConf = UFra::shared('UFconf_Sru');
+		$admin = UFra::factory('UFbean_SruAdmin_Admin');
+		$admin->getFromSession();
 		$timeToInvalidatePassword = $d['lastPswChange'] + $sruConf->passwordValidTime - time();
 
 		echo '<ul class="menu">';
 		if($timeToInvalidatePassword < $sruConf->passwordOutdatedWarning){
-			echo '<span class="head-icon" title="Zbliża się czas wygaśnięcia hasła"><span class="ui-icon ui-icon-key"></span></span>';
+			echo '<a href="'.$this->url(0).'/admins/'.$admin->id.'/:changepassword"><span class="head-icon" title="Zbliża się czas wygaśnięcia hasła"><span class="ui-icon ui-icon-key"></span></span></a>';
 		}
 		if($d['active'] == true && $d['activeTo'] - time() <= $sruConf->adminDeactivateAfter && $d['activeTo'] - time() >= 0) {
 			echo '&nbsp;<span title="Zbliża się czas dezaktywacji konta" class="head-icon"><span class="ui-icon ui-icon-locked"></span></span>';

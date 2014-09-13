@@ -219,6 +219,10 @@ extends UFctl {
 										case ':edit':
 											$get->view = 'admins/admin/edit';
 											break;
+										case ':changepassword':
+											$get->redirect = false;
+											$get->view = 'admins/admin/pswEdit';
+											break;
 										case 'history':
 											$get->view = 'admins/admin/history';
 											break;
@@ -270,10 +274,11 @@ extends UFctl {
 			$act = 'Room_Edit';
 		} elseif ('adminOwnPswEdit' == $get->view && $post->is('adminOwnPswEdit') && $acl->sruWalet('admin', 'edit', $get->adminId)) {
 			$act = 'Admin_OwnPswEdit';
-		}
-                  elseif ('dormitories/dorm' == $get->view && $post->is('allUsersDel') && $acl->sruWalet('dorm', 'checkout', $get->dormAlias)) {
+		} elseif ('dormitories/dorm' == $get->view && $post->is('allUsersDel') && $acl->sruWalet('dorm', 'checkout', $get->dormAlias)) {
 			$act = 'User_AllDel';
-                }
+                } elseif ('admins/admin/pswEdit' == $get->view && $post->is('adminOwnPswEdit') && $acl->sruWalet('admin', 'edit', $get->adminId)) {
+			$act = 'Admin_OwnPswEdit';
+		}
 
 		if (isset($act)) {
 			$action = 'SruWalet_'.$act;
@@ -437,6 +442,14 @@ extends UFctl {
 					return 'SruWalet_Admin';
 				} elseif ($acl->sruWalet('admin', 'edit', $get->adminId)) {
 					return 'SruWalet_AdminEdit';
+				} else {
+					return 'Sru_Error403';
+				}
+			case 'admins/admin/pswEdit':
+				if ($msg->get('adminOwnPswEdit/ok')) { 
+					return 'SruWalet_Admin';
+				} elseif ($acl->sruWalet('admin', 'edit', $get->adminId)) {
+					return 'SruWalet_AdminOwnPswEdit';
 				} else {
 					return 'Sru_Error403';
 				}

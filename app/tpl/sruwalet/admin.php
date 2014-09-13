@@ -121,17 +121,16 @@ $(document).ready(function()
 		echo '<h2>'.$this->_escape($d['name']).'<br/><small>('.$type.
 				' &bull; ostatnie logowanie: '.((is_null($d['lastLoginAt']) || $d['lastLoginAt'] == 0) ? 'nigdy' : date(self::TIME_YYMMDD_HHMM, $d['lastLoginAt'])).
 				' &bull; ostatnie nieudane logowanie: '.((is_null($d['lastInvLoginAt']) || $d['lastInvLoginAt'] == 0) ? 'nigdy' : date(self::TIME_YYMMDD_HHMM, $d['lastInvLoginAt'])).')</small></h2>';
-		echo '<p><em>Login:</em> '.$d['login'].(!$d['active']?' <strong>(konto nieaktywne)</strong>':'').'</p>';
-		echo '<p><em>E-mail:</em> <a href="mailto:'.$d['email'].'">'.$d['email'].'</a></p>';
-		echo '<p><em>Telefon:</em> '.$d['phone'].'</p>';
-		echo '<p><em>Jabber:</em> '.$d['jid'].'</p>';
-		echo '<p><em>Adres:</em> '.$d['address'].'</p>';
-		
 		$timeToInvalidatePassword = $d['lastPswChange'] + $sruConf->passwordValidTime - time();
 		if(($d['id'] == $session->authWaletAdmin || ($session->is('typeIdWalet') && $session->typeIdWalet == UFacl_SruWalet_Admin::HEAD)) 
 			&& $d['active'] == true && ($timeToInvalidatePassword < $sruConf->passwordOutdatedWarning)) {
 		    echo $this->ERR("<br />Hasło niedługo (za " . UFlib_Helper::secondsToTime($timeToInvalidatePassword) . ") straci ważność, należy je zmienić!<br />&nbsp;");
 		}
+		echo '<p><em>Login:</em> '.$d['login'].(!$d['active']?' <strong>(konto nieaktywne)</strong>':'').'</p>';
+		echo '<p><em>E-mail:</em> <a href="mailto:'.$d['email'].'">'.$d['email'].'</a></p>';
+		echo '<p><em>Telefon:</em> '.$d['phone'].'</p>';
+		echo '<p><em>Jabber:</em> '.$d['jid'].'</p>';
+		echo '<p><em>Adres:</em> '.$d['address'].'</p>';
 	}
 
 	public function listDorms(array $d, $dormList) {
@@ -284,12 +283,14 @@ $(document).ready(function()
 
 	public function waletBar(array $d, $ip, $time, $invIp, $invTime) {
 		$acl = $this->_srv->get('acl');
+		$walet = UFra::factory('UFbean_SruWalet_Admin');
+		$walet->getFromSession();
 		$sruConf = UFra::shared('UFconf_Sru');
 		$timeToInvalidatePassword = $d['lastPswChange'] + $sruConf->passwordValidTime - time();
 		
 		echo '<ul class="menu">';
 		if($d['typeId'] != UFacl_SruWalet_Admin::PORTIER && $timeToInvalidatePassword < $sruConf->passwordOutdatedWarning){
-		    echo '<span class="head-icon" title="Zbliża się czas wygaśnięcia hasła"><span class="ui-icon ui-icon-key"></span></span>';
+		    echo '<a href="'.$this->url(0).'/admins/'.$walet->id.'/:changepassword"><span class="head-icon" title="Zbliża się czas wygaśnięcia hasła"><span class="ui-icon ui-icon-key"></span></span></a>';
 		}
 		echo '<li><a class="mainMenuItem" href="#">'.$this->_escape($d['name']).'</a>';
 		echo '<ul>';

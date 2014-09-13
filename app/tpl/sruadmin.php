@@ -605,6 +605,9 @@ extends UFtpl_Common {
 		if ($this->_srv->get('msg')->get('adminEdit/ok')) {
 			echo $this->OK('Dane zostały zmienione');
 		}
+		if ($this->_srv->get('msg')->get('adminOwnPswEdit/ok')) {
+			echo $this->OK('Hasło zostało zmienione');
+		}
 		
 		echo '<div class="admin">';
 		$d['admin']->write('details');

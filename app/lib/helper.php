@@ -1,8 +1,10 @@
 <?
+
 /**
  * Pomocnik
  */
 class UFlib_Helper {
+
 	public static function removeSpecialChars($string) {
 		$unPretty = array('/ä/', '/ö/', '/ü/', '/Ä/', '/Ö/', '/Ü/', '/ß/',
 		    '/ą/', '/Ą/', '/ć/', '/Ć/', '/ę/', '/Ę/', '/ł/', '/Ł/', '/ń/', '/Ń/', '/ó/', '/Ó/', '/ś/', '/Ś/', '/ź/', '/Ź/', '/ż/', '/Ż/',
@@ -115,7 +117,7 @@ class UFlib_Helper {
 	 */
 	public static function formatPortName($locationAlias, $connectedSwitch, $ban, $comment) {
 		$conf = UFra::shared('UFconf_Sru');
-		
+
 		if ($locationAlias != '') {
 			$name = $locationAlias;
 			if ($ban) {
@@ -124,7 +126,7 @@ class UFlib_Helper {
 			if (!is_null($comment) && $comment != '') {
 				$name .= ($ban ? '' : ': ') . $comment;
 			}
-		} else if (!is_null ($connectedSwitch)) {
+		} else if (!is_null($connectedSwitch)) {
 			$name = $connectedSwitch->dormitoryAlias . '-hp' . $connectedSwitch->hierarchyNo;
 			if (!is_null($comment) && $comment != '') {
 				$name .= ': ' . $comment;
@@ -134,7 +136,7 @@ class UFlib_Helper {
 		} else {
 			$name = '';
 		}
-		
+
 		$name = substr($name, 0, UFlib_Snmp_Hp::MAX_PORT_NAME);
 
 		return $name;
@@ -146,31 +148,34 @@ class UFlib_Helper {
 	 * @param uint $seconds licza sekund do konwersji
 	 * @return mixed 
 	 */
-	public static function secondsToTime($seconds){
-	    $minute = 60;
-	    $hour = $minute * 60;
-	    $day = $hour * 24;
-	    
-	    if ($seconds < 0){
-		return 0;
-	    }
-	    
-	    $tmp = $seconds;
-	    $days = floor($seconds / $day);
-	    $tmp %= $day;
-	    $hours = floor($tmp / $hour);
-	    $tmp %= $hour;
-	    $minutes = floor($tmp / $minute);
-	    $secs = $tmp % $minute;
-	    
-	    $time = sprintf("%02d", $hours) . ":" . sprintf("%02d", $minutes) . ":" . sprintf("%02d", $secs);
-	    
-	    $fullTime = $days . ":" . $time;
-	    
-	    if($seconds < $day){
-		return $time;
-	    }else{
+	public static function secondsToTime($seconds) {
+		$minute = 60;
+		$hour = $minute * 60;
+		$day = $hour * 24;
+
+		if ($seconds < 0) {
+			return 0;
+		}
+
+		$tmp = $seconds;
+		$days = floor($seconds / $day);
+		$tmp %= $day;
+		$hours = floor($tmp / $hour);
+		$tmp %= $hour;
+		$minutes = floor($tmp / $minute);
+		$secs = $tmp % $minute;
+
+		$time = sprintf("%02d", $hours) . 'h ' . sprintf('%02d', $minutes) . 'min';
+
+		if ($days > 1) {
+			$fullTime = $days . ' dni';
+		} else if ($days > 0) {
+			$fullTime = $days . ' dzień';
+		} else {
+			$fullTime = $time;
+		}
+
 		return $fullTime;
-	    }
 	}
+
 }

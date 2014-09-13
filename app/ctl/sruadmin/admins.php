@@ -44,6 +44,10 @@ extends UFctl {
 							case 'history':
 								$get->view = 'admins/admin/history';
 								break;
+							case ':changepassword':
+								$get->redirect = false;
+								$get->view = 'admins/admin/pswEdit';
+								break;
 							default:
 								$get->view = 'error404';
 								break;
@@ -67,6 +71,8 @@ extends UFctl {
 			$act = 'Admin_Add';
 		} elseif ('admins/admin/edit' == $get->view && $post->is('adminEdit') && $acl->sruAdmin('admin', 'edit', $get->adminId)) {
 			$act = 'Admin_Edit';
+		} elseif ('admins/admin/pswEdit' == $get->view && $post->is('adminOwnPswEdit') && $acl->sruAdmin('admin', 'edit', $get->adminId)) {
+			$act = 'Admin_OwnPswEdit';
 		}
 
 		if (isset($act)) {
@@ -110,6 +116,14 @@ extends UFctl {
 				} else {
 					return 'Sru_Error403';
 				}
+			case 'admins/admin/pswEdit':
+				if ($msg->get('adminOwnPswEdit/ok')) { 
+					return 'SruAdmin_Admin';
+				} elseif ($acl->sruAdmin('admin', 'edit', $get->adminId)) {
+					return 'SruAdmin_AdminOwnPswEdit';
+				} else {
+					return 'Sru_Error403';
+				}	
 			case 'admins/active':
 				try {
 					$get->activeOn = $post->activeOnForm['activeOn'];
