@@ -248,6 +248,9 @@ changeVisibility();
 				));
 				echo $form->_submit('Wymelduj');
 			}
+			if ($markedToDelete == 0 && $availableForDelete == 0) {
+				echo $this->INFO('W '.strtoupper($d['alias']).' nie ma mieszkańców do wymeldowania.');
+			}
                         echo $form->_end();
         		echo $form->_end(true);
         		echo '</div>';
