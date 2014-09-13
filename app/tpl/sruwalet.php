@@ -411,12 +411,9 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 		}
 		echo '<h2><a href="'.$this->url(0).'/inhabitants">Obsadzenie</a><br/>';
 		$d['dorm']->write('exportPanel');
-                $d['dorm']->write('allUsersDelPanel');
+                $d['dorm']->write('allUsersDelPanel', $d['markedToDelete'], $d['availableForDelete']);
                 if ($this->_srv->get('msg')->get('allUsersDel/ok')) {
-			echo $this->OK('Wymeldowano wszystkich mieszkańców');
-		}
-                if ($this->_srv->get('msg')->get('allUsersDel/errors/users/no')) {
-			echo $this->ERR('Brak zameldowanych mieszkańców');
+			echo $this->OK('Wszystkich mieszkańców oznaczono do wymeldowania');
 		}
 		echo '<h3>'.$d['dorm']->name.'</h3>';
 		$d['rooms']->write('dormInhabitants', $d['dorm'], $d['users']);

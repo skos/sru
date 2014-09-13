@@ -540,6 +540,26 @@ extends UFbox {
 			} catch (UFex_Dao_NotFound $e) {
 				$d['users'] = null;
 			}
+			
+			try {
+				$toDelete = UFra::factory('UFbean_Sru_UserList');
+				$toDelete->listActiveByDorm($bean->id, true);
+				
+				$markedToDelete = 0;
+				$availableForDelete = 0;
+				foreach ($toDelete as $user) {
+					if ($user['toDeactivate']) {
+						$markedToDelete++;
+					} else {
+						$availableForDelete++;
+					}
+				}
+				$d['markedToDelete'] = $markedToDelete;
+				$d['availableForDelete'] = $availableForDelete;
+			} catch (UFex_Dao_NotFound $e) {
+				$d['markedToDelete'] = 0;
+				$d['availableForDelete'] = 0;
+			}			
 		
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {

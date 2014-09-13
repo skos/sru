@@ -50,6 +50,7 @@ extends UFmap {
 		'lastLocationChange' => 'u.last_location_change',
 		'commentSkos'	=> 'u.comment_skos',
 		'overLimit'		=> 'over_limit',
+		'toDeactivate'		=> 'to_deactivate',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -96,6 +97,7 @@ extends UFmap {
 		'lastLocationChange' => self::TS,
 		'commentSkos'	=> self::TEXT,
 		'overLimit'		=> self::BOOL,
+		'toDeactivate'		=> self::BOOL,
 	);
 	protected $tables = array(
 		'u' => 'users_history',

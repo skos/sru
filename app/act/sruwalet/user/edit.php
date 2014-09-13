@@ -25,6 +25,7 @@ extends UFact {
 			$this->begin();
 
 			$bean->fillFromPost(self::PREFIX, array('password', 'dormitory', 'nationalityName', 'lastLocationChangeActive'));
+			$bean->toDeactivate = false;
 			$bean->modifiedById = $this->_srv->get('session')->authWaletAdmin;
 			$bean->modifiedAt = NOW;
 

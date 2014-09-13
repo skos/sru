@@ -1,29 +1,23 @@
 <?
-
 /**
- * wymeldowanie przez administratora Waleta uzytkownika
+ * dezaktywacja usera
  */
-class UFact_SruWalet_User_Del
+class UFact_SruApi_User_Deactivate
 extends UFact {
 
-	const PREFIX = 'userDel';
+	const PREFIX = 'userDeactivate';
 
 	public function go() {
 		try {
-			$this->begin();
 			$bean = UFra::factory('UFbean_Sru_User');
-			$userId = (int)$this->_srv->get('req')->get->userId;
-			
-			UFlib_Helper::removePenaltyFromPort($userId);
-			
-			$bean->getByPK($userId);
+			$bean->getByPK((int)$this->_srv->get('req')->get->userId);
 
-			$post = $this->_srv->get('req')->post->{self::PREFIX};
-			
-			$bean->fillFromPost(self::PREFIX);
-			$bean->toDeactivate = false;
-			$bean->modifiedById = $this->_srv->get('session')->authWaletAdmin;
+			$admin = UFra::factory('UFbean_SruAdmin_Admin');
+			$admin->getFromHttp();
+
+			$bean->modifiedById = $admin->id;
 			$bean->modifiedAt = NOW;
+			$bean->toDeactivate = false;
 			$bean->active = false;
 			
 			$bean->save();
@@ -41,20 +35,10 @@ extends UFact {
 				$sender->send($bean, $title, $body, self::PREFIX, $bean->dormitoryAlias);
 			}
 
-			$this->postDel(self::PREFIX);
 			$this->markOk(self::PREFIX);
-			$this->commit();
-		} catch (UFex_Dao_DataNotValid $e) {
-			$this->rollback();
-			$this->markErrors(self::PREFIX, $e->getData());
-		} catch (UFex_Db_QueryFailed $e) {
-			$this->rollback();
-			if (0 == $e->getCode()) {
-				$this->markErrors(self::PREFIX, array('mac'=>'regexp'));
-			} else {
-				throw $e;
-			}
+		} catch (UFex_Dao_NotFound $e) {
 		} catch (UFex $e) {
+			$this->markErrors(self::PREFIX);
 			UFra::error($e);
 		}
 	}

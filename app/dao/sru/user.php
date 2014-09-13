@@ -189,15 +189,52 @@ extends UFdao {
 		return $this->doSelect($query);
 	}
 
-	public function listActiveByDorm($id) {
+	public function listActiveByDorm($id, $studentsOnly = false) {
 		$mapping = $this->mapping('list');
 
 		$query = $this->prepareSelect($mapping);
 		$query->where($mapping->dormitoryId, $id);
 		$query->where($mapping->active, true);
+		if ($studentsOnly) {
+			$query->where($mapping->typeId, UFtpl_Sru_User::$userTypesLimit, $query->LTE); //sami studenci i turyści
+		}
 		$query->order($mapping->overLimit);
 		$query->order($mapping->surname);
 		$query->order($mapping->name);
+
+		return $this->doSelect($query);
+	}
+	
+	public function updateToDeactivate($dormitoryId, $modifiedBy){
+		$mapping = $this->mapping('set');
+
+		$query = UFra::factory('UFlib_Db_Query');
+		$query->tables($mapping->tables());
+		$query->joins($mapping->joins(), $mapping->joinOns());
+		$data = array(
+			$mapping->toDeactivate => true,
+			$mapping->modifiedById => $modifiedBy,
+			$mapping->modifiedAt => NOW,
+		);
+		$query->values($mapping->columns(), $data,  $mapping->columnTypes());
+		$query->where(
+			$mapping->column('locationId').' IN (SELECT id FROM locations WHERE dormitory_id='.$dormitoryId.')',
+			null, $query->SQL
+		);
+		$query->where($mapping->typeId, UFtpl_Sru_User::$userTypesLimit, $query->LTE); //sami studenci i turyści
+		$query->where($mapping->active, true);
+		$query->where($mapping->toDeactivate, false);
+
+		return $this->doUpdate($query);
+	}
+	
+	public function listToDeactivate($limit=100) {
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->active, true);
+		$query->where($mapping->toDeactivate, true);
+		$query->limit($limit);
 
 		return $this->doSelect($query);
 	}

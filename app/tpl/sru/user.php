@@ -1415,6 +1415,12 @@ $(function() {
 </script>
 <?
         }
+	
+	public function apiUsersToDeactivate(array $d) {
+		foreach ($d as $c) {
+			echo $c['id']."\n";
+		}
+	}
 
 	public function userAddMailTitlePolish(array $d) {
 		echo 'Witamy w sieci SKOS';

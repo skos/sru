@@ -39,6 +39,7 @@ extends UFtpl_Common {
 		'lastLocationChange' => 'Przemeldowanie',
 		'commentSkos' => 'Komentarz',
 		'overLimit' => 'Dokwaterowany',
+		'toDeactivate' => 'Do wymeldowania',
 	);
 
 	static protected $namesEn = array(
@@ -72,6 +73,7 @@ extends UFtpl_Common {
 		'lastLocationChange' => 'Last check-in/out',
 		'commentSkos' => 'Comment',
 		'overLimit' => 'Over limit',
+		'toDeactivate' => 'To deactivate',
 	);
 
 	protected function _diff(array $old, array $new, $walet) {
@@ -119,6 +121,7 @@ extends UFtpl_Common {
 				case 'guardianPhoneNumber': $changes[] = $names[$key] . ': '.($walet ? ($val == '' ? 'brak' : $old[$key]).$arr.$new[$key] : 'zmieniono'); break;
 				case 'commentSkos': $changes[] = $names[$key] . ($walet ? ' dla administratorów SKOS: zmieniono' : ':<br/>'.UFlib_Diff::toHTML(UFlib_Diff::compare($this->_escape($val), $this->_escape($new[$key])))); break;
 				case 'overLimit': $changes[] = $names[$key].': '.($val?'tak':'nie').$arr.($new[$key]?'tak':'nie'); break;
+				case 'toDeactivate': $changes[] = $names[$key].': '.($val?'tak':'nie').$arr.($new[$key]?'tak':'nie'); break;
 				default: continue;
 			}
 		}
@@ -174,6 +177,7 @@ extends UFtpl_Common {
 			'lastLocationChange' => $current->lastLocationChange,
 			'commentSkos' => $current->commentSkos,
 			'overLimit' => $current->overLimit,
+			'toDeactivate' => $current->toDeactivate,
 		);
 
 		$url = $this->url(0).'/users/'.$current->id;

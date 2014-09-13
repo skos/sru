@@ -11,4 +11,8 @@ extends UFbeanList {
 	public function quickSearch(array $params) {
 		$this->data = $this->dao->quickSearch($params);
 	}
+	
+	public function updateToDeactivate($dormitoryId, $modifiedBy) {
+		return $this->dao->updateToDeactivate($dormitoryId, $modifiedBy);
+	}
 }

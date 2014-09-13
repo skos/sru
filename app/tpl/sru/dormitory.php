@@ -228,29 +228,32 @@ changeVisibility();
 </script><?
 	}
         
-        public function allUsersDelPanel(array $d) {
+        public function allUsersDelPanel(array $d, $markedToDelete, $availableForDelete) {
 		$acl = $this->_srv->get('acl');
-                $sess = $this->_srv->get('session');
                 if($acl->sruWalet('dorm', 'checkout', $d['alias'])) {
                         $form = UFra::factory('UFlib_Form','allUsersDel');
-                        $warn = UFra::factory('UFtpl_Html');
                         		
                         echo '<h3><span id="allUserDelSwitch"></span></h3>';
                         echo '<div id="allUserDel">';
                         echo $form->_start();
-                        echo $form->_fieldset('Wymeldowanie ręczne');
-                        echo $warn->msgErr('Ostrzeżenie: Naciśnięcie poniższego przycisku spowoduje wymeldowanie wszystkich mieszkańców ' .strtoupper($d['alias']) .'. Operacja ta jest nieodwracalna.');
-                        echo $form->confirm('Tak, wymelduj wszystkich mieszkańców ' .strtoupper($d['alias']) .'.', array(
-        			'type' =>$form->CHECKBOX,
-        			'class'=>'required'
-        		));
-                        echo $form->_submit('Wymelduj');
+                        echo $form->_fieldset('Masowe wymeldowanie');
+			if ($markedToDelete > 0) {
+				echo $this->INFO('W tej chwili oznaczonych do automatycznego wymeldowania jest '.$markedToDelete.' mieszkańców. W ciągu kilkudziesięciu minut zostaną automatycznie wymeldowani.');
+			}
+			if ($availableForDelete > 0) {
+				echo $this->ERR('Ostrzeżenie: Naciśnięcie poniższego przycisku spowoduje wymeldowanie wszystkich mieszkańców ' .strtoupper($d['alias']) .'. Operacja ta jest nieodwracalna.');
+				echo $form->confirm('Tak, wymelduj wszystkich ('.$availableForDelete.') mieszkańców ' .strtoupper($d['alias']) .'.', array(
+					'type' =>$form->CHECKBOX,
+					'class'=>'required'
+				));
+				echo $form->_submit('Wymelduj');
+			}
                         echo $form->_end();
         		echo $form->_end(true);
         		echo '</div>';
                 }
        		?><script type="text/javascript">    
-function changeVisibility2() {
+function changeVisibilityAllDel() {
         var div = document.getElementById('allUserDel');
         if (div.sruHidden != true) {
                 div.style.display = 'none';
@@ -263,12 +266,12 @@ function changeVisibility2() {
 var container2 = document.getElementById('allUserDelSwitch');
 var button2 = document.createElement('a');
 button2.onclick = function() {
-	changeVisibility2();
+	changeVisibilityAllDel();
 }
 var txt2 = document.createTextNode('Wymeldowanie wszystkich zamieszkałych osób');
 button2.appendChild(txt2);
 container2.appendChild(button2);
-changeVisibility2();
+changeVisibilityAllDel();
 </script><?
         }
 

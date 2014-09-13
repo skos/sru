@@ -77,6 +77,10 @@ extends UFtpl_Common {
 		$d['computers']->write('apiComputersNotSeen');
 	}
 	
+	public function usersToDeactivate(array $d) {
+		$d['users']->write('apiUsersToDeactivate');
+	}
+	
 	public function adminsOutdated(array $d) {
 		$d['admins']->write('apiAdminsOutdated');
 	}

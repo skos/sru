@@ -314,6 +314,19 @@ extends UFbox {
 		}
 	}
 	
+	public function usersToDeactivate() {
+		try {
+			$bean = UFra::factory('UFbean_Sru_UserList');
+			$bean->listToDeactivate();
+
+			$d['users'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return '';
+		}
+	}
+	
 	public function adminsOutdated() {
 		try {
 			$bean = UFra::factory('UFbean_SruAdmin_AdminList');
