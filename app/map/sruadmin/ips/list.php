@@ -9,6 +9,8 @@ extends UFmap {
 		'ip'           => 'i.ip',
 		'dormitoryId'  => 'i.dormitory_id',
 		'vlan'		   => 'i.vlan',
+		'vlanName'	=> 'v.name',
+		'vlanDesc'	=> 'v.description',
 		'dormitoryAlias' => 'id.alias',
 		'computerId'   => 'c.id',
 		'computerHost' => 'c.host',
@@ -27,6 +29,8 @@ extends UFmap {
 		'ip'           => self::TEXT,
 		'dormitoryId'  => self::NULL_INT,
 		'vlan'		   => self::INT,
+		'vlanName' => self::NULL_TEXT,
+		'vlanDesc' => self::NULL_TEXT,
 		'dormitoryAlias' => self::NULL_TEXT,
 		'computerId'   => self::NULL_INT,
 		'computerHost' => self::NULL_TEXT,
@@ -54,6 +58,7 @@ extends UFmap {
 		'sl' => 'locations',
 		'sd' => 'dormitories',
 		'si' => 'inventory_cards',
+		'v' => 'vlans',
 	);
 	protected $joinOns = array(
 		'id' => 'i.dormitory_id = id.id',
@@ -65,6 +70,7 @@ extends UFmap {
 		'sl' => 's.location_id = sl.id',
 		'sd' => 'sl.dormitory_id = sd.id',
 		'si' => 's.inventory_card_id = si.id',
+		'v' => 'i.vlan = v.id',
 	);
 	protected $pk = 'i.id';
 }

@@ -76,21 +76,33 @@ extends UFtpl_Common {
 		$this->showLegend();
 		
 		$vlans = array();
+		$vlanNames = array();
 		foreach ($d as &$ip) {
 			if (!array_key_exists($ip['vlan'], $vlans)) {
 				$vlans[$ip['vlan']] = 'VLAN '.$ip['vlan'];
+				$vlanNames[$ip['vlan']] = array();
+				$vlanNames[$ip['vlan']][0] = $ip['vlanName'];
+				$vlanNames[$ip['vlan']][1] = $ip['vlanDesc'];
 			}
 		}
 		if (!isset($dorm) && !isset($vlan)) {
 			$vlans[0] = 'Brak VLANu';
+			$vlanNames[0][0] = 'Żaden VLAN nie został przydzielony';
+			$vlanNames[0][1] = '';
 		}
 		if (isset($dorm)) {
 			$vlans[9999] = 'Błędny przydział IP';
+			$vlanNames[9999][0] = 'Przydzielony IP z błędnej puli';
+			$vlanNames[9999][1] = '';
 		}
 		
 		echo '<div id="tabs"><ul>';
-		foreach ($vlans as $vlanId => $vlanName) {
-			echo '<li><a href="#vlan'.$vlanId.'">'.$vlanName.'</a></li>';
+		foreach ($vlans as $vlanId => $vlanNo) {
+			$vlanName = $vlanNames[$vlanId][0];
+			if (!is_null($vlanNames[$vlanId][1]) && $vlanNames[$vlanId][1] != '') {
+				$vlanName = $vlanName.': '.$vlanNames[$vlanId][1];
+			}
+			echo '<li><a href="#vlan'.$vlanId.'" title="'.$vlanName.'">'.$vlanNo.'</a></li>';
 		}
 		echo '</ul>';
 
