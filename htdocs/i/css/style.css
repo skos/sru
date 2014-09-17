@@ -2,6 +2,7 @@
 * { margin: 0; padding: 0; }
 
 body { background-color: #ffffff; color: #000000; font-family: "Verdana", "Tahoma", "Helvetica", "Arial", sans-serif; }
+body {background: url('../test.png') repeat-y}
 
 a { color: #003d9a; text-decoration: none; }
 
@@ -18,7 +19,7 @@ img { border-style: none; }
 #head h1 { font-size: 2.8em; }
 #head h1 img { width: 40px; }
 
-#head .head-icon { display: inline-block; padding: 5px;  background-color: red; }
+#head .head-icon { display: inline-block; padding: 5px;  background-color: red; border-radius: 4px 4px 4px 4px; -moz-border-radius: 4px 4px 4px 4px; -webkit-border-radius: 4px 4px 4px 4px; }
 
 #logoBar { letter-spacing: 0.3em; width: 250px; }
 
