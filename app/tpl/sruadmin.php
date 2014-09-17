@@ -959,6 +959,7 @@ extends UFtpl_Common {
 	}
 
 	public function switchPortsNotFound(array $d) {
+		echo '<h3>Przypisane porty</h3>';
 		echo $this->ERR('Nie znaleziono portów switcha');
 	}
 
