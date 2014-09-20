@@ -153,7 +153,7 @@ extends UFbox {
 				$d['virtuals'] = null;
 			}
 			
-			if ($bean->typeId == UFbean_Sru_Computer::TYPE_SERVER || $bean->typeId == UFbean_Sru_Computer::TYPE_INTERFACE) {
+			if ($bean->typeId == UFbean_Sru_Computer::TYPE_SERVER || $bean->typeId == UFbean_Sru_Computer::TYPE_SERVER_VIRT) {
 				try {
 					$interfaces = UFra::factory('UFbean_Sru_ComputerList');
 					$interfaces->listInterfacesByComputerId($bean->id);
@@ -163,6 +163,18 @@ extends UFbox {
 				}
 			} else {
 				$d['interfaces'] = null;
+			}
+			
+			if ($bean->typeId == UFbean_Sru_Computer::TYPE_SERVER_VIRT || $bean->typeId == UFbean_Sru_Computer::TYPE_INTERFACE) {
+				try {
+					$masterHost = UFra::factory('UFbean_Sru_Computer');
+					$masterHost->getByPK($bean->masterHostId);
+					$d['masterHost'] = $masterHost;
+				} catch (UFex $e) {
+					$d['masterHost'] = null;
+				}
+			} else {
+				$d['masterHost'] = null;
 			}
 
 			return $this->render(__FUNCTION__, $d);

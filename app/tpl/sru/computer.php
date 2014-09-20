@@ -156,7 +156,7 @@ extends UFtpl_Common {
                 echo '<p><em>' . _("Widziany:") . '</em> ' . ($d['lastSeen'] == 0 ? _("nigdy") : date(self::TIME_YYMMDD_HHMM, $d['lastSeen'])) . '</p>';
         }
 
-	public function details(array $d, $switchPort, $aliases, $virtuals, $interfaces) {
+	public function details(array $d, $switchPort, $aliases, $virtuals, $interfaces, $masterHost) {
 		$url = $this->url(0);
 		$urlNav = $this->url(0).'/computers/'.$d['id'];
 		$acl = $this->_srv->get('acl');
@@ -171,8 +171,10 @@ extends UFtpl_Common {
 		if ($d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER || $d['typeId'] == UFbean_Sru_Computer::TYPE_MACHINE) {
 			echo '<p><em>Model urządzenia:</em> '.$d['deviceModelName'].'</p>';
 		}
-		if (!is_null($d['carerName'])) {
+		if (!is_null($d['carerName']) && $d['typeId'] != UFbean_Sru_Computer::TYPE_INTERFACE) {
 			echo '<p><em>Opiekun:</em> <a href="'.$url.'/admins/'.$d['carerId'].'">'.$d['carerName'].'</a></p>';
+		} else if ($d['typeId'] == UFbean_Sru_Computer::TYPE_INTERFACE) {
+			echo '<p><em>Opiekun:</em> <a href="'.$url.'/admins/'.$masterHost->carerId.'">'.$masterHost->carerName.'</a></p>';
 		}
 		echo '<p><em>Właściciel:</em> '.$user.'</p>';
 		echo '<p><em>MAC:</em> ';
@@ -208,16 +210,16 @@ $("#macvendor").load('<?=UFURL_BASE?>/admin/apis/getmacvendor/<?=$d['mac']?>');
 			$bans= '0';
 		}
 		echo '<p><em>Kary:</em> '.$bans.'</p>';
-		if (!is_null($d['masterHostName']) && $d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT) {
-			echo '<p><em>Serwer fizyczny:</em> <a href="'.$url.'/computers/'.$d['masterHostId'].'">'.$d['masterHostName'].'</a></p>';
+		if (!is_null($d['masterHostId']) && $d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT) {
+			echo '<p><em>Serwer fizyczny:</em> <a href="'.$url.'/computers/'.$d['masterHostId'].'">'.$d['masterHostDomainName'].'</a></p>';
 		}
-		if (!is_null($d['masterHostName']) && $d['typeId'] == UFbean_Sru_Computer::TYPE_INTERFACE) {
-			echo '<p><em>Serwer nadrzędny:</em> <a href="'.$url.'/computers/'.$d['masterHostId'].'">'.$d['masterHostName'].'</a></p>';
+		if (!is_null($d['masterHostId']) && $d['typeId'] == UFbean_Sru_Computer::TYPE_INTERFACE) {
+			echo '<p><em>Serwer nadrzędny:</em> <a href="'.$url.'/computers/'.$d['masterHostId'].'">'.$d['masterHostDomainName'].'</a></p>';
 		}
 		if (!is_null($virtuals)) {
 			$virtualsString = '<table><tr><td>';
 			foreach ($virtuals as $virt) {
-				$virtualsString = $virtualsString.'<a href="'.$url.'/computers/'.$virt['id'].'">'.$virt['host'].'</a>, ';
+				$virtualsString = $virtualsString.'<a href="'.$url.'/computers/'.$virt['id'].'">'.$virt['domainName'].'</a>, ';
 			}
 			$virtualsString = substr($virtualsString, 0 , -2);
 			$virtualsString = $virtualsString.'</td></tr></table>';
@@ -228,9 +230,9 @@ $("#macvendor").load('<?=UFURL_BASE?>/admin/apis/getmacvendor/<?=$d['mac']?>');
 			foreach ($interfaces as $inter) {
 				$interfacesString = $interfacesString.'<a href="'.$url.'/computers/'.$inter['id'].'">'.$inter['domainName'].'</a>, ';
 			}
-			$virtualsString = substr($virtualsString, 0 , -2);
-			$virtualsString = $virtualsString.'</td></tr></table>';
-			echo '<p><em>Maszyny wirtualne:</em> '.$virtualsString.'</p>';
+			$interfacesString = substr($interfacesString, 0 , -2);
+			$interfacesString = $interfacesString.'</td></tr></table>';
+			echo '<p><em>Interfejsy:</em> '.$interfacesString.'</p>';
 		}
 		if (!is_null($aliases)) {
 			$aliasesString = '<table><tr><td>';
@@ -321,7 +323,7 @@ changeVisibility();
 		}
 		$form = UFra::factory('UFlib_Form', 'computerEdit', $d, $this->errors);
 
-		echo '<h1>'.$d['host'].'.ds.pg.gda.pl</h1>';
+		echo '<h1>'.$d['host'].'</h1>';
                 echo $form->host(_('Nazwa'));
 		echo $form->mac('MAC', array('after'=>UFlib_Helper::displayHint(_("Adres fizyczny karty sieciowej komputera.")).$this->showMacHint().'<br/>'));
 		if ($this->_srv->get('req')->get->view == 'user/computer/activate') {
@@ -362,11 +364,13 @@ changeVisibility();
 			}
 			$tmp[$dorm['id']] = $temp[1] . ' ' . $dorm['name'];
 		}
+		echo '<div id="location">';
 		echo $form->dormitory('Akademik', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize($tmp),
 		));
 		echo $form->locationAlias('Pokój');
+		echo '</div>';
 		echo $form->typeId('Typ', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$computerTypes),
@@ -461,6 +465,8 @@ initialMasterHostId = document.getElementById("computerEdit_masterHostId").value
 initialDeviceModelId = document.getElementById("computerEdit_deviceModelId").value;
 initialTypeId = document.getElementById("computerEdit_typeId").value;
 initialAutoDeactivation = document.getElementById("computerEdit_autoDeactivation").checked;
+initialDormitory = document.getElementById("computerEdit_dormitory").value;
+initialLocationAlias = document.getElementById("computerEdit_locationAlias").value;
 (function (){
 	form = document.getElementById('computerEdit_typeId');
 	function changeVisibility() {
@@ -492,14 +498,24 @@ initialAutoDeactivation = document.getElementById("computerEdit_autoDeactivation
 		<? } if (!is_null($servers)) { ?>
 		var masterHost = document.getElementById("servers");
 		var masterHostId = document.getElementById("computerEdit_masterHostId");
+		var dormitory = document.getElementById("computerEdit_dormitory");
+		var locationAlias = document.getElementById("computerEdit_locationAlias");
+		var location = document.getElementById("location");
 		if (form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER_VIRT; ?> || form.value == <? echo UFbean_Sru_Computer::TYPE_INTERFACE; ?>) {
 			masterHostId.value = initialMasterHostId;
 			masterHost.style.display = "block";
 			masterHost.style.visibility = "visible";
+			dormitory.value = initialDormitory;
+			locationAlias.value = initialLocationAlias;
+			location.style.display = "none";
+			location.style.visibility = "hidden";
+			
 		} else {
 			masterHost.style.display = "none";
 			masterHost.style.visibility = "hidden";
 			masterHostId.value = '';
+			location.style.display = "block";
+			location.style.visibility = "visible";
 		}
 		<? } if (!is_null($deviceModels)) { ?>
 		var deviceModel = document.getElementById("deviceModel");
