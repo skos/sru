@@ -1845,7 +1845,13 @@ extends UFbox {
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
-			return $this->render(__FUNCTION__.'NotFound');
+			try {
+				$room = $this->_getRoomFromGet();
+				$d['room'] = $room;
+				return $this->render(__FUNCTION__.'NotFound', $d);
+			} catch (UFex_Dao_NotFound $e) {
+				return $this->render(__FUNCTION__.'NotFound', array());
+			}
 		}
 	}
 	

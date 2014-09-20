@@ -1268,9 +1268,11 @@ extends UFtpl_Common {
 		echo '</ul>';
 	}
 
-	public function roomDevicesNotFound() {
-		echo '<h3>Urządzenia</h3>';
-		echo $this->ERR('Brak urządzeń');
+	public function roomDevicesNotFound(array $d) {
+		if (empty($d) || $d['room']->typeId == UFbean_SruAdmin_Room::TYPE_SKOS) {
+			echo '<h3>Urządzenia</h3>';
+			echo $this->ERR('Brak urządzeń');
+		}
 	}
 	
 	public function roomSwitches(array $d) {
