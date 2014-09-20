@@ -37,6 +37,7 @@ extends UFmap {
 		'lastSeen'		 => 'c.last_seen',
 		'lastActivated'	 => 'c.last_activated',
 		'autoDeactivation' => 'c.auto_deactivation',
+		'domainName' => 'c.domain_name',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -70,6 +71,7 @@ extends UFmap {
 		'lastSeen'		 => self::TS,
 		'lastActivated'	 => self::TS,
 		'autoDeactivation' => self::BOOL,
+		'domainName' => self::TEXT,
 	);
 	protected $tables = array(
 		'c' => 'computers',

@@ -45,6 +45,7 @@ class UFmap_Sru_Computer_Get extends UFmap {
 	    'inventoryCardId' => 'c.inventory_card_id',
 	    'deviceModelId' => 'c.device_model_id',
 	    'deviceModelName' => 'm.name',
+	    'domainName' => 'c.domain_name',
 	);
 	protected $columnTypes = array(
 	    'id' => self::INT,
@@ -86,6 +87,7 @@ class UFmap_Sru_Computer_Get extends UFmap {
 	    'inventoryCardId' => self::INT,
 	    'deviceModelId' => self::NULL_INT,
 	    'deviceModelName' => self::TEXT,
+	    'domainName' => self::TEXT,
 	);
 	protected $tables = array(
 	    'c' => 'computers',

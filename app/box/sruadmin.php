@@ -152,6 +152,18 @@ extends UFbox {
 			} else {
 				$d['virtuals'] = null;
 			}
+			
+			if ($bean->typeId == UFbean_Sru_Computer::TYPE_SERVER || $bean->typeId == UFbean_Sru_Computer::TYPE_INTERFACE) {
+				try {
+					$interfaces = UFra::factory('UFbean_Sru_ComputerList');
+					$interfaces->listInterfacesByComputerId($bean->id);
+					$d['interfaces'] = $interfaces;
+				} catch (UFex $e) {
+					$d['interfaces'] = null;
+				}
+			} else {
+				$d['interfaces'] = null;
+			}
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
@@ -244,6 +256,17 @@ extends UFbox {
 				}
 			} else {
 				$d['virtuals'] = null;
+			}
+			if ($bean->typeId == UFbean_Sru_Computer::TYPE_SERVER || $bean->typeId == UFbean_Sru_Computer::TYPE_INTERFACE) {
+				try {
+					$interfaces = UFra::factory('UFbean_Sru_ComputerList');
+					$interfaces->listInterfacesByComputerId($bean->id);
+					$d['interfaces'] = $interfaces;
+				} catch (UFex $e) {
+					$d['interfaces'] = null;
+				}
+			} else {
+				$d['interfaces'] = null;
 			}
 			try {
 				$deviceModels = UFra::factory('UFbean_SruAdmin_DeviceModelsList');

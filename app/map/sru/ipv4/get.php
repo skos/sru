@@ -11,6 +11,7 @@ extends UFmap {
 		'vlan'		=> 'i.vlan',
 		'host'		=> 'c.host',
 		'taskExport'	=> 'v.task_export',
+		'domainSuffix'	=> 'v.domain_suffix',
 	);
 	protected $columnTypes = array(
 		'ip'		=> self::TEXT,
@@ -18,6 +19,7 @@ extends UFmap {
 		'vlan'		=> self::INT,
 		'host'		=> self::NULL_TEXT,
 		'taskExport'	=> self::BOOL,
+		'domainSuffix'	=> self::TEXT,
 	);
 	protected $tables = array(
 		'i' => 'ipv4s',
@@ -31,5 +33,5 @@ extends UFmap {
 		'c' => '(i.ip=c.ipv4 and c.active)',
 		'v' => 'i.vlan = v.id',
 	);
-	protected $pk = 'i.id';
+	protected $pk = 'i.ip';
 }

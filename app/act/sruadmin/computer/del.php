@@ -32,8 +32,8 @@ extends UFact {
 			$bean->modifiedById = $admin->id;
 			$bean->save();
 
-			// jeśli to serwer, to zaktualizujmy stan wirtualek
-			if ($bean->typeId == UFbean_Sru_Computer::TYPE_SERVER) {
+			// jeśli to serwer, to zaktualizujmy stan wirtualek i interfejsów, jeśli wirtualka, to interfejsów
+			if ($bean->typeId == UFbean_Sru_Computer::TYPE_SERVER || $bean->typeId == UFbean_Sru_Computer::TYPE_SERVER_VIRT) {
 				try {
 					$comps = UFra::factory('UFbean_Sru_ComputerList');
 					$comps->updateActiveByMasterId($bean->id, false, $this->_srv->get('session')->authAdmin);

@@ -6,8 +6,8 @@ class UFtpl_Sru_Computer
 extends UFtpl_Common {
 
 	protected static $computerTypes = array(
-		1 => 'Student - komp/tel',
-		2 => 'Student - AP',
+		1 => 'Student - komp / tel',
+		2 => 'Student - AP', 
 		3 => 'Student - inne',
 		11 => 'Turysta',
 		21 => 'Organizacja',
@@ -15,6 +15,8 @@ extends UFtpl_Common {
 		41 => 'Serwer fizyczny',
 		42 => 'Serwer wirtualny',
 		43 => 'Urządzenie (kamera IP, itd.)',
+		44 => 'Interfejs / usługa',
+		45 => 'Urządzenie spoza stanu',
 	);
 
 	protected static $computerTypesForHistory = array(
@@ -37,6 +39,8 @@ extends UFtpl_Common {
 		41 => 'Serwer fizyczny',
 		42 => 'Serwer wirtualny',
 		43 => 'Urządzenie (kamera IP, itd.)',
+		44 => 'Interfejs / usługa',
+		45 => 'Urządzenie spoza stanu',
 	);
 
 	static public $userToComputerType = array(
@@ -152,7 +156,7 @@ extends UFtpl_Common {
                 echo '<p><em>' . _("Widziany:") . '</em> ' . ($d['lastSeen'] == 0 ? _("nigdy") : date(self::TIME_YYMMDD_HHMM, $d['lastSeen'])) . '</p>';
         }
 
-	public function details(array $d, $switchPort, $aliases, $virtuals) {
+	public function details(array $d, $switchPort, $aliases, $virtuals, $interfaces) {
 		$url = $this->url(0);
 		$urlNav = $this->url(0).'/computers/'.$d['id'];
 		$acl = $this->_srv->get('acl');
@@ -204,13 +208,25 @@ $("#macvendor").load('<?=UFURL_BASE?>/admin/apis/getmacvendor/<?=$d['mac']?>');
 			$bans= '0';
 		}
 		echo '<p><em>Kary:</em> '.$bans.'</p>';
-		if (!is_null($d['masterHostName'])) {
+		if (!is_null($d['masterHostName']) && $d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT) {
 			echo '<p><em>Serwer fizyczny:</em> <a href="'.$url.'/computers/'.$d['masterHostId'].'">'.$d['masterHostName'].'</a></p>';
+		}
+		if (!is_null($d['masterHostName']) && $d['typeId'] == UFbean_Sru_Computer::TYPE_INTERFACE) {
+			echo '<p><em>Serwer nadrzędny:</em> <a href="'.$url.'/computers/'.$d['masterHostId'].'">'.$d['masterHostName'].'</a></p>';
 		}
 		if (!is_null($virtuals)) {
 			$virtualsString = '<table><tr><td>';
 			foreach ($virtuals as $virt) {
 				$virtualsString = $virtualsString.'<a href="'.$url.'/computers/'.$virt['id'].'">'.$virt['host'].'</a>, ';
+			}
+			$virtualsString = substr($virtualsString, 0 , -2);
+			$virtualsString = $virtualsString.'</td></tr></table>';
+			echo '<p><em>Maszyny wirtualne:</em> '.$virtualsString.'</p>';
+		}
+		if (!is_null($interfaces)) {
+			$interfacesString = '<table><tr><td>';
+			foreach ($interfaces as $inter) {
+				$interfacesString = $interfacesString.'<a href="'.$url.'/computers/'.$inter['id'].'">'.$inter['domainName'].'</a>, ';
 			}
 			$virtualsString = substr($virtualsString, 0 , -2);
 			$virtualsString = $virtualsString.'</td></tr></table>';
@@ -236,7 +252,8 @@ $("#macvendor").load('<?=UFURL_BASE?>/admin/apis/getmacvendor/<?=$d['mac']?>');
 			echo '<p><em>Uprawnienia:</em> '.implode(', ', $acls).'</p>';
 		}
 		if ($d['typeId'] != UFbean_Sru_Computer::TYPE_SERVER && $d['typeId'] != UFbean_Sru_Computer::TYPE_SERVER_VIRT &&
-			$d['typeId'] != UFbean_Sru_Computer::TYPE_MACHINE) {
+			$d['typeId'] != UFbean_Sru_Computer::TYPE_MACHINE && $d['typeId'] != UFbean_Sru_Computer::TYPE_INTERFACE &&
+			$d['typeId'] != UFbean_Sru_Computer::TYPE_NOT_SKOS_DEVICE) {
 			echo '<p><em>Widziany:</em> '.($d['lastSeen'] == 0 ? 'nigdy' : date(self::TIME_YYMMDD_HHMM, $d['lastSeen'])).'</p>';
 			echo '<p><em>Autodezaktywacja:</em> '.($d['autoDeactivation'] ? 'tak' : 'nie').'</p>';
 		}
@@ -312,14 +329,14 @@ changeVisibility();
 		}
 	}
 
-	public function formEditAdmin(array $d, $dormitories, $user = null, $history = null, $servers = null, $skosAdmins = null, $waletAdmins = null, $virtuals = null, $deviceModels = null) {
+	public function formEditAdmin(array $d, $dormitories, $user = null, $history = null, $servers = null, $skosAdmins = null, $waletAdmins = null, $virtuals = null, $deviceModels = null, $interfaces = null) {
 		if (is_array($history)) {
 			$d = $history + $d;
 		}
 		$d['availableTo'] = is_null($d['availableTo']) ? '' : date(self::TIME_YYMMDD, $d['availableTo']);
 		$d['dormitory'] = $d['dormitoryId'];
 		if ($d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER || $d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT ||
-			$d['typeId'] == UFbean_Sru_Computer::TYPE_MACHINE) {
+			$d['typeId'] == UFbean_Sru_Computer::TYPE_MACHINE || $d['typeId'] == UFbean_Sru_Computer::TYPE_NOT_SKOS_DEVICE) {
 			$d['skosCarerId'] = $d['carerId'];
 		}
 		if ($d['typeId'] == UFbean_Sru_Computer::TYPE_ADMINISTRATION) {
@@ -353,8 +370,8 @@ changeVisibility();
 		echo $form->typeId('Typ', array(
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$computerTypes),
-			'disabled' => ((is_null($virtuals)) ? false : true),
-			'after' => ((is_null($virtuals)) ? '<br/>' : UFlib_Helper::displayHint("Nie można zmienić typu serwerowi, do którego przypisane są serwery wirtualne.")),
+			'disabled' => ((is_null($virtuals) && is_null($interfaces)) ? false : true),
+			'after' => ((is_null($virtuals)) ? '<br/>' : UFlib_Helper::displayHint("Nie można zmienić typu serwerowi, do którego przypisane są serwery wirtualne lub interfejsy.")),
 		));
 		if (!is_null($deviceModels)) {
 			$tmp = array();
@@ -405,7 +422,7 @@ changeVisibility();
 				$tmp[$serv['id']] = $serv['host'];
 			}
 			echo '<div id="servers">';
-			echo $form->masterHostId('Serwer fizyczny', array(
+			echo $form->masterHostId('Serwer fizyczny/nadrzędny', array(
 				'type' => $form->SELECT,
 				'labels' => $form->_labelize($tmp),
 			));
@@ -452,7 +469,7 @@ initialAutoDeactivation = document.getElementById("computerEdit_autoDeactivation
 		var waletCarer = document.getElementById("waletCarers");
 		var skosCarerId = document.getElementById("computerEdit_skosCarerId");
 		var waletCarerId = document.getElementById("computerEdit_waletCarerId");
-		if (form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER; ?> || form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER_VIRT; ?> || form.value == <? echo UFbean_Sru_Computer::TYPE_MACHINE; ?>) {
+		if (form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER; ?> || form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER_VIRT; ?> || form.value == <? echo UFbean_Sru_Computer::TYPE_MACHINE; ?> || form.value == <? echo UFbean_Sru_Computer::TYPE_NOT_SKOS_DEVICE; ?>) {
 			skosCarerId.value = initialSkosCarerId;
 			skosCarer.style.display = "block";
 			skosCarer.style.visibility = "visible";
@@ -475,7 +492,7 @@ initialAutoDeactivation = document.getElementById("computerEdit_autoDeactivation
 		<? } if (!is_null($servers)) { ?>
 		var masterHost = document.getElementById("servers");
 		var masterHostId = document.getElementById("computerEdit_masterHostId");
-		if (form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER_VIRT; ?>) {
+		if (form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER_VIRT; ?> || form.value == <? echo UFbean_Sru_Computer::TYPE_INTERFACE; ?>) {
 			masterHostId.value = initialMasterHostId;
 			masterHost.style.display = "block";
 			masterHost.style.visibility = "visible";
@@ -500,7 +517,7 @@ initialAutoDeactivation = document.getElementById("computerEdit_autoDeactivation
 		var autoDeactivationDiv = document.getElementById("autoDeactivation");
 		var autoDeactivation = document.getElementById("computerEdit_autoDeactivation");
 		var typeId = document.getElementById("computerEdit_typeId").value;
-		if (form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER; ?> || form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER_VIRT; ?> || form.value == <? echo UFbean_Sru_Computer::TYPE_MACHINE; ?>) {
+		if (form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER; ?> || form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER_VIRT; ?> || form.value == <? echo UFbean_Sru_Computer::TYPE_MACHINE; ?> || form.value == <? echo UFbean_Sru_Computer::TYPE_INTERFACE; ?> || form.value == <? echo UFbean_Sru_Computer::TYPE_NOT_SKOS_DEVICE; ?>) {
 			autoDeactivationDiv.style.display = "none";
 			autoDeactivationDiv.style.visibility = "hidden";
 			autoDeactivation.checked = false;
@@ -622,7 +639,7 @@ activateChkB.onclick = function() {
 					$tmp[$serv['id']] = $serv['host'];
 				}
 				echo '<div id="servers">';
-				echo $form->masterHostId('Serwer fizyczny', array(
+				echo $form->masterHostId('Serwer fizyczny / nadrzędny', array(
 					'type' => $form->SELECT,
 					'labels' => $form->_labelize($tmp),
 				));
@@ -655,7 +672,7 @@ if (input) {
 		var waletCarer = document.getElementById("waletCarers");
 		var skosCarerId = document.getElementById("computerAdd_skosCarerId");
 		var waletCarerId = document.getElementById("computerAdd_waletCarerId");
-		if (form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER; ?> || form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER_VIRT; ?> || form.value == <? echo UFbean_Sru_Computer::TYPE_MACHINE; ?>) {
+		if (form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER; ?> || form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER_VIRT; ?> || form.value == <? echo UFbean_Sru_Computer::TYPE_MACHINE; ?> || form.value == <? echo UFbean_Sru_Computer::TYPE_NOT_SKOS_DEVICE; ?>) {
 			skosCarerId.value = '';
 			skosCarer.style.display = "block";
 			skosCarer.style.visibility = "visible";
@@ -678,7 +695,7 @@ if (input) {
 		<? } if (!is_null($servers)) { ?>
 		var masterHost = document.getElementById("servers");
 		var masterHostId = document.getElementById("computerAdd_masterHostId");
-		if (form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER_VIRT; ?>) {
+		if (form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER_VIRT; ?> || form.value == <? echo UFbean_Sru_Computer::TYPE_INTERFACE; ?>) {
 			masterHost.style.display = "block";
 			masterHost.style.visibility = "visible";
 		} else {
@@ -693,6 +710,7 @@ if (input) {
 			deviceModel.style.display = "block";
 			deviceModel.style.visibility = "visible";
 		} else {
+			deviceModelId.value = '';
 			deviceModel.style.display = "none";
 			deviceModel.style.visibility = "hidden";
 		}
@@ -1009,7 +1027,7 @@ $("#macvendor").load('<?=UFURL_BASE?>/admin/apis/getmacvendor/<?=$searchedMac?>'
 			echo 'IP: '.$d['ip']."\n";
 			echo 'Adres MAC: '.$d['mac']."\n";
 			if ($d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER || $d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT ||
-				$d['typeId'] == UFbean_Sru_Computer::TYPE_MACHINE) {
+				$d['typeId'] == UFbean_Sru_Computer::TYPE_MACHINE || $d['typeId'] == UFbean_Sru_Computer::TYPE_NOT_SKOS_DEVICE) {
 				echo 'Opiekun: '.$d['carerName']."\n";
 			}
 			if ($d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER || $d['typeId'] == UFbean_Sru_Computer::TYPE_MACHINE) {
@@ -1040,7 +1058,7 @@ $("#macvendor").load('<?=UFURL_BASE?>/admin/apis/getmacvendor/<?=$searchedMac?>'
 			echo 'IP: '.$d['ip']."\n";
 			echo 'MAC address: '.$d['mac']."\n";
 			if ($d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER || $d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT ||
-				$d['typeId'] == UFbean_Sru_Computer::TYPE_MACHINE) {
+				$d['typeId'] == UFbean_Sru_Computer::TYPE_MACHINE || $d['typeId'] == UFbean_Sru_Computer::TYPE_NOT_SKOS_DEVICE) {
 				echo 'Carer: '.$d['carerName']."\n";
 			}
 		}

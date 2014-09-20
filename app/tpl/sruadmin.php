@@ -83,7 +83,7 @@ extends UFtpl_Common {
 		}
 		$url = $this->url(0).'/computers/'.$d['computer']->id;
 		echo '<div class="computer">';
-		$d['computer']->write('details', $d['switchPort'], $d['aliases'], $d['virtuals']);
+		$d['computer']->write('details', $d['switchPort'], $d['aliases'], $d['virtuals'], $d['interfaces']);
 		echo '</div>';
 	}
 
@@ -173,7 +173,7 @@ extends UFtpl_Common {
 		} elseif ($this->_srv->get('msg')->get('computerEdit/ok')) {
 			echo $this->OK('Dane zostały zmienione');
 		}
-		echo $d['computer']->write('formEditAdmin', $d['dormitories'], $d['user'], $d['history'], $d['servers'], $d['skosAdmins'], $d['waletAdmins'], $d['virtuals'], $d['deviceModels']);
+		echo $d['computer']->write('formEditAdmin', $d['dormitories'], $d['user'], $d['history'], $d['servers'], $d['skosAdmins'], $d['waletAdmins'], $d['virtuals'], $d['deviceModels'], $d['interfaces']);
 		echo $form->_submit('Zapisz');
 		echo $form->_end();
 		echo $form->_end(true);

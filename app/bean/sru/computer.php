@@ -17,6 +17,8 @@ extends UFbean_Common {
 	const TYPE_SERVER = 41;
 	const TYPE_SERVER_VIRT = 42;
 	const TYPE_MACHINE = 43;
+	const TYPE_INTERFACE = 44;
+	const TYPE_NOT_SKOS_DEVICE = 45;
 
 	const EDIT_PREFIX = 'computerEdit';
 	const ADD_PREFIX = 'computerAdd';
@@ -45,7 +47,19 @@ extends UFbean_Common {
 		}
 		try {
 			$bean = UFra::factory('UFbean_Sru_Computer');
-			$bean->getByHost($val);
+			if (!is_null($post) && array_key_exists('ip', $post) && $post['ip'] != '') {
+				$ipv4 = UFra::factory('UFbean_Sru_Ipv4');
+				$ipv4->getByIp($post['ip']);
+				$vlanId = $ipv4->vlan;
+			} else if (!is_null($post) && isset($post['typeId'])) {
+				$vlanId = $this->getVlanByComputerType($post['typeId']);
+			} else {
+				$vlanId =  UFbean_SruAdmin_Vlan::DEFAULT_VLAN;
+			}
+			$vlan = UFra::factory('UFbean_SruAdmin_Vlan');
+			$vlan->getByPK($vlanId);
+			$bean->getByDomainName($val.'.'.$vlan->domainSuffix);
+			
 			if ($change && $this->data['id'] == $bean->id) {
 				return;
 			}
@@ -102,12 +116,14 @@ extends UFbean_Common {
 			try {
 				// sprawdzamy, czy mamy do czynienia z serwerem (urządzenia się nie liczą)
 				$post = $this->_srv->get('req')->post->{self::EDIT_PREFIX};
-				if (isset($post['typeId']) && ($post['typeId'] == self::TYPE_SERVER || $post['typeId'] == self::TYPE_SERVER_VIRT)) {
+				if (isset($post['typeId']) && ($post['typeId'] == self::TYPE_SERVER ||
+					$post['typeId'] == self::TYPE_SERVER_VIRT || $post['typeId'] == self::TYPE_INTERFACE)) {
 					return;
 				} else if (!isset($post['typeId'])) {
 					$computer = UFra::factory('UFbean_Sru_Computer');
 					$computer->getByPK((int)$this->_srv->get('req')->get->computerId);
-					if ($computer->typeId == self::TYPE_SERVER || $computer->typeId == self::TYPE_SERVER_VIRT) {
+					if ($computer->typeId == self::TYPE_SERVER ||
+						$computer->typeId == self::TYPE_SERVER_VIRT || $computer->typeId == self::TYPE_INTERFACE) {
 						return;
 					}
 				}
@@ -116,7 +132,8 @@ extends UFbean_Common {
 			try {
 				// sprawdzamy, czy mamy do czynienia z serwerem (urządzenia się nie liczą)
 				$post = $this->_srv->get('req')->post->{self::ADD_PREFIX};
-				if (isset($post['typeId']) && ($post['typeId'] == self::TYPE_SERVER || $post['typeId'] == self::TYPE_SERVER_VIRT)) {
+				if (isset($post['typeId']) && ($post['typeId'] == self::TYPE_SERVER ||
+					$post['typeId'] == self::TYPE_SERVER_VIRT || $post['typeId'] == self::TYPE_INTERFACE)) {
 					return;
 				}
 			} catch (UFex $e) {
@@ -208,7 +225,8 @@ extends UFbean_Common {
 			if (isset($post['typeId']) && 
 				($post['typeId'] == UFbean_Sru_Computer::TYPE_SERVER || 
 				$post['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT ||
-				$post['typeId'] == UFbean_Sru_Computer::TYPE_MACHINE) && 
+				$post['typeId'] == UFbean_Sru_Computer::TYPE_MACHINE ||
+				$post['typeId'] == UFbean_Sru_Computer::TYPE_NOT_SKOS_DEVICE) && 
 				(is_null($val) || (int)$val == 0)) {
 				return 'null';
 			} else if (!isset($post['typeId'])) {
@@ -216,7 +234,8 @@ extends UFbean_Common {
 				$computer->getByPK((int)$this->_srv->get('req')->get->computerId);
 				if (($computer->typeId == UFbean_Sru_Computer::TYPE_SERVER || 
 					$computer->typeId == UFbean_Sru_Computer::TYPE_SERVER_VIRT ||
-					$computer->typeId == UFbean_Sru_Computer::TYPE_MACHINE) && 
+					$computer->typeId == UFbean_Sru_Computer::TYPE_MACHINE ||
+					$computer->typeId == UFbean_Sru_Computer::TYPE_NOT_SKOS_DEVICE) && 
 					(is_null($val) || (int)$val == 0)) {
 					return 'null';
 				}
@@ -228,7 +247,8 @@ extends UFbean_Common {
 			if (isset($post['typeId']) && 
 				($post['typeId'] == UFbean_Sru_Computer::TYPE_SERVER || 
 				$post['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT ||
-				$post['typeId'] == UFbean_Sru_Computer::TYPE_MACHINE) && 
+				$post['typeId'] == UFbean_Sru_Computer::TYPE_MACHINE ||
+				$post['typeId'] == UFbean_Sru_Computer::TYPE_NOT_SKOS_DEVICE) && 
 				(is_null($val) || (int)$val == 0)) {
 				return 'null';
 			}
@@ -267,14 +287,16 @@ extends UFbean_Common {
 	protected function validateMasterHostId($val, $change) {
 		try {
 			$post = $this->_srv->get('req')->post->{self::EDIT_PREFIX};
-			if (isset($post['typeId']) && $post['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT && (is_null($val) || (int)$val == 0)) {
+			if (isset($post['typeId']) && ($post['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT ||
+				$post['typeId'] == UFbean_Sru_Computer::TYPE_INTERFACE) && (is_null($val) || (int)$val == 0)) {
 				return 'null';
 			}
 		} catch (UFex $e) {
 		}
 		try {
 			$post = $this->_srv->get('req')->post->{self::ADD_PREFIX};
-			if (isset($post['typeId']) && $post['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT && (is_null($val) || (int)$val == 0)) {
+			if (isset($post['typeId']) && ($post['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT ||
+				$post['typeId'] == UFbean_Sru_Computer::TYPE_INTERFACE) && (is_null($val) || (int)$val == 0)) {
 				return 'null';
 			}
 		} catch (UFex $e) {
@@ -282,7 +304,8 @@ extends UFbean_Common {
 	}
 	
 	protected function validateTypeId($val, $change) {
-		if ($val == UFbean_Sru_Computer::TYPE_SERVER || $val == UFbean_Sru_Computer::TYPE_MACHINE) {
+		if ($val == UFbean_Sru_Computer::TYPE_SERVER || $val == UFbean_Sru_Computer::TYPE_MACHINE ||
+			$val == UFbean_Sru_Computer::TYPE_INTERFACE || $val == UFbean_Sru_Computer::TYPE_NOT_SKOS_DEVICE) {
 			try {
 				$user = UFra::factory('UFbean_Sru_User'); 
 				$user->getByPK((int)$this->_srv->get('req')->get->userId);

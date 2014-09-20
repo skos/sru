@@ -42,6 +42,16 @@ extends UFdao {
 
 		return $this->doSelectFirst($query);
 	}
+	
+	public function getByDomainName($domainName) {
+		$mapping = $this->mapping('get');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->domainName, $domainName);
+		$query->where($mapping->active, true);
+
+		return $this->doSelectFirst($query);
+	}
 
 	public function getByMac($mac) {
 		$mapping = $this->mapping('get');
@@ -393,6 +403,8 @@ extends UFdao {
 		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_SERVER, $query->NOT_EQ);
 		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_SERVER_VIRT, $query->NOT_EQ);
 		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_MACHINE, $query->NOT_EQ);
+		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_INTERFACE, $query->NOT_EQ);
+		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_NOT_SKOS_DEVICE, $query->NOT_EQ);
 		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_ADMINISTRATION, $query->NOT_EQ);
 		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_ORGANIZATION, $query->NOT_EQ);
 		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_STUDENT_OTHER, $query->NOT_EQ);
@@ -416,7 +428,7 @@ extends UFdao {
 		$query->where($mapping->userId, $userId);
 		$query->where($mapping->active, true);
 		$query->where(
-			'('.$mapping->column('typeId').'!='.UFbean_Sru_Computer::TYPE_SERVER.' OR '.$mapping->column('typeId').'!='.UFbean_Sru_Computer::TYPE_SERVER_VIRT.' OR '.$mapping->column('typeId').'!='.UFbean_Sru_Computer::TYPE_MACHINE.')',
+			'('.$mapping->column('typeId').'!='.UFbean_Sru_Computer::TYPE_SERVER.' OR '.$mapping->column('typeId').'!='.UFbean_Sru_Computer::TYPE_SERVER_VIRT.' OR '.$mapping->column('typeId').'!='.UFbean_Sru_Computer::TYPE_MACHINE.' OR '.$mapping->column('typeId').'!='.UFbean_Sru_Computer::TYPE_INTERFACE.' OR '.$mapping->column('typeId').'!='.UFbean_Sru_Computer::TYPE_NOT_SKOS_DEVICE.')',
 			null, $query->SQL
 		);
 		$query->where($mapping->locationId, $location, $query->NOT_EQ);
@@ -500,6 +512,8 @@ extends UFdao {
 		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_SERVER, $query->NOT_EQ);
 		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_SERVER_VIRT, $query->NOT_EQ);
 		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_MACHINE, $query->NOT_EQ);
+		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_INTERFACE, $query->NOT_EQ);
+		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_NOT_SKOS_DEVICE, $query->NOT_EQ);
 		$query->where($mapping->autoDeactivation, true);
 		$query->where($mapping->lastActivated, time() - $days*24*60*60, $query->LT);
 		$query->where(
@@ -684,6 +698,21 @@ extends UFdao {
 
 		return $this->doSelect($query);
 	}
+	
+	/**
+	 * Wyświetla interfejsy dla danego serwera
+	 */
+	public function listInterfacesByComputerId($id) {
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_INTERFACE);
+		$query->where($mapping->masterHostId, $id);
+		$query->where($mapping->active, true);
+		$query->order($mapping->host, $query->ASC);
+
+		return $this->doSelect($query);
+	}
 
 	public function listCaredByAdminId($id) {
 		$mapping = $this->mapping('list');
@@ -707,6 +736,7 @@ extends UFdao {
 			'('.$mapping->column('typeId').'='.UFbean_Sru_Computer::TYPE_SERVER.' 
 				OR '.$mapping->column('typeId').'='.UFbean_Sru_Computer::TYPE_SERVER_VIRT.' 
 				OR '.$mapping->column('typeId').'='.UFbean_Sru_Computer::TYPE_MACHINE.' 
+				OR '.$mapping->column('typeId').'='.UFbean_Sru_Computer::TYPE_NOT_SKOS_DEVICE.' 
 				OR '.$mapping->column('typeId').'='.UFbean_Sru_Computer::TYPE_ADMINISTRATION.')',
 			null, $query->SQL
 		);

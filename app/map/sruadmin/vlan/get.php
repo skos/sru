@@ -9,11 +9,13 @@ extends UFmap {
 		'id'			=> 'v.id',
 		'name'			=> 'v.name',
 		'description'	=> 'v.description',
+		'domainSuffix'	=> 'v.domain_suffix',
 	);
 	protected $columnTypes = array(
 		'id'			=> self::INT,
 		'name'			=> self::TEXT,
 		'description'	=> self::TEXT,
+		'domainSuffix'	=> self::TEXT,
 	);
 	protected $tables = array(
 		'v' => 'vlans',

@@ -9,6 +9,7 @@ extends UFmap_Sru_Ipv4_Get {
 		'dormitoryId'	=> 'i.dormitory_id',
 		'vlanId'	=> 'i.vlan',
 		'vlanName'	=> 'v.name',
+		'domainSuffix'	=> 'v.domain_suffix',
 	);
 	protected $columnTypes = array(
 		'ip'		=> self::TEXT,
@@ -16,6 +17,7 @@ extends UFmap_Sru_Ipv4_Get {
 		'host'		=> self::NULL_TEXT,
 		'vlanId'	=> self::INT,
 		'vlanName'	=> self::TEXT,
+		'domainSuffix'	=> self::TEXT,
 	);
 	protected $tables = array(
 		'i' => 'ipv4s',
@@ -26,5 +28,5 @@ extends UFmap_Sru_Ipv4_Get {
 	protected $joinOns = array(
 		'i.vlan=v.id',
 	);
-	protected $pk = 'i.id';
+	protected $pk = 'i.ip';
 }
