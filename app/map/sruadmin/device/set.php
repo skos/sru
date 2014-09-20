@@ -8,6 +8,7 @@ class UFmap_SruAdmin_Device_Set extends UFmap {
 	protected $columns = array(
 	    'id' => 'id',
 	    'inoperational' => 'inoperational',
+	    'used' => 'used',
 	    'modifiedById' => 'modified_by',
 	    'modifiedAt' => 'modified_at',
 	    'deviceModelId' => 'device_model_id',
@@ -18,6 +19,7 @@ class UFmap_SruAdmin_Device_Set extends UFmap {
 	protected $columnTypes = array(
 	    'id' => self::INT,
 	    'inoperational' => self::BOOL,
+	    'used' => self::BOOL,
 	    'modifiedById' => self::NULL_INT,
 	    'modifiedAt' => self::TS,
 	    'deviceModelId' => self::INT,

@@ -9,7 +9,8 @@ class UFtpl_SruAdmin_DeviceHistory extends UFtpl_Common {
 	    'deviceModelId' => 'Model',
 	    'locationId' => 'Miejsce',
 	    'comment' => 'Komentarz',
-	    'inoperational' => 'Nieużywany',
+	    'used' => 'W użyciu',
+	    'inoperational' => 'Uszkodzony',
 	);
 
 	protected function _diff(array $old, array $new) {
@@ -28,6 +29,7 @@ class UFtpl_SruAdmin_DeviceHistory extends UFtpl_Common {
 					$changes[] = $names[$key] . ': ' . $old['locationAlias'] . '<small>&nbsp;(' . $old['dormitoryAlias'] . ')</small>' . $arr . $new['locationAlias'] . '<small>&nbsp;(' . $new['dormitoryAlias'] . ')</small>';
 					break;
 				case 'inoperational':
+				case 'used':
 					$changes[] = $names[$key] . ': ' . ($val ? 'tak' : 'nie') . $arr . ($new[$key] ? 'tak' : 'nie');
 					break;
 				case 'comment':
@@ -60,6 +62,7 @@ class UFtpl_SruAdmin_DeviceHistory extends UFtpl_Common {
 		    'dormitoryAlias' => $current->dormitoryAlias,
 		    'dormitoryName' => $current->dormitoryName,
 		    'inoperational' => $current->inoperational,
+		    'used' => $current->used,
 		    'modifiedById' => $current->modifiedById,
 		    'modifiedBy' => $current->modifiedBy,
 		    'modifiedAt' => $current->modifiedAt,

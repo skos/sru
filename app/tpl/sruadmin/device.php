@@ -32,11 +32,13 @@ extends UFtpl_Common {
 			}
 			
 			echo '<li>';
-			echo $c['inoperational'] ? '<span class="unused">' : '';
+			echo (!$c['used']) ? '<del>' : '';
+			echo $c['inoperational'] ? '<span class="inoperational">' : '';
 			echo '<a href="'.$urlDev.$c['id'].'">';
 			echo $c['deviceModelName'];
 			echo '</a>';
 			echo $c['inoperational'] ? '</span>' : '';
+			echo (!$c['used']) ? '</del>' : '';
 			echo ' - <small><a href="'.$urlDev.''.$c['id'].'/:edit">Edytuj</a></small></li>';
 			
 			$lastDom = $c['dormitoryId'];
@@ -71,7 +73,8 @@ extends UFtpl_Common {
 		$acl = $this->_srv->get('acl');
 
 		echo '<h3>Dane urządzenia</h3>';
-		echo '<p'.($d['inoperational'] ? ' class="unused"' : '').'><em>Nieużywany:</em> '.($d['inoperational'] ? 'tak' : 'nie').'</p>';
+		echo '<p'.($d['inoperational'] ? ' class="inoperational"' : '').'><em>Uszkodzony:</em> '.($d['inoperational'] ? 'tak' : 'nie').'</p>';
+		echo '<p><em>W użyciu:</em> '.($d['used'] ? 'tak' : 'nie').'</p>';
 		echo '<p><em>Lokalizacja:</em> <a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'/'.$d['locationAlias'].'">'.$d['locationAlias'].'</a> <small>(<a href="'.$url.'/dormitories/'.$d['dormitoryAlias'].'">'.$d['dormitoryAlias'].'</a>)</small>'.(strlen($d['locationComment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$d['locationComment'].'" />':'').'</p>';
 		echo '<p class="nav"><a href="'.$url.'/devices/dorm/'.$d['dormitoryAlias'].'">Wróć do listy</a> &bull; 
 			 <a href="'.$url.'/devices/">Pokaż wszystkie</a> &bull; 
@@ -117,7 +120,8 @@ extends UFtpl_Common {
 			'labels' => $form->_labelize($tmp),
 		));
 		echo $form->locationAlias('Lokalizacja', array('after'=>UFlib_Helper::displayHint("Pomieszczenie w akademiku, gdzie znajduje się urządzenie.")));
-		echo $form->inoperational('Nieużywany', array('type'=>$form->CHECKBOX));
+		echo $form->used('W użyciu', array('type'=>$form->CHECKBOX));
+		echo $form->inoperational('Uszkodzony', array('type'=>$form->CHECKBOX));
 		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
 	}
 	
@@ -151,7 +155,8 @@ extends UFtpl_Common {
 			'labels' => $form->_labelize($tmp),
 		));
 		echo $form->locationAlias('Lokalizacja', array('after'=>UFlib_Helper::displayHint("Pomieszczenie w akademiku, gdzie znajduje się urządzenie.")));
-		echo $form->inoperational('Nieużywany', array('type'=>$form->CHECKBOX));
+		echo $form->used('W użyciu', array('type'=>$form->CHECKBOX));
+		echo $form->inoperational('Uszkodzony', array('type'=>$form->CHECKBOX));
 		echo $form->comment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>5));
 	}
 	
@@ -160,9 +165,11 @@ extends UFtpl_Common {
 
 		foreach ($d as $c) {		
 			echo '<li>';
-			echo $c['inoperational'] ? '<span class="unused">' : '';
+			echo (!$c['used']) ? '<del>' : '';
+			echo $c['inoperational'] ? '<span class="inoperational">' : '';
 			echo '<a href="'.$url.$c['id'].'">'.$c['deviceModelName'].'</a>';
 			echo $c['inoperational'] ? '</span>' : '';
+			echo (!$c['used']) ? '</del>' : '';
 			echo ' - <small><a href="'.$url.''.$c['id'].'/:edit">Edytuj</a>';
 			echo '</small></li>';
 		}

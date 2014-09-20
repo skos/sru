@@ -9,6 +9,7 @@ extends UFdao {
 
 		$query = $this->prepareSelect($mapping);
 		$query->order($mapping->dormitoryId, $query->ASC);
+		$query->order($mapping->used, $query->DESC);
 		$query->order($mapping->deviceModelName);
 
 		return $this->doSelect($query);
@@ -19,6 +20,7 @@ extends UFdao {
 
 		$query = $this->prepareSelect($mapping);
 		$query->where($mapping->dormitoryId, $dormitoryId);
+		$query->order($mapping->used, $query->DESC);
 		$query->order($mapping->deviceModelName);
 
 		return $this->doSelect($query);
@@ -29,6 +31,7 @@ extends UFdao {
 
 		$query = $this->prepareSelect($mapping);
 		$query->where($mapping->locationId, $room);
+		$query->order($mapping->used, $query->DESC);
 		$query->order($mapping->deviceModelName);
 
 		return $this->doSelect($query);
