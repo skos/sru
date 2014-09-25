@@ -849,13 +849,23 @@ div.style.display = 'none';
 
 	public function searchResults(array $d) {
 		$url = $this->url(0);
+		$inactive = array();
 		foreach ($d as $c) {
 			if (is_null($c['userId'])) {
 				$owner = '(BRAK)';
 			} else {
 				$owner = '(<a href="'.$url.'/users/'.$c['userId'].'">'.$this->_escape($c['userName']).' '.$this->_escape($c['userSurname']).'</a>)';
 			}
-			echo '<li'.($c['banned'] ? ' class="ban"' : '').'>'.(!$c['active']? 'Do '.date(self::TIME_YYMMDD, $c['availableTo']).' ':'').(!$c['active']?'<del>':'').'<a href="'.$url.'/computers/'.$c['id'].'">'.$c['host'].(strlen($c['comment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['comment'].'" />':'').' <small>'.$c['ip'].'/'.$c['mac'].'</small></a> <span>'.$owner.'</span>'.(!$c['active']?'</del>':'').'</li>';
+			$toDisplay = '<li'.($c['banned'] ? ' class="ban"' : '').'>'.(!$c['active']? 'Do '.date(self::TIME_YYMMDD, $c['availableTo']).' ':'').(!$c['active']?'<del>':'').'<a href="'.$url.'/computers/'.$c['id'].'">'.$c['host'].(strlen($c['comment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['comment'].'" />':'').' <small>'.$c['ip'].'/'.$c['mac'].'</small></a> <span>'.$owner.'</span>'.(!$c['active']?'</del>':'').'</li>';
+			if ($c['active']) {
+				echo $toDisplay;
+			} else {
+				$inactive[$c['availableTo'].$c['id']] = $toDisplay;
+			}
+		}
+		krsort($inactive, SORT_STRING);
+		foreach ($inactive as $row) {
+			echo $row;
 		}
 	}
 
