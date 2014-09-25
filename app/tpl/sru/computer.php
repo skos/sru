@@ -70,7 +70,7 @@ extends UFtpl_Common {
 		'locationAlias/noDormitory' => 'Wybierz akademik',
 		'locationAlias/noRoom' => 'Pokój nie istnieje',
 		'exAdmin/notWithAdmin' => 'Nie można ustawić jednocześnie uprawnień admina i ex-admina',
-		'masterHostId/null' => 'Maszyna wirtualna musi mieć ustawiony serwer fizyczny',
+		'masterHostId/null' => 'Ten typ hosta musi mieć ustawiony serwer nadrzędny',
 		'skosCarerId/null' => 'Serwer musi posiadać opiekuna',
 		'waletCarerId/null' => 'Host administracji musi posiadać opiekuna',
 		'typeId/notSkos' => 'Właścicielem serwera fizycznego / urządzenia może być wyłącznie SKOS',
