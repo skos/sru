@@ -26,7 +26,7 @@ extends UFact {
 					$ip = UFra::factory('UFbean_Sru_Ipv4');
 					$dormitoryId = null;
 					$vlan = null;
-					if ($post['typeId'] <= UFbean_Sru_Computer::LIMIT_STUDENT) {
+					if ($post['typeId'] <= UFbean_Sru_Computer::LIMIT_STUDENT_AND_TOURIST) {
 						$dormitory = UFra::factory('UFbean_Sru_Dormitory');
 						$dormitory->getByPK($user->dormitoryId);
 						$dormitoryId = $dormitory->id;
