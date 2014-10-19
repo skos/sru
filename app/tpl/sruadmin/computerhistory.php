@@ -181,7 +181,8 @@ extends UFtpl_Common {
 					break;
 				case 'carerId':
 					if ($new['typeId'] == UFbean_Sru_Computer::TYPE_SERVER || $new['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT ||
-						$new['typeId'] == UFbean_Sru_Computer::TYPE_MACHINE || $new['typeId'] == UFbean_Sru_Computer::TYPE_NOT_SKOS_DEVICE) {
+						$new['typeId'] == UFbean_Sru_Computer::TYPE_MACHINE || $new['typeId'] == UFbean_Sru_Computer::TYPE_NOT_SKOS_DEVICE ||
+						$new['typeId'] == UFbean_Sru_Computer::TYPE_ADMINISTRATION) {
 						echo $names[$key].': '.(is_null($val) ? 'nikt' : $old['carerName']);
 						if ($val!==$new[$key]) {
 							echo $arr.(is_null($new[$key]) ? 'nikt' : $new['carerName']);

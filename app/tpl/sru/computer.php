@@ -1053,7 +1053,8 @@ $("#macvendor").load('<?=UFURL_BASE?>/admin/apis/getmacvendor/<?=$searchedMac?>'
 			echo 'IP: '.$d['ip']."\n";
 			echo 'Adres MAC: '.$d['mac']."\n";
 			if ($d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER || $d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT ||
-				$d['typeId'] == UFbean_Sru_Computer::TYPE_MACHINE || $d['typeId'] == UFbean_Sru_Computer::TYPE_NOT_SKOS_DEVICE) {
+				$d['typeId'] == UFbean_Sru_Computer::TYPE_MACHINE || $d['typeId'] == UFbean_Sru_Computer::TYPE_NOT_SKOS_DEVICE || 
+				$d['typeId'] == UFbean_Sru_Computer::TYPE_ADMINISTRATION) {
 				echo 'Opiekun: '.$d['carerName']."\n";
 			}
 			if ($d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER || $d['typeId'] == UFbean_Sru_Computer::TYPE_MACHINE) {
@@ -1084,7 +1085,8 @@ $("#macvendor").load('<?=UFURL_BASE?>/admin/apis/getmacvendor/<?=$searchedMac?>'
 			echo 'IP: '.$d['ip']."\n";
 			echo 'MAC address: '.$d['mac']."\n";
 			if ($d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER || $d['typeId'] == UFbean_Sru_Computer::TYPE_SERVER_VIRT ||
-				$d['typeId'] == UFbean_Sru_Computer::TYPE_MACHINE || $d['typeId'] == UFbean_Sru_Computer::TYPE_NOT_SKOS_DEVICE) {
+				$d['typeId'] == UFbean_Sru_Computer::TYPE_MACHINE || $d['typeId'] == UFbean_Sru_Computer::TYPE_NOT_SKOS_DEVICE ||
+				$d['typeId'] == UFbean_Sru_Computer::TYPE_ADMINISTRATION) {
 				echo 'Carer: '.$d['carerName']."\n";
 			}
 		}
