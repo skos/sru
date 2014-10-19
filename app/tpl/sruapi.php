@@ -13,12 +13,8 @@ extends UFtpl_Common {
 		$d['computers']->write('configDnsRev');
 	}
 
-	public function dnsDs(array $d) {
+	public function dns(array $d) {
 		$d['computers']->write('configDns', $d['aliases']);
-	}
-
-	public function dnsAdm(array $d) {
-		$d['computers']->write('configDns', null);
 	}
 
 	public function ethers(array $d) {

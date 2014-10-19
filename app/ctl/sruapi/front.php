@@ -49,15 +49,17 @@ extends UFctl {
 				case 'dns':
 					if ($segCount>1) {
 						switch ($req->segment(2)) {
-							case 'ds':
-								$get->view = 'dns/ds';
-								break;
-							case 'adm':
-								$get->view = 'dns/adm';
-								break;
+							case 'rev':
+								if ($segCount > 2) {
+									$get->view = 'revdns';
+									$get->ipClass = urldecode($req->segment(3));
+									break;
+								} else {
+									break;
+								}
 							default:
 								$get->view = 'dns';
-								$get->ipClass = urldecode($req->segment(2));
+								$get->domain = urldecode($req->segment(2));
 								break;
 						}
 					}
@@ -269,11 +271,9 @@ extends UFctl {
 				return 'SruApi_DhcpOrg';
 			case 'dhcp/serv':
 				return 'SruApi_DhcpServ';
-			case 'dns/ds':
-				return 'SruApi_DnsDs';
-			case 'dns/adm':
-				return 'SruApi_DnsAdm';
 			case 'dns':
+				return 'SruApi_Dns';
+			case 'revdns':
 				return 'SruApi_DnsRev';
 			case 'ethers':
 				return 'SruApi_Ethers';

@@ -44,4 +44,16 @@ extends UFdao {
 
 		return $this->doSelect($query);
 	}
+	
+	public function listAllByDomain($domain=null) {
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		if (!is_null($domain)) {
+			$query->where($mapping->domainSuffix, $domain);
+		}
+		$query->order($mapping->host, $query->ASC);
+
+		return $this->doSelect($query);
+	}
 }

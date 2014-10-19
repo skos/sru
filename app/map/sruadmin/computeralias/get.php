@@ -13,6 +13,7 @@ extends UFmap {
 		'parent'	=> 'c.host',
 		'parentComment'	=> 'c.comment',
 		'parentBanned'	=> 'c.banned',
+		'domainSuffix'	=> 'v.domain_suffix',
 	);
 	protected $columnTypes = array(
 		'id'		=> self::INT,
@@ -23,15 +24,20 @@ extends UFmap {
 		'parent'	=> self::TEXT,
 		'parentComment'	=> self::TEXT,
 		'parentBanned'	=> self::BOOL,
+		'domainSuffix'	=> self::TEXT,
 	);
 	protected $tables = array(
 		'a' => 'computers_aliases',
 	);
 	protected $joins = array(
 		'c' => 'computers',
+		'i' => 'ipv4s',
+		'v' => 'vlans',
 	);
 	protected $joinOns = array(
 		'c' => 'a.computer_id = c.id',
+		'i' => 'c.ipv4 = i.ip',
+		'v' => 'i.vlan = v.id',
 	);
 	protected $pk = 'id';
 }

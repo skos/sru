@@ -175,6 +175,19 @@ extends UFdao {
 
 		return $this->doSelect($query);
 	}
+	
+	public function listAllActiveByDomain($domain=null) {
+		$mapping = $this->mapping('dns');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->active, true);
+		if (!is_null($domain)) {
+			$query->where($mapping->domainSuffix, $domain);
+		}
+		$query->order($mapping->host, $query->ASC);
+
+		return $this->doSelect($query);
+	}
 
 	public function search($params) {
 		$key = $this->cachePrefix.'/'.__FUNCTION__.'/'.print_r($params, true);

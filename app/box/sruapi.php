@@ -32,7 +32,7 @@ extends UFbox {
 	}
 
 	public function dhcpServ() {
-		return $this->configDhcp(array(UFbean_Sru_Computer::TYPE_SERVER, UFbean_Sru_Computer::TYPE_MACHINE, UFbean_Sru_Computer::TYPE_INTERFACE, UFbean_Sru_Computer::TYPE_NOT_SKOS_DEVICE));
+		return $this->configDhcp(array(UFbean_Sru_Computer::TYPE_SERVER, UFbean_Sru_Computer::TYPE_MACHINE, UFbean_Sru_Computer::TYPE_NOT_SKOS_DEVICE));
 	}
 
 	public function dnsRev() {
@@ -51,45 +51,22 @@ extends UFbox {
 			return '';
 		}
 	}
-
-	public function dnsDs() {
+	
+	public function dns() {
 		try {
+			$domain = $this->_srv->get('req')->get->domain;
 			$bean = UFra::factory('UFbean_Sru_ComputerList');
-			$bean->listAllActiveByType(array(
-				UFbean_Sru_Computer::TYPE_STUDENT,
-				UFbean_Sru_Computer::TYPE_STUDENT_AP,
-				UFbean_Sru_Computer::TYPE_STUDENT_OTHER,
-				UFbean_Sru_Computer::TYPE_TOURIST,
-				UFbean_Sru_Computer::TYPE_ORGANIZATION,
-				UFbean_Sru_Computer::TYPE_SERVER,
-				UFbean_Sru_Computer::TYPE_SERVER_VIRT,
-				UFbean_Sru_Computer::TYPE_MACHINE,
-				UFbean_Sru_Computer::TYPE_INTERFACE,
-				UFbean_Sru_Computer::TYPE_NOT_SKOS_DEVICE,
-			));
+			$bean->listAllActiveByDomain($domain);
 
 			$d['computers'] = $bean;
-
+			
 			try {
 				$aliases = UFra::factory('UFbean_SruAdmin_ComputerAliasList');
-				$aliases->listAll();
+				$aliases->listAllByDomain($domain);
 				$d['aliases'] = $aliases;
 			} catch (UFex_Dao_NotFound $e) {
 				$d['aliases'] = null;
 			}
-
-			return $this->render(__FUNCTION__, $d);
-		} catch (UFex_Dao_NotFound $e) {
-			return '';
-		}
-	}
-
-	public function dnsAdm() {
-		try {
-			$bean = UFra::factory('UFbean_Sru_ComputerList');
-			$bean->listAllActiveByType(UFbean_Sru_Computer::TYPE_ADMINISTRATION);
-
-			$d['computers'] = $bean;
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
