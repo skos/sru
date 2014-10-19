@@ -689,13 +689,13 @@ if (input) {
 		var skosCarerId = document.getElementById("computerAdd_skosCarerId");
 		var waletCarerId = document.getElementById("computerAdd_waletCarerId");
 		if (form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER; ?> || form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER_VIRT; ?> || form.value == <? echo UFbean_Sru_Computer::TYPE_MACHINE; ?> || form.value == <? echo UFbean_Sru_Computer::TYPE_NOT_SKOS_DEVICE; ?>) {
-			skosCarerId.value = '';
+			waletCarerId.value = '';
 			skosCarer.style.display = "block";
 			skosCarer.style.visibility = "visible";
 			waletCarer.style.display = "none";
 			waletCarer.style.visibility = "hidden";
 		} else if (form.value == <? echo UFbean_Sru_Computer::TYPE_ADMINISTRATION; ?>) {
-			waletCarerId.value = '';
+			skosCarerId.value = '';
 			waletCarer.style.display = "block";
 			waletCarer.style.visibility = "visible";
 			skosCarer.style.display = "none";
