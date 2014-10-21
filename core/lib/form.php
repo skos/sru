@@ -81,7 +81,7 @@ extends UFlib_ClassWithService {
 				if ($msg->get($postPrefix.'/errors/'.$id)) {
 					$id = explode('/', $id, 2);
 					$id = $id[0];
-					$this->errors[$id] = $error;
+					$this->errors[$id] = _($error);
 				}
 			}
 		} catch (UFex $e) {
