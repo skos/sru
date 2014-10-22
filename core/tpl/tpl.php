@@ -27,7 +27,7 @@ extends UFlib_ClassWithService {
 	 */
 	protected function _chooseLocale() {
                 $session = $this->_srv->get('session');
-                if ($session->is('auth') == 1) {
+                if ($session->is('lang') == 1) {
                         setlocale(LC_ALL, 'pl_PL.utf8');
                         putenv("LANG=" . 'pl_PL.utf8');
                         $lang = $session->lang;

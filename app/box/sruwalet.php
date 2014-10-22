@@ -426,9 +426,11 @@ extends UFbox {
 
 	public function userPrint() {
 		try {
+                        $sess = $this->_srv->get('session');
 			try {
 				$bean = $this->_getUserFromGet();
 				$d['user'] = $bean;
+                                $sess->lang=$d['user']->lang;
 			} catch (UFex_Core_DataNotFound $e) {
 				return $this->render(__FUNCTION__.'Error');
 			}

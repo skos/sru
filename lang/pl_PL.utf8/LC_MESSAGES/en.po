@@ -725,14 +725,8 @@ msgstr "check-in"
 msgid "Aby mieć Internet, zaloguj się na swoje konto w Systemie Rejestracji Użytkowników (http://sru.ds.pg.gda.pl) skorzystaj z następujących danych"
 msgstr "To have the Internet, log in to your account User Registration Scheme (http://sru.ds.pg.gda.pl) from the following data"
 
-msgid "login"
-msgstr "login"
-
 msgid "Użyj tego samego hasła, jakiego używał(a/e)ś poprzednio. Jeśli nie pamiętasz go, skorzystaj z przypomnienia hasła na SRU lub odwiedź administratora w godzinach dyżuru. Nie zapomnij wejściówki! Aby mieć Internet, po zalogowaniu się przywróć swoje komputery i odczekaj ok godzinę"
 msgstr "Use the same password you used previously. If you do not remember it, please use the password reminder on the SRU or visit the administrator on-call hours. Do not forget capita card! To have the Internet, after logging in, restore yours computers and wait about an hour."
-
-msgid "hasło"
-msgstr "password"
 
 msgid "Zaraz po zalogowaniu zostaniesz poproszon(a/y) o zmianę hasła oraz uzupełnienie swoich danych kontaktowych i statystycznych. Następnie dodaj komputer i w przeciągu godziny ciesz się Internetem!"
 msgstr "After logging you will be asked to change your password and complete yours contact and statistics details. Then add your computer and within hours enjoy the Internet!"
@@ -752,3 +746,11 @@ msgstr "Contains not allowed characters"
 msgid "Nazwa jest już zajęta"
 msgstr "The name is already taken"
 
+msgid "login"
+msgstr "login"
+
+msgid "hasło"
+msgstr "password"
+
+msgid "Aby mieć Internet, zaloguj się na swoje konto w Systemie Rejestracji Użytkowników (http://sru.ds.pg.gda.pl) skorzystaj z następujących danych:"
+msgstr "To have the Internet, log in to your account in SRU (http://sru.ds.pg.gda.pl) using the following data:"

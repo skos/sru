@@ -332,17 +332,17 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 	}
 
 	public function userPrint(array $d) {
-		echo '<h3>Witamy w Osiedlu Studenckim Politechniki Gdańskiej!</h3>';
+		echo '<h3>'._('Witamy w Osiedlu Studenckim Politechniki Gdańskiej!').'</h3>';
 		echo '<div class="printable">';
-		echo '<i>imię i nazwisko:</i> '.$d['user']->name.' '.$d['user']->surname.'<br/>';
-		echo '<i>zameldowanie:</i> '.$d['user']->dormitoryName.', pok. '.$d['user']->locationAlias.'<br/>';
-		echo '<p>Aby mieć Internet, zaloguj się na swoje konto w Systemie Rejestracji Użytkowników (http://sru.ds.pg.gda.pl) skorzystaj z następujących danych:<br/><br/>
-			<i>login:</i> <span class="credentials">'.$d['user']->login.'</span><br/>';
+		echo '<i>'._('imię i nazwisko').':</i> '.$d['user']->name.' '.$d['user']->surname.'<br/>';
+		echo '<i>'._('zameldowanie').':</i> '.$d['user']->dormitoryName.', pok. '.$d['user']->locationAlias.'<br/>';
+		echo '<p>'._('Aby mieć Internet, zaloguj się na swoje konto w Systemie Rejestracji Użytkowników (http://sru.ds.pg.gda.pl) skorzystaj z następujących danych:').'<br/><br/>
+			<i>'._('login').':</i> <span class="credentials">'.$d['user']->login.'</span><br/>';
 		if (is_null($d['password'])) {
-			echo '<br/>Użyj tego samego hasła, jakiego używał(a/e)ś poprzednio. Jeśli nie pamiętasz go, skorzystaj z przypomnienia hasła na SRU lub odwiedź administratora w godzinach dyżuru. Nie zapomnij wejściówki! Aby mieć Internet, po zalogowaniu się przywróć swoje komputery i odczekaj ok godzinę.';
+			echo '<br/>'._('Użyj tego samego hasła, jakiego używał(a/e)ś poprzednio. Jeśli nie pamiętasz go, skorzystaj z przypomnienia hasła na SRU lub odwiedź administratora w godzinach dyżuru. Nie zapomnij wejściówki! Aby mieć Internet, po zalogowaniu się przywróć swoje komputery i odczekaj ok godzinę.');
 		} else {
-			echo '<i>hasło:</i> <span class="credentials">'.$d['password'].'</span><br/><br/>
-				Zaraz po zalogowaniu zostaniesz poproszon(a/y) o zmianę hasła oraz uzupełnienie swoich danych kontaktowych i statystycznych. Następnie dodaj komputer i w przeciągu godziny ciesz się Internetem!';
+			echo '<i>'._('hasło').':</i> <span class="credentials">'.$d['password'].'</span><br/><br/>
+				'._('Zaraz po zalogowaniu zostaniesz poproszon(a/y) o zmianę hasła oraz uzupełnienie swoich danych kontaktowych i statystycznych. Następnie dodaj komputer i w przeciągu godziny ciesz się Internetem!');
 		}
 		echo '</p><hr/>';
 		echo $d['userPrintWaletText'];
