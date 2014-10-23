@@ -149,6 +149,8 @@ extends UFctl {
 							case 'notseen':
 								$get->view = 'computers/notseen';
 								break;
+							case 'servers':
+								$get->view = 'computers/servers';
 						}
 					}
 					break;
@@ -317,6 +319,8 @@ extends UFctl {
 				} else {
 					return 'SruApi_Error403';
 				}
+			case 'computers/servers':
+				return 'SruApi_ComputersServers';
 				/*if ($acl->sruApi('computer', 'edit')) {
 					if($msg->get('computersDelete/ok')) {
 						return 'SruApi_Status200';

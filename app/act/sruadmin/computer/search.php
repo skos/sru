@@ -22,8 +22,7 @@ extends UFact {
                         }
 
 			$finds = array();
-			if (isset($post['typeId']) && !empty($post['typeId']) && $post['typeId'] != "5") {
-			
+			if (isset($post['typeId']) && !empty($post['typeId'])) {
 				$finds[] = 'typeId:'.urlencode($post['typeId']);
 			}
 			if (isset($post['host']) && !empty($post['host'])) {

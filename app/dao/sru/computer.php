@@ -224,8 +224,12 @@ extends UFdao {
 		}
 	}
 
-	public function listAllServers() {
-		$mapping = $this->mapping('list');
+	public function listAllServers($detailed = false) {
+		if ($detailed) {
+			$mapping = $this->mapping('detailedlist');
+		} else {
+			$mapping = $this->mapping('list');
+		}
 
 		$query = $this->prepareSelect($mapping);
 		$query->where($mapping->typeId, UFbean_Sru_Computer::LIMIT_SERVER, $query->GTE);

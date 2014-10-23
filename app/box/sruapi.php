@@ -293,6 +293,20 @@ extends UFbox {
 		}
 	}
 	
+	public function computersServers() {
+		try {
+			$bean = UFra::factory('UFbean_Sru_ComputerList');
+			$bean->listAllServers(true);
+
+			$d['computers'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return '';
+		}
+	}
+	
+	
 	public function usersToDeactivate() {
 		try {
 			$bean = UFra::factory('UFbean_Sru_UserList');

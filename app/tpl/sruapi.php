@@ -73,6 +73,10 @@ extends UFtpl_Common {
 		$d['computers']->write('apiComputersNotSeen');
 	}
 	
+	public function computersServers(array $d) {
+		$d['computers']->write('apiComputersServers');
+	}
+	
 	public function usersToDeactivate(array $d) {
 		$d['users']->write('apiUsersToDeactivate');
 	}
