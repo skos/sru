@@ -150,6 +150,9 @@ function fullList() {
 		$aliases = array();
 
 		foreach ($d as $c) {
+			if ($c['usersMax'] == 0) {
+				continue;
+			}
 			$roomInt = (int)$c['alias'];
 			if ((int)$c['alias'] == 0) {
 				$roomInt = $c['alias'];
