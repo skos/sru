@@ -273,7 +273,7 @@ msgstr "Page not found"
 
 #: sru3/app/tpl/sru.php:182
 msgid "Nie masz uprawnień do oglądania tej strony. Wróć do "
-msgstr "You don't have permissions to access this page. Back to"
+msgstr "You don't have permissions to access this page. Back to "
 
 #: sru3/app/tpl/sru.php:182
 #: sru3/app/tpl/sru.php:190
@@ -286,7 +286,7 @@ msgstr "No permissions"
 
 #: sru3/app/tpl/sru.php:190
 msgid "Nie znaleziono strony. Wróć do "
-msgstr "Page not found. Back to"
+msgstr "Page not found. Back to "
 
 #: sru3/app/tpl/sru.php:194
 msgid "Edycja Twoich danych"
@@ -754,3 +754,4 @@ msgstr "password"
 
 msgid "Aby mieć Internet, zaloguj się na swoje konto w Systemie Rejestracji Użytkowników (http://sru.ds.pg.gda.pl) skorzystaj z następujących danych:"
 msgstr "To have the Internet, log in to your account in SRU (http://sru.ds.pg.gda.pl) using the following data:"
+
