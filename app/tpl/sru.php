@@ -370,7 +370,7 @@ var button = document.createElement('a');
 button.onclick = function() {
 	changeVisibility();
 }
-var txt = document.createTextNode('Zapomniałem loginu lub hasła!');
+var txt = document.createTextNode('Zapomniałem loginu lub hasła! / I forgot login or password!');
 button.appendChild(txt);
 container.appendChild(button);
 changeVisibility();
