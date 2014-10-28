@@ -12,6 +12,7 @@ extends UFmap {
 		'adminType'	 => 'm.type_id',
 		'dormitory'      => 'a.dormitory',
 		'dormitoryName'  => 'd.name',
+		'dormitoryNameEn'  => 'd.name_en',
 		'dormitoryAlias' => 'd.alias',
 		'dormitoryId'	 => 'd.id',
 		'display_order'  => 'd.display_order'

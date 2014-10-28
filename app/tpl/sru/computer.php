@@ -743,7 +743,7 @@ if (input) {
 		}
 		echo '</a></span>';
 		echo '<div id="macMore">';
-		echo $form->mac('MAC', array('value'=>$mac, 'after'=>''.UFlib_Helper::displayHint("Adres fizyczny karty sieciowej komputera.").$this->showMacHint().'<br/>'));
+		echo $form->mac('MAC', array('value'=>$mac, 'after'=>''.UFlib_Helper::displayHint(_("Adres fizyczny karty sieciowej komputera.")).$this->showMacHint().'<br/>'));
 		echo '</div>';
 
 ?><script type="text/javascript">
