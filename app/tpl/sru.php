@@ -184,7 +184,7 @@ extends UFtpl_Common {
 	}
 
 	public function error403() {
-                echo $this->ERR(_("Nie znaleziono strony. Wróć do ") . '<a href="' . $this->url(0) . '/" title="' . _("System Rejestracji Użytkowników") . '">SRU</a>.');
+                echo $this->ERR(_("Nie masz uprawnień do oglądania tej strony. Wróć do ") . '<a href="' . $this->url(0) . '/" title="' . _("System Rejestracji Użytkowników") . '">SRU</a>.');
         }
 
 	public function titleError403() {
