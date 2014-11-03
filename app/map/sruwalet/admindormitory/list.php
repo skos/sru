@@ -24,6 +24,7 @@ extends UFmap {
 		'adminType'	 => self::INT,
 		'dormitory'      => self::INT,
 		'dormitoryName'  => self::TEXT,
+                'dormitoryNameEn'=> self::TEXT,
 		'dormitoryAlias' => self::TEXT,
 		'dormitoryId'	 => self::INT,
 		'display_order'  => self::INT
