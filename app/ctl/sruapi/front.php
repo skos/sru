@@ -30,20 +30,9 @@ extends UFctl {
 					}
 				case 'dhcp':
 					if ($segCount>1) {
-						switch ($req->segment(2)) {
-							case 'stud':
-								$get->view = 'dhcp/stud';
-								break;
-							case 'adm':
-								$get->view = 'dhcp/adm';
-								break;
-							case 'org':
-								$get->view = 'dhcp/org';
-								break;
-							case 'serv':
-								$get->view = 'dhcp/serv';
-								break;
-						}
+						$get->view = 'dhcp';
+						$get->domain = urldecode($req->segment(2));
+						break;
 					}
 					break;
 				case 'dns':
@@ -265,14 +254,8 @@ extends UFctl {
 				} else {
 					return 'SruApi_Error404';
 				}
-			case 'dhcp/stud':
-				return 'SruApi_DhcpStuds';
-			case 'dhcp/adm':
-				return 'SruApi_DhcpAdm';
-			case 'dhcp/org':
-				return 'SruApi_DhcpOrg';
-			case 'dhcp/serv':
-				return 'SruApi_DhcpServ';
+			case 'dhcp':
+				return 'SruApi_Dhcp';
 			case 'dns':
 				return 'SruApi_Dns';
 			case 'revdns':

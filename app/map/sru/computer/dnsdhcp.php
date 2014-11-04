@@ -1,8 +1,8 @@
 <?
 /**
- * wybranie listy komputerow do listy DNS
+ * wybranie listy komputerow do listy DNS i DHCP
  */
-class UFmap_Sru_Computer_Dns
+class UFmap_Sru_Computer_DnsDhcp
 extends UFmap {
 
 	protected $columns = array(
@@ -10,6 +10,7 @@ extends UFmap {
 		'mac'            => 'c.mac',
 		'host'           => 'c.host',
 		'active'         => 'c.active',
+		'banned'	 => 'c.banned',
 		'domainSuffix'	 => 'v.domain_suffix',
 	);
 	protected $columnTypes = array(
@@ -17,6 +18,7 @@ extends UFmap {
 		'mac'            => self::TEXT,
 		'host'           => self::TEXT,
 		'active'         => self::NULL_BOOL,
+		'banned'         => self::BOOL,
 		'domainSuffix'	 => self::TEXT,
 	);
 	protected $tables = array(

@@ -177,7 +177,7 @@ extends UFdao {
 	}
 	
 	public function listAllActiveByDomain($domain=null) {
-		$mapping = $this->mapping('dns');
+		$mapping = $this->mapping('dnsdhcp');
 
 		$query = $this->prepareSelect($mapping);
 		$query->where($mapping->active, true);

@@ -6,33 +6,18 @@
 class UFbox_SruApi
 extends UFbox {
 
-	protected function configDhcp($type) {
+	public function dhcp() {
 		try {
+			$domain = $this->_srv->get('req')->get->domain;
 			$bean = UFra::factory('UFbean_Sru_ComputerList');
-			$bean->listAllActiveByType($type);
-
+			$bean->listAllActiveByDomain($domain);
+			
 			$d['computers'] = $bean;
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
 			return '';
 		}
-	}
-
-	public function dhcpStuds() {
-		return $this->configDhcp(array(UFbean_Sru_Computer::TYPE_STUDENT, UFbean_Sru_Computer::TYPE_STUDENT_AP, UFbean_Sru_Computer::TYPE_STUDENT_OTHER, UFbean_Sru_Computer::TYPE_TOURIST));
-	}
-	
-	public function dhcpOrg() {
-		return $this->configDhcp(UFbean_Sru_Computer::TYPE_ORGANIZATION);
-	}
-
-	public function dhcpAdm() {
-		return $this->configDhcp(UFbean_Sru_Computer::TYPE_ADMINISTRATION);
-	}
-
-	public function dhcpServ() {
-		return $this->configDhcp(array(UFbean_Sru_Computer::TYPE_SERVER, UFbean_Sru_Computer::TYPE_MACHINE, UFbean_Sru_Computer::TYPE_NOT_SKOS_DEVICE));
 	}
 
 	public function dnsRev() {
@@ -46,7 +31,7 @@ extends UFbox {
 				return '';
 			}
 
-			return $this->render('configDnsRev', $d);
+			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
 			return '';
 		}

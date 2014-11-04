@@ -5,11 +5,11 @@
 class UFtpl_SruApi
 extends UFtpl_Common {
 
-	public function configDhcp(array $d) {
+	public function dhcp(array $d) {
 		$d['computers']->write('configDhcp');
 	}
 
-	public function configDnsRev(array $d) {
+	public function dnsRev(array $d) {
 		$d['computers']->write('configDnsRev');
 	}
 
