@@ -212,9 +212,11 @@ abstract class ZabbixApiAbstract
             'jsonrpc' => '2.0',
             'method'  => $method,
             'params'  => $params,
-            'auth'    => ($auth ? $this->auth : ''),
             'id'      => $this->id
         );
+	if ($auth) {
+		$this->request['auth'] = $this->auth;
+	}
 
         // encode request array
         $this->requestEncoded = json_encode($this->request);
