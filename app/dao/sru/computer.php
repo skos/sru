@@ -271,6 +271,22 @@ extends UFdao {
 
 		return $this->doSelect($query);
 	}
+	
+	public function listAllInterfacable() {
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where(
+			'('.$mapping->column('typeId').'='.UFbean_Sru_Computer::TYPE_SERVER.' OR '.$mapping->column('typeId').'='.UFbean_Sru_Computer::TYPE_SERVER_VIRT.' '
+			. 'OR '.$mapping->column('typeId').'='.UFbean_Sru_Computer::TYPE_NOT_SKOS_DEVICE.' '
+			. 'OR '.$mapping->column('typeId').'='.UFbean_Sru_Computer::TYPE_ORGANIZATION.')',
+			null, $query->SQL
+		);
+		$query->where($mapping->active, true);
+		$query->order($mapping->host, $query->ASC);
+
+		return $this->doSelect($query);
+	}
 
 	public function listAllActiveByIpClass($class) {
 		$mapping = $this->mapping('list');

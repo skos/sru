@@ -153,7 +153,7 @@ extends UFbox {
 				$d['virtuals'] = null;
 			}
 			
-			if ($bean->typeId == UFbean_Sru_Computer::TYPE_SERVER || $bean->typeId == UFbean_Sru_Computer::TYPE_SERVER_VIRT) {
+			if ($bean->typeId == UFbean_Sru_Computer::TYPE_SERVER || $bean->typeId == UFbean_Sru_Computer::TYPE_SERVER_VIRT || $bean->typeId == UFbean_Sru_Computer::TYPE_NOT_SKOS_DEVICE) {
 				try {
 					$interfaces = UFra::factory('UFbean_Sru_ComputerList');
 					$interfaces->listInterfacesByComputerId($bean->id);
@@ -269,15 +269,11 @@ extends UFbox {
 			} else {
 				$d['virtuals'] = null;
 			}
-			if ($bean->typeId == UFbean_Sru_Computer::TYPE_SERVER || $bean->typeId == UFbean_Sru_Computer::TYPE_INTERFACE) {
-				try {
-					$interfaces = UFra::factory('UFbean_Sru_ComputerList');
-					$interfaces->listInterfacesByComputerId($bean->id);
-					$d['interfaces'] = $interfaces;
-				} catch (UFex $e) {
-					$d['interfaces'] = null;
-				}
-			} else {
+			try {
+				$interfaces = UFra::factory('UFbean_Sru_ComputerList');
+				$interfaces->listInterfacesByComputerId($bean->id);
+				$d['interfaces'] = $interfaces;
+			} catch (UFex $e) {
 				$d['interfaces'] = null;
 			}
 			try {
@@ -286,6 +282,13 @@ extends UFbox {
 				$d['deviceModels'] = $deviceModels;
 			} catch (UFex $e) {
 				$d['deviceModels'] = null;
+			}
+			try {
+				$devicesInterfacable = UFra::factory('UFbean_Sru_ComputerList');
+				$devicesInterfacable->listAllInterfacable();
+				$d['devicesInterfacable'] = $devicesInterfacable;
+			} catch (UFex $e) {
+				$d['devicesInterfacable'] = null;
 			}
 
 			$d['computer'] = $bean;
@@ -1963,6 +1966,13 @@ extends UFbox {
 			$d['deviceModels'] = $deviceModels;
 		} catch (UFex $e) {
 			$d['deviceModels'] = null;
+		}
+		try {
+			$devicesInterfacable = UFra::factory('UFbean_Sru_ComputerList');
+			$devicesInterfacable->listAllInterfacable();
+			$d['devicesInterfacable'] = $devicesInterfacable;
+		} catch (UFex $e) {
+			$d['devicesInterfacable'] = null;
 		}
 
 		$d['computer'] = $bean;

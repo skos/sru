@@ -331,7 +331,7 @@ changeVisibility();
 		}
 	}
 
-	public function formEditAdmin(array $d, $dormitories, $user = null, $history = null, $servers = null, $skosAdmins = null, $waletAdmins = null, $virtuals = null, $deviceModels = null, $interfaces = null) {
+	public function formEditAdmin(array $d, $dormitories, $user = null, $history = null, $servers = null, $skosAdmins = null, $waletAdmins = null, $virtuals = null, $deviceModels = null, $interfaces = null, $interfaceable = null) {
 		if (is_array($history)) {
 			$d = $history + $d;
 		}
@@ -375,7 +375,7 @@ changeVisibility();
 			'type' => $form->SELECT,
 			'labels' => $form->_labelize(self::$computerTypes),
 			'disabled' => ((is_null($virtuals) && is_null($interfaces)) ? false : true),
-			'after' => ((is_null($virtuals)) ? '<br/>' : UFlib_Helper::displayHint("Nie można zmienić typu serwerowi, do którego przypisane są serwery wirtualne lub interfejsy.")),
+			'after' => ((is_null($virtuals) && is_null($interfaces)) ? '<br/>' : UFlib_Helper::displayHint("Nie można zmienić typu serwerowi, do którego przypisane są serwery wirtualne lub interfejsy.")),
 		));
 		if (!is_null($deviceModels)) {
 			$tmp = array();
@@ -418,13 +418,6 @@ changeVisibility();
 		}
 		if (!is_null($servers)) {
 			$tmp = array();
-			foreach ($servers as $serv) {
-				if ($serv['id'] == $d['id']) {
-					continue;
-				}
-				$tmp[''] = '';
-				$tmp[$serv['id']] = $serv['host'];
-			}
 			echo '<div id="servers">';
 			echo $form->masterHostId('Serwer fizyczny/nadrzędny', array(
 				'type' => $form->SELECT,
@@ -502,6 +495,32 @@ initialLocationAlias = document.getElementById("computerEdit_locationAlias").val
 		var locationAlias = document.getElementById("computerEdit_locationAlias");
 		var location = document.getElementById("location");
 		if (form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER_VIRT; ?> || form.value == <? echo UFbean_Sru_Computer::TYPE_INTERFACE; ?>) {
+			var selLength = masterHostId.options.length;
+			for (i = 0; i < selLength; i++) { 
+				masterHostId.remove(masterHostId.options[i]);
+			}
+			if (form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER_VIRT; ?>) {
+				<?
+				foreach ($servers as $serv) {
+				if ($serv['id'] == $d['id']) {
+					continue;
+				}
+				?>
+				var option = document.createElement("option");
+				option.value = <? echo $serv['id'] ?>;
+				option.text = "<? echo $serv['host'] ?>";
+				masterHostId.add(option);
+				<? } ?>
+			} else if (form.value == <? echo UFbean_Sru_Computer::TYPE_INTERFACE; ?>) {
+				<?
+				foreach ($interfaceable as $serv) {
+				?>
+				var option = document.createElement("option");
+				option.value = <? echo $serv['id'] ?>;
+				option.text = "<? echo $serv['host'] ?>";
+				masterHostId.add(option);
+				<? } ?>
+			}
 			masterHostId.value = initialMasterHostId;
 			masterHost.style.display = "block";
 			masterHost.style.visibility = "visible";
@@ -582,7 +601,7 @@ activateChkB.onclick = function() {
 		<?
 	}
 
-	public function formAdd(array $d, $user, $admin = false, $macAddress = null, $servers = null, $skosAdmins = null, $waletAdmins = null, $deviceModels = null) {
+	public function formAdd(array $d, $user, $admin = false, $macAddress = null, $servers = null, $skosAdmins = null, $waletAdmins = null, $deviceModels = null, $interfaceable = null) {
 		$post = $this->_srv->get('req')->post;
 		$mac = $macAddress;
 		try {
@@ -650,10 +669,6 @@ activateChkB.onclick = function() {
 			}
 			if (!is_null($servers)) {
 				$tmp = array();
-				foreach ($servers as $serv) {
-					$tmp[''] = '';
-					$tmp[$serv['id']] = $serv['host'];
-				}
 				echo '<div id="servers">';
 				echo $form->masterHostId('Serwer fizyczny / nadrzędny', array(
 					'type' => $form->SELECT,
@@ -712,6 +727,29 @@ if (input) {
 		var masterHost = document.getElementById("servers");
 		var masterHostId = document.getElementById("computerAdd_masterHostId");
 		if (form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER_VIRT; ?> || form.value == <? echo UFbean_Sru_Computer::TYPE_INTERFACE; ?>) {
+			var selLength = masterHostId.options.length;
+			for (i = 0; i < selLength; i++) { 
+				masterHostId.remove(masterHostId.options[i]);
+			}
+			if (form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER_VIRT; ?>) {
+				<?
+				foreach ($servers as $serv) {
+				?>
+				var option = document.createElement("option");
+				option.value = <? echo $serv['id'] ?>;
+				option.text = "<? echo $serv['host'] ?>";
+				masterHostId.add(option);
+				<? } ?>
+			} else if (form.value == <? echo UFbean_Sru_Computer::TYPE_INTERFACE; ?>) {
+				<?
+				foreach ($interfaceable as $serv) {
+				?>
+				var option = document.createElement("option");
+				option.value = <? echo $serv['id'] ?>;
+				option.text = "<? echo $serv['host'] ?>";
+				masterHostId.add(option);
+				<? } ?>
+			}
 			masterHost.style.display = "block";
 			masterHost.style.visibility = "visible";
 		} else {
