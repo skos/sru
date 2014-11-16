@@ -77,7 +77,9 @@ extends UFact {
 					$this->markErrors(self::PREFIX, array('deviceModelId'=>'empty'));
 					return;
 			}
-			if ($bean->typeId == UFbean_Sru_Computer::TYPE_STUDENT_OTHER) {
+			if ($bean->typeId == UFbean_Sru_Computer::TYPE_STUDENT_OTHER || $bean->typeId == UFbean_Sru_Computer::TYPE_SERVER || 
+				$bean->typeId == UFbean_Sru_Computer::TYPE_SERVER_VIRT || $bean->typeId == UFbean_Sru_Computer::TYPE_MACHINE ||
+				$bean->typeId == UFbean_Sru_Computer::TYPE_INTERFACE || $bean->typeId == UFbean_Sru_Computer::TYPE_NOT_SKOS_DEVICE) {
 				$bean->autoDeactivation = false;
 			}
 			$bean->locationId = $user->locationId;
