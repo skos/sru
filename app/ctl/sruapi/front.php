@@ -28,6 +28,7 @@ extends UFctl {
 								break;
 						}
 					}
+					break;
 				case 'dhcp':
 					if ($segCount>1) {
 						$get->view = 'dhcp';
