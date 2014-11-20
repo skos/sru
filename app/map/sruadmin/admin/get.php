@@ -31,7 +31,7 @@ extends UFmap {
 		'lastPswChange'  => 'a.last_psw_change',
                 'badLogins'	 => 'a.bad_logins',
 		'lastPswInnerChange' => 'a.last_psw_inner_change',
-		'display_order' => 'd.display_order'
+		'displayOrder' => 'd.display_order'
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -59,7 +59,7 @@ extends UFmap {
 		'lastPswChange'  => self::TS,
 		'badLogins'	 => self::INT,
 		'lastPswInnerChange' => self::TS,
-		'display_order' => self::INT
+		'displayOrder' => self::INT
 	);
 	protected $tables = array(
 		'a' => 'admins',

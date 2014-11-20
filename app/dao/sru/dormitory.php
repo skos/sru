@@ -9,7 +9,7 @@ extends UFdao {
 		$mapping = $this->mapping('list');
 
 		$query = $this->prepareSelect($mapping);
-		$query->order($mapping->display_order);
+		$query->order($mapping->displayOrder);
 
 		return $this->doSelect($query);
 	}
@@ -18,7 +18,7 @@ extends UFdao {
 		$mapping = $this->mapping('listWalet');
 
 		$query = $this->prepareSelect($mapping);
-		$query->order($mapping->display_order);
+		$query->order($mapping->displayOrder);
 
 		return $this->doSelect($query);
 	}

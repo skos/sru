@@ -77,16 +77,29 @@ extends UFtpl_Common {
 		$admins[$lastAdmin] .= '</tr>';
 		
 		echo '<table class="sruDutyHours"><thead><tr><th>Administrator</th><th>Gdzie<br/>(Where)</th><th>Poniedziałek<br/>(Monday)</th><th>Wtorek<br/>(Tuesday)</th><th>Środa<br/>(Wednesday)</th><th>Czwartek<br/>(Thursday)</th><th>Piątek<br/>(Friday)</th><th>Sobota<br/>(Saturday)</th><th>Niedziela<br/>(Sunday)</th></tr></thead><tbody>';
+		$traugutta = array(1,2,3,4,12);
+		$trauguttaAdmins = array();
+		$wyspianskiegoAdmins = array();
 		foreach ($dormitories as $dorm) {
-			$dormAdmins = array();
 			foreach ($dorm as $admin) {
-				$dormAdmins[] = $admin['admin'];
+				if (in_array($dorm[0]['displayOrder'], $traugutta)) {
+					$trauguttaAdmins[$admin['admin']] = $admin['admin'];
+				} else {
+					$wyspianskiegoAdmins[$admin['admin']] = $admin['admin'];
+				}
 			}
-			if (empty($dormAdmins)) {
-				continue;
+		}
+		echo '<tr><td colspan="10" class="sruDutyHoursDormitoryName">Osiedle Traugutta (DS1, DS2, DS3, DS4, DS12)</td></tr>';
+		if (!empty($trauguttaAdmins)) {
+			foreach ($trauguttaAdmins as $admin) {
+				if (array_key_exists($admin, $admins)) {
+					echo $admins[$admin];
+				}
 			}
-			echo '<tr><td colspan="10" class="sruDutyHoursDormitoryName">'.$dorm[0]['dormitoryName'].' (<a href="mailto:admin-'.$dorm[0]['dormitoryAlias'].'@ds.pg.gda.pl">admin-'.$dorm[0]['dormitoryAlias'].'@ds.pg.gda.pl</a>)</td></tr>';
-			foreach ($dormAdmins as $admin) {
+		}
+		echo '<tr><td colspan="10" class="sruDutyHoursDormitoryName">Osiedle Wyspiańskiego (DS5, DS6, DS7, DS8, DS9, DS10, DS11)</td></tr>';
+		if (!empty($wyspianskiegoAdmins)) {
+			foreach ($wyspianskiegoAdmins as $admin) {
 				if (array_key_exists($admin, $admins)) {
 					echo $admins[$admin];
 				}

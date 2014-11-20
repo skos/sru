@@ -13,7 +13,7 @@ extends UFmap {
 		'computerCount' => 'computers_count',
 		'usersMax'     => 'users_max',
 		'computersMax' => 'computers_max',
-		'display_order' => 'display_order',
+		'displayOrder' => 'display_order',
 	);
 	protected $columnTypes = array(
 		'id'           => self::INT,
@@ -23,7 +23,7 @@ extends UFmap {
 		'computerCount' => self::INT,
 		'usersMax'     => self::INT,
 		'computersMax' => self::INT,
-		'display_order' => self::INT,
+		'displayOrder' => self::INT,
 	);
 	protected $tables = array(
 		'' => 'dormitories',
