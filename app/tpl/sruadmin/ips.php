@@ -83,26 +83,33 @@ extends UFtpl_Common {
 				$vlanNames[$ip['vlan']] = array();
 				$vlanNames[$ip['vlan']][0] = $ip['vlanName'];
 				$vlanNames[$ip['vlan']][1] = $ip['vlanDesc'];
+				$vlanNames[$ip['vlan']][2] = $ip['vlanDomainSuffix'];
 			}
 		}
 		if (!isset($dorm) && !isset($vlan)) {
 			$vlans[0] = 'Brak VLANu';
 			$vlanNames[0][0] = 'Żaden VLAN nie został przydzielony';
 			$vlanNames[0][1] = '';
+			$vlanNames[0][2] = '';
 		}
 		if (isset($dorm)) {
 			$vlans[9999] = 'Błędny przydział IP';
 			$vlanNames[9999][0] = 'Przydzielony IP z błędnej puli';
 			$vlanNames[9999][1] = '';
+			$vlanNames[9999][2] = '';
 		}
 		
 		echo '<div id="tabs"><ul>';
 		foreach ($vlans as $vlanId => $vlanNo) {
-			$vlanName = $vlanNames[$vlanId][0];
+			$vlanDesc = $vlanNames[$vlanId][0];
+			$vlanName = $vlanDesc;
 			if (!is_null($vlanNames[$vlanId][1]) && $vlanNames[$vlanId][1] != '') {
-				$vlanName = $vlanName.': '.$vlanNames[$vlanId][1];
+				$vlanDesc = $vlanDesc.': '.$vlanNames[$vlanId][1];
 			}
-			echo '<li><a href="#vlan'.$vlanId.'" title="'.$vlanName.'">'.$vlanNo.'</a></li>';
+			if (!is_null($vlanNames[$vlanId][2]) && $vlanNames[$vlanId][2] != '') {
+				$vlanDesc = $vlanDesc.', domena: '.$vlanNames[$vlanId][2];
+			}
+			echo '<li><a href="#vlan'.$vlanId.'" title="'.$vlanDesc.'">'.$vlanNo.(($vlanId == 0) ? '' : ': '.$vlanName).'</a></li>';
 		}
 		echo '</ul>';
 
