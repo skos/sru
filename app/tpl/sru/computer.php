@@ -161,7 +161,7 @@ extends UFtpl_Common {
 		$urlNav = $this->url(0).'/computers/'.$d['id'];
 		$acl = $this->_srv->get('acl');
 
-		echo '<h1>'.$d['host'].'</h1>';
+		echo '<h1>'.$d['domainName'].'</h1>';
 		if (is_null($d['userId'])) {
 			$user = 'BRAK';
 		} else {
@@ -894,7 +894,7 @@ div.style.display = 'none';
 			} else {
 				$owner = '(<a href="'.$url.'/users/'.$c['userId'].'">'.$this->_escape($c['userName']).' '.$this->_escape($c['userSurname']).'</a>)';
 			}
-			$toDisplay = '<li'.($c['banned'] ? ' class="ban"' : '').'>'.(!$c['active']? 'Do '.date(self::TIME_YYMMDD, $c['availableTo']).' ':'').(!$c['active']?'<del>':'').'<a href="'.$url.'/computers/'.$c['id'].'">'.$c['host'].(strlen($c['comment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['comment'].'" />':'').' <small>'.$c['ip'].'/'.$c['mac'].'</small></a> <span>'.$owner.'</span>'.(!$c['active']?'</del>':'').'</li>';
+			$toDisplay = '<li'.($c['banned'] ? ' class="ban"' : '').'>'.(!$c['active']? 'Do '.date(self::TIME_YYMMDD, $c['availableTo']).' ':'').(!$c['active']?'<del>':'').'<a href="'.$url.'/computers/'.$c['id'].'">'.$c['domainName'].(strlen($c['comment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['comment'].'" />':'').' <small>'.$c['ip'].'/'.$c['mac'].'</small></a> <span>'.$owner.'</span>'.(!$c['active']?'</del>':'').'</li>';
 			if ($c['active']) {
 				echo $toDisplay;
 			} else {
