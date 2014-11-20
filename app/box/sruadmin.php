@@ -1993,6 +1993,18 @@ extends UFbox {
 			return $this->render(__FUNCTION__.'NotFound');
 		}
 	}
+	public function serverInterfaces() {
+		try {
+			$bean = UFra::factory('UFbean_Sru_ComputerList');
+			$bean->listAllInterfaces();
+
+			$d['interfaces'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}
+	}
 	public function serverAliases() {
 		try {
 			$bean = UFra::factory('UFbean_SruAdmin_ComputerAliasList');

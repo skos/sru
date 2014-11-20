@@ -224,7 +224,7 @@ extends UFdao {
 		}
 	}
 
-	public function listAllServers($detailed = false) {
+	public function listAllServers($detailed = false, $interfaces = false) {
 		if ($detailed) {
 			$mapping = $this->mapping('detailedlist');
 		} else {
@@ -233,6 +233,20 @@ extends UFdao {
 
 		$query = $this->prepareSelect($mapping);
 		$query->where($mapping->typeId, UFbean_Sru_Computer::LIMIT_SERVER, $query->GTE);
+		if (!$interfaces) {
+			$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_INTERFACE, $query->NOT_EQ);
+		}
+		$query->where($mapping->active, true);
+		$query->order($mapping->host, $query->ASC);
+
+		return $this->doSelect($query);
+	}
+	
+	public function listAllInterfaces() {
+		$mapping = $this->mapping('detailedlist');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_INTERFACE);
 		$query->where($mapping->active, true);
 		$query->order($mapping->host, $query->ASC);
 

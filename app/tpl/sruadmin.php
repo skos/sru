@@ -101,6 +101,15 @@ extends UFtpl_Common {
 		echo '</ul>';
 		echo '</div>';
 	}
+	public function serverInterfaces(array $d) {
+		echo '<div class="computers">';
+		echo '<h2>Interfejsy</h2>';
+
+		echo '<ul>';
+		$d['interfaces']->write('listInterfaces');
+		echo '</ul>';
+		echo '</div>';
+	}
 	public function serverAliases(array $d) {
 		echo '<div class="computers">';
 		echo '<h2>Aliasy serwerów</h2>';

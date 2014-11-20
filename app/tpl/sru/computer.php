@@ -849,6 +849,13 @@ div.style.display = 'none';
 			echo '<li>'.$c['host'].' <small>'.$c['ip'].'/'.$c['mac'].'</small></a>, <span>lokalizacja: '.$c['locationAlias'].' (<a href="'.$url.$c['dormitoryAlias'].'">'.strtoupper($c['dormitoryAlias']).'</a>)</span></li>';
 		}
 	}
+	
+	public function listInterfaces(array $d) {
+		$url = $this->url(0).'/computers/';
+		foreach ($d as $c) {
+			echo '<li><a href="'.$url.$c['id'].'">'.$c['domainName'].' <small>'.$c['ip'].'/'.$c['mac'].'</small></a> -> <a href="'.$url.$c['masterHostId'].'">'.$c['masterHostDomainName'].'</a></li>';
+		}
+	}
 
 	public function formSearch(array $d, array $searched) {
 		$d = $searched + $d;

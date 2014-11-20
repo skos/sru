@@ -281,7 +281,7 @@ extends UFbox {
 	public function computersServers() {
 		try {
 			$bean = UFra::factory('UFbean_Sru_ComputerList');
-			$bean->listAllServers(true);
+			$bean->listAllServers(true, true);
 
 			$d['computers'] = $bean;
 

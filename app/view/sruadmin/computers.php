@@ -11,6 +11,7 @@ extends UFview_SruAdmin {
 		$this->append('title', $box->titleComputers());
 		
 		$this->append('body', $box->serverComputers());
+		$this->append('body', $box->serverInterfaces());
 		$this->append('body', $box->serverAliases());
 		$this->append('body', $box->administrationComputers());
 		$this->append('body', $box->organizationsComputers());
