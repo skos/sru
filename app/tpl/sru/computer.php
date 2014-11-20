@@ -73,7 +73,7 @@ extends UFtpl_Common {
 		'masterHostId/null' => 'Ten typ hosta musi mieć ustawiony serwer nadrzędny',
 		'skosCarerId/null' => 'Serwer musi posiadać opiekuna',
 		'waletCarerId/null' => 'Host administracji musi posiadać opiekuna',
-		'typeId/notSkos' => 'Właścicielem serwera fizycznego / urządzenia może być wyłącznie SKOS',
+		'typeId/notSkos' => 'Właścicielem tego typu hosta nie może być ten typ użytkownika',
 		'deviceModelId' => 'Serwer fizyczny i urządzenie muszą mieć wybrany model',
 	);
 

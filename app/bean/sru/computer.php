@@ -36,6 +36,15 @@ extends UFbean_Common {
 		self::TYPE_ADMINISTRATION => UFbean_SruAdmin_Vlan::DS_ADM,
 		self::TYPE_ORGANIZATION => UFbean_SruAdmin_Vlan::DS_ORGAN,
 	);
+	
+	protected $typeToUser = array(
+		self::TYPE_SERVER => array(UFbean_Sru_User::TYPE_SKOS),
+		self::TYPE_MACHINE => array(UFbean_Sru_User::TYPE_SKOS),
+		self::TYPE_INTERFACE => array(UFbean_Sru_User::TYPE_SKOS, UFbean_Sru_User::TYPE_ORGANIZATION),
+		self::TYPE_NOT_SKOS_DEVICE => array(UFbean_Sru_User::TYPE_SKOS),
+		self::TYPE_ADMINISTRATION => array(UFbean_Sru_User::TYPE_SKOS, UFbean_Sru_User::TYPE_ADMINISTRATION),
+		self::TYPE_ORGANIZATION => array(UFbean_Sru_User::TYPE_SKOS, UFbean_Sru_User::TYPE_ORGANIZATION),
+	);
 
 	protected function validateHost($val, $change) {
 		if ($change && $this->_srv->get('req')->post->is('computerEdit')) {
@@ -304,12 +313,11 @@ extends UFbean_Common {
 	}
 	
 	protected function validateTypeId($val, $change) {
-		if ($val == UFbean_Sru_Computer::TYPE_SERVER || $val == UFbean_Sru_Computer::TYPE_MACHINE ||
-			$val == UFbean_Sru_Computer::TYPE_INTERFACE || $val == UFbean_Sru_Computer::TYPE_NOT_SKOS_DEVICE) {
+		if (array_key_exists($val, $this->typeToUser)) {
 			try {
 				$user = UFra::factory('UFbean_Sru_User'); 
 				$user->getByPK((int)$this->_srv->get('req')->get->userId);
-				if ($user->typeId != UFbean_Sru_User::TYPE_SKOS) {
+				if (!in_array($user->typeId, $this->typeToUser[$val])) {
 					return 'notSkos';
 				}
 			} catch (UFex_Core_DataNotFound $e) {
@@ -317,7 +325,7 @@ extends UFbean_Common {
 				$computer->getByPK((int)$this->_srv->get('req')->get->computerId);
 				$user = UFra::factory('UFbean_Sru_User'); 
 				$user->getByPK($computer->userId);
-				if ($user->typeId != UFbean_Sru_User::TYPE_SKOS) {
+				if (!in_array($user->typeId, $this->typeToUser[$val])) {
 					return 'notSkos';
 				}
 			} catch (UFex_Dao_NotFound $e) {
