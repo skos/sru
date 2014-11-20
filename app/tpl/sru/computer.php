@@ -1028,9 +1028,18 @@ $("#macvendor").load('<?=UFURL_BASE?>/admin/apis/getmacvendor/<?=$searchedMac?>'
 		$servers = array();
 		foreach ($d as $c) {
 			if ($c['typeId'] != UFbean_Sru_Computer::TYPE_INTERFACE) {
-				$servers[$c['id']] = array('hostname' => $c['host'], 'category' => self::getComputerType($c['typeId']),
-				    'intNo' => 1, 'hypervisor' => $c['masterHostName'], 'model' => $c['deviceModelName']);
-				$servers[$c['id']]['ip1']  = array('vlan' => $c['vlanId'], 'mac' => $c['mac'], 'ip' => $c['ip']);
+				if (!array_key_exists($c['id'], $servers)) {
+					$servers[$c['id']] = array('hostname' => $c['host'], 'category' => self::getComputerType($c['typeId']),
+					    'intNo' => 1, 'hypervisor' => $c['masterHostName'], 'model' => $c['deviceModelName']);
+					$servers[$c['id']]['ip1']  = array('vlan' => $c['vlanId'], 'mac' => $c['mac'], 'ip' => $c['ip']);
+				} else {
+					$servers[$c['id']]['hostname'] = $c['host'];
+					$servers[$c['id']]['category'] = self::getComputerType($c['typeId']);
+					$servers[$c['id']]['hypervisor'] = $c['masterHostName'];
+					$servers[$c['id']]['model'] = $c['deviceModelName'];
+					$servers[$c['id']]['intNo']++;
+					$servers[$c['id']]['ip'.$servers[$c['id']]['intNo']]  = array('vlan' => $c['vlanId'], 'mac' => $c['mac'], 'ip' => $c['ip']);
+				}
 			} else {
 				if (!array_key_exists($c['masterHostId'], $servers)) {
 					$servers[$c['masterHostId']] = array('intNo' => 0);
