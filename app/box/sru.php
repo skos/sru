@@ -465,7 +465,7 @@ extends UFbox {
 		if (strlen($ip) < 7 || substr($ip, 0, 7) != '172.16.') {
 			return null;
 		}
-		$mac = `arping -r -c 1 $ip`;
+		$mac = `sudo arping -r -c 1 $ip`;
 
 		return trim($mac);
 	}
