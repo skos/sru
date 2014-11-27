@@ -465,7 +465,7 @@ extends UFbox {
 		if (strlen($ip) < 7 || substr($ip, 0, 7) != '172.16.') {
 			return null;
 		}
-		$mac = `sudo arping $ip -f | grep -E -o '[[:xdigit:]]{2}(:[[:xdigit:]]{2}){5}'`;
+		$mac = system('arp '.$ip.' | grep -E -o \'[[:xdigit:]]{2}(:[[:xdigit:]]{2}){5}\'');
 
 		return trim($mac);
 	}
