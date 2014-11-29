@@ -24,6 +24,11 @@ extends UFact {
 			// w przypadku, gdy pole IP jest puste, pobieramy pierwszy wolny
 			// IP w danym DS
 			$post = $this->_srv->get('req')->post->{self::PREFIX};
+                        
+                        if(isset($post['mac'])) {
+                                $post['mac'] = preg_replace('/[^a-zA-Z0-9:-]/', '', $post['mac']);
+                        }
+                        
 			if($post['ip'] == '') {
 				try {
 					$ip = UFra::factory('UFbean_Sru_Ipv4');
