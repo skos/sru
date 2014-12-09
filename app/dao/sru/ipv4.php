@@ -43,7 +43,7 @@ extends UFdao {
 		$mapping = $this->mapping('count');
 
 		$query = $this->prepareSelect($mapping);
-		$query->where('i.dormitory_id = '.$dormId. ' and i.ip=c.ipv4 and c.active = true AND i.vlan = '.UFbean_SruAdmin_Vlan::DEFAULT_VLAN, null, $query->SQL);
+		$query->where('i.dormitory_id = '.$dormId. ' and i.ip=c.ipv4 and c.active = true AND i.vlan = '.UFbean_SruAdmin_Vlan::getDefaultVlan(), null, $query->SQL);
 
 		return $this->doSelect($query);
 	}
@@ -52,7 +52,7 @@ extends UFdao {
 		$mapping = $this->mapping('count');
 
 		$query = $this->prepareSelect($mapping);
-		$query->where('i.dormitory_id = '.$dormId.' AND i.vlan = '.UFbean_SruAdmin_Vlan::DEFAULT_VLAN, null, $query->SQL);
+		$query->where('i.dormitory_id = '.$dormId.' AND i.vlan = '.UFbean_SruAdmin_Vlan::getDefaultVlan(), null, $query->SQL);
 
 		return $this->doSelect($query);
 	}

@@ -22,6 +22,11 @@ extends UFconf {
 	protected $invalidHostNames = array(
 	);
 
+	protected $defaultVlan = 1;
+	protected $computerTypeToVLAN = array(
+	    1 => 1,
+	);
+
 	protected $sendEmail = true;	// wysylac maile dot. kar, edycji danych i danych kompow?
 	protected $emailPrefix = '[SRU]';	// prefix maili wysyłanych ze SRU
 

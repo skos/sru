@@ -32,11 +32,6 @@ extends UFbean_Common {
 		'typeId',
 	);
 	
-	protected $typeToVLAN = array(
-		self::TYPE_ADMINISTRATION => UFbean_SruAdmin_Vlan::DS_ADM,
-		self::TYPE_ORGANIZATION => UFbean_SruAdmin_Vlan::DS_ORGAN,
-	);
-	
 	protected $typeToUser = array(
 		self::TYPE_SERVER => array(UFbean_Sru_User::TYPE_SKOS),
 		self::TYPE_MACHINE => array(UFbean_Sru_User::TYPE_SKOS),
@@ -63,7 +58,7 @@ extends UFbean_Common {
 			} else if (!is_null($post) && isset($post['typeId'])) {
 				$vlanId = $this->getVlanByComputerType($post['typeId']);
 			} else {
-				$vlanId =  UFbean_SruAdmin_Vlan::DEFAULT_VLAN;
+				$vlanId =  UFbean_SruAdmin_Vlan::getDefaultVlan();
 			}
 			$vlan = UFra::factory('UFbean_SruAdmin_Vlan');
 			$vlan->getByPK($vlanId);
@@ -222,10 +217,10 @@ extends UFbean_Common {
 	}
 	
 	public function getVlanByComputerType($computerType) {
-		if (array_key_exists($computerType, $this->typeToVLAN)) {
-			return $this->typeToVLAN[$computerType];
+		if (array_key_exists($computerType, UFra::shared('UFconf_Sru')->computerTypeToVLAN)) {
+			return UFra::shared('UFconf_Sru')->computerTypeToVLAN[$computerType];
 		}
-		return UFbean_SruAdmin_Vlan::DEFAULT_VLAN;
+		return UFbean_SruAdmin_Vlan::getDefaultVlan();
 	}
 	
 	protected function validateSkosCarerId($val, $change) {
