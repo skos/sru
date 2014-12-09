@@ -454,7 +454,6 @@ if (input) {
 
 initialSkosCarerId = document.getElementById("computerEdit_skosCarerId").value;
 initialWaletCarerId = document.getElementById("computerEdit_waletCarerId").value;
-initialMasterHostId = document.getElementById("computerEdit_masterHostId").value;
 initialDeviceModelId = document.getElementById("computerEdit_deviceModelId").value;
 initialTypeId = document.getElementById("computerEdit_typeId").value;
 initialAutoDeactivation = document.getElementById("computerEdit_autoDeactivation").checked;
@@ -509,6 +508,9 @@ initialLocationAlias = document.getElementById("computerEdit_locationAlias").val
 				var option = document.createElement("option");
 				option.value = <? echo $serv['id'] ?>;
 				option.text = "<? echo $serv['host'] ?>";
+				if (option.text == "<? echo $d['masterHostName']; ?>") {
+					option.selected = true;
+				}
 				masterHostId.add(option);
 				<? } ?>
 			} else if (form.value == <? echo UFbean_Sru_Computer::TYPE_INTERFACE; ?>) {
@@ -518,10 +520,12 @@ initialLocationAlias = document.getElementById("computerEdit_locationAlias").val
 				var option = document.createElement("option");
 				option.value = <? echo $serv['id'] ?>;
 				option.text = "<? echo $serv['host'] ?>";
+				if (option.text == "<? echo $d['masterHostName']; ?>") {
+					option.selected = true;
+				}
 				masterHostId.add(option);
 				<? } ?>
 			}
-			masterHostId.value = initialMasterHostId;
 			masterHost.style.display = "block";
 			masterHost.style.visibility = "visible";
 			dormitory.value = initialDormitory;
