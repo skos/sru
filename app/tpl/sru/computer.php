@@ -935,7 +935,7 @@ $("#macvendor").load('<?=UFURL_BASE?>/admin/apis/getmacvendor/<?=$searchedMac?>'
 			if ($c['banned']) {
 				$c['ip'] = str_replace('153.19.', '172.16.', $c['ip']);
 			}
-			echo "host\t".$c['host']."\t{ hardware ethernet ".$c['mac'].'; fixed-address '.$c['ip']."; }\n";
+			echo "host\t".$c['host'].'_'.$c['domainSuffix']."\t{ hardware ethernet ".$c['mac'].'; fixed-address '.$c['ip']."; }\n";
 		}
 	}
 
