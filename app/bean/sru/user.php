@@ -148,6 +148,9 @@ extends UFbean_Common {
 		try {
 			$loc = UFra::factory('UFbean_Sru_Location');
 			$loc->getByAliasDormitory((string)$val, $dorm->id);
+			if ($loc->usersMax == 0 && UFbean_SruAdmin_Room::TYPE_STUDENT || UFbean_SruAdmin_Room::TYPE_GUEST) {
+				return 'excluded';
+			}
 			if (!$change || (isset($this->data['locationId']) && $this->data['locationId']!=$loc->id)) {
 				$this->data['locationAlias'] = $val;
 				$this->dataChanged['locationAlias'] = $val;

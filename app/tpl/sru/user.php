@@ -111,6 +111,7 @@ extends UFtpl_Common {
 		'locationAlias' => 'Podaj pokój',
 		'locationAlias/noDormitory' => 'Wybierz akademik',
 		'locationAlias/noRoom' => 'Pokój nie istnieje',
+		'locationAlias/excluded' => 'Pokój wyłączony z kwaterowania',
 		'password3/invalid' => 'Podałeś nieprawidłowe hasło',
 		'studyYearId/noFaculty' => 'Nieokreślony wydział',
 		'registryNo/regexp' => 'Niepoprawny numer indeksu',

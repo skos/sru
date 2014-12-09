@@ -10,7 +10,9 @@ extends UFmap {
 		'alias'          => 'alias',
 		'dormitoryId'    => 'dormitory_id',
 		'usersCount'     => 'users_count',
+		'usersMax'	 => 'users_max',
 		'computersCount' => 'computers_count',
+		'typeId'	 => 'type_id',
 		'comment'        => 'comment',
 	);
 	protected $columnTypes = array(
@@ -18,7 +20,9 @@ extends UFmap {
 		'alias'          => self::TEXT,
 		'dormitoryId'    => self::INT,
 		'usersCount'     => self::INT,
+		'usersMax'	 => self::INT,
 		'computersCount' => self::INT,
+		'typeId'	 => self::INT,
 		'comment'        => self::TEXT,
 	);
 	protected $tables = array(

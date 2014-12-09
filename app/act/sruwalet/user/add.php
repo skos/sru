@@ -59,9 +59,9 @@ extends UFact {
 			
 			// zapis narodowości
 			if($post['nationalityName'] != '') {
+				$country = UFra::factory('UFbean_SruWalet_Country');
+				$nationality = mb_convert_case(trim($post['nationalityName']), MB_CASE_LOWER, "UTF-8");
 				try {
-					$country = UFra::factory('UFbean_SruWalet_Country');
-					$nationality = mb_convert_case(trim($post['nationalityName']), MB_CASE_LOWER, "UTF-8");
 					$country->getByName($nationality);
 					$countryId = $country->id;
 				} catch (UFex_Dao_NotFound $e) {
