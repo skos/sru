@@ -207,7 +207,7 @@ extends UFdao {
 						$query->where($var, $val, UFlib_Db_Query::LIKE);
 						break;
 					case 'ip':
-						if (substr($val, 0, 6) != '153.19') {
+						if (substr_count($val, '.') == 1) {
 							$val = '153.19.' . $val;
 						}
 						$query->where($var, $val);
