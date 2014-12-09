@@ -64,11 +64,22 @@ extends UFtpl_Common {
 			for ($i = $lastDay; $i < $c['day'] - 1; $i++) {
 				$admins[$c['adminId']] .= '<td></td>';
 			}
+			$commentId = 0;
 			if (strlen($c['comment']) && array_key_exists($c['adminId'], $allDormAdmins)) {
-				$lastComment++;
-				$comments[$lastComment] = $c['comment'];
+				if (in_array($c['comment'], $comments)) {
+					$commentId = array_search($c['comment'], $comments);
+				} else {
+					$lastComment++;
+					$commentId = $lastComment;
+					$comments[$lastComment] = $c['comment'];
+				}
 			}
-			$admins[$c['adminId']] .= '<td'.($c['day'] == $currentDay ? ' class="sruDutyHoursCurrentDay"' : '').'>'.($c['active'] ? '' : '<del>').$this->formatHour($c['startHour']).'-'.$this->formatHour($c['endHour']).($c['active'] ? '' : '</del>').(strlen($c['comment']) ? ' <span title="'.$c['comment'].'" class="sruDutyHoursCommentIndex">('.$lastComment.')</span>' : '').'</td>';
+			$admins[$c['adminId']] .= '<td'.($c['day'] == $currentDay ? ' class="sruDutyHoursCurrentDay"' : '').'>'.
+				($c['active'] ? '' : '<del>').
+				$this->formatHour($c['startHour']).'-'.$this->formatHour($c['endHour']).
+					($c['active'] ? '' : '</del>').
+					(strlen($c['comment']) ? ' <span title="'.$c['comment'].'" class="sruDutyHoursCommentIndex">('.$commentId.')</span>' : '').
+				'</td>';
 			$lastDay = $c['day'];
 		}
 		for ($i = $lastDay; $i < 7; $i++) {
@@ -121,7 +132,6 @@ extends UFtpl_Common {
 		$thisWeek = '';
 		$nextWeek = '';
 		$comments = array();
-		$lastComment = 0;
 		$allDormAdmins = array();
 
 
