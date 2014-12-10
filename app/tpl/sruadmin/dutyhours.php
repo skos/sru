@@ -132,6 +132,7 @@ extends UFtpl_Common {
 		$thisWeek = '';
 		$nextWeek = '';
 		$comments = array();
+		$lastComment = 0;
 		$allDormAdmins = array();
 
 
@@ -150,8 +151,13 @@ extends UFtpl_Common {
 			}
 			if (($c['day'] == $currentDay && $c['endHour'] > date('Hi')) || ($c['day'] > $currentDay && $c['day'] <= $lastDay)) {
 				if (strlen($c['comment'])) {
-					$lastComment++;
-					$comments[$lastComment] = $c['comment'];
+					if (in_array($c['comment'], $comments)) {
+						$commentId = array_search($c['comment'], $comments);
+					} else {
+						$lastComment++;
+						$commentId = $lastComment;
+						$comments[$lastComment] = $c['comment'];
+					}
 				}
 				if ($c['day'] == $currentDay && $days == 0) {
 					$dayName = '';
@@ -179,15 +185,20 @@ extends UFtpl_Common {
 					if (!is_null($dormitories)) {
 						$thisWeek .= '<td>'.$this->listDorms($c['adminId'], $dormitories).'</td>';
 					}
-					$thisWeek .= '<td>'.$dayName.$this->formatHour($c['startHour']).'-'.$this->formatHour($c['endHour']).(strlen($c['comment']) ? ' <span class="sruDutyHoursCommentIndex">('.$lastComment.')</span>' : '').'</td></tr>';
+					$thisWeek .= '<td>'.$dayName.$this->formatHour($c['startHour']).'-'.$this->formatHour($c['endHour']).(strlen($c['comment']) ? ' <span class="sruDutyHoursCommentIndex">('.$commentId.')</span>' : '').'</td></tr>';
 				} else {
-					$thisWeek .= $c['adminName'].' ('.$c['adminAddress'].'): '.$dayName.$this->formatHour($c['startHour']).'-'.$this->formatHour($c['endHour']).(strlen($c['comment']) ? ' ('.$lastComment.')' : '')."\n";
+					$thisWeek .= $c['adminName'].' ('.$c['adminAddress'].'): '.$dayName.$this->formatHour($c['startHour']).'-'.$this->formatHour($c['endHour']).(strlen($c['comment']) ? ' ('.$commentId.')' : '')."\n";
 				}
 			}
 			if ($c['day'] <= $lastDay - 7) {
 				if (strlen($c['comment'])) {
-					$lastComment++;
-					$comments[$lastComment] = $c['comment'];
+					if (in_array($c['comment'], $comments)) {
+						$commentId = array_search($c['comment'], $comments);
+					} else {
+						$lastComment++;
+						$commentId = $lastComment;
+						$comments[$lastComment] = $c['comment'];
+					}
 				}
 				if ($c['day'] == $currentDay - 7 + 1) { // minus tydzień plus jeden dzień
 					if ($en) {
@@ -207,9 +218,9 @@ extends UFtpl_Common {
 					if (!is_null($dormitories)) {
 						$nextWeek .= '<td>'.$this->listDorms($c['adminId'], $dormitories).'</td>';
 					}
-					$nextWeek .= '<td>'.$dayName.$this->formatHour($c['startHour']).'-'.$this->formatHour($c['endHour']).(strlen($c['comment']) ? ' <span class="sruDutyHoursCommentIndex">('.$lastComment.')</span>' : '').'</td></tr>';
+					$nextWeek .= '<td>'.$dayName.$this->formatHour($c['startHour']).'-'.$this->formatHour($c['endHour']).(strlen($c['comment']) ? ' <span class="sruDutyHoursCommentIndex">('.$commentId.')</span>' : '').'</td></tr>';
 				} else {
-					$nextWeek .= $c['adminName'].' ('.$c['adminAddress'].'): '.$dayName.$this->formatHour($c['startHour']).'-'.$this->formatHour($c['endHour']).(strlen($c['comment']) ? ' ('.$lastComment.')' : '')."\n";
+					$nextWeek .= $c['adminName'].' ('.$c['adminAddress'].'): '.$dayName.$this->formatHour($c['startHour']).'-'.$this->formatHour($c['endHour']).(strlen($c['comment']) ? ' ('.$commentId.')' : '')."\n";
 				}
 			}
 		}
