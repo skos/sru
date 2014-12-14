@@ -173,7 +173,7 @@ extends UFtpl_Common {
 		}
 		if (!is_null($d['carerName']) && $d['typeId'] != UFbean_Sru_Computer::TYPE_INTERFACE) {
 			echo '<p><em>Opiekun:</em> <a href="'.$url.'/admins/'.$d['carerId'].'">'.$d['carerName'].'</a></p>';
-		} else if ($d['typeId'] == UFbean_Sru_Computer::TYPE_INTERFACE) {
+		} else if (!is_null($d['carerName']) && $d['typeId'] == UFbean_Sru_Computer::TYPE_INTERFACE) {
 			echo '<p><em>Opiekun:</em> <a href="'.$url.'/admins/'.$masterHost->carerId.'">'.$masterHost->carerName.'</a></p>';
 		}
 		echo '<p><em>Właściciel:</em> '.$user.'</p>';
