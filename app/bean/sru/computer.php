@@ -118,26 +118,29 @@ extends UFbean_Common {
 				}
 			}
 			try {
-				// sprawdzamy, czy mamy do czynienia z serwerem (urządzenia się nie liczą)
+				// sprawdzamy, czy mamy do czynienia z serwerem lub organizacją (urządzenia się nie liczą)
 				$post = $this->_srv->get('req')->post->{self::EDIT_PREFIX};
 				if (isset($post['typeId']) && ($post['typeId'] == self::TYPE_SERVER ||
-					$post['typeId'] == self::TYPE_SERVER_VIRT || $post['typeId'] == self::TYPE_INTERFACE)) {
+					$post['typeId'] == self::TYPE_SERVER_VIRT || $post['typeId'] == self::TYPE_INTERFACE ||
+					$post['typeId'] == self::TYPE_ORGANIZATION)) {
 					return;
 				} else if (!isset($post['typeId'])) {
 					$computer = UFra::factory('UFbean_Sru_Computer');
 					$computer->getByPK((int)$this->_srv->get('req')->get->computerId);
 					if ($computer->typeId == self::TYPE_SERVER ||
-						$computer->typeId == self::TYPE_SERVER_VIRT || $computer->typeId == self::TYPE_INTERFACE) {
+						$computer->typeId == self::TYPE_SERVER_VIRT || $computer->typeId == self::TYPE_INTERFACE ||
+						$computer->typeId == self::TYPE_ORGANIZATION) {
 						return;
 					}
 				}
 			} catch (UFex $e) {
 			}
 			try {
-				// sprawdzamy, czy mamy do czynienia z serwerem (urządzenia się nie liczą)
+				// sprawdzamy, czy mamy do czynienia z serwerem  lub organizacją (urządzenia się nie liczą)
 				$post = $this->_srv->get('req')->post->{self::ADD_PREFIX};
 				if (isset($post['typeId']) && ($post['typeId'] == self::TYPE_SERVER ||
-					$post['typeId'] == self::TYPE_SERVER_VIRT || $post['typeId'] == self::TYPE_INTERFACE)) {
+					$post['typeId'] == self::TYPE_SERVER_VIRT || $post['typeId'] == self::TYPE_INTERFACE ||
+					$post['typeId'] == self::TYPE_ORGANIZATION)) {
 					return;
 				}
 			} catch (UFex $e) {
