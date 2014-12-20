@@ -44,7 +44,7 @@ extends UFmap {
 		'' => 'computers',
 	);
 	protected $valids = array(
-		'host' => array('textMin'=>1, 'textMax'=>50, 'regexp'=>'^[a-z][-a-z0-9]*$'),
+		'host' => array('textMin'=>1, 'textMax'=>50, 'regexp'=>'^[a-z][-a-z0-9]*[a-z]$'),
 		'mac' => array('regexp'=>'^[0-9a-fA-F]{2}?([- :]?[0-9a-fA-F]{2}){5}$'),
 		'ip' => array('regexp'=>'^[0-9]{1,3}(\.[0-9]{1,3}){3}$'),
 		'locationId' => array('intMin'=>1),
