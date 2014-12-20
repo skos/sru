@@ -16,7 +16,7 @@ extends UFtpl_Common {
 		'active' => 'Aktywny',
 		'typeId' => 'Typ',
 		'carerId' => 'Opiekun',
-		'masterHostId' => 'Serwer fizyczny',
+		'masterHostId' => 'Serwer fizyczny/nadrzędny',
 		'autoDeactivation' => 'Autodezaktywacja',
 		'deviceModelId' => 'Model urządzenia',
 	);
@@ -33,7 +33,7 @@ extends UFtpl_Common {
 		'active' => 'Active',
 		'typeId' => 'Type',
 		'carerId' => 'Carer',
-		'masterHostId' => 'Physical server',
+		'masterHostId' => 'Physical/master server',
 		'autoDeactivation' => 'Autodeactivation',
 		'deviceModelId' => 'Device model',
 	);
