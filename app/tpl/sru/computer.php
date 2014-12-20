@@ -1001,10 +1001,8 @@ $("#macvendor").load('<?=UFURL_BASE?>/admin/apis/getmacvendor/<?=$searchedMac?>'
 	}
 
 	public function configDnsRev(array $d) {
-		$adm = UFbean_Sru_Computer::TYPE_ADMINISTRATION;
 		foreach ($d as $c) {
-			$host = $c['host'].($c['typeId']==$adm?'.adm':'').'.ds.pg.gda.pl';
-			echo substr(strrchr($c['ip'], '.'),1)."\t\tPTR\t".$host.".\n";
+			echo substr(strrchr($c['ip'], '.'),1)."\t\tPTR\t".$c['domainName'].".\n";
 		}
 	}
 

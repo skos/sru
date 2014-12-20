@@ -422,4 +422,16 @@ function fillData() {
 			echo $c['ip']."/".$c['modelNo']."\n";
 		}
 	}
+	
+	public function configDnsRev(array $d) {
+		foreach ($d as $c) {
+			echo substr(strrchr($c['ip'], '.'),1)."\t\tPTR\t".$this->displaySwitchName($c['dormitoryAlias'], $c['hierarchyNo'], $c['lab']).'.'.$c['domainSuffix'].".\n";
+		}
+	}
+	
+	public function configDns(array $d) {
+		foreach ($d as $c) {
+			echo $this->displaySwitchName($c['dormitoryAlias'], $c['hierarchyNo'], $c['lab'])."\t\tA\t".$c['ip']."\n";
+		}
+	}
 }

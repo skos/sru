@@ -78,6 +78,32 @@ extends UFdao {
 
 		return $this->doSelect($query);
 	}
+	
+	public function listAllActiveByIpClass($class) {
+		$mapping = $this->mapping('dns');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->hierarchyNo, null, UFlib_Db_Query::NOT_EQ);
+		$query->where($mapping->ip, null, UFlib_Db_Query::NOT_EQ);
+		$query->where($mapping->column('ip').' <<= \''.$class.'/24\'', null, $query->SQL);
+		$query->order($mapping->ip, $query->ASC);
+
+		return $this->doSelect($query);
+	}
+	
+	public function listAllActiveByDomain($domain=null) {
+		$mapping = $this->mapping('dns');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->hierarchyNo, null, UFlib_Db_Query::NOT_EQ);
+		$query->where($mapping->ip, null, UFlib_Db_Query::NOT_EQ);
+		if (!is_null($domain)) {
+			$query->where($mapping->domainSuffix, $domain);
+		}
+		$query->order($mapping->ip, $query->ASC);
+
+		return $this->doSelect($query);
+	}
 
 	//TODO do usunięcia w ramach #343
 	public function getBySerialNo($no) {

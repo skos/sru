@@ -10,11 +10,21 @@ extends UFtpl_Common {
 	}
 
 	public function dnsRev(array $d) {
-		$d['computers']->write('configDnsRev');
+		if (!is_null($d['computers'])) {
+			$d['computers']->write('configDnsRev');
+		}
+		if (!is_null($d['switches'])) {
+			$d['switches']->write('configDnsRev');
+		}
 	}
 
 	public function dns(array $d) {
-		$d['computers']->write('configDns', $d['aliases']);
+		if (!is_null($d['computers'])) {
+			$d['computers']->write('configDns', $d['aliases']);
+		}
+		if (!is_null($d['switches'])) {
+			$d['switches']->write('configDns');
+		}
 	}
 
 	public function ethers(array $d) {

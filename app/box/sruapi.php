@@ -21,20 +21,27 @@ extends UFbox {
 	}
 
 	public function dnsRev() {
-		try {
-			$bean = UFra::factory('UFbean_Sru_ComputerList');
-			$ipClass = $this->_srv->get('req')->get->ipClass;
-			if (preg_match('/^[0-9]{1,3}(\.[0-9]{1,3}){2}$/', $ipClass)) {
+		$bean = UFra::factory('UFbean_Sru_ComputerList');
+		$switches = UFra::factory('UFbean_SruAdmin_SwitchList');
+		$ipClass = $this->_srv->get('req')->get->ipClass;
+		if (preg_match('/^[0-9]{1,3}(\.[0-9]{1,3}){2}$/', $ipClass)) {
+			try {
 				$bean->listAllActiveByIpClass($this->_srv->get('req')->get->ipClass);
 				$d['computers'] = $bean;
-			} else {
-				return '';
+			} catch (UFex_Dao_NotFound $e) {
+				$d['computers'] = null;
 			}
-
-			return $this->render(__FUNCTION__, $d);
-		} catch (UFex_Dao_NotFound $e) {
+			try {
+				$switches->listAllActiveByIpClass($this->_srv->get('req')->get->ipClass);
+				$d['switches'] = $switches;
+			} catch (UFex_Dao_NotFound $e) {
+				$d['switches'] = null;
+			}
+		} else {
 			return '';
 		}
+
+		return $this->render(__FUNCTION__, $d);
 	}
 	
 	public function dns() {
@@ -42,9 +49,16 @@ extends UFbox {
 			$domain = $this->_srv->get('req')->get->domain;
 			$bean = UFra::factory('UFbean_Sru_ComputerList');
 			$bean->listAllActiveByDomain($domain);
-
 			$d['computers'] = $bean;
 			
+			try {
+				$switches = UFra::factory('UFbean_SruAdmin_SwitchList');
+				$switches->listAllActiveByDomain($domain);
+				$d['switches'] = $switches;
+			} catch (UFex_Dao_NotFound $e) {
+				$d['switches'] = null;
+			}
+
 			try {
 				$aliases = UFra::factory('UFbean_SruAdmin_ComputerAliasList');
 				$aliases->listAllByDomain($domain);
