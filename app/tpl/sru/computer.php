@@ -389,6 +389,14 @@ changeVisibility();
 	}
 
 	public function formEditAdmin(array $d, $dormitories, $user = null, $history = null, $servers = null, $skosAdmins = null, $waletAdmins = null, $virtuals = null, $deviceModels = null, $interfaces = null, $interfaceable = null) {
+		$post = $this->_srv->get('req')->post;
+		$masterHostId = null;
+		try {
+			if (array_key_exists('masterHostId', $post->computerEdit)) {
+				$masterHostId = $post->computerEdit['masterHostId']; //jeśli jest w poście, to przypisz
+			}
+		} catch (UFex_Core_DataNotFound $e) {
+		}
 		if (is_array($history)) {
 			$d = $history + $d;
 		}
@@ -552,6 +560,7 @@ initialLocationAlias = document.getElementById("computerEdit_locationAlias").val
 		var location = document.getElementById("location");
 		if (form.value == <? echo UFbean_Sru_Computer::TYPE_SERVER_VIRT; ?> || form.value == <? echo UFbean_Sru_Computer::TYPE_INTERFACE; ?>) {
 			var selLength = masterHostId.options.length;
+			var optSelected = false;
 			for (i = 0; i < selLength; i++) { 
 				masterHostId.remove(masterHostId.options[i]);
 			}
@@ -565,8 +574,12 @@ initialLocationAlias = document.getElementById("computerEdit_locationAlias").val
 				var option = document.createElement("option");
 				option.value = <? echo $serv['id'] ?>;
 				option.text = "<? echo $serv['host'] ?>";
-				if (option.text == "<? echo $d['masterHostName']; ?>") {
+				if (option.value == "<? echo $masterHostId; ?>" && !optSelected) {
 					option.selected = true;
+					optSelected = true;
+				} else if (option.text == "<? echo $d['masterHostName']; ?>" && !optSelected) {
+					option.selected = true;
+					optSelected = true;
 				}
 				masterHostId.add(option);
 				<? } ?>
@@ -577,8 +590,12 @@ initialLocationAlias = document.getElementById("computerEdit_locationAlias").val
 				var option = document.createElement("option");
 				option.value = <? echo $serv['id'] ?>;
 				option.text = "<? echo $serv['host'] ?>";
-				if (option.text == "<? echo $d['masterHostName']; ?>") {
+				if (option.value == "<? echo $masterHostId; ?>" && !optSelected) {
 					option.selected = true;
+					optSelected = true;
+				} else if (option.text == "<? echo $d['masterHostName']; ?>" && !optSelected) {
+					option.selected = true;
+					optSelected = true;
 				}
 				masterHostId.add(option);
 				<? } ?>
@@ -673,6 +690,13 @@ activateChkB.onclick = function() {
 		try {
 			if (array_key_exists('typeId', $post->computerAdd)) {
 				$typeId = $post->computerAdd['typeId']; //jeśli jest w poście, to przypisz
+			}
+		} catch (UFex_Core_DataNotFound $e) {
+		}
+		$masterHostId = null;
+		try {
+			if (array_key_exists('masterHostId', $post->computerAdd)) {
+				$masterHostId = $post->computerAdd['masterHostId']; //jeśli jest w poście, to przypisz
 			}
 		} catch (UFex_Core_DataNotFound $e) {
 		}
@@ -799,6 +823,9 @@ if (input) {
 				var option = document.createElement("option");
 				option.value = <? echo $serv['id'] ?>;
 				option.text = "<? echo $serv['host'] ?>";
+				if (option.value == "<? echo $masterHostId; ?>") {
+					option.selected = true;
+				}
 				masterHostId.add(option);
 				<? } ?>
 			} else if (form.value == <? echo UFbean_Sru_Computer::TYPE_INTERFACE; ?>) {
@@ -808,6 +835,9 @@ if (input) {
 				var option = document.createElement("option");
 				option.value = <? echo $serv['id'] ?>;
 				option.text = "<? echo $serv['host'] ?>";
+				if (option.value == "<? echo $masterHostId; ?>") {
+					option.selected = true;
+				}
 				masterHostId.add(option);
 				<? } ?>
 			}
