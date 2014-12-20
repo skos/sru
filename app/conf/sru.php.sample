@@ -49,6 +49,8 @@ extends UFconf {
 	protected $zabbixUser = '';
 	protected $zabbixPass = '';
 
+	protected $uploadAPIUrl = '';
+
 	protected $userPrintWaletText = '';
 	protected $touristPrintWaletText = '';
 	protected $userPrintSkosText = '';

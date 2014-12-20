@@ -155,6 +155,10 @@ extends UFtpl_Common {
                 echo '<p><em>' . _("Liczba kar:") . '</em> ' . $d['bans'] . '</p>';
                 echo '<p><em>' . _("Widziany:") . '</em> ' . ($d['lastSeen'] == 0 ? _("nigdy") : date(self::TIME_YYMMDD_HHMM, $d['lastSeen'])) . '</p>';
         }
+	
+	public function ownUploadChart(array $d){
+		echo '<p>'.$this->displayUploadChart($d, true).'</p>';
+	}
 
 	public function details(array $d, $switchPort, $aliases, $virtuals, $interfaces, $masterHost) {
 		$url = $this->url(0);
@@ -269,6 +273,7 @@ $("#macvendor").load('<?=UFURL_BASE?>/admin/apis/getmacvendor/<?=$d['mac']?>');
 		if (strlen($d['comment'])) {
 			echo '<p><em>Komentarz:</em></p><p class="comment">'.nl2br($this->_escape($d['comment'])).'</p>';
 		}
+		$this->displayUploadChart($d);
 		echo '</div>';
 		echo '<p class="nav"><a href="'.$urlNav.'">Dane</a> &bull; ';
 		if ($acl->sruAdmin('penalty', 'addForComputer', $d['id'])) {
@@ -311,6 +316,58 @@ changeVisibility();
 </script><?
 	}
 
+	private function displayUploadChart($d, $isUser = false) {
+		$conf = UFra::shared('UFconf_Sru');
+		
+		if ($d['vlanId'] == $conf->defaultVlan) {
+			$upload = json_decode(file_get_contents($conf->uploadAPIUrl.$d['ip']), true);
+			if ($upload != null && $upload != FALSE && $upload != '') {
+				if ($isUser) {
+					echo '<p>Poniżej znajduje się wykres Twojego uploadu z ostatniej godziny. Upload jest w razie potrzeby automatycznie limitowany przez SKOS. :-)</p>';
+				}
+				echo '<div id="uploadChart"></div>';
+?>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+	google.load("visualization", "1", {packages:["corechart"]});
+	google.setOnLoadCallback(drawChart);
+	function drawChart() {
+		var data = new google.visualization.DataTable();
+		data.addColumn("datetime", "X");
+		data.addColumn("number", "Upload (kB/s)");
+
+		data.addRows([
+			<?
+				foreach ($upload as $date => $bytes) {
+					echo '[new Date("'.$date.'"),'.floor($bytes/1024/5/60).'],';
+				}
+			?>
+		]);
+
+		var options = {
+			width: 900,
+			height: 563,
+			hAxis: {
+				title: "Czas"
+			},
+			vAxis: {
+				title: "kB"
+			}
+		};
+
+		var chart = new google.visualization.ColumnChart(
+		document.getElementById("uploadChart"));
+
+		chart.draw(data, options);
+	}
+</script>
+<?
+			} else if ($isUser) {
+				echo '<p>Nie zarejestrowaliśmy uploadu z Twojego hosta w ciągu ostatniej godziny. Upload jest w razie potrzeby automatycznie limitowany przez SKOS. :-)</p>';
+			}
+		}
+	}
+	
 	public function formEdit(array $d, $activate = false) {
 		if ($this->_srv->get('msg')->get('computerEdit/errors/ip/noFree')) {
 			echo $this->ERR($this->errors['ip/noFree']);

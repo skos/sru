@@ -277,6 +277,7 @@ extends UFtpl_Common {
 		echo '</p></div>';
 		echo $form->_end();
 		echo $form->_end(true);
+		$d['computer']->write('ownUploadChart');
 	}
 
 	public function userComputerNotFound() {
