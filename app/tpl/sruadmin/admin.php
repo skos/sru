@@ -46,62 +46,61 @@ extends UFtpl_Common {
 		echo '<p>'.$this->_escape($d['name']).'</p>';
 	}
 	
-	public function listAdmin(array $d, $waletAdmin = false) {
+	public function listAdmins(array $d, $id = 0, $waletAdmin = false, $bots = false) {
 		$url = $this->url(0).'/admins/';
 		$acl = $this->_srv->get('acl');
 
-		$lastDom = '-';
+		echo '<table id="adminsT'.$id.'" class="bordered"><thead><tr>';
+		if (!$bots) {
+			echo '<th>Administrator</th>';
+		} else {
+			echo '<th>Bot</th>';
+		}
+		if (!$bots) {
+			echo '<th>DS</th>';
+		}
+		echo '<th>Ostatnie logowanie</th>';
+		echo '</tr></thead><tbody>';
 		foreach ($d as $c) {
 			if ($waletAdmin && !$acl->sruWalet('dorm', 'view', $c['dormitoryAlias'])) {
 				continue;
 			}
-			if($lastDom != $c['dormitoryId']) {
-				if($lastDom != '-')
-					echo '</ul>';
-				if (is_null($c['dormitoryName'])) {
-					echo '<h3>Spoza akademików</h3>';
-				} else {
-					echo '<h3><a href="'.$this->url(0).'/dormitories/'.$c['dormitoryAlias'].'">'.$c['dormitoryName'].'</a></h3>';
-				}
-				echo '<ul>';		
-			}
-			
-			echo '<li><a href="'.$url.$c['id'].'">';
+			echo '<tr><td><a href="'.$url.$c['id'].'">';
 			switch($c['typeId']) {
-				case 1:
+				case UFacl_SruAdmin_Admin::CENTRAL:
 						echo '<strong>'.$this->_escape($c['name']).'</strong>';
 						break;
-				case 2:
+				case UFacl_SruAdmin_Admin::CAMPUS:
 						echo '<em>'.$this->_escape($c['name']).'</em>';
 						break;
-				case 3:
+				case UFacl_SruAdmin_Admin::LOCAL:
+						echo $this->_escape($c['name']);
+						break;
+				case UFacl_SruAdmin_Admin::BOT:
 						echo $this->_escape($c['name']);
 						break;
 			}
-			echo '</a></li>';
-			
-			$lastDom = $c['dormitoryId'];
-			
-		}
-		echo '</ul>';
-	}
-	public function listBots(array $d) {
-		$url = $this->url(0).'/admins/';
-		
-		if(!count($d))
-			return;
-
-		echo '<ul>';	
-		foreach ($d as $c)
-		{
-			if($c['active'] == false){
-				echo '<li><del><a href="'.$url.$c['id'].'">'.$this->_escape($c['name']).'</a></del></li>';
-			}else{
-				echo '<li><a href="'.$url.$c['id'].'">'.$this->_escape($c['name']).'</a></li>';
+			echo '</td>';
+			if (!$bots) {
+				echo '<td>'.(is_null($c['dormitoryName']) ? 'Spoza akademików' : '<a href="'.$this->url(0).'/dormitories/'.$c['dormitoryAlias'].'">'.$c['dormitoryName'].'</a>').'</td>';
 			}
+			echo '<td>'.((!is_null($c['lastLoginAt']) && $c['lastLoginAt'] != 0) ? date(self::TIME_YYMMDD_HHMM, $c['lastLoginAt']) : 'brak').'</td></tr>';
 		}
-		echo '</ul>';
+		echo '</tbody></table>';
+		
+?>
+<script type="text/javascript">
+$(document).ready(function() 
+    { 
+        $("#adminsT<? echo $id;?>").tablesorter({
+            textExtraction:  'complex'
+        });
+    } 
+);
+</script>
+<?
 	}
+
 	public function titleDetails(array $d) {
 		echo $this->_escape($d['name']);
 	}	

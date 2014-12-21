@@ -531,7 +531,7 @@ function filter(selector, query) {
 		
 		echo '<div class="admins">';
 		echo '<h2>Administratorzy ('.count($d['admins']).') | <a href="http://dyzury.ds.pg.gda.pl">Dyżury</a></h2>';
-		$d['admins']->write('listAdmin');
+		$d['admins']->write('listAdmins', 'active');
 		echo '</div>';
 		
 		if($acl->sruAdmin('admin', 'add')) {
@@ -588,7 +588,7 @@ function filter(selector, query) {
 		echo '<div class="admins inactive">';
 		echo '<h2>Nieaktywni Administratorzy ('.count($d['admins']).')</h2>';
 
-		$d['admins']->write('listAdmin');
+		$d['admins']->write('listAdmins', 'inactive');
 
 		echo '</div>';
 	}
@@ -597,7 +597,7 @@ function filter(selector, query) {
 		echo '<div class="admins">';
 		echo '<h2>Boty ('.count($d['admins']).')</h2>';
 
-		$d['admins']->write('listBots');
+		$d['admins']->write('listAdmins', 'bots', false, true);
 
 		echo '</div>';
 	}
@@ -606,7 +606,7 @@ function filter(selector, query) {
 		echo '<div class="admins">';
 		echo '<h2>Pracownicy Osiedla ('.count($d['admins']).')</h2>';
 
-		$d['admins']->write('listAdminSimple');
+		$d['admins']->write('listAdmins', $d['dormitories']);
 
 		echo '</div>';
 	}
@@ -724,9 +724,6 @@ function filter(selector, query) {
 	}
 
 	public function adminHosts(array $d) {
-		$url = $this->url(0).'/admins/'.$d['admin']->id;
-		$acl = $this->_srv->get('acl');
-
 		echo '<div class="computers">';
 		echo '<h3>Komputery pod opieką</h3>';
 		echo '<ul>';
@@ -1366,7 +1363,7 @@ function filter(selector, query) {
 		
 		echo '<h2><a href="'.$url.'">Ostatnie akcje</a>| Aktywne kary | <a href="'.$url.'templates">Szablony</a></h2>';
 
-		$d['penalties']->write('listPenalty');
+		$d['penalties']->write('listPenalty', true);
 	}	
 
 	public function penaltiesNotFound() {
@@ -1489,13 +1486,13 @@ function filter(selector, query) {
 		}
 		echo '<h3>Nowe kary</h3>';
 		if (!is_null($d['addedPenalties'])) {
-			$d['addedPenalties']->write('penaltyLastAdded');
+			$d['addedPenalties']->write('penaltyLastAdded', true, true, 'penalties');
 		} else {
 			$this->penaltiesNotFound();
 		}
 		echo '<h3>Nowe ostrzeżenia</h3>';
 		if (!is_null($d['addedWarnings'])) {
-			$d['addedWarnings']->write('penaltyLastAdded');
+			$d['addedWarnings']->write('penaltyLastAdded', true, true, 'warnings');
 		} else {
 			$this->penaltiesNotFound();
 		}
@@ -1656,12 +1653,12 @@ function filter(selector, query) {
 
 	public function adminPenaltiesAdded(array $d) {
 		echo '<h3>Kary ostatnio dodane</h3>';
-		$d['addedPenalties']->write('penaltyLastAdded', false);
+		$d['addedPenalties']->write('penaltyLastAdded', false, true, 'penalties');
 	}
 
 	public function adminWarningsAdded(array $d) {
 		echo '<h3>Ostrzeżenia ostatnio dodane</h3>';
-		$d['addedWarnings']->write('penaltyLastAdded', false);
+		$d['addedWarnings']->write('penaltyLastAdded', false, true, 'warnings');
 	}
 
 	public function adminPenaltiesModified(array $d) {

@@ -39,7 +39,7 @@ extends UFtpl_Common {
 		echo '<p>'.$this->_escape($d['name']).'</p>';
 	}
 	
-	public function listAdmin(array $d, array $dorms, $tblId = 0) {
+	public function listAdmins(array $d, array $dorms, $tblId = 0) {
 		$url = $this->url(0).'/admins/';
 		$baseUrl = $this->url(0);
 
@@ -91,20 +91,7 @@ $(document).ready(function()
 </script>
 <?
 	}
-
-	public function listAdminSimple(array $d) {
-		$url = $this->url(0).'/admins/';
-		
-		if(!count($d))
-			return;
-
-		echo '<ul>';
-		foreach ($d as $c) {
-			echo '<li><a href="'.$url.$c['id'].'">'.$this->_escape($c['name']).'</a></li>';
-		}
-		echo '</ul>';
-	}
-
+	
 	public function titleDetails(array $d) {
 		echo $this->_escape($d['name']);
 	}

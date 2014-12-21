@@ -537,7 +537,7 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 		echo '<div class="admins">';
 		echo '<h2>Administratorzy OS ('.count($d['admins']).')</h2>';
 
-		$d['admins']->write('listAdmin', $d['dormitories'], 1);
+		$d['admins']->write('listAdmins', $d['dormitories'], 1);
 
 		echo '</div>';
 		
@@ -550,7 +550,7 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 		echo '<div class="admins inactive">';
 		echo '<h2>Nieaktywni Administratorzy OS ('.count($d['admins']).')</h2>';
 
-		$d['admins']->write('listAdmin', $d['dormitories'], 2);
+		$d['admins']->write('listAdmins', $d['dormitories'], 2);
 
 		echo '</div>';
 	}
@@ -559,7 +559,7 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 		echo '<div class="admins inactive">';
 		echo '<h2>Administratorzy SKOS ('.count($d['admins']).') | <a href="http://dyzury.ds.pg.gda.pl">Dyżury</a></h2>';
 
-		$d['admins']->write('listAdmin', true);
+		$d['admins']->write('listAdmins', 'skos', true);
 
 		echo '</div>';
 	}

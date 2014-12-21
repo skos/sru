@@ -245,9 +245,9 @@ extends UFbox {
 				$d['servers'] = null;
 			}
 			try {
-				$waletAdmins = UFra::factory('UFbean_SruAdmin_AdminList');
-				$waletAdmins->listAll();
-				$d['skosAdmins'] = $waletAdmins;
+				$skosAdmins = UFra::factory('UFbean_SruAdmin_AdminList');
+				$skosAdmins->listAll();
+				$d['skosAdmins'] = $skosAdmins;
 			} catch (UFex $e) {
 				$d['skosAdmins'] = null;
 			}
@@ -910,6 +910,18 @@ extends UFbox {
 			$bean = UFra::factory('UFbean_SruWalet_AdminList');	
 			$bean->listAll();
 			$d['admins'] = $bean;
+			
+						
+			$d['dormitories'] = array();
+			foreach($d['admins'] as $c){
+				try{
+					$admDorm = UFra::factory('UFbean_SruWalet_AdminDormitoryList');
+					$admDorm->listAllById($c['id']);
+					$d['dormitories'][$c['id']] = $admDorm;
+				}catch(UFex_Dao_NotFound $e){
+					$d['dormitories'][$c['id']] = null;	//na pewno zaden ds nie bedzie mial id null
+				}
+			}
 
 			return $this->render(__FUNCTION__, $d);
 		} 

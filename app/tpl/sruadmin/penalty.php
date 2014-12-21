@@ -20,22 +20,10 @@ extends UFtpl_Common {
 		'portId/writeError' => 'Błąd zapisu na switcha',
 	);	
 
-	public function listPenalty(array $d) {
-		$url = $this->url(0);
-		echo '<h3>Wszystkich kar: '. count($d) .'</h3><ul>';
+	public function listPenalty(array $d, $showAddedBy = false) {
+		echo '<h3>Wszystkich kar: '. count($d) .'</h3>';
 
-		foreach ($d as $c) {
-			echo '<li>';
-			echo '<small>'.date(self::TIME_YYMMDD, $c['startAt']).' &mdash; '.date(self::TIME_YYMMDD, $c['endAt']).'</small> ';
-			if($c['userActive'] == true){
-				echo '<a href="'.$url.'/penalties/'.$c['id'].'">'.$this->_escape($c['userName']).' "'.$c['userLogin'].'" '.$this->_escape($c['userSurname']).' ('.$this->_escape($c['userLogin']).')</a>';
-			}else{
-				echo '<del><a href="'.$url.'/penalties/'.$c['id'].'">'.$this->_escape($c['userName']).' "'.$c['userLogin'].'" '.$this->_escape($c['userSurname']).' ('.$this->_escape($c['userLogin']).')</a></del>';
-			}
-			echo ($this->_escape($c['templateTitle']) != null ? ' <small>za: '.$this->_escape($c['templateTitle']).'</small>' : '');
-			echo '</li>';
-		}
-		echo '</ul>';
+		$this->penaltyLastAdded($d, $showAddedBy, false);
 	}
 
 	public function listUserPenalty(array $d) {
@@ -92,63 +80,89 @@ extends UFtpl_Common {
 		}
 	}
 
-	public function penaltyLastAdded(array $d, $showAddedBy = true) {
+	public function penaltyLastAdded(array $d, $showAddedBy = true, $showColor = true, $id = 0) {
 		$url = $this->url(0);
 
-		echo '<ul>';
-		foreach ($d as $c) {
-			if (UFbean_SruAdmin_Penalty::TYPE_WARNING == $c['typeId'] && $c['endAt'] > time()) {
-				echo '<li class="warning">';
-			} else if (UFbean_SruAdmin_Penalty::TYPE_WARNING != $c['typeId'] && $c['active']) {
-				echo '<li class="ban">';
-			} else {
-				echo '<li>';
-			}
-			echo date(self::TIME_YYMMDD_HHMM, $c['startAt']);
-			if($c['userActive'] == true){
-				echo ' dla: <a href="'.$url.'/penalties/'.$c['id'].'">'.$this->_escape($c['userName']).' "'.$c['userLogin'].'" '.$this->_escape($c['userSurname']).'</a>';
-			}else{
-				echo ' dla: <del><a href="'.$url.'/penalties/'.$c['id'].'">'.$this->_escape($c['userName']).' "'.$c['userLogin'].'" '.$this->_escape($c['userSurname']).'</a></del>';
-			}
-			
-			if ($showAddedBy == true) {
-				echo ' <small>przez: <a href="'.$url.'/admins/'.$c['createdById'].'">'.$this->_escape($c['creatorName']).'</a>';
-			} else {
-				echo ' <small>';
-			}
-			echo ($this->_escape($c['templateTitle']) != null ? ' za: '.$this->_escape($c['templateTitle']) : '');
-			echo '</small></li>';
+		echo '<table id="penaltiesAddedT'.$id.'" class="bordered"><thead><tr>';
+		echo '<th>Data</th>';
+		echo '<th>Ukarany</th>';
+		if ($showAddedBy) {
+			echo '<th>Karzący</th>';
 		}
-		echo '</ul>';
+		echo '<th>Szablon</th>';
+		echo '</tr></thead><tbody>';
+		foreach ($d as $c) {
+			if ($showColor && UFbean_SruAdmin_Penalty::TYPE_WARNING == $c['typeId'] && $c['endAt'] > time()) {
+				echo '<tr class="warning">';
+			} else if ($showColor && UFbean_SruAdmin_Penalty::TYPE_WARNING != $c['typeId'] && $c['active']) {
+				echo '<tr class="ban">';
+			} else {
+				echo '<tr>';
+			}
+			echo '<td>'.date(self::TIME_YYMMDD_HHMM, $c['startAt']).'</td>';
+			echo '<td>'.($c['userActive'] ? '' : '<del>').'<a href="'.$url.'/penalties/'.$c['id'].'">'.$this->_escape($c['userName']).' "'.$c['userLogin'].'" '.$this->_escape($c['userSurname']).'</a>'.($c['userActive'] ? '' : '</del>').'</td>';
+			if ($showAddedBy) {
+				echo '<td><a href="'.$url.'/admins/'.$c['createdById'].'">'.$this->_escape($c['creatorName']).'</a></td>';
+			}
+			echo '<td>'.($this->_escape($c['templateTitle']) != null ? $this->_escape($c['templateTitle']) : '').'</td></tr>';
+		}
+		echo '</tbody></table>';
+		
+?>
+<script type="text/javascript">
+$(document).ready(function() 
+    { 
+        $("#penaltiesAddedT<?echo $id;?>").tablesorter({
+            textExtraction:  'complex'
+        });
+    } 
+);
+</script>
+<?
 	}
 
-	public function penaltyLastModified(array $d) {
+	
+	public function penaltyLastModified(array $d, $id = 0) {
 		$url = $this->url(0);
 
-		echo '<ul>';
+		echo '<table id="penaltiesModifiedT'.$id.'" class="bordered"><thead><tr>';
+		echo '<th>Data</th>';
+		echo '<th>Ukarany</th>';
+		echo '<th>L. mod.</th>';
+		echo '<th>Ostatnia modyfikacja</th>';
+		echo '<th>Szablon</th>';
+		echo '</tr></thead><tbody>';
 		foreach ($d as $c) {
 			if (UFbean_SruAdmin_Penalty::TYPE_WARNING == $c['typeid'] && $c['endat'] > time()) {
-				echo '<li class="warning">';
+				echo '<tr class="warning">';
 			} else if ($c['banned']) {
-				echo '<li class="ban">';
+				echo '<tr class="ban">';
 			} else {
-				echo '<li>';
+				echo '<tr>';
 			}
-			echo date(self::TIME_YYMMDD_HHMM, $c['modifiedat']);
-			$link = '<a href="'.$url.'/penalties/'.$c['id'].'">'.$this->_escape($c['name']).' "'.$c['login'].'" '.$this->_escape($c['surname']).'</a>';
-			if($c['active'] == true){
-				echo ' dla: ' . $link;
-			}else{
-				echo ' dla: <del>' . $link . '</del>';
-			}
-			echo ' <small>modyfikowana '.$c['modificationcount'].' raz(y)</small>';
+			echo '<td>'.date(self::TIME_YYMMDD_HHMM, $c['modifiedat']).'</td>';
+			echo '<td>'.($c['active'] ? '' : '<del>').'<a href="'.$url.'/penalties/'.$c['id'].'">'.$this->_escape($c['name']).' "'.$c['login'].'" '.$this->_escape($c['surname']).'</a>'.($c['active'] ? '' : '</del>').'</td>';
+			echo '<td>'.$c['modificationcount'].'</td>';
+			echo '<td>';
 			if (strcmp($url . "/penalties/", $this->url(1) . '/') == 0){
-				echo '<small>, ostatnio przez: <a href="'.$url.'/admins/'.$c['modifiedby'].'">'.$this->_escape($c['modifiername']).'</a>';
+				echo '<a href="'.$url.'/admins/'.$c['modifiedby'].'">'.$this->_escape($c['modifiername']).'</a>';
 			}
-			echo ($this->_escape($c['template']) != null ? ', za: '.$this->_escape($c['template']) : '');
-			echo '</small></li>';
+			echo '</td>';
+			echo '<td>'.($this->_escape($c['template']) != null ? $this->_escape($c['template']) : '').'</td></tr>';
 		}
-		echo '</ul>';
+		echo '</tbody></table>';
+		
+?>
+<script type="text/javascript">
+$(document).ready(function() 
+    { 
+        $("#penaltiesModifiedT<?echo $id;?>").tablesorter({
+            textExtraction:  'complex'
+        });
+    } 
+);
+</script>
+<?
 	}
 
 	public function details(array $d, $computers) {
