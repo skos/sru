@@ -27,6 +27,7 @@ extends UFmap {
 		'currentActive'	 => 'c.active',
 		'currentComment' => 'c.comment',
 		'currentIp'      => 'c.ipv4',
+		'domainSuffix'	 => 'v.domain_suffix',
 	);
 	protected $columnTypes = array(
 		'id'             => self::INT,
@@ -50,6 +51,7 @@ extends UFmap {
 		'currentActive'  => self::BOOL,
 		'currentComment' => self::TEXT,
 		'currentIp'      => self::TEXT,
+		'domainSuffix'	 => self::TEXT,
 	);
 	protected $tables = array(
 		'h' => 'computers_history',
@@ -57,10 +59,14 @@ extends UFmap {
 	protected $joins = array(
 		'c' => 'computers',
 		'u' => 'users',
+	    	'i' => 'ipv4s',
+		'v' => 'vlans',
 	);
 	protected $joinOns = array(
 		'c' => 'h.computer_id=c.id',
 		'u' => 'h.user_id=u.id',
+		'i' => 'c.ipv4 = i.ip',
+		'v' => 'i.vlan = v.id',
 	);
 	protected $pk = 'h.id';
 }

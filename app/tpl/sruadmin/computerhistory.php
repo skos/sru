@@ -218,6 +218,14 @@ extends UFtpl_Common {
 	public function searchResults(array $d) {
 		$url = $this->url(0);
 		$displayed = array();
+		
+		echo '<table id="computersHistoryFoundT" class="bordered"><thead><tr>';
+		echo '<th>Host</th>';
+		echo '<th>IP</th>';
+		echo '<th>MAC</th>';
+		echo '<th>Właściciel</th>';
+		echo '</tr></thead><tbody>';
+		
 		foreach ($d as $c) {
 			if (in_array($c['host'], $displayed)) {
 				continue;
@@ -225,10 +233,27 @@ extends UFtpl_Common {
 			if ($c['ip'] == $c['currentIp']) {
 				continue;
 			}
-			$owner = '(Należał do: <a href="'.$url.'/users/'.$c['userId'].'">'.$this->_escape($c['userName']).' '.$this->_escape($c['userSurname']).'</a>)';
-			echo '<li'.($c['currentBanned'] ? ' class="ban"' : '').'>'.(!$c['currentActive']?'<del>':'').'<a href="'.$url.'/computers/'.$c['computerId'].'">'.$c['host'].(strlen($c['currentComment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['currentComment'].'" />':'').' <small>'.$c['currentIp'].'/'.$c['mac'].'</small></a> <span>'.$owner.'</span>'.(!$c['currentActive']?'</del>':'').'</li>';
+			$owner = '<a href="'.$url.'/users/'.$c['userId'].'">'.$this->_escape($c['userName']).' '.$this->_escape($c['userSurname']).'</a>';
+			echo '<tr'.($c['currentBanned']?' class="ban"':'').'><td>'.(!$c['currentActive']?'<del>':'').'<a href="'.$url.'/computers/'.$c['computerId'].'">'.$c['host'].'.'.$c['domainSuffix'].(strlen($c['currentComment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['currentComment'].'" />':'').(!$c['currentActive']?'</del>':'').'</td>';
+			echo '<td>'.$c['currentIp'].'</td>';
+			echo '<td>'.$c['mac'].'</td>';
+			echo '<td>'.$owner.'</td></tr>';
+			
 			$displayed[] = $c['host'];
 		}
+		echo '</tbody></table>';
+		
+?>
+<script type="text/javascript">
+$(document).ready(function() 
+    { 
+        $("#computersHistoryFoundT").tablesorter({
+            textExtraction:  'complex'
+        });
+    } 
+);
+</script>
+<?
 		if (count($displayed) == 0) {
 			echo 'Wszystkie komputery używające wcześniej tego IP zostały wyświetlone na liście wyżej.';
 		}

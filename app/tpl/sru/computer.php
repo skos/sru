@@ -177,7 +177,7 @@ extends UFtpl_Common {
 		}
 		if (!is_null($d['carerName']) && $d['typeId'] != UFbean_Sru_Computer::TYPE_INTERFACE) {
 			echo '<p><em>Opiekun:</em> <a href="'.$url.'/admins/'.$d['carerId'].'">'.$d['carerName'].'</a></p>';
-		} else if (!is_null($masterHost->carerId) && $d['typeId'] == UFbean_Sru_Computer::TYPE_INTERFACE) {
+		} else if (!is_null($masterHost) && !is_null($masterHost->carerId) && $d['typeId'] == UFbean_Sru_Computer::TYPE_INTERFACE) {
 			echo '<p><em>Opiekun:</em> <a href="'.$url.'/admins/'.$masterHost->carerId.'">'.$masterHost->carerName.'</a></p>';
 		}
 		echo '<p><em>Właściciel:</em> '.$user.'</p>';
@@ -927,25 +927,114 @@ div.style.display = 'none';
                 echo $form->_end();
         }
 
-	public function listAdmin(array $d) {
-		$url = $this->url(0).'/computers/';
-		foreach ($d as $c) {
-			echo '<li><a href="'.$url.$c['id'].'">'.$c['host'].' <small>'.$c['ip'].'/'.$c['mac'].'</small></a> <span><small>('.self::$computerTypes[$c['typeId']].')</small> '.(is_null($c['availableTo']) ? '' : date(self::TIME_YYMMDD, $c['availableTo'])).'</span>'.(strlen($c['comment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['comment'].'" />':'').'</li>';
+	public function listAdmin(array $d, $id = 0) {
+		$url = $this->url(0);
+		
+		echo '<table id="computersFoundT'.$id.'" class="bordered"><thead><tr>';
+		echo '<th>Host</th>';
+		echo '<th>IP</th>';
+		echo '<th>MAC</th>';
+		echo '<th>Właściciel</th>';
+		echo '<th>Aktywny do</th>';
+		echo '</tr></thead><tbody>';
+		$inactive = array();
+		foreach ($d as $c) {			
+			if (is_null($c['userId'])) {
+				$owner = 'BRAK';
+			} else {
+				$owner = '<a href="'.$url.'/users/'.$c['userId'].'">'.$this->_escape($c['userName']).' '.$this->_escape($c['userSurname']).'</a>';
+			}
+			$toDisplay = '<tr'.($c['banned']?' class="ban"':'').'><td>'.(!$c['active']?'<del>':'').'<a href="'.$url.'/computers/'.$c['id'].'">'.$c['domainName'].(strlen($c['comment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['comment'].'" />':'').(!$c['active']?'</del>':'').'</td>';
+			$toDisplay .= '<td>'.$c['ip'].'</td>';
+			$toDisplay .= '<td>'.$c['mac'].'</td>';
+			$toDisplay .= '<td>'.$owner.'</td>';
+			$toDisplay .= '<td>'.(!$c['active']? date(self::TIME_YYMMDD, $c['availableTo']).' ':'').'</td></tr>';
+			
+			if ($c['active']) {
+				echo $toDisplay;
+			} else {
+				$inactive[$c['availableTo'].$c['id']] = $toDisplay;
+			}
 		}
+		krsort($inactive, SORT_STRING);
+		foreach ($inactive as $row) {
+			echo $row;
+		}
+		echo '</tbody></table>';
+		
+?>
+<script type="text/javascript">
+$(document).ready(function() 
+    { 
+        $("#computersFoundT<?echo $id;?>").tablesorter({
+            textExtraction:  'complex'
+        });
+    } 
+);
+</script>
+<?
 	}
 
 	public function listWalet(array $d) {
 		$url = $this->url(0).'/dormitories/';
+		
+		echo '<table id="interfacesFoundT" class="bordered"><thead><tr>';
+		echo '<th>Host</th>';
+		echo '<th>IP</th>';
+		echo '<th>MAC</th>';
+		echo '<th>DS</th>';
+		echo '<th>Pomieszczenie</th>';
+		echo '</tr></thead><tbody>';
 		foreach ($d as $c) {
-			echo '<li>'.$c['host'].' <small>'.$c['ip'].'/'.$c['mac'].'</small></a>, <span>lokalizacja: '.$c['locationAlias'].' (<a href="'.$url.$c['dormitoryAlias'].'">'.strtoupper($c['dormitoryAlias']).'</a>)</span></li>';
+			echo '<tr><td>'.$c['host'].'</td>';
+			echo '<td>'.$c['ip'].'</td>';
+			echo '<td>'.$c['mac'].'</td>';
+			echo '<td><a href="'.$url.$c['dormitoryAlias'].'">'.strtoupper($c['dormitoryAlias']).'</a></td>';
+			echo '<td>'.$c['locationAlias'].'</td></tr>';
 		}
+		echo '</tbody></table>';
+		
+?>
+<script type="text/javascript">
+$(document).ready(function() 
+    { 
+        $("#interfacesFoundT").tablesorter({
+            textExtraction:  'complex'
+        });
+    } 
+);
+</script>
+<?
 	}
 	
 	public function listInterfaces(array $d) {
 		$url = $this->url(0).'/computers/';
+		
+		echo '<table id="interfacesFoundT" class="bordered"><thead><tr>';
+		echo '<th>Interfejs</th>';
+		echo '<th>IP</th>';
+		echo '<th>MAC</th>';
+		echo '<th>Host nadrzędny</th>';
+		echo '</tr></thead><tbody>';
 		foreach ($d as $c) {
-			echo '<li><a href="'.$url.$c['id'].'">'.$c['domainName'].' <small>'.$c['ip'].'/'.$c['mac'].'</small></a> -> <a href="'.$url.$c['masterHostId'].'">'.$c['masterHostDomainName'].'</a></li>';
+			echo '<tr><td><a href="'.$url.$c['id'].'">'.$c['domainName'].'</td>';
+			echo '<td>'.$c['ip'].'</td>';
+			echo '<td>'.$c['mac'].'</td>';
+			echo '<td><a href="'.$url.$c['masterHostId'].'">'.$c['masterHostDomainName'].'</a></td></tr>';
 		}
+		echo '</tbody></table>';
+		
+?>
+<script type="text/javascript">
+$(document).ready(function() 
+    { 
+        $("#interfacesFoundT").tablesorter({
+            textExtraction:  'complex'
+        });
+    } 
+);
+</script>
+<?
 	}
 
 	public function formSearch(array $d, array $searched) {
@@ -984,25 +1073,7 @@ div.style.display = 'none';
 	}
 
 	public function searchResults(array $d) {
-		$url = $this->url(0);
-		$inactive = array();
-		foreach ($d as $c) {
-			if (is_null($c['userId'])) {
-				$owner = '(BRAK)';
-			} else {
-				$owner = '(<a href="'.$url.'/users/'.$c['userId'].'">'.$this->_escape($c['userName']).' '.$this->_escape($c['userSurname']).'</a>)';
-			}
-			$toDisplay = '<li'.($c['banned'] ? ' class="ban"' : '').'>'.(!$c['active']? 'Do '.date(self::TIME_YYMMDD, $c['availableTo']).' ':'').(!$c['active']?'<del>':'').'<a href="'.$url.'/computers/'.$c['id'].'">'.$c['domainName'].(strlen($c['comment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['comment'].'" />':'').' <small>'.$c['ip'].'/'.$c['mac'].'</small></a> <span>'.$owner.'</span>'.(!$c['active']?'</del>':'').'</li>';
-			if ($c['active']) {
-				echo $toDisplay;
-			} else {
-				$inactive[$c['availableTo'].$c['id']] = $toDisplay;
-			}
-		}
-		krsort($inactive, SORT_STRING);
-		foreach ($inactive as $row) {
-			echo $row;
-		}
+		$this->listAdmin($d);
 	}
 
 	public function searchResultsUnregistered(array $d, $switchPort, $searchedMac) {

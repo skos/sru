@@ -664,9 +664,30 @@ $(function() {
 
 	public function searchResults(array $d) {
 		$url = $this->url(0);
+
+		echo '<table id="usersFoundT" class="bordered"><thead><tr>';
+		echo '<th>Użytkownik</th>';
+		echo '<th>Pokój</th>';
+		echo '<th>DS</th>';
+		echo '</tr></thead><tbody>';
 		foreach ($d as $c) {
-			echo '<li'.($c['banned']?' class="ban"':'').'>'.(!$c['active']?'<del>':'').'<a href="'.$url.'/users/'.$c['id'].'">'.$this->_escape($c['name']).' "'.$this->_escape($c['login']).'" '.$this->_escape($c['surname']).'</a>'.(strlen($c['commentSkos']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['commentSkos'].'" />':'').' <span><a href="'.$url.'/dormitories/'.$c['dormitoryAlias'].'/'.$c['locationAlias'].'">'.$c['locationAlias'].'</a> <small>(<a href="'.$url.'/dormitories/'.$c['dormitoryAlias'].'">'.$c['dormitoryAlias'].'</a>)</small></span>'.(!$c['active']?'</del>':'').(strlen($c['locationComment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['locationComment'].'" />':'').'</li>';
+			echo '<tr'.($c['banned']?' class="ban"':'').'><td>'.(!$c['active']?'<del>':'').'<a href="'.$url.'/users/'.$c['id'].'">'.$this->_escape($c['name']).' "'.$this->_escape($c['login']).'" '.$this->_escape($c['surname']).'</a>'.(strlen($c['commentSkos']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['commentSkos'].'" />':'').(!$c['active']?'</del>':'').'</td>';
+			echo '<td><a href="'.$url.'/dormitories/'.$c['dormitoryAlias'].'/'.$c['locationAlias'].'">'.$c['locationAlias'].'</a>'.(strlen($c['locationComment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['locationComment'].'" />':'').'</td>';
+			echo '<td><a href="'.$url.'/dormitories/'.$c['dormitoryAlias'].'">'.strtoupper($c['dormitoryAlias']).'</a></td></tr>';
 		}
+		echo '</tbody></table>';
+		
+?>
+<script type="text/javascript">
+$(document).ready(function() 
+    { 
+        $("#usersFoundT").tablesorter({
+            textExtraction:  'complex'
+        });
+    } 
+);
+</script>
+<?
 	}
 
 	public function searchResultsWalet(array $d) {

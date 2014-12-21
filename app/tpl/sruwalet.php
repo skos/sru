@@ -720,14 +720,9 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 	}
 
 	public function adminHosts(array $d) {
-		$url = $this->url(0).'/admins/'.$d['admin']->id;
-		$acl = $this->_srv->get('acl');
-
 		echo '<div class="computers">';
 		echo '<h3>Komputery pod opieką</h3>';
-		echo '<ul>';
 		$d['hosts']->write('listWalet');
-		echo '</ul>';
 		echo '</div>';
 
 		echo '<a href="'.$this->url(0).'/admins/">Powrót</a>';

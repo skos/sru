@@ -95,6 +95,12 @@ class UFtpl_SruAdmin_InventoryCardHistory extends UFtpl_Common {
 	public function searchResults(array $d) {
 		$url = $this->url(0);
 		$displayed = array();
+		
+		echo '<table id="inventoryHistoryFoundT" class="bordered"><thead><tr>';
+		echo '<th>Urządzenie</th>';
+		echo '<th>Poprzedni S/N</th>';
+		echo '<th>Obecny S/N</th>';
+		echo '</tr></thead><tbody>';
 		foreach ($d as $c) {
 			if (in_array($c['inventoryCardId'], $displayed)) {
 				continue;
@@ -102,11 +108,26 @@ class UFtpl_SruAdmin_InventoryCardHistory extends UFtpl_Common {
 			if ($c['serialNo'] == $c['currentSerialNo']) {
 				continue;
 			}
-			echo '<li><a href="'.UFtpl_SruAdmin_InventoryCard::getDeviceUrlFromArray($c, $url).'">'.
+			echo '<tr><td><a href="'.UFtpl_SruAdmin_InventoryCard::getDeviceUrlFromArray($c, $url).'">'.
 				($c['deviceTableId'] == UFbean_SruAdmin_InventoryCard::TABLE_SWITCH ? 'Switch ' : '').
-				$c['deviceModelName'].'</a> <small>'.$c['serialNo'].' &rarr; '.$c['currentSerialNo'].'</small></li>';
+				$c['deviceModelName'].'</a></td>';
+			echo '<td>'.$c['serialNo'].'</td>';
+			echo '<td>'.$c['currentSerialNo'].'</td></tr>';
 			$displayed[] = $c['inventoryCardId'];
 		}
+		echo '</tbody></table>';
+		
+?>
+<script type="text/javascript">
+$(document).ready(function() 
+    { 
+        $("#inventoryHistoryFoundT").tablesorter({
+            textExtraction:  'complex'
+        });
+    } 
+);
+</script>
+<?
 		if (count($displayed) == 0) {
 			echo 'Wszystkie urządzenia używające wcześniej tego S/N zostały wyświetlone na liście wyżej.';
 		}

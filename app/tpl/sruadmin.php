@@ -8,6 +8,18 @@ extends UFtpl_Common {
 	public function titleLogin() {
 		echo 'Zaloguj się';
 	}
+	
+	public function leftColumnStart() {
+		echo '<div class="leftColumn">';
+	}
+	
+	public function rightColumnStart() {
+		echo '<div class="rightColumn">';
+	}
+	
+	public function columnEnd() {
+		echo '</div>';
+	}
 
 	public function login(array $d) {
 		$form = UFra::factory('UFlib_Form');
@@ -91,66 +103,93 @@ extends UFtpl_Common {
 		echo 'Wszystkie komputery';
 	}
 	
+	public function computersFilter() {
+		echo '<h2>Serwery, administracja, organizacje</h2>';
+		echo '<label for="filter">Filtruj:</label> <input type="text" name="filter" value="" id="filter" />';
+		
+		?>
+<script type="text/javascript">
+$(document).ready(function() {
+	//default each row to visible
+	$('tbody tr').addClass('visible');
+	
+	$('#filter').keyup(function(event) {
+		//if esc is pressed or nothing is entered
+		if (event.keyCode == 27 || $(this).val() == '') {
+			//if esc is pressed we want to clear the value of search box
+			$(this).val('');
+			
+			//we want each row to be visible because if nothing
+			//is entered then all rows are matched.
+			$('tbody tr').removeClass('visible').show().addClass('visible');
+		} else { //if there is text, lets filter
+			filter('tbody tr', $(this).val());
+		}
+	});
+});
+
+//filter results based on query
+function filter(selector, query) {
+	query = $.trim(query); //trim white space
+	query = query.replace(/ /gi, '|'); //add OR for regex
+  
+	$(selector).each(function() {
+		($(this).text().search(new RegExp(query, "i")) < 0) ? $(this).hide().removeClass('visible') : $(this).show().addClass('visible');
+	});
+}
+</script>
+<?
+	}
 
 	public function serverComputers(array $d) {
-		echo '<div class="computers">';
-		echo '<h2>Serwery</h2>';
+		echo '<h3>Serwery</h3>';
 
-		echo '<ul>';
-		$d['computers']->write('listAdmin');
-		echo '</ul>';
+		echo '<div class="computers">';
+		$d['computers']->write('listAdmin', 'servers');
 		echo '</div>';
 	}
 	public function serverInterfaces(array $d) {
-		echo '<div class="computers">';
-		echo '<h2>Interfejsy</h2>';
+		echo '<h3>Interfejsy</h3>';
 
-		echo '<ul>';
+		echo '<div class="computers">';
 		$d['interfaces']->write('listInterfaces');
-		echo '</ul>';
 		echo '</div>';
 	}
 	public function serverAliases(array $d) {
+		echo '<h3>Aliasy serwerów</h3>';
+		
 		echo '<div class="computers">';
-		echo '<h2>Aliasy serwerów</h2>';
-
-		echo '<ul>';
 		$d['aliases']->write('listAliases');
-		echo '</ul>';
 		echo '</div>';
 	}
 	public function administrationComputers(array $d) {
-		echo '<div class="computers">';
-		echo '<h2>Komputery administracji</h2>';
+		echo '<h3>Komputery administracji</h3>';
 
-		echo '<ul>';
-		$d['computers']->write('listAdmin');
-		echo '</ul>';
+		echo '<div class="computers">';
+		$d['computers']->write('listAdmin', 'administration');
 		echo '</div>';
 	}
 	public function organizationsComputers(array $d) {
-		echo '<div class="computers">';
-		echo '<h2>Komputery organizacji</h2>';
+		echo '<h3>Komputery organizacji</h3>';
 
-		echo '<ul>';
-		$d['computers']->write('listAdmin');
-		echo '</ul>';
+		echo '<div class="computers">';
+		$d['computers']->write('listAdmin', 'org');
 		echo '</div>';
 	}
 	public function organizationsComputersNotFound() {
-		echo '<h2>Komputery organizacji</h2>';
+		echo '<h3>Komputery organizacji</h3>';
 		echo $this->ERR('Nie znaleziono komputerów');
 	}
 	public function administrationComputersNotFound() {
-		echo '<h2>Komputery administracji</h2>';
+		echo '<h3>Komputery administracji</h3>';
 		echo $this->ERR('Nie znaleziono komputerów');
 	}	
 	public function serverComputersNotFound() {
-		echo '<h2>Serwery</h2>';
+		echo '<h3>Serwery</h3>';
 		echo $this->ERR('Nie znaleziono komputerów');
 	}
 	public function serverAliasesNotFound() {
-		echo '<h2>Aliasy serwerów</h2>';
+		echo '<h3>Aliasy serwerów</h3>';
 		echo $this->ERR('Nie znaleziono komputerów');
 	}
 
@@ -221,7 +260,7 @@ extends UFtpl_Common {
 		$form = UFra::factory('UFlib_Form');	
 		echo '<div class="computerSearch">';
 		echo $form->_start($this->url(0).'/computers/search');
-		echo $form->_fieldset('<span class="ui-icon ui-icon-search legend-icon"></span> Znajdź komputer');
+		echo $form->_fieldset('Znajdź komputer');
 		echo $d['computer']->write('formSearch', $d['searched']);
 		echo $form->_submit('Znajdź');
 		echo $form->_end();
@@ -239,23 +278,23 @@ extends UFtpl_Common {
 
 	public function computerSearchResults(array $d) {
 		echo '<h2>Znalezione komputery ('.count($d['computers']).'):</h2>';
-		echo '<div class="computerSearchResults"><ul>';
+		echo '<div class="computerSearchResults">';
 		echo $d['computers']->write('searchResults');
-		echo '</ul></div>';
+		echo '</div>';
 	}
 
 	public function computerSearchByAliasResults(array $d) {
 		echo '<h2>Znalezione aliasy ('.count($d['aliases']).'):</h2>';
-		echo '<ul>';
+		echo '<div class="computerSearchResults">';
 		echo $d['aliases']->write('listAliases');
-		echo '</ul></div>';
+		echo '</div>';
 	}
 
 	public function computerSearchHistoryResults(array $d) {
 		echo '<h2>Znalezione komputery używające wcześniej szukanego IP ('.count($d['computers']).'):</h2>';
-		echo '<ul>';
+		echo '<div class="computerSearchResults">';
 		echo $d['computers']->write('searchResults');
-		echo '</ul></div>';
+		echo '</div>';
 	}
 
 	public function computerSearchResultsUnregistered(array $d) {
@@ -287,7 +326,7 @@ extends UFtpl_Common {
 
 		echo '<div class="userSearch">';
 		echo $form->_start($this->url(0).'/users/search');
-		echo $form->_fieldset('<span class="ui-icon ui-icon-search legend-icon"></span> Znajdź użytkownika');
+		echo $form->_fieldset('Znajdź użytkownika');
 		echo $d['user']->write('formSearch', $d['searched']);
 		echo $form->_submit('Znajdź');
 		if ($acl->sruAdmin('user', 'add')) {
@@ -300,9 +339,9 @@ extends UFtpl_Common {
 
 	public function userSearchResults(array $d) {
 		echo '<h2>Znalezieni użytkownicy ('.count($d['users']).'):</h2>';
-		echo '<div class="userSearchResults"><ul>';
+		echo '<div class="userSearchResults">';
 		echo $d['users']->write('searchResults');
-		echo '</ul></div>';
+		echo '</div>';
 	}
 
 	public function userSearchResultsNotFound() {
@@ -318,7 +357,7 @@ extends UFtpl_Common {
 		$form = UFra::factory('UFlib_Form');	
 		echo '<div class="inventoryCardSearch">';
 		echo $form->_start($this->url(0).'/inventory/search');
-		echo $form->_fieldset('<span class="ui-icon ui-icon-search legend-icon"></span> Znajdź urządzenie');
+		echo $form->_fieldset('Znajdź urządzenie');
 		echo $d['inventoryCard']->write('formSearch', $d['searched']);
 		echo $form->_submit('Znajdź');
 		
@@ -341,9 +380,9 @@ extends UFtpl_Common {
 	
 	public function inventoryCardSearchHistoryResults(array $d) {
 		echo '<h2>Znalezione urządzenia z szukanym S/N w historii:</h2>';
-		echo '<ul>';
+		echo '<div class="inventoryCardSearchResults">';
 		echo $d['inventoryCards']->write('searchResults');
-		echo '</ul></div>';
+		echo '</div>';
 	}
 	
 	public function inventoryCardSearchHistoryResultsNotFound(array $d) {
@@ -351,7 +390,7 @@ extends UFtpl_Common {
 	
 	public function adminLists(array $d) {
 		$form = UFra::factory('UFlib_Form');
-		echo $form->_fieldset('<span class="ui-icon ui-icon-folder-collapsed legend-icon"></span> Zestawienia');
+		echo $form->_fieldset('Zestawienia');
 		echo '<ul>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/computers/">Serwery, administracja, organizacje</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/ips/">IP i VLANy</a></li>';
@@ -398,26 +437,21 @@ extends UFtpl_Common {
 	public function userComputers(array $d) {
 		$url = $this->url(0).'/users/'.$d['user']->id.'/computers/';
 		
-		echo '<h2>Komputery użytkownika</h2><ul>';
+		echo '<h2>Komputery użytkownika</h2>';
 		
 		if ($this->_srv->get('msg')->get('computerAdd/ok')) {
 			echo $this->OK('Komputer został dodany');
 		}
-		echo $d['computers']->write('listAdmin');
-		echo '</ul>';
+		echo $d['computers']->write('listAdmin', 'active');
 		$acl = $this->_srv->get('acl');
 		if($acl->sruAdmin('computer', 'addForUser', $d['user']->id)) {
 			echo '<p class="nav"><a href="'.$url.':add">Dodaj komputer</a></p>';
 		}
 	}
-	public function userInactiveComputers(array $d) {
-		$url = $this->url(2).'/computers/';
-		
-		echo '<h2>Wyrejestrowane komputery</h2><ul>';
+	public function userInactiveComputers(array $d) {		
+		echo '<h2>Wyrejestrowane komputery</h2>';
 			
-		echo $d['computers']->write('listAdmin');
-		echo '</ul>';
-		
+		echo $d['computers']->write('listAdmin', 'unregistered');
 	}
 
 	public function userComputersNotFound(array $d) {
