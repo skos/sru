@@ -14,6 +14,7 @@ extends UFconf {
 	protected $passwordOutdatedWarning = 604800;    //czas, poniżej którego wyświetlane jest ostrzeżenie o zbliżaniu się terminu wygaśnięcia hasła; 7 dni (3600 * 24 * 7)
 	protected $sruUrl = 'https://sru.ds.pg.gda.pl';
 	protected $allowUnsecureConnections = false; // zezwalaj na połączenia z portu innego niż 443
+	protected $taskSummaryCheckInterval = 300; // liczba sekund, co którą nalezy odświeżyć informację o zadaniach
 
 	protected $noEthers = array(
 		'153.19.208.22',

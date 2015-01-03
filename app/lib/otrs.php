@@ -5,7 +5,7 @@
  */
 class UFlib_Otrs {
 
-	public function getOpenTickets() {
+	public function getOpenTickets($summaryOnly = false) {
 		try {
 			$conf = UFra::shared('UFconf_Sru');
 			$url = $conf->otrsUrl . '/rpc.pl';
@@ -30,6 +30,10 @@ class UFlib_Otrs {
 			
 			if (is_null($tickets) || !is_array($tickets)) {
 				return $allTickets;
+			}
+			
+			if ($summaryOnly) {
+				return $tickets;
 			}
 
 			foreach ($tickets as $ticketId) {

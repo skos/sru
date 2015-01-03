@@ -2609,6 +2609,47 @@ extends UFbox {
 		return $this->render(__FUNCTION__, $d);
 	}
 	
+	public function apisGetTasksSummary() {	
+		$sess = $this->_srv->get('session');
+		try {
+			$lastCheck = $sess->lastTaskSummaryCheck;
+			if (NOW > $lastCheck + UFra::shared('UFconf_Sru')->taskSummaryCheckInterval) {
+				$d = $this->performTasksCheck();
+				$sess->taskSummary = $d['tasks'];
+				$sess->taskSummaryOTRS = $d['otrs'];
+				$sess->taskSummaryZabbix = $d['zabbix'];
+				$sess->lastTaskSummaryCheck = NOW;
+			} else {
+				$d = array();
+				$d['tasks'] = $sess->taskSummary;
+				$d['otrs'] = $sess->taskSummaryOTRS;
+				$d['zabbix'] = $sess->taskSummaryZabbix;
+			}
+		} catch (UFex_Core_DataNotFound $e) {
+			$d = $this->performTasksCheck();
+			$sess->taskSummary = $d['tasks'];
+			$sess->taskSummaryOTRS = $d['otrs'];
+			$sess->taskSummaryZabbix = $d['zabbix'];
+			$sess->lastTaskSummaryCheck = NOW;
+		}
+		
+		return $this->render(__FUNCTION__, $d);
+	}
+	
+	private function performTasksCheck() {
+		$zabbix = UFra::factory('UFlib_Zabbix');
+		$zabbixProblems = $zabbix->getAllActiveProblems();
+		$d['zabbix'] = count($zabbixProblems);
+		
+		$otrs = UFra::factory('UFlib_Otrs');
+		$otrsTickets = $otrs->getOpenTickets(true);
+		$d['otrs'] = count($otrsTickets);
+		
+		$d['tasks'] = $d['zabbix'] + $d['otrs'];
+		
+		return $d;
+	}
+	
 	public function penaltyAddMailTitle($penalty, $user) {
 		$d['user'] = $user;
 		$d['penalty'] = $penalty;

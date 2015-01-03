@@ -39,6 +39,9 @@ extends UFctl {
 						$get->view = 'error404';
 					}
 					break;
+				case 'gettaskssummary':
+					$get->view = 'tasks/getSummary';
+					break;
 				default:
 					$get->view = 'error404';
 					break;
@@ -80,6 +83,8 @@ extends UFctl {
 				return 'SruAdmin_ApisZabbixProblems';
 			case 'macVendors/getVendor':
 				return 'SruAdmin_ApisGetMacVendor';
+			case 'tasks/getSummary':
+				return 'SruAdmin_ApisGetTasksSummary';
 			default:
 				return 'Sru_Error404';
 		}

@@ -15,6 +15,7 @@ extends UFview_SruAdmin {
 		$this->append('body', $box->inventoryCardSearch());
 		$this->append('body', $box->columnEnd());
 		$this->append('body', $box->rightColumnStart());
+		$this->append('body', $box->tasksSummary());
 		$this->append('body', $box->adminLists());
 		$this->append('body', $box->columnEnd());
 	}

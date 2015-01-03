@@ -388,6 +388,22 @@ function filter(selector, query) {
 	public function inventoryCardSearchHistoryResultsNotFound(array $d) {
 	}
 	
+	public function tasksSummary(array $d) {
+		$form = UFra::factory('UFlib_Form');
+		echo $form->_fieldset('Podsumowanie zadań');
+		echo ' <div id="tasksSummary"><img class="loadingImg" src="'.UFURL_BASE.'/i/img/ladowanie.gif" alt="Trwa ładowanie podsumowania..." /></div>';
+		echo $form->_end();
+?>
+<script>
+function getSummary() {
+	$("#tasksSummary").load('<?=UFURL_BASE?>/admin/apis/gettaskssummary');
+}
+getSummary();
+setInterval(getSummary, 10*1000);
+</script>
+<?
+	}
+	
 	public function adminLists(array $d) {
 		$form = UFra::factory('UFlib_Form');
 		echo $form->_fieldset('Zestawienia');
@@ -1721,6 +1737,25 @@ function filter(selector, query) {
 	public function apisGetMacVendor(array $d) {
 		if (!is_null($d['vendor'])) {
 			echo $d['vendor'][0]['company'];
+		}
+	}
+	
+	public function apisGetTasksSummary(array $d) {
+		if (!is_null($d['tasks'])) {
+			if ($d['tasks'] == 0) {
+				echo $this->OK('brak zadań! :-)');
+			} else {
+				echo '<ul>';
+				$this->displayTaskSummaryForService($d['zabbix'], 'Zabbiksie');
+				$this->displayTaskSummaryForService($d['otrs'], 'OTRS');
+				echo '</ul>';
+			}
+		}
+	}
+	
+	private function displayTaskSummaryForService($count, $service) {
+		if ($count > 0) {
+			echo '<li class="ban"><a href="'.$this->url(0).'/admins/tasks">Zgłoszenia w '.$service.': '.$count.'</a></li>';
 		}
 	}
 	
