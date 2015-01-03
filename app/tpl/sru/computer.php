@@ -355,7 +355,7 @@ changeVisibility();
 		data.addRows([
 			<?
 				foreach ($upload as $date => $bytes) {
-					echo '[new Date("'.$date.'"),'.floor($bytes/1024/5/60).'],';
+					echo '[new Date("'.$date.'"),'.str_replace(',', '.',$bytes/1024/5/60).'],';
 				}
 			?>
 		]);
