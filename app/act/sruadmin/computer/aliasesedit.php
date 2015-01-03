@@ -37,6 +37,7 @@ extends UFact {
 				$bean = UFra::factory('UFbean_SruAdmin_ComputerAlias');
 				$bean->computerId = $computer->id;
 				$bean->host = $post['alias'];
+				$bean->domainName = $post['alias'].'.'.$computer->domainSuffix;
 				$bean->isCname = $post['isCname'];
 				$added = $post['alias'];
 				$bean->save();

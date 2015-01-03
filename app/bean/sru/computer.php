@@ -76,8 +76,20 @@ extends UFbean_Common {
 			return 'duplicated';
 		} catch (UFex_Dao_NotFound $e) {
 			try {
+				if (!is_null($post) && array_key_exists('ip', $post) && $post['ip'] != '') {
+					$ipv4 = UFra::factory('UFbean_Sru_Ipv4');
+					$ipv4->getByIp($post['ip']);
+					$vlanId = $ipv4->vlan;
+				} else if (!is_null($post) && isset($post['typeId'])) {
+					$vlanId = $this->getVlanByComputerType($post['typeId']);
+				} else {
+					$vlanId =  UFbean_SruAdmin_Vlan::getDefaultVlan();
+				}
+				$vlan = UFra::factory('UFbean_SruAdmin_Vlan');
+				$vlan->getByPK($vlanId);
+				
 				$alias = UFra::factory('UFbean_SruAdmin_ComputerAlias');
-				$alias->getByHost($val);
+				$alias->getByDomainName($val.'.'.$vlan->domainSuffix);
 				return 'duplicated';
 			} catch (UFex_Dao_NotFound $e) {
 			}

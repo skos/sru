@@ -24,6 +24,15 @@ extends UFdao {
 		return $this->doSelectFirst($query);
 	}
 
+	public function getByDomainName($host) {
+		$mapping = $this->mapping('get');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->domainName, $host);
+
+		return $this->doSelectFirst($query);
+	}
+	
 	public function search($host) {
 		$mapping = $this->mapping('get');
 

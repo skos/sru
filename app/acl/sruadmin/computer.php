@@ -45,7 +45,8 @@ extends UFlib_ClassWithService {
 			if ($bean->active && ($bean->typeId == UFbean_Sru_Computer::TYPE_SERVER || $bean->typeId == UFbean_Sru_Computer::TYPE_SERVER_VIRT || 
 				$bean->typeId == UFbean_Sru_Computer::TYPE_MACHINE || $bean->typeId == UFbean_Sru_Computer::TYPE_NOT_SKOS_DEVICE || 
 				$bean->typeId == UFbean_Sru_Computer::TYPE_ADMINISTRATION  || 
-				$bean->typeId == UFbean_Sru_Computer::TYPE_ORGANIZATION || $bean->canAdmin || $bean->exAdmin)) {
+				$bean->typeId == UFbean_Sru_Computer::TYPE_ORGANIZATION  || $bean->typeId == UFbean_Sru_Computer::TYPE_INTERFACE ||
+				$bean->canAdmin || $bean->exAdmin)) {
 			    return true;
 			}
 			return false;

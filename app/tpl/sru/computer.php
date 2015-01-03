@@ -84,7 +84,7 @@ extends UFtpl_Common {
 	public function computerLastModified(array $d){
 		$url = $this->url(0);
 
-		echo '<table id="computersModifiedT'.$id.'" class="bordered"><thead><tr>';
+		echo '<table id="computersModifiedT" class="bordered"><thead><tr>';
 		echo '<th>Data</th>';
 		echo '<th>Host</th>';
 		echo '<th>Właściciel</th>';
@@ -118,7 +118,7 @@ extends UFtpl_Common {
 <script type="text/javascript">
 $(document).ready(function() 
     { 
-        $("#computersModifiedT<?echo $id;?>").tablesorter({
+        $("#computersModifiedT").tablesorter({
             textExtraction:  'complex'
         });
     } 
@@ -257,7 +257,7 @@ $("#macvendor").load('<?=UFURL_BASE?>/admin/apis/getmacvendor/<?=$d['mac']?>');
 		if (!is_null($aliases)) {
 			$aliasesString = '<table><tr><td>';
 			foreach ($aliases as $alias) {
-				$aliasesString = $aliasesString.$alias['host'].'&nbsp;('.($alias['isCname'] ? 'CNAME' : 'A').'), ';
+				$aliasesString = $aliasesString.$alias['domainName'].'&nbsp;('.($alias['isCname'] ? 'CNAME' : 'A').'), ';
 			}
 			$aliasesString = substr($aliasesString, 0 , -2);
 			$aliasesString = $aliasesString.'</td></tr></table>';
@@ -923,11 +923,11 @@ div.style.display = 'none';
 
         public function formAliasesEdit(array $d, $aliases){
                 $form = UFra::factory('UFlib_Form', 'computerAliasesEdit', $d, $this->errors);
-                $url = $this->url(0) . '/computers/';
+
                 if (!is_null($aliases)) {
                         echo $form->_fieldset(_("Usuń aliasy komputera:"));
                         foreach ($aliases as $alias) {
-                                echo $form->aliasesChk($alias['host'], array('type' => $form->CHECKBOX, 'name' => 'computerAliasesEdit[aliases][' . $alias['id'] . ']', 'id' => 'computerAliasesEdit[aliases][' . $alias['id'] . ']'));
+                                echo $form->aliasesChk($alias['domainName'], array('type' => $form->CHECKBOX, 'name' => 'computerAliasesEdit[aliases][' . $alias['id'] . ']', 'id' => 'computerAliasesEdit[aliases][' . $alias['id'] . ']'));
                         }
                         echo $form->_end();
                 }
@@ -938,7 +938,7 @@ div.style.display = 'none';
                 if ($this->_srv->get('msg')->get('computerAliasesEdit/errors/host/regexp')) {
                         echo $this->ERR($this->errors['host/regexp']);
                 }
-                echo $form->alias(_("Alias"));
+                echo $form->alias(_("Alias (.".$d['domainSuffix'].")"));
                 echo $form->isCname(_("Wpis CNAME ") . UFlib_Helper::displayHint(_("Aliasy są domyślnie wpisami CNAME.")), array('type' => $form->CHECKBOX, 'value' => '1'));
                 echo $form->_end();
         }

@@ -10,7 +10,7 @@ extends UFtpl_Common {
 		echo '<th>Host</th>';
 		echo '</tr></thead><tbody>';
 		foreach ($d as $c) {
-			echo '<tr'.($c['parentBanned'] ? ' class="ban"' : '').'><td><a href="'.$url.$c['computerId'].'">'.$c['host'].'</td>';
+			echo '<tr'.($c['parentBanned'] ? ' class="ban"' : '').'><td><a href="'.$url.$c['computerId'].'">'.$c['domainName'].'</td>';
 			echo '<td>'.($c['isCname'] ? 'CNAME' : 'A').'</td>';
 			echo '<td>'.$c['parentWithDomain'].(strlen($c['parentComment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['parentComment'].'" />':'').'</a></td></tr>';
 		}

@@ -143,7 +143,7 @@ extends UFtpl_Common {
 	public function userLastModified(array $d){
 		$url = $this->url(0);
 		
-		echo '<table id="usersModifiedT'.$id.'" class="bordered"><thead><tr>';
+		echo '<table id="usersModifiedT" class="bordered"><thead><tr>';
 		echo '<th>Data</th>';
 		echo '<th>Użytkownik</th>';
 		echo '</tr></thead><tbody>';
@@ -170,7 +170,7 @@ extends UFtpl_Common {
 <script type="text/javascript">
 $(document).ready(function() 
     { 
-        $("#usersModifiedT<?echo $id;?>").tablesorter({
+        $("#usersModifiedT").tablesorter({
             textExtraction:  'complex'
         });
     } 
