@@ -509,12 +509,14 @@ extends UFdao {
 
 	public function updateActiveByMasterId($masterId, $active, $modifiedBy=null) {
 		$mapping = $this->mapping('set');
+		$conf = UFra::shared('UFconf_Sru');
 
 		$query = UFra::factory('UFlib_Db_Query');
 		$query->tables($mapping->tables());
 		$query->joins($mapping->joins(), $mapping->joinOns());
 		$data = array(
 			$mapping->active => $active,
+			$mapping->availableTo => ($active ? $conf->computerAvailableTo : NOW),
 			$mapping->modifiedById => $modifiedBy,
 			$mapping->modifiedAt => NOW,
 		);
