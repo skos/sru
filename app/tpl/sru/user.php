@@ -143,15 +143,18 @@ extends UFtpl_Common {
 	public function userLastModified(array $d){
 		$url = $this->url(0);
 		
-		echo '<ul>';
+		echo '<table id="usersModifiedT'.$id.'" class="bordered"><thead><tr>';
+		echo '<th>Data</th>';
+		echo '<th>Użytkownik</th>';
+		echo '</tr></thead><tbody>';
 		foreach($d as $c){
 			if ($c['banned'] == true) {
-				echo '<li class="ban">';
+				echo '<tr class="ban">';
 			} else {
-				echo '<li>';
+				echo '<tr>';
 			}
-			echo date(self::TIME_YYMMDD_HHMM, $c['modifiedat']);
-			echo ' <small>zmodyfikował/dodał użytkownika: </small>';
+			echo '<td>'.date(self::TIME_YYMMDD_HHMM, $c['modifiedat']).'</td>';
+			echo '<td>';
 			if($c['active'] == true){
 				echo '<a href="'.$url.'/users/'.$c['id'].'">' . $this->_escape($c['name']);
 				echo ' "'.$c['login'].'" '.$this->_escape($c['surname']).'</a>';
@@ -159,9 +162,21 @@ extends UFtpl_Common {
 				echo '<del><a href="'.$url.'/users/'.$c['id'].'">' . $this->_escape($c['name']);
 				echo ' "'.$c['login'].'" '.$this->_escape($c['surname']).'</a></del>';
 			}
-			echo '</li>';
+			echo '</td></tr>';
 		}
-		echo '</ul>';
+		echo '</tbody></table>';
+		
+?>
+<script type="text/javascript">
+$(document).ready(function() 
+    { 
+        $("#usersModifiedT<?echo $id;?>").tablesorter({
+            textExtraction:  'complex'
+        });
+    } 
+);
+</script>
+<?
 	}
 	
 	public function formLogin(array $d) {

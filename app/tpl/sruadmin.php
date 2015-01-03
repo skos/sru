@@ -406,10 +406,8 @@ function filter(selector, query) {
 	}
 
 	public function toDoList(array $d) {
-		$form = UFra::factory('UFlib_Form');
-		echo $form->_fieldset('Lista zadań');
+		echo '<h2>Lista zadań</h2>';
 		echo $d['admin']->write('toDoList', $d['computers'], $d['devices']);
-		echo $form->_end();
 	}
 
 	public function user(array $d) {
@@ -726,12 +724,8 @@ function filter(selector, query) {
 	public function adminHosts(array $d) {
 		echo '<div class="computers">';
 		echo '<h3>Komputery pod opieką</h3>';
-		echo '<ul>';
 		$d['hosts']->write('listAdmin');
-		echo '</ul>';
 		echo '</div>';
-		
-		echo '<a href="'.$this->url(0).'/admins/">Powrót</a>';
 	}
 
 	public function adminHostsNotFound() {

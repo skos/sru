@@ -724,8 +724,6 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 		echo '<h3>Komputery pod opieką</h3>';
 		$d['hosts']->write('listWalet');
 		echo '</div>';
-
-		echo '<a href="'.$this->url(0).'/admins/">Powrót</a>';
 	}
 
 	public function adminHostsNotFound() {

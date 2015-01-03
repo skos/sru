@@ -84,21 +84,25 @@ extends UFtpl_Common {
 	public function computerLastModified(array $d){
 		$url = $this->url(0);
 
-		echo '<ul>';
+		echo '<table id="computersModifiedT'.$id.'" class="bordered"><thead><tr>';
+		echo '<th>Data</th>';
+		echo '<th>Host</th>';
+		echo '<th>Właściciel</th>';
+		echo '</tr></thead><tbody>';
 		foreach($d as $c){
 			if ($c['banned'] == true) {
-				echo '<li class="ban">';
+				echo '<tr class="ban">';
 			} else {
-				echo '<li>';
+				echo '<tr>';
 			}
-			echo date(self::TIME_YYMMDD_HHMM, $c['modifiedat']);
-			echo '<small> zmodyfikował/dodał komputer: </small>';
+			echo '<td>'.date(self::TIME_YYMMDD_HHMM, $c['modifiedat']).'</td>';
+			echo '<td>';
 			if ($c['active']) {
 				echo '<a href="'.$url.'/computers/'.$c['id'].'">'.$this->_escape($c['host']).'</a>';
 			} else {
 				echo '<del><a href="'.$url.'/computers/'.$c['id'].'">'.$this->_escape($c['host']).'</a></del>';
 			}
-			echo '<small> należący do użytkownika ';
+			echo '</td><td>';
 			if($c['u_active'] == true){
 				echo '<a href="'.$url.'/users/'.$c['userid'].'">'.$this->_escape($c['name']).' "';
 				echo $c['login'].'" '.$this->_escape($c['surname']).'</a>';
@@ -106,9 +110,21 @@ extends UFtpl_Common {
 				echo '<del><a href="'.$url.'/users/'.$c['userid'].'">'.$this->_escape($c['name']).' "';
 				echo $c['login'].'" '.$this->_escape($c['surname']).'</a></del>';
 			}
-			echo '</small></li>';
+			echo '</td></tr>';
 		}
-		echo '</ul>';
+		echo '</tbody></table>';
+		
+?>
+<script type="text/javascript">
+$(document).ready(function() 
+    { 
+        $("#computersModifiedT<?echo $id;?>").tablesorter({
+            textExtraction:  'complex'
+        });
+    } 
+);
+</script>
+<?
 	}
 
         public function listOwn(array $d){
