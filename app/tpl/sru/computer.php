@@ -348,11 +348,6 @@ changeVisibility();
 	google.load("visualization", "1", {packages:["corechart"]});
 	google.setOnLoadCallback(drawChart);
 	function drawChart() {
-		//var data = new google.visualization.DataTable();
-		//data.addColumn("time", "X");
-		//data.addColumn("number", "Upload (kB/s)");
-
-		//data.addRows([
 		var data = google.visualization.arrayToDataTable([
 			['Godzina', 'Upload (kB/s)'],
 			<?
