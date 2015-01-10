@@ -339,7 +339,7 @@ changeVisibility();
 			$upload = json_decode(file_get_contents($conf->uploadAPIUrl.$d['ip']), true);
 			if ($upload != null && $upload != FALSE && $upload != '') {
 				if ($isUser) {
-					echo '<p>Poniżej znajduje się wykres Twojego uploadu z ostatniej godziny. Upload jest w razie potrzeby automatycznie limitowany przez SKOS. :-)</p>';
+					echo '<p>Poniżej znajduje się wykres Twojego uploadu z ostatnich 12 godzin. Upload jest w razie potrzeby automatycznie limitowany przez SKOS. :-)</p>';
 				}
 				echo '<div id="uploadChart"></div>';
 ?>
@@ -348,14 +348,16 @@ changeVisibility();
 	google.load("visualization", "1", {packages:["corechart"]});
 	google.setOnLoadCallback(drawChart);
 	function drawChart() {
-		var data = new google.visualization.DataTable();
-		data.addColumn("datetime", "X");
-		data.addColumn("number", "Upload (kB/s)");
+		//var data = new google.visualization.DataTable();
+		//data.addColumn("time", "X");
+		//data.addColumn("number", "Upload (kB/s)");
 
-		data.addRows([
+		//data.addRows([
+		var data = google.visualization.arrayToDataTable([
+			['Godzina', 'Upload (kB/s)'],
 			<?
 				foreach ($upload as $date => $bytes) {
-					echo '[new Date("'.$date.'"),'.str_replace(',', '.',round($bytes/1024/5/60, 4)).'],';
+					echo '["'.substr($date, 11, -3).'",'.str_replace(',', '.',round($bytes/1024/5/60, 4)).'],';
 				}
 			?>
 		]);
@@ -364,10 +366,10 @@ changeVisibility();
 			width: 900,
 			height: 563,
 			hAxis: {
-				title: "Czas"
+				title: "Godzina"
 			},
 			vAxis: {
-				title: "kB"
+				title: "Średni upload z 5 min"
 			}
 		};
 
@@ -379,7 +381,7 @@ changeVisibility();
 </script>
 <?
 			} else if ($isUser) {
-				echo '<p>Nie zarejestrowaliśmy uploadu z Twojego hosta w ciągu ostatniej godziny. Upload jest w razie potrzeby automatycznie limitowany przez SKOS. :-)</p>';
+				echo '<p>Nie zarejestrowaliśmy uploadu z Twojego hosta w ciągu ostatnich 12 godzin. Upload jest w razie potrzeby automatycznie limitowany przez SKOS. :-)</p>';
 			}
 		}
 	}
