@@ -74,11 +74,11 @@ extends UFtpl_Common {
 					$comments[$lastComment] = $c['comment'];
 				}
 			}
-			$admins[$c['adminId']] .= '<td'.($c['day'] == $currentDay ? ' class="sruDutyHoursCurrentDay"' : '').'>'.
+			$admins[$c['adminId']] .= '<td'.($c['day'] == $currentDay ? ' class="sruDutyHoursCurrentDay"' : '').(strlen($c['comment']) ? ' title="'.$c['comment'].'"' : '').'>'.
 				($c['active'] ? '' : '<del>').
 				$this->formatHour($c['startHour']).'-'.$this->formatHour($c['endHour']).
 					($c['active'] ? '' : '</del>').
-					(strlen($c['comment']) ? ' <span title="'.$c['comment'].'" class="sruDutyHoursCommentIndex">('.$commentId.')</span>' : '').
+					(strlen($c['comment']) ? ' <span class="sruDutyHoursCommentIndex">('.$commentId.')</span>' : '').
 				'</td>';
 			$lastDay = $c['day'];
 		}
