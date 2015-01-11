@@ -356,7 +356,7 @@ extends UFtpl_Common {
 function changeVisibility() {
 	var rpDiv = document.getElementById('recoverPassword');
 	var lDiv = document.getElementById('login');
-	if (rpDiv.sruHidden != true) {
+	if (rpDiv.sruHidden !== true) {
 		rpDiv.style.display = 'none';
 		rpDiv.sruHidden = true;
 		lDiv.style.display = 'block';

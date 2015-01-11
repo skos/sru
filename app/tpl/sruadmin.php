@@ -427,7 +427,6 @@ setInterval(getSummary, 10*1000);
 	}
 
 	public function user(array $d) {
-		$url = $this->url(0).'/users/'.$d['user']->id;
 		if ($this->_srv->get('msg')->get('userAdd/ok')) {
 			echo $this->OK('Konto zostało założone.');
 		}		
@@ -1385,7 +1384,6 @@ setInterval(getSummary, 10*1000);
 	}	
 
 	public function penaltyAdd(array $d) {
-		$url = $this->url(0).'/penalties/';
 		$urlUser = $this->url(0).'/users/'.$d['user']->id;
 		
 		echo '<h2>Kara dla <a href="'.$urlUser.'">'.$d['user']->name.' '.$d['user']->surname.' ('.$d['user']->login.')</a></h2>';
