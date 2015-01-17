@@ -11,6 +11,7 @@ class UFlib_Otrs {
 			$url = $conf->otrsUrl . '/rpc.pl';
 			$username = $conf->otrsUser;
 			$password = $conf->otrsPass;
+			$queue = $conf->otrsQueue;
 
 			$client = new SoapClient(null, array(
 			    'location' => $url,
@@ -23,7 +24,8 @@ class UFlib_Otrs {
 
 			$tickets = $client->__soapCall("Dispatch", array($username, $password,
 			    "TicketObject", "TicketSearch",
-			    "UserID", "1", "Result", "ARRAY", "StateType", array("new", "open")
+			    "UserID", "1", "Result", "ARRAY", "StateType", array("new", "open"),
+			    "Queue", $queue
 			));
 
 			$allTickets = array();
