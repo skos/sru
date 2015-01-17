@@ -4,6 +4,7 @@ class UFconf_Sru
 extends UFconf {
 	//usage UFra::shared('UFconf_Sru')->NAZWA_ZMIENNEJ
 
+	protected $prodInstance = false;
 	protected $usersAvailableSince = '';	// data poczatku rejestracji nowych mieszkancow
 	protected $usersAvailableTo = '';	// data konca rejestracji nowych mieszkancow
 	protected $computerAvailableTo = '';	// data waznosci noworejestrowanych komputerow

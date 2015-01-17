@@ -13,6 +13,7 @@ extends UFtpl_Common {
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <meta name="robots" content="noindex,nofollow,noarchive" />
 <link rel="stylesheet" href="<?=UFURL_BASE;?>/i/css/style.css" type="text/css" media="screen" />
+<? echo (UFra::shared('UFconf_Sru')->prodInstance ? '' : '<link rel="stylesheet" href="'.UFURL_BASE.'/i/css/test.css" type="text/css" media="screen" />'); ?>
 <link rel="stylesheet" href="<?=UFURL_BASE;?>/i/jquery/css/smoothness/jquery-ui.custom.css" type="text/css" />
 <link rel="shortcut icon" href="<?=UFURL_BASE;?>/i/img/favicon.ico" type="image/x-icon" />	
 <script type="text/javascript" src="<?=UFURL_BASE;?>/i/jquery/jquery.js"></script>
