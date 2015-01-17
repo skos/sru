@@ -12,7 +12,6 @@ extends UFview_SruUser {
 		
 		$this->append('body', $box->contact());
 		$this->append('body', $box->importantLinks());
-		$this->append('body', $box->banners());
 		$this->append('body', $box->penaltyInfo());
 		$this->append('body', $box->userInfo());
 		$this->append('body', $box->hostsInfo());

@@ -141,14 +141,7 @@ extends UFtpl_Common {
 			echo $form->_end();
 			echo $form->_end(true);
 		}
-		// rightColumn will continue...
-	}
-
-	public function banners(array $d) {
-		// rightColumn continues...
-		if (!is_null($d['content'])) {
-			echo $d['content'];
-		}
+		// rightColumn ends
 		echo '</div>';
 	}
 

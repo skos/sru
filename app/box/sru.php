@@ -111,18 +111,6 @@ extends UFbox {
 		return $this->render(__FUNCTION__, $d);
 	}
 
-	public function banners() {
-		$content = @file_get_contents(UFURL_BASE.'i/banners/banners.htm');
-		if ($content !== false) {
-			$content = ($content);
-			$d['content'] = $content;
-		} else {
-			$d['content'] = null;
-		}
-		
-		return $this->render(__FUNCTION__, $d);
-	}
-
 	public function userAddByAdminMailTitle($user) {
 		$d['user'] = $user;
 		return $this->render(__FUNCTION__, $d);
