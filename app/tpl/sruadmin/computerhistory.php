@@ -224,6 +224,7 @@ extends UFtpl_Common {
 		echo '<th>IP</th>';
 		echo '<th>MAC</th>';
 		echo '<th>Właściciel</th>';
+		echo '<th>Używał do</th>';
 		echo '</tr></thead><tbody>';
 		
 		foreach ($d as $c) {
@@ -237,7 +238,8 @@ extends UFtpl_Common {
 			echo '<tr'.($c['currentBanned']?' class="ban"':'').'><td>'.(!$c['currentActive']?'<del>':'').'<a href="'.$url.'/computers/'.$c['computerId'].'">'.$c['host'].'.'.$c['domainSuffix'].(strlen($c['currentComment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['currentComment'].'" />':'').(!$c['currentActive']?'</del>':'').'</td>';
 			echo '<td>'.$c['currentIp'].'</td>';
 			echo '<td>'.$c['mac'].'</td>';
-			echo '<td>'.$owner.'</td></tr>';
+			echo '<td>'.$owner.'</td>';
+			echo '<td>'.date(self::TIME_YYMMDD, $c['modifiedAt']).'</td></tr>';
 			
 			$displayed[] = $c['host'];
 		}
