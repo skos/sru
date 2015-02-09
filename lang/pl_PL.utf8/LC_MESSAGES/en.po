@@ -116,7 +116,7 @@ msgstr "Year of study"
 
 #: sru3/app/tpl/sru/user.php:549
 msgid "Zmiana chronionych danych - konieczne podanie aktualnego hasła"
-msgstr "Changing protected data - necessary to provide current password"
+msgstr "Changing sensitive data - necessary to provide the current password"
 
 #: sru3/app/tpl/sru/user.php:551
 #: sru3/app/tpl/sru/user.php:556
@@ -168,7 +168,7 @@ msgstr "Send"
 
 #: sru3/app/tpl/sru/user.php:1327
 msgid "Odpowiedź otrzymasz na maila zarejestrowanego w SRU."
-msgstr "We will answer on your e-mail specified in SRU "
+msgstr "You will be answered on your e-mail specified in SRU."
 
 #: sru3/app/tpl/sru/user.php:1331
 msgid "Witaj, "
@@ -245,7 +245,7 @@ msgstr "The nearest duty hours"
 
 #: sru3/app/tpl/sru.php:123
 msgid "Pełna lista dyżurów"
-msgstr "Full list of duties"
+msgstr "Full list of duty hours"
 
 #: sru3/app/tpl/sru.php:165
 msgid "Hurra! Brak kar i ostrzeżeń! ;)"
@@ -311,7 +311,7 @@ msgstr "The computer has been checked out."
 
 #: sru3/app/tpl/sru.php:223
 msgid "Samodzielnie możesz dodać tylko jeden komputer. Jeżeli chcesz zarejestrować kolejny, zgłoś się do administratora lokalnego."
-msgstr "Yourself, you can add only one computer. If you want to register another, report to the local administrator."
+msgstr "You can add only one computer by yourself. If you want to register another one, report it to your local administrator."
 
 #: sru3/app/tpl/sru.php:229
 msgid "Dane zostały zmienione"
@@ -324,7 +324,7 @@ msgstr "Computer not found"
 
 #: sru3/app/tpl/sru.php:254
 msgid "Powrót do listy"
-msgstr "Back to list"
+msgstr "Back to the list"
 
 #: sru3/app/tpl/sru.php:256
 msgid "Edytuj"
