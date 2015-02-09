@@ -168,7 +168,7 @@ msgstr "Send"
 
 #: sru3/app/tpl/sru/user.php:1327
 msgid "Odpowiedź otrzymasz na maila zarejestrowanego w SRU."
-msgstr "We will be answered on your e-mail specified in SRU."
+msgstr "You will be answered on your e-mail specified in SRU."
 
 #: sru3/app/tpl/sru/user.php:1331
 msgid "Witaj, "
