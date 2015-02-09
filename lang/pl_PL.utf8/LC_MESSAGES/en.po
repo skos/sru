@@ -245,7 +245,7 @@ msgstr "The nearest duty hours"
 
 #: sru3/app/tpl/sru.php:123
 msgid "Pełna lista dyżurów"
-msgstr "Full list of duty hours."
+msgstr "Full list of duty hours"
 
 #: sru3/app/tpl/sru.php:165
 msgid "Hurra! Brak kar i ostrzeżeń! ;)"
