@@ -38,7 +38,7 @@ extends UFtpl_Common {
 			echo '<p><em>Przepustowość:</em> '.$speed.' Mb/s</p>';
 		}
 		echo '<p><em>Nietagowany VLAN:</em> '.(is_null($vlan) ? 'brak' : '<a href="'.$vlanUrl.key($vlan).'">'.current($vlan).' ('.key($vlan).')</a>').'</p>';
-		echo '<p><em>Port admina:</em> '.($d['admin'] ? 'tak' : 'nie').'</p>';
+		//echo '<p><em>Port admina:</em> '.($d['admin'] ? 'tak' : 'nie').'</p>';
 		if (!is_null($d['penaltyId'])) {
 			echo '<p><em>Przypisana kara: </em><a href="'.$this->url(0).'/penalties/'.$d['penaltyId'].'">'.$d['userName'].' "'.$d['userLogin'].'" '.$d['userSurname'].': '.$d['templateTitle'].' ('.$d['penaltyId'].')</a></p>';
 		}
@@ -133,7 +133,7 @@ $( "#tabs" ).tabs();
 			echo $form->portStatus('', array('type'=>$form->HIDDEN, 'value'=>($status == UFlib_Snmp_Hp::DISABLED ? 0 : 1)));
 			echo $form->portEnabled('Port włączony', array('type'=>$form->CHECKBOX, 'value'=>$portEnabled));
 		}
-		echo $form->admin('Port admina', array('type'=>$form->CHECKBOX));
+		//echo $form->admin('Port admina', array('type'=>$form->CHECKBOX));
 		echo $form->comment('Komentarz');
 		if (!is_null($status)) {
 			echo $form->copyToSwitch('Zapisz opis na switcha '.UFlib_Helper::displayHint("Zapis spowoduje nadpisanie aliasu portu na switchu. Będzie to nr pokoju, podłaczony switch (o ile podano) i komentarz."), array('type'=>$form->CHECKBOX, 'value'=>true));
