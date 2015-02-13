@@ -141,7 +141,7 @@ img { border-style: none; }
 
 #main .required { border: solid 1px red; }
 #main .necessary { border: solid 1px orange; }
-#main .tuxImg, #main .waletImg { position: relative; margin-right: 230px; float: right; top: -130px; width: 100px; }
+#main .waletImg { position: relative; margin-right: 230px; float: right; top: -130px; width: 100px; }
 
 #main ul .admin { background-color: yellow; }
 #main ul .serv { background-color: green; }

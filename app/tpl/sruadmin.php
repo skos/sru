@@ -34,8 +34,6 @@ extends UFtpl_Common {
 		echo $form->_end();
 		echo $form->_end(true);
 		
-		echo '<div class="tuxImg"><img src="'.UFURL_BASE.'/i/img/tux-jedi.png" alt="Walet"/></div>';
-		
 		UFlib_Script::focusIfLoginNotEmpty('adminLogin_password', 'adminLogin_login');
 	}
 
