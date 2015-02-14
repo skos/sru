@@ -6,14 +6,16 @@ class UFmap_Sru_Dormitory_Get
 extends UFmap {
 
 	protected $columns = array(
-		'id'           => 'id',
-		'name'         => 'name',
-		'alias'        => 'alias',
-		'userCount'    => 'users_count',
-		'computerCount' => 'computers_count',
-		'usersMax'     => 'users_max',
-		'computersMax' => 'computers_max',
-		'displayOrder' => 'display_order',
+		'id'           => 'd.id',
+		'name'         => 'd.name',
+		'alias'        => 'd.alias',
+		'userCount'    => 'd.users_count',
+		'computerCount' => 'd.computers_count',
+		'usersMax'     => 'd.users_max',
+		'computersMax' => 'd.computers_max',
+		'displayOrder' => 'd.display_order',
+		'campusId'	=> 'd.campus',
+		'campusName'	=> 'c.name',
 	);
 	protected $columnTypes = array(
 		'id'           => self::INT,
@@ -24,9 +26,18 @@ extends UFmap {
 		'usersMax'     => self::INT,
 		'computersMax' => self::INT,
 		'displayOrder' => self::INT,
+		'displayOrder' => self::INT,
+		'campusId'	=> self::INT,
+		'campusName'	=> self::TEXT,
 	);
 	protected $tables = array(
-		'' => 'dormitories',
+		'd' => 'dormitories',
+	);
+	protected $joins = array(
+		'c' => 'campuses',
+	);
+	protected $joinOns = array(
+		'c' => 'd.campus=c.id',
 	);
 	protected $pk = 'id';
 }

@@ -33,7 +33,7 @@ extends UFtpl_Common {
 		echo '</ul>';
 	}
 
-	public function apiAllDutyHours(array $d, $dormitories) {
+	public function apiAllDutyHours(array $d, $dormAdmins, $dormitories) {
 		$currentDay = date('N');
 		$lastDay = 0;
 		$comments = array();
@@ -42,14 +42,26 @@ extends UFtpl_Common {
 		$admins = array();
 		$lastAdmin = 0;
 		$allDormAdmins = array();
+		$campuses = array();
 		foreach ($dormitories as $dorm) {
+			if (!array_key_exists($dorm['campusName'], $campuses)) {
+				$campuses[$dorm['campusName']] = array();
+				$campuses[$dorm['campusName']]['dorms'] = array();
+				$campuses[$dorm['campusName']]['admins'] = array();
+			}
+			$campuses[$dorm['campusName']]['dorms'][] = $dorm['alias'];
+		}
+		foreach ($dormAdmins as $dorm) {
 			if (is_null($dorm)) continue;
 			foreach ($dorm as $admin) {
 				$allDormAdmins[$admin['admin']] = 1;
 			}
 		}
-		
+		$currentDayDutyHours = array();
 		foreach ($d as $c) {
+			if ($c['day'] == $currentDay && !array_key_exists($c['adminId'], $currentDayDutyHours)) {
+				$currentDayDutyHours[$c['adminId']] = $c['startHour'].$c['endHour'];
+			}
 			if ($c['adminId'] != $lastAdmin && $lastAdmin != '') {
 				for ($i = $lastDay; $i < 7; $i++) {
 					$admins[$lastAdmin] .= '<td></td>';
@@ -86,34 +98,48 @@ extends UFtpl_Common {
 			$admins[$lastAdmin] .= '<td></td>';
 		}
 		$admins[$lastAdmin] .= '</tr>';
+		asort($admins);
+		asort($currentDayDutyHours);
 		
 		echo '<table class="sruDutyHours"><thead><tr><th>Administrator</th><th>Gdzie<br/>(Where)</th><th>Poniedziałek<br/>(Monday)</th><th>Wtorek<br/>(Tuesday)</th><th>Środa<br/>(Wednesday)</th><th>Czwartek<br/>(Thursday)</th><th>Piątek<br/>(Friday)</th><th>Sobota<br/>(Saturday)</th><th>Niedziela<br/>(Sunday)</th></tr></thead><tbody>';
-		$traugutta = array(1,2,3,4,12);
-		$trauguttaAdmins = array();
-		$wyspianskiegoAdmins = array();
-		foreach ($dormitories as $dorm) {
+		foreach ($dormAdmins as $dorm) {
 			foreach ($dorm as $admin) {
-				if (in_array($dorm[0]['displayOrder'], $traugutta)) {
-					$trauguttaAdmins[$admin['admin']] = $admin['admin'];
-				} else {
-					$wyspianskiegoAdmins[$admin['admin']] = $admin['admin'];
+				foreach ($campuses as $campusName => $campus) {
+					if (in_array($dorm[0]['dormitoryAlias'], $campus['dorms'])) {
+						$campuses[$campusName]['admins'][] = $admin['admin'];
+						break;
+					}
 				}
 			}
 		}
-		echo '<tr><td colspan="10" class="sruDutyHoursDormitoryName">Osiedle Traugutta (DS1, DS2, DS3, DS4, DS12)</td></tr>';
-		if (!empty($trauguttaAdmins)) {
-			foreach ($trauguttaAdmins as $admin) {
-				if (array_key_exists($admin, $admins)) {
-					echo $admins[$admin];
+		foreach ($campuses as $campusName => $campus) {
+			$i = count($campus['dorms']);
+			echo '<tr><td colspan="10" class="sruDutyHoursDormitoryName">'.$campusName.' (';
+			foreach ($campus['dorms'] as $dorm) {
+				echo strtoupper($dorm);
+				if (--$i) {
+					echo ', ';
 				}
 			}
-		}
-		echo '<tr><td colspan="10" class="sruDutyHoursDormitoryName">Osiedle Wyspiańskiego (DS5, DS6, DS7, DS8, DS9, DS10, DS11)</td></tr>';
-		if (!empty($wyspianskiegoAdmins)) {
-			foreach ($wyspianskiegoAdmins as $admin) {
-				if (array_key_exists($admin, $admins)) {
-					echo $admins[$admin];
+			echo ')</td></tr>';
+			$campusAdmins = array_unique($campus['admins']);
+			$todayCampusDutyHours = array();
+			$restCampusDutyHours = array();
+			foreach ($admins as $adminId => $admin) {
+				if (in_array($adminId, $campusAdmins)) {
+					if (array_key_exists($adminId, $currentDayDutyHours)) {
+						$todayCampusDutyHours[$currentDayDutyHours[$adminId]] = $admin;
+					} else {
+						$restCampusDutyHours[] = $admin;
+					}
 				}
+			}
+			ksort($todayCampusDutyHours);
+			foreach ($todayCampusDutyHours as $dh) {
+				echo $dh;
+			}
+			foreach ($restCampusDutyHours as $dh) {
+				echo $dh;
 			}
 		}
 		echo '</tr></tbody></table>';

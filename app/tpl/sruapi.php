@@ -139,7 +139,7 @@ extends UFtpl_Common {
 	}
 
 	public function dutyHours(array $d) {
-		$d['hours']->write('apiAllDutyHours', $d['dormitories']);
+		$d['hours']->write('apiAllDutyHours', $d['dormAdmins'], $d['dormitories']);
 	}
 
 	public function dutyHoursUpcoming(array $d) {

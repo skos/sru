@@ -390,12 +390,13 @@ extends UFbox {
 
 			$dorms = UFra::factory('UFbean_Sru_DormitoryList');
 			$dorms->listAll();
-			$d['dormitories'] = array();
+			$d['dormitories'] = $dorms;
+			$d['dormAdmins'] = array();
 			foreach($dorms as $c){
 				try {
 					$dormAdm = UFra::factory('UFbean_SruWalet_AdminDormitoryList');
 					$dormAdm->listAllByDormId($c['id']);
-					$d['dormitories'][$c['id']] = $dormAdm;
+					$d['dormAdmins'][$c['id']] = $dormAdm;
 				} catch(UFex_Dao_NotFound $e) {
 				}
 			}
