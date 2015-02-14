@@ -379,7 +379,7 @@ $('#userTypeSelector').change(function(){
 	var documentTypeId = document.getElementById('documentTypeSelector');
 	function documentNumberChangeClass(){
 		var documentNo = document.getElementById('userAdd_documentNumber');
-		if(documentTypeId.value !== <?=UFbean_Sru_User::DOC_TYPE_NONE?>) {
+		if(documentTypeId.value != <?=UFbean_Sru_User::DOC_TYPE_NONE?>) {
 			documentNo.setAttribute('class', 'necessary');
 		} else {
 			documentNo.setAttribute('class', '');
@@ -396,7 +396,7 @@ $('#userTypeSelector').change(function(){
 			pesel.setAttribute('class', '');
 		}
 	}
-	nationality.onchange = peselChangeClass;
+	nationality.onblur = peselChangeClass;
 	
 	var name = document.getElementById('userAdd_name');
 	function changeSex() {
@@ -440,13 +440,7 @@ $('#userTypeSelector').change(function(){
 	}
         
         var registryNo = document.getElementById('userAdd_registryNo');
-        var registryNoErr = document.getElementById('userAdd_registryNoErr');
-	function registryNoCheck() {
-                if(registryNoErr) {
-                        registryNoErr.innerHTML = '';
-                        registryNoErr.setAttribute('class', '');
-                }
-                
+	function registryNoCheck() {                
                 if (registryNo.value == '') {
                         document.getElementById('registryNoCheckResult').innerHTML = '';
                 }
@@ -474,17 +468,6 @@ $('#userTypeSelector').change(function(){
         registryNo.onchange = registryNoCheck;
         window.onload = registryNoCheck;
 	window.onload = registryChangeClass;
-                
-        function delRegistryNoError() {
-                if(registryNoErr.innerHTML == 'Nr indeksu przypisany do innego mieszkańca') {
-                        registryNoErr.innerHTML = '';
-                        registryNoErr.setAttribute('class', '');
-                        registryNoCheck();
-                }
-        }
-        
-        window.onload = delRegistryNoError;
-
 })()
 $(function() {
 	$( "#userAdd_nationalityName" ).autocomplete({
@@ -1221,7 +1204,7 @@ $(document).ready(function(){
 
 $('#userTypeSelector').change(function(){
 	var userTypeSelector = $('#userTypeSelector');
-	if(userTypeSelector.val() === 23){
+	if(userTypeSelector.val() == 23){
 		$('#facultySelector').val(0);
 	}else if(userTypeSelector.val() !== 23 && $('#facultyFields').is(':hidden') == true){
 		$('#facultyFields').show();
@@ -1231,7 +1214,7 @@ $('#userTypeSelector').change(function(){
 	var typeId = document.getElementById('userTypeSelector');
 	function registryChangeClass(){
 		var registryNo = document.getElementById('userEdit_registryNo');
-		if(typeId.value === 1 || typeId.value === 2 || typeId.value === 5) {
+		if(typeId.value == 1 || typeId.value == 2 || typeId.value == 5) {
 			registryNo.setAttribute('class', 'required');
 		} else {
 			registryNo.setAttribute('class', '');
@@ -1243,13 +1226,13 @@ $('#userTypeSelector').change(function(){
 	var documentTypeId = document.getElementById('documentTypeSelector');
 	function documentNumberChangeClass(){
 		var documentNo = document.getElementById('userEdit_documentNumber');
-		if(documentTypeId.value !== <?=UFbean_Sru_User::DOC_TYPE_NONE?>) {
+		if(documentTypeId.value != <?=UFbean_Sru_User::DOC_TYPE_NONE?>) {
 			documentNo.setAttribute('class', 'necessary');
 		} else {
 			documentNo.setAttribute('class', '');
 		}
 	}
-	documentTypeId .onchange = documentNumberChangeClass;
+	documentTypeId.onchange = documentNumberChangeClass;
 	documentNumberChangeClass();
 
 	var nationality = document.getElementById('userEdit_nationalityName');
@@ -1261,7 +1244,7 @@ $('#userTypeSelector').change(function(){
 			pesel.setAttribute('class', '');
 		}
 	}
-	nationality.onchange = peselChangeClass;
+	nationality.onblur = peselChangeClass;
 	peselChangeClass();
 
 	var name = document.getElementById('userEdit_name');
@@ -1348,13 +1331,7 @@ $('#userTypeSelector').change(function(){
         
 
         var registryNo = document.getElementById('userEdit_registryNo');
-        var registryNoErr = document.getElementById('userEdit_registryNoErr');
-        
 	function registryNoCheck() {
-                if(registryNoErr) {
-                        registryNoErr.innerHTML = '';
-                        registryNoErr.setAttribute('class', '');
-                }
                 if (registryNo.value == '' || registryNo.value == '<?echo $d['registryNo'];?>') {
                         document.getElementById('registryNoCheckResult').innerHTML = '';
                 }
@@ -1384,17 +1361,6 @@ $('#userTypeSelector').change(function(){
 	
         registryNo.onchange = registryNoCheck;
         window.onload = registryNoCheck;
-        
-        function delRegistryNoError() {
-                        if(registryNoErr.innerHTML == 'Nr indeksu przypisany do innego mieszkańca') {
-                                registryNoErr.innerHTML = '';
-                                registryNoErr.setAttribute('class', '');
-                                registryNoCheck();
-                        }
-        }
-        
-        window.onload = delRegistryNoError;
-        
 })()
 $(function() {
 	$( "#userEdit_nationalityName" ).autocomplete({
