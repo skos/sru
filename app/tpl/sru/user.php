@@ -126,6 +126,8 @@ extends UFtpl_Common {
 		'documentType/noDocumentType' => 'Podaj typ dokumentu tożsamości',
 		'documentNumber/noDocumentNumber' => 'Podaj numer dokumentu tożsamości',
 		'nationalityName/textMin' => 'Podaj narodowość',
+		'nationalityName/textMax' => 'Zbyt długa wartość',
+		'nationalityName/regexp' => 'Błędny format',
 		'sex' => 'Podaj płeć',
 		'registryNo/noRegistryNo' => 'Podaj nr indeksu',
 		'pesel/noPesel' => 'Podaj nr PESEL',
@@ -134,6 +136,11 @@ extends UFtpl_Common {
 		'typeId/noTypeId' => 'Określ typ',
 		'birthDate/105' => 'Nieprawidłowy format daty',
 		'message/notEmpty' => 'Wiadomość nie może być pusta',
+		'documentNumber/textMax' => 'Zbyt długa wartość',
+		'pesel/textMax' => 'Zbyt długa wartość',
+		'birthPlace/textMax' => 'Zbyt długa wartość',
+		'userPhoneNumber/textMax' => 'Zbyt długa wartość',
+		'guardianPhoneNumber/textMax' => 'Zbyt długa wartość',
 	);
 
 	/*
@@ -372,7 +379,7 @@ $('#userTypeSelector').change(function(){
 	var documentTypeId = document.getElementById('documentTypeSelector');
 	function documentNumberChangeClass(){
 		var documentNo = document.getElementById('userAdd_documentNumber');
-		if(documentTypeId.value != <?=UFbean_Sru_User::DOC_TYPE_NONE?>) {
+		if(documentTypeId.value !== <?=UFbean_Sru_User::DOC_TYPE_NONE?>) {
 			documentNo.setAttribute('class', 'necessary');
 		} else {
 			documentNo.setAttribute('class', '');
@@ -383,7 +390,7 @@ $('#userTypeSelector').change(function(){
 	var nationality = document.getElementById('userAdd_nationalityName');
 	function peselChangeClass(){
 		var pesel = document.getElementById('userAdd_pesel');
-		if(nationality.value.toLowerCase() == '<?=UFbean_Sru_User::NATIONALITY_PL?>'){
+		if(nationality.value.toLowerCase() === '<?=UFbean_Sru_User::NATIONALITY_PL?>'){
 			pesel.setAttribute('class', 'necessary');
 		}else{
 			pesel.setAttribute('class', '');
@@ -394,7 +401,7 @@ $('#userTypeSelector').change(function(){
 	var name = document.getElementById('userAdd_name');
 	function changeSex() {
 		var sex = document.getElementById('userAdd_sex');
-		if (name.value.slice(-1) == 'a') {
+		if (name.value.slice(-1) === 'a') {
 			sex.value = 1;
 		} else {
 			sex.value = 0;
@@ -1207,16 +1214,16 @@ changeVisibility();
 		
 ?><script type="text/javascript">
 $(document).ready(function(){
-	if($('#userTypeSelector').val() == 23){
+	if($('#userTypeSelector').val() === 23){
 		$('#facultyFields').hide();
 	}
 });
 
 $('#userTypeSelector').change(function(){
 	var userTypeSelector = $('#userTypeSelector');
-	if(userTypeSelector.val() == 23){
+	if(userTypeSelector.val() === 23){
 		$('#facultySelector').val(0);
-	}else if(userTypeSelector.val() != 23 && $('#facultyFields').is(':hidden') == true){
+	}else if(userTypeSelector.val() !== 23 && $('#facultyFields').is(':hidden') == true){
 		$('#facultyFields').show();
 	}
 });
@@ -1224,7 +1231,7 @@ $('#userTypeSelector').change(function(){
 	var typeId = document.getElementById('userTypeSelector');
 	function registryChangeClass(){
 		var registryNo = document.getElementById('userEdit_registryNo');
-		if(typeId.value == 1 || typeId.value == 2 || typeId.value == 5) {
+		if(typeId.value === 1 || typeId.value === 2 || typeId.value === 5) {
 			registryNo.setAttribute('class', 'required');
 		} else {
 			registryNo.setAttribute('class', '');
@@ -1236,7 +1243,7 @@ $('#userTypeSelector').change(function(){
 	var documentTypeId = document.getElementById('documentTypeSelector');
 	function documentNumberChangeClass(){
 		var documentNo = document.getElementById('userEdit_documentNumber');
-		if(documentTypeId.value != <?=UFbean_Sru_User::DOC_TYPE_NONE?>) {
+		if(documentTypeId.value !== <?=UFbean_Sru_User::DOC_TYPE_NONE?>) {
 			documentNo.setAttribute('class', 'necessary');
 		} else {
 			documentNo.setAttribute('class', '');
@@ -1248,9 +1255,9 @@ $('#userTypeSelector').change(function(){
 	var nationality = document.getElementById('userEdit_nationalityName');
 	function peselChangeClass(){
 		var pesel = document.getElementById('userEdit_pesel');
-		if(nationality.value.toLowerCase() == '<?=UFbean_Sru_User::NATIONALITY_PL?>'){
+		if(nationality.value.toLowerCase() === '<?=UFbean_Sru_User::NATIONALITY_PL?>'){
 			pesel.setAttribute('class', 'necessary');
-		}else{
+		} else {
 			pesel.setAttribute('class', '');
 		}
 	}
@@ -1260,7 +1267,7 @@ $('#userTypeSelector').change(function(){
 	var name = document.getElementById('userEdit_name');
 	function changeSex() {
 		var sex = document.getElementById('userEdit_sex');
-		if (name.value.slice(-1) == 'a') {
+		if (name.value.slice(-1) === 'a') {
 			sex.value = 1;
 		} else {
 			sex.value = 0;

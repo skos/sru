@@ -89,7 +89,12 @@ extends UFmap {
 		'locationAlias' => array('textMin'=>1),
 		'locationId' => array('intMin'=>1),
 		'registryNo' => array('regexp'=>'^(|[0-9]{5,6})$'),
-		'nationalityName' => array('regexp'=>'^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]*$'),
+		'nationalityName' => array('textMax'=>50, 'regexp'=>'^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]*$'),
+		'documentNumber' => array('textMax'=>20),
+		'pesel' => array('textMax'=>11),
+		'birthPlace' => array('textMax'=>100),
+		'userPhoneNumber' => array('textMax'=>20),
+		'guardianPhoneNumber' => array('textMax'=>20),
 	);
 	protected $pk = 'id';
 }

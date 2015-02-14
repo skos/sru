@@ -16,5 +16,8 @@ extends UFmap {
 	protected $tables = array(
 		'' => 'countries',
 	);
+	protected $valids = array(
+		'nationality' => array('textMax'=>50, 'regexp'=>'^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+$'),
+	);
 	protected $pk = 'id';
 }
