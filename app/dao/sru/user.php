@@ -2,26 +2,26 @@
 /**
  * uzytkownik
  */
-clASs UFdao_Sru_User
+class UFdao_Sru_User
 extends UFdao {
-
-	public function getByLoginPASsword($id, $pASsword) {
+	
+	public function getByLoginPassword($login, $password) {
 		$mapping = $this->mapping('get');
 
 		$query = $this->prepareSelect($mapping);
-		$query->WHERE($mapping->id, $id);
-		$query->WHERE($mapping->pASsword, $pASsword);
-		$query->WHERE($mapping->active, true);
-
+		$query->where($mapping->login, $login);
+		$query->where($mapping->password, $password);
+		$query->where($mapping->active, true);
+		
 		return $this->doSelectFirst($query);
 	}
-
-	public function getByLogin($id) {
+	
+	public function getByLogin($login) {
 		$mapping = $this->mapping('get');
 
 		$query = $this->prepareSelect($mapping);
-		$query->WHERE($mapping->id, $id);
-
+		$query->where($mapping->login, $login);
+		
 		return $this->doSelectFirst($query);
 	}
 
@@ -29,8 +29,8 @@ extends UFdao {
 		$mapping = $this->mapping('get');
 
 		$query = $this->prepareSelect($mapping);
-		$query->WHERE($mapping->registryNo, $registryNo);
-
+		$query->where($mapping->registryNo, $registryNo);
+		
 		return $this->doSelectFirst($query);
 	}
 
@@ -38,8 +38,8 @@ extends UFdao {
 		$mapping = $this->mapping('get');
 
 		$query = $this->prepareSelect($mapping);
-		$query->WHERE($mapping->pesel, $pesel);
-
+		$query->where($mapping->pesel, $pesel);
+		
 		return $this->doSelectFirst($query);
 	}
 
@@ -53,49 +53,49 @@ extends UFdao {
 			return $this->cacheGet($key);
 		} catch (UFex_Core_DataNotFound $e) {
 			$mapping = $this->mapping('search');
-
+			
 			$query = $this->prepareSelect($mapping);
-			$query->ORDER($mapping->dormitoryId, $query->ASC);
-			$query->ORDER($mapping->room, $query->ASC);
-			$query->ORDER($mapping->surnameSearch, $query->ASC);
-			$query->ORDER($mapping->nameSearch, $query->ASC);
-			$query->ORDER($mapping->active, $query->DESC);
+			$query->order($mapping->dormitoryId, $query->ASC);
+			$query->order($mapping->room, $query->ASC);
+			$query->order($mapping->surnameSearch, $query->ASC);
+			$query->order($mapping->nameSearch, $query->ASC);
+			$query->order($mapping->active, $query->DESC);
                         
                         $acl = UFra::factory('UFacl_SruWalet_Admin');
                         if(!$acl->view()) {
-                             $query->WHERE($mapping->active,TRUE);
+                             $query->where($mapping->active,TRUE);
                         }
 			if ($studentsOnly) {
-				$query->WHERE($mapping->typeId, UFtpl_Sru_User::$userTypesLimit, $query->LTE); //sami studenci i turyści
+				$query->where($mapping->typeId, UFtpl_Sru_User::$userTypesLimit, $query->LTE); //sami studenci i turyści
 			}
-			foreach ($params AS $var=>$val) {
+			foreach ($params as $var=>$val) {
 				switch ($var) {
-					cASe 'surname':
-					cASe 'name':
-					cASe 'id':
-					cASe 'email':
-					cASe 'room':
+					case 'surname':
+					case 'name':
+					case 'login':
+					case 'email':
+					case 'room':
 						$val = str_replace('%', '', $val);
 						$val = str_replace('*', '%', $val);
-						$query->WHERE($var.'Search', $val, UFlib_Db_Query::LIKE);
+						$query->where($var.'Search', $val, UFlib_Db_Query::LIKE);
 						break;
-					cASe 'dormitory':
-					cASe 'typeId':
+					case 'dormitory':
+					case 'typeId':
 						if ($val == UFbean_Sru_User::DB_STUDENT_MAX) {
-							$query->WHERE($var, UFbean_Sru_User::DB_STUDENT_MAX, UFlib_Db_Query::LTE);
-							$query->WHERE($var, UFbean_Sru_User::DB_STUDENT_MIN, UFlib_Db_Query::GTE);
+							$query->where($var, UFbean_Sru_User::DB_STUDENT_MAX, UFlib_Db_Query::LTE);
+							$query->where($var, UFbean_Sru_User::DB_STUDENT_MIN, UFlib_Db_Query::GTE);
 							break;
 						}
 						if ($val == UFbean_Sru_User::DB_TOURIST_MAX) {
-							$query->WHERE($var, UFbean_Sru_User::DB_TOURIST_MAX, UFlib_Db_Query::LTE);
-							$query->WHERE($var, UFbean_Sru_User::DB_TOURIST_MIN, UFlib_Db_Query::GTE);
+							$query->where($var, UFbean_Sru_User::DB_TOURIST_MAX, UFlib_Db_Query::LTE);
+							$query->where($var, UFbean_Sru_User::DB_TOURIST_MIN, UFlib_Db_Query::GTE);
 							break;
 						}
-					cASe 'active':
-					cASe 'registryNo':
-					cASe 'pesel':
+					case 'active':
+					case 'registryNo':
+					case 'pesel':
 					default:
-						$query->WHERE($var, $val);
+						$query->where($var, $val);
 				}
 			}
 
@@ -113,17 +113,17 @@ extends UFdao {
 			$mapping = $this->mapping('search');
 
 			$query = $this->prepareSelect($mapping);
-			$query->WHERE($mapping->typeId, UFtpl_Sru_User::$userTypesLimit, $query->LTE); //sami studenci i turyści
-			$query->ORDER($mapping->surnameSearch, $query->ASC);
-			foreach ($params AS $var=>$val) {
+			$query->where($mapping->typeId, UFtpl_Sru_User::$userTypesLimit, $query->LTE); //sami studenci i turyści
+			$query->order($mapping->surnameSearch, $query->ASC);
+			foreach ($params as $var=>$val) {
 				switch ($var) {
-					cASe 'surname':
+					case 'surname':
 						$val = str_replace('%', '', $val);
 						$val = str_replace('*', '%', $val);
-						$query->WHERE($var.'Search', $val, UFlib_Db_Query::LIKE);
+						$query->where($var.'Search', $val, UFlib_Db_Query::LIKE);
 						break;
 					default:
-						$query->WHERE($var, $val);
+						$query->where($var, $val);
 				}
 			}
 
@@ -138,21 +138,21 @@ extends UFdao {
 		$mapping = $this->mapping('list');
 
 		$query = $this->prepareSelect($mapping);
-		$query->WHERE($mapping->locationId, $roomId);
-		$query->ORDER($mapping->surname);
-
+		$query->where($mapping->locationId, $roomId);
+		$query->order($mapping->surname);
+		
 		return $this->doSelect($query);
 	}
 	
 	public function listByRoomActiveOnly($roomId) {
 	
 		$mapping = $this->mapping('list');
-
+		
 		$query = $this->prepareSelect($mapping);
-		$query->WHERE($mapping->locationId, $roomId);
-		$query->WHERE($mapping->active, true);
-		$query->ORDER($mapping->surname);
-
+		$query->where($mapping->locationId, $roomId);
+		$query->where($mapping->active, true);
+		$query->order($mapping->surname);
+		
 		return $this->doSelect($query);
 	}
 
@@ -160,9 +160,9 @@ extends UFdao {
 		$mapping = $this->mapping('list');
 
 		$query = $this->prepareSelect($mapping);
-		$query->WHERE($mapping->email, $email);
+		$query->where($mapping->email, $email);
 		if (is_bool($active)) {
-			$query->WHERE($mapping->active, $active);
+			$query->where($mapping->active, $active);
 		}
 
 		return $this->doSelect($query);
@@ -172,9 +172,9 @@ extends UFdao {
 		$mapping = $this->mapping('get');
 
 		$query = $this->prepareSelect($mapping);
-		$query->WHERE($mapping->email, $email);
+		$query->where($mapping->email, $email);
 		if (is_bool($active)) {
-			$query->WHERE($mapping->active, $active);
+			$query->where($mapping->active, $active);
 		}
 
 		return $this->doSelectFirst($query);
@@ -184,8 +184,8 @@ extends UFdao {
 		$mapping = $this->mapping('stats');
 
 		$query = $this->prepareSelect($mapping);
-		$query->WHERE($mapping->active, true);
-
+		$query->where($mapping->active, true);
+		
 		return $this->doSelect($query);
 	}
 
@@ -193,15 +193,15 @@ extends UFdao {
 		$mapping = $this->mapping('list');
 
 		$query = $this->prepareSelect($mapping);
-		$query->WHERE($mapping->dormitoryId, $id);
-		$query->WHERE($mapping->active, true);
+		$query->where($mapping->dormitoryId, $id);
+		$query->where($mapping->active, true);
 		if ($studentsOnly) {
-			$query->WHERE($mapping->typeId, UFtpl_Sru_User::$userTypesLimit, $query->LTE); //sami studenci i turyści
+			$query->where($mapping->typeId, UFtpl_Sru_User::$userTypesLimit, $query->LTE); //sami studenci i turyści
 		}
-		$query->ORDER($mapping->overLimit);
-		$query->ORDER($mapping->surname);
-		$query->ORDER($mapping->name);
-
+		$query->order($mapping->overLimit);
+		$query->order($mapping->surname);
+		$query->order($mapping->name);
+		
 		return $this->doSelect($query);
 	}
 	
@@ -217,14 +217,14 @@ extends UFdao {
 			$mapping->modifiedAt => NOW,
 		);
 		$query->values($mapping->columns(), $data,  $mapping->columnTypes());
-		$query->WHERE(
+		$query->where(
 			$mapping->column('locationId').' IN (SELECT id FROM locations WHERE dormitory_id='.$dormitoryId.')',
 			null, $query->SQL
 		);
-		$query->WHERE($mapping->typeId, UFtpl_Sru_User::$userTypesLimit, $query->LTE); //sami studenci i turyści
-		$query->WHERE($mapping->active, true);
-		$query->WHERE($mapping->toDeactivate, false);
-
+		$query->where($mapping->typeId, UFtpl_Sru_User::$userTypesLimit, $query->LTE); //sami studenci i turyści
+		$query->where($mapping->active, true);
+		$query->where($mapping->toDeactivate, false);
+		
 		return $this->doUpdate($query);
 	}
 	
@@ -232,8 +232,8 @@ extends UFdao {
 		$mapping = $this->mapping('list');
 
 		$query = $this->prepareSelect($mapping);
-		$query->WHERE($mapping->active, true);
-		$query->WHERE($mapping->toDeactivate, true);
+		$query->where($mapping->active, true);
+		$query->where($mapping->toDeactivate, true);
 		$query->limit($limit);
 
 		return $this->doSelect($query);
@@ -271,14 +271,14 @@ extends UFdao {
 		$mapping = $this->mapping('regbook');
 		$query = $this->prepareSelect($mapping);
 		
-		$query->raw("SELECT id, name, surname, active, aliAS, study_year_id, EXTRACT (EPOCH FROM birth_date) AS birth_date, pesel, address, registry_no, type_id, faculty_id, (SELECT aliAS FROM faculties WHERE id = faculty_id) AS faculty_aliAS, document_type, document_number, EXTRACT (EPOCH FROM referral_start) AS referral_start, EXTRACT (EPOCH FROM referral_end) AS referral_end, EXTRACT (EPOCH FROM lASt_location_change) AS lASt_location_change, EXTRACT (EPOCH FROM modified_at) AS modified_at FROM
-					(SELECT u.id, u.name, u.surname, u.active, l.aliAS, u.study_year_id, u.birth_date, u.pesel, u.address, u.registry_no, u.type_id, u.faculty_id, u.document_type, u.document_number, u.referral_start, u.referral_end, u.lASt_location_change, u.modified_at
+		$query->raw("SELECT id, name, surname, active, alias, study_year_id, EXTRACT (EPOCH FROM birth_date) AS birth_date, pesel, address, registry_no, type_id, faculty_id, (SELECT alias from faculties WHERE id = faculty_id) AS faculty_alias, document_type, document_number, EXTRACT (EPOCH FROM referral_start) AS referral_start, EXTRACT (EPOCH FROM referral_end) AS referral_end, EXTRACT (EPOCH FROM last_location_change) AS last_location_change, EXTRACT (EPOCH FROM modified_at) AS modified_at FROM
+					(SELECT u.id, u.name, u.surname, u.active, l.alias, u.study_year_id, u.birth_date, u.pesel, u.address, u.registry_no, u.type_id, u.faculty_id, u.document_type, u.document_number, u.referral_start, u.referral_end, u.last_location_change, u.modified_at
 					FROM users u, locations l WHERE l.dormitory_id=" . $id . " AND u.referral_end > '".$activeSince."' AND u.location_id = l.id ".
-					"UNION SELECT u.user_id AS id, u.name, u.surname, u.active, l.aliAS, u.study_year_id, u.birth_date, u.pesel, u.address, u.registry_no, u.type_id, u.faculty_id, u.document_type::smallint, u.document_number, u.referral_start, u.referral_end, u.lASt_location_change, u.modified_at
+					"UNION SELECT u.user_id AS id, u.name, u.surname, u.active, l.alias, u.study_year_id, u.birth_date, u.pesel, u.address, u.registry_no, u.type_id, u.faculty_id, u.document_type::smallint, u.document_number, u.referral_start, u.referral_end, u.last_location_change, u.modified_at
 					FROM users_history u, locations l WHERE l.dormitory_id=" . $id . " AND u.referral_end > '".$activeSince."' AND u.location_id = l.id)
 					AS foo
-					ORDER BY id, modified_at DESC, lASt_location_change DESC;");
-
+					ORDER BY id, modified_at DESC, last_location_change DESC;");
+		
 		return $this->doSelect($query);
 	}
 
@@ -286,10 +286,10 @@ extends UFdao {
 		$mapping = $this->mapping('list');
 
 		$query = $this->prepareSelect($mapping);
-		$query->WHERE($mapping->dormitoryId, $id);
-		$query->WHERE($mapping->active, true);
-		$query->WHERE($mapping->typeId, UFbean_Sru_User::DB_TOURIST_MAX, UFlib_Db_Query::LTE);
-		$query->WHERE(
+		$query->where($mapping->dormitoryId, $id);
+		$query->where($mapping->active, true);
+		$query->where($mapping->typeId, UFbean_Sru_User::DB_TOURIST_MAX, UFlib_Db_Query::LTE);
+		$query->where(
 			'('.$mapping->column('nationality').' IS NULL
 				OR '.$mapping->column('address').' IS NULL
 				OR '.$mapping->column('address').' = \'\'
@@ -300,9 +300,9 @@ extends UFdao {
 			)',
 			null, $query->SQL
 		);
-		$query->ORDER($mapping->surname);
-		$query->ORDER($mapping->name);
-
+		$query->order($mapping->surname);
+		$query->order($mapping->name);
+		
 		return $this->doSelect($query);
 	}
 	
@@ -310,21 +310,21 @@ extends UFdao {
 	 * Funkcja konstruująca zapytanie wyciągające 10 ostatnio zmodyfikowanych/dodanych użytkowników.
 	 *
 	 */
-	public function listLAStModified($id = null, $page=1, $perPage=10, $overFetch=0) {
+	public function listLastModified($id = null, $page=1, $perPage=10, $overFetch=0) {
 		$mapping = $this->mapping('fullHistory');
 		$query = $this->prepareSelect($mapping);
 		
 		$query->raw("SELECT EXTRACT (EPOCH FROM max(modifieda)) AS modifiedat, 
-					id, name, surname, id, banned, active FROM
-					(SELECT id , name, surname, id, banned, active, modified_at AS modifieda
+					id, name, surname, login, banned, active FROM
+					(SELECT id , name, surname, login, banned, active, modified_at AS modifieda
 					FROM users WHERE modified_by=" . $id . 
-					"UNION SELECT user_id AS id, name, surname, id, 
+					"UNION SELECT user_id AS id, name, surname, login, 
 						(SELECT banned FROM users WHERE id = user_id) AS banned, 
 						(SELECT active FROM users WHERE id = user_id) AS active, 
 						modified_at AS modifieda 
 					FROM users_history WHERE modified_by=" . $id . ")
 					AS foo
-					GROUP BY id, name, surname, id, banned, active 
+					GROUP BY id, name, surname, login, banned, active 
 					ORDER BY modifiedat DESC LIMIT 10;");
 
 		return $this->doSelect($query);
