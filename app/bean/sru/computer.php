@@ -32,7 +32,8 @@ extends UFbean_Common {
 		'typeId',
 	);
 	
-	protected $typeToUser = array(
+	static protected $typeToUser = array(
+		self::TYPE_TOURIST => array(UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL),
 		self::TYPE_SERVER => array(UFbean_Sru_User::TYPE_SKOS),
 		self::TYPE_MACHINE => array(UFbean_Sru_User::TYPE_SKOS),
 		self::TYPE_INTERFACE => array(UFbean_Sru_User::TYPE_SKOS, UFbean_Sru_User::TYPE_ORGANIZATION),
@@ -40,6 +41,33 @@ extends UFbean_Common {
 		self::TYPE_ADMINISTRATION => array(UFbean_Sru_User::TYPE_SKOS, UFbean_Sru_User::TYPE_ADMINISTRATION),
 		self::TYPE_ORGANIZATION => array(UFbean_Sru_User::TYPE_SKOS, UFbean_Sru_User::TYPE_ORGANIZATION),
 	);
+	
+	static protected $typeToUserExclusions = array(
+		self::TYPE_STUDENT => array(UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL, UFbean_Sru_User::TYPE_ORGANIZATION, UFbean_Sru_User::TYPE_ADMINISTRATION, UFbean_Sru_User::TYPE_SKOS),
+		self::TYPE_STUDENT_AP => array(UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL, UFbean_Sru_User::TYPE_ORGANIZATION, UFbean_Sru_User::TYPE_ADMINISTRATION, UFbean_Sru_User::TYPE_SKOS),
+		self::TYPE_STUDENT_OTHER => array(UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL, UFbean_Sru_User::TYPE_ORGANIZATION, UFbean_Sru_User::TYPE_ADMINISTRATION, UFbean_Sru_User::TYPE_SKOS),
+		self::TYPE_SERVER_VIRT => array(UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL),
+	);
+	
+	static public $defaultUserToComputerType = array(
+		UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL => UFbean_Sru_Computer::TYPE_TOURIST,
+		UFbean_Sru_User::TYPE_SKOS => UFbean_Sru_Computer::TYPE_SERVER,
+		UFbean_Sru_User::TYPE_ADMINISTRATION => UFbean_Sru_Computer::TYPE_ADMINISTRATION,
+		UFbean_Sru_User::TYPE_ORGANIZATION => UFbean_Sru_Computer::TYPE_ORGANIZATION,
+	);
+	
+	public static function getHostType($user, $computer) {
+		if (array_key_exists($computer->typeId, self::$typeToUser) && in_array($user->typeId, self::$typeToUser[$computer->typeId])
+			&& (!array_key_exists($computer->typeId, self::$typeToUserExclusions) || !in_array($user->typeId, self::$typeToUserExclusions[$computer->typeId]))) {
+			$typeId = $computer->typeId;
+		} else if (array_key_exists($user->typeId, self::$defaultUserToComputerType)) {
+			$typeId = self::$defaultUserToComputerType[$user->typeId];
+		} else {
+			$typeId = self::TYPE_STUDENT;
+		}
+
+		return $typeId;
+	}
 
 	protected function validateHost($val, $change) {
 		if ($change && $this->_srv->get('req')->post->is('computerEdit')) {
@@ -323,20 +351,20 @@ extends UFbean_Common {
 	}
 	
 	protected function validateTypeId($val, $change) {
-		if (array_key_exists($val, $this->typeToUser)) {
+		if (array_key_exists($val, self::$typeToUser)) {
 			try {
 				$user = UFra::factory('UFbean_Sru_User'); 
 				$user->getByPK((int)$this->_srv->get('req')->get->userId);
-				if (!in_array($user->typeId, $this->typeToUser[$val])) {
-					return 'notSkos';
+				if (!in_array($user->typeId, self::$typeToUser[$val])) {
+					return 'wrongHostType';
 				}
 			} catch (UFex_Core_DataNotFound $e) {
 				$computer = UFra::factory('UFbean_Sru_Computer'); 
 				$computer->getByPK((int)$this->_srv->get('req')->get->computerId);
 				$user = UFra::factory('UFbean_Sru_User'); 
 				$user->getByPK($computer->userId);
-				if (!in_array($user->typeId, $this->typeToUser[$val])) {
-					return 'notSkos';
+				if (!in_array($user->typeId, self::$typeToUser[$val])) {
+					return 'wrongHostType';
 				}
 			} catch (UFex_Dao_NotFound $e) {
 			}

@@ -123,9 +123,18 @@ extends UFact {
 					}catch(Exception $e){
 						//po prostu ma nic nie wyświetlić, gdy coś się nie uda, można dorobić obsługę Exceptiona w tym miejscu
 					}
+				} else {
+					$comps->listByUserId($bean->id);
+					foreach ($comps as $comp) {
+						$computer = UFra::factory('UFbean_Sru_Computer');
+						$computer->getByPK($comp['id']);
+						$computer->typeId = UFbean_Sru_Computer::getHostType($bean, $computer);
+						$computer->locationId = $bean->locationId;
+						$computer->modifiedById = $waletAdmin;
+						$computer->modifiedAt = NOW;
+						$computer->save();
+					}					
 				}
-				$typeId = (array_key_exists($bean->typeId, UFtpl_Sru_Computer::$userToComputerType) ? UFtpl_Sru_Computer::$userToComputerType[$bean->typeId] : UFbean_Sru_Computer::TYPE_STUDENT);
-				$comps->updateLocationAndTypeByUserId($bean->id, $bean->locationId, $typeId, $waletAdmin);
 				$this->commit();
 			} catch (UFex_Dao_NotFound $e) {
 				// uzytkownik nie ma komputerow

@@ -423,67 +423,6 @@ extends UFdao {
 
 		return $this->doSelect($query);
 	}
-	
-	/**
-	 * 
-	 * Aktualizuje typ i lokalizację komputera
-	 * @param int $userId id użytkownika, do którego należy komputer
-	 * @param int $location id pokoju, do którego przenoszony jest komputer
-	 * @param int $typeId id typu, jak przypisywany jest komputerowi
-	 * @param int $modifiedBy id osoby dokonującej zmian
-	 */
-	public function updateLocationAndTypeByUserId($userId, $location, $typeId, $modifiedBy = null){
-		$mapping = $this->mapping('set');
-
-		$query = UFra::factory('UFlib_Db_Query');
-		$query->tables($mapping->tables());
-		$query->joins($mapping->joins(), $mapping->joinOns());
-		$data = array(
-			$mapping->typeId => $typeId,
-			$mapping->locationId => $location,
-			$mapping->modifiedById => $modifiedBy,
-			$mapping->modifiedAt => NOW,
-		);
-		$query->values($mapping->columns(), $data,  $mapping->columnTypes());
-		$query->where($mapping->userId, $userId);
-		$query->where($mapping->active, true);
-		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_SERVER, $query->NOT_EQ);
-		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_SERVER_VIRT, $query->NOT_EQ);
-		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_MACHINE, $query->NOT_EQ);
-		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_INTERFACE, $query->NOT_EQ);
-		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_NOT_SKOS_DEVICE, $query->NOT_EQ);
-		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_ADMINISTRATION, $query->NOT_EQ);
-		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_ORGANIZATION, $query->NOT_EQ);
-		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_STUDENT_OTHER, $query->NOT_EQ);
-		$query->where($mapping->typeId, UFbean_Sru_Computer::TYPE_STUDENT_AP, $query->NOT_EQ);
-		$query->where(
-			'('.$mapping->column('typeId').'!='.$typeId.' OR '.$mapping->column('locationId').'!='.$location.')',
-			null, $query->SQL
-		);
-
-		$return = $this->doUpdate($query);
-
-		$query = UFra::factory('UFlib_Db_Query');
-		$query->tables($mapping->tables());
-		$query->joins($mapping->joins(), $mapping->joinOns());
-		$data = array(
-			$mapping->locationId => $location,
-			$mapping->modifiedById => $modifiedBy,
-			$mapping->modifiedAt => NOW,
-		);
-		$query->values($mapping->columns(), $data,  $mapping->columnTypes());
-		$query->where($mapping->userId, $userId);
-		$query->where($mapping->active, true);
-		$query->where(
-			'('.$mapping->column('typeId').'!='.UFbean_Sru_Computer::TYPE_SERVER.' OR '.$mapping->column('typeId').'!='.UFbean_Sru_Computer::TYPE_SERVER_VIRT.' OR '.$mapping->column('typeId').'!='.UFbean_Sru_Computer::TYPE_MACHINE.' OR '.$mapping->column('typeId').'!='.UFbean_Sru_Computer::TYPE_INTERFACE.' OR '.$mapping->column('typeId').'!='.UFbean_Sru_Computer::TYPE_NOT_SKOS_DEVICE.')',
-			null, $query->SQL
-		);
-		$query->where($mapping->locationId, $location, $query->NOT_EQ);
-
-		$return = $return && $this->doUpdate($query);
-
-		return $return;
-	}
 
 	/**
 	 * Aktualizuje opiekuna hosta
@@ -639,38 +578,37 @@ extends UFdao {
 	 * @param int $modifiedBy id wprowadzającego zmiany
 	 * @return bool sukces lub porażka
 	 */
-	public function setNewIp($comp, $modifiedBy = null, $newName = ''){
+	private function setNewIp($comp, $modifiedBy = null, $newName = ''){
 		$user = UFra::factory('UFbean_Sru_User');
 		$user->getByPK($comp['userId']);
 		$ip = UFra::factory('UFbean_Sru_Ipv4');
 		try{
 			$ip->getFreeByDormitoryIdAndVlan($user->dormitoryId, null, true);
 		}catch (Exception $e){
-			//UFra::error("Nie znaleziono wolnego IP: " . $e);
 			return true;
 		}
+		
+		$computer = UFra::factory('UFbean_Sru_Computer');
+		$computer->getByPK($comp['id']);
+		
+		$typeId = UFbean_Sru_Computer::getHostType($user, $computer);
+		
 		$mapping = $this->mapping('set');
-		$data = array();
+		
+		$data = array(
+			$mapping->modifiedById => $modifiedBy,
+			$mapping->modifiedAt => NOW,
+			$mapping->ip => $ip->ip,
+			$mapping->active => true,
+			$mapping->availableTo => null,
+			$mapping->lastActivated => NOW,
+			$mapping->typeId => $typeId,
+			$mapping->locationId => $user->locationId,
+		);
 		
 		if($newName != ''){
-			$data = array(
-				$mapping->host => $newName,
-				$mapping->modifiedById => $modifiedBy,
-				$mapping->modifiedAt => NOW,
-				$mapping->ip => $ip->ip,
-				$mapping->active => true,
-				$mapping->availableTo => null,
-				$mapping->lastActivated => NOW,
-			);
-		} else {
-			$data = array(
-				$mapping->modifiedById => $modifiedBy,
-				$mapping->modifiedAt => NOW,
-				$mapping->ip => $ip->ip,
-				$mapping->active => true,
-				$mapping->availableTo => null,
-				$mapping->lastActivated => NOW,
-			);
+			$data[$mapping->host] = $newName;
+			$data[$mapping->domainName] = $newName.'.'.$computer->domainSuffix;
 		}
 
 		$query = $this->prepareUpdate($mapping, $data);
@@ -694,30 +632,31 @@ extends UFdao {
 	 * @param int $modifiedBy id wprowadzającego zmiany
 	 * @return bool sukces lub porażka
 	 */
-	public function restoreWithOldIp($comp, $modifiedBy = null, $newName = ''){
+	private function restoreWithOldIp($comp, $modifiedBy = null, $newName = ''){
 		$user = UFra::factory('UFbean_Sru_User');
 		$user->getByPK($comp['userId']);
 		$mapping = $this->mapping('set');	
-		$data = array();
+		
+		$computer = UFra::factory('UFbean_Sru_Computer');
+		$computer->getByPK($comp['id']);
+		
+		$typeId = UFbean_Sru_Computer::getHostType($user, $computer);
+		
+		$data = array(
+			$mapping->modifiedById => $modifiedBy,
+			$mapping->modifiedAt => NOW,
+			$mapping->active => true,
+			$mapping->availableTo => null,
+			$mapping->lastActivated => NOW,
+			$mapping->typeId => $typeId,
+			$mapping->locationId => $user->locationId,
+		);
 		
 		if($newName != ''){
-			$data = array(
-				$mapping->host => $newName,
-				$mapping->modifiedById => $modifiedBy,
-				$mapping->modifiedAt => NOW,
-				$mapping->active => true,
-				$mapping->availableTo => null,
-				$mapping->lastActivated => NOW,
-			);
-		} else {
-			$data = array(
-				$mapping->modifiedById => $modifiedBy,
-				$mapping->modifiedAt => NOW,
-				$mapping->active => true,
-				$mapping->availableTo => null,
-				$mapping->lastActivated => NOW,
-			);
+			$data[$mapping->host] = $newName;
+			$data[$mapping->domainName] = $newName.'.'.$computer->domainSuffix;
 		}
+		
 		$query = $this->prepareUpdate($mapping, $data);
 		$query->where($mapping->host, $comp['host']);
 		$query->where($mapping->userId, $comp['userId']);

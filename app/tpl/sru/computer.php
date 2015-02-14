@@ -43,13 +43,6 @@ extends UFtpl_Common {
 		45 => 'Urządzenie spoza stanu',
 	);
 
-	static public $userToComputerType = array(
-		UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL => UFbean_Sru_Computer::TYPE_TOURIST,
-		UFbean_Sru_User::TYPE_SKOS => UFbean_Sru_Computer::TYPE_SERVER,
-		UFbean_Sru_User::TYPE_ADMINISTRATION => UFbean_Sru_Computer::TYPE_ADMINISTRATION,
-		UFbean_Sru_User::TYPE_ORGANIZATION => UFbean_Sru_Computer::TYPE_ORGANIZATION,
-	);
-
 	protected $errors = array(
 		'host' => 'Nieprawidłowa nazwa',
 		'host/duplicated' => 'Nazwa jest już zajęta',
@@ -73,7 +66,7 @@ extends UFtpl_Common {
 		'masterHostId/null' => 'Ten typ hosta musi mieć ustawiony serwer nadrzędny',
 		'skosCarerId/null' => 'Serwer musi posiadać opiekuna',
 		'waletCarerId/null' => 'Host administracji musi posiadać opiekuna',
-		'typeId/notSkos' => 'Właścicielem tego typu hosta nie może być ten typ użytkownika',
+		'typeId/wrongHostType' => 'Właścicielem tego typu hosta nie może być ten typ użytkownika',
 		'deviceModelId' => 'Serwer fizyczny i urządzenie muszą mieć wybrany model',
 	);
 
@@ -724,7 +717,7 @@ activateChkB.onclick = function() {
 			echo $form->typeId('Typ', array(
 				'type' => $form->SELECT,
 				'labels' => $form->_labelize(self::$computerTypes),
-				'value' => !is_null($typeId) ? $typeId : (array_key_exists($user->typeId, self::$userToComputerType) ? self::$userToComputerType[$user->typeId] : UFbean_Sru_Computer::TYPE_STUDENT),
+				'value' => !is_null($typeId) ? $typeId : (array_key_exists($user->typeId, UFbean_Sru_Computer::$defaultUserToComputerType) ? UFbean_Sru_Computer::$defaultUserToComputerType[$user->typeId] : UFbean_Sru_Computer::TYPE_STUDENT),
 			));
 			if (!is_null($deviceModels)) {
 				$tmp = array();
