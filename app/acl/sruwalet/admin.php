@@ -76,4 +76,14 @@ extends UFlib_ClassWithService {
 	public function logout() {
 		return $this->_loggedIn();
 	}
+	
+	public function addChangeActiveDate(){
+		$sess = $this->_srv->get('session');
+		
+		if ($this->_loggedIn() && $sess->is('typeIdWalet') && $sess->typeIdWalet == self::HEAD) {
+			return true;
+		} else{
+			return false;
+		}
+	}
 }

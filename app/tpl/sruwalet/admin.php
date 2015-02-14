@@ -110,6 +110,11 @@ $(document).ready(function()
 		echo '<p><em>Telefon:</em> '.$d['phone'].'</p>';
 		echo '<p><em>Jabber:</em> '.$d['jid'].'</p>';
 		echo '<p><em>Adres:</em> '.$d['address'].'</p>';
+		if(!is_null($d['activeTo'])) {
+			echo '<p><em>Data dezaktywacji:</em> '.date(self::TIME_YYMMDD, $d['activeTo']).'</p>';
+		} else {
+			echo '<p><em>Data dezaktywacji:</em>Data dezaktywacji nie została podana</p>';
+		}
 	}
 
 	public function listDorms(array $d, $dormList) {
@@ -129,6 +134,8 @@ $(document).ready(function()
 	public function titleAdd(array $d) {
 		echo 'Dodanie nowego administratora';
 	}		
+	
+	private $instrukcjaObslugiPolaAktywnyDo = 'Wypełnia Kierownik OS. Data w formacie YYYY-MM-DD<br/>Możliwości:<br/>1. Brak daty - administrator nigdy nie zostanie zdezaktywowany automatycznie.<br />2. Data >= now() - administrator zostanie zdezaktywowany w danym dniu.';
 	public function formAdd(array $d, $dormitories) {
 		if (!isset($d['typeId'])) {
 			$d['typeId'] = 11;
@@ -140,6 +147,9 @@ $(document).ready(function()
 		echo $form->password('Hasło', array('type'=>$form->PASSWORD, 'class'=>'required', 'after'=>UFlib_Helper::displayHint("Hasło musi mieć co najmniej 8 znaków, zawierać co najmniej 1 dużą literę, 1 małą literę, 1 cyfrę i 1 znak specjalny")));
 		echo $form->password2('Powtórz hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
 		echo $form->name('Imię i nazwisko', array('after'=>UFlib_Helper::displayHint("Imię i nazwisko administratora lub inne oznaczenie."), 'class'=>'required')); 
+		if($this->_srv->get('acl')->sruWalet('admin', 'addChangeActiveDate')) {
+			 echo $form->activeTo('Aktywny do', array('type' => $form->CALENDER, 'after'=> UFlib_Helper::displayHint($this->instrukcjaObslugiPolaAktywnyDo)));
+		}
 		echo $form->typeId('Uprawnienia', array( 
 			'type' => $form->SELECT, 
 			'labels' => $form->_labelize(UFtpl_SruWalet_Admin::$adminTypes), 
@@ -184,13 +194,23 @@ $(document).ready(function()
 	}
 
 	public function formEdit(array $d, $dormitories, $dormList, $advanced=false) {
+		if(!is_null($d['activeTo'])){
+			$d['activeTo'] = date(self::TIME_YYMMDD, $d['activeTo']);
+		}else{
+			$d['activeTo'] = '';
+		}
 		$form = UFra::factory('UFlib_Form', 'adminEdit', $d, $this->errors);
 
 		echo $form->_fieldset();
 		echo $form->name('Imię i nazwisko', array('after'=>UFlib_Helper::displayHint("Imię i nazwisko administratora lub inne oznaczenie."), 'class'=>'required'));
 		echo $form->password('Hasło', array('type'=>$form->PASSWORD, 'class'=>'required', 'after'=>UFlib_Helper::displayHint("Hasło musi mieć co najmniej 8 znaków, zawierać co najmniej 1 dużą literę, 1 małą literę, 1 cyfrę i 1 znak specjalny")));
 		echo $form->password2('Powtórz hasło', array('type'=>$form->PASSWORD, 'class'=>'required'));
-		if($advanced) {
+		if ($this->_srv->get('acl')->sruWalet('admin', 'addChangeActiveDate')) {
+			echo $form->activeTo('Aktywny do', array('type' => $form->CALENDER, 'after'=>UFlib_Helper::displayHint($this->instrukcjaObslugiPolaAktywnyDo)));
+		} else {
+			echo $form->activeTo('Aktywny do', array('disabled' => true, 'after'=>UFlib_Helper::displayHint($this->instrukcjaObslugiPolaAktywnyDo)));
+		}
+		if ($advanced) {
 			echo $form->typeId('Uprawnienia', array( 
 				'type' => $form->SELECT, 
 				'labels' => $form->_labelize(UFtpl_SruWalet_Admin::$adminTypes), 

@@ -198,18 +198,17 @@ $(document).ready(function()
 		echo $form->passwordInner('Hasło wewnętrzne', array('type'=>$form->PASSWORD, 'after'=> UFlib_Helper::displayHint("Hasło do logowania się do systemów SKOS. Musi mieć co najmniej 8 znaków, zawierać co najmniej 1 dużą literę, 1 małą literę, 1 cyfrę i 1 znak specjalny.")));
 		echo $form->passwordInner2('Powtórz hasło wewnętrzne', array('type'=>$form->PASSWORD));
 
-		if($this->_srv->get('acl')->sruAdmin('admin', 'addChangeActiveDate'))
+		if ($this->_srv->get('acl')->sruAdmin('admin', 'addChangeActiveDate')) {
 			echo $form->activeTo('Aktywny do', array('type' => $form->CALENDER, 'after'=>UFlib_Helper::displayHint($this->instrukcjaObslugiPolaAktywnyDo)));
-		else
+		} else {
 			echo $form->activeTo('Aktywny do', array('disabled' => true, 'after'=>UFlib_Helper::displayHint($this->instrukcjaObslugiPolaAktywnyDo)));
-		if($advanced)
-		{
+		}
+		if($advanced) {
 			echo $form->typeId('Uprawnienia', array(
 				'type' => $form->SELECT,
 				'labels' => $form->_labelize(UFtpl_SruAdmin_Admin::$adminTypes),
 			));	
 			echo $form->active('Aktywny', array('type'=>$form->CHECKBOX) );
-
 		}
 		
 		echo $form->_submit('Zapisz');

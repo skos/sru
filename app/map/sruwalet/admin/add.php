@@ -14,6 +14,7 @@ extends UFmap {
 		'email'          => 'email',
 		'address'        => 'address',
 		'modifiedById'   => 'modified_by',
+		'activeTo'	 => 'active_to',
 	);
 	protected $columnTypes = array(
 		'login'          => self::TEXT,
@@ -25,6 +26,7 @@ extends UFmap {
 		'email'          => self::TEXT,
 		'address'        => self::TEXT,
 		'modifiedById'   => self::NULL_INT,
+		'activeTo'	 => self::NULL_TS,
 	);	
 
 	protected $tables = array(
