@@ -244,7 +244,10 @@ extends UFbean_Common {
 			if ($change && $this->data['id'] == $bean->id) {
 				return;
 			}
-			if (!is_null($post) && !$this->data['active'] && !$post['activateHost'] && $this->data['ip'] == $post['ip']) {
+			if (array_key_exists('active', $this->data) && !$this->data['active'] && !is_null($post) && 
+				array_key_exists('activateHost', $post) && !$post['activateHost'] &&
+				array_key_exists('ip', $this->data) && array_key_exists('ip', $post) &&
+				$this->data['ip'] == $post['ip']) {
 				return;
 			}
 			return 'duplicated';
