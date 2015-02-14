@@ -161,15 +161,29 @@ extends UFctl {
 							case 'todeactivate':
 								$get->view = 'users/toDeactivate';
 								break;
+							case 'toremove':
+								$get->view = 'users/toRemove';
+								break;
 						}
 					}
 					break;
-				case 'user':
+				case 'userdeactivate':
 					if ($segCount > 1) {
 						switch ($req->segment(2)) {
 							default:
 								// pojedynczy user - dezaktywacja
-								$get->view = 'user';
+								$get->view = 'user/deactivate';
+								$get->userId = $req->segment(2);
+								break;
+						}
+					}
+					break;
+				case 'userremove':
+					if ($segCount > 1) {
+						switch ($req->segment(2)) {
+							default:
+								// pojedynczy user - usuniecie
+								$get->view = 'user/remove';
 								$get->userId = $req->segment(2);
 								break;
 						}
@@ -203,8 +217,10 @@ extends UFctl {
 			$act = 'Penalty_Amnesty';
 		} elseif ('computer' == $get->view && 'DELETE' == $req->server->REQUEST_METHOD && $acl->sruApi('computer', 'edit')) {
 			$act = 'Computer_Deactivate';
-		} elseif ('user' == $get->view && 'DELETE' == $req->server->REQUEST_METHOD && $acl->sruApi('user', 'edit')) {
+		} elseif ('user/deactivate' == $get->view && 'DELETE' == $req->server->REQUEST_METHOD && $acl->sruApi('user', 'edit')) {
 			$act = 'User_Deactivate';
+		} elseif ('user/remove' == $get->view && 'DELETE' == $req->server->REQUEST_METHOD && $acl->sruApi('user', 'edit')) {
+			$act = 'User_Remove';
 		} elseif ('penalties/timeline' == $get->view) {
 			$act = 'Penalty_Timeline';
 		} elseif ('admins/delete' == $get->view && 'DELETE' == $req->server->REQUEST_METHOD && $acl->sruApi('admin', 'delete')) {
@@ -305,27 +321,30 @@ extends UFctl {
 				}
 			case 'computers/servers':
 				return 'SruApi_ComputersServers';
-				/*if ($acl->sruApi('computer', 'edit')) {
-					if($msg->get('computersDelete/ok')) {
-						return 'SruApi_Status200';
-					} elseif($msg->get('computersDelete/error')) {
-						return 'SruApi_Error403';
-					} else {
-						return 'SruApi_Error404';
-					}
-				} else {
-					return 'SruApi_Error403';
-				}*/
 			case 'users/toDeactivate':
 				if ($acl->sruApi('user', 'show')) {
 					return 'SruApi_UsersToDeactivate';
 				} else {
 					return 'SruApi_Error403';
 				}
-			case 'user':
+			case 'users/toRemove':
+				if ($acl->sruApi('user', 'show')) {
+					return 'SruApi_UsersToRemove';
+				} else {
+					return 'SruApi_Error403';
+				}
+			case 'user/deactivate':
 				if ($msg->get('userDeactivate/ok')) {
 					return 'SruApi_Status200';
 				} elseif ($msg->get('userDeactivate/error')) {
+					return 'SruApi_Error403';
+				} else {
+					return 'SruApi_Error404';
+				}
+			case 'user/remove':
+				if ($msg->get('userRemove/ok')) {
+					return 'SruApi_Status200';
+				} elseif ($msg->get('userRemove/error')) {
 					return 'SruApi_Error403';
 				} else {
 					return 'SruApi_Error404';
@@ -346,13 +365,6 @@ extends UFctl {
 				return 'SruApi_DutyHoursAll';
 			case 'dutyhours/upcoming':
 				return 'SruApi_DutyHoursUpcoming';
-			//czeka na lepsze czasy - okazało się na razie niepotrzebne
-			/*case 'admins/outdated':
-				if( $acl->sruApi('admin', 'show')) {
-					return 'SruApi_AdminsOutdated';
-				} else {
-					return 'SruApi_Error403';
-				}*/
 			case 'firewallexceptions':
 				return 'SruApi_FirewallExceptions';
 			default:

@@ -548,7 +548,7 @@ extends UFdao {
 		
 		return $this->doSelect($query);
 	}
-
+	
 	/**
 	 * Wyswietla komputery, które nie były widzialne w sieci (i aktywowane) od $days dni
 	 * @return bool sukces lub porażka

@@ -2,7 +2,7 @@
 
 BASE=$(dirname "$0")
 LOGFILE="$BASE/../var/log/cron.log"
-PIDFILE="$BASE/../var/run/cron_users_deactivate.pid"
+PIDFILE="$BASE/../var/run/cron_users_remove.pid"
 
 . $BASE/api.sh
 
@@ -14,8 +14,8 @@ fi
 
 echo "$$" > "$PIDFILE"
 
-for id in $(get 'users/todeactivate'); do
-	del "userdeactivate/${id}" && log "${id}" || log "${id} ERROR"
+for id in $(get 'users/toremove'); do
+	del "userremove/${id}" && log "${id}" || log "${id} ERROR"
 done
 
 rm "$PIDFILE"

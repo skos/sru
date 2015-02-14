@@ -91,6 +91,10 @@ extends UFtpl_Common {
 		$d['users']->write('apiUsersToDeactivate');
 	}
 	
+	public function usersToRemove(array $d) {
+		$d['users']->write('apiUsersToDeactivate');
+	}
+	
 	public function adminsOutdated(array $d) {
 		$d['admins']->write('apiAdminsOutdated');
 	}

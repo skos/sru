@@ -13,6 +13,7 @@ extends UFconf {
 	protected $timeForComputersRestoration = 259200; //czas w s, po przekroczeniu którego kompy nie zostaną przywrócone wraz z użytkownikiem; 3 dni
 	protected $passwordValidTime = 5184000;		//czas, po którym następuje wymuszenie zmiany hasła; 60 dni (3600 * 24 * 60)
 	protected $passwordOutdatedWarning = 604800;    //czas, poniżej którego wyświetlane jest ostrzeżenie o zbliżaniu się terminu wygaśnięcia hasła; 7 dni (3600 * 24 * 7)
+	protected $userRemoveAfter = 10;	// czas od ostatniej dezaktywacji, po ktorym użytkownik zostanie calkowicie usuniety, w miesiacachch
 	protected $sruUrl = 'https://sru.ds.pg.gda.pl';
 	protected $allowUnsecureConnections = false; // zezwalaj na połączenia z portu innego niż 443
 	protected $taskSummaryCheckInterval = 300; // liczba sekund, co którą nalezy odświeżyć informację o zadaniach
