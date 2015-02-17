@@ -16,6 +16,7 @@ extends UFmap {
 		'displayOrder' => 'd.display_order',
 		'campusId'	=> 'd.campus',
 		'campusName'	=> 'c.name',
+		'active'	=> 'd.active',
 	);
 	protected $columnTypes = array(
 		'id'           => self::INT,
@@ -29,6 +30,7 @@ extends UFmap {
 		'displayOrder' => self::INT,
 		'campusId'	=> self::INT,
 		'campusName'	=> self::TEXT,
+		'active'	=> self::BOOL,
 	);
 	protected $tables = array(
 		'd' => 'dormitories',
