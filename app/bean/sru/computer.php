@@ -56,6 +56,24 @@ extends UFbean_Common {
 		UFbean_Sru_User::TYPE_ORGANIZATION => UFbean_Sru_Computer::TYPE_ORGANIZATION,
 	);
 	
+	/**
+	 * przypisuje nowa wrtosc do parametru
+	 * nadpisanie na potrzeby ustawienia domainName
+	 * 
+	 * @param string $var - nazwa parametru
+	 * @param mixed $val - wartosc parametru
+	 */
+	public function __set($var, $val) {
+		if ($var == 'host' || $var == 'ip') {
+			if (array_key_exists('host', $this->data)) {
+				UFbean_Common::__set('domainName', $this->data['host']);
+			} else {
+				UFbean_Common::__set('domainName', 'ds.pg.gda.pl');
+			}
+		}
+		return UFbean_Common::__set($var, $val);
+	}
+	
 	public static function getHostType($user, $computer) {
 		if (array_key_exists($computer->typeId, self::$typeToUser) && in_array($user->typeId, self::$typeToUser[$computer->typeId])
 			&& (!array_key_exists($computer->typeId, self::$typeToUserExclusions) || !in_array($user->typeId, self::$typeToUserExclusions[$computer->typeId]))) {
@@ -79,15 +97,7 @@ extends UFbean_Common {
 		}
 		try {
 			$bean = UFra::factory('UFbean_Sru_Computer');
-			if (!is_null($post) && array_key_exists('ip', $post) && $post['ip'] != '') {
-				$ipv4 = UFra::factory('UFbean_Sru_Ipv4');
-				$ipv4->getByIp($post['ip']);
-				$vlanId = $ipv4->vlan;
-			} else if (!is_null($post) && isset($post['typeId'])) {
-				$vlanId = $this->getVlanByComputerType($post['typeId']);
-			} else {
-				$vlanId =  UFbean_SruAdmin_Vlan::getDefaultVlan();
-			}
+			$vlanId = $this->getVlanIdFromPost($post);
 			$vlan = UFra::factory('UFbean_SruAdmin_Vlan');
 			$vlan->getByPK($vlanId);
 			$bean->getByDomainName($val.'.'.$vlan->domainSuffix);
@@ -104,15 +114,7 @@ extends UFbean_Common {
 			return 'duplicated';
 		} catch (UFex_Dao_NotFound $e) {
 			try {
-				if (!is_null($post) && array_key_exists('ip', $post) && $post['ip'] != '') {
-					$ipv4 = UFra::factory('UFbean_Sru_Ipv4');
-					$ipv4->getByIp($post['ip']);
-					$vlanId = $ipv4->vlan;
-				} else if (!is_null($post) && isset($post['typeId'])) {
-					$vlanId = $this->getVlanByComputerType($post['typeId']);
-				} else {
-					$vlanId =  UFbean_SruAdmin_Vlan::getDefaultVlan();
-				}
+				$vlanId = $this->getVlanIdFromPost($post);
 				$vlan = UFra::factory('UFbean_SruAdmin_Vlan');
 				$vlan->getByPK($vlanId);
 				
@@ -125,6 +127,20 @@ extends UFbean_Common {
 		if (in_array($val, UFra::shared('UFconf_Sru')->invalidHostNames)) {
 			return 'duplicated';
 		}
+	}
+	
+	private function getVlanIdFromPost($post) {
+		if (!is_null($post) && array_key_exists('ip', $post) && $post['ip'] != '') {
+			$ipv4 = UFra::factory('UFbean_Sru_Ipv4');
+			$ipv4->getByIp($post['ip']);
+			$vlanId = $ipv4->vlan;
+		} else if (!is_null($post) && isset($post['typeId'])) {
+			$vlanId = $this->getVlanByComputerType($post['typeId']);
+		} else {
+			$vlanId =  UFbean_SruAdmin_Vlan::getDefaultVlan();
+		}
+		
+		return $vlanId;
 	}
 
 	protected function normalizeHost($val, $change) {
