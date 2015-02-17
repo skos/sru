@@ -136,6 +136,16 @@ extends UFtpl_Common {
 				echo date(self::TIME_YYMMDD_HHMM, $modified['modifiedat']).': '.$modified['name'].' "'.$modified['login'].'" '.$modified['surname'].' ('.strtoupper($modified['userdormalias']).') za: '.$modified['template'].' przez: '.$modified['modifiername'].' '.$host.'/admin/penalties/'.$modified['id']."\n";
 			}
 		}
+		
+		echo "\n";
+		if (is_null($d['ending'])) {
+			echo 'Żadna kara ani ostrzeżenie nie kończy się.'."\n";
+		} else {
+			echo 'Kończące się kary i ostrzeżenia: '.count($d['ending'])."\n";
+			foreach ($d['ending'] as $ending) {
+				echo date(self::TIME_YYMMDD_HHMM, $ending['endAt']).': '.$ending['userName'].' "'.$ending['userLogin'].'" '.$ending['userSurname'].' ('.strtoupper($ending['userDormAlias']).') za: '.$ending['templateTitle'].' przez: '.$ending['creatorName'].' '.$host.'/admin/penalties/'.$ending['id']."\n";
+			}
+		}
 	}
 
 	public function dutyHours(array $d) {

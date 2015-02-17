@@ -376,9 +376,10 @@ extends UFbox {
 		}
 	}
 	
-	public function apiPenaltiesTimelineMailBody($added, $modified) {
+	public function apiPenaltiesTimelineMailBody($added, $modified, $ending) {
 		$d['added'] = $added;
 		$d['modified'] = $modified;
+		$d['ending'] = $ending;
 		return $this->render(__FUNCTION__, $d);
 	}
 

@@ -25,8 +25,14 @@ extends UFact {
 			} catch (UFex_Dao_NotFound $e) {
 				$modified = null;
 			}
+			try {
+				$ending = UFra::factory('UFbean_SruAdmin_PenaltyList');
+				$ending->listEnding(24 * 60 * 60);
+			} catch (UFex_Dao_NotFound $e) {
+				$ending = null;
+			}
 
-			$body = $box->apiPenaltiesTimelineMailBody($added, $modified);
+			$body = $box->apiPenaltiesTimelineMailBody($added, $modified, $ending);
 			$sender->sendMail('adnet@ds.pg.gda.pl', $title, $body, self::PREFIX);
 
 			$this->markOk(self::PREFIX);

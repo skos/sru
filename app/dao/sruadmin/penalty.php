@@ -15,6 +15,17 @@ extends UFdao {
 			
 		return $this->doSelect($query);
 	}
+	
+	public function listBeingPenaltiesAndWarnings() {
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->endAt, NOW, $query->GTE);
+		$query->order($mapping->endAt,  $query->ASC);
+		
+			
+		return $this->doSelect($query);
+	}
 
 	public function listPast($page=1, $perPage=10, $overFetch=0) {
 		$mapping = $this->mapping('list');
@@ -142,6 +153,16 @@ extends UFdao {
 		$query->where($mapping->userId, $userId);
 		$query->where($mapping->active, true);
 		
+		return $this->doSelect($query);
+	}
+	
+	public function listEnding($timeLimit = null) {
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->endAt, NOW + $timeLimit, $query->LTE);
+		$query->where($mapping->endAt, NOW, $query->GTE);
+
 		return $this->doSelect($query);
 	}
 }

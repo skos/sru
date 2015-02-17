@@ -73,6 +73,10 @@ extends UFlib_ClassWithService {
 			return false;
 		}
 
+		// można edytować trwające ostrzeżenia
+		if ($bean->typeId == UFbean_SruAdmin_Penalty::TYPE_WARNING && $bean->endAt > NOW) {
+			return true;
+		}
 		// można edytowac tylko aktywne kary
 		if ($bean->active === false) {
 			return false;
@@ -105,6 +109,10 @@ extends UFlib_ClassWithService {
 			return false;
 		}
 		
+		// można edytować trwające ostrzeżenia
+		if ($bean->typeId == UFbean_SruAdmin_Penalty::TYPE_WARNING && $bean->endAt > NOW) {
+			return true;
+		}
 		// można edytowac tylko aktywne kary
 		if ($bean->active === false) {
 			return false;
@@ -136,6 +144,10 @@ extends UFlib_ClassWithService {
 			return false;
 		}
 		
+		// można edytować trwające ostrzeżenia
+		if ($bean->typeId == UFbean_SruAdmin_Penalty::TYPE_WARNING && $bean->endAt > NOW) {
+			return true;
+		}
 		// można edytowac tylko aktywne kary
 		if ($bean->active === false) {
 			return false;

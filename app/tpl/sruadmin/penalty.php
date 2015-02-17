@@ -21,7 +21,7 @@ extends UFtpl_Common {
 	);	
 
 	public function listPenalty(array $d, $showAddedBy = false) {
-		echo '<h3>Wszystkich kar: '. count($d) .'</h3>';
+		echo '<h3>Wszystkich kar i ostrzeżeń: '. count($d) .'</h3>';
 
 		$this->penaltyLastAdded($d, $showAddedBy, false);
 	}
@@ -92,7 +92,7 @@ extends UFtpl_Common {
 		echo '<th>Szablon</th>';
 		echo '</tr></thead><tbody>';
 		foreach ($d as $c) {
-			if ($showColor && UFbean_SruAdmin_Penalty::TYPE_WARNING == $c['typeId'] && $c['endAt'] > time()) {
+			if (UFbean_SruAdmin_Penalty::TYPE_WARNING == $c['typeId'] && $c['endAt'] > time()) {
 				echo '<tr class="warning">';
 			} else if ($showColor && UFbean_SruAdmin_Penalty::TYPE_WARNING != $c['typeId'] && $c['active']) {
 				echo '<tr class="ban">';

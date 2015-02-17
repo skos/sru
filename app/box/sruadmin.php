@@ -2056,7 +2056,7 @@ extends UFbox {
 	public function penalties() {
 		try {
 			$bean = UFra::factory('UFbean_SruAdmin_PenaltyList');	
-			$bean->listAll();
+			$bean->listBeingPenaltiesAndWarnings();
 			$d['penalties'] = $bean;
 
 			return $this->render(__FUNCTION__, $d);
