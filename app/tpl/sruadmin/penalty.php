@@ -84,7 +84,8 @@ extends UFtpl_Common {
 		$url = $this->url(0);
 
 		echo '<table id="penaltiesAddedT'.$id.'" class="bordered"><thead><tr>';
-		echo '<th>Data</th>';
+		echo '<th>Nałożona</th>';
+		echo '<th>Koniec</th>';
 		echo '<th>Ukarany</th>';
 		if ($showAddedBy) {
 			echo '<th>Karzący</th>';
@@ -100,6 +101,7 @@ extends UFtpl_Common {
 				echo '<tr>';
 			}
 			echo '<td>'.date(self::TIME_YYMMDD_HHMM, $c['startAt']).'</td>';
+			echo '<td>'.date(self::TIME_YYMMDD_HHMM, $c['endAt']).'</td>';
 			echo '<td>'.($c['userActive'] ? '' : '<del>').'<a href="'.$url.'/penalties/'.$c['id'].'">'.$this->_escape($c['userName']).' "'.$c['userLogin'].'" '.$this->_escape($c['userSurname']).'</a>'.($c['userActive'] ? '' : '</del>').'</td>';
 			if ($showAddedBy) {
 				echo '<td><a href="'.$url.'/admins/'.$c['createdById'].'">'.$this->_escape($c['creatorName']).'</a></td>';
