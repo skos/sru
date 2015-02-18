@@ -166,7 +166,7 @@ $(document).ready(function()
                	$this->ActiveTime($d['lastSeen']);
                }
 
-    private function ActiveTime($lastSeen) {
+    public function ActiveTime($lastSeen) {
 		if($lastSeen == 0) echo _("nigdy");
         else if((date('U') - $lastSeen) <= 3600) echo _("max godzinę temu");
         else if((date('U') - $lastSeen) <= 18000) echo "max " . (int)((date('U') - $lastSeen)/3600) . _(" godziny temu");
