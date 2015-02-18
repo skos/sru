@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Language: English\n"
+"Language: en\n"
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.7.4\n"
 
 #: sru3/app/tpl/sru/user.php:453
 msgid "Dane na Twoim koncie wymagają aktualizacji. Prosimy o wypełnienie prawidłowymi danymi wszystkich wymaganych pól (oznaczonych czerwoną obwódką). W celu ułatwienia kontaktu ze SKOS, możesz wypełnić także pola niewymagane."
@@ -27,13 +27,11 @@ msgstr "Your account has just set up. You have to change password"
 msgid "Login:"
 msgstr "Login:"
 
-#: sru3/app/tpl/sru/user.php:464
-#: sru3/app/tpl/sru/user.php:903
+#: sru3/app/tpl/sru/user.php:464 sru3/app/tpl/sru/user.php:903
 msgid "Typ konta:"
 msgstr "Account type:"
 
-#: sru3/app/tpl/sru/user.php:468
-#: sru3/app/tpl/sru/user.php:908
+#: sru3/app/tpl/sru/user.php:468 sru3/app/tpl/sru/user.php:908
 msgid "Zameldowanie:"
 msgstr "Dormitory:"
 
@@ -105,8 +103,7 @@ msgstr "Data on studies"
 msgid "Nr indeksu:"
 msgstr "Student book:"
 
-#: sru3/app/tpl/sru/user.php:536
-#: sru3/app/tpl/sru/user.php:910
+#: sru3/app/tpl/sru/user.php:536 sru3/app/tpl/sru/user.php:910
 msgid "Wydział:"
 msgstr "Faculty:"
 
@@ -118,23 +115,19 @@ msgstr "Year of study"
 msgid "Zmiana chronionych danych - konieczne podanie aktualnego hasła"
 msgstr "Changing sensitive data - necessary to provide the current password"
 
-#: sru3/app/tpl/sru/user.php:551
-#: sru3/app/tpl/sru/user.php:556
+#: sru3/app/tpl/sru/user.php:551 sru3/app/tpl/sru/user.php:556
 msgid "Aktualne hasło"
 msgstr "Current password"
 
-#: sru3/app/tpl/sru/user.php:552
-#: sru3/app/tpl/sru/user.php:557
+#: sru3/app/tpl/sru/user.php:552 sru3/app/tpl/sru/user.php:557
 msgid "E-mail"
 msgstr "E-mail"
 
-#: sru3/app/tpl/sru/user.php:553
-#: sru3/app/tpl/sru/user.php:558
+#: sru3/app/tpl/sru/user.php:553 sru3/app/tpl/sru/user.php:558
 msgid "Nowe hasło"
 msgstr "New password"
 
-#: sru3/app/tpl/sru/user.php:554
-#: sru3/app/tpl/sru/user.php:559
+#: sru3/app/tpl/sru/user.php:554 sru3/app/tpl/sru/user.php:559
 msgid "Potwierdź hasło"
 msgstr "Retype password"
 
@@ -178,8 +171,7 @@ msgstr "Welcome, "
 msgid "Ostatnie udane logowanie: "
 msgstr "Last successful login: "
 
-#: sru3/app/tpl/sru/user.php:1336
-#: sru3/app/tpl/sru/user.php:1343
+#: sru3/app/tpl/sru/user.php:1336 sru3/app/tpl/sru/user.php:1343
 msgid "z IP: "
 msgstr "from IP: "
 
@@ -191,38 +183,29 @@ msgstr "Last unsuccessful login: "
 msgid "Dane zostały zmienione. Pamiętaj, aby zaktualizować dane, gdy ponownie ulegną zmianie."
 msgstr "The data has been changed. Remember to update the data when re-change."
 
-#: sru3/app/tpl/sru.php:70
-#: sru3/app/tpl/sru.php:201
+#: sru3/app/tpl/sru.php:70 sru3/app/tpl/sru.php:201
 msgid "Twoje dane"
 msgstr "Your data"
 
-#: sru3/app/tpl/sru.php:82
-#: sru3/app/tpl/sru.php:209
-#: sru3/app/tpl/sru.php:213
+#: sru3/app/tpl/sru.php:82 sru3/app/tpl/sru.php:209 sru3/app/tpl/sru.php:213
 #: sru3/app/tpl/sru.php:227
 msgid "Twoje komputery"
 msgstr "Your computers"
 
-#: sru3/app/tpl/sru.php:85
-#: sru3/app/tpl/sru.php:90
-#: sru3/app/tpl/sru.php:232
+#: sru3/app/tpl/sru.php:85 sru3/app/tpl/sru.php:90 sru3/app/tpl/sru.php:232
 #: sru3/app/tpl/sru.php:237
 msgid "Nie posiadasz komputerów."
 msgstr "You don't have registered computers"
 
-#: sru3/app/tpl/sru.php:86
-#: sru3/app/tpl/sru.php:233
+#: sru3/app/tpl/sru.php:86 sru3/app/tpl/sru.php:233
 msgid "Przywróć komputer:"
 msgstr "Restore computer"
 
-#: sru3/app/tpl/sru.php:88
-#: sru3/app/tpl/sru.php:235
+#: sru3/app/tpl/sru.php:88 sru3/app/tpl/sru.php:235
 msgid "lub dodaj nowy komputer"
 msgstr "or add new one"
 
-#: sru3/app/tpl/sru.php:90
-#: sru3/app/tpl/sru.php:237
-#: sru3/app/tpl/sru.php:282
+#: sru3/app/tpl/sru.php:90 sru3/app/tpl/sru.php:237 sru3/app/tpl/sru.php:282
 #: sru3/app/tpl/sru.php:289
 msgid "Dodaj komputer"
 msgstr "Add computer"
@@ -275,8 +258,7 @@ msgstr "Page not found"
 msgid "Nie masz uprawnień do oglądania tej strony. Wróć do "
 msgstr "You don't have permissions to access this page. Back to "
 
-#: sru3/app/tpl/sru.php:182
-#: sru3/app/tpl/sru.php:190
+#: sru3/app/tpl/sru.php:182 sru3/app/tpl/sru.php:190
 msgid "System Rejestracji Użytkowników"
 msgstr "Users Registration System (SRU)"
 
@@ -292,8 +274,7 @@ msgstr "Page not found. Back to "
 msgid "Edycja Twoich danych"
 msgstr "Edit your data"
 
-#: sru3/app/tpl/sru.php:203
-#: sru3/app/tpl/sru.php:271
+#: sru3/app/tpl/sru.php:203 sru3/app/tpl/sru.php:271
 msgid "Zapisz"
 msgstr "Save"
 
@@ -317,8 +298,7 @@ msgstr "You can add only one computer by yourself. If you want to register anoth
 msgid "Dane zostały zmienione"
 msgstr "Data has been changed"
 
-#: sru3/app/tpl/sru.php:246
-#: sru3/app/tpl/sru.php:262
+#: sru3/app/tpl/sru.php:246 sru3/app/tpl/sru.php:262
 msgid "Nie znaleziono komputera"
 msgstr "Computer not found"
 
@@ -334,8 +314,7 @@ msgstr "Edit"
 msgid "Zmień dane komputera"
 msgstr "Change your computer data"
 
-#: sru3/app/tpl/sru.php:275
-#: sru3/app/tpl/sru.php:277
+#: sru3/app/tpl/sru.php:275 sru3/app/tpl/sru.php:277
 msgid "Powrót"
 msgstr "Back"
 
@@ -374,23 +353,19 @@ msgstr "There are no active account with the specified e-mail. Do you have activ
 msgid "Szczegóły"
 msgstr "Details"
 
-#: penalty.php:26
-#: penalty.php:66
+#: penalty.php:26 penalty.php:66
 msgid "Ostrzeżenie"
 msgstr "Warning"
 
-#: penalty.php:28
-#: penalty.php:68
+#: penalty.php:28 penalty.php:68
 msgid "Kara"
 msgstr "Penalty"
 
-#: penalty.php:30
-#: penalty.php:70
+#: penalty.php:30 penalty.php:70
 msgid "Komputery: "
 msgstr "Computer:"
 
-#: penalty.php:39
-#: penalty.php:78
+#: penalty.php:39 penalty.php:78
 msgid "Powód: "
 msgstr "Cause:"
 
@@ -755,3 +730,8 @@ msgstr "password"
 msgid "Aby mieć Internet, zaloguj się na swoje konto w Systemie Rejestracji Użytkowników (http://sru.ds.pg.gda.pl) skorzystaj z następujących danych:"
 msgstr "To have the Internet, log in to your account in SRU (http://sru.ds.pg.gda.pl) using the following data:"
 
+msgid "Emaile się różnią"
+msgstr "Emails are diffrent"
+
+msgid "Potwierdź e-mail"
+msgstr "Retype e-mail"

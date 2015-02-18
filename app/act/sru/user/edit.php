@@ -40,6 +40,9 @@ extends UFact {
 			$bean->fillFromPost(self::PREFIX, array('email', 'login','password','facultyId','studyYearId'));
 			if (isset($post['email']) && $post['email'] != $bean->email) {
 				$this->checkOldPassword($bean, $post);
+				if (!isset($post['email2']) || $post['email']!=$post['email2']){
+					throw UFra::factory('UFex_Dao_DataNotValid', 'Data "email" and "email2" do not match', 0, E_WARNING, array('email' => 'mismatch'));
+				}
 				$bean->email = $post['email'];
 			}
 			if (isset($post['password']) && $post['password'] != '' ) {

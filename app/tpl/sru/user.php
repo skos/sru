@@ -103,6 +103,7 @@ extends UFtpl_Common {
 		'surname/regexp' => 'Nazwisko zawiera niedozwolone znaki',
 		'surname/textMax' => 'Nazwisko jest za długie',
 		'email' => 'Podaj prawidłowy email',
+		'email/mismatch' => 'Emaile się różnią',
 		'email/notnull' => 'Podaj prawidłowy email',
 		'facultyId' => 'Wybierz wydział',
 		'studyYearId' => 'Wybierz rok studiów',
@@ -576,11 +577,13 @@ $(function() {
                 if (is_null($d['email']) || $d['changePasswordNeeded']) {
                         echo $form->password3(_("Aktualne hasło"), array('type' => $form->PASSWORD, 'class' => 'required'));
                         echo $form->email(_("E-mail"), array('class' => 'required'));
+						echo $form->email2(_("Potwierdź e-mail"), array('class' => 'required'));
                         echo $form->password(_("Nowe hasło"), array('type' => $form->PASSWORD, 'class' => 'required'));
                         echo $form->password2(_("Potwierdź hasło"), array('type' => $form->PASSWORD, 'class' => 'required'));
                 } else {
                         echo $form->password3(_("Aktualne hasło"), array('type' => $form->PASSWORD));
                         echo $form->email(_("E-mail"), array('class' => 'required'));
+						echo $form->email2(_("Potwierdź e-mail"), array('class' => 'required'));
                         echo $form->password(_("Nowe hasło"), array('type' => $form->PASSWORD));
                         echo $form->password2(_("Potwierdź hasło"), array('type' => $form->PASSWORD));
                 }
