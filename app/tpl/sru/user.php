@@ -577,17 +577,41 @@ $(function() {
                 if (is_null($d['email']) || $d['changePasswordNeeded']) {
                         echo $form->password3(_("Aktualne hasło"), array('type' => $form->PASSWORD, 'class' => 'required'));
                         echo $form->email(_("E-mail"), array('class' => 'required'));
-						echo $form->email2(_("Potwierdź e-mail"), array('class' => 'required'));
+			echo '<div id="mail2">';
+			echo $form->email2(_("Potwierdź e-mail"), array('class' => 'required'));
+			echo '</div>';
                         echo $form->password(_("Nowe hasło"), array('type' => $form->PASSWORD, 'class' => 'required'));
                         echo $form->password2(_("Potwierdź hasło"), array('type' => $form->PASSWORD, 'class' => 'required'));
                 } else {
                         echo $form->password3(_("Aktualne hasło"), array('type' => $form->PASSWORD));
                         echo $form->email(_("E-mail"), array('class' => 'required'));
-						echo $form->email2(_("Potwierdź e-mail"), array('class' => 'required'));
+			echo '<div id="mail2">';
+			echo $form->email2(_("Potwierdź e-mail"), array('class' => 'required'));
+			echo '</div>';
                         echo $form->password(_("Nowe hasło"), array('type' => $form->PASSWORD));
                         echo $form->password2(_("Potwierdź hasło"), array('type' => $form->PASSWORD));
                 }
                 echo $form->_end();
+?>
+<script type="text/javascript">
+	var mail1 = document.getElementById('userEdit_email');
+	var mail2 = document.getElementById('mail2');
+	var pass = document.getElementById('userEdit_password3');
+	mail1Curr = '<?=$d['email']?>';
+	function mailChangeValue() {
+		var mail1Val = document.getElementById('userEdit_email').value;
+		if(mail1Curr == mail1Val) {
+			mail2.style.display = 'none';
+			pass.setAttribute('class', '');
+		} else {
+			mail2.style.display = 'block';
+			pass.setAttribute('class', 'required');
+		}
+	}
+	mail1.onkeyup = mailChangeValue;
+	mailChangeValue();
+</script>
+<?
         }
 
 	public function formSearch(array $d, array $searched) {
