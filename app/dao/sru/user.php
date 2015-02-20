@@ -255,7 +255,7 @@ extends UFdao {
 			where r.active is distinct from r.prev_active and r.active = false
 			order by r.id, r.modified_at desc) as u
 			group by u.id
-			having max(u.modified_at) < now() - interval '".$conf->userRemoveAfter."months';");
+			having max(u.modified_at) < now() - interval '".$conf->userRemoveAfter." months' limit 100;");
 
 		return $this->doSelect($query);
 	}
