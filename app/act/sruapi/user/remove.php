@@ -24,6 +24,17 @@ extends UFact {
 			} catch (UFex_Dao_NotFound $e) {
 			}
 			
+			try {
+				$penalties = UFra::factory('UFbean_SruAdmin_PenaltyList');
+				$penalties->listAllByUserId($bean->id);
+				foreach ($penalties as $penalty) {
+					$pen = UFra::factory('UFbean_SruAdmin_Penalty');
+					$pen->getByPK($penalty['id']);
+					$pen->del();
+				}
+			} catch (UFex_Dao_NotFound $e) {
+			}
+			
 			$bean->del();
 
 			$this->commit();
