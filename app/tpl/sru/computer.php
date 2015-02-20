@@ -167,10 +167,10 @@ $(document).ready(function()
                }
 
     private function ActiveTime($lastSeen) {
-		if($lastSeen == 0) echo _("nigdy");
+	if($lastSeen == 0) echo _("nigdy");
         else if((date('U') - $lastSeen) <= 3600) echo _("max godzinę temu");
-        else if((date('U') - $lastSeen) <= 18000) echo "max " . (int)((date('U') - $lastSeen)/3600) . _(" godziny temu");
-        else if((date('U') - $lastSeen) < 86400) echo "max " .(int)((date('U') - $lastSeen)/3600) . _(" godzin temu"); // do doby
+        else if((date('U') - $lastSeen) <= 18000) echo "max " . (int)((date('U') - $lastSeen)/3600 + 1) . _(" godziny temu");
+        else if((date('U') - $lastSeen) < 86400) echo "max " .(int)((date('U') - $lastSeen)/3600 + 1) . _(" godzin temu"); // do doby
         else if((date('U') - $lastSeen) < 172800) echo _("max dzień temu");
         else if((date('U') - $lastSeen) < 604800) echo (int)((date('U') - $lastSeen)/86400) . _(" dni temu"); // do tygodnia
         else if((date('U') - $lastSeen) < 1209600 ) echo _("tydzień temu");
