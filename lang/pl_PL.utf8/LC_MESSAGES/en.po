@@ -13,27 +13,25 @@ msgstr ""
 
 #: sru3/app/tpl/sru/user.php:453
 msgid "Dane na Twoim koncie wymagają aktualizacji. Prosimy o wypełnienie prawidłowymi danymi wszystkich wymaganych pól (oznaczonych czerwoną obwódką). W celu ułatwienia kontaktu ze SKOS, możesz wypełnić także pola niewymagane."
-msgstr "Data in your account needs to be updated. Please fill in the correct information in all required fields (marked with a red border). In order to facilitate contact with SKOS, you can fill in the fields not required."
+msgstr "Data in your account requires an update. Please fill in the correct information in all required fields (marked with a red border). In order to facilitate contact with SKOS, you can fill in the fields which are not required."
 
 #: sru3/app/tpl/sru/user.php:456
 msgid "Twoje hasło ze względów bezpieczeństwa musi zostać zmienione."
-msgstr "Your password for security reasons must be change"
+msgstr "Your password must be changed for security reasons."
 
 #: sru3/app/tpl/sru/user.php:459
 msgid "Twoje konto zostało dopiero założone. Wymagana jest zmiana hasła."
-msgstr "Your account has just set up. You have to change password"
+msgstr "Your account has just been set up. You have to change your password."
 
 #: sru3/app/tpl/sru/user.php:461
 msgid "Login:"
 msgstr "Login:"
 
-#: sru3/app/tpl/sru/user.php:464
-#: sru3/app/tpl/sru/user.php:903
+#: sru3/app/tpl/sru/user.php:464 sru3/app/tpl/sru/user.php:903
 msgid "Typ konta:"
 msgstr "Account type:"
 
-#: sru3/app/tpl/sru/user.php:468
-#: sru3/app/tpl/sru/user.php:908
+#: sru3/app/tpl/sru/user.php:468 sru3/app/tpl/sru/user.php:908
 msgid "Zameldowanie:"
 msgstr "Dormitory:"
 
@@ -79,7 +77,7 @@ msgstr "Sex:"
 
 #: sru3/app/tpl/sru/user.php:512
 msgid "Łączysz się przez niezabezpieczone połączenie - ze względów bezpieczeństwa Twoje dane osobowe nie są wyświetlane."
-msgstr "Are you connecting through an unsecured connection - for safety reasons Your personal details are not displayed."
+msgstr "You are connecting through an unsecured connection - your personal details are not displayed for safety reasons."
 
 #: sru3/app/tpl/sru/user.php:514
 msgid "Gadu-Gadu"
@@ -87,7 +85,7 @@ msgstr "GG numer"
 
 #: sru3/app/tpl/sru/user.php:514
 msgid "Jeżeli podasz nr GG, będą na niego przesyłane informacje o zmianie statusu konta i Twoich komputerów."
-msgstr "If you specify GG number, it will be sent information about changing the status of your account and your computer."
+msgstr "If you specify GG number, it will be used to send information about changing the status of your account and your computer."
 
 #: sru3/app/tpl/sru/user.php:515
 msgid "Język"
@@ -95,18 +93,17 @@ msgstr "Language:"
 
 #: sru3/app/tpl/sru/user.php:518
 msgid "Wiadomości e-mail i GG będa przychodziły w wybranym języku."
-msgstr "You will receive e-mails and gg messages in the chosen language."
+msgstr "You will receive e-mails and GG messages in your chosen language."
 
 #: sru3/app/tpl/sru/user.php:523
 msgid "Dane dotyczące studiów"
-msgstr "Data on studies"
+msgstr "Information about studies"
 
 #: sru3/app/tpl/sru/user.php:526
 msgid "Nr indeksu:"
 msgstr "Student book:"
 
-#: sru3/app/tpl/sru/user.php:536
-#: sru3/app/tpl/sru/user.php:910
+#: sru3/app/tpl/sru/user.php:536 sru3/app/tpl/sru/user.php:910
 msgid "Wydział:"
 msgstr "Faculty:"
 
@@ -118,23 +115,19 @@ msgstr "Year of study"
 msgid "Zmiana chronionych danych - konieczne podanie aktualnego hasła"
 msgstr "Changing sensitive data - necessary to provide the current password"
 
-#: sru3/app/tpl/sru/user.php:551
-#: sru3/app/tpl/sru/user.php:556
+#: sru3/app/tpl/sru/user.php:551 sru3/app/tpl/sru/user.php:556
 msgid "Aktualne hasło"
 msgstr "Current password"
 
-#: sru3/app/tpl/sru/user.php:552
-#: sru3/app/tpl/sru/user.php:557
+#: sru3/app/tpl/sru/user.php:552 sru3/app/tpl/sru/user.php:557
 msgid "E-mail"
 msgstr "E-mail"
 
-#: sru3/app/tpl/sru/user.php:553
-#: sru3/app/tpl/sru/user.php:558
+#: sru3/app/tpl/sru/user.php:553 sru3/app/tpl/sru/user.php:558
 msgid "Nowe hasło"
 msgstr "New password"
 
-#: sru3/app/tpl/sru/user.php:554
-#: sru3/app/tpl/sru/user.php:559
+#: sru3/app/tpl/sru/user.php:554 sru3/app/tpl/sru/user.php:559
 msgid "Potwierdź hasło"
 msgstr "Retype password"
 
@@ -160,7 +153,7 @@ msgstr "Edit/details"
 
 #: sru3/app/tpl/sru/user.php:1324
 msgid "Wiadomość do administratora SKOS:"
-msgstr "Message to the SKOS admin:"
+msgstr "Message to SKOS admin:"
 
 #: sru3/app/tpl/sru/user.php:1326
 msgid "Wyślij"
@@ -178,8 +171,7 @@ msgstr "Welcome, "
 msgid "Ostatnie udane logowanie: "
 msgstr "Last successful login: "
 
-#: sru3/app/tpl/sru/user.php:1336
-#: sru3/app/tpl/sru/user.php:1343
+#: sru3/app/tpl/sru/user.php:1336 sru3/app/tpl/sru/user.php:1343
 msgid "z IP: "
 msgstr "from IP: "
 
@@ -189,40 +181,31 @@ msgstr "Last unsuccessful login: "
 
 #: sru3/app/tpl/sru.php:64
 msgid "Dane zostały zmienione. Pamiętaj, aby zaktualizować dane, gdy ponownie ulegną zmianie."
-msgstr "The data has been changed. Remember to update the data when re-change."
+msgstr "The data has been changed. Remember to update the data if they are changed again."
 
-#: sru3/app/tpl/sru.php:70
-#: sru3/app/tpl/sru.php:201
+#: sru3/app/tpl/sru.php:70 sru3/app/tpl/sru.php:201
 msgid "Twoje dane"
 msgstr "Your data"
 
-#: sru3/app/tpl/sru.php:82
-#: sru3/app/tpl/sru.php:209
-#: sru3/app/tpl/sru.php:213
+#: sru3/app/tpl/sru.php:82 sru3/app/tpl/sru.php:209 sru3/app/tpl/sru.php:213
 #: sru3/app/tpl/sru.php:227
 msgid "Twoje komputery"
 msgstr "Your computers"
 
-#: sru3/app/tpl/sru.php:85
-#: sru3/app/tpl/sru.php:90
-#: sru3/app/tpl/sru.php:232
+#: sru3/app/tpl/sru.php:85 sru3/app/tpl/sru.php:90 sru3/app/tpl/sru.php:232
 #: sru3/app/tpl/sru.php:237
 msgid "Nie posiadasz komputerów."
-msgstr "You don't have registered computers"
+msgstr "You don't have any registered computers."
 
-#: sru3/app/tpl/sru.php:86
-#: sru3/app/tpl/sru.php:233
+#: sru3/app/tpl/sru.php:86 sru3/app/tpl/sru.php:233
 msgid "Przywróć komputer:"
-msgstr "Restore computer"
+msgstr "Restore computer:"
 
-#: sru3/app/tpl/sru.php:88
-#: sru3/app/tpl/sru.php:235
+#: sru3/app/tpl/sru.php:88 sru3/app/tpl/sru.php:235
 msgid "lub dodaj nowy komputer"
-msgstr "or add new one"
+msgstr "or add a new one"
 
-#: sru3/app/tpl/sru.php:90
-#: sru3/app/tpl/sru.php:237
-#: sru3/app/tpl/sru.php:282
+#: sru3/app/tpl/sru.php:90 sru3/app/tpl/sru.php:237 sru3/app/tpl/sru.php:282
 #: sru3/app/tpl/sru.php:289
 msgid "Dodaj komputer"
 msgstr "Add computer"
@@ -273,16 +256,15 @@ msgstr "Page not found"
 
 #: sru3/app/tpl/sru.php:182
 msgid "Nie masz uprawnień do oglądania tej strony. Wróć do "
-msgstr "You don't have permissions to access this page. Back to "
+msgstr "You don't have permission to access this page. Back to "
 
-#: sru3/app/tpl/sru.php:182
-#: sru3/app/tpl/sru.php:190
+#: sru3/app/tpl/sru.php:182 sru3/app/tpl/sru.php:190
 msgid "System Rejestracji Użytkowników"
 msgstr "Users Registration System (SRU)"
 
 #: sru3/app/tpl/sru.php:186
 msgid "Brak uprawnień"
-msgstr "No permissions"
+msgstr "No permission"
 
 #: sru3/app/tpl/sru.php:190
 msgid "Nie znaleziono strony. Wróć do "
@@ -292,8 +274,7 @@ msgstr "Page not found. Back to "
 msgid "Edycja Twoich danych"
 msgstr "Edit your data"
 
-#: sru3/app/tpl/sru.php:203
-#: sru3/app/tpl/sru.php:271
+#: sru3/app/tpl/sru.php:203 sru3/app/tpl/sru.php:271
 msgid "Zapisz"
 msgstr "Save"
 
@@ -303,22 +284,21 @@ msgstr "Data has been changed."
 
 #: sru3/app/tpl/sru.php:217
 msgid "Komputer został dodany. Poczekaj cierpliwie, aż sieć zacznie działać. Może to potrwać nawet godzinę."
-msgstr "The computer has been added. Wait patiently until the network starts. This may take up to an hour."
+msgstr "The computer has been added. Wait patiently until the network starts working. This may take up to an hour."
 
 #: sru3/app/tpl/sru.php:219
 msgid "Komputer został wyrejestrowany."
-msgstr "The computer has been checked out."
+msgstr "The computer has been unregistered."
 
 #: sru3/app/tpl/sru.php:223
 msgid "Samodzielnie możesz dodać tylko jeden komputer. Jeżeli chcesz zarejestrować kolejny, zgłoś się do administratora lokalnego."
-msgstr "You can add only one computer by yourself. If you want to register another one, report it to your local administrator."
+msgstr "You can add only one computer by yourself. If you want to register another one, contact to your local administrator."
 
 #: sru3/app/tpl/sru.php:229
 msgid "Dane zostały zmienione"
 msgstr "Data has been changed"
 
-#: sru3/app/tpl/sru.php:246
-#: sru3/app/tpl/sru.php:262
+#: sru3/app/tpl/sru.php:246 sru3/app/tpl/sru.php:262
 msgid "Nie znaleziono komputera"
 msgstr "Computer not found"
 
@@ -334,8 +314,7 @@ msgstr "Edit"
 msgid "Zmień dane komputera"
 msgstr "Change your computer data"
 
-#: sru3/app/tpl/sru.php:275
-#: sru3/app/tpl/sru.php:277
+#: sru3/app/tpl/sru.php:275 sru3/app/tpl/sru.php:277
 msgid "Powrót"
 msgstr "Back"
 
@@ -357,11 +336,11 @@ msgstr "Sign out"
 
 #: sru3/app/tpl/sru.php:322
 msgid "Kliknij link, który został wysłany na maila."
-msgstr "Click the link that has been sent to email."
+msgstr "Click the link that has been sent in e-mail."
 
 #: sru3/app/tpl/sru.php:324
 msgid "Nowe hasło zostało wysłane na maila."
-msgstr "New password has been send to email"
+msgstr "New password has been sent to e-mail."
 
 #: sru3/app/tpl/sru.php:326
 msgid "Podany email jest przypisany do kilku kont - proszę zgłosić się do administratora lokalnego w celu zmiany hasła."
@@ -369,28 +348,24 @@ msgstr "Your email is assigned to multiple accounts - please go to the local adm
 
 #: sru3/app/tpl/sru.php:328
 msgid "Nie znaleziono aktywnego konta z podanym mailem. Czy aktywowałeś swoje konto w Biurze DS?"
-msgstr "There are no active account with the specified e-mail. Do you have activated your account in the dormitory office?"
+msgstr "There is no active account with the e-mail specified. Have you activated your account in the dormitory office?"
 
 msgid "Szczegóły"
 msgstr "Details"
 
-#: penalty.php:26
-#: penalty.php:66
+#: penalty.php:26 penalty.php:66
 msgid "Ostrzeżenie"
 msgstr "Warning"
 
-#: penalty.php:28
-#: penalty.php:68
+#: penalty.php:28 penalty.php:68
 msgid "Kara"
 msgstr "Penalty"
 
-#: penalty.php:30
-#: penalty.php:70
+#: penalty.php:30 penalty.php:70
 msgid "Komputery: "
-msgstr "Computer:"
+msgstr "Computers:"
 
-#: penalty.php:39
-#: penalty.php:78
+#: penalty.php:39 penalty.php:78
 msgid "Powód: "
 msgstr "Cause:"
 
@@ -412,11 +387,11 @@ msgstr "form for adding a new computer"
 
 #: computer.php:302
 msgid "Adres fizyczny karty sieciowej komputera."
-msgstr "The physical address of the computer's network interface"
+msgstr "The physical address of the computer's network interface."
 
 #: computer.php:678
 msgid "Tak, chcę wyrejestrować ten komputer"
-msgstr "Yes, I want to unregister this computer"
+msgstr "Yes, I want to unregister this computer."
 
 #: computer.php:683
 msgid "Tak, wyrejestruj ten komputer"
@@ -424,11 +399,11 @@ msgstr "Yes, unregister this computer"
 
 #: computer.php:690
 msgid "Usuń aliasy komputera:"
-msgstr "Delete aliases computer:"
+msgstr "Delete computer's aliases:"
 
 #: computer.php:696
 msgid "Dodaj alias:"
-msgstr "Add alias"
+msgstr "Add alias:"
 
 #: computer.php:703
 msgid "Alias"
@@ -440,11 +415,11 @@ msgstr "CNAME entry"
 
 #: computer.php:704
 msgid "Aliasy są domyślnie wpisami CNAME."
-msgstr "Aliases are default CNAME entries."
+msgstr "Aliases are CNAME entries by default."
 
 #: computer.php:782
 msgid "Skąd wziąć MAC?"
-msgstr "Where I can get the MAC address?"
+msgstr "Where I can find the MAC address?"
 
 #: computer.php:171
 msgid "max godzinę temu"
@@ -500,7 +475,7 @@ msgid "Rejestracja do:"
 msgstr "Registered to:"
 
 msgid "Ważne linki"
-msgstr "Useful links"
+msgstr "Important links"
 
 msgid "MAC"
 msgstr "MAC"
@@ -518,7 +493,7 @@ msgid "Zaloguj się"
 msgstr "Login"
 
 msgid "Nieprawidłowy login lub hasło. Czy aktywowałeś swoje konto w Biurze DS?"
-msgstr "Invalid username or password. Do you have activated your account in the Office of the DS?"
+msgstr "Invalid username or password. Have you activated your account in the dormitory office?"
 
 msgid "Przypomnij login i hasło"
 msgstr "Recover login and password"
@@ -533,22 +508,22 @@ msgid "Zapomniałem loginu lub hasła!"
 msgstr "I forgot login or password!"
 
 msgid "Komputer niezarejestrowany w SKOS PG"
-msgstr "Unregistered computer in SKOS PG network"
+msgstr "Computer is not registered in SKOS PG network"
 
 msgid "Komputer ukarany odcięciem od Internetu"
-msgstr "Computer punished cut off from the Internet"
+msgstr "Computer punished with a cut off from the Internet"
 
 msgid "Twój komputer został ukarany odcięciem od Internetu"
-msgstr "Your computer has been punished cut off from the Internet"
+msgstr "Your computer has been punished with a cut off from the Internet"
 
 msgid "Twój komputer został odcięty z następujących powodów:"
-msgstr "Your computer has been shut off for the following reasons:"
+msgstr "Your computer has been cut off for the following reasons:"
 
 msgid "Twój komputer został odcięty z następującego powodu: "
-msgstr "Your computer has been shut off for the following reason:"
+msgstr "Your computer has been cut off for the following reason:"
 
 msgid "Na swoje konto możesz zalogować się dopiero po zameldowaniu Cię przez Biuro DSu."
-msgstr "On your account you can login after you check-in for Office DSu."
+msgstr "You can login to your account after you check in at Dormitory's Office."
 
 msgid "Informacja"
 msgstr "Info"
@@ -566,7 +541,7 @@ msgid "Nazwa jest już zajęta. Skorzystaj z"
 msgstr "The name is already taken."
 
 msgid "Nazwa komputera w sieci - nie musi być zgodna z nazwą w systemie Windows/Linux. Możesz podać inną nazwę niż propozycja SRU - jest ona prawie dowolna, ale może zawierać tylko litery, cyfry oraz myślnik."
-msgstr "Name of the computer on the network - not necessarily match the name on Windows / Linux. You can specify a different name than the SRU proposal - it is almost arbitrary, but can only contain letters, digits and a hyphen."
+msgstr "Name of the computer on the network - not necessarily matching the name in Windows/Linux. You can specify a different name than the SRU proposal - it is almost arbitrary, but can only contain letters, digits and a hyphen."
 
 msgid "Ważna do"
 msgstr "Continues to"
@@ -617,7 +592,7 @@ msgid "algielski"
 msgstr "English"
 
 msgid "Dowód osobisty"
-msgstr "Identity card\t"
+msgstr "Identity card"
 
 msgid "Paszport"
 msgstr "Passport"
@@ -626,7 +601,7 @@ msgid "Inny"
 msgstr "Other"
 
 msgid "Brak (dziecko)"
-msgstr "None(child)"
+msgstr "None (child)"
 
 msgid "Student studiów dziennych"
 msgstr "Full time student"
@@ -647,10 +622,10 @@ msgid "Student innej uczelni"
 msgstr "Another university student"
 
 msgid "Nie student"
-msgstr "Not student"
+msgstr "Not a student"
 
 msgid "Student-turysta"
-msgstr "Student-tourist"
+msgstr "Student - tourist"
 
 msgid "Dydaktyka"
 msgstr "Teaching"
@@ -662,10 +637,10 @@ msgid "nieznany"
 msgstr "unknown"
 
 msgid "Hasło musi mieć co najmniej 6 znaków"
-msgstr "Password must be at least 6 characters"
+msgstr "Password must be at least 6 characters long"
 
 msgid "Hasła się różnią"
-msgstr "Passwords are different"
+msgstr "Passwords do not match"
 
 msgid "Musisz zdefiniować nowe hasło"
 msgstr "You need to set up a new password"
@@ -683,7 +658,7 @@ msgid "Wybierz rok studiów"
 msgstr "Select year of study"
 
 msgid "Podałeś nieprawidłowe hasło"
-msgstr "You entered a wrong password"
+msgstr "You have entered a wrong password"
 
 msgid "Wiadomość nie może być pusta"
 msgstr "Message can not be empty"
@@ -755,19 +730,19 @@ msgid "zameldowanie"
 msgstr "check-in"
 
 msgid "Aby mieć Internet, zaloguj się na swoje konto w Systemie Rejestracji Użytkowników (http://sru.ds.pg.gda.pl) skorzystaj z następujących danych"
-msgstr "To have the Internet, log in to your account User Registration Scheme (http://sru.ds.pg.gda.pl) from the following data"
+msgstr "To connect to the Internet, login to your account in User Registration System (http://sru.ds.pg.gda.pl) using following data"
 
 msgid "Użyj tego samego hasła, jakiego używał(a/e)ś poprzednio. Jeśli nie pamiętasz go, skorzystaj z przypomnienia hasła na SRU lub odwiedź administratora w godzinach dyżuru. Nie zapomnij wejściówki! Aby mieć Internet, po zalogowaniu się przywróć swoje komputery i odczekaj ok godzinę"
-msgstr "Use the same password you used previously. If you do not remember it, please use the password reminder on the SRU or visit the administrator on-call hours. Do not forget capita card! To have the Internet, after logging in, restore yours computers and wait about an hour."
+msgstr "Use the same password you used previously. If you do not remember it, please use the password reminder in SRU or visit the administrator during duty hours. Do not forget capita card! To connect to the Internet, login and restore your computers and wait for about an hour."
 
 msgid "Zaraz po zalogowaniu zostaniesz poproszon(a/y) o zmianę hasła oraz uzupełnienie swoich danych kontaktowych i statystycznych. Następnie dodaj komputer i w przeciągu godziny ciesz się Internetem!"
-msgstr "After logging you will be asked to change your password and complete yours contact and statistics details. Then add your computer and within hours enjoy the Internet!"
+msgstr "After logging in you will be asked to change your password and complete your contact and statistics details. Then add your computer and enjoy you Internet connection in about an hour!"
 
 msgid "Dane hosta"
 msgstr "Host data"
 
 msgid "Wiadomości e-mail będa przychodziły w wybranym języku."
-msgstr "You will receive emails in chosen language."
+msgstr "You will receive e-mails in chosen language."
 
 msgid "Nieprawidłowy format"
 msgstr "Incorrect format"
@@ -785,11 +760,19 @@ msgid "hasło"
 msgstr "password"
 
 msgid "Aby mieć Internet, zaloguj się na swoje konto w Systemie Rejestracji Użytkowników (http://sru.ds.pg.gda.pl) skorzystaj z następujących danych:"
-msgstr "To have the Internet, log in to your account in SRU (http://sru.ds.pg.gda.pl) using the following data:"
+msgstr "To connect to the Internet, login to your account in SRU (http://sru.ds.pg.gda.pl) using the following data:"
 
 msgid "Emaile się różnią"
-msgstr "Emails are diffrent"
+msgstr "Emails do not match"
 
 msgid "Potwierdź e-mail"
 msgstr "Retype e-mail"
 
+msgid "Regulamin"
+msgstr "Terms of use"
+
+msgid "Użytkownik"
+msgstr "User"
+
+msgid "Walet"
+msgstr "Walet"
