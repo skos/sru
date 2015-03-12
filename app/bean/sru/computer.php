@@ -56,24 +56,6 @@ extends UFbean_Common {
 		UFbean_Sru_User::TYPE_ORGANIZATION => UFbean_Sru_Computer::TYPE_ORGANIZATION,
 	);
 	
-	/**
-	 * przypisuje nowa wrtosc do parametru
-	 * nadpisanie na potrzeby ustawienia domainName
-	 * 
-	 * @param string $var - nazwa parametru
-	 * @param mixed $val - wartosc parametru
-	 */
-	public function __set($var, $val) {
-		if ($var == 'host' || $var == 'ip') {
-			if (array_key_exists('host', $this->data)) {
-				UFbean_Common::__set('domainName', $this->data['host']);
-			} else {
-				UFbean_Common::__set('domainName', 'ds.pg.gda.pl');
-			}
-		}
-		return UFbean_Common::__set($var, $val);
-	}
-	
 	public static function getHostType($user, $computer) {
 		if (array_key_exists($computer->typeId, self::$typeToUser) && in_array($user->typeId, self::$typeToUser[$computer->typeId])
 			&& (!array_key_exists($computer->typeId, self::$typeToUserExclusions) || !in_array($user->typeId, self::$typeToUserExclusions[$computer->typeId]))) {

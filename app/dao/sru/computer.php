@@ -608,7 +608,6 @@ extends UFdao {
 		
 		if($newName != ''){
 			$data[$mapping->host] = $newName;
-			$data[$mapping->domainName] = $newName.'.'.$computer->domainSuffix;
 		}
 
 		$query = $this->prepareUpdate($mapping, $data);
@@ -654,7 +653,6 @@ extends UFdao {
 		
 		if($newName != ''){
 			$data[$mapping->host] = $newName;
-			$data[$mapping->domainName] = $newName.'.'.$computer->domainSuffix;
 		}
 		
 		$query = $this->prepareUpdate($mapping, $data);

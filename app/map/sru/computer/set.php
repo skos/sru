@@ -7,7 +7,6 @@ extends UFmap_Sru_Computer_Add {
 
 	protected $columns = array(
 		'host'           => 'host',
-		'domainName'	 => 'domain_name',
 		'mac'            => 'mac',
 		'ip'             => 'ipv4',
 		'userId'         => 'user_id',
@@ -30,7 +29,6 @@ extends UFmap_Sru_Computer_Add {
 	);
 	protected $columnTypes = array(
 		'host'           => self::TEXT,
-		'domainName'	 => self::TEXT,
 		'mac'            => self::TEXT,
 		'ip'             => self::TEXT,
 		'userId'         => self::NULL_INT,
