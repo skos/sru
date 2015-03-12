@@ -1298,7 +1298,7 @@ $("#macvendor").load('<?=UFURL_BASE?>/admin/apis/getmacvendor/<?=$searchedMac?>'
 			echo 'Informujemy, że dane Twojego hosta w SKOS PG uległy zmianie.'."\n\n";
 		} else if ($action == UFact_SruApi_Computer_Deactivate::PREFIX) {
 			echo 'Informujemy, że Twój host w SKOS PG został automatycznie dezaktywowany z powodu długiej nieobecności w sieci lub przekroczenia czasu rejestracji.'."\n";
-			echo 'Jeżeli był to Twój jedyny host, możesz go samodzielnie przywrócić z poziomu Twojego konta w SRU, zakładka &quot;Komputery&quot;.'."\n\n";
+			echo 'Jeżeli był to Twój jedyny host, możesz go samodzielnie przywrócić z poziomu Twojego konta w SRU, zakładka "Komputery".'."\n\n";
 		} else {
 			echo 'Informujemy, że Twój host w SKOS PG został dezaktywowany.'."\n\n";
 		}
@@ -1331,7 +1331,7 @@ $("#macvendor").load('<?=UFURL_BASE?>/admin/apis/getmacvendor/<?=$searchedMac?>'
 			echo 'We inform, that data of your host in SKOS PG has been changed.'."\n\n";
 		} else if ($action == UFact_SruApi_Computer_Deactivate::PREFIX) {
 			echo 'We inform, that your host in SKOS PG has been deactivated because of a long absence in the network or registration timeout.'."\n";
-			echo 'If it was your only host, you can restore it from your account in SRU, tab &quot;Computers&quot;.'."\n\n";
+			echo 'If it was your only host, you can restore it from your account in SRU, tab "Computers".'."\n\n";
 		} else {
 			echo 'We inform, that your host in SKOS PG has been deactivated.'."\n\n";
 		}
