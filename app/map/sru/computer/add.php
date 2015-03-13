@@ -20,7 +20,7 @@ extends UFmap {
 		'masterHostId'	 => 'master_host_id',
 		'autoDeactivation' => 'auto_deactivation',
 	    'deviceModelId' => 'device_model_id',
-	    'computerId'	=> 'computerId',
+	    'computerId'	=> 'id',
 	);
 	protected $columnTypes = array(
 		'host'           => self::TEXT,
