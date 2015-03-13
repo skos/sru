@@ -17,6 +17,7 @@ extends UFmap {
 		'dormitoryId'  	 => 'dormitory_id',
 		'activeTo'		 => 'active_to',
 		'modifiedById'   => 'modified_by',
+		'computerId'	 => 'id',
 	);
 	protected $columnTypes = array(
 		'login'          => self::TEXT,
@@ -31,6 +32,7 @@ extends UFmap {
 		'dormitoryId'	 => self::NULL_INT,
 		'activeTo'		 => self::NULL_TS,
 		'modifiedById'   => self::NULL_INT,
+		'computerId'	 => self::INT,
 	);	
 
 	protected $tables = array(
