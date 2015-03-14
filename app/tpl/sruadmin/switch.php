@@ -26,7 +26,7 @@ extends UFtpl_Common {
 
 	public static function displaySwitchName($dormitoryAlias, $hierarchyNo, $lab = false) {
 		if (is_null($hierarchyNo)) {
-			$swName = $dormitoryAlias.'-nieużywany';
+			$swName = $dormitoryAlias.($lab ? '-lab' : '').'-nieużywany';
 		} else {
 			$swName =  $dormitoryAlias.($lab ? '-lab' : '-hp').$hierarchyNo;
 		}
