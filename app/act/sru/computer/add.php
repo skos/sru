@@ -34,12 +34,13 @@ extends UFact {
 			$post = $this->_srv->get('req')->post->{self::PREFIX};
 
 			$foundOld = false;
-
+			$foundOldByMac = false;
 			try {
 				$bean->getInactiveByMacUserId($post['mac'], $user->id);
 				$bean->active = true;
 				$bean->lastActivated = NOW;
 				$foundOld = true;
+				$foundOldByMac = true;
 			} catch (UFex $e) {
 				try {
 					$bean->getInactiveByHostUserId($post['host'], $user->id);
@@ -54,6 +55,9 @@ extends UFact {
 			$this->_srv->get('req')->post->{self::PREFIX} = $post;
 
 			$bean->fillFromPost(self::PREFIX, null, array('mac', 'host'));
+			if (!$foundOldByMac) {
+				$bean->typeId = (array_key_exists($user->typeId, UFbean_Sru_Computer::$defaultUserToComputerType) ? UFbean_Sru_Computer::$defaultUserToComputerType[$user->typeId] : UFbean_Sru_Computer::TYPE_STUDENT);
+			}
 			if ($foundOld) {
 				if ($bean->locationId != $user->locationId) {
 					$this->_srv->get('req')->post->computerEdit = $this->_srv->get('req')->post->{self::PREFIX};	// walidator oczekuje computerEdit przy zmianie pokoju
@@ -62,7 +66,6 @@ extends UFact {
 					$this->_srv->get('req')->post->del('computerEdit');
 				}
 			} else {
-				$bean->typeId = (array_key_exists($user->typeId, UFbean_Sru_Computer::$defaultUserToComputerType) ? UFbean_Sru_Computer::$defaultUserToComputerType[$user->typeId] : UFbean_Sru_Computer::TYPE_STUDENT);
 				$bean->locationAlias = $user->locationAlias;
 			}
 			$bean->modifiedById = null;
