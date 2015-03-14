@@ -98,7 +98,7 @@ extends UFtpl_Common {
 			$admins[$lastAdmin] .= '<td></td>';
 		}
 		$admins[$lastAdmin] .= '</tr>';
-		asort($admins);
+		asort($admins, SORT_LOCALE_STRING);
 		asort($currentDayDutyHours);
 		
 		echo '<table class="sruDutyHours"><thead><tr><th>Administrator</th><th>Gdzie<br/>(Where)</th><th>Poniedziałek<br/>(Monday)</th><th>Wtorek<br/>(Tuesday)</th><th>Środa<br/>(Wednesday)</th><th>Czwartek<br/>(Thursday)</th><th>Piątek<br/>(Friday)</th><th>Sobota<br/>(Saturday)</th><th>Niedziela<br/>(Sunday)</th></tr></thead><tbody>';
