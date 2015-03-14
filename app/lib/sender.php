@@ -8,6 +8,7 @@ class UFlib_Sender {
 		$mailHeaders .= 'Content-Type: text/plain; charset=UTF-8'."\n";
 		$mailHeaders .=  'Content-Transfer-Encoding: 8bit'."\n";
 		$mailHeaders .=  'From: Administratorzy SKOS <admin@ds.pg.gda.pl>'."\n";
+		$mailHeaders .=  'Return-Path: admin@ds.pg.gda.pl'."\n";
 		foreach ($headers as $header => $value) {
 			$mailHeaders .=  $header.': '.$value."\n";
 		}
@@ -54,7 +55,7 @@ class UFlib_Sender {
 		$conf = UFra::shared('UFconf_Sru');
 		$title = $conf->emailPrefix.' '.$title;
 
-		mail($email, '=?UTF-8?B?'.base64_encode($title).'?=', $body, $headers);
+		mail($email, '=?UTF-8?B?'.base64_encode($title).'?=', $body, $headers, '-fadmin@ds.pg.gda.pl');
 	}
 
 	// nagłówki
