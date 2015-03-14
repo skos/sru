@@ -359,19 +359,24 @@ changeVisibility();
 			['Godzina', 'Upload (kB/s)'],
 			<?
 				foreach ($upload as $date => $bytes) {
-					echo '["'.substr($date, 11, -3).'",'.str_replace(',', '.',round($bytes/1024/5/60, 4)).'],';
+					echo '["'.substr($date, 11, -3).'",'.str_replace(',', '.',round($bytes/1024/5/60, 2)).'],';
 				}
 			?>
 		]);
 
+		var showEvery = parseInt(data.getNumberOfRows() / 8);
 		var options = {
 			width: 900,
 			height: 563,
 			hAxis: {
-				title: "Godzina"
+				title: "Godzina",
+				showTextEvery: showEvery
 			},
 			vAxis: {
 				title: "Średni upload z 5 min"
+			},
+			legend: {
+				position:'none'
 			}
 		};
 
