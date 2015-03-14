@@ -24,7 +24,7 @@ class UFlib_Otrs {
 
 			$tickets = $client->__soapCall("Dispatch", array($username, $password,
 			    "TicketObject", "TicketSearch",
-			    "UserID", "1", "Result", "ARRAY", "Queues", array($queue), "StateType", array("new", "open")
+			    "UserID", "1", "Result", "ARRAY", "Queues", $queue, "StateType", array("new", "open")
 			));
 
 			$allTickets = array();

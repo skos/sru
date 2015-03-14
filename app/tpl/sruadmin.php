@@ -1697,10 +1697,10 @@ setInterval(getSummary, 10*1000);
 		$url = $conf->otrsUrl;
 		
 		if (is_null($d['tickets'])) {
-			echo $this->ERR('Błąd pobierania ticketów');
+			echo $this->ERR('Błąd pobierania zgłoszeń');
 			return;
 		} else if (count($d['tickets']) == 0) {
-			echo $this->OK('Brak otwartych ticketów');
+			echo $this->OK('Brak otwartych zgłoszeń');
 			return;
 		}
 		echo '<ul>';
