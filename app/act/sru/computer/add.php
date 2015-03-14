@@ -31,7 +31,6 @@ extends UFact {
 			}
 
 			$bean = UFra::factory('UFbean_Sru_Computer');
-			$bean->typeId = (array_key_exists($user->typeId, UFbean_Sru_Computer::$defaultUserToComputerType) ? UFbean_Sru_Computer::$defaultUserToComputerType[$user->typeId] : UFbean_Sru_Computer::TYPE_STUDENT);
 			$post = $this->_srv->get('req')->post->{self::PREFIX};
 
 			$foundOld = false;
@@ -63,6 +62,7 @@ extends UFact {
 					$this->_srv->get('req')->post->del('computerEdit');
 				}
 			} else {
+				$bean->typeId = (array_key_exists($user->typeId, UFbean_Sru_Computer::$defaultUserToComputerType) ? UFbean_Sru_Computer::$defaultUserToComputerType[$user->typeId] : UFbean_Sru_Computer::TYPE_STUDENT);
 				$bean->locationAlias = $user->locationAlias;
 			}
 			$bean->modifiedById = null;
