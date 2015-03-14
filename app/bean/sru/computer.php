@@ -353,22 +353,41 @@ extends UFbean_Common {
 	
 	protected function validateTypeId($val, $change) {
 		if (array_key_exists($val, self::$typeToUser)) {
-			try {
-				$user = UFra::factory('UFbean_Sru_User'); 
-				$user->getByPK((int)$this->_srv->get('req')->get->userId);
-				if (!in_array($user->typeId, self::$typeToUser[$val])) {
-					return 'wrongHostType';
+			if (array_key_exists('userId', $this->_srv->get('req')->get)) {
+				try {
+					$user = UFra::factory('UFbean_Sru_User'); 
+					$user->getByPK((int)$this->_srv->get('req')->get->userId);
+					if (!in_array($user->typeId, self::$typeToUser[$val])) {
+						return 'wrongHostType';
+					}
+					return;
+				} catch (UFex_Core_DataNotFound $e) {
 				}
-			} catch (UFex_Core_DataNotFound $e) {
-				$computer = UFra::factory('UFbean_Sru_Computer'); 
-				$computer->getByPK((int)$this->_srv->get('req')->get->computerId);
-				$user = UFra::factory('UFbean_Sru_User'); 
-				$user->getByPK($computer->userId);
-				if (!in_array($user->typeId, self::$typeToUser[$val])) {
-					return 'wrongHostType';
+			} else if (array_key_exists('computerId', $this->_srv->get('req')->get)) {
+				try {
+					$computer = UFra::factory('UFbean_Sru_Computer'); 
+					$computer->getByPK((int)$this->_srv->get('req')->get->computerId);
+					$user = UFra::factory('UFbean_Sru_User'); 
+					$user->getByPK($computer->userId);
+					if (!in_array($user->typeId, self::$typeToUser[$val])) {
+						return 'wrongHostType';
+					}
+					return;
+				} catch (UFex_Core_DataNotFound $e) {
 				}
-			} catch (UFex_Dao_NotFound $e) {
+			} else if ($this->_srv->get('session')->is('auth')) {
+				try {
+					$userId = $this->_srv->get('session')->auth;
+					$user = UFra::factory('UFbean_Sru_User'); 
+					$user->getByPK((int)$userId);
+					if (!in_array($user->typeId, self::$typeToUser[$val])) {
+						return 'wrongHostType';
+					}
+					return;
+				} catch (UFex_Core_DataNotFound $e) {
+				}
 			}
+			UFra::error('Invalidated computer typeId: '.$val.($this->_srv->get('session')->is('auth') ? 'User: '.$this->_srv->get('session')->auth : '').($this->_srv->get('session')->is('authAdmin') ? 'Admin: '.$this->_srv->get('session')->authAdmin : '').($this->_srv->get('session')->is('authWalet') ? 'Walet: '.$this->_srv->get('session')->authWalet : ''));
 		}
 	}
 }
