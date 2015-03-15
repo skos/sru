@@ -72,6 +72,10 @@ extends UFctl {
 					$ctl = UFra::factory('UFctl_SruAdmin_Inventory');
 					$ctl->go();
 					return false;
+				case 'fwexceptions':
+					$ctl = UFra::factory('UFctl_SruAdmin_FwExceptions');
+					$ctl->go();
+					return false;
 				case 'logout':
 					$ctl = UFra::factory('UFact_SruAdmin_Admin_Logout');
 					$ctl->go();

@@ -413,6 +413,7 @@ setInterval(getSummary, 10*1000);
 		echo '<li><a href="'.UFURL_BASE.'/admin/switches/">Switche</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/devices/">Urządzenia</a></li>';
 		echo '<li><a href="'.UFURL_BASE.'/admin/inventory/">Inwentaryzacja</a></li>';
+		echo '<li><a href="'.UFURL_BASE.'/admin/fwexceptions/">Wyjątki w firewallu</a></li>';
 		echo '</ul>';
 		echo $form->_end();
 	}
@@ -1618,6 +1619,24 @@ setInterval(getSummary, 10*1000);
 			echo '<h2>Zestawienie numerów IP</h2>';
 		}
 		echo $this->ERR('Brak przydzielonych adresów IP');
+	}
+	
+	public function titleFwExceptions() {
+		echo 'Wyjątki w firewallu';
+	}
+	
+	public function fwExceptions(array $d) {
+		echo '<h2>Wyjątki w firewallu</h2>';
+		$active = count($d['fwExcpetionsActive']);
+		echo '<h3>Aktywne ('.$active.')</h3>';
+		if ($active > 0) {
+			$d['fwExcpetionsActive']->write('listExceptions');
+		}
+		$inactive = count($d['fwExcpetionsInactive']);
+		echo '<h3>Nieaktywne ('.$inactive.')</h3>';
+		if ($inactive > 0) {
+			$d['fwExcpetionsInactive']->write('listExceptions');
+		}
 	}
 	
 	public function titleStatsUsers() {

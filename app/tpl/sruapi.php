@@ -108,7 +108,7 @@ extends UFtpl_Common {
 	}
 	
 	public function firewallExceptions(array $d) {
-		$d['admins']->write('apiFirewallExceptions', $d['exadmins']);
+		$d['fwExcpetions']->write('apiFirewallExceptions');
 	}
 
 	public function apiPenaltiesTimelineMailTitle(array $d) {

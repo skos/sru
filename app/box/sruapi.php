@@ -439,13 +439,9 @@ extends UFbox {
 	
 	public function firewallExceptions() {
 		try {
-			$admins = UFra::factory('UFbean_Sru_ComputerList');
-			$admins->listAdmins();
-			$d['admins'] = $admins;
-			
-			$exadmins = UFra::factory('UFbean_Sru_ComputerList');
-			$exadmins->listExAdmins();
-			$d['exadmins'] = $exadmins;
+			$fwExceptions = UFra::factory('UFbean_SruAdmin_FwExceptionsList');
+			$fwExceptions->listWithActive(true);
+			$d['fwExcpetions'] = $fwExceptions;
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {

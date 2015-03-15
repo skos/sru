@@ -2469,6 +2469,24 @@ extends UFbox {
 		}
 	}
 
+	public function fwExceptions() {
+		try {
+			$fwExceptions = UFra::factory('UFbean_SruAdmin_FwExceptionsList');
+			$fwExceptions->listWithActive(true);
+			$d['fwExcpetionsActive'] = $fwExceptions;
+		} catch (UFex_Dao_NotFound $e) {
+			$d['fwExcpetionsActive'] = null;
+		}
+		try {
+			$fwExceptions = UFra::factory('UFbean_SruAdmin_FwExceptionsList');
+			$fwExceptions->listWithActive(false);
+			$d['fwExcpetionsInactive'] = $fwExceptions;
+		} catch (UFex_Dao_NotFound $e) {
+			$d['fwExcpetionsInactive'] = null;
+		}
+		return $this->render(__FUNCTION__, $d);
+	}
+	
 	public function statsUsers() {
 		try {
 			$user = UFra::factory('UFbean_Sru_UserList');
