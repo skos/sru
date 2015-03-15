@@ -14,7 +14,7 @@ extends UFtpl_Common {
 		echo '</tr></thead><tbody>';
 		foreach ($d as $c) {
 			echo '<tr><td><a href="'.$hostUrl.$c['computerId'].'">'.$c['host'].'</a></td>';
-			echo '<td>'.$c['port'].'</td>';
+			echo '<td>'.($c['port'] == 0 ? 'wszystkie' : $c['port']).'</td>';
 			echo '<td>'.$c['comment'].'</td></tr>';
 		}
 		echo '</tbody></table>';
