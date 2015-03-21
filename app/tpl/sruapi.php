@@ -11,10 +11,10 @@ extends UFtpl_Common {
 
 	public function dnsRev(array $d) {
 		if (!is_null($d['computers'])) {
-			$d['computers']->write('configDnsRev');
+			$d['computers']->write('configDnsRev', $d['mask']);
 		}
 		if (!is_null($d['switches'])) {
-			$d['switches']->write('configDnsRev');
+			$d['switches']->write('configDnsRev', $d['mask']);
 		}
 	}
 

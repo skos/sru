@@ -37,6 +37,7 @@ extends UFbox {
 			} catch (UFex_Dao_NotFound $e) {
 				$d['switches'] = null;
 			}
+			$d['mask'] = 24;
 		} else if (preg_match('/^[0-9]{1,3}(\.[0-9]{1,3}){1}$/', $ipClass)) {
 			try {
 				$bean->listAllActiveByIpClass($this->_srv->get('req')->get->ipClass, 16);
@@ -50,6 +51,7 @@ extends UFbox {
 			} catch (UFex_Dao_NotFound $e) {
 				$d['switches'] = null;
 			}
+			$d['mask'] = 16;
 		} else {
 			return '';
 		}

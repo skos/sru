@@ -423,9 +423,13 @@ function fillData() {
 		}
 	}
 	
-	public function configDnsRev(array $d) {
+	public function configDnsRev(array $d, $mask) {
 		foreach ($d as $c) {
-			echo substr(strrchr($c['ip'], '.'),1)."\t\tPTR\t".$this->displaySwitchName($c['dormitoryAlias'], $c['hierarchyNo'], $c['lab']).'.'.$c['domainSuffix'].".\n";
+			if ($mask == 24) {
+				echo substr(strrchr($c['ip'], '.'),1)."\t\tPTR\t".$this->displaySwitchName($c['dormitoryAlias'], $c['hierarchyNo'], $c['lab']).'.'.$c['domainSuffix'].".\n";
+			} else if ($mask == 16) {
+				echo substr($c['ip'], strpos($c['ip'], '.', strpos($c['ip'], '.') + 1) + 1)."\t\tPTR\t".$this->displaySwitchName($c['dormitoryAlias'], $c['hierarchyNo'], $c['lab']).'.'.$c['domainSuffix'].".\n";
+			}
 		}
 	}
 	
