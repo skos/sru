@@ -984,7 +984,7 @@ div.style.display = 'none';
                 if ($this->_srv->get('msg')->get('computerFwExceptionsEdit/errors/port/regexp')) {
                         echo $this->ERR($this->errors['port/regexp']);
                 }
-                echo $form->newExceptions(_("Wyjątki FW") . UFlib_Helper::displayHint(_("Podaj wyjątki rozdzielone przecinkiem.")));
+                echo $form->newExceptions(_("Wyjątki FW") . UFlib_Helper::displayHint(_("Podaj wyjątki rozdzielone przecinkiem. 0 oznacza wszystkie porty.")));
                 echo $form->_end();
         }
 
