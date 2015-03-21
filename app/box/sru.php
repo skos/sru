@@ -442,6 +442,20 @@ extends UFbox {
 		$d['user'] = $user;
 		return $this->render(__FUNCTION__, $d);
 	}
+	
+	public function hostFwExceptionsChangedMailTitle($user, $host) {
+		$d['user'] = $user;
+		$d['host'] = $host;
+		return $this->render(__FUNCTION__, $d);
+	}
+
+	public function hostFwExceptionsChangedMailBody($user, $host, array $deleted, array $added) {
+		$d['user'] = $user;
+		$d['host'] = $host;
+		$d['deleted'] = $deleted;
+		$d['added'] = $added;
+		return $this->render(__FUNCTION__, $d);
+	}
 
 	private function getMacAddress() {
 		$serv = $this->_srv->get('req')->server;

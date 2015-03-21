@@ -540,4 +540,20 @@ changeVisibility();
 			echo $d['host']->write('hostChangedMailBodyPolish', $d['action']);
 		}
 	}
+	
+	public function hostFwExceptionsChangedMailTitle(array $d) {
+		if ($d['user']->lang == 'en') {
+			echo $d['host']->write('hostFwExceptionsChangedMailTitleEnglish');
+		} else {
+			echo $d['host']->write('hostFwExceptionsChangedMailTitlePolish');
+		}
+	}
+	
+	public function hostFwExceptionsChangedMailBody(array $d) {
+		if ($d['user']->lang == 'en') {
+			echo $d['host']->write('hostFwExceptionsChangedMailBodyEnglish', $d['deleted'], $d['added']);
+		} else {
+			echo $d['host']->write('hostFwExceptionsChangedMailBodyPolish', $d['deleted'], $d['added']);
+		}
+	}
 }

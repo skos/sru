@@ -452,8 +452,8 @@ extends UFbox {
 	
 	public function firewallExceptions() {
 		try {
-			$fwExceptions = UFra::factory('UFbean_SruAdmin_FwExceptionsList');
-			$fwExceptions->listWithActive(true);
+			$fwExceptions = UFra::factory('UFbean_SruAdmin_FwExceptionList');
+			$fwExceptions->listActive();
 			$d['fwExcpetions'] = $fwExceptions;
 
 			return $this->render(__FUNCTION__, $d);

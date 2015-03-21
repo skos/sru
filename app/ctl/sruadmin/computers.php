@@ -71,6 +71,9 @@ extends UFctl {
 									$get->view = 'error404';
 								}
 								break;
+							case ':fwexceptions':
+								$get->view = 'computers/computer/fwexceptions';
+								break;
 							case ':del':
 								$get->view = 'computers/computer/delete';
 								break;	
@@ -112,6 +115,8 @@ extends UFctl {
 			$act = 'Computer_Edit';
 		} elseif ($post->is('computerAliasesEdit') && $acl->sruAdmin('computer', 'editAliases')) {
 			$act = 'Computer_AliasesEdit';
+		} elseif ($post->is('computerFwExceptionsEdit') && $acl->sruAdmin('computer', 'edit')) {
+			$act = 'Computer_FwExceptionsEdit';
 		} elseif ('computers/computer/delete' == $get->view && $post->is('computerDel') ) {
 			$act = 'Computer_Del';
 		} elseif ('inventorycard/add' == $get->view && $post->is('inventoryCardAdd') && $acl->sruAdmin('computer', 'inventoryCardAdd')) {
@@ -163,6 +168,12 @@ extends UFctl {
 					return 'SruAdmin_Computer';
 				} else {
 					return 'SruAdmin_ComputerAliasesEdit';
+				}
+			case 'computers/computer/fwexceptions':
+				if ($msg->get('computerFwExceptionsEdit/ok')) {
+					return 'SruAdmin_Computer';
+				} else {
+					return 'SruAdmin_ComputerFwExceptionsEdit';
 				}
 			case 'computers/computer/restore':
 				return 'SruAdmin_ComputerRestore';

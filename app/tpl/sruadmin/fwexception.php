@@ -2,7 +2,7 @@
 /**
  * szablon wyjatkow w fw
  */
-class UFtpl_SruAdmin_FwExceptions
+class UFtpl_SruAdmin_FwException
 extends UFtpl_Common {
 	public function listExceptions(array $d, $id = 0) {
 		$hostUrl = $this->url(0).'/computers/';
@@ -10,12 +10,10 @@ extends UFtpl_Common {
 		echo '<table id="exceptionsT'.$id.'" class="bordered"><thead><tr>';
 		echo '<th>Host</th>';
 		echo '<th>Port</th>';
-		echo '<th>Komentarz</th>';
 		echo '</tr></thead><tbody>';
 		foreach ($d as $c) {
 			echo '<tr><td><a href="'.$hostUrl.$c['computerId'].'">'.$c['host'].'</a></td>';
-			echo '<td>'.($c['port'] == 0 ? 'wszystkie' : $c['port']).'</td>';
-			echo '<td>'.$c['comment'].'</td></tr>';
+			echo '<td>'.($c['port'] == 0 ? 'wszystkie' : $c['port']).'</td></tr>';
 		}
 		echo '</tbody></table>';
 		

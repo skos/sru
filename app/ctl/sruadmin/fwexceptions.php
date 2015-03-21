@@ -51,7 +51,7 @@ extends UFctl {
 		
 		switch ($get->view) {
 			case 'fwexceptions/list':
-				return 'SruAdmin_FwExceptionsList';
+				return 'SruAdmin_FwExceptionList';
 			default:
 				return 'Sru_Error404';
 		}

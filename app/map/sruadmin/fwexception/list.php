@@ -2,23 +2,23 @@
 /**
  * wyciagniecie wyjatkow w fw
  */
-class UFmap_SruAdmin_FwExceptions_List
+class UFmap_SruAdmin_FwException_List
 extends UFmap {
 
 	protected $columns = array(
+		'id'		=> 'e.id',
 		'computerId'	=> 'e.computer_id',
 		'host'		=> 'c.host',
 		'ip'		=> 'c.ipv4',
 		'port'		=> 'e.port',
-		'comment'	=> 'e.comment',
 		'active'	=> 'e.active',
 	);
 	protected $columnTypes = array(
+		'id'		=> self::INT,
 		'computerId'	=> self::INT,
 		'host'		=> self::TEXT,
 		'ip'		=> self::TEXT,
 		'port'		=> self::INT,
-		'comment'	=> self::NULL_TEXT,
 		'active'	=> self::BOOL,
 	);
 	protected $tables = array(

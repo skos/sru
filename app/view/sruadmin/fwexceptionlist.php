@@ -1,5 +1,5 @@
 <?php
-class UFview_SruAdmin_FwExceptionsList
+class UFview_SruAdmin_FwExceptionList
 extends UFview_SruAdmin {
 
 	public function fillData() {

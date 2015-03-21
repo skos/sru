@@ -176,6 +176,14 @@ extends UFbox {
 			} else {
 				$d['masterHost'] = null;
 			}
+			
+			try {
+				$fwExceptions = UFra::factory('UFbean_SruAdmin_FwExceptionList');
+				$fwExceptions->listActiveByComputerId($bean->id);
+				$d['fwExceptions'] = $fwExceptions;
+			} catch (UFex $e) {
+				$d['fwExceptions'] = null;
+			}
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
@@ -327,6 +335,36 @@ extends UFbox {
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
 			return $this->render('computerAliasesNotFound');
+		}
+	}
+	
+	public function titleComputerFwExceptionsEdit() {
+		try {
+			$bean = $this->_getComputerFromGet();
+			$d['computer'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render('titleComputerNotFound');
+		}
+	}
+
+	public function computerFwExceptionsEdit() {
+		try {
+			$bean = $this->_getComputerFromGet();
+			try {
+				$fwExceptions = UFra::factory('UFbean_SruAdmin_FwExceptionList');
+				$fwExceptions->listActiveByComputerId($bean->id);
+				$d['fwExceptions'] = $fwExceptions;
+			} catch (UFex $e) {
+				$d['fwExceptions'] = null;
+			}
+
+			$d['computer'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render('computerFwExceptionsNotFound');
 		}
 	}
 	
@@ -2471,18 +2509,11 @@ extends UFbox {
 
 	public function fwExceptions() {
 		try {
-			$fwExceptions = UFra::factory('UFbean_SruAdmin_FwExceptionsList');
-			$fwExceptions->listWithActive(true);
+			$fwExceptions = UFra::factory('UFbean_SruAdmin_FwExceptionList');
+			$fwExceptions->listActive();
 			$d['fwExcpetionsActive'] = $fwExceptions;
 		} catch (UFex_Dao_NotFound $e) {
 			$d['fwExcpetionsActive'] = null;
-		}
-		try {
-			$fwExceptions = UFra::factory('UFbean_SruAdmin_FwExceptionsList');
-			$fwExceptions->listWithActive(false);
-			$d['fwExcpetionsInactive'] = $fwExceptions;
-		} catch (UFex_Dao_NotFound $e) {
-			$d['fwExcpetionsInactive'] = null;
 		}
 		return $this->render(__FUNCTION__, $d);
 	}
@@ -2744,6 +2775,19 @@ extends UFbox {
 	}
 
 	public function hostAliasesChangedMailBody($host, array $deleted, $added, $admin) {
+		$d['host'] = $host;
+		$d['deleted'] = $deleted;
+		$d['added'] = $added;
+		$d['admin'] = $admin;
+		return $this->render(__FUNCTION__, $d);
+	}
+	
+	public function hostFwExceptionsChangedMailTitle($host) {
+		$d['host'] = $host;
+		return $this->render(__FUNCTION__, $d);
+	}
+
+	public function hostFwExceptionsChangedMailBody($host, array $deleted, array $added, $admin) {
 		$d['host'] = $host;
 		$d['deleted'] = $deleted;
 		$d['added'] = $added;

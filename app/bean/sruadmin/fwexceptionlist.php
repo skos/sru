@@ -2,6 +2,6 @@
 /**
  * akademik
  */
-class UFbean_SruAdmin_FwExceptionsList
+class UFbean_SruAdmin_FwExceptionList
 extends UFbeanList {
 }

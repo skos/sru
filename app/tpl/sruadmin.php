@@ -87,6 +87,9 @@ extends UFtpl_Common {
 		if ($this->_srv->get('msg')->get('computerAliasesEdit/ok')) {
 			echo $this->OK('Zmodyfikowano aliasy komputera');
 		}
+		if ($this->_srv->get('msg')->get('computerFwExceptionsEdit/ok')) {
+			echo $this->OK('Zmodyfikowano wyjątki FW komputera');
+		}
 		if ($this->_srv->get('msg')->get('inventoryCardAdd/ok')) {
 			echo $this->OK('Karta wyposażenia została dodana');
 		}
@@ -95,7 +98,7 @@ extends UFtpl_Common {
 		}
 		$url = $this->url(0).'/computers/'.$d['computer']->id;
 		echo '<div class="computer">';
-		$d['computer']->write('details', $d['switchPort'], $d['aliases'], $d['virtuals'], $d['interfaces'], $d['masterHost']);
+		$d['computer']->write('details', $d['switchPort'], $d['aliases'], $d['virtuals'], $d['interfaces'], $d['masterHost'], $d['fwExceptions']);
 		echo '</div>';
 	}
 
@@ -243,6 +246,24 @@ function filter(selector, query) {
 
 	public function computerAliasesNotFound() {
 		echo $this->ERR('Błąd wyświetlania aliasów');
+	}
+	
+	public function titleComputerFwExceptionsEdit(array $d) {
+		echo $d['computer']->write('titleFwExceptionsEdit');
+	}
+
+	public function computerFwExceptionsEdit(array $d) {
+		$form = UFra::factory('UFlib_Form');
+
+		echo '<h2>Edycja wyjątków FW</h2>';
+		echo $form->_start($this->url());
+		echo $d['computer']->write('formFwExceptionsEdit', $d['fwExceptions']);
+		echo $form->_submit('Zapisz');
+		echo $form->_end(true);
+	}
+
+	public function computerFwExceptionsNotFound() {
+		echo $this->ERR('Błąd wyświetlania wyjątków FW');
 	}
 	
 	public function computerDel(array $d) {
@@ -1632,11 +1653,6 @@ setInterval(getSummary, 10*1000);
 		if ($active > 0) {
 			$d['fwExcpetionsActive']->write('listExceptions');
 		}
-		$inactive = count($d['fwExcpetionsInactive']);
-		echo '<h3>Nieaktywne ('.$inactive.')</h3>';
-		if ($inactive > 0) {
-			$d['fwExcpetionsInactive']->write('listExceptions');
-		}
 	}
 	
 	public function titleStatsUsers() {
@@ -1915,6 +1931,14 @@ setInterval(getSummary, 10*1000);
 	
 	public function hostAliasesChangedMailBody(array $d) {
 		echo $d['host']->write('hostAliasesChangedMailBody', $d['deleted'], $d['added'], $d['admin']);
+	}
+	
+	public function hostFwExceptionsChangedMailTitle(array $d) {
+		echo 'Zmodyfikowano wyjątki FW hosta '.$d['host']->host;
+	}
+	
+	public function hostFwExceptionsChangedMailBody(array $d) {
+		echo $d['host']->write('hostFwExceptionsChangedMailBody', $d['deleted'], $d['added'], $d['admin']);
 	}
 	
 	public function carerChangedToYouMailTitle(array $d) {

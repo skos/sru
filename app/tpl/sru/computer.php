@@ -68,6 +68,8 @@ extends UFtpl_Common {
 		'waletCarerId/null' => 'Host administracji musi posiadać opiekuna',
 		'typeId/wrongHostType' => 'Właścicielem tego typu hosta nie może być ten typ użytkownika',
 		'deviceModelId' => 'Serwer fizyczny i urządzenie muszą mieć wybrany model',
+		'port/duplicated' => 'Wyjątek dla tego portu jest już aktywny',
+		'port/regexp' => 'Nieprawidłowy format',
 	);
 
 	/**
@@ -154,6 +156,10 @@ $(document).ready(function()
 		echo 'Edycja aliasów komputera "'.$d['host'].'"';
 	}
 
+	public function titleFwExceptionsEdit(array $d) {
+		echo 'Edycja wyjątków FW komputera "'.$d['host'].'"';
+	}
+	
         public function detailsOwn(array $d, $user){
                 echo '<h1>' . $d['host'] . '.ds.pg.gda.pl</h1>';
                 echo '<p><em>' . _("Typ:") . '</em> ' . _(self::$computerTypes[$d['typeId']]) . '</p>';
@@ -183,7 +189,7 @@ $(document).ready(function()
 		echo '<p>'.$this->displayUploadChart($d, true).'</p>';
 	}
 
-	public function details(array $d, $switchPort, $aliases, $virtuals, $interfaces, $masterHost) {
+	public function details(array $d, $switchPort, $aliases, $virtuals, $interfaces, $masterHost, $fwExceptions) {
 		$url = $this->url(0);
 		$urlNav = $this->url(0).'/computers/'.$d['id'];
 		$acl = $this->_srv->get('acl');
@@ -270,6 +276,14 @@ $("#macvendor").load('<?=UFURL_BASE?>/admin/apis/getmacvendor/<?=$d['mac']?>');
 			$aliasesString = $aliasesString.'</td></tr></table>';
 			echo '<p><em>Aliasy:</em> '.$aliasesString.'</p>';
 		}
+		if (!is_null($fwExceptions)) {
+			$exceptionsString = '';
+			foreach ($fwExceptions as $exception) {
+				$exceptionsString = $exceptionsString.($exception['port'] == 0 ? 'wszystkie' : $exception['port']).', ';
+			}
+			$exceptionsString = substr($exceptionsString, 0 , -2);
+			echo '<p><em>Wyjątki FW:</em> '.$exceptionsString.'</p>';
+		}
 		$acls = array();
 		if ($d['canAdmin']) {
 			$acls[] = 'admin';
@@ -307,6 +321,7 @@ $("#macvendor").load('<?=UFURL_BASE?>/admin/apis/getmacvendor/<?=$d['mac']?>');
 		if ($acl->sruAdmin('computer', 'editAliases')) {
 			echo ' <a href="'.$urlNav.'/:aliases">Aliasy</a> &bull; ';
 		}
+		echo ' <a href="'.$urlNav.'/:fwexceptions">Wyjątki FW</a> &bull; ';
 		if ($acl->sruAdmin('computer', 'inventoryCardAdd')) {
 			echo ' <a href="'.$urlNav.'/:inventorycardadd">Dodaj kartę wyposażenia</a> &bull; ';
 		}
@@ -951,6 +966,27 @@ div.style.display = 'none';
                 echo $form->isCname(_("Wpis CNAME ") . UFlib_Helper::displayHint(_("Aliasy są domyślnie wpisami CNAME.")), array('type' => $form->CHECKBOX, 'value' => '1'));
                 echo $form->_end();
         }
+	
+	public function formFwExceptionsEdit(array $d, $fwExceptions){
+                $form = UFra::factory('UFlib_Form', 'computerFwExceptionsEdit', $d, $this->errors);
+
+                if (!is_null($fwExceptions)) {
+                        echo $form->_fieldset(_("Usuń wyjątki FW komputera:"));
+                        foreach ($fwExceptions as $exception) {
+                                echo $form->exceptionsChk(($exception['port'] == 0 ? 'wszystkie porty' : 'port '.$exception['port']), array('type' => $form->CHECKBOX, 'name' => 'computerFwExceptionsEdit[exceptions][' . $exception['id'] . ']', 'id' => 'computerFwExceptionsEdit[exceptions][' . $exception['id'] . ']'));
+                        }
+                        echo $form->_end();
+                }
+                echo $form->_fieldset(_("Dodaj wyjątki"));
+                if ($this->_srv->get('msg')->get('computerFwExceptionsEdit/errors/port/duplicated')) {
+                        echo $this->ERR($this->errors['port/duplicated']);
+                }
+                if ($this->_srv->get('msg')->get('computerFwExceptionsEdit/errors/port/regexp')) {
+                        echo $this->ERR($this->errors['port/regexp']);
+                }
+                echo $form->newExceptions(_("Wyjątki FW") . UFlib_Helper::displayHint(_("Podaj wyjątki rozdzielone przecinkiem.")));
+                echo $form->_end();
+        }
 
 	public function listAdmin(array $d, $id = 0) {
 		$url = $this->url(0);
@@ -1357,6 +1393,75 @@ $("#macvendor").load('<?=UFURL_BASE?>/admin/apis/getmacvendor/<?=$searchedMac?>'
 			echo 'Usunięto alias(y): '.implode(', ', $deleted)."\n";
 		}
 		echo "\n".'Admin modyfikujący: '.$admin->name."\n";
+	}
+	
+	public function hostFwExceptionsChangedMailBody(array $d, array $deleted, $added, $admin) {
+		echo 'Zmodyfikowano wyjątki FW hosta: '.$d['host']."\n\n";
+		if (count($added) > 0) {
+			foreach ($added as $addK => $add) {
+				if ($add == 0) {
+					$added[$addK] = 'wszystkie porty';
+				}
+			}
+			echo 'Dodano wyjątek(wyjątki): '.implode(', ', $added)."\n";
+		}
+		if (count($deleted) > 0) {
+			foreach ($deleted as $delK => $del) {
+				if ($del == 0) {
+					$deleted[$delK] = 'wszystkie porty';
+				}
+			}
+			echo 'Usunięto wyjątek(wyjątki): '.implode(', ', $deleted)."\n";
+		}
+		echo "\n".'Admin modyfikujący: '.$admin->name."\n";
+	}
+	
+	public function hostFwExceptionsChangedMailTitlePolish(array $d) {
+		echo 'Dane Twojego hosta zostały zmienione';
+	}
+
+	public function hostFwExceptionsChangedMailTitleEnglish(array $d) {
+		echo 'Your host data have been changed';
+	}
+	
+	public function hostFwExceptionsChangedMailBodyPolish(array $d, array $deleted, $added) {
+		echo 'Zmodyfikowano wyjątki w SKOSfirewallu dla Twojego hosta '.$d['host']."\n\n";
+		if (count($added) > 0) {
+			foreach ($added as $addK => $add) {
+				if ($add == 0) {
+					$added[$addK] = 'wszystkie porty';
+				}
+			}
+			echo 'Dodano '.(count($added) > 1 ? 'wyjątki' : 'wyjątek').' dla '.(count($added) > 1 ? 'portów' : 'portu').': '.implode(', ', $added)."\n";
+		}
+		if (count($deleted) > 0) {
+			foreach ($deleted as $delK => $del) {
+				if ($del == 0) {
+					$deleted[$delK] = 'wszystkie porty';
+				}
+			}
+			echo 'Usunięto '.(count($deleted) > 1 ? 'wyjątki' : 'wyjątek').' dla '.(count($deleted) > 1 ? 'portów' : 'portu').': '.implode(', ', $deleted)."\n";
+		}
+	}
+
+	public function hostFwExceptionsChangedMailBodyEnglish(array $d, array $deleted, $added) {
+		echo 'SKOSfirewall exceptions for your host '.$d['host'].' have been changed.'."\n\n";
+		if (count($added) > 0) {
+			foreach ($added as $addK => $add) {
+				if ($add == 0) {
+					$added[$addK] = 'all ports';
+				}
+			}
+			echo 'Added '.(count($added) > 1 ? 'exceptions' : 'exception').' for '.(count($added) > 1 ? 'ports' : 'port').': '.implode(', ', $added)."\n";
+		}
+		if (count($deleted) > 0) {
+			foreach ($deleted as $delK => $del) {
+				if ($del == 0) {
+					$deleted[$delK] = 'all ports';
+				}
+			}
+			echo 'Removed '.(count($deleted) > 1 ? 'exceptions' : 'exception').' for '.(count($deleted) > 1 ? 'ports' : 'port').': '.implode(', ', $deleted)."\n";
+		}
 	}
 
 	public function carerChangedToYouMailBody(array $d, $admin) {
