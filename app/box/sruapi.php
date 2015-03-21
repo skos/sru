@@ -26,13 +26,26 @@ extends UFbox {
 		$ipClass = $this->_srv->get('req')->get->ipClass;
 		if (preg_match('/^[0-9]{1,3}(\.[0-9]{1,3}){2}$/', $ipClass)) {
 			try {
-				$bean->listAllActiveByIpClass($this->_srv->get('req')->get->ipClass);
+				$bean->listAllActiveByIpClass($this->_srv->get('req')->get->ipClass, 24);
 				$d['computers'] = $bean;
 			} catch (UFex_Dao_NotFound $e) {
 				$d['computers'] = null;
 			}
 			try {
-				$switches->listAllActiveByIpClass($this->_srv->get('req')->get->ipClass);
+				$switches->listAllActiveByIpClass($this->_srv->get('req')->get->ipClass, 24);
+				$d['switches'] = $switches;
+			} catch (UFex_Dao_NotFound $e) {
+				$d['switches'] = null;
+			}
+		} else if (preg_match('/^[0-9]{1,3}(\.[0-9]{1,3}){1}$/', $ipClass)) {
+			try {
+				$bean->listAllActiveByIpClass($this->_srv->get('req')->get->ipClass, 16);
+				$d['computers'] = $bean;
+			} catch (UFex_Dao_NotFound $e) {
+				$d['computers'] = null;
+			}
+			try {
+				$switches->listAllActiveByIpClass($this->_srv->get('req')->get->ipClass, 16);
 				$d['switches'] = $switches;
 			} catch (UFex_Dao_NotFound $e) {
 				$d['switches'] = null;

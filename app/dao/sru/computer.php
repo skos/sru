@@ -302,12 +302,12 @@ extends UFdao {
 		return $this->doSelect($query);
 	}
 
-	public function listAllActiveByIpClass($class) {
+	public function listAllActiveByIpClass($class, $mask) {
 		$mapping = $this->mapping('list');
 
 		$query = $this->prepareSelect($mapping);
 		$query->where($mapping->active, true);
-		$query->where($mapping->column('ip').' <<= \''.$class.'/24\'', null, $query->SQL);
+		$query->where($mapping->column('ip').' <<= \''.$class.'/'.$mask.'\'', null, $query->SQL);
 		$query->order($mapping->ip, $query->ASC);
 
 		return $this->doSelect($query);
