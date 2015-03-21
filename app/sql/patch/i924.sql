@@ -2,6 +2,7 @@ CREATE TABLE fw_exception_applications (
 id bigserial NOT NULL,
 user_id bigint NOT NULL,
 comment text NOT NULL,
+created_at timestamp with time zone,
 skos_opinion boolean,
 skos_comment text,
 skos_opinion_at timestamp with time zone,
@@ -29,7 +30,6 @@ CREATE TABLE fw_exceptions (
 id bigserial NOT NULL,
 computer_id bigint NOT NULL,
 port int NOT NULL,
-comment text,
 active boolean NOT NULL,
 fw_exception_application_id bigint,
 modified_by bigint,
@@ -50,56 +50,3 @@ CREATE UNIQUE INDEX fw_exceptions_computer_port_key
   USING btree
   (computer_id, port, active)
   WHERE active = true;
-
-CREATE TABLE fw_exceptions_history (
-id bigserial NOT NULL,
-fw_exception_id bigint NOT NULL,
-comment text,
-active boolean NOT NULL,
-modified_by bigint,
-modified_at timestamp with time zone NOT NULL DEFAULT now(),
-
-CONSTRAINT fw_exceptions_history_pkey PRIMARY KEY (id),
-CONSTRAINT fw_exceptions_history_fw_exception_id_fkey FOREIGN KEY (fw_exception_id)
-REFERENCES fw_exceptions (id)
-ON UPDATE CASCADE ON DELETE CASCADE,
-CONSTRAINT fw_exceptions_history_modified_by_fkey FOREIGN KEY (modified_by)
-REFERENCES admins (id)
-ON UPDATE CASCADE ON DELETE RESTRICT
-);
-COMMENT ON TABLE fw_exceptions_history IS 'historia wyjatkow w firewallu';
-
-CREATE OR REPLACE FUNCTION fw_exception_update()
-  RETURNS trigger AS
-$BODY$BEGIN
-if
-	NEW.comment!=OLD.comment OR
-	(OLD.comment IS NOT NULL AND NEW.comment IS NULL) OR
-	(OLD.comment IS NULL AND NEW.comment IS NOT NULL) OR
-	NEW.active!=OLD.active
-then
-	INSERT INTO fw_exceptions_history (
-		fw_exception_id,
-		modified_by,
-		modified_at,
-		active,
-		comment
-	) VALUES (
-		OLD.id,
-		OLD.modified_by,
-		OLD.modified_at,
-		OLD.active,
-		OLD.comment
-	);
-end if;
-return NEW;
-END;$BODY$
-  LANGUAGE 'plpgsql' VOLATILE;
-COMMENT ON FUNCTION fw_exception_update() IS 'archiwizacja wyjatku w firewallu';
-
-CREATE TRIGGER fw_exceptions_update
-  AFTER UPDATE
-  ON fw_exceptions
-  FOR EACH ROW
-  EXECUTE PROCEDURE fw_exception_update();
-COMMENT ON TRIGGER fw_exceptions_update ON fw_exceptions IS 'kopiuje dane do historii';
