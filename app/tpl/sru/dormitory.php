@@ -60,6 +60,7 @@ extends UFtpl_Common {
 			$overPlaces[$c['id']] = 0;
 		}
 		foreach ($rooms as $room) {
+			if (!array_key_exists($room['dormitoryId'], $people)) continue;
 			$people[$room['dormitoryId']] += $room['userCount'];
 			$peopleLimit[$room['dormitoryId']] += $room['usersMax'];
 			if ($room['userCount'] < $room['usersMax']) {
