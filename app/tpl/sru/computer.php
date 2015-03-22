@@ -1167,7 +1167,8 @@ $("#macvendor").load('<?=UFURL_BASE?>/admin/apis/getmacvendor/<?=$searchedMac?>'
 			if ($mask == 24) {
 				echo substr(strrchr($c['ip'], '.'),1)."\t\tPTR\t".$c['domainName'].".\n";
 			} else if ($mask == 16) {
-				echo substr($c['ip'], strpos($c['ip'], '.', strpos($c['ip'], '.') + 1) + 1)."\t\tPTR\t".$c['domainName'].".\n";
+				$parts = explode('.', $c['ip']);
+				echo $parts[3].'.'.$parts[2]."\t\tPTR\t".$c['domainName'].".\n";
 			}
 		}
 	}
