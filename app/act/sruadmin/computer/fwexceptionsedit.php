@@ -75,7 +75,7 @@ extends UFact {
 
 			$conf = UFra::shared('UFconf_Sru');
 			if ($conf->sendEmail && (count($deleted) > 0 || !is_null($added))) {
-				// wyslanie maila
+				// wyslanie maila do admina
 				$admin = UFra::factory('UFbean_SruAdmin_Admin');
 				$admin->getByPK($this->_srv->get('session')->authAdmin);
 
@@ -83,8 +83,9 @@ extends UFact {
 				$sender = UFra::factory('UFlib_Sender');
 				$title = $box->hostFwExceptionsChangedMailTitle($computer);
 				$body = $box->hostFwExceptionsChangedMailBody($computer, $deleted, $added, $admin);
-				$sender->send($user, $title, $body, self::PREFIX);
+				$sender->send("adnet@ds.pg.gda.pl", $title, $body, self::PREFIX);
 				
+				// wyslanie maila do usera
 				if ($user->typeId != UFbean_Sru_User::TYPE_SKOS) {
 					$box = UFra::factory('UFbox_Sru');
 					$sender = UFra::factory('UFlib_Sender');
