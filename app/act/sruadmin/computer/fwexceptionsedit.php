@@ -83,7 +83,7 @@ extends UFact {
 				$sender = UFra::factory('UFlib_Sender');
 				$title = $box->hostFwExceptionsChangedMailTitle($computer);
 				$body = $box->hostFwExceptionsChangedMailBody($computer, $deleted, $added, $admin);
-				$sender->send("adnet@ds.pg.gda.pl", $title, $body, self::PREFIX);
+				$sender->sendMail("adnet@ds.pg.gda.pl", $title, $body, self::PREFIX);
 				
 				// wyslanie maila do usera
 				if ($user->typeId != UFbean_Sru_User::TYPE_SKOS) {
