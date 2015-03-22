@@ -1390,7 +1390,8 @@ $("#macvendor").load('<?=UFURL_BASE?>/admin/apis/getmacvendor/<?=$searchedMac?>'
 	}
 
 	public function hostAliasesChangedMailBody(array $d, array $deleted, $added, $admin) {
-		echo 'Zmodyfikowano aliasy hosta: '.$d['host']."\n\n";
+		echo 'Zmodyfikowano aliasy hosta: '.$d['host']."\n";
+		echo 'IP: '.$d['ip']."\n\n";
 		if (!is_null($added)) {
 			echo 'Dodano alias: '.$added."\n";
 		}
@@ -1401,7 +1402,8 @@ $("#macvendor").load('<?=UFURL_BASE?>/admin/apis/getmacvendor/<?=$searchedMac?>'
 	}
 	
 	public function hostFwExceptionsChangedMailBody(array $d, array $deleted, $added, $admin) {
-		echo 'Zmodyfikowano wyjątki FW hosta: '.$d['host']."\n\n";
+		echo 'Zmodyfikowano wyjątki FW hosta: '.$d['host']."\n";
+		echo 'IP: '.$d['ip']."\n\n";
 		if (count($added) > 0) {
 			foreach ($added as $addK => $add) {
 				if ($add == 0) {

@@ -35,12 +35,16 @@ extends UFact {
 			if ($post['newExceptions'] != '') {
 				$newExceptions = explode(',', $post['newExceptions']);
 				if (in_array('0', $newExceptions)) {
-					$exceptionsList = UFra::factory('UFbean_SruAdmin_FwExceptionList');
-					$exceptionsList->listActiveByComputerId($computer->id);
-					foreach ($exceptionsList as $exception) {
-						$bean->getByPK($exception['id']);
-						array_push($deleted, $bean->port);
-						$bean->del();
+					try {
+						$exceptionsList = UFra::factory('UFbean_SruAdmin_FwExceptionList');
+						$exceptionsList->listActiveByComputerId($computer->id);
+						foreach ($exceptionsList as $exception) {
+							$bean->getByPK($exception['id']);
+							array_push($deleted, $bean->port);
+							$bean->del();
+						}
+					} catch (UFex_Dao_NotFound $e) {
+						// brak inny wyjatkow
 					}
 					$bean = UFra::factory('UFbean_SruAdmin_FwException');
 					$bean->computerId = $computer->id;
@@ -72,16 +76,16 @@ extends UFact {
 			$conf = UFra::shared('UFconf_Sru');
 			if ($conf->sendEmail && (count($deleted) > 0 || !is_null($added))) {
 				// wyslanie maila
-				if ($user->typeId == UFbean_Sru_User::TYPE_SKOS) {
-					$admin = UFra::factory('UFbean_SruAdmin_Admin');
-					$admin->getByPK($this->_srv->get('session')->authAdmin);
+				$admin = UFra::factory('UFbean_SruAdmin_Admin');
+				$admin->getByPK($this->_srv->get('session')->authAdmin);
 
-					$box = UFra::factory('UFbox_SruAdmin');
-					$sender = UFra::factory('UFlib_Sender');
-					$title = $box->hostFwExceptionsChangedMailTitle($computer);
-					$body = $box->hostFwExceptionsChangedMailBody($computer, $deleted, $added, $admin);
-					$sender->send($user, $title, $body, self::PREFIX);
-				} else {
+				$box = UFra::factory('UFbox_SruAdmin');
+				$sender = UFra::factory('UFlib_Sender');
+				$title = $box->hostFwExceptionsChangedMailTitle($computer);
+				$body = $box->hostFwExceptionsChangedMailBody($computer, $deleted, $added, $admin);
+				$sender->send($user, $title, $body, self::PREFIX);
+				
+				if ($user->typeId != UFbean_Sru_User::TYPE_SKOS) {
 					$box = UFra::factory('UFbox_Sru');
 					$sender = UFra::factory('UFlib_Sender');
 					$title = $box->hostFwExceptionsChangedMailTitle($user, $computer);
