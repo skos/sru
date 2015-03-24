@@ -217,12 +217,6 @@ extends UFbox {
 			return '';
 		}
 	}
-
-	public function validatePeselResults() {
-		$get = $this->_srv->get('req')->get;
-		$d['pesel'] = $get->peselToValidate;
-		return $this->render(__FUNCTION__, $d);
-	}
         
         public function checkRegistryNoResults() {
 		if ($this->_srv->get('req')->get->is('registryNoToCheck')) {

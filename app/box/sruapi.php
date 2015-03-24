@@ -464,6 +464,13 @@ extends UFbox {
 		}
 	}
 	
+	public function validatorResults() {
+		$get = $this->_srv->get('req')->get;
+		$d['test'] = $get->validatorTest;
+		$d['object'] = $get->validatorObject;
+		return $this->render(__FUNCTION__, $d);
+	}
+	
 	public function hostDeactivatedMailTitle($host, $user) {
 		$d['host'] = $host;
 		$d['user'] = $user;

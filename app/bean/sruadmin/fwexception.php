@@ -16,4 +16,16 @@ extends UFbeanSingle {
 		} catch (UFex_Dao_NotFound $e) {
 		}
 	}
+	
+	public static function validateExceptionsStringFormat($fwExceptions) {
+		$exceptions = explode(',', $fwExceptions);
+		
+		foreach ($exceptions as $exception) {
+			$exception = trim($exception);
+			if (!ctype_digit($exception)) {
+				return false;
+			}
+		}
+		return true;
+	}
 }

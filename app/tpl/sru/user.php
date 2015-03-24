@@ -432,7 +432,7 @@ $('#userTypeSelector').change(function(){
 				}
 			}
 		}
-		xmlhttp.open('GET',"<? echo $this->url(0); ?>/users/validatepesel/" + encodeURIComponent(pesel.value), true);
+		xmlhttp.open('GET',"<?=UFURL_BASE?>/api/validator/pesel/" + encodeURIComponent(pesel.value), true);
 		xmlhttp.send();
 	}
 	pesel.onchange = validatePesel;
@@ -1351,7 +1351,7 @@ $('#userTypeSelector').change(function(){
 				}
 			}
 		}
-		xmlhttp.open('GET',"<? echo $this->url(0); ?>/users/validatepesel/" + encodeURIComponent(pesel.value), true);
+		xmlhttp.open('GET',"<?=UFURL_BASE?>/api/validator/pesel/" + encodeURIComponent(pesel.value), true);
 		xmlhttp.send();
 	}
 	pesel.onchange = validatePesel;

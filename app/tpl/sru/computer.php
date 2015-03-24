@@ -984,8 +984,36 @@ div.style.display = 'none';
                 if ($this->_srv->get('msg')->get('computerFwExceptionsEdit/errors/port/regexp')) {
                         echo $this->ERR($this->errors['port/regexp']);
                 }
-                echo $form->newExceptions(_("Wyjątki FW") . UFlib_Helper::displayHint(_("Podaj wyjątki rozdzielone przecinkiem. 0 oznacza wszystkie porty.")));
+                echo $form->newExceptions(_("Wyjątki FW") . UFlib_Helper::displayHint(_("Podaj wyjątki rozdzielone przecinkiem. 0 oznacza wszystkie porty.")), array('after'=>'<span id="fwExceptionsValidationResult"></span><br/>'));
                 echo $form->_end();
+		
+?><script type="text/javascript">
+	var exceptions = document.getElementById('computerFwExceptionsEdit_newExceptions');
+	function validateFwExceptions() {
+		if (exceptions.value == '') {
+			document.getElementById('fwExceptionsValidationResult').innerHTML = '';
+			return;
+		}
+		if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+			xmlhttp = new XMLHttpRequest();
+		} else { // code for IE6, IE5
+			xmlhttp = new ActiveXObject('Microsoft.XMLHTTP');
+		}
+		xmlhttp.onreadystatechange = function() {
+			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+				if (xmlhttp.responseText == 'false') {
+					document.getElementById('fwExceptionsValidationResult').innerHTML = ' <img src="<?=UFURL_BASE?>/i/img/wykrzyknik.png" alt="Błąd"/>';
+				} else {
+					document.getElementById('fwExceptionsValidationResult').innerHTML = ' <img src="<?=UFURL_BASE?>/i/img/ok.png" alt="OK"/>';
+				}
+			}
+		}
+		xmlhttp.open('GET',"<?=UFURL_BASE?>/api/validator/fwexceptions/" + encodeURIComponent(exceptions.value), true);
+		xmlhttp.send();
+	}
+	exceptions.onchange = validateFwExceptions;
+	exceptions.onkeyup = validateFwExceptions;
+</script><?
         }
 
 	public function listAdmin(array $d, $id = 0) {

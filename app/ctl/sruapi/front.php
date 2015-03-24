@@ -203,6 +203,13 @@ extends UFctl {
 				case 'firewallexceptions':
 					$get->view = 'firewallexceptions';
 					break;
+				case 'validator':
+					if ($segCount > 2) {
+						$get->validatorTest = urldecode($req->segment(2));
+						$get->validatorObject = urldecode($req->segment(3));
+						$get->view = 'validator';
+					}
+					break;
 			}
 		}
 	}
@@ -367,6 +374,8 @@ extends UFctl {
 				return 'SruApi_DutyHoursUpcoming';
 			case 'firewallexceptions':
 				return 'SruApi_FirewallExceptions';
+			case 'validator':
+				return 'SruApi_Validator';
 			default:
 				return 'SruApi_Error404';
 		}

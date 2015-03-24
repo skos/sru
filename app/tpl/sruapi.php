@@ -156,6 +156,59 @@ extends UFtpl_Common {
 		$d['hours']->write('apiUpcomingDutyHours', $d['days'], $d['dormitories']);
 	}
 	
+	public function validatorResults(array $d) {
+		switch ($d['test']) {
+			case 'pesel':
+				$this->validatePeselResults($d['object']);
+				break;
+			case 'fwexceptions':
+				$this->validateFwExceptionsResults($d['object']);
+				break;
+			default:
+				break;
+		}
+	}
+	
+	public function validatePeselResults($pesel){
+		if (!UFbean_Sru_User::validatePeselFormat($pesel)) {
+			echo json_encode(false);
+			return;
+		} else {
+			$yearEndStr = substr($pesel, 0, 2);
+			$monthStr = substr($pesel, 2, 2);
+			$dayStr = substr($pesel, 4,2);
+			$month = intval($monthStr);
+			$yearStartStr = '19';
+			if ($month >= 80) {
+				$yearStartStr = '18';
+				$month = $month - 80;
+			} else if ($month >= 60) {
+				$yearStartStr = '22';
+				$month = $month - 60;
+			} else if ($month >= 40) {
+				$yearStartStr = '21';
+				$month = $month - 40;
+			} else if ($month >= 20) {
+				$yearStartStr = '20';
+				$month = $month - 20;
+			}
+			$yearStr = $yearStartStr.$yearEndStr;
+			$monthStr = $month;
+			if (strlen($monthStr) < 2) {
+				$monthStr = '0'.$monthStr;
+			}
+			$date = $yearStr.'-'.$monthStr.'-'.$dayStr;
+
+			echo json_encode($date);
+			return;
+		}
+	}
+	
+	public function validateFwExceptionsResults($fwExceptions) {
+		echo json_encode(UFbean_SruAdmin_FwException::validateExceptionsStringFormat($fwExceptions));
+		return;
+	}
+	
 	public function hostDeactivatedMailTitle(array $d) {
 		if ($d['user']->lang == 'en') {
 			echo $d['host']->write('hostChangedMailTitleEnglish');

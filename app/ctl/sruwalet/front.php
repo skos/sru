@@ -64,12 +64,6 @@ extends UFctl {
 								}
 								$get->view = 'users/quickcountrysearch';
 								break;
-							case 'validatepesel':
-								if ($segCount > 2) {
-									$get->peselToValidate = urldecode($req->segment(3));
-								}
-								$get->view = 'users/validatepesel';
-								break;
 							case 'checkregistryno':
 								if ($segCount > 2) {
 									$get->registryNoToCheck = urldecode($req->segment(3));
@@ -312,8 +306,6 @@ extends UFctl {
 				return 'SruWalet_UserQuickSearch';
 			case 'users/quickcountrysearch':
 				return 'SruWalet_CountryQuickSearch';
-			case 'users/validatepesel':
-				return 'SruWalet_UserValidatePesel';
 			case 'users/checkregistryno':
 				return 'SruWalet_UserCheckRegistryNo';
 			case 'users/user':

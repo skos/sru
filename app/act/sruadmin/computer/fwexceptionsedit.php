@@ -33,6 +33,10 @@ extends UFact {
 
 			$added = array();
 			if ($post['newExceptions'] != '') {
+				if (!UFbean_SruAdmin_FwException::validateExceptionsStringFormat($post['newExceptions'])) {
+					$this->markErrors(self::PREFIX, array('port'=>'regexp'));
+					return;
+				}
 				$newExceptions = explode(',', $post['newExceptions']);
 				if (in_array('0', $newExceptions)) {
 					try {
@@ -55,10 +59,6 @@ extends UFact {
 				} else {
 					foreach ($newExceptions as $exception) {
 						$exception = trim($exception);
-						if (!ctype_digit($exception)) {
-							$this->markErrors(self::PREFIX, array('port'=>'regexp'));
-							return;
-						}
 						$bean = UFra::factory('UFbean_SruAdmin_FwException');
 						$bean->computerId = $computer->id;
 						$bean->port = $exception;
