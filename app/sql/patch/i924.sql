@@ -1,6 +1,8 @@
 CREATE TABLE fw_exception_applications (
 id bigserial NOT NULL,
 user_id bigint NOT NULL,
+self_education boolean NOT NULL,
+university_education boolean NOT NULL,
 comment text NOT NULL,
 created_at timestamp with time zone,
 skos_opinion boolean,
@@ -11,6 +13,7 @@ sspg_opinion boolean,
 sspg_comment text,
 sspg_opinion_at timestamp with time zone,
 valid_to timestamp with time zone,
+token varchar(16),
 
 CONSTRAINT fw_exception_applications_pkey PRIMARY KEY (id),
 CONSTRAINT fw_exception_applications_user_id_fkey FOREIGN KEY (user_id)
