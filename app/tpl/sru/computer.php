@@ -970,22 +970,26 @@ div.style.display = 'none';
 	public function formFwExceptionsEdit(array $d, $fwExceptions){
                 $form = UFra::factory('UFlib_Form', 'computerFwExceptionsEdit', $d, $this->errors);
 
+		$isAll = false;
                 if (!is_null($fwExceptions)) {
                         echo $form->_fieldset(_("Usuń wyjątki FW komputera:"));
                         foreach ($fwExceptions as $exception) {
+				if ($exception['port'] == 0) {
+					$isAll = true;
+				}
                                 echo $form->exceptionsChk(($exception['port'] == 0 ? 'wszystkie porty' : 'port '.$exception['port']), array('type' => $form->CHECKBOX, 'name' => 'computerFwExceptionsEdit[exceptions][' . $exception['id'] . ']', 'id' => 'computerFwExceptionsEdit[exceptions][' . $exception['id'] . ']'));
                         }
                         echo $form->_end();
                 }
-                echo $form->_fieldset(_("Dodaj wyjątki"));
-                if ($this->_srv->get('msg')->get('computerFwExceptionsEdit/errors/port/duplicated')) {
-                        echo $this->ERR($this->errors['port/duplicated']);
-                }
-                if ($this->_srv->get('msg')->get('computerFwExceptionsEdit/errors/port/regexp')) {
-                        echo $this->ERR($this->errors['port/regexp']);
-                }
-                echo $form->newExceptions(_("Wyjątki FW") . UFlib_Helper::displayHint(_("Podaj wyjątki rozdzielone przecinkiem. 0 oznacza wszystkie porty.")), array('after'=>'<span id="fwExceptionsValidationResult"></span><br/>'));
-                echo $form->_end();
+		echo $form->_fieldset(_("Dodaj wyjątki"));
+		if ($this->_srv->get('msg')->get('computerFwExceptionsEdit/errors/port/duplicated')) {
+			echo $this->ERR($this->errors['port/duplicated']);
+		}
+		if ($this->_srv->get('msg')->get('computerFwExceptionsEdit/errors/port/regexp')) {
+			echo $this->ERR($this->errors['port/regexp']);
+		}
+		echo $form->newExceptions(_("Wyjątki FW") . UFlib_Helper::displayHint(_("Podaj wyjątki rozdzielone przecinkiem. 0 oznacza wszystkie porty.")), array('disabled' => $isAll, 'after'=>'<span id="fwExceptionsValidationResult"></span><br/>'));
+		echo $form->_end();
 		
 ?><script type="text/javascript">
 	var exceptions = document.getElementById('computerFwExceptionsEdit_newExceptions');

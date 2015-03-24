@@ -32,7 +32,7 @@ extends UFact {
 			}
 
 			$added = array();
-			if ($post['newExceptions'] != '') {
+			if (array_key_exists('newExceptions', $post) && $post['newExceptions'] != '') {
 				if (!UFbean_SruAdmin_FwException::validateExceptionsStringFormat($post['newExceptions'])) {
 					$this->markErrors(self::PREFIX, array('port'=>'regexp'));
 					return;
@@ -57,6 +57,18 @@ extends UFact {
 					array_push($added, 0);
 					$bean->save();
 				} else {
+					try {
+						$exceptionsList = UFra::factory('UFbean_SruAdmin_FwExceptionList');
+						$exceptionsList->listActiveByComputerId($computer->id);
+						foreach ($exceptionsList as $exception) {
+							if ($exception['port'] == 0) {
+								$this->markErrors(self::PREFIX, array('port'=>'regexp'));
+								return;
+							}
+						}
+					} catch (UFex_Dao_NotFound $e) {
+						// brak inny wyjatkow
+					}
 					foreach ($newExceptions as $exception) {
 						$exception = trim($exception);
 						$bean = UFra::factory('UFbean_SruAdmin_FwException');

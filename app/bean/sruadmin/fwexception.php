@@ -25,6 +25,9 @@ extends UFbeanSingle {
 			if (!ctype_digit($exception)) {
 				return false;
 			}
+			if ((int)$exception > 65535) {
+				return false;
+			}
 		}
 		return true;
 	}
