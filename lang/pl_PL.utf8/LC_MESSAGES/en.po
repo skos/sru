@@ -75,14 +75,6 @@ msgstr "Guardian phone:"
 msgid "Płeć:"
 msgstr "Sex:"
 
-#: sru3/app/tpl/sru/user.php:537
-msgid "Mężczyzna"
-msgstr "Male"
-
-#: sru3/app/tpl/sru/user.php:537
-msgid "Kobieta"
-msgstr "Female"
-
 #: sru3/app/tpl/sru/user.php:512
 msgid "Łączysz się przez niezabezpieczone połączenie - ze względów bezpieczeństwa Twoje dane osobowe nie są wyświetlane."
 msgstr "You are connecting through an unsecured connection - your personal details are not displayed for safety reasons."
@@ -784,3 +776,9 @@ msgstr "User"
 
 msgid "Walet"
 msgstr "Walet"
+
+msgid "Mężczyzna"
+msgstr "Male"
+
+msgid "Kobieta"
+msgstr "Female"
