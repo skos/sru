@@ -83,6 +83,7 @@ extends UFtpl_Common {
 	public function penaltyLastAdded(array $d, $showAddedBy = true, $showColor = true, $id = 0) {
 		$url = $this->url(0);
 
+		echo '<div id="showHideDiv'.$id.'" style="padding-bottom: 20px;"><a href="#" id="showHideRows'.$id.'">Pokaż/ukryj kary osób wymeldowanych</a></div>';
 		echo '<table id="penaltiesAddedT'.$id.'" class="bordered"><thead><tr>';
 		echo '<th>Nałożona</th>';
 		echo '<th>Koniec</th>';
@@ -92,13 +93,19 @@ extends UFtpl_Common {
 		}
 		echo '<th>Szablon</th>';
 		echo '</tr></thead><tbody>';
+		$inactiveCount = 0;
 		foreach ($d as $c) {
+			$hidden = '';
+			if (!$c['userActive']) {
+				$hidden = 'hiddenRow'.$id;
+				$inactiveCount++;
+			}
 			if (UFbean_SruAdmin_Penalty::TYPE_WARNING == $c['typeId'] && $c['endAt'] > time()) {
-				echo '<tr class="warning">';
+				echo '<tr class="warning '.$hidden.'">';
 			} else if ($showColor && UFbean_SruAdmin_Penalty::TYPE_WARNING != $c['typeId'] && $c['active']) {
-				echo '<tr class="ban">';
+				echo '<tr class="ban '.$hidden.'">';
 			} else {
-				echo '<tr>';
+				echo '<tr class="'.$hidden.'">';
 			}
 			echo '<td>'.date(self::TIME_YYMMDD_HHMM, $c['startAt']).'</td>';
 			echo '<td>'.date(self::TIME_YYMMDD_HHMM, $c['endAt']).'</td>';
@@ -114,11 +121,27 @@ extends UFtpl_Common {
 <script type="text/javascript">
 $(document).ready(function() 
     { 
-        $("#penaltiesAddedT<?echo $id;?>").tablesorter({
+        $("#penaltiesAddedT<?=$id;?>").tablesorter({
             textExtraction:  'complex'
         });
     } 
 );
+var isHidden = true;
+$('#showHideRows<?=$id;?>').click(function()
+	{
+		if (isHidden) {
+			$('.hiddenRow<?=$id;?>').show();
+		} else {
+			$('.hiddenRow<?=$id;?>').hide();
+		}
+		isHidden = !isHidden;
+		return false;
+	}
+);
+$('.hiddenRow<?=$id;?>').hide();
+if (<?=$inactiveCount ?> == 0) {
+	$('#showHideDiv<?=$id;?>').hide();
+}
 </script>
 <?
 	}
