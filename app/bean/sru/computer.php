@@ -353,7 +353,8 @@ extends UFbean_Common {
 	
 	protected function validateTypeId($val, $change) {
 		if (array_key_exists($val, self::$typeToUser)) {
-			if (array_key_exists('userId', $this->_srv->get('req')->get)) {
+			var_dump($this->_srv->get('req')->get);
+			if ($this->_srv->get('req')->get->is('userId')) {
 				try {
 					$user = UFra::factory('UFbean_Sru_User'); 
 					$user->getByPK((int)$this->_srv->get('req')->get->userId);
@@ -363,7 +364,7 @@ extends UFbean_Common {
 					return;
 				} catch (UFex_Core_DataNotFound $e) {
 				}
-			} else if (array_key_exists('computerId', $this->_srv->get('req')->get)) {
+			} else if ($this->_srv->get('req')->get->is('computerId')) {
 				try {
 					$computer = UFra::factory('UFbean_Sru_Computer'); 
 					$computer->getByPK((int)$this->_srv->get('req')->get->computerId);
@@ -387,7 +388,7 @@ extends UFbean_Common {
 				} catch (UFex_Core_DataNotFound $e) {
 				}
 			}
-			UFra::error('Invalidated computer typeId: '.$val.($this->_srv->get('session')->is('auth') ? 'User: '.$this->_srv->get('session')->auth : '').($this->_srv->get('session')->is('authAdmin') ? 'Admin: '.$this->_srv->get('session')->authAdmin : '').($this->_srv->get('session')->is('authWalet') ? 'Walet: '.$this->_srv->get('session')->authWalet : ''));
+			UFra::error('Invalidated computer typeId: '.$val.($this->_srv->get('session')->is('auth') ? ' User: '.$this->_srv->get('session')->auth : '').($this->_srv->get('session')->is('authAdmin') ? ' Admin: '.$this->_srv->get('session')->authAdmin : '').($this->_srv->get('session')->is('authWalet') ? ' Walet: '.$this->_srv->get('session')->authWalet : ''));
 		}
 	}
 }
