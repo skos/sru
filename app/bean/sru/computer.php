@@ -353,7 +353,6 @@ extends UFbean_Common {
 	
 	protected function validateTypeId($val, $change) {
 		if (array_key_exists($val, self::$typeToUser)) {
-			var_dump($this->_srv->get('req')->get);
 			if ($this->_srv->get('req')->get->is('userId')) {
 				try {
 					$user = UFra::factory('UFbean_Sru_User'); 
