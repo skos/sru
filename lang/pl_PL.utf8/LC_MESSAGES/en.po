@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.7.4\n"
+"X-Generator: Poedit 1.7.5\n"
 
 #: sru3/app/tpl/sru/user.php:453
 msgid "Dane na Twoim koncie wymagają aktualizacji. Prosimy o wypełnienie prawidłowymi danymi wszystkich wymaganych pól (oznaczonych czerwoną obwódką). W celu ułatwienia kontaktu ze SKOS, możesz wypełnić także pola niewymagane."
@@ -776,3 +776,9 @@ msgstr "User"
 
 msgid "Walet"
 msgstr "Walet"
+
+msgid "Mężczyzna"
+msgstr "Male"
+
+msgid "Kobieta"
+msgstr "Female"
