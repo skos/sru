@@ -535,7 +535,7 @@ $(function() {
                                 echo '<p><label>' . _("Tel. opiekuna:") . '</label><span class="userData"> ' . nl2br($this->_escape($d['guardianPhoneNumber'])) . '</span></p>';
                         }
                         if (!is_null($d['sex']) && $d['sex'] != '') {
-                                echo '<p><label>' . _("Płeć:") . '</label><span class="userData"> ' . (!$d['sex'] ? 'Mężczyzna' : 'Kobieta') . '</span></p>';
+                                echo '<p><label>' . _("Płeć:") . '</label><span class="userData"> ' . (!$d['sex'] ? _('Mężczyzna') : _('Kobieta')) . '</span></p>';
                         }
                 } else {
                         echo $this->ERR(_("Łączysz się przez niezabezpieczone połączenie - ze względów bezpieczeństwa Twoje dane osobowe nie są wyświetlane."));

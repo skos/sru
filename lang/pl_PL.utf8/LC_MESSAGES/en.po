@@ -71,9 +71,9 @@ msgstr "Your phone:"
 msgid "Tel. opiekuna:"
 msgstr "Guardian phone:"
 
-#: sru3/app/tpl/sru/user.php:509
-msgid "Płeć:"
-msgstr "Sex:"
+#: sru3/app/tpl/sru/user.php:537
+msgid "Kobieta"
+msgstr "Female"
 
 #: sru3/app/tpl/sru/user.php:512
 msgid "Łączysz się przez niezabezpieczone połączenie - ze względów bezpieczeństwa Twoje dane osobowe nie są wyświetlane."
@@ -486,9 +486,6 @@ msgstr "Name"
 msgid "Istnieje możliwość zmiany loginu u Administratora SKOS."
 msgstr "You can change your login by visiting any SKOS Admin."
 
-msgid "Znajdź nas na Facebooku"
-msgstr "Find us on Facebook"
-
 msgid "Zaloguj się"
 msgstr "Login"
 
@@ -777,8 +774,14 @@ msgstr "User"
 msgid "Walet"
 msgstr "Walet"
 
+msgid "Znajdź nas na Facebooku"
+msgstr "Find us on Facebook"
+
+msgid "Znajdź nas na Google+"
+msgstr "Find us on Google+"
+
+msgid "Płeć:"
+msgstr "Sex:"
+
 msgid "Mężczyzna"
 msgstr "Male"
-
-msgid "Kobieta"
-msgstr "Female"
