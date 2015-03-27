@@ -94,6 +94,23 @@ extends UFbox {
 
 		return $this->render(__FUNCTION__, $d);
 	}
+	
+	public function functionsInfo() {
+		$user = UFra::factory('UFbean_Sru_User');
+		$user->getFromSession();
+		$d['user'] = $user;
+		
+		try {
+			$functions = UFra::factory('UFbean_Sru_UserFunctionList');
+			$functions->listForUserId($user->id); 
+
+			$d['functions'] = $functions;
+		} catch (UFex_Dao_NotFound $e) {
+			$d['functions'] = null;
+		}
+
+		return $this->render(__FUNCTION__, $d);
+	}
 
 	public function contact() {
 		$user = UFra::factory('UFbean_Sru_User');

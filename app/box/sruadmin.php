@@ -1158,13 +1158,20 @@ extends UFbox {
 	    }
 	}
 	
-	public function dorms() 
-	{
-		try 
-		{
+	public function dorms() {
+		try {
 			$bean = UFra::factory('UFbean_Sru_DormitoryList');	
 			$bean->listAll();
 			$d['dorms'] = $bean;
+			
+			try {
+				$functions = UFra::factory('UFbean_Sru_UserFunctionList');
+				$functions->listForDormitoryId(null); 
+
+				$d['functions'] = $functions;
+			} catch (UFex_Dao_NotFound $e) {
+				$d['functions'] = null;
+			}
 
 			return $this->render(__FUNCTION__, $d);
 		} 
@@ -1199,6 +1206,15 @@ extends UFbox {
 				$d['rooms'] = $rooms;
 			} catch (UFex_Dao_NotFound $e) {
 
+			}
+			
+			try {
+				$functions = UFra::factory('UFbean_Sru_UserFunctionList');
+				$functions->listForDormitoryId($bean->id); 
+
+				$d['functions'] = $functions;
+			} catch (UFex_Dao_NotFound $e) {
+				$d['functions'] = null;
 			}
 			
 			$dormitories = UFra::factory('UFbean_Sru_DormitoryList');

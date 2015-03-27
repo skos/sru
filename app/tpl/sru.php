@@ -97,6 +97,18 @@ extends UFtpl_Common {
                 echo $form->_end(true);
 		// leftColumn will continue...
 	}
+	
+	public function functionsInfo(array $d) {
+		// leftColumn continues...
+		if (!is_null($d['functions'])) {
+			$form = UFra::factory('UFlib_Form');
+
+			echo $form->_fieldset(_("Twoje funkcje na rzecz DS i Osiedla"));
+			echo $d['functions']->write('listOwn');
+			echo $form->_end();
+		}
+		// leftColumn will continue...
+	}
 
 	public function contact(array $d) {
 		echo '<div class="rightColumn">';

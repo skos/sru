@@ -15,5 +15,6 @@ extends UFview_SruUser {
 		$this->append('body', $box->penaltyInfo());
 		$this->append('body', $box->userInfo());
 		$this->append('body', $box->hostsInfo());
+		$this->append('body', $box->functionsInfo());
 	}
 }

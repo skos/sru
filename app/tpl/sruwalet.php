@@ -216,6 +216,9 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 		} else if($this->_srv->get('msg')->get('userEdit/ok')) {
 			echo $this->OK('Dane zostały zapisane.'.$msg);
 		}
+		if($this->_srv->get('msg')->get('userFunctionsEdit/ok')) {
+			echo $this->OK('Dane zostały zapisane.');
+		}
 
 		echo '<div class="user">';
 		$d['user']->write('detailsWalet');
@@ -252,6 +255,20 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 		echo $d['user']->write('formEditWalet', $d['dormitories'], $d['faculties']);
 		echo $form->_submit('Zapisz');
 		echo $form->_end();
+		echo $form->_end(true);
+	}
+	
+	public function titleUserFunctionsEdit(array $d) {
+		echo $d['user']->write('titleFunctionsEdit');
+	}
+
+	public function userFunctionsEdit(array $d) {
+		$form = UFra::factory('UFlib_Form');
+
+		echo '<h2>Edycja funkcji</h2>';
+		echo $form->_start($this->url());
+		echo $d['user']->write('formFunctionsEditWalet', $d['functions']);
+		echo $form->_submit('Zapisz');
 		echo $form->_end(true);
 	}
 
@@ -363,6 +380,7 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 
 	public function inhabitants(array $d) {
 		echo '<h2>Obsadzenie</h2>';
+		$d['dormitories']->write('functionsPanel', $d['functions'], false);
 		$d['dormitories']->write('inhabitants', $d['rooms']);
 	}
 
@@ -377,6 +395,7 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 		echo '<h2><a href="'.$this->url(0).'/inhabitants">Obsadzenie</a><br/>';
 		$d['dorm']->write('exportPanel');
                 $d['dorm']->write('allUsersDelPanel', $d['markedToDelete'], $d['availableForDelete']);
+		$d['dorm']->write('functionsPanel', $d['functions']);
                 if ($this->_srv->get('msg')->get('allUsersDel/ok')) {
 			echo $this->OK('Wszystkich mieszkańców oznaczono do wymeldowania');
 		}

@@ -103,6 +103,9 @@ extends UFctl {
 										case ':edit':
 											$get->view = 'users/user/edit';
 											break;
+										case ':functions':
+											$get->view = 'users/user/functionsEdit';
+											break;
 										case ':del':
 											$get->view = 'users/user/del';
 											break;
@@ -256,6 +259,8 @@ extends UFctl {
 			$act = 'User_Add';
 		} elseif ($post->is('userEdit') && $acl->sruWalet('user', 'edit', $get->userId)) {
 			$act = 'User_Edit';
+		} elseif ($post->is('userFunctionsEdit') && $acl->sruWalet('user', 'functionsEdit', $get->userId)) {
+			$act = 'User_FunctionsEdit';
 		} elseif ('users/user/del' == $get->view && $post->is('userDel') && $acl->sruWalet('user', 'del', $get->userId)) {
 			$act = 'User_Del';
 		} elseif ('admins/add' == $get->view && $post->is('adminAdd') && $acl->sruWalet('admin', 'add')) {
@@ -328,6 +333,14 @@ extends UFctl {
 				} else if ($acl->sruWalet('user', 'edit', $get->userId)) {
 					$msg->del('userEdit/warn');
 					return 'SruWalet_UserEdit';
+				} else {
+					return 'Sru_Error403';
+				}
+			case 'users/user/functionsEdit':
+				if ($msg->get('functionsEdit/ok')) {
+					return 'SruWalet_User';
+				} else if ($acl->sruWalet('user', 'functionsEdit', $get->userId)) {
+					return 'SruWalet_UserFunctionsEdit';
 				} else {
 					return 'Sru_Error403';
 				}

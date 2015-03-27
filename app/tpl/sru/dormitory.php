@@ -278,6 +278,72 @@ container2.appendChild(button2);
 changeVisibilityAllDel();
 </script><?
         }
+	
+	public function functionsPanel(array $d, $functions, $isDorm = true, $isWalet = true) {
+		$acl = $this->_srv->get('acl');
+		$url = $this->url(0).'/users/';
+		
+		echo '<h3><span id="functionsSwitch"></span></h3>';
+		echo '<div id="functionsDiv" style="padding-bottom: 10px;">';
+		if (is_null($functions)) {
+			echo 'Brak osób pełniących funkcje na rzecz '.($isDorm ? ' tego DS' : 'Osiedla');
+		} else {
+			echo '<table id="functionsT" class="bordered"><thead><tr>';
+			echo '<th>Imię</th>';
+			echo '<th>Nazwisko</th>';
+			echo '<th>Funkcja</th>';
+			echo '<th>Komentarz</th>';
+			echo '</tr></thead><tbody>';
+			foreach ($functions as $func) {
+				if ($isWalet) {
+					echo '<tr><td>';
+					echo ($acl->sruWalet('user', 'view', $func['userId']) ? '<a href="'.$url.$func['userId'].'">' : '').$func['userName'].($acl->sruWalet('user', 'view', $func['userId']) ? '</a>' : '');
+					echo '</td><td>';
+					echo ($acl->sruWalet('user', 'view', $func['userId']) ? '<a href="'.$url.$func['userId'].'">' : '').$func['userSurname'].($acl->sruWalet('user', 'view', $func['userId']) ? '</a>' : '');
+					echo '</td>';
+				} else {
+					echo '<tr><td>';
+					echo '<a href="'.$url.$func['userId'].'">'.$func['userName'].'</a>';
+					echo '</td><td>';
+					echo '<a href="'.$url.$func['userId'].'">'.$func['userSurname'].'</a>';
+					echo '</td>';
+				}
+				echo '<td>'.UFtpl_Sru_UserFunction::$functions[$func['functionId']].'</td>';
+				echo '<td>'.$func['comment'].'</td>';
+			}
+			echo '</tbody></table>';
+		}
+		echo '</div>';
+		
+?><script type="text/javascript">    
+$(document).ready(function() 
+    { 
+        $("#functionsT").tablesorter({
+	});
+    } 
+);
+	
+function changeVisibilityFunctions() {
+        var div = document.getElementById('functionsDiv');
+        if (div.sruHidden != true) {
+                div.style.display = 'none';
+                div.sruHidden = true;
+        } else {
+                div.style.display = 'block';
+                div.sruHidden = false;
+        }
+}
+var functionsContainer = document.getElementById('functionsSwitch');
+var functionsButton = document.createElement('a');
+functionsButton.onclick = function() {
+	changeVisibilityFunctions();
+}
+var functionsTxt = document.createTextNode("Funkcje pełnione na rzecz <? echo ($isDorm ? 'DS' : 'Osiedla'); ?>");
+functionsButton.appendChild(functionsTxt);
+functionsContainer.appendChild(functionsButton);
+changeVisibilityFunctions();
+</script><?
+        }
 
 	public function inhabitantsAlphabetically(array $d, $users, $settings) {
 		echo '<table><thead><tr>';

@@ -142,6 +142,7 @@ extends UFtpl_Common {
 		'birthPlace/textMax' => 'Zbyt długa wartość',
 		'userPhoneNumber/textMax' => 'Zbyt długa wartość',
 		'guardianPhoneNumber/textMax' => 'Zbyt długa wartość',
+		'function/duplicated' => 'Ten mieszkaniec ma już przypisaną tę funkcję',
 	);
 
 	/*
@@ -962,6 +963,9 @@ changeVisibility();
 			if ($acl->sruWalet('user', 'edit', $d['id'])) {
 				echo ' &bull; <a href="'.$urlUser.'/:edit">'.($d['active'] ? 'Edycja' : 'Meldowanie').'</a>';
 			}
+			if ($acl->sruWalet('user', 'functionsEdit', $d['id'])) {
+				echo ' &bull; <a href="'.$urlUser.'/:functions">Funkcje</a>';
+			}
 			if ($acl->sruWalet('user', 'del', $d['id'])) {
 				echo ' &bull; <a href="'.$urlUser.'/:del">Wymeldowanie</a>';
 			}
@@ -1398,6 +1402,40 @@ $(function() {
 	});
 });
 </script><?
+	}
+	
+	public function titleFunctionsEdit(array $d) {
+		echo 'Edycja funkcji użytkownika: '.$this->_escape($d['name']).' '.$this->_escape($d['surname']).' ('.$d['login'].')';
+	}
+	
+	public function formFunctionsEditWalet(array $d, $functions){
+		$acl = $this->_srv->get('acl');
+		$form = UFra::factory('UFlib_Form', 'userFunctionsEdit', $d, $this->errors);
+
+                if (!is_null($functions)) {
+                        echo $form->_fieldset(_("Obecnie pełnione funkcje. Zaznacz, aby usunąć:"));
+                        foreach ($functions as $function) {
+                                echo $form->functionsChk(UFtpl_Sru_UserFunction::$functions[$function['functionId']].' '.$function['comment'], array('type' => $form->CHECKBOX, 'name' => 'userFunctionsEdit[functions][' . $function['id'] . ']', 'id' => 'userFunctionsEdit[functions][' . $function['id'] . ']'));
+                        }
+                        echo $form->_end();
+                }
+		echo $form->_fieldset(_("Dodaj nową funkcję"));
+		if ($this->_srv->get('msg')->get('userFunctionsEdit/errors/newFunction/duplicated')) {
+			echo $this->ERR($this->errors['function/duplicated']);
+		}
+		$tmp = array();
+		$tmp[''] = '';
+		foreach (UFtpl_Sru_UserFunction::$functions as $funcId => $funcName) {
+			if ($acl->sruWalet('userfunction', 'edit', $funcId)) {
+				$tmp[$funcId] = $funcName;
+			}
+		}
+		echo $form->newFunction('Funkcja', array(
+			'type' => $form->SELECT,
+			'labels' => $form->_labelize($tmp),
+		));
+		echo $form->newFunctionComment('Komentarz / opis');
+		echo $form->_end();
 	}
 
 	public function formDelWalet(array $d) {

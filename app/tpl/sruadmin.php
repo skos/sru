@@ -879,13 +879,10 @@ setInterval(getSummary, 10*1000);
 	public function titleDormitories() {
 		echo 'Akademiki';
 	}	
-	public function dorms(array $d)
-	{
-		$url = $this->url(0).'/admins/';
-			
+	public function dorms(array $d)	{		
 		echo '<div class="dormitories">';
 		echo '<h2>Akademiki</h2>';
-
+		$d['dorms']->write('functionsPanel', $d['functions'], false, false);
 		$d['dorms']->write('listDorms');
 		echo '</div>';
 	}
@@ -896,6 +893,7 @@ setInterval(getSummary, 10*1000);
 		echo '<div class="dorm">';
 		$d['dorm']->write('details', true, $d['leftRight'][0], $d['leftRight'][2]);
 		if($d['rooms']) {
+			$d['dorm']->write('functionsPanel', $d['functions'], true, false);
 			echo '<div class="rooms">';
 			echo '<h3>Pokoje</h3>';			
 

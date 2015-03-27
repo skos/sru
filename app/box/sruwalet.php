@@ -339,6 +339,39 @@ extends UFbox {
 			return $this->render(__FUNCTION__.'NotFound');
 		}
 	}
+	
+	public function userFunctionsEdit() {
+		try {
+			$bean = $this->_getUserFromGet();
+			
+			try {
+				$functions = UFra::factory('UFbean_Sru_UserFunctionList');
+				$functions->listForUserId($bean->id);
+				
+				$d['functions'] = $functions;
+			} catch (UFex_Dao_NotFound $e) {
+				$d['functions'] = null;
+			}
+			
+			$d['user'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render('userNotFound');
+		}
+	}
+
+	public function titleUserFunctionsEdit() {
+		try {
+			$bean = $this->_getUserFromGet();
+
+			$d['user'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render(__FUNCTION__.'NotFound');
+		}
+	}
 
 	public function userDel() {
 		try {
@@ -495,6 +528,15 @@ extends UFbox {
 			} catch (UFex_Dao_NotFound $e) {
 				$d['rooms'] = null;
 			}
+			
+			try {
+				$functions = UFra::factory('UFbean_Sru_UserFunctionList');
+				$functions->listForDormitoryId(null); 
+
+				$d['functions'] = $functions;
+			} catch (UFex_Dao_NotFound $e) {
+				$d['functions'] = null;
+			}
 		
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
@@ -555,7 +597,16 @@ extends UFbox {
 			} catch (UFex_Dao_NotFound $e) {
 				$d['markedToDelete'] = 0;
 				$d['availableForDelete'] = 0;
-			}			
+			}
+			
+			try {
+				$functions = UFra::factory('UFbean_Sru_UserFunctionList');
+				$functions->listForDormitoryId($bean->id); 
+
+				$d['functions'] = $functions;
+			} catch (UFex_Dao_NotFound $e) {
+				$d['functions'] = null;
+			}
 		
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {

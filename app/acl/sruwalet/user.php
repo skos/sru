@@ -62,6 +62,23 @@ extends UFlib_ClassWithService {
 		return true;
 	}
 
+	public function functionsEdit($userId) {
+		if (!$this->_loggedIn()) {
+			return false;
+		}
+		$sess = $this->_srv->get('session');
+		if ($sess->typeIdWalet == UFacl_SruWalet_Admin::PORTIER) {
+			return false;
+		}
+		try {
+			$user = UFra::factory('UFbean_Sru_User');
+			$user->getByPK($userId);
+		} catch (UFex_Dao_NotFound $e) {
+			return false;
+		}
+		return $this->edit($userId) && $user->active;
+	}
+	
 	public function del($userId) {
 		if (!$this->_loggedIn()) {
 			return false;
