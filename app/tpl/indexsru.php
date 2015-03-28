@@ -32,10 +32,10 @@ extends UFtpl_Common {
 <div id="socialBar">
 <ul id="socialSidebar">
 <li class="facebook">
-<a href="http://facebook.com/skospg"><img alt="facebook" src="<?=UFURL_BASE;?>/i/img/socialSidebar_facebook.png" title="Znajdź nas na Facebooku" /></a>
+<a href="http://facebook.com/skospg"><img alt="facebook" src="<?=UFURL_BASE;?>/i/img/socialSidebar_facebook.png" title="<? echo (_("Znajdź nas na Facebooku"));?>" /></a>
 </li>
 <li class="gplus">
-<a href="https://plus.google.com/101381300119889439141/posts"><img alt="gplus" src="<?=UFURL_BASE;?>/i/img/socialSidebar_gplus.png" title="Znajdź nas na Google+" /></a>
+<a href="https://plus.google.com/101381300119889439141/posts"><img alt="gplus" src="<?=UFURL_BASE;?>/i/img/socialSidebar_gplus.png" title="<? echo (_("Znajdź nas na Google+"));?>" /></a>
 </li>
 </ul>
 </div>
@@ -66,3 +66,4 @@ echo '<!-- boot: '.number_format(1000*($boot-$start), 1).'ms, total: '.number_fo
 </html><?
 	}
 }
+
