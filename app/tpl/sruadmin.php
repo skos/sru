@@ -453,7 +453,7 @@ setInterval(getSummary, 10*1000);
 			echo $this->OK('Konto zostało założone.');
 		}		
 		echo '<div class="user">';
-		$d['user']->write('details');
+		$d['user']->write('details', $d['functions']);
 		echo '</div>';
 	}
 

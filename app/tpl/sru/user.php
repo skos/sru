@@ -143,6 +143,7 @@ extends UFtpl_Common {
 		'userPhoneNumber/textMax' => 'Zbyt długa wartość',
 		'guardianPhoneNumber/textMax' => 'Zbyt długa wartość',
 		'function/duplicated' => 'Ten mieszkaniec ma już przypisaną tę funkcję',
+		'comment/textMax' => 'Opis jest zbyt długi',
 	);
 
 	/*
@@ -783,7 +784,7 @@ $(document).ready(function()
 <?
 	}
 
-	public function details(array $d) {
+	public function details(array $d, $functions) {
 		$acl = $this->_srv->get('acl');
 		
 		if (is_null($d['facultyId'])) {
@@ -841,13 +842,19 @@ $(document).ready(function()
 		if (!is_null($d['referralEnd']) && $d['referralEnd'] != 0) {
 			echo '<p><em>Koniec skierowania:</em> '.date(self::TIME_YYMMDD, $d['referralEnd']).'</p>';
 		}
+		if(!is_null($functions)) {
+			echo '<p><em>Funkcje:</em>';
+			$functionsArr = array();
+			foreach ($functions as $func) {
+				$functionsArr[] = UFtpl_Sru_UserFunction::$functions[$func['functionId']].(($func['comment'] == '') ? '' : ' '.$func['comment']);
+			}
+			echo implode(', ', $functionsArr).'</p>';
+		}
 		echo '<p><em>Język:</em> '.self::$languages[$d['lang']];
 		echo '<p class="displayOnHover"><em>Znajdź na:</em>';
 		echo ' <a href="http://www.google.pl/search?q='.urlencode($d['name'].' '.$d['surname']).'">google</a>';
 		echo ' <a href="http://www.facebook.com/search/results.php?q='.urlencode($d['name'].' '.$d['surname']).'">face-booczek</a>';
 		echo '</p>';
-		
-
 		if (strlen($d['commentSkos'])) {
 			echo '<p><em>Komentarz:</em></p><p class="comment">'.nl2br($this->_escape($d['commentSkos'])).'</p>';
 		}
@@ -891,7 +898,7 @@ changeVisibility();
 </script><?
 	}
 
-	public function detailsWalet(array $d) {
+	public function detailsWalet(array $d, $functions) {
 		$url = $this->url(0);
 		$acl = $this->_srv->get('acl');
 		$urlUser = $url.'/users/'.$d['id'];
@@ -911,6 +918,14 @@ changeVisibility();
 			}
 			if(!is_null($d['email']) && $d['email'] != '') {
 				echo '<p><em>E-mail:</em> <a href="mailto:'.$d['email'].'">'.$d['email'].'</a></p>';
+			}
+			if(!is_null($functions)) {
+				echo '<p><em>Funkcje:</em>';
+				$functionsArr = array();
+				foreach ($functions as $func) {
+					$functionsArr[] = UFtpl_Sru_UserFunction::$functions[$func['functionId']].(($func['comment'] == '') ? '' : ' '.$func['comment']);
+				}
+				echo implode(', ', $functionsArr).'</p>';
 			}
 		}
 		if($d['typeId'] != UFbean_Sru_User::TYPE_TOURIST_INDIVIDUAL && $d['typeId'] <= 50) {
@@ -1422,6 +1437,9 @@ $(function() {
 		echo $form->_fieldset(_("Dodaj nową funkcję"));
 		if ($this->_srv->get('msg')->get('userFunctionsEdit/errors/newFunction/duplicated')) {
 			echo $this->ERR($this->errors['function/duplicated']);
+		}
+		if ($this->_srv->get('msg')->get('userFunctionsEdit/errors/comment/textMax')) {
+			echo $this->ERR($this->errors['comment/textMax']);
 		}
 		$tmp = array();
 		$tmp[''] = '';

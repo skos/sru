@@ -221,7 +221,7 @@ window.open("<? echo $url; ?>/:print", "Wydruk potwierdzenia zameldowania",'widt
 		}
 
 		echo '<div class="user">';
-		$d['user']->write('detailsWalet');
+		$d['user']->write('detailsWalet', $d['functions']);
 		echo '</div>';
 	}
 

@@ -290,6 +290,15 @@ extends UFbox {
 			$bean = $this->_getUserFromGet();
 
 			$d['user'] = $bean;
+			
+			try {
+				$functions = UFra::factory('UFbean_Sru_UserFunctionList');
+				$functions->listForUserId($bean->id);
+				
+				$d['functions'] = $functions;
+			} catch (UFex_Dao_NotFound $e) {
+				$d['functions'] = null;
+			}
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
