@@ -83,17 +83,9 @@ msgstr "You are connecting through an unsecured connection - your personal detai
 msgid "Gadu-Gadu"
 msgstr "GG numer"
 
-#: sru3/app/tpl/sru/user.php:514
-msgid "Jeżeli podasz nr GG, będą na niego przesyłane informacje o zmianie statusu konta i Twoich komputerów."
-msgstr "If you specify GG number, it will be used to send information about changing the status of your account and your computer."
-
 #: sru3/app/tpl/sru/user.php:515
 msgid "Język"
 msgstr "Language:"
-
-#: sru3/app/tpl/sru/user.php:518
-msgid "Wiadomości e-mail i GG będa przychodziły w wybranym języku."
-msgstr "You will receive e-mails and GG messages in your chosen language."
 
 #: sru3/app/tpl/sru/user.php:523
 msgid "Dane dotyczące studiów"
