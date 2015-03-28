@@ -79,10 +79,6 @@ msgstr "Female"
 msgid "Łączysz się przez niezabezpieczone połączenie - ze względów bezpieczeństwa Twoje dane osobowe nie są wyświetlane."
 msgstr "You are connecting through an unsecured connection - your personal details are not displayed for safety reasons."
 
-#: sru3/app/tpl/sru/user.php:514
-msgid "Gadu-Gadu"
-msgstr "GG numer"
-
 #: sru3/app/tpl/sru/user.php:515
 msgid "Język"
 msgstr "Language:"
@@ -131,9 +127,6 @@ msgstr "Name and surname:"
 msgid "E-mail:"
 msgstr "E-mail:"
 
-#: sru3/app/tpl/sru/user.php:906
-msgid "Gadu-Gadu:"
-msgstr "GG number:"
 
 #: sru3/app/tpl/sru/user.php:912
 msgid "Rok studiów:"
