@@ -282,6 +282,21 @@ extends UFbox {
 
 		return $this->render(__FUNCTION__, $d);
 	}
+	
+	public function userComputerFwExceptionsAdd() {
+		try {
+			$bean = $this->_getComputerFromGetByCurrentUser();
+			$user = UFra::factory('UFbean_Sru_User');
+			$user->getFromSession();
+
+			$d['computer'] = $bean;
+			$d['user'] = $user;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render('userComputerNotFound');
+		}
+	}
 
 	public function userComputerDel() {
 		try {

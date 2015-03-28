@@ -4,6 +4,12 @@
  */
 class UFtpl_SruAdmin_FwException
 extends UFtpl_Common {
+	
+	public static $applicationTypes = array(
+		1 => 'związany z przedmiotami na Uczelni',
+		2 => 'nauka własna', 
+	);
+	
 	public function listExceptions(array $d, $id = 0) {
 		$hostUrl = $this->url(0).'/computers/';
 		

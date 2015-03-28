@@ -12,6 +12,7 @@ extends UFmap {
 		'ip'		=> 'c.ipv4',
 		'port'		=> 'e.port',
 		'active'	=> 'e.active',
+		'waiting'	=> 'e.waiting',
 	);
 	protected $columnTypes = array(
 		'id'		=> self::INT,
@@ -20,6 +21,7 @@ extends UFmap {
 		'ip'		=> self::TEXT,
 		'port'		=> self::INT,
 		'active'	=> self::BOOL,
+		'waiting'	=> self::BOOL,
 	);
 	protected $tables = array(
 		'e' => 'fw_exceptions',

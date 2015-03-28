@@ -1019,6 +1019,62 @@ div.style.display = 'none';
 	exceptions.onkeyup = validateFwExceptions;
 </script><?
         }
+	
+	public function formFwExceptionsUserAdd(array $d, $user){
+                $form = UFra::factory('UFlib_Form', 'computerFwExceptionsAdd', $d, $this->errors);
+		echo $form->_fieldset(_("Dane"));
+		echo $form->name(_('Imię'), array('value'=>$user->name, 'disabled'=>true));
+		echo $form->name(_('Nazwisko'), array('value'=>$user->surname, 'disabled'=>true));
+		echo $form->name(_('Nr indeksu'), array('value'=>$user->registryNo, 'disabled'=>true));
+		echo $form->_end();
+		
+		echo $form->_fieldset(_("Usługi"));
+		echo $form->host(_("Zamierzam uruchomić usługi serwerowe na hoście"), array('value'=>$d['host'], 'disabled'=>true));
+		echo $form->purpose(_("W celu"), array(
+			'type' => $form->RADIO,
+			'labels' => $form->_labelize(UFtpl_SruAdmin_FwException::$applicationTypes),
+			'labelClass' => 'radio',
+			'class' => 'radio',
+		));
+		echo $form->comment(_("Chcę uruchomić następujące usługi").UFlib_Helper::displayHint(_("Możesz tu wpisać także dodatkowe uzasadnienie.")), array('type'=>$form->TEXTAREA, 'rows'=>5));
+		echo $form->validTo(_("Do dnia").UFlib_Helper::displayHint("Maksymalnie koniec semestru, data w formacie RRRR-MM-DD, np. 1988-10-06"), array('type' => $form->CALENDER));
+		if ($this->_srv->get('msg')->get('computerFwExceptionsAdd/errors/port/duplicated')) {
+			echo $this->ERR($this->errors['port/duplicated']);
+		}
+		if ($this->_srv->get('msg')->get('computerFwExceptionsAdd/errors/port/regexp')) {
+			echo $this->ERR($this->errors['port/regexp']);
+		}
+		echo $form->newExceptions(_("Porty usług").UFlib_Helper::displayHint(_("Podaj porty usług rozdzielone przecinkiem.")), array('after'=>'<span id="fwExceptionsValidationResult"></span><br/>'));
+		echo $form->_end();
+		
+?><script type="text/javascript">
+	var exceptions = document.getElementById('computerFwExceptionsAdd_newExceptions');
+	function validateFwExceptions() {
+		if (exceptions.value == '') {
+			document.getElementById('fwExceptionsValidationResult').innerHTML = '';
+			return;
+		}
+		if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+			xmlhttp = new XMLHttpRequest();
+		} else { // code for IE6, IE5
+			xmlhttp = new ActiveXObject('Microsoft.XMLHTTP');
+		}
+		xmlhttp.onreadystatechange = function() {
+			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+				if (xmlhttp.responseText == 'false') {
+					document.getElementById('fwExceptionsValidationResult').innerHTML = ' <img src="<?=UFURL_BASE?>/i/img/wykrzyknik.png" alt="Błąd"/>';
+				} else {
+					document.getElementById('fwExceptionsValidationResult').innerHTML = ' <img src="<?=UFURL_BASE?>/i/img/ok.png" alt="OK"/>';
+				}
+			}
+		}
+		xmlhttp.open('GET',"<?=UFURL_BASE?>/api/validator/fwexceptions/" + encodeURIComponent(exceptions.value), true);
+		xmlhttp.send();
+	}
+	exceptions.onchange = validateFwExceptions;
+	exceptions.onkeyup = validateFwExceptions;
+</script><?
+        }
 
 	public function listAdmin(array $d, $id = 0) {
 		$url = $this->url(0);

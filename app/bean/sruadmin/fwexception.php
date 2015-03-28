@@ -10,7 +10,7 @@ extends UFbeanSingle {
 			$computer->getByPK((int)$this->_srv->get('req')->get->computerId);
 			
 			$bean = UFra::factory('UFbean_SruAdmin_FwException');
-			$bean->getActive($val, $computer->id);
+			$bean->getActiveOrWaiting($val, $computer->id);
 			
 			return 'duplicated';
 		} catch (UFex_Dao_NotFound $e) {

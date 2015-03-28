@@ -42,6 +42,9 @@ extends UFctl {
 									$get->view = 'user/computer/edit';
 								} else if ($segCount > 2 && ':activate' == $req->segment(3)) {
 									$get->view = 'user/computer/activate';
+								} else if ($segCount > 2 && ':fwexceptionsadd' == $req->segment(3)) {
+									$get->view = 'user/computer/fwexceptionsadd';
+								break;
 								} else {
 									$get->view = 'user/computer';
 								}
@@ -97,6 +100,8 @@ extends UFctl {
 			$act = 'Computer_Edit';
 		} elseif ('user/computer/activate' == $get->view && $post->is('computerEdit') && $acl->sru('computer', 'add')) {
 			$act = 'Computer_Edit';
+		} elseif ('user/computer/fwexceptionsadd' == $get->view && $post->is('computerFwExceptionsAdd') && $acl->sru('computer', 'edit')) {
+			$act = 'Computer_FwExceptionsAdd';
 		} elseif ('user/computer/add' == $get->view && $post->is('computerAdd') && $acl->sru('computer', 'add')) {
 			$act = 'Computer_Add';
 		} elseif ('user/computer/edit' == $get->view && $post->is('computerDel') && $acl->sru('computer', 'del')) {
@@ -175,6 +180,14 @@ extends UFctl {
 					return 'Sru_UserComputers';
 				} else if ($acl->sru('computer', 'add')) {
 					return 'Sru_UserComputerActivate';
+				} else {
+					return 'Sru_Error403';
+				}
+			case 'user/computer/fwexceptionsadd':
+				if ($msg->get('computerFwExceptionsAdd/ok')) {
+					return 'Sru_UserComputers';
+				} else if ($acl->sru('computer', 'edit')) {
+					return 'Sru_UserComputerFwExceptionsAdd';
 				} else {
 					return 'Sru_Error403';
 				}

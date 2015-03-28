@@ -27,13 +27,16 @@ extends UFdao {
 		return $this->doSelect($query);
 	}
 	
-	public function getActive($port, $computerId) {
+	public function getActiveOrWaiting($port, $computerId) {
 		$mapping = $this->mapping('get');
 
 		$query = $this->prepareSelect($mapping);
 		$query->where($mapping->port, $port);
 		$query->where($mapping->computerId, $computerId);
-		$query->where($mapping->active, true);
+		$query->where(
+			'('.$mapping->column('active').'='.true.' OR '.$mapping->column('waiting').'='.true.')',
+			null, $query->SQL
+		);
 			
 		return $this->doSelect($query);
 	}

@@ -230,6 +230,8 @@ extends UFtpl_Common {
                         echo $this->OK(_("Komputer został dodany. Poczekaj cierpliwie, aż sieć zacznie działać. Może to potrwać nawet godzinę."));
                 } elseif ($this->_srv->get('msg')->get('computerDel/ok')) {
                         echo $this->OK(_("Komputer został wyrejestrowany."));
+                } elseif ($this->_srv->get('msg')->get('computerFwExceptionsAdd/ok')) {
+                        echo $this->OK(_("Wniosek został zapisany. Musi teraz zostać zaakceptowany. Poniżej znajdziesz jego aktualny status."));
                 }
 		echo '<ul>';
                 $d['computers']->write('listOwn');
@@ -317,6 +319,16 @@ extends UFtpl_Common {
 		echo $d['computer']->write('formAdd', $d['user'], false, $d['macAddress'], null, null);
 		echo $form->_submit(_('Dodaj'));
 		echo $form->_end();
+		echo $form->_end(true);
+	}
+	
+	public function userComputerFwExceptionsAdd(array $d) {
+		$form = UFra::factory('UFlib_Form');
+
+		echo '<h2>'._("Wniosek o pozwolenie na uruchomienie usług serwerowych").'</h2>';
+		echo $form->_start($this->url());
+		echo $d['computer']->write('formFwExceptionsUserAdd', $d['user']);
+		echo $form->_submit(_("Zapisz"));
 		echo $form->_end(true);
 	}
 

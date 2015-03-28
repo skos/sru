@@ -10,12 +10,14 @@ extends UFmap {
 		'computerId'	=> 'computer_id',
 		'port'		=> 'port',
 		'active'	=> 'active',
+		'waiting'	=> 'waiting',
 	);
 	protected $columnTypes = array(
 		'id'		=> self::INT,
 		'computerId'	=> self::INT,
 		'port'		=> self::INT,
 		'active'	=> self::BOOL,
+		'waiting'	=> self::BOOL,
 	);
 	protected $tables = array(
 		'' => 'fw_exceptions',
