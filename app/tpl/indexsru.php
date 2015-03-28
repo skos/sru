@@ -61,7 +61,9 @@ $boot = $this->_srv->get('msg')->get('timeBoot');
 echo '<!-- boot: '.number_format(1000*($boot-$start), 1).'ms, total: '.number_format(1000*($stop-$start), 1).'ms -->';
 //echo '<pre>'.print_r(UFra::logs(), true).'</pre>';
 ?>
+<?=$d['logs'];?>
 </body>
 </html><?
 	}
 }
+
