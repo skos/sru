@@ -2536,9 +2536,17 @@ extends UFbox {
 		try {
 			$fwExceptions = UFra::factory('UFbean_SruAdmin_FwExceptionList');
 			$fwExceptions->listActive();
-			$d['fwExcpetionsActive'] = $fwExceptions;
+			$d['fwExceptionsActive'] = $fwExceptions;
 		} catch (UFex_Dao_NotFound $e) {
-			$d['fwExcpetionsActive'] = null;
+			$d['fwExceptionsActive'] = null;
+		}
+		
+		try {
+			$fwApplications = UFra::factory('UFbean_Sru_FwExceptionApplicationList');
+			$fwApplications->listActive();
+			$d['fwApplications'] = $fwApplications;
+		} catch (UFex_Dao_NotFound $e) {
+			$d['fwApplications'] = null;
 		}
 		return $this->render(__FUNCTION__, $d);
 	}

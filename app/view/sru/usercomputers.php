@@ -10,5 +10,6 @@ extends UFview_SruUser {
 
 		$this->append('title', $box->titleUserComputers());
 		$this->append('body', $box->userComputers());
+		$this->append('body', $box->userApplications());
 	}
 }

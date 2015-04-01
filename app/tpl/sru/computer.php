@@ -70,6 +70,11 @@ extends UFtpl_Common {
 		'deviceModelId' => 'Serwer fizyczny i urządzenie muszą mieć wybrany model',
 		'port/duplicated' => 'Wyjątek dla tego portu jest już aktywny',
 		'port/regexp' => 'Nieprawidłowy format',
+		'comment/textMin' => 'Wprowadź komentarz',
+		'validTo/5' => 'Wprowadź poprawną datę',
+		'validTo/tooLong' => 'Data nie może przekraczać końca semestru',
+		'newExceptions/textMin' => 'Wprowadź porty',
+		'purpose/empty' => 'Wybierz cel',
 	);
 
 	/**
@@ -1032,7 +1037,7 @@ div.style.display = 'none';
 		echo $form->host(_("Zamierzam uruchomić usługi serwerowe na hoście"), array('value'=>$d['host'], 'disabled'=>true));
 		echo $form->purpose(_("W celu"), array(
 			'type' => $form->RADIO,
-			'labels' => $form->_labelize(UFtpl_SruAdmin_FwException::$applicationTypes),
+			'labels' => $form->_labelize(UFtpl_Sru_FwExceptionApplication::$applicationTypes),
 			'labelClass' => 'radio',
 			'class' => 'radio',
 		));

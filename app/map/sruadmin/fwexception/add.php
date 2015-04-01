@@ -11,6 +11,9 @@ extends UFmap {
 		'port'		=> 'port',
 		'active'	=> 'active',
 		'waiting'	=> 'waiting',
+		'applicationId'	=> 'fw_exception_application_id',
+		'modifiedBy'	=> 'modified_by',
+		'modifiedAt'	=> 'modified_at',
 	);
 	protected $columnTypes = array(
 		'id'		=> self::INT,
@@ -18,6 +21,9 @@ extends UFmap {
 		'port'		=> self::INT,
 		'active'	=> self::BOOL,
 		'waiting'	=> self::BOOL,
+		'applicationId'	=> self::NULL_INT,
+		'modifiedBy'	=> self::NULL_INT,
+		'modifiedAt'	=> self::TS,
 	);
 	protected $tables = array(
 		'' => 'fw_exceptions',

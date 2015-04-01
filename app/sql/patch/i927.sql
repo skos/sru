@@ -6,6 +6,7 @@ COMMENT ON COLUMN fw_exceptions.waiting IS 'oczekuje na rozpatrzenie';
 ALTER TABLE fw_exception_applications
 DROP COLUMN token,
 ADD COLUMN sspg_opinion_by bigint,
+ALTER COLUMN created_at SET DEFAULT now(),
 DROP CONSTRAINT fw_exception_applications_opinion_by_fkey,
 ADD CONSTRAINT fw_exception_applications_skos_opinion_by_fkey FOREIGN KEY (skos_opinion_by)
       REFERENCES admins (id) MATCH SIMPLE

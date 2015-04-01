@@ -61,7 +61,7 @@ img { border-style: none; }
 #main blockquote { border-left: 3px solid #eee; margin-left: 1em; padding-left: 1em; }
 #main fieldset { margin-top: 1em; border-style: none; background-color: #eee; padding: 0.5em; }
 #main fieldset fieldset { padding: 0.5em 0; }
-#main fieldset.radio legend { margin-left: 27%; padding-left: 2em; }
+#main fieldset.radio legend { font-weight: normal; font-family: "Verdana", "Tahoma", "Helvetica", "Arial", sans-serif; width: 24%; margin-right: 0.5%; float: left; clear: both; text-align: right; }
 #main legend { margin-left: 1em; background-color: #eee; padding: 0.1em 2em; font-family: "Georgia", serif; font-weight: bold; }
 #main label { display: block; width: 29.5%; float: left; clear: both; text-align: right; margin-right: 0.5%; }
 #main input.radio, #main input.checkbox { margin-left: 30%; float: left; clear: both; margin-top: 0.2em; }
@@ -142,6 +142,11 @@ img { border-style: none; }
 #main .required { border: solid 1px red; }
 #main .necessary { border: solid 1px orange; }
 #main .waletImg { position: relative; margin-right: 230px; float: right; top: -130px; width: 100px; }
+
+#main .waiting { color: orange; }
+#main .active { color: green; }
+#main .rejected { color: red; }
+#main .archived { color: gray; }
 
 #main ul .admin { background-color: yellow; }
 #main ul .serv { background-color: green; }

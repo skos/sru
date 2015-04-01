@@ -297,6 +297,21 @@ extends UFbox {
 			return $this->render('userComputerNotFound');
 		}
 	}
+	
+	public function userApplications() {
+		try {
+			$user = UFra::factory('UFbean_Sru_User');
+			$user->getFromSession();
+
+			$fwApplications = UFra::factory('UFbean_Sru_FwExceptionApplicationList');
+			$fwApplications->listByUser($user->id);
+			$d['fwApplications'] = $fwApplications;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return '';
+		}
+	}
 
 	public function userComputerDel() {
 		try {

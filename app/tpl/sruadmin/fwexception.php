@@ -4,22 +4,25 @@
  */
 class UFtpl_SruAdmin_FwException
 extends UFtpl_Common {
-	
-	public static $applicationTypes = array(
-		1 => 'związany z przedmiotami na Uczelni',
-		2 => 'nauka własna', 
-	);
-	
+		
 	public function listExceptions(array $d, $id = 0) {
 		$hostUrl = $this->url(0).'/computers/';
+		$userUrl = $this->url(0).'/users/';
+		$adminUrl = $this->url(0).'/admins/';
 		
 		echo '<table id="exceptionsT'.$id.'" class="bordered"><thead><tr>';
 		echo '<th>Host</th>';
+		echo '<th>Użytkownik</th>';
 		echo '<th>Port</th>';
+		echo '<th>Dodał</th>';
+		echo '<th>Dodany</th>';
 		echo '</tr></thead><tbody>';
 		foreach ($d as $c) {
 			echo '<tr><td><a href="'.$hostUrl.$c['computerId'].'">'.$c['host'].'</a></td>';
-			echo '<td>'.($c['port'] == 0 ? 'wszystkie' : $c['port']).'</td></tr>';
+			echo '<td><a "'.$userUrl.$c['userId'].'">'.$c['userName'].' '.$c['userSurname'].'</a></td>';
+			echo '<td>'.($c['port'] == 0 ? 'wszystkie' : $c['port']).'</td>';
+			echo '<td>'.(is_null($c['modifiedBy']) ? 'użytkownik' : '<a href="'.$adminUrl.$c['modifiedBy'].'">'.$c['modifiedByName'].'<a/>').'</td>';
+			echo '<td>'.date(self::TIME_YYMMDD_HHMM, $c['modifiedAt']).'</td></tr>';
 		}
 		echo '</tbody></table>';
 		

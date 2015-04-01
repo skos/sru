@@ -9,15 +9,36 @@ extends UFact {
 
 	public function go() {
 		try {
+			$conf = UFra::shared('UFconf_Sru');
+			
 			$post = $this->_srv->get('req')->post->{self::PREFIX};	
 			$this->begin();
 			$computer = UFra::factory('UFbean_Sru_Computer');
 			$computer->getByPK((int)$this->_srv->get('req')->get->computerId);
-			/*
+			
 			$user = UFra::factory('UFbean_Sru_User');
 			$user->getByPK($computer->userId);
 
-			$bean = UFra::factory('UFbean_Sru_FwApplication');
+			$bean = UFra::factory('UFbean_Sru_FwExceptionApplication');
+			$bean->fillFromPost(self::PREFIX, null, array('comment', 'host', 'validTo', 'purpose', 'newExceptions'));
+			if (!array_key_exists('purpose', $post)) {
+				$this->markErrors(self::PREFIX, array('purpose'=>'empty'));
+				return;
+			}
+			if ($post['validTo'] > $conf->usersAvailableTo) {
+				$this->markErrors(self::PREFIX, array('validTo'=>'tooLong'));
+				return;
+			}
+			$bean->userId = $user->id;
+			if ($post['purpose'] == UFbean_Sru_FwExceptionApplication::TYPE_UNIVERSITY) {
+				$bean->universityEducation = true;
+				$bean->selfEducation = false;
+			} else {
+				$bean->universityEducation = false;
+				$bean->selfEducation = true;
+			}
+			
+			$appId = $bean->save();
 
 			if (array_key_exists('newExceptions', $post) && $post['newExceptions'] != '') {
 				if (!UFbean_SruAdmin_FwException::validateExceptionsStringFormat($post['newExceptions'])) {
@@ -39,15 +60,20 @@ extends UFact {
 				}
 				foreach ($newExceptions as $exception) {
 					$exception = trim($exception);
-					$exception = UFra::factory('UFbean_SruAdmin_FwException');
-					$exception->computerId = $computer->id;
-					$exception->port = $exception;
-					$exception->active = false;
-					$exception->waiting = false;
-					$exception->save();
+					if ($exception == 0) {
+						$this->markErrors(self::PREFIX, array('port'=>'regexp'));
+						return;
+					}
+					$exc = UFra::factory('UFbean_SruAdmin_FwException');
+					$exc->applicationId = $appId;
+					$exc->computerId = $computer->id;
+					$exc->port = $exception;
+					$exc->active = false;
+					$exc->waiting = true;
+					$exc->save();
 				}
 			}
-*/
+			
 			$this->postDel(self::PREFIX);
 			$this->markOk(self::PREFIX);
 			$this->commit();

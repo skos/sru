@@ -1646,10 +1646,15 @@ setInterval(getSummary, 10*1000);
 	
 	public function fwExceptions(array $d) {
 		echo '<h2>Wyjątki w firewallu</h2>';
-		$active = count($d['fwExcpetionsActive']);
+		$active = count($d['fwExceptionsActive']);
 		echo '<h3>Aktywne ('.$active.')</h3>';
 		if ($active > 0) {
-			$d['fwExcpetionsActive']->write('listExceptions');
+			$d['fwExceptionsActive']->write('listExceptions');
+		}
+		$applications = count($d['fwApplications']);
+		echo '<h3>Wnioski ('.$applications.')</h3>';
+		if ($applications > 0) {
+			$d['fwApplications']->write('listApplications');
 		}
 	}
 	

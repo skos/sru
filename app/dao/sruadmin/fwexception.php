@@ -34,7 +34,7 @@ extends UFdao {
 		$query->where($mapping->port, $port);
 		$query->where($mapping->computerId, $computerId);
 		$query->where(
-			'('.$mapping->column('active').'='.true.' OR '.$mapping->column('waiting').'='.true.')',
+			'('.$mapping->column('active').'= TRUE OR '.$mapping->column('waiting').'= TRUE)',
 			null, $query->SQL
 		);
 			

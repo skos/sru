@@ -230,8 +230,6 @@ extends UFtpl_Common {
                         echo $this->OK(_("Komputer został dodany. Poczekaj cierpliwie, aż sieć zacznie działać. Może to potrwać nawet godzinę."));
                 } elseif ($this->_srv->get('msg')->get('computerDel/ok')) {
                         echo $this->OK(_("Komputer został wyrejestrowany."));
-                } elseif ($this->_srv->get('msg')->get('computerFwExceptionsAdd/ok')) {
-                        echo $this->OK(_("Wniosek został zapisany. Musi teraz zostać zaakceptowany. Poniżej znajdziesz jego aktualny status."));
                 }
 		echo '<ul>';
                 $d['computers']->write('listOwn');
@@ -240,6 +238,20 @@ extends UFtpl_Common {
 		echo $form->_end();
 		echo $form->_end(true);
         }
+	
+	public function userApplications(array $d) {
+		$form = UFra::factory('UFlib_Form');
+
+		echo $form->_start();
+                echo $form->_fieldset(_("Twoje wnioski o usługi serwerowe"));
+                if ($this->_srv->get('msg')->get('computerFwExceptionsAdd/ok')) {
+                        echo $this->OK(_("Wniosek został zapisany. Musi teraz zostać zaakceptowany. Poniżej znajdziesz jego aktualny status."));
+                }
+		echo '<ul>';
+                $d['fwApplications']->write('listOwn');
+                echo '</ul>';
+		echo $form->_end();
+	}
 
 	public function userComputersNotFound(array $d) {
                 $form = UFra::factory('UFlib_Form');

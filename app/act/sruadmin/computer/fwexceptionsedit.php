@@ -54,6 +54,8 @@ extends UFact {
 					$bean->computerId = $computer->id;
 					$bean->port = 0;
 					$bean->active = true;
+					$bean->waiting = false;
+					$bean->modifiedBy = $this->_srv->get('session')->authAdmin;
 					array_push($added, 0);
 					$bean->save();
 				} else {
@@ -75,6 +77,8 @@ extends UFact {
 						$bean->computerId = $computer->id;
 						$bean->port = $exception;
 						$bean->active = true;
+						$bean->waiting = false;
+						$bean->modifiedBy = $this->_srv->get('session')->authAdmin;
 						array_push($added, $exception);
 						$bean->save();
 					}
