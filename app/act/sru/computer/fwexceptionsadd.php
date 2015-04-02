@@ -39,6 +39,7 @@ extends UFact {
 			}
 			
 			$appId = $bean->save();
+			$bean->getByPK($appId);
 
 			if (array_key_exists('newExceptions', $post) && $post['newExceptions'] != '') {
 				if (!UFbean_SruAdmin_FwException::validateExceptionsStringFormat($post['newExceptions'])) {
@@ -71,6 +72,24 @@ extends UFact {
 					$exc->active = false;
 					$exc->waiting = true;
 					$exc->save();
+				}
+			}
+			
+			if ($conf->sendEmail) {
+				// wyslanie maila do Przewodncizacych OS
+				$box = UFra::factory('UFbox_Sru');
+				$sender = UFra::factory('UFlib_Sender');
+				$title = $box->newFwExceptionApplicationMailTitle();
+				$body = $box->newFwExceptionApplicationMailBody($bean);
+				
+				try {
+					$chairmans = UFra::factory('UFbean_Sru_UserFunctionList');
+					$chairmans->listByFunctionId(UFbean_Sru_UserFunction::TYPE_CAMPUS_CHAIRMAN);
+					
+					foreach ($chairmans as $chairman) {
+						$sender->sendMail($chairman['userEmail'], $title, $body);
+					}
+				} catch (UFex_Dao_NotFound $e) {
 				}
 			}
 			

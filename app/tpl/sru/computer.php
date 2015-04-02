@@ -165,7 +165,7 @@ $(document).ready(function()
 		echo 'Edycja wyjątków FW komputera "'.$d['host'].'"';
 	}
 	
-        public function detailsOwn(array $d, $user){
+        public function detailsOwn(array $d, $user, $ports){
                 echo '<h1>' . $d['host'] . '.ds.pg.gda.pl</h1>';
                 echo '<p><em>' . _("Typ:") . '</em> ' . _(self::$computerTypes[$d['typeId']]) . '</p>';
                 echo '<p><em>' . _("MAC:") . '</em> ' . $d['mac'] . '</p>';
@@ -174,7 +174,13 @@ $(document).ready(function()
                 echo '<p><em>' . _("Miejsce:") . '</em> ' . $d['locationAlias'] . ' (' . (($user->lang == 'pl') ? $d['dormitoryName'] : $d['dormitoryNameEn']). ')</p>';
                 echo '<p><em>' . _("Liczba kar:") . '</em> ' . $d['bans'] . '</p>';
                 echo '<p><em>' . _("Widziany:") . '</em> ';
-               	$this->ActiveTime($d['lastSeen']);
+                $this->ActiveTime($d['lastSeen']);
+                $portsArr = array();
+                foreach ($ports as $port) {
+                	$portsArr[] = $port['port'];
+                }
+                $portsStr = implode(', ', $portsArr);
+                echo '<p><em>' . _("Otwarte porty w SKOSfirewallu:") . '</em> '.$portsStr.'</p>';
                }
 
     private function ActiveTime($lastSeen) {

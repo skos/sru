@@ -293,7 +293,7 @@ extends UFbox {
 			
 			try {
 				$functions = UFra::factory('UFbean_Sru_UserFunctionList');
-				$functions->listForUserId($bean->id);
+				$functions->listByUserId($bean->id);
 				
 				$d['functions'] = $functions;
 			} catch (UFex_Dao_NotFound $e) {
@@ -355,7 +355,7 @@ extends UFbox {
 			
 			try {
 				$functions = UFra::factory('UFbean_Sru_UserFunctionList');
-				$functions->listForUserId($bean->id);
+				$functions->listByUserId($bean->id);
 				
 				$d['functions'] = $functions;
 			} catch (UFex_Dao_NotFound $e) {
@@ -540,7 +540,7 @@ extends UFbox {
 			
 			try {
 				$functions = UFra::factory('UFbean_Sru_UserFunctionList');
-				$functions->listForDormitoryId(null); 
+				$functions->listByDormitoryId(null); 
 
 				$d['functions'] = $functions;
 			} catch (UFex_Dao_NotFound $e) {
@@ -610,7 +610,7 @@ extends UFbox {
 			
 			try {
 				$functions = UFra::factory('UFbean_Sru_UserFunctionList');
-				$functions->listForDormitoryId($bean->id); 
+				$functions->listByDormitoryId($bean->id); 
 
 				$d['functions'] = $functions;
 			} catch (UFex_Dao_NotFound $e) {

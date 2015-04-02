@@ -40,4 +40,14 @@ extends UFdao {
 			
 		return $this->doSelect($query);
 	}
+	
+	public function listByApplictionId($appId) {
+		$mapping = $this->mapping('list');
+	
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->applicationId, $appId);
+		$query->order($mapping->port,  $query->ASC);
+			
+		return $this->doSelect($query);
+	}
 }

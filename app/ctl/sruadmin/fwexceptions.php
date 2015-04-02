@@ -17,6 +17,14 @@ extends UFctl {
 			$get->view = 'fwexceptions/list';
 		} else {
 			switch ($req->segment(2)) {
+				case 'application':
+					if ($segCount > 2) {
+						$get->appId = (int)$req->segment(3);
+						$get->view = 'fwexceptions/edit';
+					} else {
+						$get->view = 'error404';
+					}
+					break;
 				default:
 					$get->view = 'error404';
 					break;
@@ -25,6 +33,7 @@ extends UFctl {
 	}
 	protected function chooseAction($action = null) {
 		$req = $this->_srv->get('req');
+		$get = $req->get;
 		$post = $req->post;
 		$acl = $this->_srv->get('acl');
 
@@ -32,6 +41,8 @@ extends UFctl {
 			$act = 'Admin_Logout';
 		} elseif ($post->is('adminLogin') && $acl->sruAdmin('admin', 'login')) {
 			$act = 'Admin_Login';
+		} elseif ('fwexceptions/edit' == $get->view && $post->is('fwExceptionApplicationEdit') && $acl->sruAdmin('fwexceptionapplication', 'edit', $get->appId)) {
+			$act = 'FwExceptionApplication_Edit';
 		}
 		
 		if (isset($act)) {
@@ -43,6 +54,7 @@ extends UFctl {
 	protected function chooseView($view = null) {
 		$req = $this->_srv->get('req');
 		$get = $req->get;
+		$msg = $this->_srv->get('msg');
 		$acl = $this->_srv->get('acl');
 
 		if (!$acl->sruAdmin('admin', 'logout')) {
@@ -52,6 +64,14 @@ extends UFctl {
 		switch ($get->view) {
 			case 'fwexceptions/list':
 				return 'SruAdmin_FwExceptionList';
+			case 'fwexceptions/edit':
+				if ($msg->get('fwExceptionApplicationEdit/ok')) {
+					return 'SruAdmin_FwExceptionList';
+				} else if ($acl->sruAdmin('fwexceptionapplication', 'edit', $get->appId)) {
+					return 'SruAdmin_FwExceptionEdit';
+				} else {
+					return 'Sru_Error403';
+				}
 			default:
 				return 'Sru_Error404';
 		}

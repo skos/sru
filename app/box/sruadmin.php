@@ -757,7 +757,7 @@ extends UFbox {
 			
 			try {
 				$functions = UFra::factory('UFbean_Sru_UserFunctionList');
-				$functions->listForUserId($bean->id);
+				$functions->listByUserId($bean->id);
 				
 				$d['functions'] = $functions;
 			} catch (UFex_Dao_NotFound $e) {
@@ -1175,7 +1175,7 @@ extends UFbox {
 			
 			try {
 				$functions = UFra::factory('UFbean_Sru_UserFunctionList');
-				$functions->listForDormitoryId(null); 
+				$functions->listByDormitoryId(null); 
 
 				$d['functions'] = $functions;
 			} catch (UFex_Dao_NotFound $e) {
@@ -1219,7 +1219,7 @@ extends UFbox {
 			
 			try {
 				$functions = UFra::factory('UFbean_Sru_UserFunctionList');
-				$functions->listForDormitoryId($bean->id); 
+				$functions->listByDormitoryId($bean->id); 
 
 				$d['functions'] = $functions;
 			} catch (UFex_Dao_NotFound $e) {
@@ -2547,6 +2547,21 @@ extends UFbox {
 			$d['fwApplications'] = $fwApplications;
 		} catch (UFex_Dao_NotFound $e) {
 			$d['fwApplications'] = null;
+		}
+		return $this->render(__FUNCTION__, $d);
+	}
+	
+	public function fwExceptionEdit() {
+		try {
+			$fwApplication = UFra::factory('UFbean_Sru_FwExceptionApplication');
+			$fwApplication->getByPK((int)$this->_srv->get('req')->get->appId);
+			$d['fwApplication'] = $fwApplication;
+			
+			$fwExceptions = UFra::factory('UFbean_SruAdmin_FwExceptionList');
+			$fwExceptions->listByApplictionId($fwApplication->id);
+			$d['fwExceptions'] = $fwExceptions;
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render('fwExceptionNotFound');
 		}
 		return $this->render(__FUNCTION__, $d);
 	}

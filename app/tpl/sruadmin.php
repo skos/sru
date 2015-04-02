@@ -1645,6 +1645,9 @@ setInterval(getSummary, 10*1000);
 	}
 	
 	public function fwExceptions(array $d) {
+		if ($this->_srv->get('msg')->get('fwExceptionApplicationEdit/ok')) {
+			echo $this->OK('Wniosek został zaopiniowany');
+		}
 		echo '<h2>Wyjątki w firewallu</h2>';
 		$active = count($d['fwExceptionsActive']);
 		echo '<h3>Aktywne ('.$active.')</h3>';
@@ -1654,8 +1657,27 @@ setInterval(getSummary, 10*1000);
 		$applications = count($d['fwApplications']);
 		echo '<h3>Wnioski ('.$applications.')</h3>';
 		if ($applications > 0) {
-			$d['fwApplications']->write('listApplications');
+			$d['fwApplications']->write('listApplications', 0, true, false);
 		}
+	}
+	
+	public function titleFwExceptionEdit() {
+		echo 'Zatwierdzanie wniosku o usługi serwerowe w SKOS PG';
+	}
+	
+	public function fwExceptionEdit(array $d) {
+		$form = UFra::factory('UFlib_Form');
+		echo '<h2>Wniosek o usługi serwerowe w SKOS PG</h2>';
+		echo $form->_start();
+		$d['fwApplication']->write('skosFormEdit', $d['fwExceptions']);
+		echo $form->_submit('Zapisz');
+		echo $form->_end();
+		echo $form->_end(true);
+	
+	}
+	
+	public function fwExceptionNotFound() {
+		echo $this->ERR('Nie znaleziono wniosku');
 	}
 	
 	public function titleStatsUsers() {
