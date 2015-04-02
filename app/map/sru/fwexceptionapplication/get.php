@@ -18,6 +18,7 @@ extends UFmap {
 		'comment'		=> 'a.comment',
 		'skosOpinion'		=> 'a.skos_opinion',
 		'sspgOpinion'		=> 'a.sspg_opinion',
+		'sspgComment'		=> 'a.sspg_comment',
 	);
 	protected $columnTypes = array(
 		'id'			=> self::INT,
@@ -32,6 +33,7 @@ extends UFmap {
 		'comment'		=> self::TEXT,
 		'skosOpinion'		=> self::NULL_BOOL,
 		'sspgOpinion'		=> self::NULL_BOOL,
+		'sspgComment'		=> self::NULL_TEXT,
 	);
 	protected $tables = array(
 		'a' => 'fw_exception_applications',

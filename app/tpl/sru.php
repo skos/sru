@@ -175,12 +175,17 @@ extends UFtpl_Common {
 		echo $form->_end(true);
 	}
 
-	public function userMainMenu() {		
+	public function userMainMenu() {
+		$acl = $this->_srv->get('acl');
+		
 		echo '<div id="nav"><ul>';
                 echo '<li><a href="' . $this->url(0) . '">' . _("Główna") . '</a></li>';
                 echo '<li><a href="' . $this->url(0) . '/profile">' . _("Profil") . '</a></li>';
                 echo '<li><a href="' . $this->url(0) . '/computers">' . _("Komputery") . '</a></li>';
                 echo '<li><a href="' . $this->url(0) . '/penalties">' . _("Kary") . '</a></li>';
+                if ($acl->sru('fwexception', 'edit')) {
+                	echo '<li><a href="' . $this->url(0) . '/applications/fwexceptions">Wnioski</a></li>';
+                }
 		echo '</ul></div>';
 	}
 
@@ -288,10 +293,11 @@ extends UFtpl_Common {
 		echo $form->_start();
 		echo $form->_fieldset(_('Dane hosta'));
 		echo '<div class="computer">';
-		$d['computer']->write('detailsOwn', $d['user']);
+		$d['computer']->write('detailsOwn', $d['user'], $d['fwExceptions']);
                 echo '<p><a class="userAction" href="' . $this->url(1) . '">' . _("Powrót do listy") . '</a>';
                 if ($acl->sru('computer', 'edit')) {
                         echo ' &bull; <a class="userAction" href="' . $this->url(2) . '/:edit">' . _("Edytuj") . '</a>';
+                        echo ' &bull; <a class="userAction" href="' . $this->url(2) . '/:fwexceptionsadd">' . _("Wniosek o usługi serwerowe") . '</a>';
                 }
 		echo '</p></div>';
 		echo $form->_end();
@@ -407,20 +413,38 @@ changeVisibility();
 </script><?
 	}
 
-	public function titleUserUnregistered() {
-                echo _("Komputer niezarejestrowany w SKOS PG");
+	public function titleApplicationFwExceptions() {
+                echo 'Lista wniosków o usługi serwerowe w SKOS PG';
 	}
 
-	public function userUnregistered() {
-		echo '<h1>Twój komputer jest niezarejestrowany w SKOS PG</h1>
-<p>Aby zarejestrować się, musisz zameldować się w biurze/recepcji swojego akademika.</p>
-<p>Jeżeli posiadasz konto w  SRU, a lista Twoich komputerów jest pusta, należy dodać komputer. Po zarejestrowaniu komputera należy poczekać nawet godzinę.</p>
-<p>Zobacz także: <a href="#more">Więcej informacji</a> &bull; <a href="http://skos.ds.pg.gda.pl">Strona SKOS</a> </p>
-<h1>Your computer is not registered in the SKOS PG</h1>
-<p>You should visit your dorm office/reception.</p>
-<p>If you have an account in SRU, but the list of your computers is empty, you should add your computer. After that you need to wait for 1 hour.</p>
-<p>See also: <a href="#more">More info</a> &bull; <a href="http://skos.ds.pg.gda.pl">SKOS web page</a></p>
-<p>*SKOS PG - it is a polish acronym for the campus network</p>';
+	public function applicationFwExceptions(array $d) {
+		if ($this->_srv->get('msg')->get('fwExceptionApplicationEdit/ok')) {
+			echo $this->OK('Wniosek został zaopiniowany');
+		}
+		$applications = count($d['fwApplications']);
+		echo '<h2>Wnioski o usługi serwerowe w SKOS PG ('.$applications.')</h2>';
+		if ($applications > 0) {
+			$d['fwApplications']->write('listApplications', 0, false, true);
+		}
+	}
+	
+	public function titleApplicationFwException() {
+		echo 'Zatwierdzanie wniosku o usługi serwerowe w SKOS PG';
+	}
+	
+	public function applicationFwException(array $d) {
+		$form = UFra::factory('UFlib_Form');
+		echo '<h2>Wniosek o usługi serwerowe w SKOS PG</h2>';
+		echo $form->_start();
+		$d['fwApplication']->write('sspgFormEdit');
+		echo $form->_submit('Zapisz');
+		echo $form->_end();
+		echo $form->_end(true);
+		
+	}
+	
+	public function applicationFwExceptionNotFound() {
+		echo $this->ERR('Nie znaleziono wniosku');
 	}
 	
 	public function userUnregisteredMore() {
@@ -591,5 +615,13 @@ changeVisibility();
 		} else {
 			echo $d['host']->write('hostFwExceptionsChangedMailBodyPolish', $d['deleted'], $d['added']);
 		}
+	}
+	
+	public function newFwExceptionApplicationMailTitle(array $d) {
+		echo 'Nowy wniosek o usługi serwerowe';
+	}
+	
+	public function newFwExceptionApplicationMailBody(array $d) {
+		echo $d['application']->write('newFwExceptionApplicationMailBody');
 	}
 }

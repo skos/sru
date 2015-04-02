@@ -29,7 +29,7 @@ extends UFact {
 			if (array_key_exists('newFunction', $post) && $post['newFunction'] != '') {
 				try {
 					$functions = UFra::factory('UFbean_Sru_UserFunctionList');
-					$functions->listForUserId($user->id);
+					$functions->listByUserId($user->id);
 					foreach ($functions as $func) {
 						if ($func['functionId'] == $post['newFunction']) {
 							$this->markErrors(self::PREFIX, array('newFunction'=>'duplicated'));

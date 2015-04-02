@@ -22,7 +22,7 @@ extends UFctl {
 			} catch (UFex_Core_DataNotFound $e) {
 			}
 		}
-;
+
 		if (0 == $segCount) {
 			$get->view = 'user/main';
 		} else {
@@ -55,6 +55,25 @@ extends UFctl {
 					break;
 				case 'penalties':
 					$get->view = 'user/penalties';
+					break;
+				case 'applications':
+					if ($segCount > 1) {
+						switch ($req->segment(2)) {
+							case 'fwexceptions':
+								if ($segCount > 2) {
+									$get->appId = (int)$req->segment(3);
+									$get->view = 'applications/fwexceptions/edit';
+								} else {
+									$get->view = 'applications/fwexceptions/list';
+								}
+								break;
+							default:
+								$get->view = 'error404';
+								break;
+						}
+					} else {
+						$get->view = 'error404';
+					}
 					break;
 				case 'unregistered':
 					$get->view = 'user/unregistered';
@@ -102,6 +121,8 @@ extends UFctl {
 			$act = 'Computer_Edit';
 		} elseif ('user/computer/fwexceptionsadd' == $get->view && $post->is('computerFwExceptionsAdd') && $acl->sru('computer', 'edit')) {
 			$act = 'Computer_FwExceptionsAdd';
+		} elseif ('applications/fwexceptions/edit' == $get->view && $post->is('fwExceptionApplicationEdit') && $acl->sru('fwexception', 'editApp', $get->appId)) {
+			$act = 'FwExceptionApplication_Edit';
 		} elseif ('user/computer/add' == $get->view && $post->is('computerAdd') && $acl->sru('computer', 'add')) {
 			$act = 'Computer_Add';
 		} elseif ('user/computer/edit' == $get->view && $post->is('computerDel') && $acl->sru('computer', 'del')) {
@@ -200,6 +221,20 @@ extends UFctl {
 			case 'user/penalties':
 				if ($acl->sru('user', 'logout')) {
 					return 'Sru_UserPenalties';
+				} else {
+					return 'Sru_Error403';
+				}
+			case 'applications/fwexceptions/list':
+				if ($acl->sru('fwexception', 'edit')) {
+					return 'Sru_ApplicationFwExceptions';
+				} else {
+					return 'Sru_Error403';
+				}
+			case 'applications/fwexceptions/edit':
+				if ($msg->get('fwExceptionApplicationEdit/ok')) {
+					return 'Sru_ApplicationFwExceptions';
+				} else if ($acl->sru('fwexception', 'editApp', $get->appId)) {
+					return 'Sru_ApplicationFwExceptionEdit';
 				} else {
 					return 'Sru_Error403';
 				}

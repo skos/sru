@@ -102,7 +102,7 @@ extends UFbox {
 		
 		try {
 			$functions = UFra::factory('UFbean_Sru_UserFunctionList');
-			$functions->listForUserId($user->id); 
+			$functions->listByUserId($user->id); 
 
 			$d['functions'] = $functions;
 		} catch (UFex_Dao_NotFound $e) {
@@ -227,6 +227,14 @@ extends UFbox {
 			$user = UFra::factory('UFbean_Sru_User');
 			$user->getFromSession();
 			$d['user'] = $user;
+			
+			try {
+				$fwExceptions = UFra::factory('UFbean_SruAdmin_FwExceptionList');
+				$fwExceptions->listActiveByComputerId($bean->id);
+				$d['fwExceptions'] = $fwExceptions;
+			} catch (UFex $e) {
+				$d['fwExceptions'] = null;
+			}
 
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
@@ -404,6 +412,28 @@ extends UFbox {
 			return $this->render('userPenaltiesNotFound');
 		}
 	}
+	
+	public function applicationFwExceptions() {
+		try {
+			$fwApplications = UFra::factory('UFbean_Sru_FwExceptionApplicationList');
+			$fwApplications->listAll();
+			$d['fwApplications'] = $fwApplications;
+		} catch (UFex_Dao_NotFound $e) {
+			$d['fwApplications'] = null;
+		}
+		return $this->render(__FUNCTION__, $d);
+	}
+	
+	public function applicationFwException() {
+		try {
+			$fwApplication = UFra::factory('UFbean_Sru_FwExceptionApplication');
+			$fwApplication->getByPK((int)$this->_srv->get('req')->get->appId);
+			$d['fwApplication'] = $fwApplication;
+		} catch (UFex_Dao_NotFound $e) {
+			return $this->render('applicationFwExceptionNotFound');
+		}
+		return $this->render(__FUNCTION__, $d);
+	}
 
 	public function userRecoverPasswordMailTitle($user) {
 		$d['user'] = $user;
@@ -501,6 +531,11 @@ extends UFbox {
 		$d['host'] = $host;
 		$d['deleted'] = $deleted;
 		$d['added'] = $added;
+		return $this->render(__FUNCTION__, $d);
+	}
+	
+	public function newFwExceptionApplicationMailBody($application) {
+		$d['application'] = $application;
 		return $this->render(__FUNCTION__, $d);
 	}
 
