@@ -34,6 +34,14 @@ extends UFact {
 					$fwException->waiting = false;
 					$fwException->save();
 				}
+				// wyslanie maila do usera
+				$user = UFra::factory('UFbean_Sru_User');
+				$user->getByPK($bean->userId);
+				$box = UFra::factory('UFbox_Sru');
+				$sender = UFra::factory('UFlib_Sender');
+				$title = $box->rejectedFwExceptionApplicationMailTitle($bean, $user);
+				$body = $box->rejectedFwExceptionApplicationMailBody($bean, $user);
+				$sender->send($user, $title, $body, self::PREFIX);
 			} else {
 				if ($conf->sendEmail) {
 					// wyslanie maila do adminow

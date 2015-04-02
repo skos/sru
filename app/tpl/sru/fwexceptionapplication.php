@@ -91,6 +91,7 @@ $(document).ready(function()
 				'labelClass' => 'radio',
 				'class' => 'radio',
 		));
+		echo 'W przypadku odrzucenia wniosku komentarz będzie widoczny dla składającego wniosek.';
 	}
 	
 	public function skosFormEdit(array $d, $ports) {
@@ -119,6 +120,7 @@ $(document).ready(function()
 				'labelClass' => 'radio',
 				'class' => 'radio',
 		));
+		echo 'W przypadku odrzucenia wniosku komentarz będzie widoczny dla składającego wniosek.';
 	}
 	
 	private function getStatus($application, $details = false) {
@@ -145,6 +147,36 @@ $(document).ready(function()
 	public function newFwExceptionApplicationMailBody(array $d) {
 		$conf = UFra::shared('UFconf_Sru');
 		$host = $conf->sruUrl;
-		echo 'W SRU znajduje się nowy wniosek o usługi serwerowe do zatwierdzenia: '.$host.'/sru/applications/fwexceptions/'.$d['id']."\n";
+		if (is_null($d['sspgOpinion'])) {
+			echo 'W SRU znajduje się nowy wniosek o usługi serwerowe do zatwierdzenia: '.$host.'/sru/applications/fwexceptions/'.$d['id']."\n";
+		} else {
+			echo 'W SRU znajduje się nowy wniosek o usługi serwerowe do zatwierdzenia.';
+		}
+	}
+	
+	public function rejectedFwExceptionApplicationMailBodyEnglish(array $d) {
+		echo 'Your server services application was rejected with the following comment: ';
+		if (!is_null($d['sspgOpinion']) && $d['sspgOpinion'] == false) {
+			echo $d['sspgComment'];
+		} else if (!is_null($d['skosOpinion']) && $d['skosOpinion'] == false) {
+			echo $d['skosComment'];
+		}
+	}
+	
+	public function rejectedFwExceptionApplicationMailBodyPolish(array $d) {
+		echo 'Twój wniosek o usługi serwerowe został odrzucony z następującym komentarzem: ';
+		if (!is_null($d['sspgOpinion']) && $d['sspgOpinion'] == false) {
+			echo $d['sspgComment'];
+		} else if (!is_null($d['skosOpinion']) && $d['skosOpinion'] == false) {
+			echo $d['skosComment'];
+		}
+	}
+	
+	public function approvedFwExceptionApplicationMailBodyEnglish(array $d) {
+		echo 'Your server services application was approved. The server services will work in max 24h.';
+	}
+	
+	public function approvedFwExceptionApplicationMailBodyPolish(array $d) {
+		echo 'Twój wniosek o usługi serwerowe został zaopiniowany pozytywnie. Usługi serwerowe będą działać maksymalnie za 24h.';
 	}
 }

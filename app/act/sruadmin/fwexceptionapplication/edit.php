@@ -34,6 +34,22 @@ extends UFact {
 				$fwException->active = $post['skosOpinion'];
 				$fwException->save();
 			}
+			
+			// wyslanie maila do usera
+			$user = UFra::factory('UFbean_Sru_User');
+			$user->getByPK($bean->userId);
+			$box = UFra::factory('UFbox_Sru');
+			$sender = UFra::factory('UFlib_Sender');
+			if ($bean->skosOpinion == false) {
+				$title = $box->rejectedFwExceptionApplicationMailTitle($bean, $user);
+				$body = $box->rejectedFwExceptionApplicationMailBody($bean, $user);
+				
+			} else {
+				$title = $box->approvedFwExceptionApplicationMailTitle($bean, $user);
+				$body = $box->approvedFwExceptionApplicationMailBody($bean, $user);
+			}
+			$sender->send($user, $title, $body, self::PREFIX);
+			
 			$this->postDel(self::PREFIX);
 			$this->markOk(self::PREFIX);
 			$this->commit();

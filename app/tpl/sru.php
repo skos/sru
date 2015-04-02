@@ -624,4 +624,36 @@ changeVisibility();
 	public function newFwExceptionApplicationMailBody(array $d) {
 		echo $d['application']->write('newFwExceptionApplicationMailBody');
 	}
+	
+	public function rejectedFwExceptionApplicationMailTitle(array $d) {
+	if ($d['user']->lang == 'en') {
+			echo 'Your application has been rejected';
+		} else {
+			echo 'Twój wniosek o usługi serwerowe został odrzucony';
+		}
+	}
+	
+	public function rejectedFwExceptionApplicationMailBody(array $d) {
+		if ($d['user']->lang == 'en') {
+			echo $d['application']->write('rejectedFwExceptionApplicationMailBodyEnglish');
+		} else {
+			echo $d['application']->write('rejectedFwExceptionApplicationMailBodyPolish');
+		}
+	}
+	
+	public function approvedFwExceptionApplicationMailTitle(array $d) {
+		if ($d['user']->lang == 'en') {
+			echo 'Your application has been approved';
+		} else {
+			echo 'Twój wniosek o usługi serwerowe został zatwierdzony';
+		}
+	}
+	
+	public function approvedFwExceptionApplicationMailBody(array $d) {
+		if ($d['user']->lang == 'en') {
+			echo $d['application']->write('approvedFwExceptionApplicationMailBodyEnglish');
+		} else {
+			echo $d['application']->write('approvedFwExceptionApplicationMailBodyPolish');
+		}
+	}
 }

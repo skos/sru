@@ -538,6 +538,30 @@ extends UFbox {
 		$d['application'] = $application;
 		return $this->render(__FUNCTION__, $d);
 	}
+	
+	public function rejectedFwExceptionApplicationMailTitle($application, $user) {
+		$d['application'] = $application;
+		$d['user'] = $user;
+		return $this->render(__FUNCTION__, $d);
+	}
+	
+	public function rejectedFwExceptionApplicationMailBody($application, $user) {
+		$d['application'] = $application;
+		$d['user'] = $user;
+		return $this->render(__FUNCTION__, $d);
+	}
+	
+	public function approvedFwExceptionApplicationMailTitle($application, $user) {
+		$d['application'] = $application;
+		$d['user'] = $user;
+		return $this->render(__FUNCTION__, $d);
+	}
+	
+	public function approvedFwExceptionApplicationMailBody($application, $user) {
+		$d['application'] = $application;
+		$d['user'] = $user;
+		return $this->render(__FUNCTION__, $d);
+	}
 
 	private function getMacAddress() {
 		$serv = $this->_srv->get('req')->server;
