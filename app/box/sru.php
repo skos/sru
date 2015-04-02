@@ -562,7 +562,7 @@ extends UFbox {
 		$d['user'] = $user;
 		return $this->render(__FUNCTION__, $d);
 	}
-
+	
 	private function getMacAddress() {
 		$serv = $this->_srv->get('req')->server;
 		if($serv->is('HTTP_X_FORWARDED_FOR') && $serv->HTTP_X_FORWARDED_FOR != '' ) {

@@ -34,6 +34,7 @@ extends UFact {
 					$fwException->waiting = false;
 					$fwException->save();
 				}
+
 				// wyslanie maila do usera
 				$user = UFra::factory('UFbean_Sru_User');
 				$user->getByPK($bean->userId);

@@ -147,6 +147,7 @@ $(document).ready(function()
 	public function newFwExceptionApplicationMailBody(array $d) {
 		$conf = UFra::shared('UFconf_Sru');
 		$host = $conf->sruUrl;
+
 		if (is_null($d['sspgOpinion'])) {
 			echo 'W SRU znajduje się nowy wniosek o usługi serwerowe do zatwierdzenia: '.$host.'/sru/applications/fwexceptions/'.$d['id']."\n";
 		} else {
