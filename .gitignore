@@ -1,4 +1,7 @@
 /nbproject/
+/.buildpath
+/.project
+/.settings
 /app/conf/core.php
 /app/bin/api.config
 /app/conf/sru.php
