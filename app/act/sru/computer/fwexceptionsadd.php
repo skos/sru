@@ -76,21 +76,12 @@ extends UFact {
 			}
 			
 			if ($conf->sendEmail) {
-				// wyslanie maila do Przewodncizacych OS
+				// wyslanie maila do adminow
 				$box = UFra::factory('UFbox_Sru');
 				$sender = UFra::factory('UFlib_Sender');
 				$title = $box->newFwExceptionApplicationMailTitle();
 				$body = $box->newFwExceptionApplicationMailBody($bean);
-				
-				try {
-					$chairmans = UFra::factory('UFbean_Sru_UserFunctionList');
-					$chairmans->listByFunctionId(UFbean_Sru_UserFunction::TYPE_CAMPUS_CHAIRMAN);
-					
-					foreach ($chairmans as $chairman) {
-						$sender->sendMail($chairman['userEmail'], $title, $body);
-					}
-				} catch (UFex_Dao_NotFound $e) {
-				}
+				$sender->sendMail('adnet@ds.pg.gda.pl', $title, $body);
 			}
 			
 			$this->postDel(self::PREFIX);

@@ -25,34 +25,30 @@ extends UFact {
 			$bean->sspgOpinionAt = NOW;
 			$bean->save();
 			
+			$fwExceptions = UFra::factory('UFbean_SruAdmin_FwExceptionList');
+			$fwExceptions->listByApplictionId($bean->id);
+			foreach ($fwExceptions as $exc) {
+				$fwException = UFra::factory('UFbean_SruAdmin_FwException');
+				$fwException->getByPK($exc['id']);
+				$fwException->waiting = false;
+				$fwException->active = $post['sspgOpinion'];
+				$fwException->save();
+			}
+			
+			// wyslanie maila do usera
+			$user = UFra::factory('UFbean_Sru_User');
+			$user->getByPK($bean->userId);
+			$box = UFra::factory('UFbox_Sru');
+			$sender = UFra::factory('UFlib_Sender');
 			if ($bean->sspgOpinion == false) {
-				$fwExceptions = UFra::factory('UFbean_SruAdmin_FwExceptionList');
-				$fwExceptions->listByApplictionId($bean->id);
-				foreach ($fwExceptions as $exc) {
-					$fwException = UFra::factory('UFbean_SruAdmin_FwException');
-					$fwException->getByPK($exc['id']);
-					$fwException->waiting = false;
-					$fwException->save();
-				}
-
-				// wyslanie maila do usera
-				$user = UFra::factory('UFbean_Sru_User');
-				$user->getByPK($bean->userId);
-				$box = UFra::factory('UFbox_Sru');
-				$sender = UFra::factory('UFlib_Sender');
 				$title = $box->rejectedFwExceptionApplicationMailTitle($bean, $user);
 				$body = $box->rejectedFwExceptionApplicationMailBody($bean, $user);
-				$sender->send($user, $title, $body, self::PREFIX);
+				
 			} else {
-				if ($conf->sendEmail) {
-					// wyslanie maila do adminow
-					$box = UFra::factory('UFbox_Sru');
-					$sender = UFra::factory('UFlib_Sender');
-					$title = $box->newFwExceptionApplicationMailTitle();
-					$body = $box->newFwExceptionApplicationMailBody($bean);
-					$sender->sendMail('adnet@ds.pg.gda.pl', $title, $body);
-				}
+				$title = $box->approvedFwExceptionApplicationMailTitle($bean, $user);
+				$body = $box->approvedFwExceptionApplicationMailBody($bean, $user);
 			}
+			$sender->send($user, $title, $body, self::PREFIX);
 			
 			$this->postDel(self::PREFIX);
 			$this->markOk(self::PREFIX);

@@ -25,30 +25,45 @@ extends UFact {
 			$bean->skosOpinionAt = NOW;
 			$bean->save();
 			
-			$fwExceptions = UFra::factory('UFbean_SruAdmin_FwExceptionList');
-			$fwExceptions->listByApplictionId($bean->id);
-			foreach ($fwExceptions as $exc) {
-				$fwException = UFra::factory('UFbean_SruAdmin_FwException');
-				$fwException->getByPK($exc['id']);
-				$fwException->waiting = false;
-				$fwException->active = $post['skosOpinion'];
-				$fwException->save();
-			}
-			
-			// wyslanie maila do usera
-			$user = UFra::factory('UFbean_Sru_User');
-			$user->getByPK($bean->userId);
-			$box = UFra::factory('UFbox_Sru');
-			$sender = UFra::factory('UFlib_Sender');
 			if ($bean->skosOpinion == false) {
-				$title = $box->rejectedFwExceptionApplicationMailTitle($bean, $user);
-				$body = $box->rejectedFwExceptionApplicationMailBody($bean, $user);
-				
+				$fwExceptions = UFra::factory('UFbean_SruAdmin_FwExceptionList');
+				$fwExceptions->listByApplictionId($bean->id);
+				foreach ($fwExceptions as $exc) {
+					$fwException = UFra::factory('UFbean_SruAdmin_FwException');
+					$fwException->getByPK($exc['id']);
+					$fwException->waiting = false;
+					$fwException->save();
+				}
+			
+				if ($conf->sendEmail) {
+					// wyslanie maila do usera
+					$user = UFra::factory('UFbean_Sru_User');
+					$user->getByPK($bean->userId);
+					$box = UFra::factory('UFbox_Sru');
+					$sender = UFra::factory('UFlib_Sender');
+					$title = $box->rejectedFwExceptionApplicationMailTitle($bean, $user);
+					$body = $box->rejectedFwExceptionApplicationMailBody($bean, $user);
+					$sender->send($user, $title, $body, self::PREFIX);
+				}
 			} else {
-				$title = $box->approvedFwExceptionApplicationMailTitle($bean, $user);
-				$body = $box->approvedFwExceptionApplicationMailBody($bean, $user);
+				if ($conf->sendEmail) {
+					// wyslanie maila do Przewodniczacych OS
+					$box = UFra::factory('UFbox_Sru');
+					$sender = UFra::factory('UFlib_Sender');
+					$title = $box->newFwExceptionApplicationMailTitle();
+					$body = $box->newFwExceptionApplicationMailBody($bean);
+					
+					try {
+						$chairmans = UFra::factory('UFbean_Sru_UserFunctionList');
+						$chairmans->listByFunctionId(UFbean_Sru_UserFunction::TYPE_CAMPUS_CHAIRMAN);
+							
+						foreach ($chairmans as $chairman) {
+							$sender->sendMail($chairman['userEmail'], $title, $body);
+						}
+					} catch (UFex_Dao_NotFound $e) {
+					}
+				}
 			}
-			$sender->send($user, $title, $body, self::PREFIX);
 			
 			$this->postDel(self::PREFIX);
 			$this->markOk(self::PREFIX);

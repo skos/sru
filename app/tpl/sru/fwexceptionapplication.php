@@ -80,6 +80,7 @@ $(document).ready(function()
 		echo '<p><em>Komentarz:</em> '.$d['comment'].'</p>';
 		echo '<p><em>Edukacja własna:</em> '.($d['selfEducation'] ? 'tak' : 'nie').'</p>';
 		echo '<p><em>Edukacja PG:</em> '.($d['universityEducation'] ? 'tak' : 'nie').'</p>';
+		echo '<p><em>Opinia SKOS:</em> '.$d['skosComment'].'</p>';
 		echo $form->sspgComment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>2));
 		$tmp = array(
 				'0' => 'Nie',
@@ -108,7 +109,6 @@ $(document).ready(function()
 		echo '<p><em>Komentarz:</em> '.$d['comment'].'</p>';
 		echo '<p><em>Edukacja własna:</em> '.($d['selfEducation'] ? 'tak' : 'nie').'</p>';
 		echo '<p><em>Edukacja PG:</em> '.($d['universityEducation'] ? 'tak' : 'nie').'</p>';
-		echo '<p><em>Opinia SSPG:</em> '.$d['sspgComment'].'</p>';
 		echo $form->skosComment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>2));
 		$tmp = array(
 				'0' => 'Nie',
@@ -134,10 +134,10 @@ $(document).ready(function()
 			(!is_null($application['sspgOpinion']) && $application['sspgOpinion'] == true)) {
 			return '<span class="active">ZAAKCEPTOWANY</span>';
 		} else if ($details) {
-			if (is_null($application['sspgOpinion'])) {
-				return '<span class="waiting">OCZEKUJE NA SSPG</span>';
-			} else {
+			if (is_null($application['skosOpinion'])) {
 				return '<span class="waiting">OCZEKUJE NA SKOS</span>';
+			} else {
+				return '<span class="waiting">OCZEKUJE NA SSPG</span>';
 			}
 		} else {
 			return '<span class="waiting">OCZEKUJE</span>';

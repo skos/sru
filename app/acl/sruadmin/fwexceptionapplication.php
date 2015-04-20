@@ -19,7 +19,7 @@ extends UFlib_ClassWithService {
 			try {
 				$app = UFra::factory('UFbean_Sru_FwExceptionApplication');
 				$app->getByPK($appId);
-				if (!is_null($app->sspgOpinion) && $app->sspgOpinion == true && is_null($app->skosOpinion) && $app->validTo > NOW) {
+				if (is_null($app->skosOpinion) && $app->validTo > NOW) {
 					return true;
 				}
 			} catch (UFex_Dao_NotFound $e) {
