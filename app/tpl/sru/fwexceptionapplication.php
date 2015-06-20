@@ -12,6 +12,7 @@ extends UFtpl_Common {
 	
 	protected $errors = array(
 		'sspgOpinion/empty' => 'Podaj decyzję',
+		'skosOpinion/empty' => 'Podaj decyzję',
 	);
 	
 	public function listOwn(array $d) {
