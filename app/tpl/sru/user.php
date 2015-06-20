@@ -300,7 +300,7 @@ $(document).ready(function()
 
 		echo $form->documentNumber('Numer dokumentu', array('class'=>'necessary'));
 		echo $form->nationalityName('Narodowość', array('class'=>'necessary',
-			'after'=>UFlib_Helper::displayHint("Np. &quot;polska&quot;, &quot;niemiecka&quot;, &quot;angielska&quot;")));
+			'after'=>UFlib_Helper::displayHint("Np. \"polska\", \"niemiecka\", \"angielska\"")));
 		try {
 			$pesel = $post->userAdd['pesel'];
 		} catch (UFex_Core_DataNotFound $e) {
@@ -1124,8 +1124,7 @@ changeVisibility();
 		));
 
 		echo $form->documentNumber('Numer dokumentu', array('class'=>'necessary'));
-		echo $form->nationalityName('Narodowość', array('class'=>'necessary',
-														'after'=>UFlib_Helper::displayHint("Np. &quot;polska&quot;, &quot;niemiecka&quot;, &quot;angielska&quot;,")));
+		echo $form->nationalityName('Narodowość', array('class'=>'necessary', 'after'=>UFlib_Helper::displayHint("Np. \"polska\", \"niemiecka\", \"angielska\"")));
 		echo $form->pesel("PESEL", array('after'=>'<span id="peselValidationResult"></span><br/>'));
 
 		echo $form->birthDate('Data urodzenia', array('type' => $form->CALENDER,'after'=>UFlib_Helper::displayHint("Data w formacie RRRR-MM-DD, np. 1988-10-06")));
