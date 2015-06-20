@@ -83,7 +83,7 @@ extends UFtpl_Common {
 	public function penaltyLastAdded(array $d, $showAddedBy = true, $showColor = true, $id = 0) {
 		$url = $this->url(0);
 
-		echo '<div id="showHideDiv'.$id.'" style="padding-bottom: 20px;"><a href="#" id="showHideRows'.$id.'">Pokaż/ukryj kary osób wymeldowanych</a></div>';
+		echo '<div id="showHideDiv'.$id.'" style="padding-bottom: 20px;"><a href="#" id="showHideRows'.$id.'" /></div>';
 		echo '<table id="penaltiesAddedT'.$id.'" class="bordered"><thead><tr>';
 		echo '<th>Nałożona</th>';
 		echo '<th>Koniec</th>';
@@ -131,14 +131,17 @@ $('#showHideRows<?=$id;?>').click(function()
 	{
 		if (isHidden) {
 			$('.hiddenRow<?=$id;?>').show();
+			$('#showHideRows<?=$id;?>').text('Ukryj kary osób wymeldowanych');
 		} else {
 			$('.hiddenRow<?=$id;?>').hide();
+			$('#showHideRows<?=$id;?>').text('Pokaż kary osób wymeldowanych');
 		}
 		isHidden = !isHidden;
 		return false;
 	}
 );
 $('.hiddenRow<?=$id;?>').hide();
+$('#showHideRows<?=$id;?>').text('Pokaż kary osób wymeldowanych');
 if (<?=$inactiveCount ?> == 0) {
 	$('#showHideDiv<?=$id;?>').hide();
 }
