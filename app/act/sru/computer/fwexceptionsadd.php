@@ -25,6 +25,10 @@ extends UFact {
 				$this->markErrors(self::PREFIX, array('purpose'=>'empty'));
 				return;
 			}
+			if (strtotime($post['validTo']) < NOW) {
+				$this->markErrors(self::PREFIX, array('validTo'=>'tooShort'));
+				return;
+			}
 			if ($post['validTo'] > $conf->usersAvailableTo) {
 				$this->markErrors(self::PREFIX, array('validTo'=>'tooLong'));
 				return;

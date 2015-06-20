@@ -72,6 +72,7 @@ extends UFtpl_Common {
 		'port/regexp' => 'Nieprawidłowy format',
 		'comment/textMin' => 'Wprowadź komentarz',
 		'validTo/5' => 'Wprowadź poprawną datę',
+		'validTo/tooShort' => 'Data musi być przyszła',
 		'validTo/tooLong' => 'Data nie może przekraczać końca semestru',
 		'newExceptions/textMin' => 'Wprowadź porty',
 		'purpose/empty' => 'Wybierz cel',
