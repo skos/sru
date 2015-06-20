@@ -54,10 +54,13 @@ extends UFact {
 			$post['dormitory'] = $user->dormitoryId;
 			$this->_srv->get('req')->post->{self::PREFIX} = $post;
 
-			$bean->fillFromPost(self::PREFIX, null, array('mac', 'host'));
-			if (!$foundOldByMac) {
-				$bean->typeId = (array_key_exists($user->typeId, UFbean_Sru_Computer::$defaultUserToComputerType) ? UFbean_Sru_Computer::$defaultUserToComputerType[$user->typeId] : UFbean_Sru_Computer::TYPE_STUDENT);
+			$bean->fillFromPost(self::PREFIX, null, array('typeId', 'mac', 'host'));
+			if (!UFbean_Sru_Computer::isHostTypeAvailable($user->typeId, $bean->typeId)) {
+				throw UFra::factory('UFex_Dao_DataNotValid', 'Wront typeId', 0, E_ERROR, array('typeId' => 'wrongHostType'));
 			}
+			//if (!$foundOldByMac) {
+			//	$bean->typeId = (array_key_exists($user->typeId, UFbean_Sru_Computer::$defaultUserToComputerType) ? UFbean_Sru_Computer::$defaultUserToComputerType[$user->typeId] : UFbean_Sru_Computer::TYPE_STUDENT);
+			//}
 			if ($foundOld) {
 				if ($bean->locationId != $user->locationId) {
 					$this->_srv->get('req')->post->computerEdit = $this->_srv->get('req')->post->{self::PREFIX};	// walidator oczekuje computerEdit przy zmianie pokoju

@@ -245,8 +245,11 @@ extends UFbox {
 	public function userComputerEdit($activate = false) {
 		try {
 			$bean = $this->_getComputerFromGetByCurrentUser();
+			$user = UFra::factory('UFbean_Sru_User');
+			$user->getFromSession();
 
 			$d['computer'] = $bean;
+			$d['user'] = $user;
 			$d['activate'] = $activate;
 
 			return $this->render(__FUNCTION__, $d);

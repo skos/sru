@@ -314,7 +314,7 @@ extends UFtpl_Common {
 
 		echo $form->_start($this->url(3).'/');
 		echo $form->_fieldset(_('Zmień dane komputera'));
-		echo $d['computer']->write('formEdit', $d['activate']);
+		echo $d['computer']->write('formEdit', $d['user'], $d['activate']);
 		echo $form->_submit(_('Zapisz'));
 		echo $form->_end();
 		echo $form->_end(true);

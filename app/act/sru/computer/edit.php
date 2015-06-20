@@ -14,7 +14,7 @@ extends UFact {
 			$bean->getByUserIdPK((int)$this->_srv->get('session')->auth, (int)$this->_srv->get('req')->get->computerId);
 			$user = UFra::factory('UFbean_Sru_User');
 			$user->getByPK($bean->userId);
-			$bean->fillFromPost(self::PREFIX, null, array('mac', 'host'));
+			$bean->fillFromPost(self::PREFIX, null, array('typeId', 'mac', 'host'));
 			if (!$bean->active) {
 				// przywrocenie aktywnosci komputera
 				$computers = UFra::factory('UFbean_Sru_ComputerList');
@@ -32,7 +32,10 @@ extends UFact {
 				// aktualizacja lokalizacji komputera
 				$bean->locationId = $user->locationId;
 				// aktualizacja typu kompa wg typu usera
-				$bean->typeId = UFbean_Sru_Computer::getHostType($user, $bean);
+				//$bean->typeId = UFbean_Sru_Computer::getHostType($user, $bean);
+				if (!UFbean_Sru_Computer::isHostTypeAvailable($user->typeId, $bean->typeId)) {
+					throw UFra::factory('UFex_Dao_DataNotValid', 'Wront typeId', 0, E_ERROR, array('typeId' => 'wrongHostType'));
+				}
 				// przypisanie nowego IP
 				try {
 					$ip = UFra::factory('UFbean_Sru_Ipv4');

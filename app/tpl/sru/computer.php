@@ -6,7 +6,7 @@ class UFtpl_Sru_Computer
 extends UFtpl_Common {
 
 	protected static $computerTypes = array(
-		1 => 'Student - komp / tel',
+		1 => 'Student - komputer',
 		2 => 'Student - AP', 
 		3 => 'Student - inne',
 		11 => 'Turysta',
@@ -176,13 +176,15 @@ $(document).ready(function()
                 echo '<p><em>' . _("Liczba kar:") . '</em> ' . $d['bans'] . '</p>';
                 echo '<p><em>' . _("Widziany:") . '</em> ';
                 $this->ActiveTime($d['lastSeen']);
-                $portsArr = array();
-                foreach ($ports as $port) {
-                	$portsArr[] = $port['port'];
+                if ($ports != null) {
+	                $portsArr = array();
+	                foreach ($ports as $port) {
+	                	$portsArr[] = $port['port'];
+	                }
+	                $portsStr = implode(', ', $portsArr);
+	                echo '<p><em>' . _("Otwarte porty w SKOSfirewallu:") . '</em> '.$portsStr.'</p>';
                 }
-                $portsStr = implode(', ', $portsArr);
-                echo '<p><em>' . _("Otwarte porty w SKOSfirewallu:") . '</em> '.$portsStr.'</p>';
-               }
+        }
 
     private function ActiveTime($lastSeen) {
 	if($lastSeen == 0) echo _("nigdy");
@@ -420,7 +422,7 @@ changeVisibility();
 		}
 	}
 	
-	public function formEdit(array $d, $activate = false) {
+	public function formEdit(array $d, $user, $activate = false) {
 		if ($this->_srv->get('msg')->get('computerEdit/errors/ip/noFree')) {
 			echo $this->ERR($this->errors['ip/noFree']);
 		}
@@ -433,6 +435,15 @@ changeVisibility();
 		$form = UFra::factory('UFlib_Form', 'computerEdit', $d, $this->errors);
 
 		echo '<h1>'.$d['host'].'</h1>';
+		foreach (self::$computerTypes as $hostTypeId => $hostType) {
+			if (UFbean_Sru_Computer::isHostTypeAvailable($user->typeId, $hostTypeId) && $hostTypeId != UFbean_Sru_Computer::TYPE_SERVER_VIRT) {
+				$tmp[$hostTypeId] = $hostType;
+			}
+		}
+		echo $form->typeId('Typ', array(
+				'type' => $form->SELECT,
+				'labels' => $form->_labelize($tmp),
+		));
                 echo $form->host(_('Nazwa'));
 		echo $form->mac('MAC', array('after'=>UFlib_Helper::displayHint(_("Adres fizyczny karty sieciowej komputera.")).$this->showMacHint().'<br/>'));
 		if ($this->_srv->get('req')->get->view == 'user/computer/activate') {
@@ -759,12 +770,18 @@ activateChkB.onclick = function() {
 		if ($this->_srv->get('msg')->get('computerAdd/errors/comp/second')) {
 			echo $this->ERR($this->errors['comp/second']);
 		}
+		$tmp = array();
+		foreach (self::$computerTypes as $hostTypeId => $hostType) {
+			if ($admin || (UFbean_Sru_Computer::isHostTypeAvailable($user->typeId, $hostTypeId) && $hostTypeId != UFbean_Sru_Computer::TYPE_SERVER_VIRT)) {
+				$tmp[$hostTypeId] = $hostType;
+			}
+		}
+		echo $form->typeId('Typ', array(
+			'type' => $form->SELECT,
+			'labels' => $form->_labelize($tmp),
+			'value' => !is_null($typeId) ? $typeId : (array_key_exists($user->typeId, UFbean_Sru_Computer::$defaultUserToComputerType) ? UFbean_Sru_Computer::$defaultUserToComputerType[$user->typeId] : UFbean_Sru_Computer::TYPE_STUDENT),
+		));
 		if ($admin) {
-			echo $form->typeId('Typ', array(
-				'type' => $form->SELECT,
-				'labels' => $form->_labelize(self::$computerTypes),
-				'value' => !is_null($typeId) ? $typeId : (array_key_exists($user->typeId, UFbean_Sru_Computer::$defaultUserToComputerType) ? UFbean_Sru_Computer::$defaultUserToComputerType[$user->typeId] : UFbean_Sru_Computer::TYPE_STUDENT),
-			));
 			if (!is_null($deviceModels)) {
 				$tmp = array();
 				foreach ($deviceModels as $dm) {

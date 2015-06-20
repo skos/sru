@@ -68,6 +68,17 @@ extends UFbean_Common {
 
 		return $typeId;
 	}
+	
+	public static function isHostTypeAvailable($userId, $hostTypeId) {
+		if (array_key_exists($hostTypeId, self::$typeToUser) && in_array($userId, self::$typeToUser[$hostTypeId])
+			&& (!array_key_exists($hostTypeId, self::$typeToUserExclusions) || !in_array($userId, self::$typeToUserExclusions[$hostTypeId]))) {
+			return true;
+		} else if (!array_key_exists($hostTypeId, self::$typeToUser)
+			&& (!array_key_exists($hostTypeId, self::$typeToUserExclusions) || !in_array($userId, self::$typeToUserExclusions[$hostTypeId]))) {
+			return true;
+		}
+		return false;
+	}
 
 	protected function validateHost($val, $change) {
 		if ($change && $this->_srv->get('req')->post->is('computerEdit')) {
