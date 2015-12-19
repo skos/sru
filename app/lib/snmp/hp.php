@@ -402,6 +402,8 @@ extends UFlib_Snmp {
 							$name = $portUser - 48;
 						} else if ($portUser < 200) {
 							$name = $portUser - 50;
+						} else if ($portUser < 220) {
+							$name = $portUser - 206;
 						} else if ($portUser < 280) {
 							$name = $portUser - 218;
 						} else {
