@@ -71,6 +71,7 @@ extends UFlib_Snmp {
 		'J8697A',
 		'J9728A',
 		'J9727A',
+		'J9311A',
 	);
 
 	public $movedTrunksNumbersUp = array(
