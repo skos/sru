@@ -463,6 +463,18 @@ extends UFbox {
 			return '';
 		}
 	}
+
+	public function firewallExceptionsOutdated() {
+		try {
+			$fwExceptions = UFra::factory('UFbean_SruAdmin_FwExceptionList');
+			$fwExceptions->listOutdated();
+			$d['fwExcpetions'] = $fwExceptions;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return '';
+		}
+	}
 	
 	public function validatorResults() {
 		$get = $this->_srv->get('req')->get;

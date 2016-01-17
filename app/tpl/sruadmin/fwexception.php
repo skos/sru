@@ -46,4 +46,10 @@ $(document).ready(function()
 		}
 		echo json_encode($hosts);
 	}
+
+	public function apiFirewallExceptionsPlain(array $d) {
+		foreach ($d as $c) {
+			echo $c['id']."\n";
+		}
+	}
 }

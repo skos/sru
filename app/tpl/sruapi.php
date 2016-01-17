@@ -111,6 +111,10 @@ extends UFtpl_Common {
 		$d['fwExcpetions']->write('apiFirewallExceptions');
 	}
 
+	public function firewallExceptionsOutdated(array $d) {
+		$d['fwExcpetions']->write('apiFirewallExceptionsPlain');
+	}
+
 	public function apiPenaltiesTimelineMailTitle(array $d) {
 		echo date(self::TIME_YYMMDD).': Podsumowanie nałożonych/modyfikowanych kar';
 	}

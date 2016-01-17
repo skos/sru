@@ -16,6 +16,7 @@ extends UFmap {
 		'ip'			=> 'c.ipv4',
 		'port'			=> 'e.port',
 		'active'		=> 'e.active',
+		'validTo'		=> 'p.valid_to',
 		'waiting'		=> 'e.waiting',
 		'applicationId'		=> 'e.fw_exception_application_id',
 		'modifiedBy'		=> 'e.modified_by',
@@ -25,7 +26,7 @@ extends UFmap {
 	protected $columnTypes = array(
 		'id'			=> self::INT,
 		'computerId'		=> self::INT,
-	    	'userId'		=> self::INT,
+		'userId'		=> self::INT,
 		'userLogin'		=> self::TEXT,
 		'userName'		=> self::TEXT,
 		'userSurname'		=> self::TEXT,
@@ -33,9 +34,10 @@ extends UFmap {
 		'ip'			=> self::TEXT,
 		'port'			=> self::INT,
 		'active'		=> self::BOOL,
+		'validTo'		=> self::NULL_TS,
 		'waiting'		=> self::BOOL,
 		'applicationId'		=> self::NULL_INT,
-	    	'modifiedBy'		=> self::NULL_INT,
+		'modifiedBy'		=> self::NULL_INT,
 		'modifiedByName'	=> self::NULL_TEXT,
 		'modifiedAt'		=> self::TS,
 	);
@@ -46,11 +48,13 @@ extends UFmap {
 		'c' => 'computers',
 		'u' => 'users',
 		'a' => 'admins',
+		'p' => 'fw_exception_applications',
 	);
 	protected $joinOns = array(
 		'c' => 'e.computer_id=c.id',
 		'u' => 'c.user_id=u.id',
 		'a' => 'e.modified_by=a.id',
+		'p' => 'e.fw_exception_application_id=p.id',
 	);
 	protected $pk = 'i.id';
 }

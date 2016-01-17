@@ -202,6 +202,18 @@ extends UFctl {
 					break;
 				case 'firewallexceptions':
 					$get->view = 'firewallexceptions';
+					if ($segCount > 1) {
+						switch ($req->segment(2)) {
+							case 'outdated':
+								$get->view = 'firewallexceptions/outdated';
+								break;
+							default:
+								// pojedynczy wyjatek - dezaktywacja
+								$get->view = 'firewallexception';
+								$get->fwId = $req->segment(2);
+								break;
+						}
+					}
 					break;
 				case 'validator':
 					if ($segCount > 2) {
@@ -232,6 +244,8 @@ extends UFctl {
 			$act = 'Penalty_Timeline';
 		} elseif ('admins/delete' == $get->view && 'DELETE' == $req->server->REQUEST_METHOD && $acl->sruApi('admin', 'delete')) {
 			$act = 'Admin_Deactivate';
+		} elseif ('firewallexception' == $get->view && 'DELETE' == $req->server->REQUEST_METHOD && $acl->sruApi('firewallexceptions', 'edit')) {
+			$act = 'Firewallexceptions_Deactivate';
 		}
 
 		if (isset($act)) {
@@ -372,8 +386,18 @@ extends UFctl {
 				return 'SruApi_DutyHoursAll';
 			case 'dutyhours/upcoming':
 				return 'SruApi_DutyHoursUpcoming';
+			case 'firewallexception':
+				if ($msg->get('fwExceptionDeactivate/ok')) {
+					return 'SruApi_Status200';
+				} elseif ($msg->get('fwExceptionDeactivate/error')) {
+					return 'SruApi_Error403';
+				} else {
+					return 'SruApi_Error404';
+				}
 			case 'firewallexceptions':
 				return 'SruApi_FirewallExceptions';
+			case 'firewallexceptions/outdated':
+				return 'SruApi_FirewallExceptionsOutdated';
 			case 'validator':
 				return 'SruApi_Validator';
 			default:
