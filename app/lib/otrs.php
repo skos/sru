@@ -89,7 +89,7 @@ class UFlib_Otrs {
 		$TicketID = $client->__soapCall("Dispatch", array($username, $password, "TicketObject", "TicketCreate",
 		    "TN", $ticketnumber,
 		    "Title", $title,
-		    "Queue", $queue,
+		    "Queue", $queue[0],
 		    "Lock", 'unlock',
 		    "Priority", '3 normal',
 		    "State", 'new',
