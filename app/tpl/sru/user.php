@@ -1923,8 +1923,16 @@ $(function() {
 			$activeBanned = (key_exists(key($bannedTypes), $bannedTypesActive) ? $bannedTypesActive[key($bannedTypes)] : 0);
 			$chartDataType = $type.','.$chartDataType;
 			$chartActiveDataType = $activeBanned.','.$chartActiveDataType;
-			$chartLabelType = self::getUserType(key($bannedTypes)).': '.round($type/$bannedSum*100).'%|'.$chartLabelType;
-			$chartActiveLabelType = self::getUserType(key($bannedTypes)).': '.round($activeBanned/$bannedActiveSum*100).'%|'.$chartActiveLabelType;
+			if ($bannedSum > 0) {
+				$chartLabelType = self::getUserType(key($bannedTypes)) . ': ' . round($type / $bannedSum * 100) . '%|' . $chartLabelType;
+			} else {
+				$chartLabelType = self::getUserType(key($bannedTypes)) . ': -' . $chartLabelType;
+			}
+			if ($bannedActiveSum > 0) {
+				$chartActiveLabelType = self::getUserType(key($bannedTypes)) . ': ' . round($activeBanned / $bannedActiveSum * 100) . '%|' . $chartActiveLabelType;
+			} else {
+				$chartActiveLabelType = self::getUserType(key($bannedTypes)) . ': -' . $chartActiveLabelType;
+			}
 			next($bannedTypes);
 		}
 		echo '<tr><td>ŚREDNIO (kar/typ)</td><td>'.round($bannedSum/$bannedTypesSum,2).'</td><td>'.round($bannedActiveSum/$bannedTypesSum,2).'</td></tr>';
@@ -1985,15 +1993,17 @@ $(function() {
 			echo '<tr><td>ŚREDNIO (kar/użytkownik)</td><td>'.round($banSum/$bannedSum,2).'</td><td>'.($bannedWomanSum > 0 ? round($womanBanSum/$bannedWomanSum,2) : '').'</td><td>'.round(($banSum - $womanBanSum)/($bannedSum - $bannedWomanSum),2).'</td></tr>';
 		}
 		echo '</table>';
-		$womanActiveProc = round($activeBannedWomanSum/$activeBannedSum,2);
-		$manActiveProc = round(($activeBannedSum - $activeBannedWomanSum)/$activeBannedSum,2);
-		$womanSumProc = round($bannedWomanSum/$bannedSum,2);
-		$manSumProc = round(($bannedSum-$bannedWomanSum)/$bannedSum,2);
-		echo '<div style="text-align: center;">';
-		echo '<img src="http://chart.apis.google.com/chart?chs=600x200&chd=t:'.$womanActiveProc.','.$manActiveProc.'|'.$womanSumProc.','.$manSumProc;
-		echo '&cht=pc&chl=Aktywne dla kobiet: '.($womanActiveProc*100).'%|Aktywne dla mężczyzn: '.($manActiveProc*100).'%|Suma dla kobiet: ';
-		echo ($womanSumProc*100).'%|Suma dla mężczyzn: '.($manSumProc*100).'%" alt=""/>';
-		echo '</div>';
+		if ($bannedActiveSum > 0) {
+			$womanActiveProc = round($activeBannedWomanSum / $activeBannedSum, 2);
+			$manActiveProc = round(($activeBannedSum - $activeBannedWomanSum) / $activeBannedSum, 2);
+			$womanSumProc = round($bannedWomanSum / $bannedSum, 2);
+			$manSumProc = round(($bannedSum - $bannedWomanSum) / $bannedSum, 2);
+			echo '<div style="text-align: center;">';
+			echo '<img src="http://chart.apis.google.com/chart?chs=600x200&chd=t:' . $womanActiveProc . ',' . $manActiveProc . '|' . $womanSumProc . ',' . $manSumProc;
+			echo '&cht=pc&chl=Aktywne dla kobiet: ' . ($womanActiveProc * 100) . '%|Aktywne dla mężczyzn: ' . ($manActiveProc * 100) . '%|Suma dla kobiet: ';
+			echo ($womanSumProc * 100) . '%|Suma dla mężczyzn: ' . ($manSumProc * 100) . '%" alt=""/>';
+			echo '</div>';
+		}
 
 		echo '<h3>Top 10 ukaranych:</h3>';
 		echo '<table style="text-align: center; width: 100%;">';
