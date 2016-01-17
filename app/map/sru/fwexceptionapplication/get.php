@@ -17,6 +17,7 @@ extends UFmap {
 		'universityEducation'	=> 'a.university_education',
 		'comment'		=> 'a.comment',
 		'skosOpinion'		=> 'a.skos_opinion',
+		'skosComment'		=> 'a.skos_comment',
 		'sspgOpinion'		=> 'a.sspg_opinion',
 		'sspgComment'		=> 'a.sspg_comment',
 	);
