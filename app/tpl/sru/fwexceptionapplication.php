@@ -81,7 +81,7 @@ $(document).ready(function()
 		echo '<p><em>Komentarz:</em> '.$d['comment'].'</p>';
 		echo '<p><em>Edukacja własna:</em> '.($d['selfEducation'] ? 'tak' : 'nie').'</p>';
 		echo '<p><em>Edukacja PG:</em> '.($d['universityEducation'] ? 'tak' : 'nie').'</p>';
-		echo '<p><em>Opinia SKOS:</em> '.(is_null($d['skosComment']) ? '' : $d['skosComment']).'</p>';
+		echo '<p><em>Opinia SKOS:</em> '. $d['skosOpinion'].'</p>';
 		echo $form->sspgComment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>2));
 		$tmp = array(
 				'0' => 'Nie',

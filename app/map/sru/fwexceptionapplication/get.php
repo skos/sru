@@ -23,7 +23,7 @@ extends UFmap {
 	protected $columnTypes = array(
 		'id'			=> self::INT,
 		'userId'		=> self::INT,
-	    	'userLogin'		=> self::TEXT,
+		'userLogin'		=> self::TEXT,
 		'userName'		=> self::TEXT,
 		'userSurname'		=> self::TEXT,
 		'validTo'		=> self::TS,
@@ -32,6 +32,7 @@ extends UFmap {
 		'universityEducation'	=> self::BOOL,
 		'comment'		=> self::TEXT,
 		'skosOpinion'		=> self::NULL_BOOL,
+		'skosComment'		=> self::NULL_TEXT,
 		'sspgOpinion'		=> self::NULL_BOOL,
 		'sspgComment'		=> self::NULL_TEXT,
 	);
