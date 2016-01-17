@@ -349,6 +349,7 @@ changeVisibilityFunctions();
 		echo '<table><thead><tr>';
 		echo '<th>Imię</th>';
 		echo '<th>Nazwisko</th>';
+		echo '<th>Nr albumu</th>';
 		echo '<th>Pokój</th>';
 		if ($settings['faculty']) {
 			echo '<th>Wydział</th>';
@@ -363,6 +364,7 @@ changeVisibilityFunctions();
 			}
 			echo '<tr><td style="border: 1px solid;">'.$user['name'].'</td>';
 			echo '<td style="border: 1px solid;">'.$user['surname'].'</td>';
+			echo '<td style="border: 1px solid;">'.$user['registryNo'].'</td>';
 			echo '<td style="border: 1px solid;">'.$user['locationAlias'].'</td>';
 			if ($settings['faculty']) {
 				echo '<td style="border: 1px solid;">'.(is_null($user['facultyId']) ? '&nbsp;' : strtoupper($user['facultyAlias'])).'</td>';
