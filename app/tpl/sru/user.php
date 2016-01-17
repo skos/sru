@@ -2257,10 +2257,15 @@ $(function() {
 			}
 			echo '<td>'.$bansPerUser.'</td></tr>';
 			$chartData = $dorm->getActiveBans().','.$chartData;
-			if (is_numeric(substr(key($dormitories), 1, 1))) {
-				$chartLabel = 'DS'.key($dormitories).': '.round($dorm->getActiveBans()/$activeBanSum*100).'%|'.$chartLabel;
+			if ($activeBanSum > 0) {
+				$label = round($dorm->getActiveBans()/$activeBanSum*100).'%|';
 			} else {
-				$chartLabel = key($dormitories).': '.round($dorm->getActiveBans()/$activeBanSum*100).'%|'.$chartLabel;
+				$label = '-';
+			}
+			if (is_numeric(substr(key($dormitories), 1, 1))) {
+				$chartLabel = 'DS'.key($dormitories).': '.$label.$chartLabel;
+			} else {
+				$chartLabel = key($dormitories).': '.$label.$chartLabel;
 			}
 			next($dormitories);
 			$avSum += $bansPerUser;

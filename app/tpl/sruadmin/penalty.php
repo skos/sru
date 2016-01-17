@@ -644,7 +644,11 @@ changeVisibility();
 			}
 			next ($bannersActive);
 		}
-		echo '<td>ŚREDNIO:</td><td>'.round(($activeBanSum/$i),1).'</td>';
+		if ($i > 0) {
+			echo '<td>ŚREDNIO:</td><td>' . round(($activeBanSum / $i), 1) . '</td>';
+		} else {
+			echo '<td>ŚREDNIO:</td><td>-</td>';
+		}
 		echo '</table>';
 		reset($bannersActive);
 		$chartData = substr($chartData, 0, -1);
