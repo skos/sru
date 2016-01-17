@@ -81,7 +81,7 @@ $(document).ready(function()
 		echo '<p><em>Komentarz:</em> '.$d['comment'].'</p>';
 		echo '<p><em>Edukacja własna:</em> '.($d['selfEducation'] ? 'tak' : 'nie').'</p>';
 		echo '<p><em>Edukacja PG:</em> '.($d['universityEducation'] ? 'tak' : 'nie').'</p>';
-		echo '<p><em>Opinia SKOS:</em> '.$d['skosComment'].'</p>';
+		echo '<p><em>Opinia SKOS:</em> '.(is_null($d['skosComment']) ? '' : $d['skosComment']).'</p>';
 		echo $form->sspgComment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>2));
 		$tmp = array(
 				'0' => 'Nie',
@@ -149,10 +149,10 @@ $(document).ready(function()
 		$conf = UFra::shared('UFconf_Sru');
 		$host = $conf->sruUrl;
 
-		if (is_null($d['sspgOpinion'])) {
-			echo 'W SRU znajduje się nowy wniosek o usługi serwerowe do zatwierdzenia: '.$host.'/sru/applications/fwexceptions/'.$d['id']."\n";
+		if (is_null($d['skosOpinion'])) {
+			echo 'W SRU znajduje się nowy wniosek o usługi serwerowe do zatwierdzenia. Lista wniosków: '.$host.'/admin/fwexceptions/'."\n";
 		} else {
-			echo 'W SRU znajduje się nowy wniosek o usługi serwerowe do zatwierdzenia.';
+			echo 'W SRU znajduje się nowy wniosek o usługi serwerowe do zatwierdzenia: '.$host.'/sru/applications/fwexceptions/'.$d['id']."\n";
 		}
 	}
 	
