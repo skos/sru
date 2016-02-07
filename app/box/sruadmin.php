@@ -451,17 +451,31 @@ extends UFbox {
 		} catch (UFex_Db_QueryFailed $e) {
 			return $this->render(__FUNCTION__, $d);
 		} catch (UFex_Dao_NotFound $e) {
-			// sprawdźmy, czy chodzi o niezarejestrowanego MACa
-			try {
-				$get = $this->_srv->get('req')->get;
-				$hp = UFra::factory('UFlib_Snmp_Hp');
-				$switchPort = $hp->findMac($get->searchedMac);
-				if (!is_null($switchPort)) {
-					$d['switchPort'] = $switchPort;
-					$d['searchedMac'] = $get->searchedMac;
-					return $this->render(__FUNCTION__.'Unregistered', $d);
+			// sprawdźmy, czy chodzi o switcha
+			if(isset($tmp['ip'])) {
+				try {
+					$switch = UFra::factory('UFbean_SruAdmin_Switch');
+					$switch->getByIp($tmp['ip']);
+					if (count($switch) == 1) {
+						$get->switchSn = $switch->serialNo;
+						return $this->switchDetails().$this->switchPorts().$this->inventoryCard();
+					}
+				} catch (UFex_Dao_NotFound $e) {
 				}
-			} catch (UFex_Core_DataNotFound $e) {
+			}
+			// sprawdźmy, czy chodzi o niezarejestrowanego MACa
+			if(isset($tmp['mac'])) {
+				try {
+					$get = $this->_srv->get('req')->get;
+					$hp = UFra::factory('UFlib_Snmp_Hp');
+					$switchPort = $hp->findMac($get->searchedMac);
+					if (!is_null($switchPort)) {
+						$d['switchPort'] = $switchPort;
+						$d['searchedMac'] = $get->searchedMac;
+						return $this->render(__FUNCTION__ . 'Unregistered', $d);
+					}
+				} catch (UFex_Core_DataNotFound $e) {
+				}
 			}
 
 			return $this->render(__FUNCTION__.'NotFound');
