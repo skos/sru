@@ -1050,7 +1050,7 @@ div.style.display = 'none';
         }
 	
 	public function formFwExceptionsUserAdd(array $d, $user){
-                $form = UFra::factory('UFlib_Form', 'computerFwExceptionsAdd', $d, $this->errors);
+		$form = UFra::factory('UFlib_Form', 'computerFwExceptionsAdd', $d, $this->errors);
 		echo $form->_fieldset(_("Dane"));
 		echo $form->name(_('Imię'), array('value'=>$user->name, 'disabled'=>true));
 		echo $form->name(_('Nazwisko'), array('value'=>$user->surname, 'disabled'=>true));

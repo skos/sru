@@ -345,6 +345,7 @@ extends UFtpl_Common {
 
 		echo '<h2>'._("Wniosek o pozwolenie na uruchomienie usług serwerowych").'</h2>';
 		echo $form->_start($this->url());
+		$d['computer']->comment = ''; // brzydki hack, ale pola się tak samo nazywają i trzeba by kombinować
 		echo $d['computer']->write('formFwExceptionsUserAdd', $d['user']);
 		echo $form->_submit(_("Zapisz"));
 		echo $form->_end(true);
