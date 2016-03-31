@@ -649,6 +649,9 @@ initialLocationAlias = document.getElementById("computerEdit_locationAlias").val
 			} else if (form.value == <? echo UFbean_Sru_Computer::TYPE_INTERFACE; ?>) {
 				<?
 				foreach ($interfaceable as $serv) {
+				if ($serv['id'] == $d['id']) {
+					continue;
+				}
 				?>
 				var option = document.createElement("option");
 				option.value = <? echo $serv['id'] ?>;
@@ -1050,7 +1053,7 @@ div.style.display = 'none';
         }
 	
 	public function formFwExceptionsUserAdd(array $d, $user){
-		$form = UFra::factory('UFlib_Form', 'computerFwExceptionsAdd', $d, $this->errors);
+                $form = UFra::factory('UFlib_Form', 'computerFwExceptionsAdd', $d, $this->errors);
 		echo $form->_fieldset(_("Dane"));
 		echo $form->name(_('Imię'), array('value'=>$user->name, 'disabled'=>true));
 		echo $form->name(_('Nazwisko'), array('value'=>$user->surname, 'disabled'=>true));
