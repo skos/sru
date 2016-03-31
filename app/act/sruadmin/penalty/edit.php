@@ -17,7 +17,7 @@ extends UFact {
 			//aby miec historię do maila
 			$oldBean = clone $bean;
 			$post = $this->_srv->get('req')->post->{self::PREFIX};
-			if (!$bean->active) {
+			if (($bean->typeId == UFbean_SruAdmin_Penalty::TYPE_WARNING && $bean->endAt <= NOW) || ($bean->typeId != UFbean_SruAdmin_Penalty::TYPE_WARNING && !$bean->active)) {
 				UFra::error('Penalty '.$bean->id.' is not active');
 				return;
 			}
