@@ -446,6 +446,22 @@ changeVisibility();
 	public function applicationFwExceptionNotFound() {
 		echo $this->ERR('Nie znaleziono wniosku');
 	}
+
+	public function titleUserUnregistered() {
+		echo _("Komputer niezarejestrowany w SKOS PG");
+	}
+
+	public function userUnregistered() {
+		echo '<h1>Twój komputer jest niezarejestrowany w SKOS PG</h1>
+<p>Aby zarejestrować się, musisz zameldować się w biurze/recepcji swojego akademika.</p>
+<p>Jeżeli posiadasz konto w  SRU, a lista Twoich komputerów jest pusta, należy dodać komputer. Po zarejestrowaniu komputera należy poczekać nawet godzinę.</p>
+<p>Zobacz także: <a href="#more">Więcej informacji</a> &bull; <a href="http://skos.ds.pg.gda.pl">Strona SKOS</a> </p>
+<h1>Your computer is not registered in the SKOS PG</h1>
+<p>You should visit your dorm office/reception.</p>
+<p>If you have an account in SRU, but the list of your computers is empty, you should add your computer. After that you need to wait for 1 hour.</p>
+<p>See also: <a href="#more">More info</a> &bull; <a href="http://skos.ds.pg.gda.pl">SKOS web page</a></p>
+<p>*SKOS PG - it is a polish acronym for the campus network</p>';
+	}
 	
 	public function userUnregisteredMore() {
 		echo '<div style="clear:both"><a id="more" /><img src="'.UFURL_BASE.'/i/img/niezarejestrowani_info.png" alt="Szczegółowa instrukcja podłączenia się do Internetu"></div>';
