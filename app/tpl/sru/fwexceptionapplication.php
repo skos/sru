@@ -49,12 +49,18 @@ extends UFtpl_Common {
 			echo '<td>'.date(self::TIME_YYMMDD_HHMM, $c['createdAt']).'</td>';
 			echo '<td>'.date(self::TIME_YYMMDD, $c['validTo']).'</td>';
 			echo '<td>'.$this->getStatus($c, true).'</td>';
-			if ($isChairman && $acl->sru('fwexception', 'editApp', $c['id'])) {
-				echo '<td><a href="'.$this->url(2).'/'.$c['id'].'">Edytuj</a></td>';
-			} else if ($isAdmin && $acl->sruAdmin('fwexceptionapplication', 'edit', $c['id'])) {
-				echo '<td><a href="'.$this->url(0).'/fwexceptions/application/'.$c['id'].'">Edytuj</a></td>';
-			} else {
-				echo '<td></td>';
+			if ($isChairman) {
+				if ($acl->sru('fwexception', 'editApp', $c['id'])) {
+					echo '<td><a href="' . $this->url(2) . '/' . $c['id'] . '">Edytuj</a></td>';
+				} else {
+					echo '<td></td>';
+				}
+			} else if ($isAdmin) {
+				if ($acl->sruAdmin('fwexceptionapplication', 'edit', $c['id'])) {
+					echo '<td><a href="'.$this->url(0).'/fwexceptions/application/'.$c['id'].'"> Edytuj</a></td>';
+				} else {
+					echo '<td><a href="'.$this->url(0).'/fwexceptions/application/'.$c['id'].'">Podgląd</a></td>';
+				}
 			}
 			echo '</tr>';
 		}
@@ -98,9 +104,12 @@ $(document).ready(function()
 	
 	public function skosFormEdit(array $d, $ports) {
 		$form = UFra::factory('UFlib_Form', 'fwExceptionApplicationEdit', $d, $this->errors);
-	
+		$acl = $this->_srv->get('acl');
+		$editable = $acl->sruAdmin('fwexceptionapplication', 'edit', $d['id']);
+		$userUrl = $this->url(0).'/users/';
+
 		echo $form->_fieldset();
-		echo '<p><em>Użytkownik:</em> '.$d['userName'].' '.$d['userSurname'].'</p>';
+		echo '<p><em>Użytkownik:</em> <a href="'.$userUrl.$d['userId'].'">'.$d['userName'].' '.$d['userSurname'].'</a></p>';
 		$portsArr = array();
 		foreach ($ports as $port) {
 			$portsArr[] = $port['port'];
@@ -110,7 +119,12 @@ $(document).ready(function()
 		echo '<p><em>Komentarz:</em> '.$d['comment'].'</p>';
 		echo '<p><em>Edukacja własna:</em> '.($d['selfEducation'] ? 'tak' : 'nie').'</p>';
 		echo '<p><em>Edukacja PG:</em> '.($d['universityEducation'] ? 'tak' : 'nie').'</p>';
-		echo $form->skosComment('Komentarz', array('type'=>$form->TEXTAREA, 'rows'=>2));
+		if ($editable) {
+			echo $form->skosComment('Komentarz', array('type' => $form->TEXTAREA, 'rows' => 2));
+		} else {
+			echo '<p><em>Komentarz SKOS:</em> '.$d['skosComment'].'</p>';
+			echo '<p><em>Komentarz SSPG:</em> '.$d['sspgComment'].'</p>';
+		}
 		$tmp = array(
 				'0' => 'Nie',
 				'1' => 'Tak',
@@ -120,6 +134,7 @@ $(document).ready(function()
 				'labels' => $form->_labelize($tmp),
 				'labelClass' => 'radio',
 				'class' => 'radio',
+				'disabled'=>!$editable
 		));
 		echo 'W przypadku odrzucenia wniosku komentarz będzie widoczny dla składającego wniosek.';
 	}

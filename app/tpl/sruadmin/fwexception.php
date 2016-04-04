@@ -9,6 +9,7 @@ extends UFtpl_Common {
 		$hostUrl = $this->url(0).'/computers/';
 		$userUrl = $this->url(0).'/users/';
 		$adminUrl = $this->url(0).'/admins/';
+		$applicationUrl = $this->url(0).'/fwexceptions/application/';
 		
 		echo '<table id="exceptionsT'.$id.'" class="bordered"><thead><tr>';
 		echo '<th>Host</th>';
@@ -21,7 +22,7 @@ extends UFtpl_Common {
 			echo '<tr><td><a href="'.$hostUrl.$c['computerId'].'">'.$c['host'].'</a></td>';
 			echo '<td><a "'.$userUrl.$c['userId'].'">'.$c['userName'].' '.$c['userSurname'].'</a></td>';
 			echo '<td>'.($c['port'] == 0 ? 'wszystkie' : $c['port']).'</td>';
-			echo '<td>'.(is_null($c['modifiedBy']) ? 'użytkownik' : '<a href="'.$adminUrl.$c['modifiedBy'].'">'.$c['modifiedByName'].'<a/>').'</td>';
+			echo '<td>'.(is_null($c['applicationId']) ? (is_null($c['modifiedBy']) ? 'admin (przed 2016)' : '<a href="'.$adminUrl.$c['modifiedBy'].'">'.$c['modifiedByName'].'<a/>') : '<a href="'.$applicationUrl.$c['applicationId'].'">użytkownik</a>').'</td>';
 			echo '<td>'.date(self::TIME_YYMMDD_HHMM, $c['modifiedAt']).'</td></tr>';
 		}
 		echo '</tbody></table>';

@@ -67,10 +67,8 @@ extends UFctl {
 			case 'fwexceptions/edit':
 				if ($msg->get('fwExceptionApplicationEdit/ok')) {
 					return 'SruAdmin_FwExceptionList';
-				} else if ($acl->sruAdmin('fwexceptionapplication', 'edit', $get->appId)) {
-					return 'SruAdmin_FwExceptionEdit';
 				} else {
-					return 'Sru_Error403';
+					return 'SruAdmin_FwExceptionEdit';
 				}
 			default:
 				return 'Sru_Error404';
