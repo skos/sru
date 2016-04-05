@@ -2557,7 +2557,7 @@ extends UFbox {
 		
 		try {
 			$fwApplications = UFra::factory('UFbean_Sru_FwExceptionApplicationList');
-			$fwApplications->listActive();
+			$fwApplications->listAll();
 			$d['fwApplications'] = $fwApplications;
 		} catch (UFex_Dao_NotFound $e) {
 			$d['fwApplications'] = null;

@@ -122,21 +122,26 @@ $(document).ready(function()
 		if ($editable) {
 			echo $form->skosComment('Komentarz', array('type' => $form->TEXTAREA, 'rows' => 2));
 		} else {
+			echo '<p><em>Decyzja SKOS:</em> '.(is_null($d['skosOpinion']) ? 'brak' : ($d['skosOpinion'] ? 'tak' : 'nie')).'</p>';
 			echo '<p><em>Komentarz SKOS:</em> '.$d['skosComment'].'</p>';
+			echo '<p><em>Decyzja SSPG:</em> '.(is_null($d['sspgOpinion']) ? 'brak' : ($d['sspgOpinion'] ? 'tak' : 'nie')).'</p>';
 			echo '<p><em>Komentarz SSPG:</em> '.$d['sspgComment'].'</p>';
+			echo '<p><em>Ważny do:</em> '.date(self::TIME_YYMMDD, $d['validTo']).'</p>';
 		}
-		$tmp = array(
+		if ($editable) {
+			$tmp = array(
 				'0' => 'Nie',
 				'1' => 'Tak',
-		);
-		echo $form->skosOpinion('Zgoda', array(
+			);
+			echo $form->skosOpinion('Zgoda', array(
 				'type' => $form->RADIO,
 				'labels' => $form->_labelize($tmp),
 				'labelClass' => 'radio',
 				'class' => 'radio',
 				'disabled'=>!$editable
-		));
-		echo 'W przypadku odrzucenia wniosku komentarz będzie widoczny dla składającego wniosek.';
+			));
+			echo 'W przypadku odrzucenia wniosku komentarz będzie widoczny dla składającego wniosek.';
+		}
 	}
 	
 	private function getStatus($application, $details = false) {

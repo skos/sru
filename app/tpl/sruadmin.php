@@ -1667,11 +1667,18 @@ setInterval(getSummary, 10*1000);
 	
 	public function fwExceptionEdit(array $d) {
 		$form = UFra::factory('UFlib_Form');
+		$acl = $this->_srv->get('acl');
+		$editable = $acl->sruAdmin('fwexceptionapplication', 'edit', $d['fwApplication']->id);
+		$url = $this->url(0).'/fwexceptions/';
+
 		echo '<h2>Wniosek o usługi serwerowe w SKOS PG</h2>';
 		echo $form->_start();
 		$d['fwApplication']->write('skosFormEdit', $d['fwExceptions']);
-		echo $form->_submit('Zapisz');
+		if ($editable) {
+			echo $form->_submit('Zapisz');
+		}
 		echo $form->_end();
+		echo '<p class="nav"><a href="'.$url.'">Powrót</a></p>';
 		echo $form->_end(true);
 	
 	}
