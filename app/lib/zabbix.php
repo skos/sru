@@ -19,10 +19,10 @@ class UFlib_Zabbix {
 			
 			$triggers = $api->triggerGet(array(
 			    'output' => 'extend',
-			    'monitored' => 1,
+				'selectHosts' => 'extend',
+				'monitored' => 1,
 			    'withUnacknowledgedEvents' => 1,
 			    'skipDependent' => 1,
-			    'expandData' => 1,
 			    'expandDescription' => 1,
 			    'active' => TRUE,
 			    'only_true' => TRUE,

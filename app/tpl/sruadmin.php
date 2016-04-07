@@ -1794,7 +1794,7 @@ setInterval(getSummary, 10*1000);
 		}
 		echo '<ul>';
 		foreach ($d['problems'] as $problem) {
-			echo '<li><a href="'.$url.'tr_status.php?hostid='.$problem->hostid.'">'.$problem->hostname.': '.$problem->description.'</a> <small>(z '.date(self::TIME_YYMMDD_HHMMSS, $problem->lastchange).')</small></li>';
+			echo '<li><a href="'.$url.'tr_status.php?hostid='.$problem->hosts[0]->hostid.'">'.$problem->hosts[0]->host.': '.$problem->description.'</a> <small>(z '.date(self::TIME_YYMMDD_HHMMSS, $problem->lastchange).')</small></li>';
 		}
 		echo '</ul>';
 	}
