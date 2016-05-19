@@ -8,7 +8,7 @@ extends UFmap {
 		'id'		=> 'id',
 		'computerId'	=> 'computer_id',
 		'host'		=> 'host',
-		'isCname'	=> 'is_cname',
+		'recordType'	=> 'record_type',
 		'domainName'	=> 'domain_name',
 	);
 
@@ -16,7 +16,7 @@ extends UFmap {
 		'id'		=> self::INT,
 		'computerId'	=> self::INT,
 		'host'		=> self::TEXT,
-		'isCname'	=> self::BOOL,
+		'recordType'	=> self::INT,
 		'domainName'	=> self::TEXT,
 	);
 	protected $tables = array(

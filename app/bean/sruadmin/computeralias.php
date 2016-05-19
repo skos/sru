@@ -4,6 +4,11 @@
  */
 class UFbean_SruAdmin_ComputerAlias
 extends UFbeanSingle {
+
+	const TYPE_CNAME = 1;
+	const TYPE_A = 2;
+	const TYPE_IN_TXT = 3;
+
 	protected function validateHost($val, $change) {
 		if (in_array($val, UFra::shared('UFconf_Sru')->invalidHostNames)) {
 			return 'duplicated';

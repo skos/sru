@@ -284,7 +284,7 @@ $("#macvendor").load('<?=UFURL_BASE?>/admin/apis/getmacvendor/<?=$d['mac']?>');
 		if (!is_null($aliases)) {
 			$aliasesString = '<table><tr><td>';
 			foreach ($aliases as $alias) {
-				$aliasesString = $aliasesString.$alias['domainName'].'&nbsp;('.($alias['isCname'] ? 'CNAME' : 'A').'), ';
+				$aliasesString = $aliasesString.$alias['domainName'].'&nbsp;('.UFtpl_SruAdmin_ComputerAlias::$recordTypes[$alias['recordType']].'), ';
 			}
 			$aliasesString = substr($aliasesString, 0 , -2);
 			$aliasesString = $aliasesString.'</td></tr></table>';
@@ -995,7 +995,7 @@ div.style.display = 'none';
                         echo $this->ERR($this->errors['host/regexp']);
                 }
                 echo $form->alias(_("Alias (.".$d['domainSuffix'].")"));
-                echo $form->isCname(_("Wpis CNAME ") . UFlib_Helper::displayHint(_("Aliasy są domyślnie wpisami CNAME.")), array('type' => $form->CHECKBOX, 'value' => '1'));
+                echo $form->isCname(_("Wpis CNAME ") . UFlib_Helper::displayHint(_("Aliasy są domyślnie wpisami CNAME, jeśli odznaczysz checkbox będzie to wpis A.")), array('type' => $form->CHECKBOX, 'value' => '1'));
                 echo $form->_end();
         }
 	
@@ -1316,9 +1316,9 @@ $("#macvendor").load('<?=UFURL_BASE?>/admin/apis/getmacvendor/<?=$searchedMac?>'
 		}
 		if (!is_null($aliases)) {
 			foreach ($aliases as $alias) {
-				if ($alias['isCname']) {
+				if ($alias['recordType'] == UFbean_SruAdmin_ComputerAlias::TYPE_CNAME) {
 					echo $alias['host']."\t\tCNAME\t".$alias['parent']."\n";
-				} else {
+				} else if ($alias['recordType'] == UFbean_SruAdmin_ComputerAlias::TYPE_A) {
 					echo $alias['host']."\t\tA\t".$alias['ip']."\n";
 				}
 			}

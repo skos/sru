@@ -1,6 +1,13 @@
 <?
 class UFtpl_SruAdmin_ComputerAlias
 extends UFtpl_Common {
+
+	public static $recordTypes = array(
+		UFbean_SruAdmin_ComputerAlias::TYPE_CNAME 	=> 'CNAME',
+		UFbean_SruAdmin_ComputerAlias::TYPE_A 	=> 'A',
+		UFbean_SruAdmin_ComputerAlias::TYPE_IN_TXT 	=> 'IN TXT',
+	);
+
 	public function listAliases(array $d) {
 		$url = $this->url(0).'/computers/';
 		
@@ -11,7 +18,7 @@ extends UFtpl_Common {
 		echo '</tr></thead><tbody>';
 		foreach ($d as $c) {
 			echo '<tr'.($c['parentBanned'] ? ' class="ban"' : '').'><td><a href="'.$url.$c['computerId'].'">'.$c['domainName'].'</td>';
-			echo '<td>'.($c['isCname'] ? 'CNAME' : 'A').'</td>';
+			echo '<td>'.UFtpl_SruAdmin_ComputerAlias::$recordTypes[$c['recordType']].'</td>';
 			echo '<td>'.$c['parentWithDomain'].(strlen($c['parentComment']) ? ' <img src="'.UFURL_BASE.'/i/img/gwiazdka.png" alt="" title="'.$c['parentComment'].'" />':'').'</a></td></tr>';
 		}
 		echo '</tbody></table>';

@@ -38,7 +38,7 @@ extends UFact {
 				$bean->computerId = $computer->id;
 				$bean->host = $post['alias'];
 				$bean->domainName = $post['alias'].'.'.$computer->domainSuffix;
-				$bean->isCname = $post['isCname'];
+				$bean->recordType = ($post['isCname'] == 1 ? UFbean_SruAdmin_ComputerAlias::TYPE_CNAME : UFbean_SruAdmin_ComputerAlias::TYPE_A);
 				$added = $post['alias'];
 				$bean->save();
 			}
