@@ -18,4 +18,8 @@ for host in $(get 'computers/outdated'); do
 	del "computer/${host}" && log "${host}" || log "${host} ERROR"
 done
 
+for alias in $(get 'computers/outdatedaliases'); do
+	del "computer/deldnsentry/${alias}" && log "alias ${alias}" || log "alias ${alias} ERROR"
+done
+
 rm "$PIDFILE"
