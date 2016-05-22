@@ -16,6 +16,8 @@ extends UFmap {
 		'parentComment'	=> 'c.comment',
 		'parentBanned'	=> 'c.banned',
 		'domainSuffix'	=> 'v.domain_suffix',
+		'value'			=> 'a.value',
+		'availTo'		=> 'a.avail_to',
 	);
 	protected $columnTypes = array(
 		'id'		=> self::INT,
@@ -29,6 +31,8 @@ extends UFmap {
 		'parentComment'	=> self::TEXT,
 		'parentBanned'	=> self::BOOL,
 		'domainSuffix'	=> self::TEXT,
+		'value'			=> self::NULL_TEXT,
+		'availTo'		=> self::NULL_TS
 	);
 	protected $tables = array(
 		'a' => 'computers_aliases',

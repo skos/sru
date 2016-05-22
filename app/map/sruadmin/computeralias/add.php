@@ -10,6 +10,8 @@ extends UFmap {
 		'host'		=> 'host',
 		'recordType'	=> 'record_type',
 		'domainName'	=> 'domain_name',
+		'value'			=> 'value',
+		'availTo'		=> 'avail_to',
 	);
 
 	protected $columnTypes = array(
@@ -18,6 +20,8 @@ extends UFmap {
 		'host'		=> self::TEXT,
 		'recordType'	=> self::INT,
 		'domainName'	=> self::TEXT,
+		'value'			=> self::NULL_TEXT,
+		'availTo'		=> self::NULL_TS
 	);
 	protected $tables = array(
 		'' => 'computers_aliases',
@@ -26,6 +30,7 @@ extends UFmap {
 	protected $pk = 'id';
 
 	protected $valids = array(
-		'host' => array('textMin'=>1, 'textMax'=>50, 'regexp'=>'^[a-z][-a-z0-9]*[a-z0-9]$|^[a-z][-a-z0-9.]*[-a-z0-9]+[a-z0-9]$'),
+		'host' => array('textMin'=>1, 'textMax'=>50, 'regexp'=>'^[_]?[a-z][-a-z0-9]*[a-z0-9]$|^[_]?[a-z][-a-z0-9.]*[-a-z0-9]+[a-z0-9]$'),
+		'value' => array('regexp'=>'^[-a-z0-9]+$'),
 	);
 }

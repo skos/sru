@@ -19,3 +19,7 @@ function get() {
 function del() {
 	req DELETE "$1"
 }
+
+function put() {
+	req PUT "$1"
+}

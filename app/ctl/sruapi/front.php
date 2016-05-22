@@ -141,12 +141,31 @@ extends UFctl {
 								break;
 							case 'servers':
 								$get->view = 'computers/servers';
+								break;
+							case 'outdatedaliases':
+								$get->view = 'computers/outdatedaliases';
+								break;
 						}
 					}
 					break;
 				case 'computer':
 					if ($segCount > 1) {
 						switch ($req->segment(2)) {
+							case 'adddnsentry':
+								if ($segCount >= 5) {
+									$get->view = 'computer/addDnsEntry';
+									$get->computer = $req->segment(3);
+									$get->alias = $req->segment(4);
+									$get->recordType = $req->segment(5);
+									if ($segCount >= 6) {
+										$get->value = $req->segment(6);
+									}
+								}
+								break;
+							case 'deldnsentry':
+								$get->view = 'computer/delDnsEntry';
+								$get->alias = $req->segment(3);
+								break;
 							default:
 								// pojedynczy komputer - dezaktywacja
 								$get->view = 'computer';
@@ -236,6 +255,10 @@ extends UFctl {
 			$act = 'Penalty_Amnesty';
 		} elseif ('computer' == $get->view && 'DELETE' == $req->server->REQUEST_METHOD && $acl->sruApi('computer', 'edit')) {
 			$act = 'Computer_Deactivate';
+		} elseif ('computer/addDnsEntry' == $get->view && 'PUT' == $req->server->REQUEST_METHOD && $acl->sruApi('computer', 'edit')) {
+			$act = 'Computer_AddAlias';
+		} elseif ('computer/delDnsEntry' == $get->view && 'DELETE' == $req->server->REQUEST_METHOD && $acl->sruApi('computer', 'edit')) {
+			$act = 'Computer_DelAlias';
 		} elseif ('user/deactivate' == $get->view && 'DELETE' == $req->server->REQUEST_METHOD && $acl->sruApi('user', 'edit')) {
 			$act = 'User_Deactivate';
 		} elseif ('user/remove' == $get->view && 'DELETE' == $req->server->REQUEST_METHOD && $acl->sruApi('user', 'edit')) {
@@ -272,6 +295,22 @@ extends UFctl {
 				if ($msg->get('computerDeactivate/ok')) {
 					return 'SruApi_Status200';
 				} elseif ($msg->get('computerDeactivate/error')) {
+					return 'SruApi_Error403';
+				} else {
+					return 'SruApi_Error404';
+				}
+			case 'computer/addDnsEntry':
+				if ($msg->get('computerAddAlias/ok')) {
+					return 'SruApi_Status200';
+				} elseif ($msg->get('computerAddAlias/error')) {
+					return 'SruApi_Error403';
+				} else {
+					return 'SruApi_Error404';
+				}
+			case 'computer/delDnsEntry':
+				if ($msg->get('computerDelAlias/ok')) {
+					return 'SruApi_Status200';
+				} elseif ($msg->get('computerDelAlias/error')) {
 					return 'SruApi_Error403';
 				} else {
 					return 'SruApi_Error404';
@@ -342,6 +381,12 @@ extends UFctl {
 				}
 			case 'computers/servers':
 				return 'SruApi_ComputersServers';
+			case 'computers/outdatedaliases':
+				if ($acl->sruApi('computer', 'show')) {
+					return 'SruApi_ComputersOutdatedAliases';
+				} else {
+					return 'SruApi_Error403';
+				}
 			case 'users/toDeactivate':
 				if ($acl->sruApi('user', 'show')) {
 					return 'SruApi_UsersToDeactivate';

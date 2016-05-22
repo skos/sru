@@ -35,4 +35,10 @@ $(document).ready(function()
 </script>
 <?
 	}
+
+	public function apiAliasesOutdated(array $d) {
+		foreach ($d as $c) {
+			echo $c['host']."\n";
+		}
+	}
 }

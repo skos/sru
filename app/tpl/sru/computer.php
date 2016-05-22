@@ -1319,7 +1319,9 @@ $("#macvendor").load('<?=UFURL_BASE?>/admin/apis/getmacvendor/<?=$searchedMac?>'
 				if ($alias['recordType'] == UFbean_SruAdmin_ComputerAlias::TYPE_CNAME) {
 					echo $alias['host']."\t\tCNAME\t".$alias['parent']."\n";
 				} else if ($alias['recordType'] == UFbean_SruAdmin_ComputerAlias::TYPE_A) {
-					echo $alias['host']."\t\tA\t".$alias['ip']."\n";
+					echo $alias['host'] . "\t\tA\t" . $alias['ip'] . "\n";
+				} else if ($alias['recordType'] == UFbean_SruAdmin_ComputerAlias::TYPE_IN_TXT) {
+					echo $alias['host'] . "\t\tIN TXT\t" . $alias['value'] . "\n";
 				}
 			}
 		}

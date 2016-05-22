@@ -90,6 +90,10 @@ extends UFtpl_Common {
 	public function usersToDeactivate(array $d) {
 		$d['users']->write('apiUsersToDeactivate');
 	}
+
+	public function computersOutdatedAliases(array $d) {
+		$d['aliases']->write('apiAliasesOutdated');
+	}
 	
 	public function usersToRemove(array $d) {
 		$d['users']->write('apiUsersToDeactivate');

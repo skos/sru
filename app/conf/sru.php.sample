@@ -17,6 +17,7 @@ extends UFconf {
 	protected $sruUrl = 'https://sru.ds.pg.gda.pl';
 	protected $allowUnsecureConnections = false; // zezwalaj na połączenia z portu innego niż 443
 	protected $taskSummaryCheckInterval = 300; // liczba sekund, co którą nalezy odświeżyć informację o zadaniach
+	protected $computerAliasesValidTime = 86400;		//czas, po którym aliasy dodane przez API zostana dezaktywowane; 1 dzien (3600 * 24 * 1)
 
 	protected $noEthers = array(
 		'153.19.208.22',

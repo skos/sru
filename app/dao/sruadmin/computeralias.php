@@ -65,4 +65,14 @@ extends UFdao {
 
 		return $this->doSelect($query);
 	}
+
+	public function listOutdated() {
+		$mapping = $this->mapping('list');
+
+		$query = $this->prepareSelect($mapping);
+		$query->where($mapping->availTo, time(), $query->LT);
+		$query->order($mapping->host, $query->ASC);
+
+		return $this->doSelect($query);
+	}
 }

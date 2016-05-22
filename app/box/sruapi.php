@@ -319,7 +319,19 @@ extends UFbox {
 			return '';
 		}
 	}
-	
+
+	public function computersOutdatedAliases() {
+		try {
+			$bean = UFra::factory('UFbean_SruAdmin_ComputerAliasList');
+			$bean->listOutdated();
+
+			$d['aliases'] = $bean;
+
+			return $this->render(__FUNCTION__, $d);
+		} catch (UFex_Dao_NotFound $e) {
+			return '';
+		}
+	}
 	
 	public function usersToDeactivate() {
 		try {
