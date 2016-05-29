@@ -31,6 +31,6 @@ extends UFmap {
 
 	protected $valids = array(
 		'host' => array('textMin'=>1, 'textMax'=>50, 'regexp'=>'^[_]?[a-z][-a-z0-9]*[a-z0-9]$|^[_]?[a-z][-a-z0-9.]*[-a-z0-9]+[a-z0-9]$'),
-		'value' => array('regexp'=>'^[-a-z0-9]+$'),
+		'value' => array('regexp'=>'^[-_a-zA-Z0-9]+$'),
 	);
 }

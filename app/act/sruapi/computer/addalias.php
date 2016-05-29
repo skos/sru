@@ -12,8 +12,14 @@ extends UFact {
 			$get = $this->_srv->get('req')->get;
 			$conf = UFra::shared('UFconf_Sru');
 
-			$computer = UFra::factory('UFbean_Sru_Computer');
-			$computer->getByDomainName($get->computer);
+			try {
+				$computer = UFra::factory('UFbean_Sru_Computer');
+				$computer->getByDomainName($get->computer);
+			} catch (UFex_Dao_NotFound $e) {
+				$computerAlias = UFra::factory('UFbean_SruAdmin_ComputerAlias');
+				$computerAlias->getByDomainName($get->computer);
+				$computer->getByPK($computerAlias->computerId);
+			}
 
 			$bean = UFra::factory('UFbean_SruAdmin_ComputerAlias');
 			$bean->computerId = $computer->id;
