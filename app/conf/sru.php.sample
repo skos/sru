@@ -55,6 +55,9 @@ extends UFconf {
 
 	protected $uploadAPIUrl = '';
 
+	protected $macVendorLookupAPIUrl = 'http://api.macvendors.com/';
+	protected $macVendorLookupAPIJson = false;
+
 	protected $userPrintWaletText = '';
 	protected $touristPrintWaletText = '';
 	protected $userPrintSkosText = '';

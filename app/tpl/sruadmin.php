@@ -1800,8 +1800,13 @@ setInterval(getSummary, 10*1000);
 	}
 	
 	public function apisGetMacVendor(array $d) {
+		$conf = UFra::shared('UFconf_Sru');
 		if (!is_null($d['vendor'])) {
-			echo $d['vendor'][0]['company'];
+			if ($conf->macVendorLookupAPIJson) {
+				echo $d['vendor'][0]['company'];
+			} else {
+				echo $d['vendor'];
+			}
 		}
 	}
 	
