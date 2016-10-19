@@ -21,10 +21,19 @@ extends UFact {
 				$computer->getByPK($computerAlias->computerId);
 			}
 
+			$alias = $get->alias;
+            $domainSuffixLength = strlen($computer->domainSuffix);
+            if ($domainSuffixLength > 0 && strlen($alias) > ($domainSuffixLength + 1)) {
+                if (substr($alias, -($domainSuffixLength + 1)) == '.'.$computer->domainSuffix) {
+                    $alias = substr($alias, 0, (strlen($alias) - $domainSuffixLength - 1));
+                }
+                var_dump("after: ".$alias);
+            }
+
 			$bean = UFra::factory('UFbean_SruAdmin_ComputerAlias');
 			$bean->computerId = $computer->id;
-			$bean->host = $get->alias;
-			$bean->domainName = $get->alias.'.'.$computer->domainSuffix;
+			$bean->host = $alias;
+			$bean->domainName = $alias.'.'.$computer->domainSuffix;
 			$bean->recordType = $get->recordType;
 			$bean->availTo = time() + $conf->computerAliasesValidTime;
 			try {
