@@ -693,7 +693,7 @@ extends UFbox {
 			$admin->getFromSession();
 			$d['admin'] = $admin;
 
-			if ($admin->typeId != UFacl_SruAdmin_Admin::CAMPUS && $admin->typeId != UFacl_SruAdmin_Admin::CENTRAL) {
+			if ($admin->typeId != UFacl_SruAdmin_Admin::ASI && $admin->typeId != UFacl_SruAdmin_Admin::CAMPUS && $admin->typeId != UFacl_SruAdmin_Admin::CENTRAL) {
 				try {
 					$dorms = UFra::factory('UFbean_SruWalet_AdminDormitoryList');
 					$dorms->listAllById($admin->id);
@@ -732,7 +732,7 @@ extends UFbox {
 			
 			try {
 				$devices = UFra::factory('UFbean_SruAdmin_InventoryCardList');
-				if ($admin->typeId == UFacl_SruAdmin_Admin::CAMPUS || $admin->typeId == UFacl_SruAdmin_Admin::CENTRAL) {
+				if ($admin->typeId == UFacl_SruAdmin_Admin::ASI || $admin->typeId == UFacl_SruAdmin_Admin::CAMPUS || $admin->typeId == UFacl_SruAdmin_Admin::CENTRAL) {
 					$devices->listWithoutInventoryCard();
 					$d['devices'] = $devices;
 				} else if (count($dormitories) > 0) {
@@ -1061,7 +1061,7 @@ extends UFbox {
 			$d['admin'] = $bean;
 
 			// godziny dyżurów mają tylko admini SKOS, nawet boty ich nie mają!
-			if ($bean->typeId != UFacl_SruAdmin_Admin::CENTRAL && $bean->typeId != UFacl_SruAdmin_Admin::CAMPUS && $bean->typeId != UFacl_SruAdmin_Admin::LOCAL) {
+			if ($bean->typeId != UFacl_SruAdmin_Admin::ASI && $bean->typeId != UFacl_SruAdmin_Admin::CENTRAL && $bean->typeId != UFacl_SruAdmin_Admin::CAMPUS && $bean->typeId != UFacl_SruAdmin_Admin::LOCAL) {
 				return '';
 			}
 

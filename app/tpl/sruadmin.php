@@ -690,7 +690,7 @@ setInterval(getSummary, 10*1000);
 		}
 		$timeToInvalidatePassword = $d['admin']->lastPswChange + $sruConf->passwordValidTime - time();
 		if(($d['admin']->id == $session->authAdmin || ($session->is('typeId') && ($session->typeId == UFacl_SruAdmin_Admin::CENTRAL
-			|| $session->typeId == UFacl_SruAdmin_Admin::CAMPUS))) && $d['admin']->active == true 
+			|| $session->typeId == UFacl_SruAdmin_Admin::CAMPUS || $session->typeId == UFacl_SruAdmin_Admin::ASI))) && $d['admin']->active == true
 			&& ($timeToInvalidatePassword < $sruConf->passwordOutdatedWarning)) {
 			if ($timeToInvalidatePassword <= 0) {
 				echo $this->ERR('Hasło straciło ważność');
@@ -699,7 +699,7 @@ setInterval(getSummary, 10*1000);
 			}
 		}
 		if(($d['admin']->id == $session->authAdmin || ($session->is('typeId') && ($session->typeId == UFacl_SruAdmin_Admin::CENTRAL 
-			|| $session->typeId == UFacl_SruAdmin_Admin::CAMPUS)))
+			|| $session->typeId == UFacl_SruAdmin_Admin::CAMPUS || $session->typeId == UFacl_SruAdmin_Admin::ASI)))
 			&& $d['admin']->active == true && $d['admin']->activeTo - time() <= $sruConf->adminDeactivateAfter && $d['admin']->activeTo - time() >= 0){
 			echo $this->ERR('Konto niedługo ulegnie dezaktywacji, należy przedłużyć jego ważność w CUI!');
 		}

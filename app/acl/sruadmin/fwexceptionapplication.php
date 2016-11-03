@@ -15,7 +15,7 @@ extends UFlib_ClassWithService {
 	
 	public function edit($appId) {
 		$sess = $this->_srv->get('session');
-		if($this->_loggedIn() && $sess->is('typeId') && ($sess->typeId == UFacl_SruAdmin_Admin::CENTRAL || $sess->typeId == UFacl_SruAdmin_Admin::CAMPUS)) {
+		if($this->_loggedIn() && $sess->is('typeId') && ($sess->typeId == UFacl_SruAdmin_Admin::ASI || $sess->typeId == UFacl_SruAdmin_Admin::CENTRAL || $sess->typeId == UFacl_SruAdmin_Admin::CAMPUS)) {
 			try {
 				$app = UFra::factory('UFbean_Sru_FwExceptionApplication');
 				$app->getByPK($appId);

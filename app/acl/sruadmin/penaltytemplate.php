@@ -14,7 +14,7 @@ extends UFlib_ClassWithService {
 			return false;
 		}
 		$sess = $this->_srv->get('session');		
-		if ($sess->typeId == UFacl_SruAdmin_Admin::CENTRAL || $sess->typeId == UFacl_SruAdmin_Admin::CAMPUS) {
+		if ($sess->typeId == UFacl_SruAdmin_Admin::ASI || $sess->typeId == UFacl_SruAdmin_Admin::CENTRAL || $sess->typeId == UFacl_SruAdmin_Admin::CAMPUS) {
 			return true;
 		}
 		return false;
@@ -25,7 +25,7 @@ extends UFlib_ClassWithService {
 			return false;
 		}
 		$sess = $this->_srv->get('session');		
-		if ($sess->typeId == UFacl_SruAdmin_Admin::CENTRAL || $sess->typeId == UFacl_SruAdmin_Admin::CAMPUS) {
+		if ($sess->typeId == UFacl_SruAdmin_Admin::ASI || $sess->typeId == UFacl_SruAdmin_Admin::CENTRAL || $sess->typeId == UFacl_SruAdmin_Admin::CAMPUS) {
 			return true;
 		}
 		return false;

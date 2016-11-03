@@ -6,6 +6,7 @@ class UFtpl_SruAdmin_Admin
 extends UFtpl_Common {
 
 	public static $adminTypes = array(
+		UFacl_SruAdmin_Admin::ASI 	=> 'ASI',
 		UFacl_SruAdmin_Admin::CENTRAL 	=> 'Administrator Centralny',
 		UFacl_SruAdmin_Admin::CAMPUS 	=> 'Administrator Lokalny (team leader)',
 		UFacl_SruAdmin_Admin::LOCAL	=> 'Administrator Lokalny',
@@ -67,6 +68,9 @@ extends UFtpl_Common {
 			}
 			echo '<tr><td><a href="'.$url.$c['id'].'">';
 			switch($c['typeId']) {
+				case UFacl_SruAdmin_Admin::ASI:
+					echo '<strong><em>'.$this->_escape($c['name']).'</em></strong>';
+					break;
 				case UFacl_SruAdmin_Admin::CENTRAL:
 						echo '<strong>'.$this->_escape($c['name']).'</strong>';
 						break;

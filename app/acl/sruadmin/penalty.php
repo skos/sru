@@ -84,7 +84,7 @@ extends UFlib_ClassWithService {
 		
 		if ($sess->authAdmin == $bean->createdById) {	//swoje kary mozna edytowac
 			return true;
-		} elseif ($sess->typeId == UFacl_SruAdmin_Admin::CENTRAL || $sess->typeId == UFacl_SruAdmin_Admin::CAMPUS) {
+		} elseif ($sess->typeId == UFacl_SruAdmin_Admin::ASI || $sess->typeId == UFacl_SruAdmin_Admin::CENTRAL || $sess->typeId == UFacl_SruAdmin_Admin::CAMPUS) {
 			return true;
 		} else {
 			return ($bean->amnestyAfter<$bean->endAt);
@@ -120,7 +120,7 @@ extends UFlib_ClassWithService {
 
 		if ($sess->authAdmin == $bean->createdById) {	//swoje kary mozna edytowac
 			return true;	
-		} elseif ($sess->typeId == UFacl_SruAdmin_Admin::CENTRAL || $sess->typeId == UFacl_SruAdmin_Admin::CAMPUS) {
+		} elseif ($sess->typeId == UFacl_SruAdmin_Admin::ASI || $sess->typeId == UFacl_SruAdmin_Admin::CENTRAL || $sess->typeId == UFacl_SruAdmin_Admin::CAMPUS) {
 			return true;
 		}
 		return false;

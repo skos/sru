@@ -972,7 +972,7 @@ extends UFbox {
 			$d['admin'] = $bean;
 
 			// godziny dyżurów mają tylko admini SKOS, nawet boty ich nie mają!
-			if ($bean->typeId != UFacl_SruAdmin_Admin::CENTRAL && $bean->typeId != UFacl_SruAdmin_Admin::CAMPUS && $bean->typeId != UFacl_SruAdmin_Admin::LOCAL) {
+			if ($bean->typeId != UFacl_SruAdmin_Admin::ASI && $bean->typeId != UFacl_SruAdmin_Admin::CENTRAL && $bean->typeId != UFacl_SruAdmin_Admin::CAMPUS && $bean->typeId != UFacl_SruAdmin_Admin::LOCAL) {
 				return '';
 			}
 

@@ -4,7 +4,8 @@
  */
 class UFacl_SruAdmin_Admin
 extends UFlib_ClassWithService {
-	
+
+    const ASI = 0;
 	const CENTRAL = 1;
 	const CAMPUS = 2;
 	const LOCAL = 3;
@@ -23,7 +24,7 @@ extends UFlib_ClassWithService {
 	public function add() {
 		$sess = $this->_srv->get('session');
 		
-		if($this->_loggedIn() && $sess->is('typeId') && ($sess->typeId == self::CENTRAL || $sess->typeId == self::CAMPUS) )
+		if($this->_loggedIn() && $sess->is('typeId') && ($sess->typeId == self::ASI || $sess->typeId == self::CENTRAL || $sess->typeId == self::CAMPUS) )
 		{
 			return true;
 		}
@@ -33,7 +34,7 @@ extends UFlib_ClassWithService {
 	public function addChangeActiveDate(){
 		$sess = $this->_srv->get('session');
 		
-		if($this->_loggedIn() && $sess->is('typeId') && ($sess->typeId == self::CENTRAL)){
+		if($this->_loggedIn() && $sess->is('typeId') && ($sess->typeId == self::ASI || $sess->typeId == self::CENTRAL)){
 			return true;
 		}else{
 			return false;
@@ -55,7 +56,7 @@ extends UFlib_ClassWithService {
 		$bean = UFra::factory('UFbean_SruAdmin_Admin');
 		$bean->getByPK($id);
 		
-		if($this->_loggedIn() && $sess->is('typeId') && ($sess->typeId == self::CAMPUS || $sess->typeId == self::CENTRAL) && ($bean->typeId == self::CENTRAL || $bean->typeId == self::CAMPUS || $bean->typeId == self::LOCAL)) {
+		if($this->_loggedIn() && $sess->is('typeId') && ($sess->typeId == self::ASI || $sess->typeId == self::CAMPUS || $sess->typeId == self::CENTRAL) && ($bean->typeId == self::ASI || $bean->typeId == self::CENTRAL || $bean->typeId == self::CAMPUS || $bean->typeId == self::LOCAL)) {
 			return true;
 		} else {
 			return false;
@@ -71,8 +72,8 @@ extends UFlib_ClassWithService {
 
 		$bean = UFra::factory('UFbean_SruAdmin_Admin');
 		$bean->getByPK($id);
-		if($this->_loggedIn() && $sess->is('typeId') && ($sess->typeId == self::CENTRAL || $sess->typeId == self::CAMPUS) &&
-			($bean->typeId == self::CENTRAL || $bean->typeId == self::CAMPUS || $bean->typeId == self::LOCAL || $bean->typeId == self::BOT)) {
+		if($this->_loggedIn() && $sess->is('typeId') && ($sess->typeId == self::ASI ||$sess->typeId == self::CENTRAL || $sess->typeId == self::CAMPUS) &&
+			($bean->typeId == self::ASI || $bean->typeId == self::CENTRAL || $bean->typeId == self::CAMPUS || $bean->typeId == self::LOCAL || $bean->typeId == self::BOT)) {
 			return true;
 		}
 		return false;
@@ -81,7 +82,7 @@ extends UFlib_ClassWithService {
 
 		$sess = $this->_srv->get('session');
 		
-		if($this->_loggedIn() && $sess->is('typeId') && ($sess->typeId == self::CENTRAL || $sess->typeId == self::CAMPUS) )
+		if($this->_loggedIn() && $sess->is('typeId') && ($sess->typeId == self::ASI || $sess->typeId == self::CENTRAL || $sess->typeId == self::CAMPUS) )
 		{
 			return true;
 		}
