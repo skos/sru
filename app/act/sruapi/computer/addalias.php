@@ -27,7 +27,6 @@ extends UFact {
                 if (substr($alias, -($domainSuffixLength + 1)) == '.'.$computer->domainSuffix) {
                     $alias = substr($alias, 0, (strlen($alias) - $domainSuffixLength - 1));
                 }
-                var_dump("after: ".$alias);
             }
 
 			$bean = UFra::factory('UFbean_SruAdmin_ComputerAlias');
