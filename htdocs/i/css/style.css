@@ -402,3 +402,12 @@ li.right-menu > a {
 	line-height: 1.8em;
 	padding: 0 10px !important;
 }
+
+.center {
+	clear: both;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	text-align:center;
+}
+

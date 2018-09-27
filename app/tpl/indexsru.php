@@ -28,6 +28,7 @@ extends UFtpl_Common {
 <div id="body">
 <div id="head">
 <div id="logoBar"><h1><a href="<?=UFURL_BASE;?>/sru/"><img src="<?=UFURL_BASE;?>/i/img/skoslogo.png" alt="logo SKOS"/>&nbsp;<abbr title="System Rejestracji Użytkowników">SRU</abbr></a></h1></div>
+<div id="baner"><a href="https://www.facebook.com/skospg/"><img src="baner.png" alt="baner rekrutacja" class="center"/></a></div>
 <div class="userBar"><?=$d['userBar'];?></div>
 </div><!-- head -->
 <?=$d['userMainMenu'];?>
